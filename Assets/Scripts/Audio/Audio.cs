@@ -6,6 +6,7 @@ public class Audio : MonoBehaviour
 {
     public Scene scene;
     public AudioClip[] audioClips;
+    public AudioClip[] missionAudioClips;
     public List<AudioSource> audioSources;
 
     // Start is called before the first frame update

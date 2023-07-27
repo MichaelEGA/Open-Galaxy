@@ -43,7 +43,7 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "loadscene")
             {
-                Task a = new Task(LoadScene(missionName, missionEvent.data1, false));
+                Task a = new Task(LoadScene(missionName, missionEvent.data1, false, missionAddress));
                 while (a.Running == true) { yield return null; }
             }
         }
@@ -212,7 +212,7 @@ public static class MissionFunctions
         }
         else if (missionEvent.eventType == "message")
         {
-            Message(missionEvent.data1, missionEvent.data2);
+            Message(missionEvent);
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
         else if (missionEvent.eventType == "movetowaypoint")
@@ -292,7 +292,7 @@ public static class MissionFunctions
     #region main scene loading function
 
     //This creates the scene 
-    public static IEnumerator LoadScene(string missionName, string location, bool randomiseLocation)
+    public static IEnumerator LoadScene(string missionName, string location, bool randomiseLocation, string missionAddress)
     {
         Scene scene = SceneFunctions.GetScene();
 
@@ -309,7 +309,7 @@ public static class MissionFunctions
         LoadScreenFunctions.AddLogToLoadingScreen("Hud created.", Time.unscaledTime - time);
 
         //THis loads the audio and music manager
-        AudioFunctions.CreateAudioManager();
+        AudioFunctions.CreateAudioManager(missionAddress + missionName + "_audio" + "/", false);
         LoadScreenFunctions.AddLogToLoadingScreen("Audio Manager created", Time.unscaledTime - time);
         MusicFunctions.CreateMusicManager();
         LoadScreenFunctions.AddLogToLoadingScreen("Music Manager created", Time.unscaledTime - time);
@@ -667,13 +667,21 @@ public static class MissionFunctions
     }
 
     //This adds a message to the log and can also play an audio file
-    public static void Message(string message, string audio)
+    public static void Message(MissionEvent missionEvent)
     {
+        string audio = missionEvent.data2;
+        string message = missionEvent.data1;
+        string internalAudioFile = missionEvent.data3;
+
         HudFunctions.AddToShipLog(message);
 
-        if (audio != "none")
+        if (audio != "none" & internalAudioFile != "true")
         {
-            AudioFunctions.PlayAudioClip(null, audio, new Vector3(0,0,0), 0, 1, 500, 1f, 1);
+            AudioFunctions.PlayVoiceClip(null, audio, new Vector3(0,0,0), 0, 1, 500, 1f, 1);
+        }
+        else if (audio != "none" & internalAudioFile == "true")
+        {
+            AudioFunctions.PlayAudioClip(null, audio, new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
         }
     }
 

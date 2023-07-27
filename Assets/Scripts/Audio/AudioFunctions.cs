@@ -7,13 +7,20 @@ public static class AudioFunctions
     #region start functions
 
     //This creates the audio manager and loads all availible audio clips
-    public static void CreateAudioManager()
+    public static void CreateAudioManager(string address = "none", bool filesAreExternal = false)
     {
         GameObject audioManager = new GameObject();
         audioManager.name = "Audio Manager";
         Audio audioManagerScript = audioManager.AddComponent<Audio>();
 
         LoadAudioClips(audioManagerScript);
+
+        if (address != "none")
+        {
+            LoadMissionAudioClips(audioManagerScript, address, filesAreExternal);
+            Debug.Log("address is " + address);
+        }
+
     }
 
     //This loads all the availible audio clips
@@ -22,6 +29,14 @@ public static class AudioFunctions
         AudioClip[] audioClips = Resources.LoadAll<AudioClip>("AudioClips");
         audio.audioClips = new AudioClip[audioClips.Length];
         audio.audioClips = audioClips;
+    }
+
+    //This loads all availble mission audio files
+    public static void LoadMissionAudioClips(Audio audio, string address, bool filesAreExternal = false)
+    {
+        AudioClip[] missionAudioClips = Resources.LoadAll<AudioClip>(address);
+        audio.missionAudioClips = new AudioClip[missionAudioClips.Length];
+        audio.missionAudioClips = missionAudioClips;
     }
 
     #endregion
@@ -62,6 +77,60 @@ public static class AudioFunctions
             if (dontPlay == false)
             {
                 AudioClip audioClip = GetAudioClip(audioManager, audioName);
+                AudioSource audioSource = GetAudioSource(audioManager);
+
+                if (audioClip != null & audioSource != null)
+                {
+                    audioSource.clip = audioClip;
+                    audioSource.pitch = pitch;
+                    audioSource.spatialBlend = spatialBlend;
+                    audioSource.reverbZoneMix = 1;
+                    audioSource.dopplerLevel = 0;
+                    audioSource.spread = 45;
+                    audioSource.maxDistance = distance;
+                    audioSource.priority = priority;
+                    audioSource.rolloffMode = AudioRolloffMode.Linear;
+                    audioSource.loop = false;
+                    audioSource.Play();
+                    audioSource.gameObject.transform.position = location;
+                }
+            }
+        }
+    }
+
+    //This plays the requested voice audio file
+    public static void PlayVoiceClip(Audio audioManager, string audioName, Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
+    {
+        if (audioManager == null)
+        {
+            audioManager = GetAudioManager();
+        }
+
+        //This prevents the game from playing audio that's nowhere near the player
+        bool dontPlay = false;
+
+        if (audioManager != null)
+        {
+            if (audioManager.scene != null)
+            {
+                GameObject mainShip = audioManager.scene.mainShip;
+
+                if (mainShip != null)
+                {
+                    float tempDistance = Vector3.Distance(location, mainShip.transform.position);
+
+                    if (tempDistance > distance)
+                    {
+                        dontPlay = true;
+                    }
+
+                }
+            }
+
+            //This finds and plays the audio clip
+            if (dontPlay == false)
+            {
+                AudioClip audioClip = GetMissionAudioClip(audioManager, audioName);
                 AudioSource audioSource = GetAudioSource(audioManager);
 
                 if (audioClip != null & audioSource != null)
@@ -201,6 +270,29 @@ public static class AudioFunctions
                 }
             }
         }     
+
+        return audioClip;
+    }
+
+    //This gets the voice clip to be played
+    public static AudioClip GetMissionAudioClip(Audio audioManager, string audioName)
+    {
+        AudioClip audioClip = null;
+
+        if (audioManager != null)
+        {
+            if (audioManager.missionAudioClips != null)
+            {
+                foreach (AudioClip tempAudioClip in audioManager.missionAudioClips)
+                {
+                    if (tempAudioClip.name == audioName)
+                    {
+                        audioClip = tempAudioClip;
+                        break;
+                    }
+                }
+            }
+        }
 
         return audioClip;
     }

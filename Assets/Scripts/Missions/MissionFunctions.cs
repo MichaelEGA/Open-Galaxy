@@ -325,7 +325,7 @@ public static class MissionFunctions
         SceneFunctions.MoveStarfieldCamera(planetData.location);
         scene.location = planetData.planet;
 
-        Task a = new Task(SceneFunctions.GeneratePlanetHeightmap(planetData.type, planetData.seed, 2048));
+        Task a = new Task(SceneFunctions.GeneratePlanetHeightmap(planetData.type, planetData.seed));
         while (a.Running == true) { yield return null; }
         SceneFunctions.SetPlanetDistance(planetData.seed);
         LoadScreenFunctions.AddLogToLoadingScreen("Planet created", Time.unscaledTime - time);

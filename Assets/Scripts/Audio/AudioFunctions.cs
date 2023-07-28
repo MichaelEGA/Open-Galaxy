@@ -18,7 +18,6 @@ public static class AudioFunctions
         if (address != "none")
         {
             LoadMissionAudioClips(audioManagerScript, address, filesAreExternal);
-            Debug.Log("address is " + address);
         }
 
     }

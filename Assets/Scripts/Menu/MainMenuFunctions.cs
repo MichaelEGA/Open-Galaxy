@@ -135,7 +135,7 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("QuitToMainMenu", new System.Action(QuitToMainMenu));
         mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
         mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
-        mainMenu.functions.Add("ChangePlanetTextureResolution", new System.Action<string>(ChangeResolution));
+        mainMenu.functions.Add("ChangePlanetTextureResolution", new System.Action<string>(ChangePlanetTextureResolution));
         mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
         mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
         mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
@@ -525,9 +525,22 @@ public static class MainMenuFunctions
         }
     }
 
+    //This changes the heightmap resolution
+    public static void ChangePlanetTextureResolution(string resolution)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.heightMapResolution = int.Parse(resolution);
+
+        OGSettingsFunctions.SaveSettingsData();
+
+        ActivateSubMenu("Settings");
+    }
+
     //This sets the screen resolution
     public static void ChangeResolution(string resolution)
     {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
 
         FullScreenMode screenMode = Screen.fullScreenMode;
 
@@ -536,118 +549,175 @@ public static class MainMenuFunctions
             int width = Display.main.systemWidth;
             int height = Display.main.systemHeight;
             Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
         }
         else if (resolution == "640 x 480 (4:3)")
         {
             Screen.SetResolution(640, 480, screenMode);
+            settings.screenResX = 640;
+            settings.screenResY = 480;
         }
         else if (resolution == "640 x 360 (16:9)")
         {
             Screen.SetResolution(640, 360, screenMode);
+            settings.screenResX = 640;
+            settings.screenResY = 360;
         }
         else if (resolution == "640 x 400 (16:10)")
         {
             Screen.SetResolution(640, 400, screenMode);
+            settings.screenResX = 640;
+            settings.screenResY = 400;
         }
         else if (resolution == "800 x 600 (4:3)")
         {
             Screen.SetResolution(800, 600, screenMode);
+            settings.screenResX = 800;
+            settings.screenResY = 600;
         }
         else if (resolution == "848 x 450 (16:9)")
         {
             Screen.SetResolution(848, 450, screenMode);
+            settings.screenResX = 848;
+            settings.screenResY = 450;
         }
         else if (resolution == "960 x 600 (16:10)")
         {
             Screen.SetResolution(960, 600, screenMode);
+            settings.screenResX = 960;
+            settings.screenResY = 600;
         }
         else if (resolution == "1024 x 768 (4:3)")
         {
             Screen.SetResolution(1024, 768, screenMode);
+            settings.screenResX = 1024;
+            settings.screenResY = 768;
         }
         else if (resolution == "1024 x 576 (16:9)")
         {
             Screen.SetResolution(1024, 576, screenMode);
+            settings.screenResX = 1024;
+            settings.screenResY = 576;
         }
         else if (resolution == "1024 x 640 (16:10)")
         {
             Screen.SetResolution(1024, 640, screenMode);
+            settings.screenResX = 1024;
+            settings.screenResY = 640;
         }
         else if (resolution == "1220 x 915 (4:3)")
         {
             Screen.SetResolution(1220, 915, screenMode);
+            settings.screenResX = 1220;
+            settings.screenResY = 915;
         }
         else if (resolution == "1220 x 720 (16:9)")
         {
             Screen.SetResolution(1220, 720, screenMode);
+            settings.screenResX = 1220;
+            settings.screenResY = 620;
         }
         else if (resolution == "1280 x 800 (16:10)")
         {
             Screen.SetResolution(1280, 800, screenMode);
+            settings.screenResX = 1280;
+            settings.screenResY = 800;
         }
         else if (resolution == "1680 × 1260 (4:3)")
         {
             Screen.SetResolution(1680, 1260, screenMode);
+            settings.screenResX = 1680;
+            settings.screenResY = 1260;
         }
         else if (resolution == "1680 × 945 (16:9)")
         {
             Screen.SetResolution(1680, 945, screenMode);
+            settings.screenResX = 1680;
+            settings.screenResY = 945;
         }
         else if (resolution == "1680 × 1050 (16:10)")
         {
             Screen.SetResolution(1680, 1050, screenMode);
+            settings.screenResX = 1680;
+            settings.screenResY = 1050;
         }
         else if (resolution == "1920 x 1440 (4:3)")
         {
             Screen.SetResolution(1920, 1440, screenMode);
+            settings.screenResX = 1920;
+            settings.screenResY = 1440;
         }
         else if (resolution == "1920 x 1080 (16:9)")
         {
             Screen.SetResolution(1920, 1080, screenMode);
+            settings.screenResX = 1920;
+            settings.screenResY = 1080;
         }
         else if (resolution == "1920 x 1200 (16:10)")
         {
             Screen.SetResolution(1920, 1200, screenMode);
+            settings.screenResX = 1920;
+            settings.screenResY = 1200;
         }
         else if (resolution == "2560 x 1920 (4:3)")
         {
             Screen.SetResolution(2560, 1920, screenMode);
+            settings.screenResX = 2560;
+            settings.screenResY = 1920;
         }
         else if (resolution == "2560 x 1440 (16:9)")
         {
             Screen.SetResolution(2560, 1440, screenMode);
+            settings.screenResX = 2560;
+            settings.screenResY = 1440;
         }
         else if (resolution == "2560 x 1600 (16:10)")
         {
             Screen.SetResolution(2560, 1600, screenMode);
+            settings.screenResX = 2560;
+            settings.screenResY = 1600;
         }
         else if (resolution == "3840 x 2880 (4:3)")
         {
             Screen.SetResolution(3840, 2880, screenMode);
+            settings.screenResX = 3840;
+            settings.screenResY = 2880;
         }
         else if (resolution == "3840 x 2160 (16:9)")
         {
             Screen.SetResolution(3840, 2160, screenMode);
+            settings.screenResX = 3840;
+            settings.screenResY = 2160;
         }
         else if (resolution == "3840 x 2400 (16:10)")
         {
             Screen.SetResolution(3840, 2400, screenMode);
+            settings.screenResX = 3840;
+            settings.screenResY = 2400;
         }
         else if (resolution == "7680 x 5760 (4:3)")
         {
             Screen.SetResolution(7680, 5760, screenMode);
+            settings.screenResX = 7680;
+            settings.screenResY = 5760;
         }
         else if (resolution == "7680 x 4320 (16:9)")
         {
             Screen.SetResolution(7680, 4320, screenMode);
+            settings.screenResX = 7680;
+            settings.screenResY = 4320;
         }
         else if (resolution == "7680 x 4800 (16:10)")
         {
             Screen.SetResolution(7680, 4800, screenMode);
+            settings.screenResX = 7680;
+            settings.screenResY = 4800;
         }
 
-        ActivateSubMenu("Video");
+        OGSettingsFunctions.SaveSettingsData();
 
+        ActivateSubMenu("Settings");
     }
 
     //This sets the window mode
@@ -674,24 +744,25 @@ public static class MainMenuFunctions
             Screen.SetResolution(widthRes, heightRes, FullScreenMode.ExclusiveFullScreen);
         }
 
-        ActivateSubMenu("Video");
+        ActivateSubMenu("Settings");
 
     }
 
     //Stand in function for inverting the horizontal view
     public static void InvertHorizontal(string choice)
     {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
 
         if (choice == "true")
         {
-            //Your code to invert the horizontal
-            Debug.Log("Horizontal Inverted");
+            settings.invertX = true;
         }
         else
         {
-            //Your code to set the horizontal to normal
-            Debug.Log("Horizontal Normal");
+            settings.invertX = false;
         }
+
+        OGSettingsFunctions.SaveSettingsData();
 
         ActivateSubMenu("Controls");
 
@@ -700,16 +771,18 @@ public static class MainMenuFunctions
     //Stand in function for inverting the vertical view
     public static void InvertVertical(string choice)
     {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
         if (choice == "true")
         {
-            //Your code to invert the horizontal
-            Debug.Log("Vertical Inverted");
+            settings.invertY = true;
         }
         else
         {
-            //Your code to set the horizontal to normal
-            Debug.Log("Vertical Normal");
+            settings.invertY = false;
         }
+
+        OGSettingsFunctions.SaveSettingsData();
 
         ActivateSubMenu("Controls");
 

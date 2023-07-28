@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class SettingsFunctions
+public static class OGSettingsFunctions
 {
     //This loads the settings data from an external file or if it doesn't find one makes a new one
     public static void LoadSettingsData()
@@ -71,8 +71,8 @@ public static class SettingsFunctions
         ogSettingsClass.ogSettingsData[0].screenResY = settings.screenResY;
 
         // Write JSON to file.
-        string stringOFSettingsData = JsonUtility.ToJson(ogSettingsClass);
-        File.WriteAllText(Application.persistentDataPath + "/settings", stringOFSettingsData);
+        string stringOFSettingsData = JsonUtility.ToJson(ogSettingsClass, true);
+        File.WriteAllText(Application.persistentDataPath + "/settings.json", stringOFSettingsData);
     }
 
     //This gets the accessible settings class

@@ -202,7 +202,7 @@ public static class SceneFunctions
     }
 
     //This generates the planet texture
-    public static IEnumerator GeneratePlanetHeightmap(string type, int seed, int mapSize)
+    public static IEnumerator GeneratePlanetHeightmap(string type, int seed)
     {
 
         LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", 0, false);
@@ -269,6 +269,11 @@ public static class SceneFunctions
 
         ModuleBase myModule;
         myModule = finalTerrain;
+
+        //This sets the heightmap resolution according to the player settings
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        int mapSize = settings.heightMapResolution;
 
         Noise2D heightMap = new Noise2D(mapSize, mapSize, myModule);
 
@@ -701,7 +706,11 @@ public static class SceneFunctions
 
                 if (isAI == false)
                 {
-                    smallShip.invertUpDown = true; //This should be defined by the player settings
+                    OGSettings settings = OGSettingsFunctions.GetSettings();
+
+                    smallShip.invertUpDown = settings.invertY;
+                    smallShip.invertLeftRight = settings.invertX;
+
                     scene.mainShip = smallShip.gameObject;
                 }
 

@@ -11,6 +11,7 @@ public class StartGame : MonoBehaviour
         SceneFunctions.CreateCameras();
         Task special = new Task(SceneFunctions.GenerateStarField());
         Task a = new Task(MainMenuFunctions.RunMenu());
+        SettingsFunctions.LoadSettingsData();
     }
 
     void Update()

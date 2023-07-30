@@ -2,6 +2,7 @@
 **X-Wing and Tie Fighter style flightsim**
 
 **Latest Release:** 0.49.1
+
 Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
 **Changelog**

@@ -225,6 +225,21 @@ public static class MissionFunctions
             PlayMusicType(missionEvent.data1);
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
+        else if (missionEvent.eventType == "setaioverride")
+        {
+            SetAIOverride(missionEvent);
+            FindNextEvent(missionName, missionEvent.nextEvent1);
+        }
+        else if (missionEvent.eventType == "setshiptarget")
+        {
+            SetShipTarget(missionEvent);
+            FindNextEvent(missionName, missionEvent.nextEvent1);
+        }
+        else if (missionEvent.eventType == "setshiptargettoclosestenemy")
+        {
+            SetShipTargetToClosestEnemy(missionEvent);
+            FindNextEvent(missionName, missionEvent.nextEvent1);
+        }
         else if (missionEvent.eventType == "setshiptoinvincible")
         {
             SetShipToInvincible(missionEvent);
@@ -731,6 +746,31 @@ public static class MissionFunctions
         }       
     }
 
+    //This manually sets the ai flight mode
+    public static void SetAIOverride(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            smallShip.aiOverideMode = missionEvent.data2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //This tells a ship or ships to move toward a waypoint by position its waypoint and setting its ai override mode
     public static void SetShipToInvincible(MissionEvent missionEvent)
     {
@@ -756,6 +796,56 @@ public static class MissionFunctions
                         if (smallShip != null)
                         {
                             smallShip.invincible = isInvincible;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //This sets the designated ships target, provided both the ship and its target can be found
+    public static void SetShipTarget(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            SmallShipFunctions.GetSpecificTarget(smallShip, missionEvent.data2);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //This sets the designated ships target to the closest enemy, provided both the ship can be found
+    public static void SetShipTargetToClosestEnemy(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            SmallShipFunctions.GetClosestEnemy(smallShip, true);
                         }
                     }
                 }

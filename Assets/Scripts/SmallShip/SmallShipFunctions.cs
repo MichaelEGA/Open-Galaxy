@@ -872,7 +872,7 @@ public static class SmallShipFunctions
                     smallShip.targetPrefabName = " ";
                     break;
                 }
-                else if (scene.objectPool[i] != null & smallShip.targetNumber != i) //This gets any ship in the scene
+                else if (scene.objectPool[i] != null & smallShip.targetNumber != i) //This gets any type of ship in the scene
                 {
                     if (scene.objectPool[i].activeSelf == true) //This ignores objects that are inactive
                     {
@@ -1025,7 +1025,7 @@ public static class SmallShipFunctions
     }
 
     //This gets the closesd enemy target
-    public static void GetClosestEnemy(SmallShip smallShip)
+    public static void GetClosestEnemy(SmallShip smallShip, bool externalActivation = false)
     {
 
         bool automaticSearch = false;
@@ -1038,7 +1038,7 @@ public static class SmallShipFunctions
             }
         }
 
-        if (smallShip.targetPressedTime < Time.time & smallShip.getClosestEnemy == true || automaticSearch == true)
+        if (smallShip.targetPressedTime < Time.time & smallShip.getClosestEnemy == true || automaticSearch == true || externalActivation == true)
         {
             Scene scene = smallShip.scene;
 
@@ -1115,6 +1115,66 @@ public static class SmallShipFunctions
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
+        }
+    }
+
+    //This gets the designated target and sets it as the ships target if it can be found
+    public static void GetSpecificTarget(SmallShip smallShip, string targetName)
+    {
+        Scene scene = smallShip.scene;
+        GameObject target = null;
+        SmallShip tempSmallShip = null;
+        SmallShip targetSmallShip = null;
+
+        foreach (GameObject ship in scene.objectPool)
+        {
+            if (ship != null)
+            {
+                if (ship.activeSelf == true)
+                {
+                    if (ship.name.Contains(targetName))
+                    {
+                        target = ship;
+                        tempSmallShip = ship.GetComponent<SmallShip>();
+                        
+                        if (tempSmallShip != null)
+                        {
+                            targetSmallShip = tempSmallShip;
+                        }
+                        
+                        break;
+                    }
+                }
+            } 
+        }
+
+        if (target != null)
+        {
+            smallShip.target = target;
+            smallShip.targetName = target.name;
+
+            if (targetSmallShip != null)
+            {
+                smallShip.targetSmallShip = targetSmallShip;
+                smallShip.targetPrefabName = targetSmallShip.prefabName;
+            }
+            else
+            {
+                smallShip.targetSmallShip = null;
+                smallShip.targetPrefabName = " ";
+            }
+
+            smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
+
+            if (smallShip.isAI == true)
+            {
+                targetSmallShip.numberTargeting += 1;
+            }
+        }
+
+        if (smallShip.isAI == false)
+        {
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
         }
     }
 

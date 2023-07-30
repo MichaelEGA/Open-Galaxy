@@ -18,6 +18,7 @@ public static class SmallShipAIFunctions
 
     #region Set Flight Mode
 
+    //This selects the flight mode from the avaible patterns
     public static void SetFlightMode(SmallShip smallShip)
     {
         //This selects the next enemy target
@@ -59,7 +60,14 @@ public static class SmallShipAIFunctions
         {
             MoveToWayPoint(smallShip);
         }
-
+        else if (smallShip.aiOverideMode == "Patrol")
+        {
+            PatrolPatternAlpha(smallShip);
+        }
+        else if (smallShip.aiOverideMode == "Stationary")
+        {
+            Stationary(smallShip);
+        }
     }
 
     #endregion
@@ -131,6 +139,12 @@ public static class SmallShipAIFunctions
         ThreeQuarterSpeed(smallShip);
         PatrolSpeedPowerSettings(smallShip);
         AngleTowardsWaypoint(smallShip);
+    }
+
+    //This causes the ship to come to a full stop
+    public static void Stationary(SmallShip smallShip)
+    {
+        NoSpeed(smallShip);
     }
 
     #endregion
@@ -459,6 +473,19 @@ public static class SmallShipAIFunctions
         float quarterSpeed = (smallShip.speedRating / 4f);
 
         if (smallShip.thrustSpeed > quarterSpeed)
+        {
+            smallShip.thrustInput = -1;
+        }
+        else
+        {
+            smallShip.thrustInput = 1;
+        }
+    }
+
+    //This sets the ship to half speed (typically used when no enemies are detected)
+    public static void NoSpeed(SmallShip smallShip)
+    {
+        if (smallShip.thrustSpeed > 0)
         {
             smallShip.thrustInput = -1;
         }

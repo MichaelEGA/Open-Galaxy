@@ -13,5 +13,5 @@ Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
   - Made separate loading pathways for standard audio and mission audio
   - Added new mission - Corrans Nightmare Part 2
 
-27/07/23 - v0.49
+27/07/23 - v0.49.0
   - First Commit

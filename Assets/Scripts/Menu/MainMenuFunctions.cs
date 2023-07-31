@@ -96,6 +96,8 @@ public static class MainMenuFunctions
         GameObject menuPrefab = Resources.Load("Menu/Title") as GameObject;
         GameObject title = GameObject.Instantiate(menuPrefab);
         title.name = "Title";
+        Text messageText = title.GetComponentInChildren<Text>();
+        DisplayMessageOnTitleScreen(messageText);
         return title;
     }
 
@@ -468,6 +470,25 @@ public static class MainMenuFunctions
     #endregion
 
     #region menu functions
+
+    //Displays a message on the title screen
+    public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
+    {
+        string[] messages = new string[10];
+        messages[0] = "Welcome to Open Galaxy. Version 0.5 focuses on combat and playability.";
+        messages[1] = "Open Galaxy's missions are based on the Legends timeline.";
+        messages[2] = "There are more than just missions. Try your hand at a random battle or try climbing THE LADDER";
+        messages[3] = "Struggling to figure out how to play Open Galaxy? Spend some time working through the training missions.";
+        messages[4] = "Open Galaxy generates a real star wars galaxy with accurately positioned stars and planets.";
+        messages[5] = "You can lower the quality of the planet heightmap for faster loadtimes.";
+        messages[6] = "Open Galaxy is best played with a keyboard and mouse. But there is rudimentary controller support.";
+        messages[7] = "Open Galaxy uses a mouse joystick system that allows for precision control of your ship.";
+        messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
+        messages[9] = "Future plans for Open Galaxy include an 'explore galaxy' option and other unique game modes.";
+        Random.InitState(System.DateTime.Now.Millisecond);
+        int randomMessageNo = Random.Range(0, 9);
+        titleScreenMessageBox.text = messages[randomMessageNo];
+    }
 
     //This loads a main mission
     public static void LoadMainMission(string name)

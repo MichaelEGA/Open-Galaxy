@@ -230,6 +230,11 @@ public static class MissionFunctions
             SetAIOverride(missionEvent);
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
+        else if (missionEvent.eventType == "setshipallegiance")
+        {
+            SetShipAllegiance(missionEvent);
+            FindNextEvent(missionName, missionEvent.nextEvent1);
+        }
         else if (missionEvent.eventType == "setshiptarget")
         {
             SetShipTarget(missionEvent);
@@ -764,6 +769,31 @@ public static class MissionFunctions
                         if (smallShip != null)
                         {
                             smallShip.aiOverideMode = missionEvent.data2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //This sets the designated ships target to the closest enemy, provided both the ship can be found
+    public static void SetShipAllegiance(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+                        
+                        if (smallShip != null)
+                        {
+                            smallShip.allegiance = missionEvent.data2;
                         }
                     }
                 }

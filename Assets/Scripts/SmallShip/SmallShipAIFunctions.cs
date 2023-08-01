@@ -117,7 +117,6 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.waypoint != null)
         {
-            FireControl(smallShip);
             HalfSpeed(smallShip);
             PatrolSpeedPowerSettings(smallShip);
 

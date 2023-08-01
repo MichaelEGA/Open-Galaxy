@@ -514,7 +514,10 @@ public static class HudFunctions
             {
                 if (hud.smallShip.targetSmallShip != null)
                 {
-                    hud.targetSpeedText.text = (hud.smallShip.targetSmallShip.shipRigidbody.velocity.magnitude * 3.6f).ToString("000");
+                    if (hud.smallShip.targetSmallShip.shipRigidbody != null)
+                    {
+                        hud.targetSpeedText.text = (hud.smallShip.targetSmallShip.shipRigidbody.velocity.magnitude * 3.6f).ToString("000");
+                    }
                 }
             }
             else

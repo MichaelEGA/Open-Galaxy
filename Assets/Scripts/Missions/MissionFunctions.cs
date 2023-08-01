@@ -283,7 +283,7 @@ public static class MissionFunctions
     {
         MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
 
-        if (nextEvent != "none")
+        if (nextEvent != "none" & missionManager != null)
         {
             TextAsset missionDataFile = Resources.Load(missionManager.missionAddress + missionName) as TextAsset;
             Mission mission = JsonUtility.FromJson<Mission>(missionDataFile.text);

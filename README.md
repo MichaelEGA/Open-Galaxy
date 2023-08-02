@@ -1,5 +1,5 @@
 # Open-Galaxy
-![OpenGalaxyv05](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/fbc65a92-67bc-468e-9b83-5e8a44dedb8e)
+![OpenGalaxyv05](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/065166c6-3e87-4980-953f-92cb9aa729d5)
 **X-Wing and Tie Fighter style flightsim**
 
 **Latest Release:** 0.5.0

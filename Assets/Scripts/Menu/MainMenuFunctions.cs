@@ -477,8 +477,8 @@ public static class MainMenuFunctions
         string[] messages = new string[10];
         messages[0] = "Welcome to Open Galaxy. Version 0.5 focuses on combat and playability.";
         messages[1] = "Open Galaxy's missions are based on the Legends timeline.";
-        messages[2] = "There are more than just missions. Try your hand at a random battle or try climbing THE LADDER";
-        messages[3] = "Struggling to figure out how to play Open Galaxy? Spend some time working through the training missions.";
+        messages[2] = "Need a quick fix? Try out the random battle and ladder modes.";
+        messages[3] = "Flying a ship isn't like dusting crops. Remember to complete the training missions.";
         messages[4] = "Open Galaxy generates a real star wars galaxy with accurately positioned stars and planets.";
         messages[5] = "You can lower the quality of the planet heightmap for faster loadtimes.";
         messages[6] = "Open Galaxy is best played with a keyboard and mouse. But there is rudimentary controller support.";

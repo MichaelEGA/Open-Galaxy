@@ -446,15 +446,15 @@ public static class MissionFunctions
         {
             string[] messages = new string[10];
             messages[0] = "Settle into your seat pilot. Flying a starfighter requires practice, skill, and focus.";
-            messages[1] = "If you push all your power to engines you will overshoot your target.";
+            messages[1] = "If you constantly fly at top speed you will almost always overshoot your target.";
             messages[2] = "Linking your lasers is a good way to compensate when you need power for other systems.";
             messages[3] = "Even if your shields are at full strength, your ship will take damage from physical impacts.";
             messages[4] = "In more maneuvarable craft you can hold down the match speed button to stay on someone's tail.";
-            messages[5] = "In less maneuvrable craft you will need to lower your speed significantly to perform sharp turns.";
+            messages[5] = "In less maneuvrable craft you will need to lower your speed manually to perform sharp turns.";
             messages[6] = "Your ship is most maneuverable at half speed. So try to figure out what the top speed is for each craft.";
-            messages[7] = "When you pump all your energy to engines or lasers your shields will start to drain away.";
-            messages[8] = "When you pump all your energy to engines your WEP system becomes availible.";
-            messages[9] = "Remember you can link your torpedoes for greater impact.";
+            messages[7] = "When you push all your energy to engines or lasers your shields will start to drain away.";
+            messages[8] = "When you push all your energy to engines your WEP system becomes availible.";
+            messages[9] = "Remember you can link your torpedoes and lasers for greater impact.";
             int randomMessageNo = Random.Range(0, 9);
             LoadScreenFunctions.LoadingScreen(true, missionName, messages[randomMessageNo]);
         }

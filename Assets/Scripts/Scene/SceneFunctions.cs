@@ -815,7 +815,7 @@ public static class SceneFunctions
             float posVarY = Random.Range(0, positionVariance);
             float posVarZ = Random.Range(0, positionVariance);
 
-            Vector3 adjustedPosition = position + new Vector3(gDistance, 0, 0) + new Vector3(0, groupingdifferentiation, 0) + new Vector3(posVarX, posVarY, posVarZ);
+            Vector3 adjustedPosition = position + new Vector3(gDistance, 0, 0) + new Vector3(0, gDifferentiation, 0) + new Vector3(posVarX, posVarY, posVarZ);
 
             int shipCallNumber = i + 1;
 
@@ -829,13 +829,14 @@ public static class SceneFunctions
             LoadShip(name, isAI, adjustedPosition, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
 
             gNumber++;
-            gDistance = gDistance + groupingDistance;          
+
+            gDifferentiation += groupingdifferentiation;
 
             if (gNumber >= groupsOf)
             {
-                gNumber = 0; 
-                gDistance = 0;
-                gDifferentiation = gDifferentiation + groupingDistance;
+                gNumber = 0;
+                gDifferentiation = 0;
+                gDistance += groupingDistance;
             }
 
             yield return null;
@@ -895,7 +896,7 @@ public static class SceneFunctions
                 float posVarY = Random.Range(0, positionVariance);
                 float posVarZ = Random.Range(0, positionVariance);
 
-                Vector3 adjustedPosition = position + new Vector3(gDistance, 0, 0) + new Vector3(0, groupingdifferentiation, 0) + new Vector3(posVarX, posVarY, posVarZ);
+                Vector3 adjustedPosition = position + new Vector3(gDistance, 0, 0) + new Vector3(0, gDifferentiation, 0) + new Vector3(posVarX, posVarY, posVarZ);
 
                 bool isAI = true;
 
@@ -909,13 +910,14 @@ public static class SceneFunctions
                 LoadShip(shipTypesList[shipTypeCount].name, isAI, adjustedPosition, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
 
                 gNumber++;
-                gDistance = gDistance + groupingDistance;
+
+                gDifferentiation += groupingdifferentiation;
 
                 if (gNumber >= groupsOf)
                 {
                     gNumber = 0;
-                    gDistance = 0;
-                    gDifferentiation = gDifferentiation + groupingDistance;
+                    gDifferentiation = 0;
+                    gDistance += groupingDistance;
                 }
 
                 //This increments the ship type

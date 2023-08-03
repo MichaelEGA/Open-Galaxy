@@ -1,12 +1,22 @@
 # Open-Galaxy
-![OpenGalaxyv05](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/fbc65a92-67bc-468e-9b83-5e8a44dedb8e)
+![OpenGalaxyv05](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/065166c6-3e87-4980-953f-92cb9aa729d5)
 **X-Wing and Tie Fighter style flightsim**
 
-**Latest Release:** 0.49.1
+**Latest Release:** 0.5.0
 
 Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
 **Changelog**
+
+02/08/23 - v.0.5.0
+  - Updated cursor and fixed loading placement problems
+  - Updated all three training missions and the menu script
+  - Minor updates to several missions
+  - Updated game mode: the ladder
+  - Added game mode: the ladder rebel
+  - Updated game mode: the ladder imperial
+  - Added new game mode: the ladder imperial
+  - Added dynamic messages to title and load screens
 
 30/07/23 - v.0.49.1
   - Added new mission functions: set target, set ai override mode

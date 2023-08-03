@@ -906,6 +906,10 @@ public static class SmallShipFunctions
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
+            //This prevents the torpedo from immediately locking on to the new target
+            smallShip.torpedoLockedOn = false;
+            smallShip.torpedoLockingOn = false;
+
         }
     }
 
@@ -1021,6 +1025,10 @@ public static class SmallShipFunctions
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
+            //This prevents the torpedo from immediately locking on to the new target
+            smallShip.torpedoLockedOn = false;
+            smallShip.torpedoLockingOn = false;
+
         }
     }
 
@@ -1115,6 +1123,10 @@ public static class SmallShipFunctions
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
+            //This prevents the torpedo from immediately locking on to the new target
+            smallShip.torpedoLockedOn = false;
+            smallShip.torpedoLockingOn = false;
+
         }
     }
 
@@ -1176,6 +1188,11 @@ public static class SmallShipFunctions
         {
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
         }
+
+        //This prevents the torpedo from immediately locking on to the new target
+        smallShip.torpedoLockedOn = false;
+        smallShip.torpedoLockingOn = false;
+
     }
 
     //This draws key data/info from the target including relative position, distance, and hostility

@@ -218,10 +218,16 @@ public static class HudFunctions
             {
                 if (hud.smallShip.target.activeSelf != false)
                 {
-                    if (hud.radarObject == null)
+
+                    Debug.Log("Target:" + hud.smallShip.targetPrefabName);
+
+                    if (hud.radarObject == null || hud.radarObject.activeSelf == false)
                     {
                         foreach (GameObject radarObject in hud.radarPool)
                         {
+
+                            Debug.Log("Radar Object 1" + radarObject.name);
+
                             if (radarObject.name == hud.smallShip.targetPrefabName + "(Clone)")
                             {
                                 radarObject.SetActive(true);
@@ -237,6 +243,9 @@ public static class HudFunctions
                     {
                         foreach (GameObject radarObject in hud.radarPool)
                         {
+
+                            Debug.Log("Radar Object 2" + radarObject.name);
+
                             if (radarObject.name == hud.smallShip.targetPrefabName + "(Clone)")
                             {
                                 radarObject.SetActive(true);

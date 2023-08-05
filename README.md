@@ -2,11 +2,16 @@
 ![OpenGalaxyv05](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/065166c6-3e87-4980-953f-92cb9aa729d5)
 **X-Wing and Tie Fighter style flightsim**
 
-**Latest Release:** 0.5.0
+**Latest Release:** 0.5.01
 
 Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
 **Changelog**
+
+05/08/23 - v.0.5.01
+  - Update aes_b1.wav
+  - Fixed torpedoes locking on instantly
+  - Fixed target representation not showing
 
 02/08/23 - v.0.5.0
   - Updated cursor and fixed loading placement problems

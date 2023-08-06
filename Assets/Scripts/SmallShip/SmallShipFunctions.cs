@@ -820,11 +820,11 @@ public static class SmallShipFunctions
     //This tells the hud that it should run the hud shake function
     public static IEnumerator HudShake(SmallShip smallShip, float time)
     {
-        smallShip.hudShake = true;
+        smallShip.cockpitShake = true;
 
         yield return new WaitForSeconds(time);
 
-        smallShip.hudShake = false;
+        smallShip.cockpitShake = false;
     }
 
     #endregion
@@ -1544,14 +1544,120 @@ public static class SmallShipFunctions
                     if (cockpit.name.Contains(smallShip.cockpitName))
                     {
                         cockpit.SetActive(true);
+                        smallShip.cockpit = cockpit;
                     }
                     else
                     {
                         cockpit.SetActive(false);
+                        smallShip.cockpit = null;
                     }
                 }
             }
         }
+    }
+
+    //This runs HudSpeedShake and HudShake
+    public static void RunCockpitShake(SmallShip smallShip)
+    {
+        if (smallShip.isAI == false)
+        {
+            if (smallShip.thrustSpeed > smallShip.speedRating / 2f & smallShip.cockpitDamageShake != true)
+            {
+                if (smallShip.turnInput > 0.75f || smallShip.turnInput < -0.75f || smallShip.pitchInput > 0.75f || smallShip.pitchInput < -0.75f || smallShip.thrustSpeed > smallShip.speedRating + 2 || smallShip.rollInput > 0.75f || smallShip.rollInput < -75f)
+                {
+                    float shakeMagnitude = 0.001f;
+
+                    if (smallShip.speedShakeMagnitude < shakeMagnitude)
+                    {
+                        smallShip.speedShakeMagnitude += 0.00005f;
+                    }
+
+                }
+                else if (smallShip.speedShakeMagnitude > 0)
+                {
+                    smallShip.speedShakeMagnitude -= 0.00005f;
+                }
+            }
+            else if (smallShip.speedShakeMagnitude > 0)
+            {
+                smallShip.speedShakeMagnitude -= 0.00005f;
+            }
+
+            if (smallShip.speedShakeMagnitude > 0)
+            {
+                if (smallShip.cockpitDamageShake == false & smallShip.cockpitSpeedShake == false)
+                {
+                    Task a = new Task(CockpitSpeedShake(smallShip));
+                    //AudioFunctions.PlayHudShakeNoise(hud);
+                }
+            }
+
+            if (smallShip.cockpitShake == true)
+            {
+                if (smallShip.cockpitDamageShake == false)
+                {
+                   Task a = new Task(CockpitDamageShake(smallShip, 1, 0.001f));
+                }
+            }
+        }
+    }
+
+    //This shakes the hud glass
+    public static IEnumerator CockpitSpeedShake(SmallShip smallShip)
+    {
+        smallShip.cockpitSpeedShake = true;
+
+        if (smallShip.cockpit != null)
+        {
+            float time = Time.time + 1;
+
+            while (time > Time.time)
+            {
+                float x = Random.Range(-1f, 1f) * smallShip.speedShakeMagnitude;
+                float y = Random.Range(-1f, 1f) * smallShip.speedShakeMagnitude;
+
+                smallShip.cockpit.transform.position = new Vector3(x, y, smallShip.basePosition.z);
+
+                if (smallShip.cockpitDamageShake == true)
+                {
+                    break;
+                }
+
+                yield return null;
+            }
+
+            smallShip.cockpit.transform.position = smallShip.basePosition;
+        }
+
+       smallShip.cockpitSpeedShake = false;
+    }
+
+    //This shakes the hud glass
+    public static IEnumerator CockpitDamageShake(SmallShip smallShip, float time, float magnitude)
+    {
+        smallShip.cockpitDamageShake = true;
+
+        time = Time.time + time;
+
+        while (time > Time.time)
+        {
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+
+            if (smallShip.cockpit != null)
+            {
+                smallShip.cockpit.transform.position = new Vector3(x, y, smallShip.basePosition.z);
+            }
+
+            yield return null;
+        }
+
+        if (smallShip.cockpit != null)
+        {
+            smallShip.cockpit.transform.position = smallShip.basePosition;
+        }
+
+        smallShip.cockpitDamageShake = false;
     }
 
     #endregion

@@ -32,8 +32,6 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public GameObject mainCamera;
     [HideInInspector] public bool cameraAttached;
     [HideInInspector] public bool attachCameraToAI;
-    [HideInInspector] public bool hudShake;
-    [HideInInspector] public float shakeMagnitude = 0.1f;
     [HideInInspector] public Vector3 cameraLocalPosition;
 
     [Header("Ship Ratings")]
@@ -192,8 +190,17 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool isCurrentlyColliding;
 
     [Header("Ship Cockpit")]
+    [HideInInspector] public bool cockpitShake;
+    [HideInInspector] public float shakeMagnitude = 0.1f;
     [HideInInspector] public string cockpitName;
     [HideInInspector] public GameObject cockpit;
+    [HideInInspector] public bool cockpitDamageShake;
+    [HideInInspector] public bool cockpitSpeedShake;
+    [HideInInspector] public float speedShakeMagnitude;
+    [HideInInspector] public Vector3 basePosition = new Vector3(0,0,0);
+    [HideInInspector] public AudioSource shakeAudioSource;
+    [HideInInspector] public Audio shakeAudioManager;
+
 
     // Update is called once per frame
     void Update()
@@ -251,8 +258,8 @@ public class SmallShip : MonoBehaviour
 
         //Cockpit Functions
         SmallShipFunctions.ActivateCockpit(this);
+        SmallShipFunctions.RunCockpitShake(this);
     }
-
     
     void FixedUpdate()
     {

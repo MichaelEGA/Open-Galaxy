@@ -13,6 +13,7 @@ public class Scene : MonoBehaviour
 
     [Header("Prefab and Material Pools")]
     [HideInInspector] public Object[] objectPrefabPool;
+    [HideInInspector] public Object[] cockpitPrefabPool;
     [HideInInspector] public Object[] particlePrefabPool;
     [HideInInspector] public Object[] asteroidMaterialsPool;
 
@@ -22,6 +23,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> particlesPool;
     [HideInInspector] public List<GameObject> lasersPool;
     [HideInInspector] public List<GameObject> torpedosPool;
+    [HideInInspector] public List<GameObject> cockpitPool;
 
     [Header("Collision Avoidance Checks")]
     [HideInInspector] public bool avoidSmallObjectsRunning;
@@ -31,6 +33,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public GameObject mainCamera;
     [HideInInspector] public GameObject planetCamera;
     [HideInInspector] public GameObject starfieldCamera;
+    [HideInInspector] public GameObject cockpitCamera;
 
     [Header("Avoid Collison")]
     [HideInInspector] public float loadTime;

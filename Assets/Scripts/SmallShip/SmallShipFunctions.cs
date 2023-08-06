@@ -1517,8 +1517,40 @@ public static class SmallShipFunctions
 
             HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
 
-            //This deactivates the ships
+            //This deactives the cockpit
+            if (smallShip.cockpit != null)
+            {
+                smallShip.cockpit.SetActive(false);
+            }
+
+            //This deactivates the ship
             smallShip.gameObject.SetActive(false);
+        }
+    }
+
+    #endregion
+
+    #region cockpit
+
+    //This activates the ships cockpit if it's a player ship
+    public static void ActivateCockpit(SmallShip smallShip)
+    {
+        if (smallShip.isAI == false & smallShip.scene != null & smallShip.cockpit == null)
+        {
+            if (smallShip.scene.cockpitPool != null)
+            {
+                foreach (GameObject cockpit in smallShip.scene.cockpitPool)
+                {
+                    if (cockpit.name.Contains(smallShip.cockpitName))
+                    {
+                        cockpit.SetActive(true);
+                    }
+                    else
+                    {
+                        cockpit.SetActive(false);
+                    }
+                }
+            }
         }
     }
 

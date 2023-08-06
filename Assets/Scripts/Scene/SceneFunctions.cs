@@ -28,6 +28,7 @@ public static class SceneFunctions
 
             LoadScenePrefabs();
             GetCameras();
+            InstantiateCockpits();
         } 
     }
 
@@ -39,6 +40,10 @@ public static class SceneFunctions
         Object[] objectPrefabs = Resources.LoadAll("ObjectPrefabs", typeof(GameObject)); 
         scene.objectPrefabPool = new GameObject[objectPrefabs.Length];
         scene.objectPrefabPool = objectPrefabs;
+
+        Object[] cockpitPrefabs = Resources.LoadAll("CockpitPrefabs", typeof(GameObject));
+        scene.cockpitPrefabPool = new GameObject[cockpitPrefabs.Length];
+        scene.cockpitPrefabPool = cockpitPrefabs;
 
         Object[] asteroidMaterials = Resources.LoadAll("AsteroidMaterials", typeof(Material));
         scene.asteroidMaterialsPool = new Material[asteroidMaterials.Length];
@@ -98,11 +103,26 @@ public static class SceneFunctions
             mainCameraData.renderPostProcessing = true;         
         }
 
+        GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
+        Camera cockpitCamera = null;
+
+        if (cockpitCameraGO == null)
+        {
+            cockpitCameraGO = new GameObject();
+            cockpitCameraGO.name = "Cockpit Camera";
+            cockpitCamera = cockpitCameraGO.AddComponent<Camera>();
+            cockpitCamera.cullingMask = LayerMask.GetMask("cockpit");
+            cockpitCamera.nearClipPlane = 0.01f;
+            var cockpitCameraData = cockpitCamera.GetUniversalAdditionalCameraData();
+            cockpitCameraData.renderType = CameraRenderType.Overlay;
+        }
+
         if (loading == true)
         {
             var starfieldCameraData = starfieldCamera.GetUniversalAdditionalCameraData();
             starfieldCameraData.cameraStack.Add(planetCamera);
             starfieldCameraData.cameraStack.Add(mainCamera);
+            starfieldCameraData.cameraStack.Add(cockpitCamera);
         } 
     }
 
@@ -114,10 +134,12 @@ public static class SceneFunctions
         GameObject starfieldCamera = GameObject.Find("Starfield Camera");
         GameObject planetCamera = GameObject.Find("Planet Camera");
         GameObject mainCamera = GameObject.Find("Main Camera");
+        GameObject cockpitCamera = GameObject.Find("Cockpit Camera");
 
         scene.starfieldCamera = starfieldCamera;
         scene.planetCamera = planetCamera;
         scene.mainCamera = mainCamera;
+        scene.cockpitCamera = cockpitCamera;
     }
 
     #endregion
@@ -691,6 +713,7 @@ public static class SceneFunctions
                 smallShip.engineAudio = shipType.engineAudio;
                 smallShip.torpedoNumber = shipType.torpedoRating;
                 smallShip.torpedoType = shipType.torpedoType;
+                smallShip.cockpitName = shipType.cockpitPrefab;
                 smallShip.scene = scene;
                 smallShip.audioManager = audioManager;
                 smallShip.loadTime = Time.time;
@@ -934,6 +957,26 @@ public static class SceneFunctions
      
     }
 
+    public static void InstantiateCockpits()
+    {
+        Scene scene = GetScene();
+
+        if (scene.cockpitPool == null)
+        {
+            scene.cockpitPool = new List<GameObject>();
+        }
+
+        foreach (GameObject cockpitPrefab in scene.cockpitPrefabPool)
+        {
+            GameObject cockpitObject = GameObject.Instantiate(cockpitPrefab) as GameObject;
+            scene.cockpitPool.Add(cockpitObject);
+            cockpitObject.transform.position = new Vector3(0, 0, 0);
+            cockpitObject.layer = LayerMask.NameToLayer("cockpit");
+            GameObjectUtils.SetLayerAllChildren(cockpitObject.transform, 28);
+            cockpitObject.SetActive(false);
+        }
+    }
+
     #endregion
 
     #region floating point control and camera rotation
@@ -1051,7 +1094,18 @@ public static class SceneFunctions
 
             scene.torpedosPool.Clear();
         }
+
+        if (scene.cockpitPool != null)
+        {
+            foreach (GameObject gameobject in scene.cockpitPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.cockpitPool.Clear();
+        }
     }
+
 
     //This unloads the starfield
     public static void UnloadStarfield()

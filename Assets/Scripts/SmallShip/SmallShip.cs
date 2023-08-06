@@ -191,6 +191,10 @@ public class SmallShip : MonoBehaviour
     [Header("Ship Collisions")]
     [HideInInspector] public bool isCurrentlyColliding;
 
+    [Header("Ship Cockpit")]
+    [HideInInspector] public string cockpitName;
+    [HideInInspector] public GameObject cockpit;
+
     // Update is called once per frame
     void Update()
     {
@@ -244,6 +248,9 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.TakeCollisionDamage(this);
         SmallShipFunctions.SmokeTrail(this);
         SmallShipFunctions.Explode(this);
+
+        //Cockpit Functions
+        SmallShipFunctions.ActivateCockpit(this);
     }
 
     

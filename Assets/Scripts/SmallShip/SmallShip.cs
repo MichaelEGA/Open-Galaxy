@@ -33,6 +33,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool cameraAttached;
     [HideInInspector] public bool attachCameraToAI;
     [HideInInspector] public Vector3 cameraLocalPosition;
+    [HideInInspector] public GameObject cockpitCamera;
 
     [Header("Ship Ratings")]
     public float accelerationRating = 50; //Value set in inspector or by loading script
@@ -201,7 +202,6 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public AudioSource shakeAudioSource;
     [HideInInspector] public Audio shakeAudioManager;
 
-
     // Update is called once per frame
     void Update()
     {
@@ -259,6 +259,7 @@ public class SmallShip : MonoBehaviour
         //Cockpit Functions
         SmallShipFunctions.ActivateCockpit(this);
         SmallShipFunctions.RunCockpitShake(this);
+        SmallShipFunctions.CockpitCameraMovement(this);
     }
     
     void FixedUpdate()

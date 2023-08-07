@@ -1549,7 +1549,6 @@ public static class SmallShipFunctions
                     else
                     {
                         cockpit.SetActive(false);
-                        smallShip.cockpit = null;
                     }
                 }
             }
@@ -1658,6 +1657,52 @@ public static class SmallShipFunctions
         }
 
         smallShip.cockpitDamageShake = false;
+    }
+
+    //This dynamically adjusts the position of the cockpit camera to simulate the movement of the pilots head and body
+    public static void CockpitCameraMovement(SmallShip smallShip)
+    {
+        if (smallShip.isAI == false)
+        {
+            if (smallShip.cockpitCamera == null)
+            {
+                smallShip.cockpitCamera = GameObject.Find("Cockpit Camera");
+            }
+
+            if (smallShip.cockpitCamera != null)
+            {
+                float gForceMagnitude;
+
+                if (smallShip.thrustSpeed <= smallShip.speedRating)
+                {
+                    gForceMagnitude = 5f / 125f * smallShip.thrustSpeed;
+                }
+                else
+                {
+                    gForceMagnitude = 5f / 125f * 50f;
+                }
+
+                float xLocation = 0 + (0.0001f * smallShip.turnInput * 100 * gForceMagnitude);
+                float yLocation = 0 * gForceMagnitude;
+                float zLocation = 0 - 0.0005f * smallShip.thrustSpeed;
+
+                float xRotation = 0.0005f * smallShip.pitchInput * 100 * 0.5f;
+                float yRotation = 0; //float yRotation = 0.01f * headTurnInput * 100;
+                float zRotation = 0.0005f * smallShip.rollInput * 100;
+
+                float step = 0.45f * Time.time;
+
+                //baseLocation = new Vector3(0, 0.235f, 0);
+                Vector3 dynamicLocation = new Vector3(xLocation, yLocation, zLocation);
+                Quaternion baseRotation = new Quaternion(0, 0, 0, 1);
+                Quaternion dynamicRotation = new Quaternion(xRotation, yRotation, zRotation, 1);
+
+                //This causes the Camera to respond to the starfighters movements
+
+                smallShip.cockpitCamera.transform.position = Vector3.MoveTowards(new Vector3(0, 0, 0), dynamicLocation, step);
+                smallShip.cockpitCamera.transform.rotation = Quaternion.RotateTowards(baseRotation, dynamicRotation, step);
+            }
+        }        
     }
 
     #endregion

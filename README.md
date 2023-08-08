@@ -2,10 +2,10 @@
 ![OpenGalaxyv05](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/065166c6-3e87-4980-953f-92cb9aa729d5)
 **X-Wing and Tie Fighter style flightsim**
 
-  Roadmap: https://docs.google.com/spreadsheets/d/14mWjYlATWQYKEfD6AG4MwC_ppTzG-aDlsI2yR2h7D54/edit?usp=sharing
-  Mission Roadmap: https://docs.google.com/spreadsheets/d/1Gh4fdxHZI7DfOsCidDuX5mCqRGvpNe71Tga3iwFPoFA/edit?usp=sharing
-  Ship Stats: https://docs.google.com/spreadsheets/d/1PwTEx9dPTEhxY5ebIWjXgZj0bz84qzDL47KDm0aw8FU/edit?usp=sharing
-  Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
+  - Roadmap: https://docs.google.com/spreadsheets/d/14mWjYlATWQYKEfD6AG4MwC_ppTzG-aDlsI2yR2h7D54/edit?usp=sharing
+  - Mission Roadmap: https://docs.google.com/spreadsheets/d/1Gh4fdxHZI7DfOsCidDuX5mCqRGvpNe71Tga3iwFPoFA/edit?usp=sharing
+  - Ship Stats: https://docs.google.com/spreadsheets/d/1PwTEx9dPTEhxY5ebIWjXgZj0bz84qzDL47KDm0aw8FU/edit?usp=sharing
+  - Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
 
 **Latest Release:** 0.5.1
 

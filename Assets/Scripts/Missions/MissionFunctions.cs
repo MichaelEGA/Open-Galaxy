@@ -451,8 +451,8 @@ public static class MissionFunctions
             messages[3] = "Even if your shields are at full strength, your ship will take damage from physical impacts.";
             messages[4] = "In more maneuvarable craft you can hold down the match speed button to stay on someone's tail.";
             messages[5] = "In less maneuvrable craft you will need to lower your speed manually to perform sharp turns.";
-            messages[6] = "Your ship is most maneuverable at half speed. So try to figure out what the top speed is for each craft.";
-            messages[7] = "When you push all your energy to engines or lasers your shields will start to drain away.";
+            messages[6] = "Your ship is most maneuverable at half speed, so try slowing down if you can't track a target.";
+            messages[7] = "When you push all your energy to engines or lasers your shields will start to lose strength.";
             messages[8] = "When you push all your energy to engines your WEP system becomes availible.";
             messages[9] = "Remember you can link your torpedoes and lasers for greater impact.";
             int randomMessageNo = Random.Range(0, 9);

@@ -1587,7 +1587,7 @@ public static class SmallShipFunctions
                 if (smallShip.cockpitDamageShake == false & smallShip.cockpitSpeedShake == false)
                 {
                     Task a = new Task(CockpitSpeedShake(smallShip));
-                    //AudioFunctions.PlayHudShakeNoise(hud);
+                    AudioFunctions.PlayCockpitShakeNoise(smallShip);
                 }
             }
 

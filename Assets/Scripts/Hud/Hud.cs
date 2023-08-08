@@ -14,15 +14,6 @@ public class Hud : MonoBehaviour
     [Header("Hud Elements Check")]
     [HideInInspector] public bool hudElementsSet;
 
-    [Header("Cockpit Glass")]
-    [HideInInspector] public bool hudDamageShake;
-    [HideInInspector] public bool hudSpeedShake;
-    [HideInInspector] public float speedShakeMagnitude;
-    [HideInInspector] public AudioSource shakeAudioSource;
-    [HideInInspector] public Audio audioManager;
-    [HideInInspector] public Vector3 basePosition;
-    [HideInInspector] public RawImage hudGlass;
-
     [Header("Ship Information")]
     [HideInInspector] public Text shipInfo;
     [HideInInspector] public Text shipName;
@@ -115,8 +106,5 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplayTargetLockReticule(this);
 
         HudFunctions.DisplayShipPreview(this);
-
-        HudFunctions.RunHudShake(this);
-
     }
 }

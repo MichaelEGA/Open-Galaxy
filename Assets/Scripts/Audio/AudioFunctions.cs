@@ -202,48 +202,49 @@ public static class AudioFunctions
     }
 
     //This function specifcally plays hud shake noise
-    public static void PlayHudShakeNoise(Hud hud)
+    public static void PlayCockpitShakeNoise(SmallShip smallShip)
     {
-
-        if (hud.audioManager == null)
+        if (smallShip.audioManager == null)
         {
-            hud.audioManager = GetAudioManager();
+            smallShip.audioManager = GetAudioManager();
         }
 
-        if (hud.shakeAudioSource == null & hud.audioManager != null)
+        if (smallShip.cockpitAudioSource == null & smallShip.audioManager != null)
         {
-            AudioClip audioClip = GetAudioClip(hud.audioManager, "shaking01_hud");
-            AudioSource audioSource = GetAudioSource(hud.audioManager);
+            AudioClip audioClip = GetAudioClip(smallShip.audioManager, "shaking01");
+            AudioSource audioSource = GetAudioSource(smallShip.audioManager);
 
             if (audioClip != null & audioSource != null)
             {
-                hud.shakeAudioSource = audioSource;
-                hud.shakeAudioSource.clip = audioClip;
+                smallShip.cockpitAudioSource = audioSource;
+                smallShip.cockpitAudioSource.clip = audioClip;
             }
         }
 
-        if (hud.shakeAudioSource != null)
+        if (smallShip.cockpitAudioSource != null)
         {
-            hud.shakeAudioSource.volume = (1f / 5f) * hud.speedShakeMagnitude;
+            smallShip.cockpitAudioSource.volume = smallShip.speedShakeMagnitude * 500;
 
-            if (hud.shakeAudioSource.isPlaying == false)
+            if (smallShip.cockpitAudioSource.isPlaying == false)
             {
-                hud.shakeAudioSource.priority = 128;
-                hud.shakeAudioSource.spatialBlend = 0;
-                hud.shakeAudioSource.pitch = 1;
-                hud.shakeAudioSource.reverbZoneMix = 1;
-                hud.shakeAudioSource.dopplerLevel = 0f;
-                hud.shakeAudioSource.spread = 45;
-                hud.shakeAudioSource.maxDistance = 1000;
-                hud.shakeAudioSource.rolloffMode = AudioRolloffMode.Linear;
-                hud.shakeAudioSource.loop = true;
-                hud.shakeAudioSource.Play();
+                smallShip.cockpitAudioSource.priority = 128;
+                smallShip.cockpitAudioSource.spatialBlend = 0;
+                smallShip.cockpitAudioSource.pitch = 1;
+                smallShip.cockpitAudioSource.reverbZoneMix = 1;
+                smallShip.cockpitAudioSource.dopplerLevel = 0f;
+                smallShip.cockpitAudioSource.spread = 45;
+                smallShip.cockpitAudioSource.maxDistance = 1000;
+                smallShip.cockpitAudioSource.rolloffMode = AudioRolloffMode.Linear;
+                smallShip.cockpitAudioSource.loop = true;
+                smallShip.cockpitAudioSource.Play();
+            }
+            else
+            {
+                Debug.Log("shaking sound is playing. Volume is " + smallShip.cockpitAudioSource.volume);
             }
 
-            hud.shakeAudioSource.gameObject.transform.position = hud.smallShip.transform.position;
+            smallShip.cockpitAudioSource.gameObject.transform.position = smallShip.transform.position;
         }
-
-
     }
 
     #endregion

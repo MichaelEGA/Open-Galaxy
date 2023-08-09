@@ -860,7 +860,7 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            SmallShipFunctions.GetSpecificTarget(smallShip, missionEvent.data2);
+                            TargetingFunctions.GetSpecificTarget(smallShip, missionEvent.data2);
                         }
                     }
                 }
@@ -885,7 +885,7 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            SmallShipFunctions.GetClosestEnemy(smallShip, true);
+                            TargetingFunctions.GetClosestEnemy(smallShip, true);
                         }
                     }
                 }

@@ -232,10 +232,10 @@ public class SmallShip : MonoBehaviour
         AudioFunctions.PlayEngineNoise(this);
 
         //Targetting functions
-        SmallShipFunctions.GetClosestEnemy(this);
-        SmallShipFunctions.GetNextEnemy(this);
-        SmallShipFunctions.GetNextTarget(this);
-        SmallShipFunctions.GetTargetInfo(this);
+        TargetingFunctions.GetClosestEnemy(this);
+        TargetingFunctions.GetNextEnemy(this);
+        TargetingFunctions.GetNextTarget(this);
+        TargetingFunctions.GetTargetInfo(this);
 
         //Weapon functions
         SmallShipFunctions.ToggleWeapons(this);

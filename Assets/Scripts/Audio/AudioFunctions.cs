@@ -238,10 +238,6 @@ public static class AudioFunctions
                 smallShip.cockpitAudioSource.loop = true;
                 smallShip.cockpitAudioSource.Play();
             }
-            else
-            {
-                Debug.Log("shaking sound is playing. Volume is " + smallShip.cockpitAudioSource.volume);
-            }
 
             smallShip.cockpitAudioSource.gameObject.transform.position = smallShip.transform.position;
         }

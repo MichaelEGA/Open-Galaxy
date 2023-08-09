@@ -12,9 +12,9 @@ public static class LargeShipFunctions
     {
         if (largeShip.loaded == false)
         {
-            GameObjectUtils.AddColliders(largeShip.gameObject, true);
-            Rigidbody shipRigidbody = GameObjectUtils.AddRigidbody(largeShip.gameObject, 100f, 9f, 7.5f);
-            shipRigidbody.isKinematic = true;
+            largeShip.shipRigidbody = GameObjectUtils.AddRigidbody(largeShip.gameObject, 100f, 9f, 7.5f);
+            largeShip.shipRigidbody.isKinematic = true;
+            GameObjectUtils.AddColliders(largeShip.gameObject, false);
             largeShip.LODs = GameObjectUtils.GetLODs(largeShip.gameObject);        
             largeShip.colliders = largeShip.GetComponentsInChildren<MeshCollider>();
             LoadThrusters(largeShip);
@@ -26,30 +26,37 @@ public static class LargeShipFunctions
     //This attaches a particle system to the ship engines to simulate thrust
     public static void LoadThrusters(LargeShip largeShip)
     {
-        Transform thruster1 = largeShip.gameObject.transform.Find("thrusters/thruster");
+        List<Transform> thrusters = new List<Transform>();
+
+        Transform thruster1 = largeShip.gameObject.transform.Find("thrusters/thruster");  
         Transform thruster2 = largeShip.gameObject.transform.Find("thrusters/thruster.001");
         Transform thruster3 = largeShip.gameObject.transform.Find("thrusters/thruster.002");
         Transform thruster4 = largeShip.gameObject.transform.Find("thrusters/thruster.003");
+        Transform thruster5 = largeShip.gameObject.transform.Find("thrusters/thruster.004");
+        Transform thruster6 = largeShip.gameObject.transform.Find("thrusters/thruster.005");
+        Transform thruster7 = largeShip.gameObject.transform.Find("thrusters/thruster.006");
+        Transform thruster8 = largeShip.gameObject.transform.Find("thrusters/thruster.007");
+        Transform thruster9 = largeShip.gameObject.transform.Find("thrusters/thruster.008");
+        Transform thruster10 = largeShip.gameObject.transform.Find("thrusters/thruster.009");
+        Transform thruster11 = largeShip.gameObject.transform.Find("thrusters/thruster.010");
 
-        if (thruster1 != null)
+        if (thruster1 != null) { thrusters.Add(thruster1); }
+        if (thruster2 != null) { thrusters.Add(thruster2); }
+        if (thruster3 != null) { thrusters.Add(thruster3); }
+        if (thruster4 != null) { thrusters.Add(thruster4); }
+        if (thruster5 != null) { thrusters.Add(thruster5); }
+        if (thruster6 != null) { thrusters.Add(thruster6); }
+        if (thruster7 != null) { thrusters.Add(thruster7); }
+        if (thruster8 != null) { thrusters.Add(thruster8); }
+        if (thruster9 != null) { thrusters.Add(thruster9); }
+        if (thruster10 != null) { thrusters.Add(thruster10); }
+        if (thruster11 != null) { thrusters.Add(thruster11); }
+
+        foreach (Transform thruster in thrusters)
         {
-            AttachParticleThruster(largeShip, thruster1);
+            AttachParticleThruster(largeShip, thruster);
         }
 
-        if (thruster2 != null)
-        {
-            AttachParticleThruster(largeShip, thruster2);
-        }
-
-        if (thruster3 != null)
-        {
-            AttachParticleThruster(largeShip, thruster3);
-        }
-
-        if (thruster4 != null)
-        {
-            AttachParticleThruster(largeShip, thruster4);
-        }
     }
 
     //This attaches the particle trail to the torpedo
@@ -130,15 +137,13 @@ public static class LargeShipFunctions
         {
             largeShip.thrustSpeed = largeShip.thrustSpeed - acclerationAmount * 4;
         }
-        else if (largeShip.thrustInput < 0 & largeShip.thrustTimeStamp < Time.time)
+        else if (largeShip.thrustInput < 0)
         {
             largeShip.thrustSpeed = largeShip.thrustSpeed - acclerationAmount;
-            largeShip.thrustTimeStamp = Time.time + 0.01f;
         }
-        else if (largeShip.thrustInput > 0 & largeShip.thrustTimeStamp < Time.time)
+        else if (largeShip.thrustInput > 0)
         {
             largeShip.thrustSpeed = largeShip.thrustSpeed + acclerationAmount;
-            largeShip.thrustTimeStamp = Time.time + 0.01f;
         }
 
         if (largeShip.thrustSpeed < 0)
@@ -181,26 +186,37 @@ public static class LargeShipFunctions
         {
             largeShip.shipRigidbody = largeShip.gameObject.GetComponent<Rigidbody>();
         }
-
-        //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
-        largeShip.pitchInputActual = Mathf.Lerp(largeShip.pitchInputActual, largeShip.pitchInput, 0.1f);
-        largeShip.turnInputActual = Mathf.Lerp(largeShip.turnInputActual, largeShip.turnInput, 0.1f);
-        largeShip.rollInputActual = Mathf.Lerp(largeShip.rollInputActual, largeShip.rollInput, 0.1f);
-
-        //This makes the vehicle fly
-        if (largeShip.thrustSpeed > 0)
+        else
         {
-            largeShip.gameObject.transform.Translate(Vector3.forward * Time.deltaTime * largeShip.thrustSpeed);
+            //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
+            largeShip.pitchInputActual = Mathf.Lerp(largeShip.pitchInputActual, largeShip.pitchInput, 0.1f);
+            largeShip.turnInputActual = Mathf.Lerp(largeShip.turnInputActual, largeShip.turnInput, 0.1f);
+            largeShip.rollInputActual = Mathf.Lerp(largeShip.rollInputActual, largeShip.rollInput, 0.1f);
+
+            Debug.Log(largeShip.name + " pitch is " + largeShip.pitchInput + " turn input is " + largeShip.turnInput + " roll input is " + largeShip.rollInput);
+
+            //This makes the vehicle fly
+            if (largeShip.thrustSpeed > 0)
+            {
+                largeShip.gameObject.transform.Translate(Vector3.forward * Time.deltaTime * largeShip.thrustSpeed);
+            }
+
+            Vector3 x = Vector3.right * largeShip.pitchInputActual * largeShip.pitchSpeed;
+            Vector3 y = Vector3.up * largeShip.turnInputActual * largeShip.turnSpeed;
+            Vector3 z = Vector3.forward * largeShip.rollInputActual * largeShip.rollSpeed;
+
+            Vector3 rotationVector = x + y + z;
+
+            Debug.Log(largeShip.name + " rotation vector is " + rotationVector);
+
+            Quaternion deltaRotation = Quaternion.Euler(rotationVector * Time.fixedDeltaTime);
+
+            Debug.Log(largeShip.name + " delta rotation vector is " + deltaRotation);
+
+            //largeShip.shipRigidbody.MoveRotation(largeShip.shipRigidbody.rotation * deltaRotation);
+            largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime, Space.World);
+
         }
-
-        Vector3 x = Vector3.right * largeShip.pitchInputActual * largeShip.pitchSpeed;
-        Vector3 y = Vector3.up * largeShip.turnInputActual * largeShip.turnSpeed;
-        Vector3 z = Vector3.forward * largeShip.rollInputActual * largeShip.rollSpeed;
-
-        Vector3 rotationVector = x + y + z;
-
-        Quaternion deltaRotation = Quaternion.Euler(rotationVector * Time.deltaTime);
-        largeShip.shipRigidbody.MoveRotation(largeShip.shipRigidbody.rotation * deltaRotation);
     }
 
     #endregion

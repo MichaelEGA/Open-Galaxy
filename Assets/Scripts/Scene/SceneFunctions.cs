@@ -739,6 +739,53 @@ public static class SceneFunctions
 
             }
 
+            if (shipType.scriptType == "largeship")
+            {
+                //Add appropriate ship script
+                LargeShip largeShip = ship.AddComponent<LargeShip>();
+
+                //Load ship data into script
+                largeShip.accelerationRating = shipType.accelerationRating;
+
+                if (allegiance == "none")
+                {
+                    largeShip.allegiance = shipType.allegiance;
+                }
+                else
+                {
+                    largeShip.allegiance = allegiance;
+                }
+
+                if (squadron == "none")
+                {
+                    largeShip.name = shipType.callsign + "- Alpha " + Random.Range(1, 99).ToString("00");
+                }
+                else
+                {
+                    largeShip.name = shipType.callsign + "-" + squadron;
+                }
+
+                largeShip.wepRating = shipType.wepRating;
+                largeShip.hullRating = shipType.hullRating;
+                largeShip.hullLevel = shipType.hullRating;
+                largeShip.laserFireRating = shipType.laserFireRating;
+                largeShip.laserRating = shipType.laserRating;
+                largeShip.maneuverabilityRating = shipType.maneuverabilityRating;
+                largeShip.shieldRating = shipType.shieldRating;
+                largeShip.shieldLevel = shipType.shieldRating;
+                largeShip.frontShieldLevel = shipType.shieldRating / 2f;
+                largeShip.rearShieldLevel = shipType.shieldRating / 2f;
+                largeShip.speedRating = shipType.speedRating;
+                largeShip.laserColor = shipType.laserColor;
+                largeShip.aiSkillLevel = aiSkillLevel;
+                largeShip.type = shipTypeName;
+                largeShip.prefabName = shipType.prefab;
+                largeShip.scene = scene;
+                largeShip.audioManager = audioManager;
+                largeShip.loadTime = Time.time;
+                ship.name = largeShip.name;
+            }
+
             //Set ship position
             ship.transform.position = scene.transform.position + position;
 
@@ -781,11 +828,6 @@ public static class SceneFunctions
             }
 
         }
-
-        //Look for cockpit model in prefabs -> TO BE ADDED
-
-        //Load cockpit model if appropriate (i.e. the player will pilot the craft)  -> TO BE ADDED
-
     }
 
     public static IEnumerator LoadShipsByName(string name, int number = 1, string aiSkillLevel = "easy", int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = false, float positionVariance = 10, Vector3 position = new Vector3(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LargeShip : MonoBehaviour
 {
-
     [Header("Ship Information")]
     public string allegiance;
     public string type;
@@ -22,6 +21,10 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float distanceToPlayer;
     [HideInInspector] public float savedPlayerDistance;
 
+    [Header("Ship Audio")]
+    [HideInInspector] public Audio audioManager;
+    [HideInInspector] public AudioSource engineAudioSource;
+
     [Header("Ship Ratings")]
     public float accelerationRating = 50;
     public float speedRating = 50;
@@ -36,8 +39,6 @@ public class LargeShip : MonoBehaviour
     public float thrustSpeed = 20;
     public float speedInKms;
     [HideInInspector] public float thrustInput = 1;
-    [HideInInspector] public float thrustTimeStamp;
-    [HideInInspector] public bool wep;
 
     [Header("Ship Rotation")]
     [HideInInspector] public float pitchSpeed;
@@ -56,6 +57,9 @@ public class LargeShip : MonoBehaviour
     public float frontShieldLevel = 100;
     public float rearShieldLevel = 100;
 
+    [Header("Ship Weapons")]
+    [HideInInspector] public string laserColor = "red";
+
     [Header("Ship Controls")]
     [HideInInspector] public bool getNextTarget;
     [HideInInspector] public bool getNextEnemy;
@@ -64,6 +68,7 @@ public class LargeShip : MonoBehaviour
     [Header("Ship Targetting")]
     public GameObject waypoint;
     public GameObject target;
+    public string mode = "largeship";
     [HideInInspector] public SmallShip targetSmallShip;
     [HideInInspector] public LargeShip targetLargeShip;
     [HideInInspector] public Rigidbody targetRigidbody;
@@ -97,12 +102,6 @@ public class LargeShip : MonoBehaviour
     [Header("Ship Loading")]
     [HideInInspector] public bool loaded;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -117,9 +116,9 @@ public class LargeShip : MonoBehaviour
         LargeShipFunctions.CalculatePitchTurnRollSpeeds(this);
 
         //Targetting functions
-        TargetingFunctions.GetClosestEnemy_LargeShip(this);
-        TargetingFunctions.GetNextEnemy_LargeShip(this);
-        TargetingFunctions.GetNextTarget_LargeShip(this);
+        TargetingFunctions.GetClosestEnemy_LargeShip(this, mode);
+        TargetingFunctions.GetNextEnemy_LargeShip(this, mode);
+        TargetingFunctions.GetNextTarget_LargeShip(this, mode);
         TargetingFunctions.GetTargetInfo_LargeShip(this);
     }
 

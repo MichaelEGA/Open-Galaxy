@@ -142,6 +142,7 @@ public class SmallShip : MonoBehaviour
     public GameObject waypoint;
     public GameObject target;
     [HideInInspector] public SmallShip targetSmallShip;
+    [HideInInspector] public LargeShip targetLargeShip;
     [HideInInspector] public Rigidbody targetRigidbody;
     [HideInInspector] public string targetAllegiance;
     [HideInInspector] public string targetName;

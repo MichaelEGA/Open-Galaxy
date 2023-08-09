@@ -71,7 +71,7 @@ public static class LargeShipAIFunctions
     //This is the basic flight pattern for attack
     public static void AttackPatternAlpha(LargeShip largeShip)
     {
-        if (largeShip.targetDistance > 500)
+        if (largeShip.targetDistance > 1000)
         {
             FullSpeed(largeShip);
             AngleTowardsTarget(largeShip);
@@ -284,7 +284,7 @@ public static class LargeShipAIFunctions
         }
         else
         {
-            largeShip.thrustInput = 1;
+            largeShip.thrustInput = 0;
         }
     }
 
@@ -295,7 +295,6 @@ public static class LargeShipAIFunctions
     //This angles the ship towards the target vector
     public static void AngleTowardsTarget(LargeShip largeShip)
     {
-
         if (largeShip.targetForward < 0.8)
         {
             LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight);
@@ -306,7 +305,6 @@ public static class LargeShipAIFunctions
             LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight * 5);
             LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp * 5);
         }
-
     }
 
     //This angles the ship away from the target vector

@@ -7,7 +7,7 @@ public static class TargetingFunctions
     #region small ship targetting
 
     //This gets the next target of any kind
-    public static void GetNextTarget(SmallShip smallShip = null)
+    public static void GetNextTarget(SmallShip smallShip = null, string mode = "none")
     {
         bool automaticSearch = false;
 
@@ -55,16 +55,19 @@ public static class TargetingFunctions
                         smallShip.targetName = scene.objectPool[i].name;
 
                         SmallShip targetSmallShip = scene.objectPool[i].GetComponent<SmallShip>();
+                        LargeShip targetLargeShip = scene.objectPool[i].GetComponent<LargeShip>();
 
-                        if (targetSmallShip != null)
+                        if (targetSmallShip != null & mode != "largeship")
                         {
                             smallShip.targetSmallShip = targetSmallShip;
+                            smallShip.targetLargeShip = null;
                             smallShip.targetPrefabName = targetSmallShip.prefabName;
                         }
-                        else
+                        else if (targetLargeShip != null & mode != "smallship")
                         {
                             smallShip.targetSmallShip = null;
-                            smallShip.targetPrefabName = " ";
+                            smallShip.targetLargeShip = targetLargeShip;
+                            smallShip.targetPrefabName = targetLargeShip.prefabName;
                         }
 
                         smallShip.targetRigidbody = scene.objectPool[i].GetComponent<Rigidbody>();
@@ -89,7 +92,7 @@ public static class TargetingFunctions
     }
 
     //This gets the next enemy target
-    public static void GetNextEnemy(SmallShip smallShip = null)
+    public static void GetNextEnemy(SmallShip smallShip = null, string mode = "none")
     {
         bool automaticSearch = false;
 
@@ -134,12 +137,19 @@ public static class TargetingFunctions
                     {
                         bool isHostile = false;
                         int numberTargetting = 0;
+
                         SmallShip targetSmallShip = scene.objectPool[i].GetComponent<SmallShip>();
+                        LargeShip targetLargeShip = scene.objectPool[i].GetComponent<LargeShip>();
 
                         if (targetSmallShip != null)
                         {
                             numberTargetting = targetSmallShip.numberTargeting;
                             isHostile = GetHostility(smallShip, targetSmallShip.allegiance);
+                        }
+                        else if (targetLargeShip != null)
+                        {
+                            numberTargetting = 0;
+                            isHostile = GetHostility(smallShip, targetLargeShip.allegiance);
                         }
 
                         if (isHostile == true)
@@ -151,15 +161,17 @@ public static class TargetingFunctions
                                 smallShip.targetName = scene.objectPool[i].name;
                                 smallShip.targetNumber = i;
 
-                                if (targetSmallShip != null)
+                                if (targetSmallShip != null & mode != "largeship")
                                 {
                                     smallShip.targetSmallShip = targetSmallShip;
+                                    smallShip.targetLargeShip = null;
                                     smallShip.targetPrefabName = targetSmallShip.prefabName;
                                 }
-                                else
+                                else if (targetLargeShip != null & mode != "smallship")
                                 {
                                     smallShip.targetSmallShip = null;
-                                    smallShip.targetPrefabName = " ";
+                                    smallShip.targetLargeShip = targetLargeShip;
+                                    smallShip.targetPrefabName = targetLargeShip.prefabName;
                                 }
 
                                 smallShip.targetRigidbody = scene.objectPool[i].GetComponent<Rigidbody>();
@@ -172,15 +184,17 @@ public static class TargetingFunctions
                                 smallShip.targetName = scene.objectPool[i].name;
                                 smallShip.targetNumber = i;
 
-                                if (targetSmallShip != null)
+                                if (targetSmallShip != null & mode != "largeship")
                                 {
                                     smallShip.targetSmallShip = targetSmallShip;
+                                    smallShip.targetLargeShip = null;
                                     smallShip.targetPrefabName = targetSmallShip.prefabName;
                                 }
-                                else
+                                else if (targetLargeShip != null & mode != "smallship")
                                 {
                                     smallShip.targetSmallShip = null;
-                                    smallShip.targetPrefabName = " ";
+                                    smallShip.targetLargeShip = targetLargeShip;
+                                    smallShip.targetPrefabName = targetLargeShip.prefabName;
                                 }
 
                                 smallShip.targetRigidbody = scene.objectPool[i].GetComponent<Rigidbody>();
@@ -208,7 +222,7 @@ public static class TargetingFunctions
     }
 
     //This gets the closesd enemy target
-    public static void GetClosestEnemy(SmallShip smallShip = null, bool externalActivation = false)
+    public static void GetClosestEnemy(SmallShip smallShip = null, string mode = "none", bool externalActivation = false)
     {
 
         bool automaticSearch = false;
@@ -228,6 +242,8 @@ public static class TargetingFunctions
             GameObject target = null;
             SmallShip tempSmallShip = null;
             SmallShip targetSmallShip = null;
+            LargeShip tempLargeShip = null;
+            LargeShip targetLargeShip = null;
 
             float distance = Mathf.Infinity;
 
@@ -236,6 +252,7 @@ public static class TargetingFunctions
                 if (ship != null)
                 {
                     tempSmallShip = ship.GetComponent<SmallShip>();
+                    tempLargeShip = ship.GetComponent<LargeShip>();
 
                     if (ship.activeSelf == true & tempSmallShip != null)
                     {
@@ -264,6 +281,22 @@ public static class TargetingFunctions
                             }
                         }
                     }
+                    else if (ship.activeSelf == true & tempLargeShip != null)
+                    {
+                        bool isHostile = GetHostility(smallShip, tempLargeShip.allegiance);
+
+                        if (isHostile == true)
+                        {
+                            float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
+
+                            if (tempDistance < distance)
+                            {
+                                target = ship;
+                                targetLargeShip = tempLargeShip;
+                                distance = tempDistance;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -272,23 +305,26 @@ public static class TargetingFunctions
                 smallShip.target = target;
                 smallShip.targetName = target.name;
 
-                if (targetSmallShip != null)
+                if (targetSmallShip != null & mode != "largeship")
                 {
                     smallShip.targetSmallShip = targetSmallShip;
+                    smallShip.targetLargeShip = null;
                     smallShip.targetPrefabName = targetSmallShip.prefabName;
+
+                    if (smallShip.isAI == true)
+                    {
+                        targetSmallShip.numberTargeting += 1;
+                    }
+
                 }
-                else
+                else if (targetLargeShip != null & mode != "smallship")
                 {
                     smallShip.targetSmallShip = null;
-                    smallShip.targetPrefabName = " ";
+                    smallShip.targetLargeShip = targetLargeShip;
+                    smallShip.targetPrefabName = targetLargeShip.prefabName;
                 }
 
                 smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
-
-                if (smallShip.isAI == true)
-                {
-                    targetSmallShip.numberTargeting += 1;
-                }
             }
 
             smallShip.targetPressedTime = Time.time + 0.2f;
@@ -312,6 +348,8 @@ public static class TargetingFunctions
         GameObject target = null;
         SmallShip tempSmallShip = null;
         SmallShip targetSmallShip = null;
+        LargeShip tempLargeShip = null;
+        LargeShip targetLargeShip = null;
 
         foreach (GameObject ship in scene.objectPool)
         {
@@ -323,10 +361,15 @@ public static class TargetingFunctions
                     {
                         target = ship;
                         tempSmallShip = ship.GetComponent<SmallShip>();
+                        tempLargeShip = ship.GetComponent<LargeShip>();
 
                         if (tempSmallShip != null)
                         {
                             targetSmallShip = tempSmallShip;
+                        }
+                        else if (tempLargeShip != null)
+                        {
+                            targetLargeShip = tempLargeShip;
                         }
 
                         break;
@@ -343,12 +386,14 @@ public static class TargetingFunctions
             if (targetSmallShip != null)
             {
                 smallShip.targetSmallShip = targetSmallShip;
+                smallShip.targetLargeShip = null;
                 smallShip.targetPrefabName = targetSmallShip.prefabName;
             }
-            else
+            else if (targetLargeShip != null)
             {
                 smallShip.targetSmallShip = null;
-                smallShip.targetPrefabName = " ";
+                smallShip.targetLargeShip = targetLargeShip;
+                smallShip.targetPrefabName = targetLargeShip.prefabName;
             }
 
             smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
@@ -388,6 +433,16 @@ public static class TargetingFunctions
                     smallShip.targetShield = smallShip.targetSmallShip.shieldLevel;
                     smallShip.targetType = smallShip.targetSmallShip.type;
                     smallShip.targetPrefabName = smallShip.targetSmallShip.prefabName;
+                }
+
+                if (smallShip.targetLargeShip != null)
+                {
+                    smallShip.targetAllegiance = smallShip.targetLargeShip.allegiance;
+                    smallShip.targetSpeed = smallShip.targetLargeShip.thrustSpeed;
+                    smallShip.targetHull = smallShip.targetLargeShip.hullLevel;
+                    smallShip.targetShield = smallShip.targetLargeShip.shieldLevel;
+                    smallShip.targetType = smallShip.targetLargeShip.type;
+                    smallShip.targetPrefabName = smallShip.targetLargeShip.prefabName;
                 }
 
                 Transform targetTransform = smallShip.target.transform;

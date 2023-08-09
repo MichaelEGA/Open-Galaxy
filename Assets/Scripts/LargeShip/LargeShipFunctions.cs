@@ -133,20 +133,27 @@ public static class LargeShipFunctions
         float actualSpeedRating = largeShip.speedRating;
 
         //This controls the throttle of the ship, and prevents it going above the speed rating or below zero
-        if (largeShip.thrustSpeed > actualSpeedRating)
+        if (actualSpeedRating != 0)
         {
-            largeShip.thrustSpeed = largeShip.thrustSpeed - acclerationAmount * 4;
-        }
-        else if (largeShip.thrustInput < 0)
-        {
-            largeShip.thrustSpeed = largeShip.thrustSpeed - acclerationAmount;
-        }
-        else if (largeShip.thrustInput > 0)
-        {
-            largeShip.thrustSpeed = largeShip.thrustSpeed + acclerationAmount;
-        }
+            if (largeShip.thrustSpeed > actualSpeedRating)
+            {
+                largeShip.thrustSpeed = largeShip.thrustSpeed - acclerationAmount * 4;
+            }
+            else if (largeShip.thrustInput < 0)
+            {
+                largeShip.thrustSpeed = largeShip.thrustSpeed - acclerationAmount;
+            }
+            else if (largeShip.thrustInput > 0)
+            {
+                largeShip.thrustSpeed = largeShip.thrustSpeed + acclerationAmount;
+            }
 
-        if (largeShip.thrustSpeed < 0)
+            if (largeShip.thrustSpeed < 0)
+            {
+                largeShip.thrustSpeed = 0;
+            }
+        }
+        else
         {
             largeShip.thrustSpeed = 0;
         }
@@ -193,8 +200,6 @@ public static class LargeShipFunctions
             largeShip.turnInputActual = Mathf.Lerp(largeShip.turnInputActual, largeShip.turnInput, 0.1f);
             largeShip.rollInputActual = Mathf.Lerp(largeShip.rollInputActual, largeShip.rollInput, 0.1f);
 
-            Debug.Log(largeShip.name + " pitch is " + largeShip.pitchInput + " turn input is " + largeShip.turnInput + " roll input is " + largeShip.rollInput);
-
             //This makes the vehicle fly
             if (largeShip.thrustSpeed > 0)
             {
@@ -207,15 +212,12 @@ public static class LargeShipFunctions
 
             Vector3 rotationVector = x + y + z;
 
-            Debug.Log(largeShip.name + " rotation vector is " + rotationVector);
+            if (largeShip.pitchInputActual > 0 || largeShip.turnInputActual > 0 || largeShip.rollInputActual > 0)
+            {
+                Quaternion deltaRotation = Quaternion.Euler(rotationVector * Time.fixedDeltaTime);
+            }
 
-            Quaternion deltaRotation = Quaternion.Euler(rotationVector * Time.fixedDeltaTime);
-
-            Debug.Log(largeShip.name + " delta rotation vector is " + deltaRotation);
-
-            //largeShip.shipRigidbody.MoveRotation(largeShip.shipRigidbody.rotation * deltaRotation);
             largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime, Space.World);
-
         }
     }
 

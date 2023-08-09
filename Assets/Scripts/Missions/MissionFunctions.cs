@@ -885,7 +885,7 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            TargetingFunctions.GetClosestEnemy(smallShip, true);
+                            TargetingFunctions.GetClosestEnemy(smallShip, "smallship", true);
                         }
                     }
                 }

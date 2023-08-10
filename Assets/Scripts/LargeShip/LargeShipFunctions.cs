@@ -17,6 +17,7 @@ public static class LargeShipFunctions
             GameObjectUtils.AddColliders(largeShip.gameObject, false);
             largeShip.LODs = GameObjectUtils.GetLODs(largeShip.gameObject);        
             largeShip.colliders = largeShip.GetComponentsInChildren<MeshCollider>();
+            largeShip.castPoint = largeShip.gameObject.transform.Find("castPoint");
             LoadThrusters(largeShip);
             CreateWaypoint(largeShip);
             largeShip.loaded = true;

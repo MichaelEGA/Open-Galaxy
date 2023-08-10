@@ -9,6 +9,7 @@ public class LargeShip : MonoBehaviour
     public string type;
     public string prefabName;
     public float loadTime;
+    public string largeShipClass = "large";
 
     [Header("Ship Components")]
     [HideInInspector] public Rigidbody shipRigidbody;
@@ -90,6 +91,9 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float waypointUp;
     [HideInInspector] public float waypointDistance;
     [HideInInspector] public float targetPressedTime;
+
+    [Header("Collisions")]
+    public Transform castPoint;
 
     [Header("Ship AI")]
     public string aiMode;

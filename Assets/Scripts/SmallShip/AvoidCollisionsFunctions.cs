@@ -4,7 +4,6 @@ using UnityEngine;
 
 public static class AvoidCollisionsFunctions
 {
-
     //Starts avoid collision running
     public static void RunAvoidCollision()
     {
@@ -169,75 +168,76 @@ public static class AvoidCollisionsFunctions
                 Vector3 forwardRaycast = ship.transform.position + (ship.transform.forward * 10);
                 Vector3 backwardRaycast = ship.transform.position + (ship.transform.forward * -10);
                 SmallShip smallShip = ship.GetComponent<SmallShip>();
+                LargeShip largeShip = ship.GetComponent<LargeShip>();
 
-                RaycastHit Hit;
+                if (largeShip != null)
+                {
+                    if (largeShip.castPoint != null)
+                    {
+                        forwardRaycast = largeShip.castPoint.position;
+                    }
+                }
+
+                RaycastHit hit;
+                RaycastHit hitSave;
 
                 int direction = 0;
 
-                if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.forward), out Hit, 500))
+                if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.forward), out hit, 500))
                 {
-                        direction = 0;
+                    direction = 0;
+                    hitSave = hit;
 
-                    if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.right), out Hit, 500))
+                    if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.right), out hit, 500))
                     {
                         direction = 1;
+                        hitSave = hit;
 
-                        if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.left), out Hit, 500))
+                        if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.left), out hit, 500))
                         {
                             direction = 2;
+                            hitSave = hit;
 
-                            if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.up), out Hit, 500))
+                            if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.up), out hit, 500))
                             {
                                 direction = 3;
+                                hitSave = hit;
 
-                                if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.down), out Hit, 500))
+                                if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.down), out hit, 500))
                                 {
                                     direction = 1;
+                                    hitSave = hit;
                                 }
                             }
                         }
                     }
 
-                    if (smallShip != null)
+                    if (hitSave.transform.GetComponentInParent<SmallShip>() != true)
                     {
-                        if (Hit.transform != null)
+                        if (smallShip != null)
                         {
-                            Transform objectHit = Hit.transform;
-
-                            if (objectHit != null)
+                            if (smallShip.isAI == true)
                             {
-                                if (ship.GetComponent<SmallShip>() == null & ship != objectHit.root)
-                                {
-                                    if (ship.GetComponent<SmallShip>().isAI == true)
-                                    {
-                                        Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 2, "avoidCollision", direction));
-                                        Debug.Log(ship.name + " avoiding collision with " + objectHit.name);
-                                    }
-                                }
+                                Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 2, "avoidCollision", direction));
                             }
+                        }
+                        else if (largeShip != null)
+                        {
+                           Task a = new Task(LargeShipAIFunctions.Evade(largeShip, 2, "avoidCollision", direction));
                         }
                     }
                 }
-                else if (Physics.SphereCast(backwardRaycast, 50, ship.transform.TransformDirection(Vector3.back), out Hit, 500))
+                else if (Physics.SphereCast(backwardRaycast, 50, ship.transform.TransformDirection(Vector3.back), out hit, 500) & smallShip != null)
                 {
                     direction = 6;
 
-                    if (Hit.transform != null)
+                    if (smallShip != null)
                     {
-                        Transform objectHit = Hit.transform;
-
-                        if (objectHit != null)
+                        if (smallShip.isAI == true & hit.transform.GetComponentInParent<SmallShip>() != true)
                         {
-                            if (ship.GetComponent<SmallShip>() == null & ship != objectHit.root)
-                            {
-                                if (ship.GetComponent<SmallShip>().isAI == true)
-                                {
-                                    Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 2, "avoidCollision", direction));
-                                    Debug.Log(ship.name + " avoiding collision with " + objectHit.name);
-                                }
-                            }
+                            Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 6, "avoidCollision", direction));
                         }
-                    }
+                    }                   
                 }
 
                 yield return null;

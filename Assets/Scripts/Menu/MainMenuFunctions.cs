@@ -478,7 +478,7 @@ public static class MainMenuFunctions
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
     {
         string[] messages = new string[10];
-        messages[0] = "Welcome to Open Galaxy. Version 0.5.1 adds cockpits to the game.";
+        messages[0] = "Welcome to Open Galaxy. Version 0.5.2 adds rudimentary capital ship support.";
         messages[1] = "Open Galaxy's missions are based on the Legends timeline.";
         messages[2] = "Need a quick fix? Try out the random battle and ladder modes.";
         messages[3] = "Flying a ship isn't like dusting crops. Remember to complete the training missions.";

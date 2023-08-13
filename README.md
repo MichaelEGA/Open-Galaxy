@@ -7,11 +7,19 @@
   - Ship Stats: https://docs.google.com/spreadsheets/d/1PwTEx9dPTEhxY5ebIWjXgZj0bz84qzDL47KDm0aw8FU/edit?usp=sharing
   - Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
 
-**Latest Release:** 0.5.1
+**Latest Release:** 0.5.2
 
 Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
 **Changelog**
+
+13/08/23 - v.0.5.2
+  - Added capital ship turret loading
+  - Added "In Development" mission category
+  - Correctly Implemented Code for Avoiding Collisions with large objects
+  - Fixed bug that causes stationary "capital ships" (i.e. stations) to move
+  - Rudimentary capital ship support complete
+  - Created base functions for capital ships
 
 08/08/23 - v.0.5.1
   - Finished adding cockpits, removed hud shake and hud glass

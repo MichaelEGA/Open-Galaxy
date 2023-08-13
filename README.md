@@ -10,8 +10,8 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Cockpits (Implemented)
   - Capital ships (In Progress)
   - Easy to use mission editor (In Progress)
-  - External mission loading (not implemented yet)
-  - Accurate Star Wars galaxy (the star locations accurately represent the galaxy)
+  - External mission loading (Not implemented yet)
+  - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
   - Explore mode where you can explore the whole Star Wars galaxy (In progress)
 
 **Latest Release:** 0.5.2

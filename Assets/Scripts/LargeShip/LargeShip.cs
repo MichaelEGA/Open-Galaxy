@@ -92,6 +92,11 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float waypointDistance;
     [HideInInspector] public float targetPressedTime;
 
+    [Header("Turrets")]
+    public bool turretsLoaded;
+    public Turret[] turrets;
+    public Transform[] destroyedTurretsTransforms;
+
     [Header("Collisions")]
     public Transform castPoint;
 
@@ -111,6 +116,7 @@ public class LargeShip : MonoBehaviour
     {
         //Start functions
         LargeShipFunctions.PrepareShip(this);
+        TurretFunctions.LoadTurrets(this);
 
         //Input functions
         LargeShipFunctions.GetAIInput(this);

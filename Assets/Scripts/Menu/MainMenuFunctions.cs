@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public static class MainMenuFunctions
 {
@@ -132,6 +131,7 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("LoadMainMission", new System.Action<string>(LoadMainMission));
         mainMenu.functions.Add("LoadTrainingMission", new System.Action<string>(LoadTrainingMission));
         mainMenu.functions.Add("LoadOtherGameModes", new System.Action<string>(LoadOtherGameModes));
+        mainMenu.functions.Add("LoadInDevelopment", new System.Action<string>(LoadInDevelopment));
         mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
         mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
         mainMenu.functions.Add("QuitToMainMenu", new System.Action(QuitToMainMenu));
@@ -197,8 +197,9 @@ public static class MainMenuFunctions
         //This adds three extra sub menus just for open galaxy
         subMenus.Add("Missions");
         subMenus.Add("Training");
-        subMenus.Add("Custom Missions");
         subMenus.Add("OtherGameModes");
+        subMenus.Add("Custom Missions");
+        subMenus.Add("InDevelopment");
 
         //This allows the script to log the first menu created. It will be the first loaded
         bool firstSubMenuLogged = false;
@@ -262,8 +263,10 @@ public static class MainMenuFunctions
         CreateMissionButtons(mainMenu, trainingMissions, "Training_Settings", "LoadTrainingMission");
         //Object[] customMissions = Resources.LoadAll("Data/Files/Mission", typeof(TextAsset));
         //CreateMissionButtons(mainMenu, customMissions, "Custom Missions_Settings", "LoadCustomMission");
-        Object[] OtherGameModes = Resources.LoadAll("Data/Files/Missions_Misc", typeof(TextAsset));
-        CreateMissionButtons(mainMenu, OtherGameModes, "OtherGameModes_Settings", "LoadOtherGameModes");
+        Object[] otherGameModes = Resources.LoadAll("Data/Files/Missions_Misc", typeof(TextAsset));
+        CreateMissionButtons(mainMenu, otherGameModes, "OtherGameModes_Settings", "LoadOtherGameModes");
+        Object[] inDevelopment = Resources.LoadAll("Data/Files/Missions_InDevelopment", typeof(TextAsset));
+        CreateMissionButtons(mainMenu, inDevelopment, "InDevelopment_Settings", "LoadInDevelopment");
 
         //This turns off all the sub menus
         foreach (GameObject subMenu in mainMenu.SubMenus)
@@ -536,6 +539,20 @@ public static class MainMenuFunctions
     public static void LoadOtherGameModes(string name)
     {
         Task a = new Task(MissionFunctions.RunMission(name, "Data/Files/Missions_Misc/"));
+
+        GameObject menu = GameObject.Find("Menu");
+
+        if (menu != null)
+        {
+            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
+            Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
+        }
+    }
+
+    //This loads a training missino
+    public static void LoadInDevelopment(string name)
+    {
+        Task a = new Task(MissionFunctions.RunMission(name, "Data/Files/Missions_InDevelopment/"));
 
         GameObject menu = GameObject.Find("Menu");
 

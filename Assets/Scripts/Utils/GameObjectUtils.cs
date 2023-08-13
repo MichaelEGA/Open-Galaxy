@@ -87,4 +87,102 @@ public static class GameObjectUtils
         }
     }
 
+    //Gets every child of a give transform
+    public static Transform[] GetAllChildTransforms(Transform transform)
+    {
+        List<Transform> childTransforms = new List<Transform>();
+
+        foreach (Transform tempTransform in transform)
+        {
+            childTransforms.Add(tempTransform);
+
+            if (tempTransform.childCount > 0)
+            {
+                childTransforms.AddRange(GetAllChildTransforms(tempTransform));
+            }              
+        }
+
+        return childTransforms.ToArray();
+    }
+
+    //This searchs through all the child transforms of a particular transform looking for all transforms that containt the search string
+    public static Transform[] FindAllChildTransformsContaining(Transform transform, string searchString, string exclusionString1 = "none", string exclusionString2 = "none", string exclusionString3 = "none")
+    {
+        Transform[] allTransforms = GetAllChildTransforms(transform);
+        List<Transform> selectedTransforms = new List<Transform>();
+
+        foreach (Transform child in allTransforms)
+        {
+           if (child.transform.name.Contains(searchString))
+           {
+                if (exclusionString1 == "none")
+                {
+                    selectedTransforms.Add(child);
+                }
+                else if (!child.name.Contains(exclusionString1) & exclusionString2 == "none" & exclusionString3 == "none")
+                {
+                    selectedTransforms.Add(child);
+                }
+                else if (!child.name.Contains(exclusionString1) & !child.name.Contains(exclusionString2) & exclusionString3 == "none")
+                {
+                    selectedTransforms.Add(child);
+                }
+                else if (!child.name.Contains(exclusionString1) & !child.name.Contains(exclusionString2) & !child.name.Contains(exclusionString3))
+                {
+                    selectedTransforms.Add(child);
+                }
+            }
+        }
+
+        return selectedTransforms.ToArray();
+    }
+
+    //This searchs through all the child transforms of a particular transform looking for all transforms that containt the search string
+    public static Transform[] FindAllChildTransformsContainingBothStrings(Transform transform, string searchString1, string searchString2)
+    {
+        Transform[] allTransforms = GetAllChildTransforms(transform);
+        List<Transform> selectedTransforms = new List<Transform>();
+
+        foreach (Transform child in allTransforms)
+        {
+            if (child.transform.name.Contains(searchString1) & child.transform.name.Contains(searchString2))
+            {
+                selectedTransforms.Add(child);
+            }
+        }
+
+        return selectedTransforms.ToArray();
+    }
+
+    //This searchs through all the child transforms of a particular transform looking for the first transform that contains the search phrase
+    public static Transform FindChildTransformContaining(Transform transform, string searchString, string exclusionString1 = "none", string exclusionString2 = "none")
+    {
+        Transform[] allTransforms = GetAllChildTransforms(transform);
+        Transform selectedTransform = null;
+
+        foreach (Transform child in allTransforms)
+        {
+            if (child.transform.name.Contains(searchString))
+            {
+                if (exclusionString1 == "none")
+                {
+                    selectedTransform = child;
+                    break;
+                }
+                else if (!child.name.Contains(exclusionString1) & exclusionString2 == "none")
+                {
+                    selectedTransform = child;
+                    break;
+                }
+                else if (!child.name.Contains(exclusionString1) & !child.name.Contains(exclusionString2))
+                {
+                    selectedTransform = child;
+                    break;
+                }
+            }
+        }
+
+        return selectedTransform;
+    }
+
 }

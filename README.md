@@ -1,5 +1,5 @@
 # Open-Galaxy
-![OpenGalaxyv05](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/065166c6-3e87-4980-953f-92cb9aa729d5)
+![Screenshot (102)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/bfaaffc9-1d2f-484a-8f20-c833c434699c)
 **X-Wing and Tie Fighter style flightsim**
 
 Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platform for custom missions made by the community. 

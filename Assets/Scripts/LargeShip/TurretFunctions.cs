@@ -35,7 +35,10 @@ public static class TurretFunctions
                         Turret tempTurret = turretGameObject.AddComponent<Turret>();
                         tempTurret.largeShip = largeShip;
                         tempTurret.turretBase = turretTransform.gameObject;    
-                        
+                        turretGameObject.transform.position = turretTransform.position;
+                        turretGameObject.transform.rotation = turretTransform.rotation;
+                        turretGameObject.transform.SetParent(turretTransform);
+
                         Transform turretArm = GameObjectUtils.FindChildTransformContaining(turretTransform, "arm");
 
                         if (turretArm != null)
@@ -43,9 +46,6 @@ public static class TurretFunctions
                             tempTurret.turretArm = turretArm.gameObject;
                         }
 
-                        turretGameObject.transform.position = turretTransform.position;
-                        turretGameObject.transform.rotation = turretTransform.rotation;
-                        turretGameObject.transform.SetParent(turretTransform);
                         turrets.Add(tempTurret);
                     }
                 }
@@ -61,11 +61,11 @@ public static class TurretFunctions
     {
         if (largeShip.target != null)
         {
-            Vector3 targetRelativePosition = largeShip.target.transform.position - turret.transform.position;
+            Vector3 targetRelativePosition = largeShip.target.transform.position - turret.turretArm.transform.position;
 
-            float targetForward = Vector3.Dot(turret.transform.forward, targetRelativePosition.normalized);
-            float targetRight = Vector3.Dot(turret.transform.right, targetRelativePosition.normalized);
-            float targetUp = Vector3.Dot(turret.transform.up, targetRelativePosition.normalized);
+            float targetForward = Vector3.Dot(turret.turretArm.transform.forward, targetRelativePosition.normalized);
+            float targetRight = Vector3.Dot(turret.turretArm.transform.right, targetRelativePosition.normalized);
+            float targetUp = Vector3.Dot(turret.turretArm.transform.up, targetRelativePosition.normalized);
 
             TurretFunctions.SmoothTurnInput(turret, targetRight);
             TurretFunctions.SmoothPitchInput(turret, -targetUp);     
@@ -92,14 +92,17 @@ public static class TurretFunctions
         Vector3 armRotation = Vector3.right * turret.pitchInputActual * 60;
         Vector3 baseRotation = Vector3.up * turret.turnInputActual * 50;
 
+        Vector3 armRotation2 = new Vector3(armRotation.x, 0, 0);
+        Vector3 baseRotation2 = new Vector3(0, baseRotation.y, 0);
+
         if (turret.turretBase != null)
         {
-            turret.turretBase.transform.Rotate(baseRotation, Time.fixedDeltaTime, Space.World);
+            turret.turretBase.transform.Rotate(baseRotation2, Time.fixedDeltaTime, Space.World);
         }
 
         if (turret.turretArm != null)
         {
-            turret.turretArm.transform.Rotate(armRotation, Time.fixedDeltaTime, Space.World);
+            turret.turretArm.transform.Rotate(armRotation2, Time.fixedDeltaTime, Space.World);
         }       
     }
 

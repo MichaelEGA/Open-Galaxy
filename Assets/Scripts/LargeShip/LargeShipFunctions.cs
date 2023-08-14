@@ -213,11 +213,6 @@ public static class LargeShipFunctions
 
             Vector3 rotationVector = x + y + z;
 
-            if (largeShip.pitchInputActual > 0 || largeShip.turnInputActual > 0 || largeShip.rollInputActual > 0)
-            {
-                Quaternion deltaRotation = Quaternion.Euler(rotationVector * Time.fixedDeltaTime);
-            }
-
             largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime, Space.World);
         }
     }

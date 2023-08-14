@@ -95,7 +95,6 @@ public class LargeShip : MonoBehaviour
     [Header("Turrets")]
     public bool turretsLoaded;
     public Turret[] turrets;
-    public Transform[] destroyedTurretsTransforms;
 
     [Header("Collisions")]
     public Transform castPoint;

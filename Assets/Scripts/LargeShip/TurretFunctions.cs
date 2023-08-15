@@ -34,7 +34,7 @@ public static class TurretFunctions
                     {                
                         Turret tempTurret = turretGameObject.AddComponent<Turret>();
                         tempTurret.largeShip = largeShip;
-                        tempTurret.turretBase = turretTransform.gameObject;    
+                        tempTurret.turretBase = turretGameObject; 
                         turretGameObject.transform.position = turretTransform.position;
                         turretGameObject.transform.rotation = turretTransform.rotation;
                         turretGameObject.transform.SetParent(turretTransform);
@@ -97,13 +97,61 @@ public static class TurretFunctions
 
         if (turret.turretBase != null)
         {
+            //This applies the rotation
             turret.turretBase.transform.Rotate(baseRotation2, Time.fixedDeltaTime, Space.World);
+
+            //This tracks the rotation and prevents it from going beyond predefined parameters
+            float rotation = turret.turretBase.transform.localRotation.eulerAngles.y;
+
+            //This keeps the rotation value between 180 and -180
+            if (rotation > 180)
+            {
+                rotation -= 360;
+            }
+            else if (rotation < -180)
+            {
+                rotation += 360;
+            }
+
+            //This cause the turret to stop rotating at its limites
+            if (rotation < -30)
+            {
+                turret.turretBase.transform.localRotation = Quaternion.Euler(0, -30, 0);
+            }
+            else if (rotation > 30)
+            {
+                turret.turretBase.transform.localRotation = Quaternion.Euler(0, 30, 0);
+            }
         }
 
         if (turret.turretArm != null)
         {
+            //This applies the rotation
             turret.turretArm.transform.Rotate(armRotation2, Time.fixedDeltaTime, Space.World);
-        }       
-    }
 
+            //This tracks the rotation and prevents it from going beyond predefined parameters
+            float rotation = turret.turretArm.transform.localRotation.eulerAngles.x;
+
+            //This keeps the rotation value between 180 and -180
+            if (rotation > 180)
+            {
+                rotation -= 360;
+            }
+            else if (rotation < -180)
+            {
+                rotation += 360;
+            }
+
+            //This cause the turret to stop rotating at its limites
+            if (rotation < -90)
+            {
+                turret.turretArm.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+            }
+            else if (rotation > 0)
+            {
+                turret.turretArm.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+
+        }   
+    }
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public static class TurretFunctions
 {
+
+    #region loading functions
+
     //This loads all the turrets on the ship
     public static void LoadTurrets(LargeShip largeShip)
     {
@@ -34,17 +37,21 @@ public static class TurretFunctions
                     {                
                         Turret tempTurret = turretGameObject.AddComponent<Turret>();
                         tempTurret.largeShip = largeShip;
-                        tempTurret.turretBase = turretGameObject; 
-                        turretGameObject.transform.position = turretTransform.position;
-                        turretGameObject.transform.rotation = turretTransform.rotation;
-                        turretGameObject.transform.SetParent(turretTransform);
+                        tempTurret.turretBase = turretGameObject;
 
-                        Transform turretArm = GameObjectUtils.FindChildTransformContaining(turretTransform, "arm");
+                        Transform turretArm = GameObjectUtils.FindChildTransformContaining(turretGameObject.transform, "arm");
 
                         if (turretArm != null)
                         {
                             tempTurret.turretArm = turretArm.gameObject;
                         }
+
+
+                        turretGameObject.transform.position = turretTransform.position;
+                        turretGameObject.transform.rotation = turretTransform.rotation;
+                        turretGameObject.transform.SetParent(turretTransform);
+
+                        CheckTurretType(tempTurret);
 
                         turrets.Add(tempTurret);
                     }
@@ -57,6 +64,37 @@ public static class TurretFunctions
         }
     }
 
+    //This inputs the rotation values
+    public static void CheckTurretType(Turret turret)
+    {
+        if (turret.gameObject != null)
+        {
+            if (turret.gameObject.name.Contains("isd_turretlarge"))
+            {
+                turret.yRotationMax = 30;
+                turret.yRotationMin = -30;
+                turret.turretSpeed = 70;
+            }
+            else if (turret.gameObject.name.Contains("isd_turretsmall"))
+            {
+                turret.yRotationMax = 90;
+                turret.yRotationMin = -90;
+                turret.turretSpeed = 90;
+            }
+            else if (turret.gameObject.name.Contains("cr90_turretlarge"))
+            {
+                turret.yRotationMax = 180;
+                turret.yRotationMin = -180;
+                turret.turretSpeed = 80;
+            }
+        }
+    }
+
+    #endregion
+
+    #region turret input
+
+    //This gets the input for the turret from ship
     public static void TurretInput(Turret turret, LargeShip largeShip)
     {
         if (largeShip.target != null)
@@ -72,25 +110,35 @@ public static class TurretFunctions
         }      
     }
 
+    //This smoothly transitions between input variables as if the computer is using a mouse a joystick
     public static void SmoothPitchInput(Turret turret, float pitchInput)
     {
         float step = +Time.deltaTime / 0.01f;
         turret.pitchInput = Mathf.Lerp(turret.pitchInput, pitchInput, step);
     }
 
+    //This smoothly transitions between input variables as if the computer is using a mouse a joystick
     public static void SmoothTurnInput(Turret turret, float turnInput)
     {
         float step = +Time.deltaTime / 0.01f;
         turret.turnInput = Mathf.Lerp(turret.turnInput, turnInput, step);
     }
 
+    #endregion
+
+    #region turretRotation
+
+    //This rotates the turret
     public static void RotateTurret(Turret turret)
     {
         turret.pitchInputActual = Mathf.Lerp(turret.pitchInputActual, turret.pitchInput, 0.1f);
         turret.turnInputActual = Mathf.Lerp(turret.turnInputActual, turret.turnInput, 0.1f);
 
-        Vector3 armRotation = Vector3.right * turret.pitchInputActual * 60;
-        Vector3 baseRotation = Vector3.up * turret.turnInputActual * 50;
+        float armSpeed = (120f / 100f) * turret.turretSpeed;
+        float baseSpeed = (100f / 100f) * turret.turretSpeed;
+
+        Vector3 armRotation = Vector3.right * turret.pitchInputActual * armSpeed;
+        Vector3 baseRotation = Vector3.up * turret.turnInputActual * baseSpeed;
 
         Vector3 armRotation2 = new Vector3(armRotation.x, 0, 0);
         Vector3 baseRotation2 = new Vector3(0, baseRotation.y, 0);
@@ -114,13 +162,13 @@ public static class TurretFunctions
             }
 
             //This cause the turret to stop rotating at its limites
-            if (rotation < -30)
+            if (rotation < turret.yRotationMin)
             {
-                turret.turretBase.transform.localRotation = Quaternion.Euler(0, -30, 0);
+                turret.turretBase.transform.localRotation = Quaternion.Euler(0, turret.yRotationMin, 0);
             }
-            else if (rotation > 30)
+            else if (rotation > turret.yRotationMax)
             {
-                turret.turretBase.transform.localRotation = Quaternion.Euler(0, 30, 0);
+                turret.turretBase.transform.localRotation = Quaternion.Euler(0, turret.yRotationMax, 0);
             }
         }
 
@@ -154,4 +202,6 @@ public static class TurretFunctions
 
         }   
     }
+
+    #endregion
 }

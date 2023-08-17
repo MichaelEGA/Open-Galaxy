@@ -8,6 +8,9 @@ public class Turret : MonoBehaviour
     public GameObject turretBase;
     public GameObject turretArm;
     public Transform[] firepoints;
+    public GameObject turretParticleSystem;
+    public string allegiance;
+    public string laserColor = "red";
     public float turretSpeed = 100; //Percentage
     public float turnInput;
     public float pitchInput;
@@ -16,11 +19,15 @@ public class Turret : MonoBehaviour
     public float yRotationMax = 30;
     public float yRotationMin = -30;
     public float turretPower = 10;
+    public float targetForward;
+    public float fireDelay;
+    public bool turretFiring;
 
     void Update()
     {
         TurretFunctions.TurretInput(this, largeShip);
         TurretFunctions.RotateTurret(this);
+        TurretFunctions.FireTurret(this);
     }
 }
 

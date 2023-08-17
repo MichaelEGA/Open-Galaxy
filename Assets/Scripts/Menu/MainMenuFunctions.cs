@@ -94,9 +94,15 @@ public static class MainMenuFunctions
     {
         GameObject menuPrefab = Resources.Load("Menu/Title") as GameObject;
         GameObject title = GameObject.Instantiate(menuPrefab);
+        GameObject tip = GameObject.Find("Tip");
         title.name = "Title";
-        Text messageText = title.GetComponentInChildren<Text>();
-        DisplayMessageOnTitleScreen(messageText);
+
+        if (tip != null)
+        {
+            Text messageText = tip.GetComponent<Text>();
+            DisplayMessageOnTitleScreen(messageText);
+        }
+
         return title;
     }
 

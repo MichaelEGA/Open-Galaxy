@@ -40,8 +40,6 @@ public static class TurretFunctions
                         tempTurret.turretBase = turretGameObject;
                         tempTurret.allegiance = largeShip.allegiance;
 
-                        LoadLaserParticleSystem(tempTurret);
-
                         Transform turretArm = GameObjectUtils.FindChildTransformContaining(turretGameObject.transform, "arm");
 
                         if (turretArm != null)
@@ -61,6 +59,8 @@ public static class TurretFunctions
                         turretGameObject.transform.SetParent(turretTransform);
 
                         CheckTurretType(tempTurret);
+
+                        LoadLaserParticleSystem(tempTurret);
 
                         turrets.Add(tempTurret);
                     }

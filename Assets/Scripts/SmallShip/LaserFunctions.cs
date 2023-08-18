@@ -415,9 +415,8 @@ public static class LaserFunctions
     #region laser damage and explosions
 
     //This causes the ship to take damage from lasers
-    public static void TakeLaserDamage(SmallShip smallShip, SmallShip attackingShip, Vector3 hitPosition)
+    public static void TakeLaserDamage(SmallShip smallShip, float damage, Vector3 hitPosition)
     {
-
         if (Time.time - smallShip.loadTime > 10)
         {
             Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
@@ -429,18 +428,18 @@ public static class LaserFunctions
                 {
                     if (smallShip.frontShieldLevel > 0)
                     {
-                        smallShip.frontShieldLevel = smallShip.frontShieldLevel - GetLaserDamage(attackingShip);
-                        smallShip.shieldLevel = smallShip.shieldLevel - GetLaserDamage(attackingShip);
+                        smallShip.frontShieldLevel = smallShip.frontShieldLevel - damage;
+                        smallShip.shieldLevel = smallShip.shieldLevel - damage;
                     }
                     else
                     {
-                        if (smallShip.hullLevel - GetLaserDamage(attackingShip) < 5 & smallShip.invincible == true)
+                        if (smallShip.hullLevel - damage < 5 & smallShip.invincible == true)
                         {
                             smallShip.hullLevel = 5;
                         }
                         else
                         {
-                            smallShip.hullLevel = smallShip.hullLevel - GetLaserDamage(attackingShip);
+                            smallShip.hullLevel = smallShip.hullLevel - damage;
                         }
                     }
                 }
@@ -448,18 +447,18 @@ public static class LaserFunctions
                 {
                     if (smallShip.rearShieldLevel > 0)
                     {
-                        smallShip.rearShieldLevel = smallShip.rearShieldLevel - GetLaserDamage(attackingShip);
-                        smallShip.shieldLevel = smallShip.shieldLevel - GetLaserDamage(attackingShip);
+                        smallShip.rearShieldLevel = smallShip.rearShieldLevel - damage;
+                        smallShip.shieldLevel = smallShip.shieldLevel - damage;
                     }
                     else
                     {
-                        if (smallShip.hullLevel - GetLaserDamage(attackingShip) < 5 & smallShip.invincible == true)
+                        if (smallShip.hullLevel - damage < 5 & smallShip.invincible == true)
                         {
                             smallShip.hullLevel = 5;
                         }
                         else
                         {
-                            smallShip.hullLevel = smallShip.hullLevel - GetLaserDamage(attackingShip);
+                            smallShip.hullLevel = smallShip.hullLevel - damage;
                         }
                     }
                 }
@@ -469,34 +468,12 @@ public static class LaserFunctions
                 if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
 
                 //This shakes the camera
-                Task a = new Task(SmallShipFunctions.HudShake(smallShip, 0.5f));
-
+                if (smallShip.isAI == true)
+                {
+                    Task a = new Task(SmallShipFunctions.ActivateCockpitShake(smallShip, 0.5f));
+                }
             }
         }       
- 
-    }
-
-    //This gets the laser power of the attacking ship
-    public static float GetLaserDamage(SmallShip attackingShip)
-    {
-
-        float power = 0;
-
-        if (attackingShip.laserPower > 50)
-        {
-            power = (50f / 100F) * attackingShip.laserRating;
-        }
-        else if (attackingShip.laserPower == 50f)
-        {
-            power = (20f / 100F) * attackingShip.laserRating;
-        }
-        else if (attackingShip.laserPower < 50f)
-        {
-            power = (16f / 100F) * attackingShip.laserRating;
-        }
-
-        return power;
-
     }
 
     //This instantiates an explosion at the laser point of impact
@@ -538,9 +515,7 @@ public static class LaserFunctions
             {
                 AudioFunctions.PlayAudioClip(audioManager, "impact01_laserhitshield", hitPosition, 1,1, 500, 0.6f);
             }
-
-        }
-       
+        }    
     }
 
     #endregion

@@ -817,16 +817,6 @@ public static class SmallShipFunctions
 
     }
 
-    //This tells the hud that it should run the hud shake function
-    public static IEnumerator HudShake(SmallShip smallShip, float time)
-    {
-        smallShip.cockpitShake = true;
-
-        yield return new WaitForSeconds(time);
-
-        smallShip.cockpitShake = false;
-    }
-
     #endregion
 
     #region weapons
@@ -930,7 +920,7 @@ public static class SmallShipFunctions
                         smallShip.hullLevel = 0;
                     }
 
-                    Task a = new Task(HudShake(smallShip, 0.5f));
+                    Task a = new Task(ActivateCockpitShake(smallShip, 0.5f));
 
                 }
             }
@@ -1088,6 +1078,16 @@ public static class SmallShipFunctions
                 }
             }
         }
+    }
+
+    //This tells the hud that it should run the hud shake function
+    public static IEnumerator ActivateCockpitShake(SmallShip smallShip, float time)
+    {
+        smallShip.cockpitShake = true;
+
+        yield return new WaitForSeconds(time);
+
+        smallShip.cockpitShake = false;
     }
 
     //This shakes the hud glass

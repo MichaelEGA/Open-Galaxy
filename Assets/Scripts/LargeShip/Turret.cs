@@ -18,7 +18,8 @@ public class Turret : MonoBehaviour
     public float pitchInputActual;
     public float yRotationMax = 30;
     public float yRotationMin = -30;
-    public float turretPower = 10;
+    public float laserDamage = 50;
+    public float hullLevel = 100;
     public float targetForward;
     public float fireDelay;
     public bool turretFiring;

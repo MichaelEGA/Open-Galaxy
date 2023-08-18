@@ -53,6 +53,7 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float rollInputActual;
 
     [Header("Ship Levels")]
+    public bool invincible = false;
     public float hullLevel = 100;
     public float shieldLevel = 200;
     public float frontShieldLevel = 100;

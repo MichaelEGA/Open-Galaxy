@@ -233,7 +233,7 @@ public static class TorpedoFunctions
             }
 
             //This shakes the camera
-            Task a = new Task(SmallShipFunctions.HudShake(smallShip, 0.5f));
+            Task a = new Task(SmallShipFunctions.ActivateCockpitShake(smallShip, 0.5f));
 
             smallShip.torpedoPressedTime = Time.time + 2.5f;
         }
@@ -569,7 +569,7 @@ public static class TorpedoFunctions
             }
 
             //This shakes the camera
-            Task a = new Task(SmallShipFunctions.HudShake(smallShip, 0.5f));
+            Task a = new Task(SmallShipFunctions.ActivateCockpitShake(smallShip, 0.5f));
         }
 
     }

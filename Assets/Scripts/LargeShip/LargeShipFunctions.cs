@@ -15,7 +15,7 @@ public static class LargeShipFunctions
             largeShip.shipRigidbody = GameObjectUtils.AddRigidbody(largeShip.gameObject, 100f, 9f, 7.5f);
             largeShip.shipRigidbody.isKinematic = true;
             GameObjectUtils.AddColliders(largeShip.gameObject, false);
-            largeShip.LODs = GameObjectUtils.GetLODs(largeShip.gameObject);        
+            largeShip.LODs = GameObjectUtils.GetLODs(largeShip.gameObject);
             largeShip.colliders = largeShip.GetComponentsInChildren<MeshCollider>();
             largeShip.castPoint = largeShip.gameObject.transform.Find("castPoint");
             LoadThrusters(largeShip);
@@ -29,7 +29,7 @@ public static class LargeShipFunctions
     {
         List<Transform> thrusters = new List<Transform>();
 
-        Transform thruster1 = largeShip.gameObject.transform.Find("thrusters/thruster");  
+        Transform thruster1 = largeShip.gameObject.transform.Find("thrusters/thruster");
         Transform thruster2 = largeShip.gameObject.transform.Find("thrusters/thruster.001");
         Transform thruster3 = largeShip.gameObject.transform.Find("thrusters/thruster.002");
         Transform thruster4 = largeShip.gameObject.transform.Find("thrusters/thruster.003");
@@ -100,7 +100,7 @@ public static class LargeShipFunctions
     //This gets the AI input
     public static void GetAIInput(LargeShip largeShip)
     {
-        LargeShipAIFunctions.GetAIInput(largeShip);      
+        LargeShipAIFunctions.GetAIInput(largeShip);
     }
 
     //For AI Input. These functions smoothly transitions between different pitch, turn, and roll inputs by lerping between different values like the ai is using a joystick or controller
@@ -214,6 +214,66 @@ public static class LargeShipFunctions
             Vector3 rotationVector = x + y + z;
 
             largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime, Space.World);
+        }
+    }
+
+    #endregion
+
+    #region damage
+
+    //This causes the ship to take damage from lasers
+    public static void TakeLaserDamage(LargeShip largeShip, float damage, Vector3 hitPosition)
+    {
+        if (Time.time - largeShip.loadTime > 10)
+        {
+            Vector3 relativePosition = largeShip.gameObject.transform.position - hitPosition;
+            float forward = -Vector3.Dot(largeShip.gameObject.transform.position, relativePosition.normalized);
+
+            if (largeShip.hullLevel > 0)
+            {
+                if (forward > 0)
+                {
+                    if (largeShip.frontShieldLevel > 0)
+                    {
+                        largeShip.frontShieldLevel = largeShip.frontShieldLevel - damage;
+                        largeShip.shieldLevel = largeShip.shieldLevel - damage;
+                    }
+                    else
+                    {
+                        if (largeShip.hullLevel - damage < 5 & largeShip.invincible == true)
+                        {
+                            largeShip.hullLevel = 5;
+                        }
+                        else
+                        {
+                            largeShip.hullLevel = largeShip.hullLevel - damage;
+                        }
+                    }
+                }
+                else
+                {
+                    if (largeShip.rearShieldLevel > 0)
+                    {
+                        largeShip.rearShieldLevel = largeShip.rearShieldLevel - damage;
+                        largeShip.shieldLevel = largeShip.shieldLevel - damage;
+                    }
+                    else
+                    {
+                        if (largeShip.hullLevel - damage < 5 & largeShip.invincible == true)
+                        {
+                            largeShip.hullLevel = 5;
+                        }
+                        else
+                        {
+                            largeShip.hullLevel = largeShip.hullLevel - damage;
+                        }
+                    }
+                }
+
+                if (largeShip.frontShieldLevel < 0) { largeShip.frontShieldLevel = 0; }
+                if (largeShip.rearShieldLevel < 0) { largeShip.rearShieldLevel = 0; }
+                if (largeShip.shieldLevel < 0) { largeShip.shieldLevel = 0; }
+            }
         }
     }
 

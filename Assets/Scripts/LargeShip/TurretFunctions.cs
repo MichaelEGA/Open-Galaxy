@@ -62,6 +62,8 @@ public static class TurretFunctions
 
                         LoadLaserParticleSystem(tempTurret);
 
+                        GameObjectUtils.AddColliders(turretGameObject, false);
+
                         turrets.Add(tempTurret);
                     }
                 }
@@ -85,6 +87,7 @@ public static class TurretFunctions
                 turret.turretSpeed = 70;
                 turret.fireDelay = 3f;
                 turret.laserColor = "green";
+                turret.laserDamage = 50;
             }
             else if (turret.gameObject.name.Contains("isd_turretsmall"))
             {
@@ -93,6 +96,7 @@ public static class TurretFunctions
                 turret.turretSpeed = 90;
                 turret.fireDelay = 1.5f;
                 turret.laserColor = "green";
+                turret.laserDamage = 30;
             }
             else if (turret.gameObject.name.Contains("cr90_turretlarge"))
             {
@@ -101,6 +105,7 @@ public static class TurretFunctions
                 turret.turretSpeed = 80;
                 turret.fireDelay = 2f;
                 turret.laserColor = "red";
+                turret.laserDamage = 30;
             }
         }
     }
@@ -108,7 +113,6 @@ public static class TurretFunctions
     //This sets all the correct settings on the provided particle system to fire lasers
     public static void LoadLaserParticleSystem(Turret turret)
     {
-
         GameObject laser = null;
 
         //This loads the necessary prefabs
@@ -375,6 +379,8 @@ public static class TurretFunctions
 
     #endregion
 
+    #region fire lasers
+
     public static void FireTurret(Turret turret)
     {
         if (turret.targetForward > 0.75 & turret.fireDelay < Time.time & turret.turretFiring == false)
@@ -402,4 +408,66 @@ public static class TurretFunctions
 
         turret.turretFiring = false;
     }
+
+    #endregion
+
+    #region damage
+
+    //This causes the ship to take damage from lasers
+    public static void TakeLaserDamage(Turret turret, float damage, Vector3 hitPosition)
+    {
+        if (Time.time - turret.largeShip.loadTime > 10)
+        {
+            Vector3 relativePosition = turret.largeShip.gameObject.transform.position - hitPosition;
+            float forward = -Vector3.Dot(turret.largeShip.gameObject.transform.position, relativePosition.normalized);
+
+            if (turret.largeShip.hullLevel > 0)
+            {
+                if (forward > 0)
+                {
+                    if (turret.largeShip.frontShieldLevel > 0)
+                    {
+                        turret.largeShip.frontShieldLevel = turret.largeShip.frontShieldLevel - damage;
+                        turret.largeShip.shieldLevel = turret.largeShip.shieldLevel - damage;
+                    }
+                    else
+                    {
+                        if (turret.hullLevel - damage < 5 & turret.largeShip.invincible == true)
+                        {
+                            turret.hullLevel = 5;
+                        }
+                        else
+                        {
+                            turret.hullLevel = turret.hullLevel - damage;
+                        }
+                    }
+                }
+                else
+                {
+                    if (turret.largeShip.rearShieldLevel > 0)
+                    {
+                        turret.largeShip.rearShieldLevel = turret.largeShip.rearShieldLevel - damage;
+                        turret.largeShip.shieldLevel = turret.largeShip.shieldLevel - damage;
+                    }
+                    else
+                    {
+                        if (turret.hullLevel - damage < 5 & turret.largeShip.invincible == true)
+                        {
+                            turret.hullLevel = 5;
+                        }
+                        else
+                        {
+                            turret.hullLevel = turret.hullLevel - damage;
+                        }
+                    }
+                }
+
+                if (turret.largeShip.frontShieldLevel < 0) { turret.largeShip.frontShieldLevel = 0; }
+                if (turret.largeShip.rearShieldLevel < 0) { turret.largeShip.rearShieldLevel = 0; }
+                if (turret.largeShip.shieldLevel < 0) { turret.largeShip.shieldLevel = 0; }
+            }
+        }
+    }
+
+    #endregion
 }

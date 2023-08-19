@@ -41,7 +41,7 @@ public static class SceneFunctions
         scene.objectPrefabPool = new GameObject[objectPrefabs.Length];
         scene.objectPrefabPool = objectPrefabs;
 
-        Object[] cockpitPrefabs = Resources.LoadAll("CockpitPrefabs", typeof(GameObject));
+        Object[] cockpitPrefabs = Resources.LoadAll("CockpitPrefabs/fs_cockpits/", typeof(GameObject));
         scene.cockpitPrefabPool = new GameObject[cockpitPrefabs.Length];
         scene.cockpitPrefabPool = cockpitPrefabs;
 

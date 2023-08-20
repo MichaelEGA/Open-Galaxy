@@ -84,6 +84,8 @@ public static class TurretFunctions
             {
                 turret.yRotationMax = 30;
                 turret.yRotationMin = -30;
+                turret.xRotationMax = -90;
+                turret.xRotationMin = 0;
                 turret.turretSpeed = 70;
                 turret.fireDelay = 6f;
                 turret.laserColor = "green";
@@ -93,15 +95,41 @@ public static class TurretFunctions
             {
                 turret.yRotationMax = 90;
                 turret.yRotationMin = -90;
+                turret.xRotationMax = -90;
+                turret.xRotationMin = 0;
                 turret.turretSpeed = 90;
                 turret.fireDelay = 4f;
                 turret.laserColor = "green";
+                turret.laserDamage = 10;
+            }
+            if (turret.gameObject.name.Contains("mc80a_turretlarge"))
+            {
+                turret.yRotationMax = 60;
+                turret.yRotationMin = -60;
+                turret.xRotationMax = 0;
+                turret.xRotationMin = 50;
+                turret.turretSpeed = 80;
+                turret.fireDelay = 6f;
+                turret.laserColor = "red";
+                turret.laserDamage = 50;
+            }
+            else if (turret.gameObject.name.Contains("mc80a_turretsmall"))
+            {
+                turret.yRotationMax = 60;
+                turret.yRotationMin = -60;
+                turret.xRotationMax = 0;
+                turret.xRotationMin = 50;
+                turret.turretSpeed = 90;
+                turret.fireDelay = 4f;
+                turret.laserColor = "red";
                 turret.laserDamage = 10;
             }
             else if (turret.gameObject.name.Contains("cr90_turretlarge"))
             {
                 turret.yRotationMax = 180;
                 turret.yRotationMin = -180;
+                turret.xRotationMax = -90;
+                turret.xRotationMin = 0;
                 turret.turretSpeed = 80;
                 turret.fireDelay = 4f;
                 turret.laserColor = "red";
@@ -325,14 +353,28 @@ public static class TurretFunctions
             //This tracks the rotation and prevents it from going beyond predefined parameters
             float rotation = turret.turretBase.transform.localRotation.eulerAngles.y;
 
-            //This keeps the rotation value between 180 and -180
-            if (rotation > 180)
+            if (Vector3.Dot(turret.turretBase.transform.up, Vector3.down) < 0)
             {
-                rotation -= 360;
+                //This keeps the rotation value between 180 and -180
+                if (rotation > 180)
+                {
+                    rotation -= 360;
+                }
+                else if (rotation < -180)
+                {
+                    rotation += 360;
+                }
             }
-            else if (rotation < -180)
+            else
             {
-                rotation += 360;
+                if (rotation > 180)
+                {
+                    rotation += 360;
+                }
+                else if (rotation < -180)
+                {
+                    rotation -= 360;
+                }
             }
 
             //This cause the turret to stop rotating at its limites
@@ -355,23 +397,37 @@ public static class TurretFunctions
             float rotation = turret.turretArm.transform.localRotation.eulerAngles.x;
 
             //This keeps the rotation value between 180 and -180
-            if (rotation > 180)
+            if (Vector3.Dot(turret.turretBase.transform.up, Vector3.down) < 0)
             {
-                rotation -= 360;
+                if (rotation > 180)
+                {
+                    rotation -= 360;
+                }
+                else if (rotation < -180)
+                {
+                    rotation += 360;
+                }
             }
-            else if (rotation < -180)
+            else
             {
-                rotation += 360;
-            }
+                if (rotation > 180)
+                {
+                    rotation += 360;
+                }
+                else if (rotation < -180)
+                {
+                    rotation -= 360;
+                }
+            }   
 
             //This cause the turret to stop rotating at its limites
-            if (rotation < -90)
+            if (rotation < turret.xRotationMax)
             {
-                turret.turretArm.transform.localRotation = Quaternion.Euler(-90, 0, 0);
+                turret.turretArm.transform.localRotation = Quaternion.Euler(turret.xRotationMax, 0, 0);
             }
-            else if (rotation > 0)
+            else if (rotation > turret.xRotationMin)
             {
-                turret.turretArm.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                turret.turretArm.transform.localRotation = Quaternion.Euler(turret.xRotationMin, 0, 0);
             }
 
         }   

@@ -80,10 +80,10 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public string targetPrefabName;
     [HideInInspector] public int targetNumber;
     [HideInInspector] public bool targetIsHostile;
-    [HideInInspector] public float targetForward;
-    [HideInInspector] public float targetRight;
+    public float targetForward;
+    public float targetRight;
     [HideInInspector] public float targetUp;
-    [HideInInspector] public float targetDistance;
+    public float targetDistance;
     [HideInInspector] public float targetSpeed;
     [HideInInspector] public float targetShield;
     [HideInInspector] public float targetHull;

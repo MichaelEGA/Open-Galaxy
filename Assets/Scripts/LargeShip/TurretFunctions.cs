@@ -85,7 +85,7 @@ public static class TurretFunctions
                 turret.yRotationMax = 30;
                 turret.yRotationMin = -30;
                 turret.turretSpeed = 70;
-                turret.fireDelay = 3f;
+                turret.fireDelay = 6f;
                 turret.laserColor = "green";
                 turret.laserDamage = 50;
             }
@@ -94,18 +94,18 @@ public static class TurretFunctions
                 turret.yRotationMax = 90;
                 turret.yRotationMin = -90;
                 turret.turretSpeed = 90;
-                turret.fireDelay = 1.5f;
+                turret.fireDelay = 4f;
                 turret.laserColor = "green";
-                turret.laserDamage = 30;
+                turret.laserDamage = 10;
             }
             else if (turret.gameObject.name.Contains("cr90_turretlarge"))
             {
                 turret.yRotationMax = 180;
                 turret.yRotationMin = -180;
                 turret.turretSpeed = 80;
-                turret.fireDelay = 2f;
+                turret.fireDelay = 4f;
                 turret.laserColor = "red";
-                turret.laserDamage = 30;
+                turret.laserDamage = 50;
             }
         }
     }
@@ -383,11 +383,16 @@ public static class TurretFunctions
 
     public static void FireTurret(Turret turret)
     {
-        if (turret.targetForward > 0.75 & turret.fireDelay < Time.time & turret.turretFiring == false)
+        if (turret.targetForward > 0.75 & turret.fireDelayCount < Time.time & turret.turretFiring == false)
         {
             Task a = new Task(FireLasers(turret));
 
-            turret.fireDelay = Time.time + 3;
+            if (turret.fireDelay == 0)
+            {
+                turret.fireDelay = 3;
+            }
+
+            turret.fireDelayCount = Time.time + turret.fireDelay;
         }
     }
 

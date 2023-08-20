@@ -322,43 +322,70 @@ public static class LargeShipAIFunctions
     //This angles the ship towards the target vector
     public static void AngleTowardsTarget(LargeShip largeShip)
     {
-        LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight);
-        LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+        if (largeShip.targetForward < 0.95)
+        {
+            LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight);
+            LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+        }
+        else
+        {
+            LargeShipFunctions.NoInput(largeShip);
+        }
     }
 
     //This angles the ship away from the target vector
     public static void AngleAwayFromTarget(LargeShip largeShip)
     {
-        LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetRight);
-        LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.targetUp);
+        if (largeShip.targetForward > -0.95)
+        {
+            LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetRight);
+            LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.targetUp);
+        }
+        else
+        {
+            LargeShipFunctions.NoInput(largeShip);
+        }
     }
 
     //This angles the ship towards the target vector
     public static void AngleTowardsWaypoint(LargeShip largeShip)
     {
-        LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.waypointRight);
-        LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.waypointUp);
+        if (largeShip.waypointForward < 0.95)
+        {
+            LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.waypointRight);
+            LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.waypointUp);
+        }
+        else
+        {
+            LargeShipFunctions.NoInput(largeShip);
+        }
     }
 
     //This angles the ship away from the target vector
     public static void AngleAwayFromWaypoint(LargeShip largeShip)
     {
-        LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.waypointRight);
-        LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.waypointUp);
+        if (largeShip.waypointForward > -0.95)
+        {
+            LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.waypointRight);
+            LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.waypointUp);
+        }
+        else
+        {
+            LargeShipFunctions.NoInput(largeShip);
+        }
     }
 
     //This angles the ship towards the target vector
     public static void KeepTargetOnRight(LargeShip largeShip)
     {
-        if (largeShip.targetRight < 0.8)
+        if (largeShip.targetRight < 0.95)
         {
-            LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetForward);
+            LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetForward);
             LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
         }
         else
         {
-            LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetForward * 5);
-            LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp * 5);
+            LargeShipFunctions.NoInput(largeShip);
         }
     }
 

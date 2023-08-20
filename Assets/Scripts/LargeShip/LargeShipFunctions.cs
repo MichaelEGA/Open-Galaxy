@@ -122,6 +122,13 @@ public static class LargeShipFunctions
         largeShip.rollInput = Mathf.Lerp(largeShip.rollInput, rollInput, step);
     }
 
+    public static void NoInput(LargeShip largeShip)
+    {
+        largeShip.pitchInput = 0;
+        largeShip.rollInput = 0;
+        largeShip.turnInput = 0;
+    }
+
     #endregion
 
     #region ship movement

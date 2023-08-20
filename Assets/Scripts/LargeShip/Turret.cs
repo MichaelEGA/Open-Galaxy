@@ -22,6 +22,7 @@ public class Turret : MonoBehaviour
     public float hullLevel = 100;
     public float targetForward;
     public float fireDelay;
+    public float fireDelayCount;
     public bool turretFiring;
 
     void Update()

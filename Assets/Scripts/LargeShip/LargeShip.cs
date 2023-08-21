@@ -130,6 +130,9 @@ public class LargeShip : MonoBehaviour
         TargetingFunctions.GetNextEnemy_LargeShip(this, mode);
         TargetingFunctions.GetNextTarget_LargeShip(this, mode);
         TargetingFunctions.GetTargetInfo_LargeShip(this);
+
+        //Damage functions
+        LargeShipFunctions.Explode(this);
     }
 
     void FixedUpdate()

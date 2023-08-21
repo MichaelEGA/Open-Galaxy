@@ -284,5 +284,15 @@ public static class LargeShipFunctions
         }
     }
 
+    public static void Explode(LargeShip largeShip)
+    {
+        if (largeShip.hullLevel <= 0)
+        {
+            LaserFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, largeShip.gameObject.transform.position, "explosion02", 1000);
+
+            largeShip.gameObject.SetActive(false);
+        }
+    }
+
     #endregion
 }

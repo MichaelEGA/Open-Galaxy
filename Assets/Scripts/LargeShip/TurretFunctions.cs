@@ -301,14 +301,34 @@ public static class TurretFunctions
     {
         if (largeShip.target != null)
         {
+            //This gets the targets relative position
             Vector3 targetRelativePosition = largeShip.target.transform.position - turret.turretArm.transform.position;
 
-            turret.targetForward = Vector3.Dot(turret.turretArm.transform.forward, targetRelativePosition.normalized);
-            float targetRight = Vector3.Dot(turret.turretArm.transform.right, targetRelativePosition.normalized);
-            float targetUp = Vector3.Dot(turret.turretArm.transform.up, targetRelativePosition.normalized);
+            //This conmpares the turret with the ship transform to see if it's upside down or not
+            bool isUpsideDown = false;
 
-            TurretFunctions.SmoothTurnInput(turret, targetRight);
-            TurretFunctions.SmoothPitchInput(turret, -targetUp);     
+            if (Vector3.Dot(turret.turretBase.transform.up, -largeShip.transform.up) > 0)
+            {
+                isUpsideDown = true;
+            }
+
+            //This sets the target position values
+            if (isUpsideDown == false)
+            {
+                turret.targetForward = Vector3.Dot(turret.turretArm.transform.forward, targetRelativePosition.normalized);
+                turret.targetRight = Vector3.Dot(turret.turretArm.transform.right, targetRelativePosition.normalized);
+                turret.targetUp = Vector3.Dot(turret.turretArm.transform.up, targetRelativePosition.normalized);
+            }
+            else
+            {
+                turret.targetForward = Vector3.Dot(turret.turretArm.transform.forward, targetRelativePosition.normalized);
+                turret.targetRight = Vector3.Dot(-turret.turretArm.transform.right, targetRelativePosition.normalized);
+                turret.targetUp = Vector3.Dot(-turret.turretArm.transform.up, targetRelativePosition.normalized);
+            }
+
+            //This transforms the target data into input
+            TurretFunctions.SmoothTurnInput(turret, turret.targetRight);
+            TurretFunctions.SmoothPitchInput(turret, -turret.targetUp);
         }      
     }
 
@@ -353,28 +373,14 @@ public static class TurretFunctions
             //This tracks the rotation and prevents it from going beyond predefined parameters
             float rotation = turret.turretBase.transform.localRotation.eulerAngles.y;
 
-            if (Vector3.Dot(turret.turretBase.transform.up, Vector3.down) < 0)
+            //This keeps the rotation value between 180 and -180     
+            if (rotation > 180)
             {
-                //This keeps the rotation value between 180 and -180
-                if (rotation > 180)
-                {
-                    rotation -= 360;
-                }
-                else if (rotation < -180)
-                {
-                    rotation += 360;
-                }
+                rotation -= 360;
             }
-            else
+            else if (rotation < -180)
             {
-                if (rotation > 180)
-                {
-                    rotation += 360;
-                }
-                else if (rotation < -180)
-                {
-                    rotation -= 360;
-                }
+                rotation += 360;
             }
 
             //This cause the turret to stop rotating at its limites
@@ -396,29 +402,15 @@ public static class TurretFunctions
             //This tracks the rotation and prevents it from going beyond predefined parameters
             float rotation = turret.turretArm.transform.localRotation.eulerAngles.x;
 
-            //This keeps the rotation value between 180 and -180
-            if (Vector3.Dot(turret.turretBase.transform.up, Vector3.down) < 0)
+            //This keeps the rotation value between 180 and - 180
+            if (rotation > 180)
             {
-                if (rotation > 180)
-                {
-                    rotation -= 360;
-                }
-                else if (rotation < -180)
-                {
-                    rotation += 360;
-                }
+                rotation -= 360;
             }
-            else
+            else if (rotation < -180)
             {
-                if (rotation > 180)
-                {
-                    rotation += 360;
-                }
-                else if (rotation < -180)
-                {
-                    rotation -= 360;
-                }
-            }   
+                rotation += 360;
+            }
 
             //This cause the turret to stop rotating at its limites
             if (rotation < turret.xRotationMax)
@@ -439,16 +431,22 @@ public static class TurretFunctions
 
     public static void FireTurret(Turret turret)
     {
-        if (turret.targetForward > 0.75 & turret.fireDelayCount < Time.time & turret.turretFiring == false)
+        if (turret.largeShip.target != null)
         {
-            Task a = new Task(FireLasers(turret));
-
-            if (turret.fireDelay == 0)
+            if (turret.largeShip.target.activeSelf != false)
             {
-                turret.fireDelay = 3;
-            }
+                if (turret.targetForward > 0.75 & turret.fireDelayCount < Time.time & turret.turretFiring == false)
+                {
+                    Task a = new Task(FireLasers(turret));
 
-            turret.fireDelayCount = Time.time + turret.fireDelay;
+                    if (turret.fireDelay == 0)
+                    {
+                        turret.fireDelay = 3;
+                    }
+
+                    turret.fireDelayCount = Time.time + turret.fireDelay;
+                }
+            }
         }
     }
 

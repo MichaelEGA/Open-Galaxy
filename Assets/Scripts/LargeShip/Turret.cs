@@ -23,6 +23,8 @@ public class Turret : MonoBehaviour
     public float laserDamage = 50;
     public float hullLevel = 100;
     public float targetForward;
+    public float targetRight;
+    public float targetUp;
     public float fireDelay;
     public float fireDelayCount;
     public bool turretFiring;

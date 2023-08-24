@@ -1,5 +1,5 @@
 # Open-Galaxy
-![Screenshot (102)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/bfaaffc9-1d2f-484a-8f20-c833c434699c)
+![Screenshot (106)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/9f8c2094-df5b-468a-8ab8-8bdfdc8983e3)
 
 Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platform for custom missions made by the community. 
 
@@ -14,7 +14,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
   - Explore mode where you can explore the whole Star Wars galaxy (In progress)
 
-**Latest Release:** 0.5.2
+**Latest Release:** 0.5.21
 
 Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
@@ -27,6 +27,19 @@ Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
 
 **Changelog**
+
+21/08/23 - v.0.5.21
+  - WARNING: This version may temporarily break some missions like 'Assault on Empress Station' 
+  - Upside Down Turret Rotation Fixed, and Capital Ships are Destroyed
+  - All turret prefabs set up, initial code for upside down turrets
+  - Fixed capital ship jitter, turret firerates and damage, capital ship …
+  - Begun to add code to toggle cockpit sets
+  - Capital ships now deal and take laser damage
+  - Fixed laser color bug
+  - Capital ship turrets now fire lasers
+  - Implemented variable values for different turrets
+  - Added rotation restrictions on turrets
+  - turret rotation improvements
 
 13/08/23 - v.0.5.2
   - Added capital ship turret loading

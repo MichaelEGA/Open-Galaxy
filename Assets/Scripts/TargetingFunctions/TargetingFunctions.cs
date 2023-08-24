@@ -746,7 +746,6 @@ public static class TargetingFunctions
     //This gets the closesd enemy target
     public static void GetClosestEnemy_LargeShip(LargeShip largeShip = null, string mode = "none", bool externalActivation = false)
     {
-
         bool automaticSearch = false;
 
         if (largeShip.target != null)
@@ -831,7 +830,10 @@ public static class TargetingFunctions
 
                 largeShip.targetRigidbody = target.GetComponent<Rigidbody>();
 
-                targetSmallShip.numberTargeting += 1;
+                if (targetSmallShip != null)
+                {
+                    targetSmallShip.numberTargeting += 1;
+                }     
             }
 
             largeShip.targetPressedTime = Time.time + 0.2f;
@@ -976,7 +978,6 @@ public static class TargetingFunctions
     //This checks whether a target is hostile or not
     public static bool GetHostility_LargeShip(LargeShip largeShip = null, string targetAllegiance = "none")
     {
-
         bool isHostile = false;
 
         //This gets the Json ship data
@@ -1036,6 +1037,138 @@ public static class TargetingFunctions
 
         return isHostile;
 
+    }
+
+    #endregion
+
+    #region turret targetting
+
+    //This gets the closes enemy for turret
+    public static void GetClosestEnemy_Turret(Turret turret)
+    {
+        bool automaticSearch = false;
+
+        if (turret.target == null || turret.targetForward < 0 & turret.rotationIsRestricted == true)
+        {
+            automaticSearch = true;
+        }
+        else if (turret.target.activeSelf == false)
+        {
+            automaticSearch = true;
+        }
+
+        if (automaticSearch == true)
+        {
+            Scene scene = turret.largeShip.scene;
+
+            GameObject target = null;
+           
+            float distance = Mathf.Infinity;
+
+            //This priortises capital ships for large turrets
+            if (turret.turretType == "large")
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        LargeShip tempLargeShip = ship.GetComponent<LargeShip>();
+
+                        bool isHostile = false;
+
+                        if (tempLargeShip != null)
+                        {
+                            isHostile = GetHostility_LargeShip(turret.largeShip, tempLargeShip.allegiance);
+                        }
+
+                        if (tempLargeShip != null & ship.activeSelf != false & isHostile == true)
+                        {
+                            float tempDistance = Vector3.Distance(turret.transform.position, ship.transform.position);
+
+                            if (tempDistance < distance)
+                            {
+                                target = ship;
+                                distance = tempDistance;
+                            }
+                        }
+                    }
+                }
+
+                if (target == null)
+                {
+                    distance = Mathf.Infinity;
+
+                    foreach (GameObject ship in scene.objectPool)
+                    {
+                        if (ship != null)
+                        {
+                            SmallShip tempSmallShip = ship.GetComponent<SmallShip>();
+                            LargeShip tempLargeShip = ship.GetComponent<LargeShip>();
+
+                            bool isHostile = false;
+
+                            if (tempSmallShip != null)
+                            {
+                                isHostile = GetHostility_LargeShip(turret.largeShip, tempSmallShip.allegiance);
+                            }
+                            else if (tempLargeShip != null)
+                            {
+                                isHostile = GetHostility_LargeShip(turret.largeShip, tempLargeShip.allegiance);
+                            }
+
+                            if (ship.activeSelf != false & isHostile == true)
+                            {
+                                float tempDistance = Vector3.Distance(turret.transform.position, ship.transform.position);
+
+                                if (tempDistance < distance)
+                                {
+                                    target = ship;
+                                    distance = tempDistance;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+
+                        SmallShip tempSmallShip = ship.GetComponent<SmallShip>();
+                        LargeShip tempLargeShip = ship.GetComponent<LargeShip>();
+
+                        bool isHostile = false;
+
+                        if (tempSmallShip != null)
+                        {
+                            isHostile = GetHostility_LargeShip(turret.largeShip, tempSmallShip.allegiance);
+                        }
+                        else if (tempLargeShip != null)
+                        {
+                            isHostile = GetHostility_LargeShip(turret.largeShip, tempLargeShip.allegiance);
+                        }
+
+                        if (ship.activeSelf != false & isHostile == true)
+                        {
+                            float tempDistance = Vector3.Distance(turret.transform.position, ship.transform.position);
+
+                            if (tempDistance < distance)
+                            {
+                                target = ship;
+                                distance = tempDistance;
+                            }
+                        }
+                    }
+                }
+            }
+
+            turret.target = target;
+
+        }
     }
 
     #endregion

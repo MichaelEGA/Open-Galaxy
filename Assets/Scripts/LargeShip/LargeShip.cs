@@ -9,7 +9,7 @@ public class LargeShip : MonoBehaviour
     public string type;
     public string prefabName;
     public float loadTime;
-    public string largeShipClass = "large";
+    public string classType = "large";
 
     [Header("Ship Components")]
     [HideInInspector] public Rigidbody shipRigidbody;
@@ -51,6 +51,7 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float rollSpeed;
     [HideInInspector] public float rollInput;
     [HideInInspector] public float rollInputActual;
+    [HideInInspector] public float maneuvarabilityActual;
 
     [Header("Ship Levels")]
     public bool invincible = false;

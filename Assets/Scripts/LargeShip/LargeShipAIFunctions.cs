@@ -30,14 +30,45 @@ public static class LargeShipAIFunctions
         {
             if (largeShip.target.activeSelf == true)
             {
-                if (largeShip.largeShipClass == "large")
+                LargeShip targetLargeShip = largeShip.target.GetComponent<LargeShip>();
+
+                if (targetLargeShip != null)
                 {
-                    largeShip.aiMode = "AttackPatternAlpha";
+                    if (largeShip.classType == "medium")
+                    {
+                        if (targetLargeShip.classType == "large")
+                        {
+                            largeShip.aiMode = "AttackPatternBeta";
+                        }
+                        else
+                        {
+                            largeShip.aiMode = "AttackPatternAlpha";
+                        }
+                    }
+                    else if (largeShip.classType == "small")
+                    {
+                        if (targetLargeShip.classType != "small")
+                        {
+                            largeShip.aiMode = "AttackPatternBeta";
+                        }
+                        else
+                        {
+                            largeShip.aiMode = "AttackPatternAlpha";
+                        }
+                    }
+                    else if (largeShip.classType == "large")
+                    {
+                        largeShip.aiMode = "AttackPatternAlpha";
+                    }
+                    else
+                    {
+                        largeShip.aiMode = "Stationary";
+                    }
                 }
                 else
                 {
-                    largeShip.aiMode = "AttackPatternBeta";
-                } 
+                    largeShip.aiMode = "Stationary";
+                }
             }
             else
             {
@@ -90,21 +121,21 @@ public static class LargeShipAIFunctions
         else
         {
            NoSpeed(largeShip);
-           KeepTargetOnRight(largeShip);
+           //KeepTargetOnRight(largeShip);
         }
     }
 
     //This causes the ship to circle around it's target
     public static void AttackPatternBeta(LargeShip largeShip)
     {
-        if (largeShip.targetDistance > 800)
+        if (largeShip.targetDistance > 1500)
         {
             FullSpeed(largeShip);
             AngleTowardsTarget(largeShip);
         }
         else
         {
-            QuarterSpeed(largeShip);
+            FullSpeed(largeShip);
             KeepTargetOnRight(largeShip);
         }
     }
@@ -378,7 +409,7 @@ public static class LargeShipAIFunctions
     //This angles the ship towards the target vector
     public static void KeepTargetOnRight(LargeShip largeShip)
     {
-        if (largeShip.targetRight < 0.95)
+        if (largeShip.targetRight > -0.95)
         {
             LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetForward);
             LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);

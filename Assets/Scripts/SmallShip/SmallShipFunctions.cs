@@ -641,9 +641,9 @@ public static class SmallShipFunctions
 
         manveurablityPercentageAsDecimal = (smallShip.maneuverabilityRating / 100f);
 
-        smallShip.pitchSpeed = (120 / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
-        smallShip.turnSpeed = (100 / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
-        smallShip.rollSpeed = (160 / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
+        smallShip.pitchSpeed = (120f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
+        smallShip.turnSpeed = (100f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
+        smallShip.rollSpeed = (160f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
 
     }
 

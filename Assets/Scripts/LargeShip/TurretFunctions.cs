@@ -90,6 +90,8 @@ public static class TurretFunctions
                 turret.fireDelay = 6f;
                 turret.laserColor = "green";
                 turret.laserDamage = 50;
+                turret.turretType = "large";
+                turret.rotationIsRestricted = true;
             }
             else if (turret.gameObject.name.Contains("isd_turretsmall"))
             {
@@ -101,6 +103,8 @@ public static class TurretFunctions
                 turret.fireDelay = 4f;
                 turret.laserColor = "green";
                 turret.laserDamage = 10;
+                turret.turretType = "small";
+                turret.rotationIsRestricted = true;
             }
             if (turret.gameObject.name.Contains("mc80a_turretlarge"))
             {
@@ -112,6 +116,8 @@ public static class TurretFunctions
                 turret.fireDelay = 6f;
                 turret.laserColor = "red";
                 turret.laserDamage = 50;
+                turret.turretType = "large";
+                turret.rotationIsRestricted = true;
             }
             else if (turret.gameObject.name.Contains("mc80a_turretsmall"))
             {
@@ -123,6 +129,8 @@ public static class TurretFunctions
                 turret.fireDelay = 4f;
                 turret.laserColor = "red";
                 turret.laserDamage = 10;
+                turret.turretType = "small";
+                turret.rotationIsRestricted = true;
             }
             else if (turret.gameObject.name.Contains("cr90_turretlarge"))
             {
@@ -134,6 +142,8 @@ public static class TurretFunctions
                 turret.fireDelay = 4f;
                 turret.laserColor = "red";
                 turret.laserDamage = 50;
+                turret.turretType = "large";
+                turret.rotationIsRestricted = false;
             }
         }
     }
@@ -299,10 +309,10 @@ public static class TurretFunctions
     //This gets the input for the turret from ship
     public static void TurretInput(Turret turret, LargeShip largeShip)
     {
-        if (largeShip.target != null)
+        if (turret.target != null)
         {
             //This gets the targets relative position
-            Vector3 targetRelativePosition = largeShip.target.transform.position - turret.turretArm.transform.position;
+            Vector3 targetRelativePosition = turret.target.transform.position - turret.turretArm.transform.position;
 
             //This conmpares the turret with the ship transform to see if it's upside down or not
             bool isUpsideDown = false;
@@ -356,11 +366,11 @@ public static class TurretFunctions
         turret.pitchInputActual = Mathf.Lerp(turret.pitchInputActual, turret.pitchInput, 0.1f);
         turret.turnInputActual = Mathf.Lerp(turret.turnInputActual, turret.turnInput, 0.1f);
 
-        float armSpeed = (120f / 100f) * turret.turretSpeed;
-        float baseSpeed = (100f / 100f) * turret.turretSpeed;
+        float armSpeed = (10f / 100f) * turret.turretSpeed;
+        float baseSpeed = (10f / 100f) * turret.turretSpeed;
 
-        Vector3 armRotation = Vector3.right * turret.pitchInputActual * armSpeed;
-        Vector3 baseRotation = Vector3.up * turret.turnInputActual * baseSpeed;
+        Vector3 armRotation = Vector3.right * turret.pitchInputActual;
+        Vector3 baseRotation = Vector3.up * turret.turnInputActual;
 
         Vector3 armRotation2 = new Vector3(armRotation.x, 0, 0);
         Vector3 baseRotation2 = new Vector3(0, baseRotation.y, 0);
@@ -368,7 +378,7 @@ public static class TurretFunctions
         if (turret.turretBase != null)
         {
             //This applies the rotation
-            turret.turretBase.transform.Rotate(baseRotation2, Time.fixedDeltaTime, Space.World);
+            turret.turretBase.transform.Rotate(baseRotation2, Time.fixedDeltaTime * baseSpeed, Space.World);
 
             //This tracks the rotation and prevents it from going beyond predefined parameters
             float rotation = turret.turretBase.transform.localRotation.eulerAngles.y;
@@ -397,7 +407,7 @@ public static class TurretFunctions
         if (turret.turretArm != null)
         {
             //This applies the rotation
-            turret.turretArm.transform.Rotate(armRotation2, Time.fixedDeltaTime, Space.World);
+            turret.turretArm.transform.Rotate(armRotation2, Time.fixedDeltaTime * armSpeed, Space.World);
 
             //This tracks the rotation and prevents it from going beyond predefined parameters
             float rotation = turret.turretArm.transform.localRotation.eulerAngles.x;

@@ -677,6 +677,7 @@ public static class SceneFunctions
                 if (allegiance == "none")
                 {
                     smallShip.allegiance = shipType.allegiance;
+                    allegiance = shipType.allegiance;
                 }
                 else
                 {
@@ -750,6 +751,7 @@ public static class SceneFunctions
                 if (allegiance == "none")
                 {
                     largeShip.allegiance = shipType.allegiance;
+                    allegiance = shipType.allegiance;
                 }
                 else
                 {
@@ -782,6 +784,7 @@ public static class SceneFunctions
                 largeShip.prefabName = shipType.prefab;
                 largeShip.scene = scene;
                 largeShip.audioManager = audioManager;
+                largeShip.classType = shipType.classType;
                 largeShip.loadTime = Time.time;
                 ship.name = largeShip.name;
             }
@@ -806,7 +809,7 @@ public static class SceneFunctions
 
                 foreach (Allegiance tempAllegiance in allegiances.allegianceData)
                 {
-                    if (tempAllegiance.allegiance == shipType.allegiance)
+                    if (tempAllegiance.allegiance == allegiance)
                     {
                         allegianceScript = tempAllegiance;
                         break;

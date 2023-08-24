@@ -24,6 +24,8 @@ public class ShipType
     public string torpedoType;
     public string laserAudio;
     public string engineAudio;
+    public string thrustType;
+    public string classType;
 }
 
 [System.Serializable]

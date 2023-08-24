@@ -189,9 +189,7 @@ public static class LargeShipFunctions
 
         manveurablityPercentageAsDecimal = (largeShip.maneuverabilityRating / 100f);
 
-        largeShip.pitchSpeed = (120 / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
-        largeShip.turnSpeed = (100 / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
-        largeShip.rollSpeed = (160 / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
+        largeShip.maneuvarabilityActual = (10f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal); 
     }
 
     //This makes the ship move
@@ -204,9 +202,10 @@ public static class LargeShipFunctions
         else
         {
             //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
-            largeShip.pitchInputActual = Mathf.Lerp(largeShip.pitchInputActual, largeShip.pitchInput, 0.1f);
-            largeShip.turnInputActual = Mathf.Lerp(largeShip.turnInputActual, largeShip.turnInput, 0.1f);
-            largeShip.rollInputActual = Mathf.Lerp(largeShip.rollInputActual, largeShip.rollInput, 0.1f);
+            float step = +Time.deltaTime / 0.1f;
+            largeShip.pitchInputActual = Mathf.Lerp(largeShip.pitchInputActual, largeShip.pitchInput, step);
+            largeShip.turnInputActual = Mathf.Lerp(largeShip.turnInputActual, largeShip.turnInput, step);
+            largeShip.rollInputActual = Mathf.Lerp(largeShip.rollInputActual, largeShip.rollInput, step);
 
             //This makes the vehicle fly
             if (largeShip.thrustSpeed > 0)
@@ -214,13 +213,13 @@ public static class LargeShipFunctions
                 largeShip.gameObject.transform.Translate(Vector3.forward * Time.deltaTime * largeShip.thrustSpeed);
             }
 
-            Vector3 x = Vector3.right * largeShip.pitchInputActual * largeShip.pitchSpeed;
-            Vector3 y = Vector3.up * largeShip.turnInputActual * largeShip.turnSpeed;
-            Vector3 z = Vector3.forward * largeShip.rollInputActual * largeShip.rollSpeed;
+            Vector3 x = Vector3.right * largeShip.pitchInputActual;
+            Vector3 y = Vector3.up * largeShip.turnInputActual;
+            Vector3 z = Vector3.forward * largeShip.rollInputActual;
 
-            Vector3 rotationVector = x + y + z;
+            Vector3 rotationVector = new Vector3(x.x, y.y, z.z);
 
-            largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime, Space.World);
+            largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime * largeShip.maneuvarabilityActual, Space.World);
         }
     }
 

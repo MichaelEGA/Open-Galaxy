@@ -414,68 +414,6 @@ public static class LaserFunctions
 
     #region laser damage and explosions
 
-    //This causes the ship to take damage from lasers
-    public static void TakeLaserDamage(SmallShip smallShip, float damage, Vector3 hitPosition)
-    {
-        if (Time.time - smallShip.loadTime > 10)
-        {
-            Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
-            float forward = -Vector3.Dot(smallShip.gameObject.transform.position, relativePosition.normalized);
-
-            if (smallShip.hullLevel > 0)
-            {
-                if (forward > 0)
-                {
-                    if (smallShip.frontShieldLevel > 0)
-                    {
-                        smallShip.frontShieldLevel = smallShip.frontShieldLevel - damage;
-                        smallShip.shieldLevel = smallShip.shieldLevel - damage;
-                    }
-                    else
-                    {
-                        if (smallShip.hullLevel - damage < 5 & smallShip.invincible == true)
-                        {
-                            smallShip.hullLevel = 5;
-                        }
-                        else
-                        {
-                            smallShip.hullLevel = smallShip.hullLevel - damage;
-                        }
-                    }
-                }
-                else
-                {
-                    if (smallShip.rearShieldLevel > 0)
-                    {
-                        smallShip.rearShieldLevel = smallShip.rearShieldLevel - damage;
-                        smallShip.shieldLevel = smallShip.shieldLevel - damage;
-                    }
-                    else
-                    {
-                        if (smallShip.hullLevel - damage < 5 & smallShip.invincible == true)
-                        {
-                            smallShip.hullLevel = 5;
-                        }
-                        else
-                        {
-                            smallShip.hullLevel = smallShip.hullLevel - damage;
-                        }
-                    }
-                }
-
-                if (smallShip.frontShieldLevel < 0) { smallShip.frontShieldLevel = 0; }
-                if (smallShip.rearShieldLevel < 0) { smallShip.rearShieldLevel = 0; }
-                if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
-
-                //This shakes the camera
-                if (smallShip.isAI == true)
-                {
-                    Task a = new Task(SmallShipFunctions.ActivateCockpitShake(smallShip, 0.5f));
-                }
-            }
-        }       
-    }
-
     //This instantiates an explosion at the laser point of impact
     public static void InstantiateExplosion(GameObject parentObject, Vector3 hitPosition, Vector3 hitRotation, string explosionName = "explosion01", float explosionSize = 25, Audio audioManager = null)
     {

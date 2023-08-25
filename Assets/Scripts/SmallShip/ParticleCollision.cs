@@ -50,16 +50,15 @@ public class ParticleCollision : MonoBehaviour
 
                     if (smallShip != null)
                     {
-                        LaserFunctions.TakeLaserDamage(smallShip, damage, hitPosition);
+                        SmallShipFunctions.TakeDamage(smallShip, damage, hitPosition);
                     }
                     else if (turret != null)
                     {
                         TurretFunctions.TakeLaserDamage(turret, damage, hitPosition);
-                        Debug.Log("Turret was hit");
                     }
                     else if (largeShip != null)
                     {
-                        LargeShipFunctions.TakeLaserDamage(largeShip, damage, hitPosition);
+                        LargeShipFunctions.TakeDamage(largeShip, damage, hitPosition);
                     }
                 }
 

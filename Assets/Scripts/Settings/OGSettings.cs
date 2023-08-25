@@ -9,4 +9,5 @@ public class OGSettings : MonoBehaviour
     public int screenResY = 0;
     public bool invertY = true;
     public bool invertX = true;
+    public string cockpitAssetsAddress = "CockpitPrefabs/fs_cockpits/";
 }

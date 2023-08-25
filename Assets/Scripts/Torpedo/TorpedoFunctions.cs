@@ -4,7 +4,6 @@ using UnityEngine;
 
 public static class TorpedoFunctions
 {
-
     #region start functions
 
     //This finds all torpedo launchers on the ship
@@ -516,62 +515,19 @@ public static class TorpedoFunctions
     public static void TakeTorpedoDamage(GameObject other, Torpedo torpedo, Vector3 hitPosition)
     {
         SmallShip smallShip = other.GetComponentInParent<SmallShip>();
+        LargeShip largeShip = other.GetComponentInParent<LargeShip>();
 
-        if (Time.time > 10 & smallShip != null)
+        if (Time.time > 10)
         {
-            Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
-            float forward = -Vector3.Dot(smallShip.gameObject.transform.position, relativePosition.normalized);
-
-            if (smallShip.hullLevel > 0 & smallShip.invincible == false)
+            if (smallShip != null)
             {
-                if (forward > 0)
-                {
-                    if (smallShip.frontShieldLevel > 0)
-                    {
-                        smallShip.frontShieldLevel = smallShip.frontShieldLevel - torpedo.damagePower;
-                        smallShip.shieldLevel = smallShip.shieldLevel - torpedo.damagePower;
-                    }
-                    else
-                    {
-                        if (smallShip.hullLevel - torpedo.damagePower < 5 & smallShip.invincible == true)
-                        {
-                            smallShip.hullLevel = 5;
-                        }
-                        else
-                        {
-                            smallShip.hullLevel = smallShip.hullLevel - torpedo.damagePower;
-                        }
-                    }
-                }
-                else
-                {
-                    if (smallShip.rearShieldLevel > 0)
-                    {
-                        smallShip.rearShieldLevel = smallShip.rearShieldLevel - torpedo.damagePower;
-                        smallShip.shieldLevel = smallShip.shieldLevel - torpedo.damagePower;
-                    }
-                    else
-                    {
-                        if (smallShip.hullLevel - torpedo.damagePower < 5 & smallShip.invincible == true)
-                        {
-                            smallShip.hullLevel = 5;
-                        }
-                        else
-                        {
-                            smallShip.hullLevel = smallShip.hullLevel - torpedo.damagePower;
-                        }
-                    }
-                }
-
-                if (smallShip.frontShieldLevel < 0) { smallShip.frontShieldLevel = 0; }
-                if (smallShip.rearShieldLevel < 0) { smallShip.rearShieldLevel = 0; }
-                if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
+                SmallShipFunctions.TakeDamage(smallShip, torpedo.damagePower, hitPosition);
             }
-
-            //This shakes the camera
-            Task a = new Task(SmallShipFunctions.ActivateCockpitShake(smallShip, 0.5f));
+            else if (largeShip != null)
+            {
+                LargeShipFunctions.TakeDamage(largeShip, torpedo.damagePower, hitPosition);
+            }
         }
-
     }
 
     //Destroy close to target
@@ -656,5 +612,4 @@ public static class TorpedoFunctions
     }
 
     #endregion
-
 }

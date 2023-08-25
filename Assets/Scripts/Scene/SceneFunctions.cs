@@ -36,12 +36,13 @@ public static class SceneFunctions
     public static void LoadScenePrefabs()
     {
         Scene scene = GetScene();
+        OGSettings settings = OGSettingsFunctions.GetSettings();
 
         Object[] objectPrefabs = Resources.LoadAll("ObjectPrefabs", typeof(GameObject)); 
         scene.objectPrefabPool = new GameObject[objectPrefabs.Length];
         scene.objectPrefabPool = objectPrefabs;
 
-        Object[] cockpitPrefabs = Resources.LoadAll("CockpitPrefabs/fs_cockpits/", typeof(GameObject));
+        Object[] cockpitPrefabs = Resources.LoadAll(settings.cockpitAssetsAddress, typeof(GameObject));
         scene.cockpitPrefabPool = new GameObject[cockpitPrefabs.Length];
         scene.cockpitPrefabPool = cockpitPrefabs;
 

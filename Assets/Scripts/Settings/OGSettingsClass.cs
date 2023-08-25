@@ -9,6 +9,7 @@ public class OGSettingData
     public int screenResY;
     public bool invertY;
     public bool invertX;
+    public string cockpitAssetsAddress;
 }
 
 [System.Serializable]

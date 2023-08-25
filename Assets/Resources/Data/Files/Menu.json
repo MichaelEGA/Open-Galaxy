@@ -418,8 +418,8 @@
         },
 	  {
 		"ParentMenu": "Change Resolution",
-            "Name": "Back to Video",
-            "Description": "Returns to video sub menu",
+            "Name": "Back to Settings",
+            "Description": "Returns to settings sub menu",
             "Function": "ActivateSubMenu",
 		"Type": "ContentButton02",
 		"Variable": "Settings"
@@ -759,6 +759,38 @@
             "Function": "ChangePlanetTextureResolution",
 		"Type": "ContentButton02",
 		"Variable": "4096"
+        },
+{
+		"ParentMenu": "Settings",
+            "Name": "Select Cockpit Assets",
+            "Description": "Change the cockpit set used in the game",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton01",
+		"Variable": "Select Cockpit Assets"
+        },
+	  {
+		"ParentMenu": "Select Cockpit Assets",
+            "Name": "Back to Settings",
+            "Description": "Returns to settings sub menu",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton02",
+		"Variable": "Settings"
+        },
+	{
+		"ParentMenu": "Select Cockpit Assets",
+            "Name": "First Strike Cockpit Set",
+            "Description": "Cockpits from First Strike",
+            "Function": "SelectCockpitAssets",
+		"Type": "ContentButton02",
+		"Variable": "firststrike"
+        },
+	{
+		"ParentMenu": "Select Cockpit Assets",
+            "Name": "Galactic Conquest Cockpit Set",
+            "Description": "Cockpits from First Strike",
+            "Function": "SelectCockpitAssets",
+		"Type": "ContentButton02",
+		"Variable": "galacticconquest"
         },
 	  {
 		"ParentMenu": "Credits",

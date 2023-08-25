@@ -36,6 +36,7 @@ public static class OGSettingsFunctions
         settings.invertY = ogSettingsClass.ogSettingsData[0].invertY;
         settings.screenResX = ogSettingsClass.ogSettingsData[0].screenResX;
         settings.screenResY = ogSettingsClass.ogSettingsData[0].screenResY;
+        settings.cockpitAssetsAddress = ogSettingsClass.ogSettingsData[0].cockpitAssetsAddress;
     }
 
     //This saves the data back to the settings file or if it doesn't find one makes a new one
@@ -69,6 +70,7 @@ public static class OGSettingsFunctions
         ogSettingsClass.ogSettingsData[0].invertY = settings.invertY;
         ogSettingsClass.ogSettingsData[0].screenResX = settings.screenResX;
         ogSettingsClass.ogSettingsData[0].screenResY = settings.screenResY;
+        ogSettingsClass.ogSettingsData[0].cockpitAssetsAddress = settings.cockpitAssetsAddress;
 
         // Write JSON to file.
         string stringOFSettingsData = JsonUtility.ToJson(ogSettingsClass, true);
@@ -102,4 +104,22 @@ public static class OGSettingsFunctions
 
         return settings;
     }
+
+    //This function selects the cockpits to be used 
+    public static void SelectCockpitAssets(string type)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        if (type == "firststrike")
+        {
+            settings.cockpitAssetsAddress = "CockpitPrefabs/fs_cockpits/";
+        }
+        else if (type == "galacticconquest")
+        {
+            settings.cockpitAssetsAddress = "CockpitPrefabs/gc_cockpits/";
+        }
+
+        SaveSettingsData();
+    }
+
 }

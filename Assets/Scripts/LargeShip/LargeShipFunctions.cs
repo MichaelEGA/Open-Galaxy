@@ -228,7 +228,7 @@ public static class LargeShipFunctions
     #region damage
 
     //This causes the ship to take damage from lasers
-    public static void TakeLaserDamage(LargeShip largeShip, float damage, Vector3 hitPosition)
+    public static void TakeDamage(LargeShip largeShip, float damage, Vector3 hitPosition)
     {
         if (Time.time - largeShip.loadTime > 10)
         {

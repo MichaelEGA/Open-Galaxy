@@ -141,6 +141,7 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
         mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
         mainMenu.functions.Add("QuitToMainMenu", new System.Action(QuitToMainMenu));
+        mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
         mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
         mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
         mainMenu.functions.Add("ChangePlanetTextureResolution", new System.Action<string>(ChangePlanetTextureResolution));
@@ -760,6 +761,14 @@ public static class MainMenuFunctions
         }
 
         OGSettingsFunctions.SaveSettingsData();
+
+        ActivateSubMenu("Settings");
+    }
+
+    //This selects the cockpit types to be used in the game
+    public static void SelectCockpitAssets(string type)
+    {
+        OGSettingsFunctions.SelectCockpitAssets(type);
 
         ActivateSubMenu("Settings");
     }

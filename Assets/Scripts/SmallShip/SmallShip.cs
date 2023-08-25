@@ -195,6 +195,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool cockpitShake;
     [HideInInspector] public float shakeMagnitude = 0.1f;
     [HideInInspector] public string cockpitName;
+    [HideInInspector] public GameObject cockpitAnchor;
     [HideInInspector] public GameObject cockpit;
     [HideInInspector] public bool cockpitDamageShake;
     [HideInInspector] public bool cockpitSpeedShake;
@@ -260,6 +261,7 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.ActivateCockpit(this);
         SmallShipFunctions.RunCockpitShake(this);
         SmallShipFunctions.CockpitCameraMovement(this);
+        SmallShipFunctions.CockpitAnchorRotation(this);
     }
     
     void FixedUpdate()

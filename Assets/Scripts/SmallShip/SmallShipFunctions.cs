@@ -1078,6 +1078,33 @@ public static class SmallShipFunctions
     {
         if (smallShip.isAI == false & smallShip.scene != null & smallShip.cockpit == null)
         {
+            //This creates the cockpit scene anchor
+            if (smallShip.cockpitAnchor == null)
+            {
+                smallShip.cockpitAnchor = GameObject.Find("Cockpit Anchor");
+
+                if (smallShip.cockpitAnchor == null)
+                {
+                    smallShip.cockpitAnchor = new GameObject();
+                    smallShip.cockpitAnchor.name = "Cockpit Anchor";
+                }
+
+                smallShip.cockpitAnchor.transform.rotation = Quaternion.identity;
+            }
+
+            //This anchors the cockpit camera to the cockpit scene
+            if (smallShip.cockpitCamera == null)
+            {
+                smallShip.cockpitCamera = GameObject.Find("Cockpit Camera");
+
+                if (smallShip.cockpitCamera != null)
+                {
+                    smallShip.cockpitCamera.transform.rotation = Quaternion.identity;
+                    smallShip.cockpitCamera.transform.SetParent(smallShip.cockpitAnchor.transform);
+                }
+            }
+
+            //This loads the cockpit and sets it to the anchor
             if (smallShip.scene.cockpitPool != null)
             {
                 foreach (GameObject cockpit in smallShip.scene.cockpitPool)
@@ -1086,6 +1113,11 @@ public static class SmallShipFunctions
                     {
                         cockpit.SetActive(true);
                         smallShip.cockpit = cockpit;
+
+                        if (smallShip.cockpitAnchor != null)
+                        {
+                            smallShip.cockpit.transform.SetParent(smallShip.cockpitAnchor.transform);
+                        }
                     }
                     else
                     {
@@ -1166,7 +1198,7 @@ public static class SmallShipFunctions
                 float x = Random.Range(-1f, 1f) * smallShip.speedShakeMagnitude;
                 float y = Random.Range(-1f, 1f) * smallShip.speedShakeMagnitude;
 
-                smallShip.cockpit.transform.position = new Vector3(x, y, smallShip.basePosition.z);
+                smallShip.cockpit.transform.localPosition = new Vector3(x, y, smallShip.basePosition.z);
 
                 if (smallShip.cockpitDamageShake == true)
                 {
@@ -1176,7 +1208,7 @@ public static class SmallShipFunctions
                 yield return null;
             }
 
-            smallShip.cockpit.transform.position = smallShip.basePosition;
+            smallShip.cockpit.transform.localPosition = smallShip.basePosition;
         }
 
        smallShip.cockpitSpeedShake = false;
@@ -1196,7 +1228,7 @@ public static class SmallShipFunctions
 
             if (smallShip.cockpit != null)
             {
-                smallShip.cockpit.transform.position = new Vector3(x, y, smallShip.basePosition.z);
+                smallShip.cockpit.transform.localPosition = new Vector3(x, y, smallShip.basePosition.z);
             }
 
             yield return null;
@@ -1204,7 +1236,7 @@ public static class SmallShipFunctions
 
         if (smallShip.cockpit != null)
         {
-            smallShip.cockpit.transform.position = smallShip.basePosition;
+            smallShip.cockpit.transform.localPosition = smallShip.basePosition;
         }
 
         smallShip.cockpitDamageShake = false;
@@ -1249,11 +1281,22 @@ public static class SmallShipFunctions
                 Quaternion dynamicRotation = new Quaternion(xRotation, yRotation, zRotation, 1);
 
                 //This causes the Camera to respond to the starfighters movements
-
-                smallShip.cockpitCamera.transform.position = Vector3.MoveTowards(new Vector3(0, 0, 0), dynamicLocation, step);
-                smallShip.cockpitCamera.transform.rotation = Quaternion.RotateTowards(baseRotation, dynamicRotation, step);
+                smallShip.cockpitCamera.transform.localPosition = Vector3.MoveTowards(new Vector3(0, 0, 0), dynamicLocation, step);
+                smallShip.cockpitCamera.transform.localRotation = Quaternion.RotateTowards(baseRotation, dynamicRotation, step);
             }
         }        
+    }
+
+    //Cockpit anchor rotation
+    public static void CockpitAnchorRotation(SmallShip smallShip)
+    {
+        if (smallShip.isAI == false)
+        {
+            if (smallShip.cockpitAnchor != null)
+            {
+                smallShip.cockpitAnchor.transform.rotation = smallShip.transform.rotation;
+            }
+        }
     }
 
     #endregion

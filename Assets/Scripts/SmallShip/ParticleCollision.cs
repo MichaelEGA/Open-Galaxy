@@ -40,6 +40,7 @@ public class ParticleCollision : MonoBehaviour
             {
                 if (objectHitParent != null) //This prevents lasers from causing damage to the firing ship if they accidentally hit the collider
                 {
+
                     SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
                     LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
                     Turret turret = objectHit.gameObject.GetComponentInParent<Turret>();
@@ -51,13 +52,14 @@ public class ParticleCollision : MonoBehaviour
                     {
                         LaserFunctions.TakeLaserDamage(smallShip, damage, hitPosition);
                     }
-                    else if (largeShip != null)
-                    {
-                        LargeShipFunctions.TakeLaserDamage(largeShip, damage, hitPosition);
-                    }
                     else if (turret != null)
                     {
                         TurretFunctions.TakeLaserDamage(turret, damage, hitPosition);
+                        Debug.Log("Turret was hit");
+                    }
+                    else if (largeShip != null)
+                    {
+                        LargeShipFunctions.TakeLaserDamage(largeShip, damage, hitPosition);
                     }
                 }
 

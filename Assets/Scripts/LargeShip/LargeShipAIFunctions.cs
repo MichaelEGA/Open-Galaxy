@@ -121,7 +121,7 @@ public static class LargeShipAIFunctions
         else
         {
            NoSpeed(largeShip);
-           //KeepTargetOnRight(largeShip);
+           KeepTargetOnRight(largeShip);
         }
     }
 

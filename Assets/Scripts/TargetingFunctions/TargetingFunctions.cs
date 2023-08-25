@@ -1048,7 +1048,7 @@ public static class TargetingFunctions
     {
         bool automaticSearch = false;
 
-        if (turret.target == null || turret.targetForward < 0 & turret.rotationIsRestricted == true)
+        if (turret.target == null || turret.targetForward < 0 & turret.yRotationIsRestricted == true)
         {
             automaticSearch = true;
         }
@@ -1166,8 +1166,10 @@ public static class TargetingFunctions
                 }
             }
 
-            turret.target = target;
-
+            if (target != null)
+            {
+                turret.target = target;
+            }
         }
     }
 

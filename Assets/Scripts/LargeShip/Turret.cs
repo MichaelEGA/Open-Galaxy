@@ -13,7 +13,7 @@ public class Turret : MonoBehaviour
     public string allegiance;
     public string laserColor = "red";
     public string turretType;
-    public bool rotationIsRestricted = false;
+    public bool yRotationIsRestricted = false;
     public float turretSpeed = 100; //Percentage
     public float turnInput;
     public float pitchInput;
@@ -31,6 +31,7 @@ public class Turret : MonoBehaviour
     public float fireDelay;
     public float fireDelayCount;
     public bool turretFiring;
+    public bool isUpsideDown;
 
     void Update()
     {
@@ -38,6 +39,7 @@ public class Turret : MonoBehaviour
         TurretFunctions.RotateTurret(this);
         TurretFunctions.FireTurret(this);
         TargetingFunctions.GetClosestEnemy_Turret(this);
+        TurretFunctions.Explode(this);
     }
 }
 

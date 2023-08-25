@@ -36,6 +36,8 @@ public static class TurretFunctions
                     if (turretGameObject != null)
                     {                
                         Turret tempTurret = turretGameObject.AddComponent<Turret>();
+                        Rigidbody rigidbody = turretGameObject.AddComponent<Rigidbody>();
+                        rigidbody.isKinematic = true;
                         tempTurret.largeShip = largeShip;
                         tempTurret.turretBase = turretGameObject;
                         tempTurret.allegiance = largeShip.allegiance;
@@ -64,6 +66,8 @@ public static class TurretFunctions
 
                         GameObjectUtils.AddColliders(turretGameObject, false);
 
+                        GameObjectUtils.SetLayerAllChildren(turretTransform, turretTransform.gameObject.layer);
+
                         turrets.Add(tempTurret);
                     }
                 }
@@ -84,66 +88,66 @@ public static class TurretFunctions
             {
                 turret.yRotationMax = 30;
                 turret.yRotationMin = -30;
-                turret.xRotationMax = -90;
-                turret.xRotationMin = 0;
+                turret.xRotationMax = 0;
+                turret.xRotationMin = -90;
                 turret.turretSpeed = 70;
                 turret.fireDelay = 6f;
                 turret.laserColor = "green";
                 turret.laserDamage = 50;
                 turret.turretType = "large";
-                turret.rotationIsRestricted = true;
+                turret.yRotationIsRestricted = true;
             }
             else if (turret.gameObject.name.Contains("isd_turretsmall"))
             {
                 turret.yRotationMax = 90;
                 turret.yRotationMin = -90;
-                turret.xRotationMax = -90;
-                turret.xRotationMin = 0;
+                turret.xRotationMax = 0;
+                turret.xRotationMin = -90;
                 turret.turretSpeed = 90;
                 turret.fireDelay = 4f;
                 turret.laserColor = "green";
                 turret.laserDamage = 10;
                 turret.turretType = "small";
-                turret.rotationIsRestricted = true;
+                turret.yRotationIsRestricted = true;
             }
             if (turret.gameObject.name.Contains("mc80a_turretlarge"))
             {
                 turret.yRotationMax = 60;
                 turret.yRotationMin = -60;
-                turret.xRotationMax = 0;
-                turret.xRotationMin = 50;
+                turret.xRotationMax = 50;
+                turret.xRotationMin = 0;
                 turret.turretSpeed = 80;
                 turret.fireDelay = 6f;
                 turret.laserColor = "red";
                 turret.laserDamage = 50;
                 turret.turretType = "large";
-                turret.rotationIsRestricted = true;
+                turret.yRotationIsRestricted = true;
             }
             else if (turret.gameObject.name.Contains("mc80a_turretsmall"))
             {
                 turret.yRotationMax = 60;
                 turret.yRotationMin = -60;
-                turret.xRotationMax = 0;
-                turret.xRotationMin = 50;
+                turret.xRotationMax = 50;
+                turret.xRotationMin = 0;
                 turret.turretSpeed = 90;
                 turret.fireDelay = 4f;
                 turret.laserColor = "red";
                 turret.laserDamage = 10;
                 turret.turretType = "small";
-                turret.rotationIsRestricted = true;
+                turret.yRotationIsRestricted = true;
             }
             else if (turret.gameObject.name.Contains("cr90_turretlarge"))
             {
                 turret.yRotationMax = 180;
                 turret.yRotationMin = -180;
-                turret.xRotationMax = -90;
-                turret.xRotationMin = 0;
+                turret.xRotationMax = 0;
+                turret.xRotationMin = -90;
                 turret.turretSpeed = 80;
                 turret.fireDelay = 4f;
                 turret.laserColor = "red";
-                turret.laserDamage = 50;
+                turret.laserDamage = 30;
                 turret.turretType = "large";
-                turret.rotationIsRestricted = false;
+                turret.yRotationIsRestricted = false;
             }
         }
     }
@@ -312,18 +316,16 @@ public static class TurretFunctions
         if (turret.target != null)
         {
             //This gets the targets relative position
-            Vector3 targetRelativePosition = turret.target.transform.position - turret.turretArm.transform.position;
+            Vector3 targetRelativePosition = turret.target.transform.position - turret.transform.position;
 
             //This conmpares the turret with the ship transform to see if it's upside down or not
-            bool isUpsideDown = false;
-
             if (Vector3.Dot(turret.turretBase.transform.up, -largeShip.transform.up) > 0)
             {
-                isUpsideDown = true;
+                turret.isUpsideDown = true;
             }
 
             //This sets the target position values
-            if (isUpsideDown == false)
+            if (turret.isUpsideDown == false)
             {
                 turret.targetForward = Vector3.Dot(turret.turretArm.transform.forward, targetRelativePosition.normalized);
                 turret.targetRight = Vector3.Dot(turret.turretArm.transform.right, targetRelativePosition.normalized);
@@ -339,7 +341,7 @@ public static class TurretFunctions
             //This transforms the target data into input
             TurretFunctions.SmoothTurnInput(turret, turret.targetRight);
             TurretFunctions.SmoothPitchInput(turret, -turret.targetUp);
-        }      
+        }   
     }
 
     //This smoothly transitions between input variables as if the computer is using a mouse a joystick
@@ -369,45 +371,58 @@ public static class TurretFunctions
         float armSpeed = (10f / 100f) * turret.turretSpeed;
         float baseSpeed = (10f / 100f) * turret.turretSpeed;
 
-        Vector3 armRotation = Vector3.right * turret.pitchInputActual;
-        Vector3 baseRotation = Vector3.up * turret.turnInputActual;
+        Vector3 armRotation;
+        Vector3 baseRotation;
 
-        Vector3 armRotation2 = new Vector3(armRotation.x, 0, 0);
-        Vector3 baseRotation2 = new Vector3(0, baseRotation.y, 0);
+        if (turret.isUpsideDown == false)
+        {
+            armRotation = turret.turretBase.transform.right * turret.pitchInputActual;
+            baseRotation = turret.turretArm.transform.up * turret.turnInputActual;
+        }
+        else
+        {
+            armRotation = -turret.turretBase.transform.right * turret.pitchInputActual;
+            baseRotation = -turret.turretArm.transform.up * turret.turnInputActual;
+        }  
 
         if (turret.turretBase != null)
         {
             //This applies the rotation
-            turret.turretBase.transform.Rotate(baseRotation2, Time.fixedDeltaTime * baseSpeed, Space.World);
+            turret.turretBase.transform.Rotate(baseRotation, Time.fixedDeltaTime * baseSpeed, Space.World);
+            turret.turretBase.transform.localRotation = Quaternion.Euler(0, turret.turretBase.transform.localRotation.eulerAngles.y, 0);
 
-            //This tracks the rotation and prevents it from going beyond predefined parameters
-            float rotation = turret.turretBase.transform.localRotation.eulerAngles.y;
+            if (turret.yRotationIsRestricted == true)
+            {
+                //This tracks the rotation and prevents it from going beyond predefined parameters
+                float rotation = turret.turretBase.transform.localRotation.eulerAngles.y;
 
-            //This keeps the rotation value between 180 and -180     
-            if (rotation > 180)
-            {
-                rotation -= 360;
-            }
-            else if (rotation < -180)
-            {
-                rotation += 360;
-            }
+                //This keeps the rotation value between 180 and -180     
+                if (rotation > 180)
+                {
+                    rotation -= 360;
+                }
+                else if (rotation < -180)
+                {
+                    rotation += 360;
+                }
 
-            //This cause the turret to stop rotating at its limites
-            if (rotation < turret.yRotationMin)
-            {
-                turret.turretBase.transform.localRotation = Quaternion.Euler(0, turret.yRotationMin, 0);
-            }
-            else if (rotation > turret.yRotationMax)
-            {
-                turret.turretBase.transform.localRotation = Quaternion.Euler(0, turret.yRotationMax, 0);
+                //This cause the turret to stop rotating at its limites
+                if (rotation < turret.yRotationMin)
+                {
+                    turret.turretBase.transform.localRotation = Quaternion.Euler(0, turret.yRotationMin, 0);
+                }
+                else if (rotation > turret.yRotationMax)
+                {
+                    turret.turretBase.transform.localRotation = Quaternion.Euler(0, turret.yRotationMax, 0);
+                }
             }
         }
 
         if (turret.turretArm != null)
         {
             //This applies the rotation
-            turret.turretArm.transform.Rotate(armRotation2, Time.fixedDeltaTime * armSpeed, Space.World);
+            turret.turretArm.transform.Rotate(armRotation, Time.fixedDeltaTime * armSpeed, Space.World);
+            turret.turretArm.transform.localRotation = Quaternion.Euler(turret.turretArm.transform.localRotation.eulerAngles.x, 0, 0); //This removes unwanted transforms on y and z asix
 
             //This tracks the rotation and prevents it from going beyond predefined parameters
             float rotation = turret.turretArm.transform.localRotation.eulerAngles.x;
@@ -423,13 +438,13 @@ public static class TurretFunctions
             }
 
             //This cause the turret to stop rotating at its limites
-            if (rotation < turret.xRotationMax)
-            {
-                turret.turretArm.transform.localRotation = Quaternion.Euler(turret.xRotationMax, 0, 0);
-            }
-            else if (rotation > turret.xRotationMin)
+            if (rotation < turret.xRotationMin)
             {
                 turret.turretArm.transform.localRotation = Quaternion.Euler(turret.xRotationMin, 0, 0);
+            }
+            else if (rotation > turret.xRotationMax)
+            {
+                turret.turretArm.transform.localRotation = Quaternion.Euler(turret.xRotationMax, 0, 0);
             }
 
         }   
@@ -441,9 +456,9 @@ public static class TurretFunctions
 
     public static void FireTurret(Turret turret)
     {
-        if (turret.largeShip.target != null)
+        if (turret.target != null)
         {
-            if (turret.largeShip.target.activeSelf != false)
+            if (turret.target.activeSelf != false)
             {
                 if (turret.targetForward > 0.75 & turret.fireDelayCount < Time.time & turret.turretFiring == false)
                 {
@@ -535,6 +550,16 @@ public static class TurretFunctions
                 if (turret.largeShip.rearShieldLevel < 0) { turret.largeShip.rearShieldLevel = 0; }
                 if (turret.largeShip.shieldLevel < 0) { turret.largeShip.shieldLevel = 0; }
             }
+        }
+    }
+
+    //This causes the turret to disappear if it's destroyed
+    public static void Explode(Turret turret)
+    {
+        if (turret.hullLevel <= 0)
+        {
+            turret.hullLevel = 0;
+            turret.gameObject.SetActive(false);
         }
     }
 

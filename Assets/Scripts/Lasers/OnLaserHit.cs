@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleCollision : MonoBehaviour
+public class OnLaserHit : MonoBehaviour
 {
-
     private ParticleSystem ps;
     private List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
     public GameObject relatedGameObject;
@@ -46,7 +45,7 @@ public class ParticleCollision : MonoBehaviour
                     Turret turret = objectHit.gameObject.GetComponentInParent<Turret>();
 
                     //Acquire damage calculation from attack ship/turret
-                    float damage = CalculateDamage(thisSmallShip, thisTurret);
+                    float damage = CalculateLaserDamage(thisSmallShip, thisTurret);
 
                     if (smallShip != null)
                     {
@@ -67,13 +66,29 @@ public class ParticleCollision : MonoBehaviour
                     audioManager = GameObject.FindObjectOfType<Audio>();
                 }
 
-                LaserFunctions.InstantiateExplosion(objectHit, hitPosition, hitRotation, "explosion01", 6, audioManager);             
+                if (thisTurret != null)
+                {
+                    if (thisTurret.turretType == "large")
+                    {
+                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 25, audioManager);
+                    }
+                    else
+                    {
+                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 6, audioManager);
+                    }
+                }
+                else
+                {
+                    ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 6, audioManager);
+                }
+
+                            
             }
         }
     }
 
     //Calculates the damage done by the laser
-    private float CalculateDamage(SmallShip smallShip, Turret turret)
+    private float CalculateLaserDamage(SmallShip smallShip, Turret turret)
     {
         float damage = 0;
         float laserPower = 0;

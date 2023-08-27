@@ -287,7 +287,7 @@ public static class LargeShipFunctions
     {
         if (largeShip.hullLevel <= 0)
         {
-            LaserFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, largeShip.gameObject.transform.position, "explosion02", 1000);
+            ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion02", 1000);
 
             largeShip.gameObject.SetActive(false);
         }

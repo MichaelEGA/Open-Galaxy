@@ -1043,7 +1043,7 @@ public static class SmallShipFunctions
             }
 
             //This creates an explosion where the ship is
-            LaserFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, smallShip.gameObject.transform.position, "explosion02", 12);
+            ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion02", 12);
 
             //This makes an explosion sound
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", smallShip.gameObject.transform.position, 1, 1, 1000, 1, 100);

@@ -51,7 +51,8 @@ public class Torpedo : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        TorpedoFunctions.TakeTorpedoDamage(collision.gameObject, this, collision.transform.position);
-        TorpedoFunctions.InstantiateExplosion(this);
+        TorpedoFunctions.CauseTorpedoDamage(collision.gameObject, this, collision.transform.position);
+        ParticleFunctions.InstantiateExplosion(collision.gameObject, collision.transform.position, "explosion01", 100f, audioManager);
+        TorpedoFunctions.DeactivateTorpedo(this);
     }
 }

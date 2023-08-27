@@ -178,7 +178,7 @@ public static class TurretFunctions
         turret.turretParticleSystem.name = "laserparticlesystem_" + turret.gameObject.name;
         ParticleSystem particleSystem = turret.turretParticleSystem.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = turret.turretParticleSystem.GetComponent<ParticleSystemRenderer>();
-        ParticleCollision particleCollision = turret.turretParticleSystem.AddComponent<ParticleCollision>();
+        OnLaserHit particleCollision = turret.turretParticleSystem.AddComponent<OnLaserHit>();
         particleCollision.relatedGameObject = turret.gameObject;
 
         //This adds the new particle system to the pool
@@ -559,6 +559,7 @@ public static class TurretFunctions
         if (turret.hullLevel <= 0)
         {
             turret.hullLevel = 0;
+            ParticleFunctions.InstantiateExplosion(turret.largeShip.gameObject, turret.gameObject.transform.position, "explosion02", 12);
             turret.gameObject.SetActive(false);
         }
     }

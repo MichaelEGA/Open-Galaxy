@@ -512,7 +512,7 @@ public static class TorpedoFunctions
     #region damage
 
     //This causes the ship to take damage from torpedos
-    public static void TakeTorpedoDamage(GameObject other, Torpedo torpedo, Vector3 hitPosition)
+    public static void CauseTorpedoDamage(GameObject other, Torpedo torpedo, Vector3 hitPosition)
     {
         SmallShip smallShip = other.GetComponentInParent<SmallShip>();
         LargeShip largeShip = other.GetComponentInParent<LargeShip>();
@@ -539,8 +539,8 @@ public static class TorpedoFunctions
 
             if (distance < 25)
             {
-                TakeTorpedoDamage(torpedo.target, torpedo, torpedo.transform.position);
-                InstantiateExplosion(torpedo);
+                CauseTorpedoDamage(torpedo.target, torpedo, torpedo.transform.position);
+                DeactivateTorpedo(torpedo);
             }
         }
     }
@@ -550,64 +550,13 @@ public static class TorpedoFunctions
     {
         if (Time.time > torpedo.destroyAfter)
         {
-            InstantiateExplosion(torpedo);
+            DeactivateTorpedo(torpedo);
         }
     }
 
     //This causes a torpedo to explode on impact, deactivates and puts it pack in the torpedo pool
-    public static void InstantiateExplosion(Torpedo torpedo, float explosionSize = 100)
+    public static void DeactivateTorpedo(Torpedo torpedo)
     {
-        Scene scene = SceneFunctions.GetScene();
-        GameObject explosion = null;
-
-        //This searches for any deactivated explosions and reuses them
-        if (scene.particlesPool != null)
-        {
-            explosion = PoolUtils.FindInactiveGameObjectInPool(scene.particlesPool, "explosion01");
-        }
-
-        //This instantiates a new explosion if there are none in the list
-        if (explosion == null)
-        {
-            Object explosionObject = PoolUtils.FindPrefabObjectInPool(scene.particlePrefabPool, "explosion01");
-
-            if (explosionObject != null)
-            {
-                explosion = GameObject.Instantiate(explosionObject) as GameObject;
-                scene.particlesPool = PoolUtils.AddToPool(scene.particlesPool, explosion);
-            }
-        }
-
-        //This sets the position of the explosion and also sets it's deactivation time
-        if (explosion != null)
-        {
-            explosion.transform.position = torpedo.gameObject.transform.position;
-            Vector3 scale = new Vector3(explosionSize, explosionSize, explosionSize); //This sets the explosion size
-            explosion.transform.localScale = scale; //This reapplies the object scale after parenting
-            explosion.SetActive(true);
-            Task a = new Task(GameObjectUtils.DeactivateObjectAfterDelay(5, explosion));
-
-            //This applies explosive force to any objects in range
-            Collider[] colliders = Physics.OverlapSphere(explosion.transform.position, 50);
-
-            foreach (Collider hit in colliders)
-            {
-                Rigidbody rb = hit.GetComponentInParent<Rigidbody>();
-
-                if (rb != null)
-                {
-                    rb.AddExplosionForce(5000, explosion.transform.position, 50, 3.0F, ForceMode.Impulse);
-                }
-                   
-            }
-
-            //This makes an explosion sound
-            if (torpedo.audioManager != null)
-            {
-                AudioFunctions.PlayAudioClip(torpedo.audioManager, torpedo.explosionAudio, explosion.transform.position, 1, 1, 1000, 0.6f);
-            }            
-        }
-
         torpedo.gameObject.SetActive(false);
     }
 

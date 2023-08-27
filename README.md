@@ -28,6 +28,14 @@ Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
 **Changelog**
 
+27/08/23 - v.0.5.7
+  - Added: Galactic Conquest Cockpits, Bomber attack pattern, dynamic thruster placement
+  - Added: Turret explodes on destruction + some general cleaning up
+  - Added: Cockpit rotation for lighting effects
+  - Added: Toggle Cockpit Sets, Torpedoes damage cap ships
+  - Fixed: turret tracking bud
+  - Added: Turrets can be destroyed
+
 21/08/23 - v.0.5.21
   - WARNING: This version may temporarily break some missions like 'Assault on Empress Station' 
   - Upside Down Turret Rotation Fixed, and Capital Ships are Destroyed

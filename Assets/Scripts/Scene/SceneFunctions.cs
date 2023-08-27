@@ -710,6 +710,7 @@ public static class SceneFunctions
                 smallShip.healthSave = shipType.shieldRating + shipType.hullRating;  
                 smallShip.aiSkillLevel = aiSkillLevel;
                 smallShip.type = shipTypeName;
+                smallShip.thrustType = shipType.thrustType;
                 smallShip.prefabName = shipType.prefab;
                 smallShip.laserAudio = shipType.laserAudio;
                 smallShip.engineAudio = shipType.engineAudio;
@@ -783,6 +784,7 @@ public static class SceneFunctions
                 largeShip.aiSkillLevel = aiSkillLevel;
                 largeShip.type = shipTypeName;
                 largeShip.prefabName = shipType.prefab;
+                largeShip.thrustType = shipType.thrustType;
                 largeShip.scene = scene;
                 largeShip.audioManager = audioManager;
                 largeShip.classType = shipType.classType;

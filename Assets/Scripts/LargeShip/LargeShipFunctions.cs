@@ -70,7 +70,7 @@ public static class LargeShipFunctions
 
         if (largeShip.scene != null)
         {
-            Object thrusterObject = PoolUtils.FindPrefabObjectInPool(largeShip.scene.particlePrefabPool, "Thruster_Red");
+            Object thrusterObject = PoolUtils.FindPrefabObjectInPool(largeShip.scene.particlePrefabPool, largeShip.thrustType);
 
             if (thrusterObject != null)
             {

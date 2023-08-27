@@ -77,7 +77,7 @@ public static class SmallShipFunctions
 
         if (smallShip.scene != null)
         {
-            Object thrusterObject = PoolUtils.FindPrefabObjectInPool(smallShip.scene.particlePrefabPool, "Thruster_Red");
+            Object thrusterObject = PoolUtils.FindPrefabObjectInPool(smallShip.scene.particlePrefabPool, smallShip.thrustType);
 
             if (thrusterObject != null)
             {
@@ -851,6 +851,8 @@ public static class SmallShipFunctions
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                 }
 
+                smallShip.toggleWeapons = false;
+
             }
             else
             {
@@ -940,15 +942,14 @@ public static class SmallShipFunctions
     }
 
     //This tells the damage system that a collision has begun
-    public static void StartCollision(SmallShip smallShip)
+    public static void StartCollision(SmallShip smallShip, GameObject collidingWith)
     {
         smallShip.isCurrentlyColliding = true;
 
         if (smallShip.isAI == false)
         {
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "crash", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
-        }
-
+        }        
     }
 
     //This tells the damage system that a collision has ended

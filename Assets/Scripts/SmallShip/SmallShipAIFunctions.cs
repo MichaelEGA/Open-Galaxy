@@ -32,7 +32,14 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target.activeSelf == true)
             {
-                smallShip.aiMode = "AttackPatternAlpha";
+                if (smallShip.target.GetComponent<LargeShip>() == null)
+                {
+                    smallShip.aiMode = "AttackPatternAlpha";
+                }
+                else
+                {
+                    smallShip.aiMode = "AttackPatternBeta";
+                }        
             }
             else
             {
@@ -50,6 +57,10 @@ public static class SmallShipAIFunctions
             if (smallShip.aiMode == "AttackPatternAlpha")
             {
                 AttackPatternAlpha(smallShip);
+            }
+            else if (smallShip.aiMode == "AttackPatternBeta")
+            {
+                AttackPatternBeta(smallShip);
             }
             else if (smallShip.aiMode == "PatrolPatternAlpha")
             {
@@ -77,7 +88,7 @@ public static class SmallShipAIFunctions
     //This is the basic flight pattern for attack
     public static void AttackPatternAlpha(SmallShip smallShip)
     {
-        FireControl(smallShip);
+        LaserControl(smallShip);
         AttackSpeedPowerSettings(smallShip);
 
         if (smallShip.targetDistance > 250)
@@ -112,6 +123,68 @@ public static class SmallShipAIFunctions
         }
     }
 
+    //This is the basic flight pattern for attacking a capital ship
+    public static void AttackPatternBeta(SmallShip smallShip)
+    {       
+        AttackSpeedPowerSettings(smallShip);
+
+        float distance = 1500;
+
+        if (smallShip.targetLargeShip != null)
+        {
+            if (smallShip.targetLargeShip.classType == "large")
+            {
+                distance = 1500;
+            }
+            else if (smallShip.targetLargeShip.classType == "middle")
+            {
+                distance = 1000;
+            }
+            else
+            {
+                distance = 500;
+            }
+        }
+
+        if (smallShip.targetDistance > distance & smallShip.withdraw == false)
+        {
+            if (smallShip.torpedoNumber > 0)
+            {
+                TorpedoControl(smallShip);
+            }
+            else
+            {
+                LaserControl(smallShip);
+            }
+            
+            FullSpeed(smallShip);
+            AngleTowardsTarget(smallShip);
+        }
+        else if (smallShip.targetDistance < distance & smallShip.withdraw == false)
+        {
+            smallShip.withdraw = true;
+        }
+        else if (smallShip.targetDistance > 3000 & smallShip.withdraw == true)
+        {
+            smallShip.withdraw = false;
+        }
+        else
+        {
+            LaserControl(smallShip);
+
+            if (smallShip.targetForward > 0)
+            {
+                HalfSpeed(smallShip);
+            }
+            else
+            {
+                FullSpeed(smallShip);
+            }
+
+            AngleAwayFromTarget(smallShip);
+        }
+    }
+
     //This is the basic flight pattern for patrolling
     public static void PatrolPatternAlpha(SmallShip smallShip)
     {
@@ -134,7 +207,7 @@ public static class SmallShipAIFunctions
     //This angles towards the ships waypoint
     public static void MoveToWayPoint(SmallShip smallShip)
     {
-        FireControl(smallShip);
+        LaserControl(smallShip);
         ThreeQuarterSpeed(smallShip);
         PatrolSpeedPowerSettings(smallShip);
         AngleTowardsWaypoint(smallShip);
@@ -313,38 +386,59 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.target == null)
         {
-            Task a = new Task(SelectEnemyTarget(smallShip));
+            if (smallShip.type == "bomber")
+            {
+                TargetingFunctions.GetNextEnemy(smallShip, "largeship", true);
+            }
+
+            if (smallShip.target == null)
+            {
+                TargetingFunctions.GetNextEnemy(smallShip, "none", true);
+            }  
         }
         else if (smallShip.target != null)
         {
             if (smallShip.target.activeSelf == false)
             {
-                Task a = new Task(SelectEnemyTarget(smallShip));
+                if (smallShip.type == "bomber")
+                {
+                    TargetingFunctions.GetNextEnemy(smallShip, "largeship", true);
+                }
+
+                if (smallShip.target == null)
+                {
+                    TargetingFunctions.GetNextEnemy(smallShip, "none", true);
+                }
+                else if (smallShip.target != null)
+                {
+                    if (smallShip.target.activeSelf == false)
+                    {
+                        TargetingFunctions.GetNextEnemy(smallShip, "none", true);
+                    } 
+                }
             }
         }
     }
 
-    //This presses the select enemy target button
-    public static IEnumerator SelectEnemyTarget(SmallShip smallShip)
-    {
-        smallShip.getNextEnemy = true;
+    ////This presses the select enemy target button
+    //public static IEnumerator SelectEnemyTarget(SmallShip smallShip)
+    //{
+    //    smallShip.getNextEnemy = true;
 
-        yield return new WaitForSeconds(0.1f);
+    //    yield return new WaitForSeconds(0.1f);
 
-        smallShip.getNextEnemy = false;
-    }
+    //    smallShip.getNextEnemy = false;
+    //}
 
-    //This presses the select target button
-    public static IEnumerator SelectNextTarget(SmallShip smallShip)
-    {
+    ////This presses the select target button
+    //public static IEnumerator SelectNextTarget(SmallShip smallShip)
+    //{
+    //    smallShip.getNextTarget = true;
 
-        smallShip.getNextTarget = true;
+    //    yield return new WaitForSeconds(0.1f);
 
-        yield return new WaitForSeconds(0.1f);
-
-        smallShip.getNextTarget = false;
-
-    }
+    //    smallShip.getNextTarget = false;
+    //}
 
     //This selects a random waypoint
     public static void SelectRandomWaypoint(SmallShip smallship)
@@ -360,8 +454,13 @@ public static class SmallShipAIFunctions
     #region Fire Control
 
     //This controls the lasers
-    public static void FireControl(SmallShip smallShip)
+    public static void LaserControl(SmallShip smallShip)
     {
+        if (smallShip.activeWeapon != "lasers")
+        {
+            smallShip.toggleWeapons = true;
+        }
+
         if (smallShip.target != null)
         {
             if (smallShip.interceptForward > 0.90f & smallShip.interceptDistance < 500)
@@ -377,6 +476,31 @@ public static class SmallShipAIFunctions
         {
             smallShip.fireWeapon = false;
         } 
+    }
+
+    //This controls torpedos
+    public static void TorpedoControl(SmallShip smallShip)
+    {
+        if (smallShip.torpedoNumber > 0 & smallShip.activeWeapon != "torpedos")
+        {
+            smallShip.toggleWeapons = true;
+        }
+
+        if (smallShip.target != null & smallShip.activeWeapon == "torpedos")
+        {
+            if (smallShip.interceptForward > 0.95f & smallShip.torpedoLockedOn == true)
+            {
+                smallShip.fireWeapon = true;
+            }
+            else
+            {
+                smallShip.fireWeapon = false;
+            }
+        }
+        else
+        {
+            smallShip.fireWeapon = false;
+        }
     }
 
     #endregion

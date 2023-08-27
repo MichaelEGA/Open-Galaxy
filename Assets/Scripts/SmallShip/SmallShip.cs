@@ -10,10 +10,11 @@ public class SmallShip : MonoBehaviour
     public string type;
     public string prefabName;
     public float loadTime;
+    public string thrustType;
 
     [Header("Ship Components")]
-    [HideInInspector] public Rigidbody shipRigidbody;
-    [HideInInspector] public Collider[] colliders;
+    public Rigidbody shipRigidbody;
+    public Collider[] colliders;
 
     [Header("Ship Audio")]
     [HideInInspector] public Audio audioManager;
@@ -180,6 +181,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float aiTurnInput;
     [HideInInspector] public float aiRollInput;
     [HideInInspector] public float healthSave;
+    [HideInInspector] public bool withdraw;
 
     [Header("Particle Effcets")]
     [HideInInspector] public GameObject smokeTrail;
@@ -271,7 +273,7 @@ public class SmallShip : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        SmallShipFunctions.StartCollision(this);
+        SmallShipFunctions.StartCollision(this, collision.gameObject);
     }
 
     void OnCollisionExit(Collision collision)

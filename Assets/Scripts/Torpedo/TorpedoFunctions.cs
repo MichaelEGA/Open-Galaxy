@@ -114,7 +114,6 @@ public static class TorpedoFunctions
     {
         if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.fireWeapon == true & smallShip.activeWeapon == "torpedos" & smallShip.torpedoPressedTime < Time.time & smallShip.weaponsLock == false)
         {
-
             float spatialBlend = 1;
 
             if (smallShip.isAI == false)
@@ -170,7 +169,6 @@ public static class TorpedoFunctions
                 }  
                 
                 smallShip.torpedoCycleNumber += 1;
-
 
                 if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
                 Torpedo torpedo02 = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
@@ -257,13 +255,15 @@ public static class TorpedoFunctions
         }
 
         //This grabs the torpedo from the torpedo pool if availible
-        GameObject torpedo = PoolUtils.FindInactiveGameObjectInPool(scene.torpedosPool, smallShip.torpedoType);
+        GameObject torpedo = null;
+        //GameObject torpedo = PoolUtils.FindInactiveGameObjectInPool(scene.torpedosPool, smallShip.torpedoType);
 
         if (torpedo != null)
         {
             torpedoScript = torpedo.GetComponent<Torpedo>();
             torpedoScript.firingShip = smallShip;
             torpedoScript.destroyAfter = Time.time + 30;
+            torpedoScript.fireTime = Time.time;
             torpedoScript.target = null;
             torpedoScript.target = smallShip.target;
             torpedoScript.torpedoRigidbody.velocity = new Vector3(0f, 0f, 0f);
@@ -412,7 +412,7 @@ public static class TorpedoFunctions
     {
         if (torpedo.target != null)
         {
-            if (torpedo.target.activeSelf != false)
+            if (torpedo.target.activeSelf != false & torpedo.fireTime + 2 < Time.time)
             {
                 Transform torpedoTransform = torpedo.transform;
                 Vector3 targetPosition = torpedo.target.transform.position;
@@ -512,7 +512,7 @@ public static class TorpedoFunctions
     #region damage
 
     //This causes the ship to take damage from torpedos
-    public static void CauseTorpedoDamage(GameObject other, Torpedo torpedo, Vector3 hitPosition)
+    public static void CauseTorpedoDamage(SmallShip firingShip, GameObject other, Torpedo torpedo, Vector3 hitPosition)
     {
         SmallShip smallShip = other.GetComponentInParent<SmallShip>();
         LargeShip largeShip = other.GetComponentInParent<LargeShip>();
@@ -521,7 +521,10 @@ public static class TorpedoFunctions
         {
             if (smallShip != null)
             {
-                SmallShipFunctions.TakeDamage(smallShip, torpedo.damagePower, hitPosition);
+                if (smallShip.gameObject != firingShip.gameObject)
+                {
+                    SmallShipFunctions.TakeDamage(smallShip, torpedo.damagePower, hitPosition);
+                }
             }
             else if (largeShip != null)
             {
@@ -539,7 +542,7 @@ public static class TorpedoFunctions
 
             if (distance < 25)
             {
-                CauseTorpedoDamage(torpedo.target, torpedo, torpedo.transform.position);
+                CauseTorpedoDamage(torpedo.firingShip, torpedo.target, torpedo, torpedo.transform.position);
                 DeactivateTorpedo(torpedo);
             }
         }

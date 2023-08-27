@@ -10,6 +10,7 @@ public class LargeShip : MonoBehaviour
     public string prefabName;
     public float loadTime;
     public string classType = "large";
+    public string thrustType = "thruster_blue_large";
 
     [Header("Ship Components")]
     [HideInInspector] public Rigidbody shipRigidbody;

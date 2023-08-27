@@ -18,6 +18,7 @@ public class Torpedo : MonoBehaviour
     public float rollSpeed;
     public float turnSpeed;
     public float destroyAfter;
+    public float fireTime;
 
     [Header("Torpedo Audio")]
     [HideInInspector] public string launchAudio;
@@ -51,8 +52,14 @@ public class Torpedo : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        TorpedoFunctions.CauseTorpedoDamage(collision.gameObject, this, collision.transform.position);
-        ParticleFunctions.InstantiateExplosion(collision.gameObject, collision.transform.position, "explosion01", 100f, audioManager);
+        TorpedoFunctions.CauseTorpedoDamage(firingShip, collision.gameObject, this, collision.transform.position);
+
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion02", 100f, audioManager);
+            break;
+        }
+
         TorpedoFunctions.DeactivateTorpedo(this);
     }
 }

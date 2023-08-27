@@ -92,7 +92,7 @@ public static class TargetingFunctions
     }
 
     //This gets the next enemy target
-    public static void GetNextEnemy(SmallShip smallShip = null, string mode = "none")
+    public static void GetNextEnemy(SmallShip smallShip = null, string mode = "none", bool forceSearch = false)
     {
         bool automaticSearch = false;
 
@@ -104,7 +104,7 @@ public static class TargetingFunctions
             }
         }
 
-        if (smallShip.targetPressedTime < Time.time & smallShip.getNextEnemy == true || automaticSearch == true)
+        if (smallShip.targetPressedTime < Time.time & smallShip.getNextEnemy == true || automaticSearch == true || forceSearch == true)
         {
             Scene scene = smallShip.scene;
             int countStart = 0;
@@ -175,7 +175,12 @@ public static class TargetingFunctions
                                 }
 
                                 smallShip.targetRigidbody = scene.objectPool[i].GetComponent<Rigidbody>();
-                                targetSmallShip.numberTargeting += 1;
+
+                                if (targetSmallShip != null)
+                                {
+                                    targetSmallShip.numberTargeting += 1;
+                                }
+                                
                                 break;
                             }
                             else if (smallShip.isAI == false)
@@ -224,7 +229,6 @@ public static class TargetingFunctions
     //This gets the closesd enemy target
     public static void GetClosestEnemy(SmallShip smallShip = null, string mode = "none", bool externalActivation = false)
     {
-
         bool automaticSearch = false;
 
         if (smallShip.target != null)
@@ -570,7 +574,7 @@ public static class TargetingFunctions
 
     #endregion
 
-    #region small ship targetting
+    #region large ship targetting
 
     //This gets the next target of any kind
     public static void GetNextTarget_LargeShip(LargeShip largeShip = null, string mode = "none")

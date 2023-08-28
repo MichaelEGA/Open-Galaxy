@@ -8,13 +8,13 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - X-Wing and Tie Fighter style ship combat (Implemented)
   - Missions and other game modes (Implemented)
   - Cockpits (Implemented)
-  - Capital ships (In Progress)
+  - Capital ships (Implemented)
   - Easy to use mission editor (In Progress)
   - External mission loading (Not implemented yet)
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
   - Explore mode where you can explore the whole Star Wars galaxy (In progress)
 
-**Latest Release:** 0.5.21
+**Latest Release:** 0.5.7
 
 Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
@@ -27,6 +27,14 @@ Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
 
 **Changelog**
+
+27/08/23 - v.0.5.7
+  - Added: Galactic Conquest Cockpits, Bomber attack pattern, dynamic thruster placement
+  - Added: Turret explodes on destruction + some general cleaning up
+  - Added: Cockpit rotation for lighting effects
+  - Added: Toggle Cockpit Sets, Torpedoes damage cap ships
+  - Fixed: turret tracking bud
+  - Added: Turrets can be destroyed
 
 21/08/23 - v.0.5.21
   - WARNING: This version may temporarily break some missions like 'Assault on Empress Station' 

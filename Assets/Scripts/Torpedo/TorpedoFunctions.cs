@@ -327,6 +327,7 @@ public static class TorpedoFunctions
 
                         GameObjectUtils.AddColliders(torpedo, true);
                         torpedoScript.torpedoRigidbody = GameObjectUtils.AddRigidbody(torpedo, 100f, 9f, 7.5f);
+                        torpedoScript.torpedoRigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
                         torpedo.transform.position = position;
                         torpedo.transform.rotation = smallShip.transform.rotation;
@@ -543,6 +544,7 @@ public static class TorpedoFunctions
             if (distance < 25)
             {
                 CauseTorpedoDamage(torpedo.firingShip, torpedo.target, torpedo, torpedo.transform.position);
+                ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion02", 50f, torpedo.audioManager);
                 DeactivateTorpedo(torpedo);
             }
         }

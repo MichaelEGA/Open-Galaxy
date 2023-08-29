@@ -39,20 +39,6 @@ public static class ParticleFunctions
             explosion.SetActive(true);
             Task a = new Task(GameObjectUtils.DeactivateObjectAfterDelay(5, explosion));
 
-            //This applies explosive force to any objects in range
-            //Collider[] colliders = Physics.OverlapSphere(explosion.transform.position, 50);
-
-            //foreach (Collider hit in colliders)
-            //{
-            //    Rigidbody rb = hit.GetComponentInParent<Rigidbody>();
-
-            //    if (rb != null)
-            //    {
-            //        rb.AddExplosionForce(5000, explosion.transform.position, 50, 3.0F, ForceMode.Impulse);
-            //    }
-
-            //}
-
             if (audioManager != null)
             {
                 AudioFunctions.PlayAudioClip(audioManager, "impact01_laserhitshield", hitPosition, 1, 1, 500, 0.6f);

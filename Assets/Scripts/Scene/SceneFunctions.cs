@@ -18,7 +18,7 @@ public static class SceneFunctions
     public static void CreateScene()
     {
         GameObject sceneGO = GameObject.Find("scene");
-       
+
         if (sceneGO == null)
         {
             sceneGO = new GameObject();
@@ -29,7 +29,7 @@ public static class SceneFunctions
             LoadScenePrefabs();
             GetCameras();
             InstantiateCockpits();
-        } 
+        }
     }
 
     //This loads all the all the scene objects
@@ -38,13 +38,17 @@ public static class SceneFunctions
         Scene scene = GetScene();
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
-        Object[] objectPrefabs = Resources.LoadAll("ObjectPrefabs", typeof(GameObject)); 
+        Object[] objectPrefabs = Resources.LoadAll("ObjectPrefabs", typeof(GameObject));
         scene.objectPrefabPool = new GameObject[objectPrefabs.Length];
         scene.objectPrefabPool = objectPrefabs;
 
         Object[] cockpitPrefabs = Resources.LoadAll(settings.cockpitAssetsAddress, typeof(GameObject));
         scene.cockpitPrefabPool = new GameObject[cockpitPrefabs.Length];
         scene.cockpitPrefabPool = cockpitPrefabs;
+
+        Object[] tilePrefabs = Resources.LoadAll("TilePrefabs", typeof(GameObject));
+        scene.tilesPrefabPool = new GameObject[tilePrefabs.Length];
+        scene.tilesPrefabPool = tilePrefabs;
 
         Object[] asteroidMaterials = Resources.LoadAll("AsteroidMaterials", typeof(Material));
         scene.asteroidMaterialsPool = new Material[asteroidMaterials.Length];
@@ -82,7 +86,7 @@ public static class SceneFunctions
             planetCameraGO.name = "Planet Camera";
             planetCamera = planetCameraGO.AddComponent<Camera>();
             planetCamera.cullingMask = LayerMask.GetMask("planet");
-            planetCamera.nearClipPlane = 0.01f;         
+            planetCamera.nearClipPlane = 0.01f;
             var planetCameraData = planetCamera.GetUniversalAdditionalCameraData();
             planetCameraData.renderType = CameraRenderType.Overlay;
         }
@@ -101,7 +105,7 @@ public static class SceneFunctions
             mainCamera.farClipPlane = 30000;
             var mainCameraData = mainCamera.GetUniversalAdditionalCameraData();
             mainCameraData.renderType = CameraRenderType.Overlay;
-            mainCameraData.renderPostProcessing = true;         
+            mainCameraData.renderPostProcessing = true;
         }
 
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
@@ -124,7 +128,7 @@ public static class SceneFunctions
             starfieldCameraData.cameraStack.Add(planetCamera);
             starfieldCameraData.cameraStack.Add(mainCamera);
             starfieldCameraData.cameraStack.Add(cockpitCamera);
-        } 
+        }
     }
 
     //This gets the cameras and adds them to the scene script
@@ -145,7 +149,7 @@ public static class SceneFunctions
 
     #endregion
 
-    #region starfield and planet creation
+    #region starfield creation
 
     //This creates the starfield
     public static IEnumerator GenerateStarField()
@@ -205,7 +209,7 @@ public static class SceneFunctions
         //This creates another 8000 or so stars to fill in the space, especially the unknown regions
         while (i < 10000)
         {
-            float xCoord = Random.Range(-50,50);
+            float xCoord = Random.Range(-50, 50);
             float yCoord = Random.Range(-25, 25); //The y coord is actaully the z coord and vice versa b/c original data was vector 2 
             float zCoord = Random.Range(-50, 50);
 
@@ -223,6 +227,21 @@ public static class SceneFunctions
         particleSystem.SetParticles(points, points.Length);
         particleSystemRenderer.lengthScale = 1;
     }
+
+    //Move starfield camera to planet location
+    public static void MoveStarfieldCamera(Vector3 location)
+    {
+        GameObject starfieldCamera = GameObject.Find("Starfield Camera");
+
+        if (starfieldCamera != null)
+        {
+            starfieldCamera.transform.position = location;
+        }
+    }
+
+    #endregion
+
+    #region planet creation
 
     //This generates the planet texture
     public static IEnumerator GeneratePlanetHeightmap(string type, int seed)
@@ -302,7 +321,7 @@ public static class SceneFunctions
 
         //This actually generates the map
         Task a = new Task(heightMap.GenerateSpherical(90, -90, -180, 180, 1, false));
-        while (a.Running == true) { yield return new WaitForEndOfFrame();}
+        while (a.Running == true) { yield return new WaitForEndOfFrame(); }
 
         //This outputs the libnoise result to the planet material use a greyscale preset
         Gradient grayscale = GradientPresets.Grayscale;
@@ -402,17 +421,6 @@ public static class SceneFunctions
         }
     }
 
-    //Move starfield camera to planet location
-    public static void MoveStarfieldCamera(Vector3 location)
-    {
-        GameObject starfieldCamera = GameObject.Find("Starfield Camera");
-
-        if (starfieldCamera != null)
-        {
-            starfieldCamera.transform.position = location;
-        }
-    }
-
     //This return the name of a random location
     public static (string planet, string type, Vector3 location, int seed) GetRandomLocation()
     {
@@ -420,7 +428,7 @@ public static class SceneFunctions
 
         string planet = null;
         string type = null;
-        Vector3 location = new Vector3(0,0,0);
+        Vector3 location = new Vector3(0, 0, 0);
         int seed = 0;
 
         //This loads the Json file
@@ -463,7 +471,7 @@ public static class SceneFunctions
         //This finds specific data on the location
         foreach (StarSystem starSystem in starSystems.starSystemsData)
         {
-           
+
             if (starSystem.Planet == name)
             {
                 float xCoord = (starSystem.X / 15000f) * 50f;
@@ -559,7 +567,7 @@ public static class SceneFunctions
         //Pick number of asteroids to load in the scene
         int asteroidNumber = Random.Range(100, 1000);
 
-        float changeScale = Random.Range(5,15);
+        float changeScale = Random.Range(5, 15);
 
         //Get asteroid collision layer
         int layerNumber = LayerMask.NameToLayer("collision_asteroid");
@@ -577,7 +585,7 @@ public static class SceneFunctions
             asteroid.GetComponent<Renderer>().material = material;
 
             float scale = Random.Range(0.001f, 0.1f);
-            
+
             if (i2 == changeScale)
             {
                 scale = Random.Range(1f, 2f);
@@ -623,12 +631,276 @@ public static class SceneFunctions
 
     #endregion
 
-    #region ship and object creation
+    #region ground tile creation
+
+    public static void PlaceTiles(string sceneType, int xDistance, int yDistance, int tileSize)
+    {
+        LoadTileSet();
+
+        Scene scene = GetScene();
+
+        int numberOfTilesX = xDistance / tileSize;
+        int numberOfTilesY = yDistance / tileSize;
+
+        GameObject[,] tiles = new GameObject[numberOfTilesX, numberOfTilesY];
+
+        for (int x = 0; x < numberOfTilesX - 1; x++)
+        {
+            for (int y = 0; y < numberOfTilesY - 1; y++)
+            {
+                //This gets the correct tile
+                Transform tilePointUp = GetTilePointDownOfTileUp(tiles, x, y);
+                Transform tilePointLeft = GetTilePointRightOfTileLeft(tiles, x, y);
+                tiles[x, y] = PickTiles(tilePointUp, tilePointLeft);
+
+                //This positions the tile on the grid
+                float tileRadius = tileSize / 2f;
+                float positionX = (x * tileSize) + tileRadius;
+                float positionY = (y * tileSize) + tileRadius;
+                tiles[x, y].transform.position = new Vector3(positionX, 0, positionY);
+                tiles[x, y].transform.SetParent(scene.gameObject.transform);
+            }
+        }
+    }
+
+    public static void LoadTileSet()
+    {
+        Scene scene = GetScene();
+
+        foreach (Object tilePrefab in scene.tilesPrefabPool)
+        {
+            GameObject tempTile = GameObject.Instantiate(tilePrefab) as GameObject;
+
+            if (scene.tilesSet == null)
+            {
+                scene.tilesSet = new List<GameObject>();
+            }
+
+            scene.tilesSet.Add(tempTile);
+            tempTile.name = tilePrefab.name;                    
+        }
+    }
+
+    public static GameObject PickTiles(Transform tileUpPointDown, Transform tileLeftPointRight)
+    {
+        GameObject tileToLoad = null;
+
+        Scene scene = GetScene();
+
+        List<string> useableTilesName = new List<string>();
+        List<int> useableTilesRotation = new List<int>();
+
+        foreach (GameObject tile in scene.tilesSet)
+        {
+            tile.SetActive(true);
+
+            Transform connectionPointUp = null;
+            Transform connectionPointLeft = null;
+
+            for (int rotation = 0; rotation < 360; rotation = rotation + 90)
+            {
+                tile.transform.rotation = Quaternion.Euler(0, rotation, 0);
+
+                connectionPointUp = GetTilePointUp(tile);
+                connectionPointLeft = GetTilePointLeft(tile);
+
+                if (tileUpPointDown != null)
+                {
+                    if (connectionPointUp.name == tileUpPointDown.name)
+                    {
+                        if (tileLeftPointRight != null)
+                        {
+                            if (connectionPointLeft.name == tileLeftPointRight.name)
+                            {
+                                useableTilesName.Add(tile.name);
+                                useableTilesRotation.Add(rotation);
+                            }
+                        }
+                        else
+                        {
+                            useableTilesName.Add(tile.name);
+                            useableTilesRotation.Add(rotation);
+                        }
+                    }
+                }
+                else
+                {
+                    if (tileLeftPointRight != null)
+                    {
+                        if (connectionPointLeft.name == tileLeftPointRight.name)
+                        {
+                            useableTilesName.Add(tile.name);
+                            useableTilesRotation.Add(rotation);
+                        }
+                    }
+                    else
+                    {
+                        useableTilesName.Add(tile.name);
+                        useableTilesRotation.Add(rotation);
+                    }
+                }
+            }
+
+            tile.SetActive(false);
+        }
+
+        int useableTilesCount = useableTilesName.Count - 1;
+
+        int tileChoice = Random.Range(0, useableTilesCount);
+
+        foreach (GameObject tile in scene.tilesSet)
+        {
+            if (tile.name == useableTilesName[tileChoice])
+            {
+                tile.SetActive(true);
+
+                tileToLoad = GameObject.Instantiate(tile);
+                tileToLoad.transform.rotation = Quaternion.Euler(0, useableTilesRotation[tileChoice], 0);
+
+                if (scene.tilesPool == null)
+                {
+                    scene.tilesPool = new List<GameObject>();
+                }
+
+                scene.tilesPool.Add(tileToLoad);
+
+                tile.transform.rotation = Quaternion.identity;
+                tile.SetActive(false);
+                break;
+            }
+        }
+
+        return tileToLoad;
+    }
+
+    public static Transform GetTilePointDownOfTileUp(GameObject[,] tileTypes, int x, int y)
+    {
+        GameObject tileUp = null;
+        Transform tileUpConnectionPointDown = null;
+
+        int yAxis = y - 1;
+
+        if (yAxis >= 0)
+        {
+            tileUp = tileTypes[x, yAxis];
+
+            Transform[] tileUpPoints = tileUp.transform.GetComponentsInChildren<Transform>();
+
+            foreach (Transform tilePoint in tileUpPoints)
+            {
+                GameObject rotationTest = new GameObject();
+                rotationTest.transform.position = tileUp.transform.position;
+
+                Vector3 tilePointRelativePosition = tilePoint.position - tileUp.transform.position;
+                
+                float tilePosition = Vector3.Dot(rotationTest.transform.forward, tilePointRelativePosition.normalized);
+
+                if (tilePosition < -0.55)
+                {
+                    tileUpConnectionPointDown = tilePoint;
+                    break;
+                }
+
+                GameObject.Destroy(rotationTest);
+            }
+        }
+
+        return tileUpConnectionPointDown;
+    }
+
+    public static Transform GetTilePointRightOfTileLeft(GameObject[,] tileTypes, int x, int y)
+    {
+        GameObject tileLeft = null;
+        Transform tileLeftConnectionPointRight = null;
+
+        int xAxis = x - 1;
+
+        if (xAxis >= 0)
+        {
+            tileLeft = tileTypes[xAxis, y];
+
+            Transform[] tileLeftPoints = tileLeft.transform.GetComponentsInChildren<Transform>();
+
+            foreach (Transform tilePoint in tileLeftPoints)
+            {
+                GameObject rotationTest = new GameObject();
+                rotationTest.transform.position = tileLeft.transform.position;
+
+                Vector3 tilePointRelativePosition = tilePoint.position - tileLeft.transform.position;
+                float tilePosition = Vector3.Dot(rotationTest.transform.right, tilePointRelativePosition.normalized);
+
+                if (tilePosition > 0.55)
+                {
+                    tileLeftConnectionPointRight = tilePoint;
+                    break;
+                }
+
+                GameObject.Destroy(rotationTest);
+            }
+        }
+
+        return tileLeftConnectionPointRight;
+    }
+
+    public static Transform GetTilePointUp(GameObject tile)
+    {
+        Transform connectionPointUp = null;
+
+        Transform[] tileUpPoints = tile.transform.GetComponentsInChildren<Transform>();
+
+        foreach (Transform tilePoint in tileUpPoints)
+        {
+            GameObject rotationTest = new GameObject();
+            rotationTest.transform.position = tile.transform.position;
+
+            Vector3 tilePointRelativePosition = tilePoint.position - tile.transform.position;
+            float tilePosition = Vector3.Dot(rotationTest.transform.forward, tilePointRelativePosition.normalized);
+
+            if (tilePosition > 0.55)
+            {
+                connectionPointUp = tilePoint;
+                break;
+            }
+
+            GameObject.Destroy(rotationTest);
+        }
+
+        return connectionPointUp;
+    }
+
+    public static Transform GetTilePointLeft(GameObject tile)
+    {
+        Transform connectionPointLeft = null;
+
+        Transform[] tileUpPoints = tile.transform.GetComponentsInChildren<Transform>();
+
+        foreach (Transform tilePoint in tileUpPoints)
+        {
+            GameObject rotationTest = new GameObject();
+            rotationTest.transform.position = tile.transform.position;
+
+            Vector3 tilePointRelativePosition = tilePoint.position - tile.transform.position;
+            float tilePosition = Vector3.Dot(rotationTest.transform.right, tilePointRelativePosition.normalized);
+
+            if (tilePosition < -0.55)
+            {
+                connectionPointLeft = tilePoint;
+                break;
+            }
+
+            GameObject.Destroy(rotationTest);
+        }
+
+        return connectionPointLeft;
+    }
+
+    #endregion
+
+    #region ship creation
 
     //This loads an individual ship in the scene
     public static void LoadShip(string shipTypeName, bool isAI = true, Vector3 position = new Vector3(), string allegiance = "none", bool attachCameraToAI = false, string aiSkillLevel = "easy", string squadron = "none")
     {
-
         //Get scene script reference
         Scene scene = GetScene();
         Audio audioManager = AudioFunctions.GetAudioManager();
@@ -1004,6 +1276,10 @@ public static class SceneFunctions
         }
      
     }
+
+    #endregion
+
+    #region cockpit creation
 
     public static void InstantiateCockpits()
     {

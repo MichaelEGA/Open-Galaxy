@@ -642,6 +642,11 @@ public static class SceneFunctions
         int numberOfTilesX = xDistance / tileSize;
         int numberOfTilesY = yDistance / tileSize;
 
+        float xDistanceRadius = xDistance / 2;
+        float yDistanceRadius = yDistance / 2;
+
+        float tileRadius = tileSize / 2f;
+
         GameObject[,] tiles = new GameObject[numberOfTilesX, numberOfTilesY];
 
         for (int x = 0; x < numberOfTilesX - 1; x++)
@@ -654,9 +659,8 @@ public static class SceneFunctions
                 tiles[x, y] = PickTiles(tilePointUp, tilePointLeft);
 
                 //This positions the tile on the grid
-                float tileRadius = tileSize / 2f;
-                float positionX = (x * tileSize) + tileRadius;
-                float positionY = (y * tileSize) + tileRadius;
+                float positionX = ((x * tileSize) + tileRadius) - xDistanceRadius;
+                float positionY = ((y * tileSize) + tileRadius) - yDistanceRadius;
                 tiles[x, y].transform.position = new Vector3(positionX, 0, positionY);
                 tiles[x, y].transform.SetParent(scene.gameObject.transform);
             }
@@ -795,13 +799,13 @@ public static class SceneFunctions
                 
                 float tilePosition = Vector3.Dot(rotationTest.transform.forward, tilePointRelativePosition.normalized);
 
-                if (tilePosition < -0.55)
+                GameObject.Destroy(rotationTest);
+
+                if (tilePosition > 0.55)
                 {
                     tileUpConnectionPointDown = tilePoint;
                     break;
                 }
-
-                GameObject.Destroy(rotationTest);
             }
         }
 
@@ -829,13 +833,13 @@ public static class SceneFunctions
                 Vector3 tilePointRelativePosition = tilePoint.position - tileLeft.transform.position;
                 float tilePosition = Vector3.Dot(rotationTest.transform.right, tilePointRelativePosition.normalized);
 
+                GameObject.Destroy(rotationTest);
+
                 if (tilePosition > 0.55)
                 {
                     tileLeftConnectionPointRight = tilePoint;
                     break;
                 }
-
-                GameObject.Destroy(rotationTest);
             }
         }
 
@@ -856,13 +860,13 @@ public static class SceneFunctions
             Vector3 tilePointRelativePosition = tilePoint.position - tile.transform.position;
             float tilePosition = Vector3.Dot(rotationTest.transform.forward, tilePointRelativePosition.normalized);
 
-            if (tilePosition > 0.55)
+            GameObject.Destroy(rotationTest);
+
+            if (tilePosition < -0.55)
             {
                 connectionPointUp = tilePoint;
                 break;
             }
-
-            GameObject.Destroy(rotationTest);
         }
 
         return connectionPointUp;
@@ -882,13 +886,13 @@ public static class SceneFunctions
             Vector3 tilePointRelativePosition = tilePoint.position - tile.transform.position;
             float tilePosition = Vector3.Dot(rotationTest.transform.right, tilePointRelativePosition.normalized);
 
+            GameObject.Destroy(rotationTest);
+
             if (tilePosition < -0.55)
             {
                 connectionPointLeft = tilePoint;
                 break;
             }
-
-            GameObject.Destroy(rotationTest);
         }
 
         return connectionPointLeft;

@@ -633,7 +633,7 @@ public static class SceneFunctions
 
     #region ground tile creation
 
-    public static void PlaceTiles(string sceneType, int xDistance, int yDistance, int tileSize)
+    public static IEnumerator PlaceTiles(string sceneType, int xDistance, int yDistance, int tileSize)
     {
         LoadTileSet();
 
@@ -663,6 +663,8 @@ public static class SceneFunctions
                 float positionY = ((y * tileSize) + tileRadius) - yDistanceRadius;
                 tiles[x, y].transform.position = new Vector3(positionX, 0, positionY);
                 tiles[x, y].transform.SetParent(scene.gameObject.transform);
+
+                yield return null;
             }
         }
     }

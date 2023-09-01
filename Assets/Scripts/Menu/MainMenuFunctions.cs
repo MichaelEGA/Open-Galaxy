@@ -27,6 +27,8 @@ public static class MainMenuFunctions
 
         yield return new WaitForSeconds(2);
 
+        Task special = new Task(SceneFunctions.PlaceTiles("none", 30000, 30000, 1000));
+
         if (disclaimer != null)
         {
             CanvasGroup canvasGroup = disclaimer.GetComponent<CanvasGroup>();

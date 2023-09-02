@@ -633,7 +633,7 @@ public static class SceneFunctions
 
     #region ground tile creation
 
-    public static IEnumerator PlaceTiles(string sceneType, int xDistance, int yDistance, int tileSize)
+    public static IEnumerator GenerateTiles(string sceneType, int xDistance, int yDistance, int tileSize)
     {
         LoadTileSet();
 
@@ -762,6 +762,12 @@ public static class SceneFunctions
 
                 tileToLoad = GameObject.Instantiate(tile);
                 tileToLoad.transform.rotation = Quaternion.Euler(0, useableTilesRotation[tileChoice], 0);
+
+                Rigidbody rigidbody = tileToLoad.AddComponent<Rigidbody>();
+                rigidbody.isKinematic = true;
+                GameObjectUtils.AddColliders(tileToLoad, false);
+                tileToLoad.transform.gameObject.layer = 7;
+                GameObjectUtils.SetLayerAllChildren(tileToLoad.transform, 7);
 
                 if (scene.tilesPool == null)
                 {

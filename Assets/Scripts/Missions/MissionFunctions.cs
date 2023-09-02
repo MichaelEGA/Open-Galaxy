@@ -50,26 +50,31 @@ public static class MissionFunctions
 
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-            if (missionEvent.eventType == "preload_loadship" )
+            if (missionEvent.eventType == "preload_loadtiles")
+            {
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading Tiles. This may take a while...", Time.unscaledTime - time);
+                Task a = new Task(LoadTiles(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Tiles loaded", Time.unscaledTime - time);
+            }
+            else if (missionEvent.eventType == "preload_loadship" )
             {
                 LoadShip(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("single ship created", 0);
+                LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_loadshipsbyname")
             {
                 Task a = new Task(LoadShipsByName(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("batch of ships created by name", 0);
+                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_loadshipsbytypeandallegiance")
             {
                 Task a = new Task(LoadShipsByTypeAndAllegiance(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("batch of ships created by type and allegiance", 0);
-            }
+                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by type and allegiance", Time.unscaledTime - time);
+            }        
         }
-
-        Time.timeScale = 1;
 
         //This tells the player to get ready
         LoadScreenFunctions.AddLogToLoadingScreen(missionName + " loaded.", 0);
@@ -78,6 +83,8 @@ public static class MissionFunctions
         float delay = Time.unscaledTime + 5;
 
         while (Time.unscaledTime < delay) { yield return null; }
+
+        Time.timeScale = 1;
 
         DisplayLoadingScreen(missionName, false);
 
@@ -675,6 +682,18 @@ public static class MissionFunctions
 
         Task c = new Task(SceneFunctions.LoadShipsByTypeAndAllegiance(missionEvent.data1, missionEvent.data2, missionEvent.data3, shipNo, groupsOf, float.Parse(missionEvent.data6), float.Parse(missionEvent.data7), bool.Parse(missionEvent.data8), float.Parse(missionEvent.data9), new Vector3(x, y, z), squadronName, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
+    }
+
+    //This loads a tile set for ground / other scenery
+    public static IEnumerator LoadTiles(MissionEvent missionEvent)
+    {
+        string type = missionEvent.data1;
+        int distanceX = (int)missionEvent.x;
+        int distanceY = (int)missionEvent.y;
+        int tileSize = (int)missionEvent.z;
+
+        Task a = new Task(SceneFunctions.GenerateTiles(type, distanceX, distanceY, tileSize));
+        while (a.Running == true) { yield return null; }
     }
 
     //This toggles whether the player can fire their weapons or not

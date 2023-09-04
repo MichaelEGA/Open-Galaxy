@@ -533,7 +533,7 @@ public static class SceneFunctions
     #region asteroid field creation
 
     //This generates a random asteroid field
-    public static IEnumerator CreateAsteroidField(int seed, bool ignoreSeed = false, int asteroidNo = 100)
+    public static IEnumerator GenerateAsteroidField(int seed, bool ignoreSeed = false, int asteroidNo = 100)
     {
         LoadScreenFunctions.AddLogToLoadingScreen("Generating asteroid field...", 0, false);
 
@@ -678,12 +678,12 @@ public static class SceneFunctions
         {
             GameObject tempTile = GameObject.Instantiate(tilePrefab) as GameObject;
 
-            if (scene.tilesSet == null)
+            if (scene.tilesSetPool == null)
             {
-                scene.tilesSet = new List<GameObject>();
+                scene.tilesSetPool = new List<GameObject>();
             }
 
-            scene.tilesSet.Add(tempTile);
+            scene.tilesSetPool.Add(tempTile);
             tempTile.name = tilePrefab.name;                    
         }
     }
@@ -697,7 +697,7 @@ public static class SceneFunctions
         List<string> useableTilesName = new List<string>();
         List<int> useableTilesRotation = new List<int>();
 
-        foreach (GameObject tile in scene.tilesSet)
+        foreach (GameObject tile in scene.tilesSetPool)
         {
             tile.SetActive(true);
 
@@ -755,7 +755,7 @@ public static class SceneFunctions
 
         int tileChoice = Random.Range(0, useableTilesCount);
 
-        foreach (GameObject tile in scene.tilesSet)
+        foreach (GameObject tile in scene.tilesSetPool)
         {
             if (tile.name == useableTilesName[tileChoice])
             {
@@ -1430,6 +1430,26 @@ public static class SceneFunctions
             }
 
             scene.torpedosPool.Clear();
+        }
+
+        if (scene.tilesPool != null)
+        {
+            foreach (GameObject gameobject in scene.tilesPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.tilesPool.Clear();
+        }
+
+        if (scene.tilesSetPool != null)
+        {
+            foreach (GameObject gameobject in scene.tilesSetPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.tilesSetPool.Clear();
         }
 
         if (scene.cockpitPool != null)

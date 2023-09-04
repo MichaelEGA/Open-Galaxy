@@ -512,12 +512,12 @@ public static class MissionFunctions
 
         if (missionEvent.data1 != "none")
         {
-            Task b = new Task(SceneFunctions.CreateAsteroidField(scene.planetSeed, true, int.Parse(missionEvent.data1)));
+            Task b = new Task(SceneFunctions.GenerateAsteroidField(scene.planetSeed, true, int.Parse(missionEvent.data1)));
             while (b.Running == true) { yield return null; }
         }
         else
         {
-            Task b = new Task(SceneFunctions.CreateAsteroidField(scene.planetSeed));
+            Task b = new Task(SceneFunctions.GenerateAsteroidField(scene.planetSeed));
             while (b.Running == true) { yield return null; }
         }
     }

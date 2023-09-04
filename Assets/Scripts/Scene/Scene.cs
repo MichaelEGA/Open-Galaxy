@@ -28,7 +28,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> torpedosPool;
     [HideInInspector] public List<GameObject> cockpitPool;
     [HideInInspector] public List<GameObject> tilesPool;
-    [HideInInspector] public List<GameObject> tilesSet;
+    [HideInInspector] public List<GameObject> tilesSetPool;
 
     [Header("Collision Avoidance Checks")]
     [HideInInspector] public bool avoidSmallObjectsRunning;

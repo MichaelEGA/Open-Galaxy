@@ -15,7 +15,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
   - Explore mode where you can explore the whole Star Wars galaxy (In progress)
 
-**Latest Release:** 0.5.7
+**Latest Release:** 0.6.2
 
 Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
@@ -28,6 +28,18 @@ Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
 
 **Changelog**
+
+03/09/23 - v.0.6.2
+  - Update: Death Star test mission with new messages and enemies
+  - Added: Tile Loading to mission functions. 
+  - Added: Death Star Mission - Our Moment of Triumph
+  - Update: death star tiles and tiling code
+  - Added: Code for generating tiles
+  - Update: FS and GC cockpit models
+  - Update: First Strike X-Wing cockpit is now slightly more accurate
+  - Fixed: Torpedoes not exploding 
+  - Added: high resolution cockpit textures for FS
+  - Update: GC X-Wing cockpit improved
 
 27/08/23 - v.0.5.7
   - Added: Galactic Conquest Cockpits, Bomber attack pattern, dynamic thruster placement

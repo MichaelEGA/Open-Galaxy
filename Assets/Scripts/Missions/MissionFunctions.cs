@@ -43,16 +43,28 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "loadscene")
             {
-                Task a = new Task(LoadScene(missionName, missionEvent.data1, false, missionAddress));
-                while (a.Running == true) { yield return null; }
+                LoadScene(missionName, missionEvent.data1, false, missionAddress);
             }
         }
 
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-            if (missionEvent.eventType == "preload_loadtiles")
+            if (missionEvent.eventType == "preload_loadasteroids")
             {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading Tiles. This may take a while...", Time.unscaledTime - time);
+                Task a = new Task(LoadAsteroids(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);
+            }
+            else if (missionEvent.eventType == "preload_loadplanet")
+            {
+                LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
+                Task a = new Task(LoadPlanet());
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
+            }
+            else if (missionEvent.eventType == "preload_loadtiles")
+            {
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading unique tile configuration. This may take a while...", Time.unscaledTime - time);
                 Task a = new Task(LoadTiles(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Tiles loaded", Time.unscaledTime - time);
@@ -319,7 +331,7 @@ public static class MissionFunctions
     #region main scene loading function
 
     //This creates the scene 
-    public static IEnumerator LoadScene(string missionName, string location, bool randomiseLocation, string missionAddress)
+    public static void LoadScene(string missionName, string location, bool randomiseLocation, string missionAddress)
     {
         Scene scene = SceneFunctions.GetScene();
 
@@ -351,16 +363,8 @@ public static class MissionFunctions
         var planetData = SceneFunctions.GetSpecificLocation(location);
         SceneFunctions.MoveStarfieldCamera(planetData.location);
         scene.location = planetData.planet;
-
-        Task a = new Task(SceneFunctions.GeneratePlanetHeightmap(planetData.type, planetData.seed));
-        while (a.Running == true) { yield return null; }
-        SceneFunctions.SetPlanetDistance(planetData.seed);
-        LoadScreenFunctions.AddLogToLoadingScreen("Planet created", Time.unscaledTime - time);
-
-        //This creates the asteroids in the area
-        Task b = new Task(SceneFunctions.CreateAsteroidField(planetData.seed));
-        while (b.Running == true) { yield return null; }
-        LoadScreenFunctions.AddLogToLoadingScreen("Asteroids created", Time.unscaledTime - time);
+        scene.planetType = planetData.type;
+        scene.planetSeed = planetData.seed;
     }
 
     #endregion
@@ -499,6 +503,32 @@ public static class MissionFunctions
         }
 
         return shipTypeIsActive;
+    }
+
+    //This loads the asteroid field
+    public static IEnumerator LoadAsteroids(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (missionEvent.data1 != "none")
+        {
+            Task b = new Task(SceneFunctions.CreateAsteroidField(scene.planetSeed, true, int.Parse(missionEvent.data1)));
+            while (b.Running == true) { yield return null; }
+        }
+        else
+        {
+            Task b = new Task(SceneFunctions.CreateAsteroidField(scene.planetSeed));
+            while (b.Running == true) { yield return null; }
+        }
+    }
+
+    //This loads a planet in the scene
+    public static IEnumerator LoadPlanet()
+    {
+        Scene scene = SceneFunctions.GetScene();
+        Task a = new Task(SceneFunctions.GeneratePlanetHeightmap(scene.planetType, scene.planetSeed));
+        while (a.Running == true) { yield return null; }
+        SceneFunctions.SetPlanetDistance(scene.planetSeed);
     }
 
     //This loads a single ship by name

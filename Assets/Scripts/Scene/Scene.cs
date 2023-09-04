@@ -7,6 +7,8 @@ public class Scene : MonoBehaviour
 {
     [Header("Scene Information")]
     public string location;
+    public string planetType;
+    public int planetSeed;
 
     [Header("The Main Ship")]
     [HideInInspector] public GameObject mainShip;
@@ -31,6 +33,9 @@ public class Scene : MonoBehaviour
     [Header("Collision Avoidance Checks")]
     [HideInInspector] public bool avoidSmallObjectsRunning;
     [HideInInspector] public bool avoidLargeObjectsRunning;
+
+    [Header("Planet")]
+    [HideInInspector] public GameObject planet;
 
     [Header("Cameras")]
     [HideInInspector] public GameObject mainCamera;

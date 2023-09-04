@@ -246,21 +246,20 @@ public static class SceneFunctions
     //This generates the planet texture
     public static IEnumerator GeneratePlanetHeightmap(string type, int seed)
     {
-
-        LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", 0, false);
-
         //This gets key references
-        GameObject planet = GameObject.Find("Planet");
+        Scene scene = GetScene();
 
-        if (planet == null)
+        scene.planet = GameObject.Find("Planet");
+
+        if (scene.planet == null)
         {
             GameObject planetPrefab = Resources.Load("Planet/Planet") as GameObject;
-            planet = GameObject.Instantiate(planetPrefab);
-            planet.name = "Planet";
+            scene.planet = GameObject.Instantiate(planetPrefab);
+            scene.planet.name = "Planet";
         }
 
         GameObject atmosphere = GameObject.Find("Atmosphere");
-        Renderer planetRenderer = planet.GetComponent<Renderer>();
+        Renderer planetRenderer = scene.planet.GetComponent<Renderer>();
         Material planetMaterial = planetRenderer.sharedMaterial;
 
         Random.InitState(seed);
@@ -327,9 +326,6 @@ public static class SceneFunctions
         Gradient grayscale = GradientPresets.Grayscale;
         Task b = new Task(heightMap.GetTexture(grayscale, planetRenderer));
         while (b.Running == true) { yield return new WaitForEndOfFrame(); }
-
-        LoadScreenFunctions.AddLogToLoadingScreen("Heightmap complete.", 0, false);
-        LoadScreenFunctions.AddLogToLoadingScreen("Applying textures and colors.", 0, false);
 
         //This loads the planet type data
         TextAsset planetTypesFile = Resources.Load("Data/Files/PlanetTypes") as TextAsset;
@@ -537,7 +533,7 @@ public static class SceneFunctions
     #region asteroid field creation
 
     //This generates a random asteroid field
-    public static IEnumerator CreateAsteroidField(int seed)
+    public static IEnumerator CreateAsteroidField(int seed, bool ignoreSeed = false, int asteroidNo = 100)
     {
         LoadScreenFunctions.AddLogToLoadingScreen("Generating asteroid field...", 0, false);
 
@@ -566,6 +562,11 @@ public static class SceneFunctions
 
         //Pick number of asteroids to load in the scene
         int asteroidNumber = Random.Range(100, 1000);
+
+        if (ignoreSeed == true)
+        {
+            asteroidNumber = asteroidNo;
+        }
 
         float changeScale = Random.Range(5, 15);
 
@@ -1440,8 +1441,12 @@ public static class SceneFunctions
 
             scene.cockpitPool.Clear();
         }
-    }
 
+        if (scene.planet != null)
+        {
+            GameObject.Destroy(scene.planet);
+        }
+    }
 
     //This unloads the starfield
     public static void UnloadStarfield()

@@ -85,7 +85,12 @@ public static class MissionFunctions
                 Task a = new Task(LoadShipsByTypeAndAllegiance(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by type and allegiance", Time.unscaledTime - time);
-            }        
+            }
+            else if (missionEvent.eventType == "preload_setskybox")
+            {
+                SetSkyBox(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);
+            }
         }
 
         //This tells the player to get ready
@@ -365,6 +370,9 @@ public static class MissionFunctions
         scene.location = planetData.planet;
         scene.planetType = planetData.type;
         scene.planetSeed = planetData.seed;
+
+        //This sets the scene skybox to the default: space
+        SceneFunctions.SetSkybox("space");
     }
 
     #endregion
@@ -940,6 +948,12 @@ public static class MissionFunctions
                 }
             }
         }
+    }
+
+    //This sets the skybox
+    public static void SetSkyBox(MissionEvent missionEvent)
+    {
+        SceneFunctions.SetSkybox(missionEvent.data1);
     }
 
     //This checks the ship distance to its waypoint

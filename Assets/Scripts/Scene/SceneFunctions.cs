@@ -57,6 +57,9 @@ public static class SceneFunctions
         Object[] particlePrefabs = Resources.LoadAll("ParticlePrefabs", typeof(GameObject));
         scene.particlePrefabPool = new GameObject[particlePrefabs.Length];
         scene.particlePrefabPool = particlePrefabs;
+
+        scene.space = Resources.Load("Data/SkyboxAssets/Space") as Material;
+        scene.sky = Resources.Load("Data/SkyboxAssets/Sky") as Material;      
     }
 
     //This creates the starfield Camera
@@ -1311,6 +1314,29 @@ public static class SceneFunctions
             cockpitObject.layer = LayerMask.NameToLayer("cockpit");
             GameObjectUtils.SetLayerAllChildren(cockpitObject.transform, 28);
             cockpitObject.SetActive(false);
+        }
+    }
+
+    #endregion
+
+    #region skybox
+
+    public static void SetSkybox(string mode)
+    {
+        Scene scene = GetScene();
+
+        GameObject starfield = GameObject.Find("starfield");
+
+        if (mode == "sky")
+        {
+            RenderSettings.skybox = scene.sky;
+            starfield.layer = LayerMask.NameToLayer("invisible");
+
+        }
+        else
+        {
+            RenderSettings.skybox = scene.space;
+            starfield.layer = LayerMask.NameToLayer("starfield");
         }
     }
 

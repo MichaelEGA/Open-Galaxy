@@ -33,7 +33,7 @@ Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
   - Updated: Death Star test mission with new messages and enemies
   - Added: Tile Loading to mission functions. 
   - Added: Death Star Mission - Our Moment of Triumph
-  - Update: death star tiles and tiling code
+  - Updated: death star tiles and tiling code
   - Added: Code for generating tiles
   - Updated: FS and GC cockpit models
   - Updated: First Strike X-Wing cockpit is now slightly more accurate

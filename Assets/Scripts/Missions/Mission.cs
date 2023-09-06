@@ -11,6 +11,9 @@ public class MissionEvent
     public float x;
     public float y;
     public float z;
+    public float xRotation;
+    public float yRotation;
+    public float zRotation;
     public string data1;
     public string data2;
     public string data3;

@@ -1190,7 +1190,7 @@ public static class SmallShipFunctions
     {
         smallShip.cockpitSpeedShake = true;
 
-        if (smallShip.cockpit != null)
+        if (smallShip.cockpit != null & smallShip.basePosition != null)
         {
             float time = Time.time + 1;
 

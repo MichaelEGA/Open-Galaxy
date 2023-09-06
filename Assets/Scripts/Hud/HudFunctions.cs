@@ -475,7 +475,7 @@ public static class HudFunctions
     {
         if (hud.targetType != null & hud.smallShip != null)
         {
-            if (hud.smallShip.target != null)
+            if (hud.smallShip.target != null & hud.smallShip.targetAllegiance != null & hud.smallShip.targetType != null) 
             {
                 hud.targetType.text = hud.smallShip.targetAllegiance.ToUpper() + " " + hud.smallShip.targetType.ToUpper();
             }

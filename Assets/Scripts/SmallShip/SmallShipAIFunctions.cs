@@ -446,7 +446,11 @@ public static class SmallShipAIFunctions
         float x = Random.Range(0, 15000);
         float y = Random.Range(0, 15000);
         float z = Random.Range(0, 15000);
-        smallship.waypoint.transform.position = new Vector3(x, y, z);
+
+        if (smallship.waypoint != null)
+        {
+            smallship.waypoint.transform.position = new Vector3(x, y, z);
+        }
     }
 
     #endregion

@@ -153,6 +153,12 @@ public static class MissionFunctions
                 RunEvent(missionName, missionEvent);
             }
 
+            //This makes sure the mission that mission events aren't run when the mission manager has been deleted
+            if (missionManager == null)
+            {
+                break;
+            }
+
             yield return null;
         }
     }
@@ -312,22 +318,32 @@ public static class MissionFunctions
             TextAsset missionDataFile = Resources.Load(missionManager.missionAddress + missionName) as TextAsset;
             Mission mission = JsonUtility.FromJson<Mission>(missionDataFile.text);
 
-            int i = 0;
-
-            foreach (MissionEvent missionEvent in mission.missionEventData)
+            if (missionDataFile == null || mission == null)
             {
-                if (missionEvent.eventID == nextEvent)
-                {
-                    missionManager.eventNo = i;
-                    break;
-                }
+                missionManager.running = false;
+            }
+            else
+            {
+                int i = 0;
 
-                i++;
+                foreach (MissionEvent missionEvent in mission.missionEventData)
+                {
+                    if (missionEvent.eventID == nextEvent)
+                    {
+                        missionManager.eventNo = i;
+                        break;
+                    }
+
+                    i++;
+                }
             }
         }
         else
         {
-            missionManager.running = false;
+            if (missionManager != null)
+            {
+                missionManager.running = false;
+            }
         }
     }
 
@@ -549,6 +565,12 @@ public static class MissionFunctions
         string allegiance = missionEvent.data4;
         string squadronName = missionEvent.data5;
 
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
         bool randomise = bool.Parse(missionEvent.data3);
 
         if (ship == "none" || randomise == true)
@@ -566,7 +588,7 @@ public static class MissionFunctions
             z = Random.Range(-10000, 10000);
         }
 
-        SceneFunctions.LoadShip(ship, bool.Parse(missionEvent.data2), new Vector3(x, y, z), allegiance, false, "easy", squadronName);
+        SceneFunctions.LoadShip(ship, bool.Parse(missionEvent.data2), new Vector3(x, y, z), rotation, allegiance, false, "easy", squadronName);
     }
 
     //This loads a single ship at a certain distance and angle from the player
@@ -579,6 +601,12 @@ public static class MissionFunctions
         string allegiance = missionEvent.data4;
         float distance = float.Parse(missionEvent.data5);
         string squadronName = missionEvent.data6;
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
         bool randomise = bool.Parse(missionEvent.data3);
 
@@ -602,7 +630,7 @@ public static class MissionFunctions
             }
         }
 
-        SceneFunctions.LoadShip(ship, bool.Parse(missionEvent.data2), newPosition, allegiance, false, "easy", squadronName);
+        SceneFunctions.LoadShip(ship, bool.Parse(missionEvent.data2), newPosition, rotation, allegiance, false, "easy", squadronName);
     }
 
     //This loads multiple ships by name
@@ -611,6 +639,12 @@ public static class MissionFunctions
         float x = missionEvent.x;
         float y = missionEvent.y;
         float z = missionEvent.z;
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
         string shipName = "xwing";
         if (missionEvent.data1 != "none") { shipName = missionEvent.data1;}
@@ -658,7 +692,7 @@ public static class MissionFunctions
             playerNo = Random.Range(0, shipNo - 1);
         }
 
-        Task c = new Task(SceneFunctions.LoadShipsByName(shipName, shipNo, skillLevel, groupsOf, groupingDistance, groupingDiffereniation, radomisePosition, positionVariance, new Vector3(x, y, z), squadronName, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadShipsByName(shipName, shipNo, skillLevel, groupsOf, groupingDistance, groupingDiffereniation, radomisePosition, positionVariance, new Vector3(x, y, z), rotation, squadronName, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
     }
 
@@ -668,6 +702,12 @@ public static class MissionFunctions
         float x = missionEvent.x;
         float y = missionEvent.y;
         float z = missionEvent.z;
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
         string shipType = "fighter";
         if (missionEvent.data1 != "none") { shipType = missionEvent.data1; }
@@ -718,7 +758,7 @@ public static class MissionFunctions
             playerNo = Random.Range(0, shipNo - 1);
         }
 
-        Task c = new Task(SceneFunctions.LoadShipsByTypeAndAllegiance(missionEvent.data1, missionEvent.data2, missionEvent.data3, shipNo, groupsOf, float.Parse(missionEvent.data6), float.Parse(missionEvent.data7), bool.Parse(missionEvent.data8), float.Parse(missionEvent.data9), new Vector3(x, y, z), squadronName, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadShipsByTypeAndAllegiance(missionEvent.data1, missionEvent.data2, missionEvent.data3, shipNo, groupsOf, float.Parse(missionEvent.data6), float.Parse(missionEvent.data7), bool.Parse(missionEvent.data8), float.Parse(missionEvent.data9), new Vector3(x, y, z), rotation, squadronName, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
     }
 

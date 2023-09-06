@@ -486,7 +486,7 @@ public static class MainMenuFunctions
     {
         string[] messages = new string[10];
         messages[0] = "Welcome to Open Galaxy. Version 0.6.2 adds tiling support for Death Star and planet surfaces.";
-        messages[1] = "Open Galaxy's aim is to be a platform X-Wing and Tie Fighter style custom missions.";
+        messages[1] = "Open Galaxy's aim is to be a platform for X-Wing and Tie Fighter style custom missions.";
         messages[2] = "Need a quick fix? Try out the random battle and ladder modes.";
         messages[3] = "Flying a ship isn't like dusting crops. Remember to complete the training missions.";
         messages[4] = "Open Galaxy generates a real star wars galaxy with accurately positioned stars and planets.";

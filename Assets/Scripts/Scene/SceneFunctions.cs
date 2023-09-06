@@ -915,7 +915,7 @@ public static class SceneFunctions
     #region ship creation
 
     //This loads an individual ship in the scene
-    public static void LoadShip(string shipTypeName, bool isAI = true, Vector3 position = new Vector3(), string allegiance = "none", bool attachCameraToAI = false, string aiSkillLevel = "easy", string squadron = "none")
+    public static void LoadShip(string shipTypeName, bool isAI = true, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string allegiance = "none", bool attachCameraToAI = false, string aiSkillLevel = "easy", string squadron = "none")
     {
         //Get scene script reference
         Scene scene = GetScene();
@@ -1080,8 +1080,9 @@ public static class SceneFunctions
                 ship.name = largeShip.name;
             }
 
-            //Set ship position
+            //Set ship position and rotation
             ship.transform.position = scene.transform.position + position;
+            ship.transform.rotation = rotation;
 
             //Add ship to the object pool
             scene.objectPool = PoolUtils.AddToPool(scene.objectPool, ship);
@@ -1124,7 +1125,7 @@ public static class SceneFunctions
         }
     }
 
-    public static IEnumerator LoadShipsByName(string name, int number = 1, string aiSkillLevel = "easy", int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = false, float positionVariance = 10, Vector3 position = new Vector3(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
+    public static IEnumerator LoadShipsByName(string name, int number = 1, string aiSkillLevel = "easy", int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = false, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
     {
 
         //This gets the scene reference
@@ -1185,7 +1186,7 @@ public static class SceneFunctions
                 isAI = false;
             }
 
-            LoadShip(name, isAI, adjustedPosition, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
+            LoadShip(name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
 
             gNumber++;
 
@@ -1202,7 +1203,7 @@ public static class SceneFunctions
         }
     }
 
-    public static IEnumerator LoadShipsByTypeAndAllegiance(string type, string allegiance, string aiSkillLevel = "easy", int number = 1, int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = true, float positionVariance = 10, Vector3 position = new Vector3(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
+    public static IEnumerator LoadShipsByTypeAndAllegiance(string type, string allegiance, string aiSkillLevel = "easy", int number = 1, int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = true, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1266,7 +1267,7 @@ public static class SceneFunctions
 
                 int shipCallNumber = i + 1;
 
-                LoadShip(shipTypesList[shipTypeCount].name, isAI, adjustedPosition, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
+                LoadShip(shipTypesList[shipTypeCount].name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
 
                 gNumber++;
 

@@ -1,5 +1,5 @@
 # Open-Galaxy
-![Screenshot (106)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/9f8c2094-df5b-468a-8ab8-8bdfdc8983e3)
+![screenshot](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/d8400322-e72b-415f-a0b1-1a59dd9299f8)
 
 Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platform for custom missions made by the community. 
 
@@ -30,16 +30,16 @@ Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 **Changelog**
 
 03/09/23 - v.0.6.2
-  - Update: Death Star test mission with new messages and enemies
+  - Updated: Death Star test mission with new messages and enemies
   - Added: Tile Loading to mission functions. 
   - Added: Death Star Mission - Our Moment of Triumph
-  - Update: death star tiles and tiling code
+  - Updated: death star tiles and tiling code
   - Added: Code for generating tiles
-  - Update: FS and GC cockpit models
-  - Update: First Strike X-Wing cockpit is now slightly more accurate
+  - Updated: FS and GC cockpit models
+  - Updated: First Strike X-Wing cockpit is now slightly more accurate
   - Fixed: Torpedoes not exploding 
   - Added: high resolution cockpit textures for FS
-  - Update: GC X-Wing cockpit improved
+  - Updated: GC X-Wing cockpit improved
 
 27/08/23 - v.0.5.7
   - Added: Galactic Conquest Cockpits, Bomber attack pattern, dynamic thruster placement
@@ -51,51 +51,49 @@ Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases
 
 21/08/23 - v.0.5.21
   - WARNING: This version may temporarily break some missions like 'Assault on Empress Station' 
-  - Upside Down Turret Rotation Fixed, and Capital Ships are Destroyed
-  - All turret prefabs set up, initial code for upside down turrets
-  - Fixed capital ship jitter, turret firerates and damage, capital ship …
-  - Begun to add code to toggle cockpit sets
-  - Capital ships now deal and take laser damage
-  - Fixed laser color bug
-  - Capital ship turrets now fire lasers
-  - Implemented variable values for different turrets
-  - Added rotation restrictions on turrets
-  - turret rotation improvements
+  - Fixed: Upside Down Turret Rotation Fixed, and Capital Ships are Destroyed
+  - Added: All turret prefabs set up, initial code for upside down turrets
+  - Fixed: capital ship jitter, turret firerates and damage, capital ship …
+  - Added: Begun to add code to toggle cockpit sets
+  - Added: Capital ships now deal and take laser damage
+  - Fixed: laser color bug
+  - Added: Capital ship turrets now fire lasers
+  - Added: Implemented variable values for different turrets
+  - Added: rotation restrictions on turrets
+  - Updated: turret rotation improvements
 
 13/08/23 - v.0.5.2
-  - Added capital ship turret loading
-  - Added "In Development" mission category
-  - Correctly Implemented Code for Avoiding Collisions with large objects
-  - Fixed bug that causes stationary "capital ships" (i.e. stations) to move
-  - Rudimentary capital ship support complete
-  - Created base functions for capital ships
+  - Added: capital ship turret loading
+  - Added: "In Development" mission category
+  - Updated: Correctly Implemented Code for Avoiding Collisions with large objects
+  - Fixed: bug that causes stationary "capital ships" (i.e. stations) to move
+  - Added: Rudimentary capital ship support complete
+  - Added: Created base functions for capital ships
 
 08/08/23 - v.0.5.1
-  - Finished adding cockpits, removed hud shake and hud glass
-  - Added dynamic head movement
-  - Added cockpit shake
+  - Added: real cockpits, removed hud shake and hud glass
+  - Added: dynamic head movement
+  - Added: cockpit shake
 
 05/08/23 - v.0.5.01
-  - Update aes_b1.wav
-  - Fixed torpedoes locking on instantly
-  - Fixed target representation not showing
+  - Updated: aes_b1.wav
+  - Fixed: torpedoes locking on instantly
+  - Fixed: target representation not showing
 
 02/08/23 - v.0.5.0
-  - Updated cursor and fixed loading placement problems
-  - Updated all three training missions and the menu script
-  - Minor updates to several missions
-  - Updated game mode: the ladder
-  - Added game mode: the ladder rebel
-  - Updated game mode: the ladder imperial
-  - Added new game mode: the ladder imperial
-  - Added dynamic messages to title and load screens
+  - Updated: cursor and fixed loading placement problems
+  - Updated: all three training missions and the menu script
+  - Updated: Minor changes to several missions
+  - Added: the ladder imperial game mode
+  - Added: the ladder rebel game mode
+  - Added: dynamic messages to title and load screens
 
 30/07/23 - v.0.49.1
-  - Added new mission functions: set target, set ai override mode
-  - Added invert options and planet heightmap resolution options
-  - Added external loading and saving of game settings from the persistent data file
-  - Made separate loading pathways for standard audio and mission audio
-  - Added new mission - Corrans Nightmare Part 2
+  - Added: new mission functions: set target, set ai override mode
+  - Added: invert options and planet heightmap resolution options
+  - Added: external loading and saving of game settings from the persistent data file
+  - Added: Made separate loading pathways for standard audio and mission audio
+  - Added: new mission - Corrans Nightmare Part 2
 
 27/07/23 - v0.49.0
   - First Commit

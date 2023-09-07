@@ -33,6 +33,8 @@ public class MissionEvent
     public string nextEvent2;
     public string nextEvent3;
     public string nextEvent4;
+    public float nodePosX;
+    public float nodePosY;
 }
 
 [System.Serializable]

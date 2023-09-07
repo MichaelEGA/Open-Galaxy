@@ -43,7 +43,7 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "loadscene")
             {
-                LoadScene(missionName, missionEvent.data1, false, missionAddress);
+                LoadScene(missionName, missionEvent.conditionLocation, missionAddress);
             }
         }
 
@@ -352,7 +352,7 @@ public static class MissionFunctions
     #region main scene loading function
 
     //This creates the scene 
-    public static void LoadScene(string missionName, string location, bool randomiseLocation, string missionAddress)
+    public static void LoadScene(string missionName, string location, string missionAddress)
     {
         Scene scene = SceneFunctions.GetScene();
 
@@ -373,12 +373,6 @@ public static class MissionFunctions
         LoadScreenFunctions.AddLogToLoadingScreen("Audio Manager created", Time.unscaledTime - time);
         MusicFunctions.CreateMusicManager();
         LoadScreenFunctions.AddLogToLoadingScreen("Music Manager created", Time.unscaledTime - time);
-
-        //This radommises the planet location if requested
-        if (randomiseLocation == true)
-        {
-            location = "none";
-        }
 
         //This gets the planet data
         var planetData = SceneFunctions.GetSpecificLocation(location);

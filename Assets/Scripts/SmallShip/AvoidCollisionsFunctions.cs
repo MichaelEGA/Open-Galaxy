@@ -32,8 +32,10 @@ public static class AvoidCollisionsFunctions
 
                 if (scene.avoidLargeObjectsRunning == false)
                 {
+
                     Task a = new Task(AvoidLargeObjects(scene));
                 }
+
             }
         }      
     }
@@ -43,11 +45,11 @@ public static class AvoidCollisionsFunctions
     {
         scene.avoidSmallObjectsRunning = true;
 
-        foreach (GameObject shipA in scene.objectPool)
+        foreach (GameObject shipA in scene.objectPool.ToArray())
         {
             if (shipA.activeSelf == true & shipA.GetComponent<SmallShip>() != null)
             {
-                foreach (GameObject shipB in scene.objectPool)
+                foreach (GameObject shipB in scene.objectPool.ToArray())
                 {
                     if (shipB.activeSelf == true & shipB.GetComponent<SmallShip>() != null & shipB != shipA)
                     {
@@ -161,7 +163,7 @@ public static class AvoidCollisionsFunctions
 
         scene.avoidLargeObjectsRunning = true;
 
-        foreach (GameObject ship in scene.objectPool)
+        foreach (GameObject ship in scene.objectPool.ToArray())
         {
             if (ship.activeSelf == true)
             {
@@ -249,9 +251,9 @@ public static class AvoidCollisionsFunctions
             }
         }
 
-        scene.avoidLargeObjectsRunning = false;
-
         yield return null;
+
+        scene.avoidLargeObjectsRunning = false;
 
     }
 }

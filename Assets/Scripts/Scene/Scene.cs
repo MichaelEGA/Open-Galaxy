@@ -30,7 +30,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> tilesPool;
     [HideInInspector] public List<GameObject> tilesSetPool;
 
-    [Header("Collision Avoidance Checks")]
+    [Header("Collision Avoidance")]
     [HideInInspector] public bool avoidSmallObjectsRunning;
     [HideInInspector] public bool avoidLargeObjectsRunning;
 

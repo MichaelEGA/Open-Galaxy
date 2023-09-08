@@ -280,6 +280,11 @@ public static class MissionFunctions
             SetShipToInvincible(missionEvent);
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
+        else if (missionEvent.eventType == "setweaponslock")
+        {
+            SetWeaponsLock(missionEvent);
+            FindNextEvent(missionName, missionEvent.nextEvent1);
+        }
         else if (missionEvent.eventType == "shipshullislessthan")
         {
             bool isLessThan = ShipsHullIsLessThan(missionEvent);
@@ -557,7 +562,7 @@ public static class MissionFunctions
         float y = missionEvent.y;
         float z = missionEvent.z;
         string allegiance = missionEvent.data4;
-        string squadronName = missionEvent.data5;
+        string name = missionEvent.data5;
 
         float xRotation = missionEvent.xRotation;
         float yRotation = missionEvent.yRotation;
@@ -582,7 +587,7 @@ public static class MissionFunctions
             z = Random.Range(-10000, 10000);
         }
 
-        SceneFunctions.LoadShip(ship, bool.Parse(missionEvent.data2), new Vector3(x, y, z), rotation, allegiance, false, "easy", squadronName);
+        SceneFunctions.LoadShip(ship, bool.Parse(missionEvent.data2), new Vector3(x, y, z), rotation, allegiance, false, "easy", name);
     }
 
     //This loads a single ship at a certain distance and angle from the player
@@ -928,6 +933,14 @@ public static class MissionFunctions
                         {
                             smallShip.invincible = isInvincible;
                         }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            largeShip.invincible = isInvincible;
+                        }
+
                     }
                 }
             }
@@ -988,6 +1001,45 @@ public static class MissionFunctions
     public static void SetSkyBox(MissionEvent missionEvent)
     {
         SceneFunctions.SetSkybox(missionEvent.data1);
+    }
+
+    //This toggles whether a ship can fire their weapons or not
+    public static void SetWeaponsLock(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool isLocked = false;
+
+        if (missionEvent.data2 != "none")
+        {
+            isLocked = bool.Parse(missionEvent.data2);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            smallShip.weaponsLock = isLocked;
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            largeShip.weaponsLock = isLocked;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //This checks the ship distance to its waypoint

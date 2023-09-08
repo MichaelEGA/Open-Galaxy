@@ -489,7 +489,7 @@ public static class MainMenuFunctions
         messages[1] = "Open Galaxy's aim is to be a platform for X-Wing and Tie Fighter style custom missions.";
         messages[2] = "Need a quick fix? Try out the random battle and ladder modes.";
         messages[3] = "Flying a ship isn't like dusting crops. Remember to complete the training missions.";
-        messages[4] = "Open Galaxy generates a real star wars galaxy with accurately positioned stars and planets.";
+        messages[4] = "Open Galaxy generates a real Star Wars galaxy with accurately positioned stars and planets.";
         messages[5] = "You can lower the quality of the planet heightmap for faster loadtimes.";
         messages[6] = "Open Galaxy is best played with a keyboard and mouse. But there is rudimentary controller support.";
         messages[7] = "Open Galaxy uses a mouse joystick system that allows for precision control of your ship.";

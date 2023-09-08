@@ -251,6 +251,7 @@ public static class TargetingFunctions
 
             float distance = Mathf.Infinity;
 
+            //This checks for the closest small ship first
             foreach (GameObject ship in scene.objectPool)
             {
                 if (ship != null)
@@ -285,19 +286,34 @@ public static class TargetingFunctions
                             }
                         }
                     }
-                    else if (ship.activeSelf == true & tempLargeShip != null)
+                   
+                }
+            }
+            
+            //If the target is still null it looks for the closest large ship
+            if (target == null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
                     {
-                        bool isHostile = GetHostility(smallShip, tempLargeShip.allegiance);
+                        tempSmallShip = ship.GetComponent<SmallShip>();
+                        tempLargeShip = ship.GetComponent<LargeShip>();
 
-                        if (isHostile == true)
+                       if (ship.activeSelf == true & tempLargeShip != null)
                         {
-                            float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
+                            bool isHostile = GetHostility(smallShip, tempLargeShip.allegiance);
 
-                            if (tempDistance < distance)
+                            if (isHostile == true)
                             {
-                                target = ship;
-                                targetLargeShip = tempLargeShip;
-                                distance = tempDistance;
+                                float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
+
+                                if (tempDistance < distance)
+                                {
+                                    target = ship;
+                                    targetLargeShip = tempLargeShip;
+                                    distance = tempDistance;
+                                }
                             }
                         }
                     }
@@ -341,7 +357,6 @@ public static class TargetingFunctions
             //This prevents the torpedo from immediately locking on to the new target
             smallShip.torpedoLockedOn = false;
             smallShip.torpedoLockingOn = false;
-
         }
     }
 
@@ -772,6 +787,7 @@ public static class TargetingFunctions
 
             float distance = Mathf.Infinity;
 
+            //This looks for a largeship first
             foreach (GameObject ship in scene.objectPool)
             {
                 if (ship != null)
@@ -779,23 +795,7 @@ public static class TargetingFunctions
                     tempSmallShip = ship.GetComponent<SmallShip>();
                     tempLargeShip = ship.GetComponent<LargeShip>();
 
-                    if (ship.activeSelf == true & tempSmallShip != null & mode != "largeship")
-                    {
-                        bool isHostile = GetHostility_LargeShip(largeShip, tempSmallShip.allegiance);
-
-                        if (isHostile == true)
-                        {
-                            float tempDistance = Vector3.Distance(ship.transform.position, largeShip.gameObject.transform.position);
-
-                            if (tempDistance < distance)
-                            {
-                                target = ship;
-                                targetSmallShip = tempSmallShip;
-                                distance = tempDistance;
-                            }
-                        }
-                    }
-                    else if (ship.activeSelf == true & tempLargeShip != null & mode != "smallship")
+                    if (ship.activeSelf == true & tempLargeShip != null & mode != "smallship")
                     {
                         bool isHostile = GetHostility_LargeShip(largeShip, tempLargeShip.allegiance);
 
@@ -808,6 +808,36 @@ public static class TargetingFunctions
                                 target = ship;
                                 targetLargeShip = tempLargeShip;
                                 distance = tempDistance;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Then if it can't find a small ship it looks for a smallship
+            if (target == null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        tempSmallShip = ship.GetComponent<SmallShip>();
+                        tempLargeShip = ship.GetComponent<LargeShip>();
+
+                        if (ship.activeSelf == true & tempSmallShip != null & mode != "largeship")
+                        {
+                            bool isHostile = GetHostility_LargeShip(largeShip, tempSmallShip.allegiance);
+
+                            if (isHostile == true)
+                            {
+                                float tempDistance = Vector3.Distance(ship.transform.position, largeShip.gameObject.transform.position);
+
+                                if (tempDistance < distance)
+                                {
+                                    target = ship;
+                                    targetSmallShip = tempSmallShip;
+                                    distance = tempDistance;
+                                }
                             }
                         }
                     }

@@ -1181,9 +1181,14 @@ public static class HudFunctions
         while (alpha > 0)
         {
             alpha = alpha - (1f / (60f * duration));
-            Color newColor = text.color;
-            newColor.a = alpha;
-            text.color = newColor;
+
+            if (text != null)
+            {       
+                Color newColor = text.color;
+                newColor.a = alpha;
+                text.color = newColor;           
+            }
+
             yield return new WaitForSecondsRealtime(0.016f);
         }
 
@@ -1197,12 +1202,16 @@ public static class HudFunctions
         while (alpha < 1)
         {
             alpha = alpha + (1f / (60f * duration));
-            Color newColor = text.color;
-            newColor.a = alpha;
-            text.color = newColor;
+
+            if (text != null)
+            {            
+                Color newColor = text.color;
+                newColor.a = alpha;
+                text.color = newColor;               
+            }
+
             yield return new WaitForSecondsRealtime(0.016f);
         }
-
     }
 
     //This fades an image in and out
@@ -1223,12 +1232,16 @@ public static class HudFunctions
         while (alpha > 0)
         {
             alpha = alpha - (1f / (60f * duration));
-            Color newColor = rawimage.color;
-            newColor.a = alpha;
-            rawimage.color = newColor;
+
+            if (rawimage != null)
+            {         
+                Color newColor = rawimage.color;
+                newColor.a = alpha;
+                rawimage.color = newColor;              
+            }
+
             yield return new WaitForSecondsRealtime(0.016f);
         }
-
     }
 
     //This fades in an image
@@ -1239,9 +1252,14 @@ public static class HudFunctions
         while (alpha < 1)
         {
             alpha = alpha + (1f / (60f * duration));
-            Color newColor = rawimage.color;
-            newColor.a = alpha;
-            rawimage.color = newColor;
+
+            if (rawimage != null)
+            {
+                Color newColor = rawimage.color;
+                newColor.a = alpha;
+                rawimage.color = newColor;               
+            }
+
             yield return new WaitForSecondsRealtime(0.016f);
         }
 
@@ -1280,7 +1298,12 @@ public static class HudFunctions
         while (alpha > 0)
         {
             alpha = alpha - (1f / (60f * duration));
-            canvasGroup.alpha = alpha;
+
+            if (canvasGroup != null)
+            {             
+                canvasGroup.alpha = alpha;               
+            }
+
             yield return new WaitForSecondsRealtime(0.016f);
         }
     }
@@ -1298,7 +1321,12 @@ public static class HudFunctions
         while (alpha1 < 1)
         {
             alpha1 = alpha1 + (1f / (60f * duration));
-            canvasGroup.alpha = alpha1;
+
+            if (canvasGroup != null)
+            {        
+                canvasGroup.alpha = alpha1;                
+            }
+
             yield return new WaitForSecondsRealtime(0.016f);
         }
     }

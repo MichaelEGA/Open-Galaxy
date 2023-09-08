@@ -62,7 +62,7 @@ public class LargeShip : MonoBehaviour
     public float rearShieldLevel = 100;
 
     [Header("Ship Weapons")]
-    public bool dontfire = false;
+    public bool weaponsLock = false;
     [HideInInspector] public string laserColor = "red";
 
     [Header("Ship Controls")]

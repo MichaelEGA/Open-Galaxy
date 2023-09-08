@@ -456,7 +456,7 @@ public static class TurretFunctions
 
     public static void FireTurret(Turret turret)
     {
-        if (turret.target != null & turret.largeShip.dontfire == false)
+        if (turret.target != null & turret.largeShip.weaponsLock == false)
         {
             if (turret.target.activeSelf != false)
             {

@@ -1125,7 +1125,7 @@ public static class SceneFunctions
         }
     }
 
-    public static IEnumerator LoadShipsByName(string name, int number = 1, string aiSkillLevel = "easy", int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = false, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
+    public static IEnumerator LoadShipsByName(string name, int number = 1, string aiSkillLevel = "easy", int groupsOf = 1, float shipDistance = 50, float groupDistance = 250, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
     {
 
         //This gets the scene reference
@@ -1145,15 +1145,6 @@ public static class SceneFunctions
                 shipType = tempShipType;
                 break;
             }
-        }
-
-        //This randomises the position
-        if (randomisePosition == true)
-        {
-            float randomX = Random.Range(-10000, 10000);
-            float randomY = Random.Range(-10000, 10000);
-            float randomZ = Random.Range(-10000, 10000);
-            position = new Vector3(randomX, randomY, randomZ);
         }
 
         //This loads the ships according to the number set
@@ -1190,13 +1181,13 @@ public static class SceneFunctions
 
             gNumber++;
 
-            gDifferentiation += groupingdifferentiation;
+            gDifferentiation += groupDistance;
 
             if (gNumber >= groupsOf)
             {
                 gNumber = 0;
                 gDifferentiation = 0;
-                gDistance += groupingDistance;
+                gDistance += shipDistance;
             }
 
             yield return null;

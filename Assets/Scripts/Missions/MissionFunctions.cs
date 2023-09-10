@@ -652,19 +652,16 @@ public static class MissionFunctions
         if (missionEvent.data2 != "none") { shipNo = int.Parse(missionEvent.data2); }
 
         string skillLevel = "easy";
-        if (missionEvent.data3 != "none") { skillLevel = missionEvent.data3; }
+        //if (missionEvent.data3 != "none") { skillLevel = missionEvent.data3; }
 
         int groupsOf = 4;
         if (missionEvent.data4 != "none") { groupsOf = int.Parse(missionEvent.data4); }
 
-        float groupingDistance = 50;
-        if (missionEvent.data5 != "none") { groupingDistance = float.Parse(missionEvent.data5); }
+        float shipDistance = 50;
+        if (missionEvent.data5 != "none") { shipDistance = float.Parse(missionEvent.data5); }
 
-        float groupingDiffereniation = 250;
-        if (missionEvent.data6 != "none") { groupingDiffereniation = float.Parse(missionEvent.data6); }
-
-        bool radomisePosition = false;
-        if (missionEvent.data7 != "none") { radomisePosition = bool.Parse(missionEvent.data7); }
+        float groupDistance = 250;
+        if (missionEvent.data6 != "none") { groupDistance = float.Parse(missionEvent.data6); }
 
         float positionVariance = 10;
         if (missionEvent.data8 != "none") { positionVariance = float.Parse(missionEvent.data8); }
@@ -672,8 +669,8 @@ public static class MissionFunctions
         bool randomise = false;
         if (missionEvent.data9 != "none") { randomise = bool.Parse(missionEvent.data9); }
 
-        string squadronName = "none";
-        if (missionEvent.data10 != "none") { squadronName = missionEvent.data10; }
+        string groupName = "none";
+        if (missionEvent.data10 != "none") { groupName = missionEvent.data10; }
 
         bool includePlayer = false;
         if (missionEvent.data11 != "none" & missionEvent.data11 != null) { includePlayer = bool.Parse(missionEvent.data11); }
@@ -681,17 +678,28 @@ public static class MissionFunctions
         int playerNo = 0;
         if (missionEvent.data12 != "none" & missionEvent.data12 != null) { playerNo = int.Parse(missionEvent.data12); }
 
+        if (playerNo > shipNo - 1)
+        {
+            playerNo = shipNo - 1;
+        }
+
         if (randomise == true)
         {
             x = Random.Range(-10000, 10000);
             y = Random.Range(-10000, 10000);
             z = Random.Range(-10000, 10000);
+            xRotation = Random.Range(0, 360);
+            yRotation = Random.Range(0, 360);
+            zRotation = Random.Range(0, 360);
             shipNo = Random.Range(1, 30);
             groupsOf = Random.Range(1, 10);
+            shipDistance = 50;
+            groupDistance = 250;
+            positionVariance = 10;
             playerNo = Random.Range(0, shipNo - 1);
         }
 
-        Task c = new Task(SceneFunctions.LoadShipsByName(shipName, shipNo, skillLevel, groupsOf, groupingDistance, groupingDiffereniation, radomisePosition, positionVariance, new Vector3(x, y, z), rotation, squadronName, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadShipsByName(shipName, shipNo, skillLevel, groupsOf, shipDistance, groupDistance, positionVariance, new Vector3(x, y, z), rotation, groupName, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
     }
 

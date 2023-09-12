@@ -427,26 +427,6 @@ public static class SmallShipAIFunctions
         }
     }
 
-    ////This presses the select enemy target button
-    //public static IEnumerator SelectEnemyTarget(SmallShip smallShip)
-    //{
-    //    smallShip.getNextEnemy = true;
-
-    //    yield return new WaitForSeconds(0.1f);
-
-    //    smallShip.getNextEnemy = false;
-    //}
-
-    ////This presses the select target button
-    //public static IEnumerator SelectNextTarget(SmallShip smallShip)
-    //{
-    //    smallShip.getNextTarget = true;
-
-    //    yield return new WaitForSeconds(0.1f);
-
-    //    smallShip.getNextTarget = false;
-    //}
-
     //This selects a random waypoint
     public static void SelectRandomWaypoint(SmallShip smallship)
     {
@@ -474,7 +454,7 @@ public static class SmallShipAIFunctions
 
         if (smallShip.target != null)
         {
-            if (smallShip.interceptForward > 0.90f & smallShip.interceptDistance < 500)
+            if (smallShip.interceptForward > 0.90f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
             {
                 smallShip.fireWeapon = true;
             }

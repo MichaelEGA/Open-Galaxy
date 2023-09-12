@@ -513,14 +513,44 @@ public static class HudFunctions
                 {
                     if (hud.smallShip.targetSmallShip.shipRigidbody != null)
                     {
-                        hud.targetSpeedText.text = (hud.smallShip.targetSmallShip.shipRigidbody.velocity.magnitude * 3.6f).ToString("000");
+                        float speed = hud.smallShip.targetSmallShip.shipRigidbody.velocity.magnitude * 3.6f;
+
+                        if (speed > hud.speed)
+                        {
+                            hud.speed += 1;
+                        }
+                        else if (speed < hud.speed)
+                        {
+                            hud.speed -= 1;
+                        }
+
+                        hud.targetSpeedText.text = hud.speed.ToString("000");
                     }
+                }
+                else if (hud.smallShip.targetLargeShip != null)
+                {
+                    Vector3 newPosition = hud.smallShip.targetLargeShip.transform.position;
+                    var media = (newPosition - hud.lastPosition);
+                    Vector3 velocity = media / Time.deltaTime;
+                    hud.lastPosition = newPosition;
+                    float speed = velocity.magnitude * 3.6f;
+
+                    if (speed > hud.speed)
+                    {
+                        hud.speed += 1;
+                    }
+                    else if (speed < hud.speed)
+                    {
+                        hud.speed -= 1;
+                    }
+
+                    hud.targetSpeedText.text = hud.speed.ToString("000");
                 }
             }
             else
             {
                 hud.targetSpeedText.text = " ";
-            }
+            }            
         }
     }
 

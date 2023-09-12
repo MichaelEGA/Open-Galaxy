@@ -46,6 +46,8 @@ public class Hud : MonoBehaviour
     [HideInInspector] public RawImage targetLockingReticule;
     [HideInInspector] public RawImage targetLockedReticule;
     [HideInInspector] public bool reticuleFlashing;
+    [HideInInspector] public Vector3 lastPosition;
+    [HideInInspector] public float speed;
 
     [Header("Ship Log")]
     [HideInInspector] public Text shipLog;

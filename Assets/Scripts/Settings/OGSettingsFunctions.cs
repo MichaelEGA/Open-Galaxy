@@ -39,6 +39,7 @@ public static class OGSettingsFunctions
             settings.screenResX = ogSettingsClass.ogSettingsData[0].screenResX;
             settings.screenResY = ogSettingsClass.ogSettingsData[0].screenResY;
             settings.cockpitAssetsAddress = ogSettingsClass.ogSettingsData[0].cockpitAssetsAddress;
+            CheckSettingsData();
         }
     }
 
@@ -121,12 +122,40 @@ public static class OGSettingsFunctions
         {
             settings.cockpitAssetsAddress = "CockpitPrefabs/gc_cockpits/";
         }
-        else
-        {
-            settings.cockpitAssetsAddress = "CockpitPrefabs/fs_cockpits/";
-        }
+
+        CheckSettingsData();
 
         SaveSettingsData();
+    }
+
+    //This modifies any incorrect values to prevent errors i.e. if the player manually edits the settings data
+    public static void CheckSettingsData()
+    {
+        OGSettings settings = GetSettings();
+
+        if (settings != null)
+        {
+            if (settings.cockpitAssetsAddress != "CockpitPrefabs/fs_cockpits/" & settings.cockpitAssetsAddress != "CockpitPrefabs/gc_cockpits/")
+            {
+                settings.cockpitAssetsAddress = "CockpitPrefabs/fs_cockpits/";
+            }
+
+            if (settings.heightMapResolution <= 0)
+            {
+                settings.heightMapResolution = 2048;
+            }
+
+            if (settings.screenResX <= 0)
+            {
+                settings.screenResX = 1024;
+            }
+
+            if (settings.screenResY <= 0)
+            {
+                settings.screenResY = 768;
+            }
+        }
+
     }
 
 }

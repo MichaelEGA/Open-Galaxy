@@ -39,24 +39,53 @@ public static class SceneFunctions
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
         Object[] objectPrefabs = Resources.LoadAll("ObjectPrefabs", typeof(GameObject));
-        scene.objectPrefabPool = new GameObject[objectPrefabs.Length];
-        scene.objectPrefabPool = objectPrefabs;
 
-        Object[] cockpitPrefabs = Resources.LoadAll(settings.cockpitAssetsAddress, typeof(GameObject));
-        scene.cockpitPrefabPool = new GameObject[cockpitPrefabs.Length];
-        scene.cockpitPrefabPool = cockpitPrefabs;
+        if (objectPrefabs != null)
+        {
+            scene.objectPrefabPool = new GameObject[objectPrefabs.Length];
+            scene.objectPrefabPool = objectPrefabs;
+        }
+
+        Object[] cockpitPrefabs;
+
+        if (settings != null)
+        {
+            cockpitPrefabs = Resources.LoadAll(settings.cockpitAssetsAddress, typeof(GameObject));
+        }
+        else
+        {
+            cockpitPrefabs = Resources.LoadAll("CockpitPrefabs/fs_cockpits/", typeof(GameObject));
+        }
+
+        if (cockpitPrefabs != null)
+        {
+            scene.cockpitPrefabPool = new GameObject[cockpitPrefabs.Length];
+            scene.cockpitPrefabPool = cockpitPrefabs;
+        }
 
         Object[] tilePrefabs = Resources.LoadAll("TilePrefabs", typeof(GameObject));
-        scene.tilesPrefabPool = new GameObject[tilePrefabs.Length];
-        scene.tilesPrefabPool = tilePrefabs;
+
+        if (tilePrefabs != null)
+        {
+            scene.tilesPrefabPool = new GameObject[tilePrefabs.Length];
+            scene.tilesPrefabPool = tilePrefabs;
+        }
 
         Object[] asteroidMaterials = Resources.LoadAll("AsteroidMaterials", typeof(Material));
-        scene.asteroidMaterialsPool = new Material[asteroidMaterials.Length];
-        scene.asteroidMaterialsPool = asteroidMaterials;
+
+        if (asteroidMaterials != null)
+        {
+            scene.asteroidMaterialsPool = new Material[asteroidMaterials.Length];
+            scene.asteroidMaterialsPool = asteroidMaterials;
+        }
 
         Object[] particlePrefabs = Resources.LoadAll("ParticlePrefabs", typeof(GameObject));
-        scene.particlePrefabPool = new GameObject[particlePrefabs.Length];
-        scene.particlePrefabPool = particlePrefabs;
+
+        if (particlePrefabs != null)
+        {
+            scene.particlePrefabPool = new GameObject[particlePrefabs.Length];
+            scene.particlePrefabPool = particlePrefabs;
+        }
 
         scene.space = Resources.Load("Data/SkyboxAssets/Space") as Material;
         scene.sky = Resources.Load("Data/SkyboxAssets/Sky") as Material;      

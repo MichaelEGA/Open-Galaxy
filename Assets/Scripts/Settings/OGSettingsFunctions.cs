@@ -31,12 +31,15 @@ public static class OGSettingsFunctions
         //This applies all the values into the accesible  settings class
         OGSettings settings = GetSettings();
 
-        settings.heightMapResolution = ogSettingsClass.ogSettingsData[0].heightMapResolution;
-        settings.invertX = ogSettingsClass.ogSettingsData[0].invertX;
-        settings.invertY = ogSettingsClass.ogSettingsData[0].invertY;
-        settings.screenResX = ogSettingsClass.ogSettingsData[0].screenResX;
-        settings.screenResY = ogSettingsClass.ogSettingsData[0].screenResY;
-        settings.cockpitAssetsAddress = ogSettingsClass.ogSettingsData[0].cockpitAssetsAddress;
+        if (settings != null & ogSettingsClass != null)
+        {
+            settings.heightMapResolution = ogSettingsClass.ogSettingsData[0].heightMapResolution;
+            settings.invertX = ogSettingsClass.ogSettingsData[0].invertX;
+            settings.invertY = ogSettingsClass.ogSettingsData[0].invertY;
+            settings.screenResX = ogSettingsClass.ogSettingsData[0].screenResX;
+            settings.screenResY = ogSettingsClass.ogSettingsData[0].screenResY;
+            settings.cockpitAssetsAddress = ogSettingsClass.ogSettingsData[0].cockpitAssetsAddress;
+        }
     }
 
     //This saves the data back to the settings file or if it doesn't find one makes a new one
@@ -117,6 +120,10 @@ public static class OGSettingsFunctions
         else if (type == "galacticconquest")
         {
             settings.cockpitAssetsAddress = "CockpitPrefabs/gc_cockpits/";
+        }
+        else
+        {
+            settings.cockpitAssetsAddress = "CockpitPrefabs/fs_cockpits/";
         }
 
         SaveSettingsData();

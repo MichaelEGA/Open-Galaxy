@@ -645,8 +645,8 @@ public static class MissionFunctions
 
         Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
-        string shipName = "xwing";
-        if (missionEvent.data1 != "none") { shipName = missionEvent.data1;}
+        string shipType = "xwing";
+        if (missionEvent.data1 != "none") { shipType = missionEvent.data1;}
 
         int shipNo = 1;
         if (missionEvent.data2 != "none") { shipNo = int.Parse(missionEvent.data2); }
@@ -669,8 +669,8 @@ public static class MissionFunctions
         bool randomise = false;
         if (missionEvent.data9 != "none") { randomise = bool.Parse(missionEvent.data9); }
 
-        string groupName = "none";
-        if (missionEvent.data10 != "none") { groupName = missionEvent.data10; }
+        string shipName = "none";
+        if (missionEvent.data10 != "none") { shipName = missionEvent.data10; }
 
         bool includePlayer = false;
         if (missionEvent.data11 != "none" & missionEvent.data11 != null) { includePlayer = bool.Parse(missionEvent.data11); }
@@ -685,21 +685,21 @@ public static class MissionFunctions
 
         if (randomise == true)
         {
+            shipNo = Random.Range(1, 30);
+            playerNo = Random.Range(0, shipNo - 1);
             x = Random.Range(-10000, 10000);
             y = Random.Range(-10000, 10000);
             z = Random.Range(-10000, 10000);
             xRotation = Random.Range(0, 360);
             yRotation = Random.Range(0, 360);
             zRotation = Random.Range(0, 360);
-            shipNo = Random.Range(1, 30);
             groupsOf = Random.Range(1, 10);
             shipDistance = 50;
             groupDistance = 250;
             positionVariance = 10;
-            playerNo = Random.Range(0, shipNo - 1);
         }
 
-        Task c = new Task(SceneFunctions.LoadShipsByName(shipName, shipNo, skillLevel, groupsOf, shipDistance, groupDistance, positionVariance, new Vector3(x, y, z), rotation, groupName, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadShipsByName(shipType, shipNo, skillLevel, groupsOf, shipDistance, groupDistance, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
     }
 
@@ -731,14 +731,11 @@ public static class MissionFunctions
         int groupsOf = 4;
         if (missionEvent.data5 != "none") { groupsOf = int.Parse(missionEvent.data5); }
 
-        float groupingDistance = 50;
-        if (missionEvent.data6 != "none") { groupingDistance = float.Parse(missionEvent.data6); }
+        float shipDistance = 50;
+        if (missionEvent.data6 != "none") { shipDistance = float.Parse(missionEvent.data6); }
 
-        float groupingDiffereniation = 250;
-        if (missionEvent.data7 != "none") { groupingDiffereniation = float.Parse(missionEvent.data7); }
-
-        bool radomisePosition = false;
-        if (missionEvent.data8 != "none") { radomisePosition = bool.Parse(missionEvent.data8); }
+        float groupDistance = 250;
+        if (missionEvent.data7 != "none") { groupDistance = float.Parse(missionEvent.data7); }
 
         float positionVariance = 10;
         if (missionEvent.data9 != "none") { positionVariance = float.Parse(missionEvent.data9); }
@@ -746,8 +743,8 @@ public static class MissionFunctions
         bool randomise = false;
         if (missionEvent.data10 != "none") { randomise = bool.Parse(missionEvent.data10); }
 
-        string squadronName = "none";
-        if (missionEvent.data11 != "none" & missionEvent.data11 != null) { squadronName = missionEvent.data11; }
+        string shipName = "none";
+        if (missionEvent.data11 != "none" & missionEvent.data11 != null) { shipName = missionEvent.data11; }
 
         bool includePlayer = false;
         if (missionEvent.data12 != "none" & missionEvent.data12 != null) { includePlayer = bool.Parse(missionEvent.data12); }
@@ -757,15 +754,20 @@ public static class MissionFunctions
 
         if (randomise == true)
         {
+            xRotation = Random.Range(0, 360);
+            yRotation = Random.Range(0, 360);
+            zRotation = Random.Range(0, 360);
             x = Random.Range(-10000, 10000);
             y = Random.Range(-10000, 10000);
             z = Random.Range(-10000, 10000);
-            shipNo = Random.Range(1, 30);
             groupsOf = Random.Range(1, 10);
+            shipDistance = 50;
+            groupDistance = 250;
+            positionVariance = 10;
             playerNo = Random.Range(0, shipNo - 1);
         }
 
-        Task c = new Task(SceneFunctions.LoadShipsByTypeAndAllegiance(missionEvent.data1, missionEvent.data2, missionEvent.data3, shipNo, groupsOf, float.Parse(missionEvent.data6), float.Parse(missionEvent.data7), bool.Parse(missionEvent.data8), float.Parse(missionEvent.data9), new Vector3(x, y, z), rotation, squadronName, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadShipsByTypeAndAllegiance(shipType, allegiance, missionEvent.data3, shipNo, groupsOf, shipDistance, groupDistance, false, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
     }
 

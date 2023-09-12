@@ -190,9 +190,6 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.waypoint != null)
         {
-            HalfSpeed(smallShip);
-            PatrolSpeedPowerSettings(smallShip);
-
             float distanceToWaypoint = Vector3.Distance(smallShip.gameObject.transform.position, smallShip.waypoint.transform.position);
 
             if (distanceToWaypoint < 50)
@@ -202,6 +199,10 @@ public static class SmallShipAIFunctions
 
             AngleTowardsWaypoint(smallShip);
         }
+
+        HalfSpeed(smallShip);
+        PatrolSpeedPowerSettings(smallShip);
+        DontFire(smallShip);
     }
 
     //This angles towards the ships waypoint
@@ -217,6 +218,7 @@ public static class SmallShipAIFunctions
     public static void Stationary(SmallShip smallShip)
     {
         NoSpeed(smallShip);
+        DontFire(smallShip);
     }
 
     #endregion
@@ -390,11 +392,15 @@ public static class SmallShipAIFunctions
             {
                 TargetingFunctions.GetNextEnemy(smallShip, "largeship", true);
             }
+            else
+            {
+                TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
+            }  
 
             if (smallShip.target == null)
             {
                 TargetingFunctions.GetNextEnemy(smallShip, "none", true);
-            }  
+            }
         }
         else if (smallShip.target != null)
         {
@@ -404,18 +410,19 @@ public static class SmallShipAIFunctions
                 {
                     TargetingFunctions.GetNextEnemy(smallShip, "largeship", true);
                 }
+                else
+                {
+                    TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
+                }
 
-                if (smallShip.target == null)
+                if (smallShip.target.activeSelf == false)
                 {
                     TargetingFunctions.GetNextEnemy(smallShip, "none", true);
-                }
-                else if (smallShip.target != null)
-                {
-                    if (smallShip.target.activeSelf == false)
-                    {
-                        TargetingFunctions.GetNextEnemy(smallShip, "none", true);
-                    } 
-                }
+                }               
+            }
+            else if (smallShip.target.GetComponent<LargeShip>() == true & smallShip.type != "bomber")
+            {
+                TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
             }
         }
     }
@@ -505,6 +512,12 @@ public static class SmallShipAIFunctions
         {
             smallShip.fireWeapon = false;
         }
+    }
+
+    //This prevents all weapons from firing
+    public static void DontFire(SmallShip smallShip)
+    {
+        smallShip.fireWeapon = false;
     }
 
     #endregion

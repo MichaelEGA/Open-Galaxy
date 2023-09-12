@@ -95,7 +95,8 @@ public static class LaserFunctions
             lights.light = greenLaserLight.GetComponent<Light>();
         }
 
-        
+        //This prevents the particle system playing when loaded
+        particleSystem.Stop();   
     }
 
     //This sets the collision layer for the lasers

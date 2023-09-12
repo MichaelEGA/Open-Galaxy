@@ -38,6 +38,7 @@ Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.3
   - Added: Ability to change skybox
   - Added: Ability to set rotation of ship when loading
   - Update: Scene now unloads tiles when mission is over
+  - Fixed: Various reported loading problems
 
 03/09/23 - v.0.6.2
   - Updated: Death Star test mission with new messages and enemies

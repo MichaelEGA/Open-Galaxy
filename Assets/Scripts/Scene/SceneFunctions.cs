@@ -46,11 +46,11 @@ public static class SceneFunctions
             scene.objectPrefabPool = objectPrefabs;
         }
 
-        Object[] cockpitPrefabs;
+        Object[] cockpitPrefabs = null;
 
         if (settings != null)
         {
-            cockpitPrefabs = Resources.LoadAll(settings.cockpitAssetsAddress, typeof(GameObject));
+            cockpitPrefabs = Resources.LoadAll(settings.cockpitAssetsAddress, typeof(GameObject));        
         }
         else
         {

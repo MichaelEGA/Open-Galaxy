@@ -105,6 +105,23 @@ public static class GameObjectUtils
         return childTransforms.ToArray();
     }
 
+    //Gets every child of a give transform
+    public static Transform FindChildTransformCalled(Transform transform, string name)
+    {
+        Transform selectedTransform = null;
+
+        foreach (Transform tempTransform in transform)
+        {
+            if (tempTransform.name == name)
+            {
+                selectedTransform = tempTransform;
+                break;
+            }
+        }
+
+        return selectedTransform;
+    }
+
     //This searchs through all the child transforms of a particular transform looking for all transforms that containt the search string
     public static Transform[] FindAllChildTransformsContaining(Transform transform, string searchString, string exclusionString1 = "none", string exclusionString2 = "none", string exclusionString3 = "none")
     {

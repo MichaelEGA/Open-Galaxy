@@ -43,7 +43,7 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "loadscene")
             {
-                LoadScene(missionName, missionEvent.conditionLocation, missionAddress);
+                LoadScene(missionName, missionAddress, missionEvent);
             }
         }
 
@@ -102,6 +102,9 @@ public static class MissionFunctions
         while (Time.unscaledTime < delay) { yield return null; }
 
         Time.timeScale = 1;
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
 
         DisplayLoadingScreen(missionName, false);
 
@@ -321,8 +324,13 @@ public static class MissionFunctions
         if (nextEvent != "none" & missionManager != null)
         {
             TextAsset missionDataFile = Resources.Load(missionManager.missionAddress + missionName) as TextAsset;
-            Mission mission = JsonUtility.FromJson<Mission>(missionDataFile.text);
+            Mission mission = null;
 
+            if (missionDataFile != null)
+            {
+                mission = JsonUtility.FromJson<Mission>(missionDataFile.text);
+            }
+            
             if (missionDataFile == null || mission == null)
             {
                 missionManager.running = false;
@@ -357,8 +365,21 @@ public static class MissionFunctions
     #region main scene loading function
 
     //This creates the scene 
-    public static void LoadScene(string missionName, string location, string missionAddress)
+    public static void LoadScene(string missionName, string missionAddress, MissionEvent missionEvent)
     {
+        string location = missionEvent.conditionLocation;
+        float sceneRadius = 15000;
+
+        if (missionEvent.data1 != "none")
+        {
+            float radiusTemp = float.Parse(missionEvent.data1);
+
+            if (radiusTemp > 5000)
+            {
+                sceneRadius = radiusTemp;
+            }
+        }
+
         Scene scene = SceneFunctions.GetScene();
 
         //This marks the load time using unscaled time
@@ -385,6 +406,9 @@ public static class MissionFunctions
         scene.location = planetData.planet;
         scene.planetType = planetData.type;
         scene.planetSeed = planetData.seed;
+
+        //This sets the radius of the play space
+        scene.sceneRadius = sceneRadius;
 
         //This sets the scene skybox to the default: space
         SceneFunctions.SetSkybox("space");
@@ -1161,6 +1185,8 @@ public static class MissionFunctions
                     {
                         Task a = new Task(UnloadAfter(5));
                         Task b = new Task(HudFunctions.FadeOutHud(0.25f));
+                        Cursor.visible = true;
+                        Cursor.lockState = CursorLockMode.None;
                         missionManager.unloading = true;
                     }
                 }

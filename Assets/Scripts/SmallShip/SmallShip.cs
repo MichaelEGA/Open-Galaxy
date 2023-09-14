@@ -35,6 +35,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool attachCameraToAI;
     [HideInInspector] public Vector3 cameraLocalPosition;
     [HideInInspector] public GameObject cockpitCamera;
+    [HideInInspector] public GameObject cameraPosition;
 
     [Header("Ship Ratings")]
     public float accelerationRating = 50; //Value set in inspector or by loading script

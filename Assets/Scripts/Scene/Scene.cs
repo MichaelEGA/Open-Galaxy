@@ -9,6 +9,7 @@ public class Scene : MonoBehaviour
     public string location;
     public string planetType;
     public int planetSeed;
+    public float sceneRadius = 15000;
 
     [Header("The Main Ship")]
     [HideInInspector] public GameObject mainShip;

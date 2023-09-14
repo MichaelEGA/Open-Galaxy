@@ -50,9 +50,13 @@ public static class SceneFunctions
 
         if (settings != null)
         {
-            cockpitPrefabs = Resources.LoadAll(settings.cockpitAssetsAddress, typeof(GameObject));        
+            if (settings.cockpitAssetsAddress != null)
+            {
+                cockpitPrefabs = Resources.LoadAll(settings.cockpitAssetsAddress, typeof(GameObject));
+            }     
         }
-        else
+        
+        if (cockpitPrefabs == null)
         {
             cockpitPrefabs = Resources.LoadAll("CockpitPrefabs/fs_cockpits/", typeof(GameObject));
         }

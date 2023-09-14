@@ -26,6 +26,8 @@ public static class ExitMenuFunctions
 
                 exitMenu.SetActive(true);
 
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
             }
         }
         else
@@ -37,6 +39,8 @@ public static class ExitMenuFunctions
                 exitMenu.SetActive(false);
             }
 
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Confined;
         }
     }
 
@@ -69,5 +73,8 @@ public static class ExitMenuFunctions
         }
 
         if (missionManager != null) { GameObject.Destroy(missionManager.gameObject); }
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

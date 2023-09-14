@@ -356,7 +356,7 @@ public static class SmallShipFunctions
 
             float currentDistance = Vector3.Distance(currentPosition, center);
 
-            if (currentDistance > 15000)
+            if (currentDistance > smallShip.scene.sceneRadius)
             {
                 smallShip.automaticRotation = true;
 
@@ -793,13 +793,26 @@ public static class SmallShipFunctions
                 smallShip.mainCamera = mainCamera;
             }
 
-            if (mainCamera.transform.parent != smallShip.gameObject.transform)
+            if (smallShip.cameraPosition == null)
             {
-                mainCamera.transform.position = smallShip.gameObject.transform.position;
-                mainCamera.transform.rotation = smallShip.gameObject.transform.rotation;
-                mainCamera.transform.SetParent(smallShip.gameObject.transform);
+                Transform cameraPos = GameObjectUtils.FindChildTransformCalled(smallShip.gameObject.transform, "camera");
+
+                if (cameraPos != null)
+                {
+                    smallShip.cameraPosition = cameraPos.gameObject;
+                }
+                else
+                {
+                    smallShip.cameraPosition = smallShip.gameObject;
+                }
+            }
+            else if (mainCamera.transform.parent != smallShip.cameraPosition.transform)
+            {
+                mainCamera.transform.position = smallShip.cameraPosition.transform.position;
+                mainCamera.transform.rotation = smallShip.cameraPosition.transform.rotation;
+                mainCamera.transform.SetParent(smallShip.cameraPosition.transform);
                 smallShip.cameraAttached = true;
-                smallShip.cameraLocalPosition = mainCamera.transform.localPosition;
+                smallShip.cameraLocalPosition = smallShip.cameraPosition.transform.localPosition;
             }
         }
     }
@@ -1132,7 +1145,7 @@ public static class SmallShipFunctions
     //This runs HudSpeedShake and HudShake
     public static void RunCockpitShake(SmallShip smallShip)
     {
-        if (smallShip.isAI == false)
+        if (smallShip.isAI == false & Time.timeScale != 0)
         {
             if (smallShip.thrustSpeed > smallShip.speedRating / 2f & smallShip.cockpitDamageShake != true)
             {
@@ -1206,6 +1219,11 @@ public static class SmallShipFunctions
                     break;
                 }
 
+                if (Time.timeScale == 0)
+                {
+                    break;
+                }
+
                 yield return null;
             }
 
@@ -1232,6 +1250,11 @@ public static class SmallShipFunctions
                 smallShip.cockpit.transform.localPosition = new Vector3(x, y, smallShip.basePosition.z);
             }
 
+            if (Time.timeScale == 0)
+            {
+                break;
+            }
+
             yield return null;
         }
 
@@ -1246,7 +1269,7 @@ public static class SmallShipFunctions
     //This dynamically adjusts the position of the cockpit camera to simulate the movement of the pilots head and body
     public static void CockpitCameraMovement(SmallShip smallShip)
     {
-        if (smallShip.isAI == false)
+        if (smallShip.isAI == false & Time.timeScale != 0)
         {
             if (smallShip.cockpitCamera == null)
             {

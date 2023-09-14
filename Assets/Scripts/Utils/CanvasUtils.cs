@@ -94,8 +94,9 @@ public static class CanvasUtils
     }
 
     //Makes a line on the ui canvas between two points
-    public static void MakeLine(GameObject canvas, GameObject firstPoint, GameObject secondPoint, float lineWidth, List<GameObject> pool)
+    public static GameObject MakeLine(GameObject canvas, GameObject firstPoint, GameObject secondPoint, float lineWidth)
     {
+        GameObject newLine = new GameObject();
 
         float ax = firstPoint.transform.localPosition.x;
         float ay = firstPoint.transform.localPosition.y;
@@ -103,8 +104,6 @@ public static class CanvasUtils
         float bx = secondPoint.transform.localPosition.x;
         float by = secondPoint.transform.localPosition.y;
 
-        GameObject newLine = new GameObject();
-        newLine.name = "line from " + firstPoint.name + " to " + secondPoint.name;
         Image NewImage = newLine.AddComponent<Image>();
         RectTransform rect = newLine.GetComponent<RectTransform>();
         rect.SetParent(canvas.transform);
@@ -126,8 +125,28 @@ public static class CanvasUtils
         newLine.transform.SetParent(canvas.transform);
         newLine.transform.SetAsFirstSibling();
 
-        PoolUtils.AddToPool(pool, newLine);
+        return newLine;
+    }
 
+    //Makes a line on the ui canvas between two points
+    public static void DynamicallyMoveLine(GameObject line, GameObject canvas, GameObject firstPoint, GameObject secondPoint, float lineWidth)
+    {
+        float ax = firstPoint.transform.localPosition.x;
+        float ay = firstPoint.transform.localPosition.y;
+
+        float bx = secondPoint.transform.localPosition.x;
+        float by = secondPoint.transform.localPosition.y;
+
+        RectTransform rect = line.GetComponent<RectTransform>();
+        Vector2 graphScale = canvas.transform.localScale;
+
+        Vector3 a = new Vector3(ax * graphScale.x, ay * graphScale.y, 0);
+        Vector3 b = new Vector3(bx * graphScale.x, by * graphScale.y, 0);
+
+        rect.localPosition = (a + b) / 2;
+        Vector3 dif = a - b;
+        rect.sizeDelta = new Vector3(dif.magnitude, lineWidth);
+        rect.rotation = Quaternion.Euler(new Vector3(0, 0, 180 * Mathf.Atan(dif.y / dif.x) / Mathf.PI));
     }
 
 }

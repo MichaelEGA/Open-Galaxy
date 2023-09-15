@@ -100,7 +100,16 @@ public static class LargeShipFunctions
     //This gets the AI input
     public static void GetAIInput(LargeShip largeShip)
     {
-        LargeShipAIFunctions.GetAIInput(largeShip);
+        if (largeShip.spinShip == false)
+        {
+            LargeShipAIFunctions.GetAIInput(largeShip);
+        }
+        else
+        {
+            SmoothPitchInput(largeShip, 0);
+            SmoothTurnInput(largeShip, 0);
+            SmoothRollInput(largeShip, 1);
+        }
     }
 
     //For AI Input. These functions smoothly transitions between different pitch, turn, and roll inputs by lerping between different values like the ai is using a joystick or controller
@@ -190,6 +199,11 @@ public static class LargeShipFunctions
         manveurablityPercentageAsDecimal = (largeShip.maneuverabilityRating / 100f);
 
         largeShip.maneuvarabilityActual = (10f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal); 
+
+        if (largeShip.spinShip == true)
+        {
+            largeShip.maneuvarabilityActual = 10;
+        }
     }
 
     //This makes the ship move
@@ -285,12 +299,40 @@ public static class LargeShipFunctions
 
     public static void Explode(LargeShip largeShip)
     {
-        if (largeShip.hullLevel <= 0)
+        if (largeShip.hullLevel <= 0 & largeShip.explode == false)
         {
-            ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion02", 1000);
-
-            largeShip.gameObject.SetActive(false);
+            Task a = new Task(ExplosionSequence(largeShip));
+            largeShip.explode = true;
         }
+    }
+
+    public static IEnumerator ExplosionSequence(LargeShip largeShip)
+    {
+        largeShip.spinShip = true;
+
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.forward * Random.Range(50,100), "explosion02", 125);
+
+        yield return new WaitForSeconds(2);
+
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.forward * -Random.Range(50, 100), "explosion02", 125);
+
+        yield return new WaitForSeconds(2);
+
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.right * Random.Range(25, 50), "explosion02", 125);
+
+        yield return new WaitForSeconds(2);
+
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.right * -Random.Range(25, 50), "explosion02", 125);
+
+        yield return new WaitForSeconds(2);
+
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion02", 1000);
+
+        //This sets the ship up for the next time it is loaded from the pool
+        largeShip.spinShip = false;
+        largeShip.explode = false;
+
+        largeShip.gameObject.SetActive(false);
     }
 
     #endregion

@@ -95,7 +95,7 @@ public static class SmallShipFunctions
     //This gets the input from the game controller
     public static void GetGameControllerInput(SmallShip smallShip)
     {
-        if (smallShip.isAI == false & smallShip.automaticRotation == false)
+        if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false)
         {
             if (smallShip.keyboadAndMouse == false)
             {
@@ -200,7 +200,7 @@ public static class SmallShipFunctions
     //This gets the input from the keyboard and mouse
     public static void GetKeyboardAndMouseInput(SmallShip smallShip)
     {
-        if (smallShip.isAI == false & smallShip.automaticRotation == false)
+        if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false)
         {
             if (smallShip.keyboadAndMouse == true)
             {
@@ -321,7 +321,7 @@ public static class SmallShipFunctions
     //This gets the AI input
     public static void GetAIInput(SmallShip smallShip)
     {
-        if (smallShip.isAI == true & smallShip.automaticRotation == false)
+        if (smallShip.isAI == true & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false)
         {
             SmallShipAIFunctions.GetAIInput(smallShip);
         }
@@ -358,7 +358,7 @@ public static class SmallShipFunctions
 
             if (currentDistance > smallShip.scene.sceneRadius)
             {
-                smallShip.automaticRotation = true;
+                smallShip.automaticRotationTurnAround = true;
 
                 Vector3 targetRelativePosition = center - currentPosition;
 
@@ -387,9 +387,25 @@ public static class SmallShipFunctions
             }
             else
             {
-                smallShip.automaticRotation = false;
+                smallShip.automaticRotationTurnAround = false;
                 smallShip.messageSent = false;
             }
+        }
+    }
+
+    //This automatically spins the ship on the x-axis when its hit by a torpedo or destroyed
+    public static void SpinShip(SmallShip smallShip)
+    {
+        if (smallShip.spinShip == true)
+        {
+            smallShip.automaticRotationSpin = true;
+            SmoothTurnInput(smallShip, 0);
+            SmoothPitchInput(smallShip, 0);
+            SmoothRollInput(smallShip, 1);
+        }
+        else
+        {
+            smallShip.automaticRotationSpin = false;
         }
     }
 
@@ -644,6 +660,11 @@ public static class SmallShipFunctions
         smallShip.pitchSpeed = (120f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
         smallShip.turnSpeed = (100f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
         smallShip.rollSpeed = (160f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
+
+        if (smallShip.spinShip == true)
+        {
+            smallShip.rollSpeed = (160f / 100f) * 100;
+        }
 
     }
 
@@ -1033,54 +1054,81 @@ public static class SmallShipFunctions
     //This causes the ship to explode
     public static void Explode(SmallShip smallShip)
     {
-        if (smallShip.hullLevel <= 0)
+        if (smallShip.hullLevel <= 0 & smallShip.exploded == false)
         {
+            Task a = new Task(ExplosionSequence(smallShip));
+            smallShip.exploded = true;
+        }
+    }
 
-            //Stops listing the ship as targetting another ship
-            if (smallShip.target != null)
+    public static IEnumerator ExplosionSequence(SmallShip smallShip)
+    {
+        //Stops listing the ship as targetting another ship
+        if (smallShip.target != null)
+        {
+            if (smallShip.target.gameObject.activeSelf == true)
             {
-                if (smallShip.target.gameObject.activeSelf == true)
+                if (smallShip.targetSmallShip != null)
                 {
-                    if (smallShip.targetSmallShip != null)
-                    {
-                        smallShip.targetSmallShip.numberTargeting -= 1;
-                    }
+                    smallShip.targetSmallShip.numberTargeting -= 1;
                 }
             }
-
-            //This removes the main camera
-            RemoveMainCamera(smallShip);
-
-            if (smallShip.scene == null)
-            {
-                smallShip.scene = SceneFunctions.GetScene();
-            }
-
-            //This creates an explosion where the ship is
-            ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion02", 12);
-
-            //This makes an explosion sound
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", smallShip.gameObject.transform.position, 1, 1, 1000, 1, 100);
-
-            //This turns of the engine sound and release the ship audio source from the ship
-            if (smallShip.audioManager != null)
-            {
-                smallShip.engineAudioSource.Stop();
-                smallShip.engineAudioSource = null;
-                smallShip.audioManager = null;
-            }
-
-            HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
-
-            //This deactives the cockpit
-            if (smallShip.cockpit != null)
-            {
-                smallShip.cockpit.SetActive(false);
-            }
-
-            //This deactivates the ship
-            smallShip.gameObject.SetActive(false);
         }
+
+        if (smallShip.isCurrentlyColliding == false)
+        {
+            smallShip.spinShip = true;
+            float time = Random.Range(2, 6);
+            yield return new WaitForSeconds(time);
+        }
+
+        //This removes the main camera
+        RemoveMainCamera(smallShip);
+
+        if (smallShip.scene == null)
+        {
+            smallShip.scene = SceneFunctions.GetScene();
+        }
+
+        //This creates an explosion where the ship is
+        ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion02", 12);
+
+        //This makes an explosion sound
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", smallShip.gameObject.transform.position, 1, 1, 1000, 1, 100);
+
+        //This turns of the engine sound and release the ship audio source from the ship
+        if (smallShip.audioManager != null)
+        {
+            smallShip.engineAudioSource.Stop();
+            smallShip.engineAudioSource = null;
+            smallShip.audioManager = null;
+        }
+
+        HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
+
+        //This deactives the cockpit
+        if (smallShip.cockpit != null)
+        {
+            smallShip.cockpit.SetActive(false);
+        }
+
+        //This resets the ship for the next load if needed
+        smallShip.exploded = false;
+
+        //This deactivates the ship
+        smallShip.gameObject.SetActive(false);
+    }
+
+    public static IEnumerator ShipSpinSequence(SmallShip smallShip, float time)
+    {
+        smallShip.spinShip = true;
+
+        if (smallShip.isCurrentlyColliding == false)
+        {
+            yield return new WaitForSeconds(time);
+        }
+
+        smallShip.spinShip = false;
     }
 
     #endregion
@@ -1149,7 +1197,7 @@ public static class SmallShipFunctions
         {
             if (smallShip.thrustSpeed > smallShip.speedRating / 2f & smallShip.cockpitDamageShake != true)
             {
-                if (smallShip.turnInput > 0.75f || smallShip.turnInput < -0.75f || smallShip.pitchInput > 0.75f || smallShip.pitchInput < -0.75f || smallShip.thrustSpeed > smallShip.speedRating + 2 || smallShip.rollInput > 0.75f || smallShip.rollInput < -75f)
+                if (smallShip.turnInput > 0.75f || smallShip.turnInput < -0.75f || smallShip.pitchInput > 0.75f || smallShip.pitchInput < -0.75f || smallShip.thrustSpeed > smallShip.speedRating + 5 || smallShip.rollInput > 0.75f || smallShip.rollInput < -75f)
                 {
                     float shakeMagnitude = 0.001f;
 

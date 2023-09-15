@@ -472,7 +472,7 @@ public static class TurretFunctions
                         turret.fireDelay = 3;
                     }
 
-                    turret.fireDelayCount = Time.time + turret.fireDelay;
+                    turret.fireDelayCount = Time.time + turret.fireDelay + Random.Range(0,3);
                 }
             }
         }

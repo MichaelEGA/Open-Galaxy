@@ -11,6 +11,7 @@ public class LargeShip : MonoBehaviour
     public float loadTime;
     public string classType = "large";
     public string thrustType = "thruster_blue_large";
+    public bool explode;
 
     [Header("Ship Components")]
     [HideInInspector] public Rigidbody shipRigidbody;
@@ -53,6 +54,7 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float rollInput;
     [HideInInspector] public float rollInputActual;
     [HideInInspector] public float maneuvarabilityActual;
+    [HideInInspector] public bool spinShip;
 
     [Header("Ship Levels")]
     public bool invincible = false;

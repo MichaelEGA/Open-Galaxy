@@ -11,6 +11,7 @@ public class SmallShip : MonoBehaviour
     public string prefabName;
     public float loadTime;
     public string thrustType;
+    public bool exploded;
 
     [Header("Ship Components")]
     public Rigidbody shipRigidbody;
@@ -64,8 +65,10 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float rollSpeed;
     [HideInInspector] public float rollInput;
     [HideInInspector] public float rollInputActual;
-    [HideInInspector] public bool automaticRotation;
+    [HideInInspector] public bool automaticRotationTurnAround;
+    [HideInInspector] public bool automaticRotationSpin;
     [HideInInspector] public bool messageSent;
+    [HideInInspector] public bool spinShip;
 
     [Header("Ship Power Distribution")]
     public string powerMode = "reset";
@@ -215,6 +218,7 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.GetGameControllerInput(this);
         SmallShipFunctions.DetectInputType(this);
         SmallShipFunctions.TurnShipAround(this);
+        SmallShipFunctions.SpinShip(this);
 
         //Start functions
         SmallShipFunctions.PrepareShip(this);

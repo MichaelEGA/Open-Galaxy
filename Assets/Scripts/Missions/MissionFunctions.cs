@@ -370,7 +370,7 @@ public static class MissionFunctions
         string location = missionEvent.conditionLocation;
         float sceneRadius = 15000;
 
-        if (missionEvent.data1 != "none")
+        if (float.TryParse(missionEvent.data1, out _))
         {
             float radiusTemp = float.Parse(missionEvent.data1);
 

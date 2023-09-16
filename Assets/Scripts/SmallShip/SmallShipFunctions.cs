@@ -1054,7 +1054,7 @@ public static class SmallShipFunctions
     //This causes the ship to explode
     public static void Explode(SmallShip smallShip)
     {
-        if (smallShip.hullLevel <= 0 & smallShip.exploded == false)
+        if (smallShip.hullLevel <= 0 & smallShip.exploded == false || smallShip.hullLevel <= 0 & smallShip.exploded == false & smallShip.isCurrentlyColliding == true)
         {
             Task a = new Task(ExplosionSequence(smallShip));
             smallShip.exploded = true;

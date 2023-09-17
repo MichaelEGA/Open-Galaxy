@@ -149,6 +149,32 @@ public static class TurretFunctions
                 turret.turretType = "large";
                 turret.yRotationIsRestricted = false;
             }
+            else if (turret.gameObject.name.Contains("tt_tall_turretlarge"))
+            {
+                turret.yRotationMax = 180;
+                turret.yRotationMin = -180;
+                turret.xRotationMax = 0;
+                turret.xRotationMin = -90;
+                turret.turretSpeed = 80;
+                turret.fireDelay = 4f;
+                turret.laserColor = "green";
+                turret.laserDamage = 30;
+                turret.turretType = "large";
+                turret.yRotationIsRestricted = false;
+            }
+            else if (turret.gameObject.name.Contains("tt_short_turretlarge"))
+            {
+                turret.yRotationMax = 180;
+                turret.yRotationMin = -180;
+                turret.xRotationMax = 0;
+                turret.xRotationMin = -90;
+                turret.turretSpeed = 80;
+                turret.fireDelay = 4f;
+                turret.laserColor = "green";
+                turret.laserDamage = 30;
+                turret.turretType = "large";
+                turret.yRotationIsRestricted = false;
+            }
         }
     }
 

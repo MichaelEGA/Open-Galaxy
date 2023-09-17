@@ -374,7 +374,7 @@ public static class MissionFunctions
         {
             float radiusTemp = float.Parse(missionEvent.data1);
 
-            if (radiusTemp > 5000)
+            if (radiusTemp >= 1000)
             {
                 sceneRadius = radiusTemp;
             }

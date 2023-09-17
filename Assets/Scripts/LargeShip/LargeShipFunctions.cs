@@ -202,7 +202,7 @@ public static class LargeShipFunctions
 
         if (largeShip.spinShip == true)
         {
-            largeShip.maneuvarabilityActual = 10;
+            largeShip.maneuvarabilityActual = 2.5f;
         }
     }
 

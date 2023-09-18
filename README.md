@@ -17,7 +17,8 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
 **Latest Release:** 0.6.3
 
-Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.3/Open.Galaxy.0.6.3.zip
+  Play version: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.5/Open.Galaxy.0.6.5.zip
+  Debug version: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.5/Open.Galaxy.0.6.5_Debug.zip
 
 **Other Info**
 
@@ -26,8 +27,21 @@ Find it here: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.3
   - Ship Stats: https://docs.google.com/spreadsheets/d/1PwTEx9dPTEhxY5ebIWjXgZj0bz84qzDL47KDm0aw8FU/edit?usp=sharing
   - Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
 
-
 **Changelog**
+
+18/11/23 - v.0.6.5
+  - Update: Misc improvements
+  - Updated: Radar prefabs
+  - Added: Basic Ground Turret Code
+  - Fixed: UI Images, String Parse Bug, and Explode on collision bug
+  - Added: Ships now spin before blowing up
+  - Added: Set game area radius, Updated: set camera to cockpit pos not s…
+  - Fixed: More loading issues
+  - Added: More cockpit prefabs
+  - Update: Capital ship speed is now displayed in Hud
+  - Update SmallShipAIFunctions.cs
+  - Fixed: Lasers no longer fire when ship is loaded, Fixed: ships firing…
+  - Updated: More checks to prevent loading errors from incorrect settings
 
 10/09/23 - v.0.6.3
   - Updated: Cleaned up some mission functions

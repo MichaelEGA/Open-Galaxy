@@ -40,7 +40,8 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Added: More cockpit prefabs
   - Update: Capital ship speed is now displayed in Hud
   - Update SmallShipAIFunctions.cs
-  - Fixed: Lasers no longer fire when ship is loaded, Fixed: ships firing…
+  - Fixed: Lasers no longer fire when ship is loaded
+  - Fixed: ships firing when no enemy is present
   - Updated: More checks to prevent loading errors from incorrect settings
 
 10/09/23 - v.0.6.3

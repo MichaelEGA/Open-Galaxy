@@ -1318,6 +1318,57 @@ public static class SceneFunctions
      
     }
 
+    public static IEnumerator PlaceGroundShips(string type, string allegiance, int number = 1, int numberPerLength = 1, float positionVar = 0, float length = 1000, float width = 1000, Vector2 centerPoint = new Vector2(), bool randomise = false, bool ifRaycastFailsDontLoad = false)
+    {
+        //This gets the scene reference
+        Scene scene = GetScene();
+
+        //This gets the Json ship data
+        TextAsset shipTypesFile = Resources.Load("Data/Files/ShipTypes") as TextAsset;
+        ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
+
+        //This finds the ship type to load 
+        ShipType shipType = null;
+
+        foreach (ShipType tempShipType in shipTypes.shipTypeData)
+        {
+            if (tempShipType.name == type)
+            {
+                shipType = tempShipType;
+                break;
+            }
+        }
+
+        if (randomise == false)
+        {
+            float lengthUnit = length / (float)numberPerLength;
+            float widthUnit = width / ((float)number / (float)numberPerLength);
+
+            float lengthRadius = length / 2;
+            float widthRadius = width / 2;
+
+            for (int l = 0; l < length; l += (int)lengthUnit)
+            {
+                for (int w = 0; w < width; w += (int)widthUnit)
+                {
+                    float xPos = l + centerPoint.x - lengthRadius;
+                    float zPos = w + centerPoint.y - widthRadius;
+
+                    float yPos = 0; //Ray cast for Y pos
+
+                    Vector3 newPosition = new Vector3(xPos, yPos, zPos);
+
+                    //Load Ship
+                }
+            }
+        }
+
+        
+
+        
+        yield return null;
+    }
+
     #endregion
 
     #region cockpit creation

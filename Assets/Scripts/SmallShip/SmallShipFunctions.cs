@@ -401,7 +401,15 @@ public static class SmallShipFunctions
             smallShip.automaticRotationSpin = true;
             SmoothTurnInput(smallShip, 0);
             SmoothPitchInput(smallShip, 0);
-            SmoothRollInput(smallShip, 1);
+
+            if (smallShip.rollInput > 0)
+            {
+                SmoothRollInput(smallShip, 1);
+            }
+            else if (smallShip.rollInput <= 0)
+            {
+                SmoothRollInput(smallShip, -1);
+            }
         }
         else
         {
@@ -663,7 +671,7 @@ public static class SmallShipFunctions
 
         if (smallShip.spinShip == true)
         {
-            smallShip.rollSpeed = (160f / 100f) * 100;
+            smallShip.rollSpeed = ((160f / 100f) * 100) * 2;
         }
 
     }
@@ -1082,41 +1090,45 @@ public static class SmallShipFunctions
             yield return new WaitForSeconds(time);
         }
 
-        //This removes the main camera
-        RemoveMainCamera(smallShip);
 
-        if (smallShip.scene == null)
+        if (smallShip != null)
         {
-            smallShip.scene = SceneFunctions.GetScene();
-        }
+            //This removes the main camera
+            RemoveMainCamera(smallShip);
 
-        //This creates an explosion where the ship is
-        ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion02", 12);
+            if (smallShip.scene == null)
+            {
+                smallShip.scene = SceneFunctions.GetScene();
+            }
 
-        //This makes an explosion sound
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", smallShip.gameObject.transform.position, 1, 1, 1000, 1, 100);
+            //This creates an explosion where the ship is
+            ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion02", 12);
 
-        //This turns of the engine sound and release the ship audio source from the ship
-        if (smallShip.audioManager != null)
-        {
-            smallShip.engineAudioSource.Stop();
-            smallShip.engineAudioSource = null;
-            smallShip.audioManager = null;
-        }
+            //This makes an explosion sound
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", smallShip.gameObject.transform.position, 1, 1, 1000, 1, 100);
 
-        HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
+            //This turns of the engine sound and release the ship audio source from the ship
+            if (smallShip.audioManager != null)
+            {
+                smallShip.engineAudioSource.Stop();
+                smallShip.engineAudioSource = null;
+                smallShip.audioManager = null;
+            }
 
-        //This deactives the cockpit
-        if (smallShip.cockpit != null)
-        {
-            smallShip.cockpit.SetActive(false);
-        }
+            HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
 
-        //This resets the ship for the next load if needed
-        smallShip.exploded = false;
+            //This deactives the cockpit
+            if (smallShip.cockpit != null)
+            {
+                smallShip.cockpit.SetActive(false);
+            }
 
-        //This deactivates the ship
-        smallShip.gameObject.SetActive(false);
+            //This resets the ship for the next load if needed
+            smallShip.exploded = false;
+
+            //This deactivates the ship
+            smallShip.gameObject.SetActive(false);
+        } 
     }
 
     public static IEnumerator ShipSpinSequence(SmallShip smallShip, float time)

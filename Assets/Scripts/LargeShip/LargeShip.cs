@@ -123,18 +123,22 @@ public class LargeShip : MonoBehaviour
         LargeShipFunctions.PrepareShip(this);
         TurretFunctions.LoadTurrets(this);
 
-        //Input functions
-        LargeShipFunctions.GetAIInput(this);
+        if (classType != "station")
+        {
+            //Input functions
+            LargeShipFunctions.GetAIInput(this);
 
-        //Ship movement functions
-        LargeShipFunctions.CalculateThrustSpeed(this);
-        LargeShipFunctions.CalculatePitchTurnRollSpeeds(this);
+            //Ship movement functions
+            LargeShipFunctions.CalculateThrustSpeed(this);
+            LargeShipFunctions.CalculatePitchTurnRollSpeeds(this);
 
-        //Targetting functions
-        TargetingFunctions.GetClosestEnemy_LargeShip(this, mode);
-        TargetingFunctions.GetNextEnemy_LargeShip(this, mode);
-        TargetingFunctions.GetNextTarget_LargeShip(this, mode);
-        TargetingFunctions.GetTargetInfo_LargeShip(this);
+            //Targetting functions
+
+            TargetingFunctions.GetClosestEnemy_LargeShip(this, mode);
+            TargetingFunctions.GetNextEnemy_LargeShip(this, mode);
+            TargetingFunctions.GetNextTarget_LargeShip(this, mode);
+            TargetingFunctions.GetTargetInfo_LargeShip(this);
+        }
 
         //Damage functions
         LargeShipFunctions.Explode(this);
@@ -142,6 +146,9 @@ public class LargeShip : MonoBehaviour
 
     void FixedUpdate()
     {
-        LargeShipFunctions.MoveShip(this);
+        if (classType != "station")
+        {
+            LargeShipFunctions.MoveShip(this);
+        }           
     }
 }

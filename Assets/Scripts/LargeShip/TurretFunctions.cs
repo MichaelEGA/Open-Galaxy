@@ -510,14 +510,20 @@ public static class TurretFunctions
 
         ParticleSystem particleSystem = turret.turretParticleSystem.GetComponent<ParticleSystem>();
 
-        foreach (Transform turretTransform in turret.firepoints)
+        if (particleSystem != null)
         {
-            particleSystem.transform.position = turretTransform.position;
-            particleSystem.transform.rotation = turretTransform.transform.rotation;
-            particleSystem.Play();
-            //AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, firstCannon.transform.position, spatialBlend, 1, 500, 0.6f);
-            yield return null;
-        }
+            foreach (Transform turretTransform in turret.firepoints)
+            {
+                if (turretTransform != null)
+                {
+                    particleSystem.transform.position = turretTransform.position;
+                    particleSystem.transform.rotation = turretTransform.transform.rotation;
+                    particleSystem.Play();
+                    //AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, firstCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                    yield return null;
+                }
+            }
+        }     
 
         turret.turretFiring = false;
     }

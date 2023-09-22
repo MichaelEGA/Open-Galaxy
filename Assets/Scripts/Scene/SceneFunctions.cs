@@ -704,6 +704,8 @@ public static class SceneFunctions
                 yield return null;
             }
         }
+
+        UnloadTileSet();
     }
 
     public static void LoadTileSet()
@@ -722,6 +724,18 @@ public static class SceneFunctions
             scene.tilesSetPool.Add(tempTile);
             tempTile.name = tilePrefab.name;                    
         }
+    }
+
+    public static void UnloadTileSet()
+    {
+        Scene scene = GetScene();
+
+        foreach (GameObject tile in scene.tilesSetPool)
+        {
+            GameObject.Destroy(tile);
+        }
+
+        scene.tilesSetPool.Clear();
     }
 
     public static GameObject PickTiles(Transform tileUpPointDown, Transform tileLeftPointRight)
@@ -796,10 +810,11 @@ public static class SceneFunctions
             if (tile.name == useableTilesName[tileChoice])
             {
                 tile.SetActive(true);
-
+                
                 tileToLoad = GameObject.Instantiate(tile);
                 tileToLoad.transform.rotation = Quaternion.Euler(0, useableTilesRotation[tileChoice], 0);
 
+                tileToLoad.name = "Tile" + Random.Range(0, 1000).ToString("0000");
                 Rigidbody rigidbody = tileToLoad.AddComponent<Rigidbody>();
                 rigidbody.isKinematic = true;
                 GameObjectUtils.AddColliders(tileToLoad, false);
@@ -948,7 +963,7 @@ public static class SceneFunctions
     #region ship creation
 
     //This loads an individual ship in the scene
-    public static void LoadShip(string shipTypeName, bool isAI = true, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string allegiance = "none", bool attachCameraToAI = false, string aiSkillLevel = "easy", string squadron = "none")
+    public static void LoadSingleShip(string shipTypeName, bool isAI = true, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string allegiance = "none", bool attachCameraToAI = false, string aiSkillLevel = "easy", string name = "none", bool dontModifyPosition = false)
     {
         //Get scene script reference
         Scene scene = GetScene();
@@ -1006,13 +1021,13 @@ public static class SceneFunctions
                     smallShip.allegiance = allegiance;
                 }
 
-                if (squadron == "none")
+                if (name == "none")
                 {
                     smallShip.name = shipType.callsign + "- Alpha " + Random.Range(1, 99).ToString("00");
                 }
                 else
                 {
-                    smallShip.name = shipType.callsign + "-" + squadron;
+                    smallShip.name = shipType.callsign + "-" + name;
                 }
 
                 smallShip.wepRating = shipType.wepRating;
@@ -1081,13 +1096,13 @@ public static class SceneFunctions
                     largeShip.allegiance = allegiance;
                 }
 
-                if (squadron == "none")
+                if (name == "none")
                 {
                     largeShip.name = shipType.callsign + "- Alpha " + Random.Range(1, 99).ToString("00");
                 }
                 else
                 {
-                    largeShip.name = shipType.callsign + "-" + squadron;
+                    largeShip.name = shipType.callsign + "-" + name;
                 }
 
                 largeShip.wepRating = shipType.wepRating;
@@ -1114,7 +1129,16 @@ public static class SceneFunctions
             }
 
             //Set ship position and rotation
-            ship.transform.position = scene.transform.position + position;
+
+            if (dontModifyPosition == false)
+            {
+                ship.transform.position = scene.transform.position + position;
+            }
+            else
+            {
+                ship.transform.position = position;
+            }          
+
             ship.transform.rotation = rotation;
 
             //Add ship to the object pool
@@ -1158,7 +1182,7 @@ public static class SceneFunctions
         }
     }
 
-    public static IEnumerator LoadShipsByName(string name, int number = 1, string aiSkillLevel = "easy", int groupsOf = 1, float shipDistance = 50, float groupDistance = 250, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
+    public static IEnumerator LoadMultipleShips(string name, int number = 1, string aiSkillLevel = "easy", int groupsOf = 1, float shipDistance = 50, float groupDistance = 250, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
     {
 
         //This gets the scene reference
@@ -1210,7 +1234,7 @@ public static class SceneFunctions
                 isAI = false;
             }
 
-            LoadShip(name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
+            LoadSingleShip(name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
 
             gNumber++;
 
@@ -1227,7 +1251,7 @@ public static class SceneFunctions
         }
     }
 
-    public static IEnumerator LoadShipsByTypeAndAllegiance(string type, string allegiance, string aiSkillLevel = "easy", int number = 1, int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = true, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
+    public static IEnumerator LoadMultipleShipByType(string type, string allegiance, string aiSkillLevel = "easy", int number = 1, int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = true, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1291,7 +1315,7 @@ public static class SceneFunctions
 
                 int shipCallNumber = i + 1;
 
-                LoadShip(shipTypesList[shipTypeCount].name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
+                LoadSingleShip(shipTypesList[shipTypeCount].name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
 
                 gNumber++;
 
@@ -1318,7 +1342,7 @@ public static class SceneFunctions
      
     }
 
-    public static IEnumerator PlaceGroundShips(string type, string allegiance, int number = 1, int numberPerLength = 1, float positionVar = 0, float length = 1000, float width = 1000, Vector2 centerPoint = new Vector2(), bool randomise = false, bool ifRaycastFailsDontLoad = false)
+    public static IEnumerator LoadMultipleShipsOnGround(string type, string name, string allegiance, int number = 1, int numberPerLength = 1, float positionVar = 0, float length = 1000, float width = 1000, float distanceAboveGround = 0, Vector2 centerPoint = new Vector2(), Quaternion rotation = new Quaternion(),  bool randomise = false, bool ifRaycastFailsStillLoad = false)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1339,32 +1363,57 @@ public static class SceneFunctions
             }
         }
 
-        if (randomise == false)
+        float lengthUnit = length / (float)numberPerLength;
+        float widthUnit = width / ((float)number / (float)numberPerLength);
+
+        float lengthRadius = length / 2;
+        float widthRadius = width / 2;
+
+        for (int l = 0; l < length; l += (int)lengthUnit)
         {
-            float lengthUnit = length / (float)numberPerLength;
-            float widthUnit = width / ((float)number / (float)numberPerLength);
-
-            float lengthRadius = length / 2;
-            float widthRadius = width / 2;
-
-            for (int l = 0; l < length; l += (int)lengthUnit)
+            for (int w = 0; w < width; w += (int)widthUnit)
             {
-                for (int w = 0; w < width; w += (int)widthUnit)
+                float xPos = l + (centerPoint.x - lengthRadius);
+                float zPos = w + (centerPoint.y - widthRadius);
+
+                if (randomise == true)
                 {
-                    float xPos = l + centerPoint.x - lengthRadius;
-                    float zPos = w + centerPoint.y - widthRadius;
+                    //This radomises the position within the give width and length
+                    xPos = Random.Range(0, lengthRadius) - lengthRadius;
+                    zPos = Random.Range(0, widthRadius) - widthRadius;
 
-                    float yPos = 0; //Ray cast for Y pos
+                    //This randomises the rotation
+                    float xRot = Random.Range(0, 360);
+                    float yRot = Random.Range(0, 360);
+                    float zRot = Random.Range(0, 360);
 
-                    Vector3 newPosition = new Vector3(xPos, yPos, zPos);
-
-                    //Load Ship
+                    rotation = Quaternion.Euler(xRot, yRot, zRot);
                 }
+
+                Vector3 raycastPos = new Vector3(xPos, 2000, zPos);
+
+                RaycastHit hit;
+
+                LayerMask mask = ~0;
+
+                Debug.DrawRay(raycastPos, Vector3.down * 5000, Color.red, 500);
+
+                //NOTE: Raycasts only work when the time scale is set to zero IF "Auto Sync Transform" is set to true in the project settings
+
+                if (Physics.Raycast(raycastPos, Vector3.down, out hit, 5000, mask))
+                {
+                    Vector3 newPosition = hit.point;
+                    LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name, true);
+                }
+                else if (ifRaycastFailsStillLoad == true)
+                {
+                    Vector3 newPosition = new Vector3(xPos, 0, zPos);
+                    LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name);
+                }
+
+                yield return null;
             }
         }
-
-        
-
         
         yield return null;
     }

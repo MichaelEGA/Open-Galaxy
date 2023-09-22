@@ -69,20 +69,26 @@ public static class MissionFunctions
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Tiles loaded", Time.unscaledTime - time);
             }
+            else if (missionEvent.eventType == "preload_loadmultipleshipsonground")
+            {
+                Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", Time.unscaledTime - time);
+            }
             else if (missionEvent.eventType == "preload_loadship" )
             {
-                LoadShip(missionEvent);
+                LoadSingleShip(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_loadshipsbyname")
             {
-                Task a = new Task(LoadShipsByName(missionEvent));
+                Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_loadshipsbytypeandallegiance")
             {
-                Task a = new Task(LoadShipsByTypeAndAllegiance(missionEvent));
+                Task a = new Task(LoadMultipleShipsByType(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by type and allegiance", Time.unscaledTime - time);
             }
@@ -220,22 +226,27 @@ public static class MissionFunctions
         }
         else if (missionEvent.eventType == "loadship")
         {
-            LoadShip(missionEvent);
+            LoadSingleShip(missionEvent);
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
         else if (missionEvent.eventType == "loadshipatdistanceandanglefromplayer")
         {
-            LoadShipAtDistanceAndAngleFromPlayer(missionEvent);
+            LoadSingleShipAtDistanceAndAngleFromPlayer(missionEvent);
+            FindNextEvent(missionName, missionEvent.nextEvent1);
+        }
+        else if (missionEvent.eventType == "loadmultipleshipsonground")
+        {
+            Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
         else if (missionEvent.eventType == "loadshipsbyname")
         {
-            Task a = new Task(LoadShipsByName(missionEvent));
+            Task a = new Task(LoadMultipleShips(missionEvent));
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
         else if (missionEvent.eventType == "loadshipsbytypeandallegiance")
         {
-            Task a = new Task(LoadShipsByTypeAndAllegiance(missionEvent));
+            Task a = new Task(LoadMultipleShipsByType(missionEvent));
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
         else if (missionEvent.eventType == "lockmainshipweapons")
@@ -579,7 +590,7 @@ public static class MissionFunctions
     }
 
     //This loads a single ship by name
-    public static void LoadShip(MissionEvent missionEvent)
+    public static void LoadSingleShip(MissionEvent missionEvent)
     {
         string ship = missionEvent.data1;
         float x = missionEvent.x;
@@ -611,11 +622,11 @@ public static class MissionFunctions
             z = Random.Range(-10000, 10000);
         }
 
-        SceneFunctions.LoadShip(ship, bool.Parse(missionEvent.data2), new Vector3(x, y, z), rotation, allegiance, false, "easy", name);
+        SceneFunctions.LoadSingleShip(ship, bool.Parse(missionEvent.data2), new Vector3(x, y, z), rotation, allegiance, false, "easy", name);
     }
 
     //This loads a single ship at a certain distance and angle from the player
-    public static void LoadShipAtDistanceAndAngleFromPlayer(MissionEvent missionEvent)
+    public static void LoadSingleShipAtDistanceAndAngleFromPlayer(MissionEvent missionEvent)
     {
         string ship = missionEvent.data1;
         float x = missionEvent.x;
@@ -653,11 +664,62 @@ public static class MissionFunctions
             }
         }
 
-        SceneFunctions.LoadShip(ship, bool.Parse(missionEvent.data2), newPosition, rotation, allegiance, false, "easy", squadronName);
+        SceneFunctions.LoadSingleShip(ship, bool.Parse(missionEvent.data2), newPosition, rotation, allegiance, false, "easy", squadronName);
     }
 
     //This loads multiple ships by name
-    public static IEnumerator LoadShipsByName(MissionEvent missionEvent)
+    public static IEnumerator LoadMultipleShipsOnGround(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float z = missionEvent.z;
+
+        Vector2 centerPoint = new Vector2(x, z);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "xwing";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+        
+        string name = "none";
+        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
+
+        string allegiance = "none";
+        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
+
+        int number = 0;
+        if (int.TryParse(missionEvent.data4, out _)) { number = int.Parse(missionEvent.data4); }
+
+        int numberPerLength = 0;
+        if (int.TryParse(missionEvent.data5, out _)) { numberPerLength = int.Parse(missionEvent.data5); }
+
+        float positionVariance = 0;
+        if (int.TryParse(missionEvent.data6, out _)) { positionVariance = float.Parse(missionEvent.data6); }
+
+        float length = 0;
+        if (int.TryParse(missionEvent.data7, out _)) { length = float.Parse(missionEvent.data7); }
+
+        float width = 0;
+        if (int.TryParse(missionEvent.data8, out _)) { width = float.Parse(missionEvent.data8); }
+
+        float distanceAboveGround = 0;
+        if (int.TryParse(missionEvent.data9, out _)) { distanceAboveGround = float.Parse(missionEvent.data9); }
+
+        bool randomise = false;
+        if (bool.TryParse(missionEvent.data10, out _)) { randomise = bool.Parse(missionEvent.data10); }
+
+        bool ifRaycastFailsStillLoad = false;
+        if (bool.TryParse(missionEvent.data11, out _)) { ifRaycastFailsStillLoad = bool.Parse(missionEvent.data11); }
+
+        Task c = new Task(SceneFunctions.LoadMultipleShipsOnGround(type, name, allegiance, number, numberPerLength, positionVariance, length, width, distanceAboveGround, centerPoint, rotation, randomise, ifRaycastFailsStillLoad));
+        while (c.Running == true) { yield return null; }
+    }
+
+    //This loads multiple ships by name
+    public static IEnumerator LoadMultipleShips(MissionEvent missionEvent)
     {
         float x = missionEvent.x;
         float y = missionEvent.y;
@@ -723,12 +785,12 @@ public static class MissionFunctions
             positionVariance = 10;
         }
 
-        Task c = new Task(SceneFunctions.LoadShipsByName(shipType, shipNo, skillLevel, groupsOf, shipDistance, groupDistance, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadMultipleShips(shipType, shipNo, skillLevel, groupsOf, shipDistance, groupDistance, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
     }
 
     //This loads multiple ships by type and allegiance
-    public static IEnumerator LoadShipsByTypeAndAllegiance(MissionEvent missionEvent)
+    public static IEnumerator LoadMultipleShipsByType(MissionEvent missionEvent)
     {
         float x = missionEvent.x;
         float y = missionEvent.y;
@@ -791,7 +853,7 @@ public static class MissionFunctions
             playerNo = Random.Range(0, shipNo - 1);
         }
 
-        Task c = new Task(SceneFunctions.LoadShipsByTypeAndAllegiance(shipType, allegiance, missionEvent.data3, shipNo, groupsOf, shipDistance, groupDistance, false, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadMultipleShipByType(shipType, allegiance, missionEvent.data3, shipNo, groupsOf, shipDistance, groupDistance, false, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
     }
 

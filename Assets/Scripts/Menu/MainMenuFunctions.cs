@@ -483,7 +483,7 @@ public static class MainMenuFunctions
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
     {
         string[] messages = new string[10];
-        messages[0] = "Welcome to Open Galaxy. Version 0.6.5 brings numerous small updates to improve your experience.";
+        messages[0] = "Welcome to Open Galaxy. Version 0.6.61 adds ground turrent placement for death star missions.";
         messages[1] = "Open Galaxy's aim is to be a platform for X-Wing and Tie Fighter style custom missions.";
         messages[2] = "Need a quick fix? Try out the random battle and ladder modes.";
         messages[3] = "Flying a ship isn't like dusting crops. Remember to complete the training missions.";
@@ -492,7 +492,7 @@ public static class MainMenuFunctions
         messages[6] = "Open Galaxy is best played with a keyboard and mouse. But there is rudimentary controller support.";
         messages[7] = "Open Galaxy uses a mouse joystick system that allows for precision control of your ship.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
-        messages[9] = "Future plans for Open Galaxy include an 'explore galaxy' option and other unique game modes.";
+        messages[9] = "Future plans for Open Galaxy include an 'explore galaxy' option and lots of other features.";
         Random.InitState(System.DateTime.Now.Millisecond);
         int randomMessageNo = Random.Range(0, 9);
         titleScreenMessageBox.text = messages[randomMessageNo];

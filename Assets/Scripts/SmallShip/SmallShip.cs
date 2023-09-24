@@ -146,6 +146,7 @@ public class SmallShip : MonoBehaviour
     [Header("Ship Targetting")]
     public GameObject waypoint;
     public GameObject target;
+    public bool dontSelectLargeShips;
     [HideInInspector] public SmallShip targetSmallShip;
     [HideInInspector] public LargeShip targetLargeShip;
     [HideInInspector] public Rigidbody targetRigidbody;

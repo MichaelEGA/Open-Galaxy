@@ -22,10 +22,7 @@ public static class SmallShipAIFunctions
     public static void SetFlightMode(SmallShip smallShip)
     {
         //This selects the next enemy target
-        if (smallShip.target == null)
-        {
-            SelectTarget(smallShip);
-        }
+        SelectTarget(smallShip);       
 
         //This chooses between attack and patrol
         if (smallShip.target != null)
@@ -388,7 +385,7 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.target == null)
         {
-            if (smallShip.type == "bomber")
+            if (smallShip.type == "bomber" & smallShip.dontSelectLargeShips == false)
             {
                 TargetingFunctions.GetNextEnemy(smallShip, "largeship", true);
             }
@@ -397,7 +394,7 @@ public static class SmallShipAIFunctions
                 TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
             }  
 
-            if (smallShip.target == null)
+            if (smallShip.target == null & smallShip.dontSelectLargeShips == false)
             {
                 TargetingFunctions.GetNextEnemy(smallShip, "none", true);
             }
@@ -406,7 +403,7 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target.activeSelf == false)
             {
-                if (smallShip.type == "bomber")
+                if (smallShip.type == "bomber" & smallShip.dontSelectLargeShips == false)
                 {
                     TargetingFunctions.GetNextEnemy(smallShip, "largeship", true);
                 }
@@ -415,10 +412,15 @@ public static class SmallShipAIFunctions
                     TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
                 }
 
-                if (smallShip.target.activeSelf == false)
+                if (smallShip.target.activeSelf == false & smallShip.dontSelectLargeShips == false)
                 {
                     TargetingFunctions.GetNextEnemy(smallShip, "none", true);
                 }               
+            }
+            else if (smallShip.target.GetComponent<LargeShip>() == true & smallShip.dontSelectLargeShips == true)
+            {
+                TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
+                //Make targeting function to deselect a target
             }
             else if (smallShip.target.GetComponent<LargeShip>() == true & smallShip.type != "bomber")
             {

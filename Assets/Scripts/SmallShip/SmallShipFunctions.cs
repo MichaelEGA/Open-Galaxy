@@ -402,11 +402,11 @@ public static class SmallShipFunctions
             SmoothTurnInput(smallShip, 0);
             SmoothPitchInput(smallShip, 0);
 
-            if (smallShip.rollInput > 0)
+            if (smallShip.rollInputActual > 0)
             {
                 SmoothRollInput(smallShip, 1);
             }
-            else if (smallShip.rollInput <= 0)
+            else if (smallShip.rollInputActual <= 0)
             {
                 SmoothRollInput(smallShip, -1);
             }
@@ -671,7 +671,7 @@ public static class SmallShipFunctions
 
         if (smallShip.spinShip == true)
         {
-            smallShip.rollSpeed = ((160f / 100f) * 100) * 2;
+            smallShip.rollSpeed = ((160f / 100f) * 100) * 2.5f * manveurablityPercentageAsDecimal;
         }
 
     }

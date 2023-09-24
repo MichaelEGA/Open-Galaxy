@@ -274,6 +274,11 @@ public static class MissionFunctions
             SetAIOverride(missionEvent);
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
+        else if (missionEvent.eventType == "setdontattacklargeships")
+        {
+            SetDontAttackLargeShips(missionEvent);
+            FindNextEvent(missionName, missionEvent.nextEvent1);
+        }
         else if (missionEvent.eventType == "setshipallegiance")
         {
             SetShipAllegiance(missionEvent);
@@ -976,6 +981,34 @@ public static class MissionFunctions
                 }
             }
         }
+    }
+
+    //This sets the designated ships target, provided both the ship and its target can be found
+    public static void SetDontAttackLargeShips(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (bool.TryParse(missionEvent.data2, out _))
+        {
+            if (scene != null)
+            {
+                if (scene.objectPool != null)
+                {
+                    foreach (GameObject ship in scene.objectPool)
+                    {
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                            if (smallShip != null)
+                            {
+                                smallShip.dontSelectLargeShips = bool.Parse(missionEvent.data2);
+                            }
+                        }
+                    }
+                }
+            }
+        }   
     }
 
     //This sets the designated ships target to the closest enemy, provided both the ship can be found

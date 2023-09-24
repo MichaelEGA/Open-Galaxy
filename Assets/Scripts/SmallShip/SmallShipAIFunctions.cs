@@ -412,10 +412,13 @@ public static class SmallShipAIFunctions
                     TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
                 }
 
-                if (smallShip.target.activeSelf == false & smallShip.dontSelectLargeShips == false)
+                if (smallShip.target != null) //This needs to be rechecked as the target may be altered by the above functions
                 {
-                    TargetingFunctions.GetNextEnemy(smallShip, "none", true);
-                }               
+                    if (smallShip.target.activeSelf == false & smallShip.dontSelectLargeShips == false)
+                    {
+                        TargetingFunctions.GetNextEnemy(smallShip, "none", true);
+                    }
+                }     
             }
             else if (smallShip.target.GetComponent<LargeShip>() == true & smallShip.dontSelectLargeShips == true)
             {

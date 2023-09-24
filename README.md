@@ -34,7 +34,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Fixed: Smallships targetting largeships before smallships
   - Updated: A-Wing cockpit lightmap texture added
   - Fixed: Ship now spins in a consistent direction
-  - Update: Turret placement code is complete
+  - Updated: Turret placement code is complete
 
 18/09/23 - v.0.6.5
   - Updated: Misc improvements

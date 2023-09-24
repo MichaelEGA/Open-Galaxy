@@ -30,7 +30,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 **Changelog**
 
 18/11/23 - v.0.6.5
-  - Update: Misc improvements
+  - Updated: Misc improvements
   - Updated: Radar prefabs
   - Added: Basic Ground Turret Code
   - Fixed: UI Images, String Parse Bug, and Explode on collision bug
@@ -38,8 +38,8 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Added: Set game area radius, Updated: set camera to cockpit pos not s…
   - Fixed: More loading issues
   - Added: More cockpit prefabs
-  - Update: Capital ship speed is now displayed in Hud
-  - Update SmallShipAIFunctions.cs
+  - Updated: Capital ship speed is now displayed in Hud
+  - Updated SmallShipAIFunctions.cs
   - Fixed: Lasers no longer fire when ship is loaded
   - Fixed: ships firing when no enemy is present
   - Updated: More checks to prevent loading errors from incorrect settings
@@ -47,12 +47,12 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 10/09/23 - v.0.6.3
   - Updated: Cleaned up some mission functions
   - Fixed: Missions that broke with capital ship support
-  - Update: Minor modifications to prepare for node-based mission editor
+  - Updated: Minor modifications to prepare for node-based mission editor
   - Fixed: Enumeration error in avoid collision
   - Added: Two new in development missions
   - Added: Ability to change skybox
   - Added: Ability to set rotation of ship when loading
-  - Update: Scene now unloads tiles when mission is over
+  - Updated: Scene now unloads tiles when mission is over
   - Fixed: Various reported loading problems
 
 03/09/23 - v.0.6.2

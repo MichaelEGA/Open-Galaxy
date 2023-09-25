@@ -869,8 +869,14 @@ public static class MissionFunctions
         int distanceX = (int)missionEvent.x;
         int distanceY = (int)missionEvent.y;
         int tileSize = (int)missionEvent.z;
+        int seed = Random.Range(0, 5000);
 
-        Task a = new Task(SceneFunctions.GenerateTiles(type, distanceX, distanceY, tileSize));
+        if (int.TryParse(missionEvent.data2, out _))
+        {
+            seed = int.Parse(missionEvent.data2);
+        }
+
+        Task a = new Task(SceneFunctions.GenerateTiles(type, distanceX, distanceY, tileSize, seed));
         while (a.Running == true) { yield return null; }
     }
 

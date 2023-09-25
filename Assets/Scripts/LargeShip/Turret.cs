@@ -10,8 +10,10 @@ public class Turret : MonoBehaviour
     public Transform[] firepoints;
     public GameObject turretParticleSystem;
     public GameObject target;
+    public Audio audioManager;
     public string allegiance;
     public string laserColor = "red";
+    public string audioFile = "turbolaser_ac";
     public string turretType;
     public bool yRotationIsRestricted = false;
     public float turretSpeed = 100; //Percentage

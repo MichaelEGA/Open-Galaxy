@@ -519,7 +519,16 @@ public static class TurretFunctions
                     particleSystem.transform.position = turretTransform.position;
                     particleSystem.transform.rotation = turretTransform.transform.rotation;
                     particleSystem.Play();
-                    //AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, firstCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+
+                    if (turret.audioManager == null)
+                    {
+                        turret.audioManager = AudioFunctions.GetAudioManager();
+                    }
+                    else
+                    {
+                        AudioFunctions.PlayAudioClip(turret.audioManager, turret.audioFile, turret.transform.position, 1, 1, 500, 0.6f);
+                    }
+                    
                     yield return null;
                 }
             }

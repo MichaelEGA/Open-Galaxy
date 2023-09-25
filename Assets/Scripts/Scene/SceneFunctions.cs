@@ -670,7 +670,7 @@ public static class SceneFunctions
 
     #region ground tile creation
 
-    public static IEnumerator GenerateTiles(string sceneType, int xDistance, int yDistance, int tileSize)
+    public static IEnumerator GenerateTiles(string sceneType, int xDistance, int yDistance, int tileSize, int seed)
     {
         LoadTileSet();
 
@@ -685,6 +685,9 @@ public static class SceneFunctions
         float tileRadius = tileSize / 2f;
 
         GameObject[,] tiles = new GameObject[numberOfTilesX, numberOfTilesY];
+
+        //This sets the seed so that asteroids don't change position or number when you visit the same area twice
+        Random.InitState(seed);
 
         for (int x = 0; x < numberOfTilesX - 1; x++)
         {
@@ -701,9 +704,11 @@ public static class SceneFunctions
                 tiles[x, y].transform.position = new Vector3(positionX, 0, positionY);
                 tiles[x, y].transform.SetParent(scene.gameObject.transform);
 
-                yield return null;
+                //yield return null;
             }
         }
+
+        yield return null;
 
         UnloadTileSet();
     }

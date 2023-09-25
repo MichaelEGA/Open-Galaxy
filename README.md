@@ -15,10 +15,10 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
   - Explore mode where you can explore the whole Star Wars galaxy (In progress)
 
-**Latest Release:** 0.6.5
+**Latest Release:** 0.6.61
 
-  - Play version: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.5/Open.Galaxy.0.6.5.zip
-  - Debug version: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.5/Open.Galaxy.0.6.5_Debug.zip
+  - Play version: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.61/Open.Galaxy.0.6.61.zip
+  - Debug version: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.61/Open.Galaxy.0.6.61_Debug.zip
 
 **Other Info**
 
@@ -29,7 +29,14 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
 **Changelog**
 
-18/11/23 - v.0.6.5
+24/09/23 - v.0.6.61
+  - Added: Don't Attack Large Ships Function to Mission Functions
+  - Fixed: Smallships targetting largeships before smallships
+  - Updated: A-Wing cockpit lightmap texture added
+  - Fixed: Ship now spins in a consistent direction
+  - Updated: Turret placement code is complete
+
+18/09/23 - v.0.6.5
   - Updated: Misc improvements
   - Updated: Radar prefabs
   - Added: Basic Ground Turret Code

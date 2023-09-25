@@ -392,17 +392,14 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
             {
-                TargetingFunctions.GetNextEnemy(smallShip, "largeship", true);
+                TargetingFunctions.GetClosestEnemyLargeShip_AI(smallShip);
+                Debug.Log("Run 1 " + smallShip.name);
             }
             else
             {
-                TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
+                TargetingFunctions.GetClosestEnemySmallShip_AI(smallShip);
+                Debug.Log("Run 2 " + smallShip.name);
             }  
-
-            if (smallShip.target == null & smallShip.dontSelectLargeShips == false)
-            {
-                TargetingFunctions.GetNextEnemy(smallShip, "none", true);
-            }
         }
         else if (smallShip.target != null)
         {
@@ -410,20 +407,14 @@ public static class SmallShipAIFunctions
             {
                 if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
                 {
-                    TargetingFunctions.GetNextEnemy(smallShip, "largeship", true);
+                    TargetingFunctions.GetClosestEnemyLargeShip_AI(smallShip);
+                    Debug.Log("Run 3 " + smallShip.name);
                 }
                 else
                 {
-                    TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
-                }
-
-                if (smallShip.target == null)
-                {
-                    if (smallShip.target.activeSelf == false & smallShip.dontSelectLargeShips == false)
-                    {
-                        TargetingFunctions.GetNextEnemy(smallShip, "none", true);
-                    }
-                }                                 
+                    TargetingFunctions.GetClosestEnemySmallShip_AI(smallShip);
+                    Debug.Log("Run 4 " + smallShip.name);
+                }                              
             }
         }
 

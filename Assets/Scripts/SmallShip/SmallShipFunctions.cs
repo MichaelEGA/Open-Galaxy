@@ -1269,28 +1269,47 @@ public static class SmallShipFunctions
 
             while (time > Time.time)
             {
-                float x = Random.Range(-1f, 1f) * smallShip.speedShakeMagnitude;
-                float y = Random.Range(-1f, 1f) * smallShip.speedShakeMagnitude;
+                if (smallShip != null) //This needs to be checked as conditions can change while the inumerator is running
+                {
+                    float x = Random.Range(-1f, 1f) * smallShip.speedShakeMagnitude;
+                    float y = Random.Range(-1f, 1f) * smallShip.speedShakeMagnitude;
 
-                smallShip.cockpit.transform.localPosition = new Vector3(x, y, smallShip.basePosition.z);
+                    if (smallShip != null)
+                    {
 
-                if (smallShip.cockpitDamageShake == true)
+                    }
+
+                    smallShip.cockpit.transform.localPosition = new Vector3(x, y, smallShip.basePosition.z);
+
+                    if (smallShip.cockpitDamageShake == true)
+                    {
+                        break;
+                    }
+
+                    if (Time.timeScale == 0)
+                    {
+                        break;
+                    }
+
+                    yield return null;
+                }
+                else
                 {
                     break;
                 }
 
-                if (Time.timeScale == 0)
-                {
-                    break;
-                }
-
-                yield return null;
             }
 
-            smallShip.cockpit.transform.localPosition = smallShip.basePosition;
+            if (smallShip != null)  //This needs to be checked as conditions can change while the inumerator is running
+            {
+                smallShip.cockpit.transform.localPosition = smallShip.basePosition;
+            }
         }
 
-       smallShip.cockpitSpeedShake = false;
+        if (smallShip != null)  //This needs to be checked as conditions can change while the inumerator is running
+        {
+            smallShip.cockpitSpeedShake = false;
+        }
     }
 
     //This shakes the hud glass

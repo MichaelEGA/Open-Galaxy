@@ -233,7 +233,7 @@ public static class TargetingFunctions
 
         if (smallShip.target != null)
         {
-            if (smallShip.target.activeSelf == false)
+            if (smallShip.target.activeSelf == false & smallShip.isAI == false)
             {
                 automaticSearch = true;
             }
@@ -585,6 +585,135 @@ public static class TargetingFunctions
 
         return isHostile;
 
+    }
+
+    #endregion
+
+    #region AI smallship targetting
+
+    //This gets the closesd enemy target
+    public static void GetClosestEnemySmallShip_AI(SmallShip smallShip)
+    {
+        Scene scene = smallShip.scene;
+
+        GameObject target = null;
+        SmallShip tempSmallShip = null;
+        SmallShip targetSmallShip = null;
+
+        float distance = Mathf.Infinity;
+
+        //This checks for the closest small ship first
+        foreach (GameObject ship in scene.objectPool)
+        {
+            if (ship != null)
+            {
+                tempSmallShip = ship.GetComponent<SmallShip>();
+
+                if (ship.activeSelf == true & tempSmallShip != null)
+                {
+                    bool isHostile = GetHostility(smallShip, tempSmallShip.allegiance);
+
+                    if (isHostile == true)
+                    {
+                        float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
+
+                        if (tempDistance < distance)
+                        {
+                            float numberTargetting = tempSmallShip.numberTargeting;
+
+                            target = ship;
+                            targetSmallShip = tempSmallShip;
+                            distance = tempDistance;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (target != null)
+        {
+            smallShip.target = target;
+            smallShip.targetName = target.name;
+
+            if (targetSmallShip != null)
+            {
+                smallShip.targetSmallShip = targetSmallShip;
+                smallShip.targetLargeShip = null;
+                smallShip.targetPrefabName = targetSmallShip.prefabName;
+
+                if (smallShip.isAI == true)
+                {
+                    targetSmallShip.numberTargeting += 1;
+                }
+            }
+
+            smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
+        }
+
+        //This prevents the torpedo from immediately locking on to the new target
+        smallShip.torpedoLockedOn = false;
+        smallShip.torpedoLockingOn = false;      
+    }
+
+    //This gets the closesd enemy target
+    public static void GetClosestEnemyLargeShip_AI(SmallShip smallShip)
+    {
+        Scene scene = smallShip.scene;
+
+        GameObject target = null;
+        LargeShip tempLargeShip = null;
+        LargeShip targetLargeShip = null;
+
+        float distance = Mathf.Infinity;
+
+        //If the target is still null it looks for the closest large ship
+        if (target == null)
+        {
+            foreach (GameObject ship in scene.objectPool)
+            {
+                if (ship != null)
+                {                   
+                    tempLargeShip = ship.GetComponent<LargeShip>();
+
+                    if (ship.activeSelf == true & tempLargeShip != null)
+                    {
+                        bool isHostile = GetHostility(smallShip, tempLargeShip.allegiance);
+
+                        if (isHostile == true)
+                        {
+                            float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
+
+                            if (tempDistance < distance)
+                            {
+                                target = ship;
+                                targetLargeShip = tempLargeShip;
+                                distance = tempDistance;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (target != null)
+        {
+            smallShip.target = target;
+            smallShip.targetName = target.name;
+
+            if (targetLargeShip != null)
+            {
+                smallShip.targetSmallShip = null;
+                smallShip.targetLargeShip = targetLargeShip;
+                smallShip.targetPrefabName = targetLargeShip.prefabName;
+            }
+
+            smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
+        }
+
+        //This prevents the torpedo from immediately locking on to the new target
+        smallShip.torpedoLockedOn = false;
+        smallShip.torpedoLockingOn = false;        
     }
 
     #endregion

@@ -13,9 +13,10 @@ public class Turret : MonoBehaviour
     public Audio audioManager;
     public string allegiance;
     public string laserColor = "red";
-    public string audioFile = "turbolaser_ac";
+    public string audioFile = "Turbolaser";
     public string turretType;
     public bool yRotationIsRestricted = false;
+    public bool lookingForTarget = false;
     public float turretSpeed = 100; //Percentage
     public float turnInput;
     public float pitchInput;
@@ -37,10 +38,10 @@ public class Turret : MonoBehaviour
 
     void Update()
     {
+        TurretFunctions.GetTarget(this);
         TurretFunctions.TurretInput(this, largeShip);
         TurretFunctions.RotateTurret(this);
-        TurretFunctions.FireTurret(this);
-        TargetingFunctions.GetClosestEnemy_Turret(this);
+        TurretFunctions.FireTurret(this);   
         TurretFunctions.Explode(this);
     }
 }

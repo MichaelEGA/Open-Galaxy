@@ -792,6 +792,38 @@
 		"Type": "ContentButton02",
 		"Variable": "galacticconquest"
         },
+ 	{
+		"ParentMenu": "Settings",
+            "Name": "Toggle Debugging Window",
+            "Description": "Toggle the debugging window on and off",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton01",
+		"Variable": "Toggle Debugging Window"
+        },
+ 	{
+		"ParentMenu": "Toggle Debugging Window",
+            "Name": "Back to Settings",
+            "Description": "Returns to settings sub menu",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton02",
+		"Variable": "Settings"
+        },
+	{
+		"ParentMenu": "Toggle Debugging Window",
+            "Name": "Turn On Debugging",
+            "Description": "Makes the debugging window visible",
+            "Function": "ToggleDebugging",
+		"Type": "ContentButton02",
+		"Variable": "True"
+        },
+	{
+		"ParentMenu": "Toggle Debugging Window",
+            "Name": "Turn Off Debugging",
+            "Description": "Makes the debugging window invisible",
+            "Function": "ToggleDebugging",
+		"Type": "ContentButton02",
+		"Variable": "False"
+        },
 	  {
 		"ParentMenu": "Credits",
             "Name": "MichaelEGA",

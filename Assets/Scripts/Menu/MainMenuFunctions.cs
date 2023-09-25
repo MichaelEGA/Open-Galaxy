@@ -143,6 +143,7 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("QuitToMainMenu", new System.Action(QuitToMainMenu));
         mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
         mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
+        mainMenu.functions.Add("ToggleDebugging", new System.Action<string>(ToggleDebugging));
         mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
         mainMenu.functions.Add("ChangePlanetTextureResolution", new System.Action<string>(ChangePlanetTextureResolution));
         mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
@@ -837,6 +838,22 @@ public static class MainMenuFunctions
 
         ActivateSubMenu("Controls");
 
+    }
+
+    //This turns the debugging window on and off
+    public static void ToggleDebugging(string choice)
+    {
+        if (bool.TryParse(choice, out _))
+        {
+            Debug.developerConsoleVisible = bool.Parse(choice);
+
+            if (choice.ToLower() == "true")
+            {
+                Debug.LogError("The developer console was toggled on");
+            }
+        }
+
+        ActivateSubMenu("Settings");
     }
 
     //Stand in funciton for returning to the main menu

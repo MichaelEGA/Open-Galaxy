@@ -339,6 +339,27 @@ public static class TurretFunctions
 
     #region turret input
 
+    //This gets the turrets target
+    public static void GetTarget(Turret turret)
+    {
+        if (turret.lookingForTarget == false)
+        {
+            Task a = new Task(LookForTarget(turret));
+        }
+    }
+    
+    //This looks for the target every 2.5 secs to prevent it running too often
+    public static IEnumerator LookForTarget(Turret turret)
+    {
+        turret.lookingForTarget = true;
+
+        TargetingFunctions.GetClosestEnemy_Turret(turret);
+
+        yield return new WaitForSeconds(Random.Range(2f, 3f));
+
+        turret.lookingForTarget = false;
+    }
+
     //This gets the input for the turret from ship
     public static void TurretInput(Turret turret, LargeShip largeShip)
     {

@@ -22,7 +22,10 @@ public static class SmallShipAIFunctions
     public static void SetFlightMode(SmallShip smallShip)
     {
         //This selects the next enemy target
-        SelectTarget(smallShip);       
+        if (smallShip.lookingForTarget == false)
+        {
+            Task a = new Task(SelectTarget(smallShip));
+        }           
 
         //This chooses between attack and patrol
         if (smallShip.target != null)
@@ -381,8 +384,10 @@ public static class SmallShipAIFunctions
     #region Targetting and Waypoints
 
     //This selects the next target
-    public static void SelectTarget(SmallShip smallShip)
+    public static IEnumerator SelectTarget(SmallShip smallShip)
     {
+        smallShip.lookingForTarget = true;
+
         if (smallShip.target == null)
         {
             if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
@@ -412,24 +417,19 @@ public static class SmallShipAIFunctions
                     TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
                 }
 
-                if (smallShip.target != null) //This needs to be rechecked as the target may be altered by the above functions
+                if (smallShip.target == null)
                 {
                     if (smallShip.target.activeSelf == false & smallShip.dontSelectLargeShips == false)
                     {
                         TargetingFunctions.GetNextEnemy(smallShip, "none", true);
                     }
-                }     
-            }
-            else if (smallShip.target.GetComponent<LargeShip>() == true & smallShip.dontSelectLargeShips == true)
-            {
-                TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
-                //Make targeting function to deselect a target
-            }
-            else if (smallShip.target.GetComponent<LargeShip>() == true & smallShip.type.Contains("bomber"))
-            {
-                TargetingFunctions.GetNextEnemy(smallShip, "none", true);
+                }                                 
             }
         }
+
+        yield return new WaitForSeconds(Random.Range(2f, 3f));
+
+        smallShip.lookingForTarget = false;
     }
 
     //This selects a random waypoint

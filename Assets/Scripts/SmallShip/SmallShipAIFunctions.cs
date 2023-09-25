@@ -385,7 +385,7 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.target == null)
         {
-            if (smallShip.type == "bomber" & smallShip.dontSelectLargeShips == false)
+            if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
             {
                 TargetingFunctions.GetNextEnemy(smallShip, "largeship", true);
             }
@@ -403,7 +403,7 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target.activeSelf == false)
             {
-                if (smallShip.type == "bomber" & smallShip.dontSelectLargeShips == false)
+                if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
                 {
                     TargetingFunctions.GetNextEnemy(smallShip, "largeship", true);
                 }
@@ -425,9 +425,9 @@ public static class SmallShipAIFunctions
                 TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
                 //Make targeting function to deselect a target
             }
-            else if (smallShip.target.GetComponent<LargeShip>() == true & smallShip.type != "bomber")
+            else if (smallShip.target.GetComponent<LargeShip>() == true & smallShip.type.Contains("bomber"))
             {
-                TargetingFunctions.GetNextEnemy(smallShip, "smallship", true);
+                TargetingFunctions.GetNextEnemy(smallShip, "none", true);
             }
         }
     }

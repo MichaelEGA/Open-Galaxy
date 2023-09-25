@@ -8,6 +8,7 @@ public class SmallShip : MonoBehaviour
     [Header("Ship Information")]
     public string allegiance; //Value set in inspector or by loading script
     public string type;
+    public string classType;
     public string prefabName;
     public float loadTime;
     public string thrustType;

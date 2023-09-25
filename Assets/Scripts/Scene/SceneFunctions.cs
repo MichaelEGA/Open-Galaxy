@@ -1053,6 +1053,7 @@ public static class SceneFunctions
                 smallShip.type = shipTypeName;
                 smallShip.thrustType = shipType.thrustType;
                 smallShip.prefabName = shipType.prefab;
+                smallShip.classType = shipType.type;
                 smallShip.laserAudio = shipType.laserAudio;
                 smallShip.engineAudio = shipType.engineAudio;
                 smallShip.torpedoNumber = shipType.torpedoRating;

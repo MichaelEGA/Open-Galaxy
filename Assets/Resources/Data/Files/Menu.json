@@ -56,21 +56,29 @@
 		"Type": "ContentButton01",
 		"Variable": "Missions"
         },	  	           
-	  {
+	{
+		"ParentMenu": "Start Game",
+            "Name": "Custom Missions",
+            "Description": "Load custom missions from the community",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton01",
+		"Variable": "Custom Missions"
+        },
+	{
 		"ParentMenu": "Start Game",
             "Name": "Other Game Modes",
             "Description": "Play a Variety of Other Game Modes",
             "Function": "ActivateSubMenu",
 		"Type": "ContentButton01",
-		"Variable": "OtherGameModes"
+		"Variable": "Other Game Modes"
         },
         {
 		"ParentMenu": "Start Game",
-            "Name": "In Development Missions",
+            "Name": "In Development",
             "Description": "Check out what's being worked on",
             "Function": "ActivateSubMenu",
 		"Type": "ContentButton01",
-		"Variable": "InDevelopment"
+		"Variable": "In Development"
         },
         {
 		"ParentMenu": "Controls",

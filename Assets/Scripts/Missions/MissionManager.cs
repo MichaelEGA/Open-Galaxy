@@ -10,6 +10,7 @@ public class MissionManager : MonoBehaviour
     public bool unloading;
     public bool running;
     public string missionAddress;
+    public string missionData;
 
     // Update is called once per frame
     void Update()

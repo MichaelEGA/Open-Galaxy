@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public static class MainMenuFunctions
 {
@@ -205,9 +206,9 @@ public static class MainMenuFunctions
         //This adds three extra sub menus just for open galaxy
         subMenus.Add("Missions");
         subMenus.Add("Training");
-        subMenus.Add("OtherGameModes");
+        subMenus.Add("Other Game Modes");
         subMenus.Add("Custom Missions");
-        subMenus.Add("InDevelopment");
+        subMenus.Add("In Development");
 
         //This allows the script to log the first menu created. It will be the first loaded
         bool firstSubMenuLogged = false;
@@ -264,17 +265,32 @@ public static class MainMenuFunctions
             rt.sizeDelta = new Vector2(0, buttonDrop);
         }
 
-        //This adds all the missions buttons (An Open Galaxy Function)
+        //This adds all the missions buttons for internal missions
         Object[] mainMissions = Resources.LoadAll("Data/Files/Missions_Main", typeof(TextAsset));
         CreateMissionButtons(mainMenu, mainMissions, "Missions_Settings", "LoadMainMission");
         Object[] trainingMissions = Resources.LoadAll("Data/Files/Missions_Training", typeof(TextAsset));
-        CreateMissionButtons(mainMenu, trainingMissions, "Training_Settings", "LoadTrainingMission");
-        //Object[] customMissions = Resources.LoadAll("Data/Files/Mission", typeof(TextAsset));
-        //CreateMissionButtons(mainMenu, customMissions, "Custom Missions_Settings", "LoadCustomMission");
+        CreateMissionButtons(mainMenu, trainingMissions, "Training_Settings", "LoadTrainingMission");      
         Object[] otherGameModes = Resources.LoadAll("Data/Files/Missions_Misc", typeof(TextAsset));
-        CreateMissionButtons(mainMenu, otherGameModes, "OtherGameModes_Settings", "LoadOtherGameModes");
+        CreateMissionButtons(mainMenu, otherGameModes, "Other Game Modes_Settings", "LoadOtherGameModes");
         Object[] inDevelopment = Resources.LoadAll("Data/Files/Missions_InDevelopment", typeof(TextAsset));
-        CreateMissionButtons(mainMenu, inDevelopment, "InDevelopment_Settings", "LoadInDevelopment");
+        CreateMissionButtons(mainMenu, inDevelopment, "In Development_Settings", "LoadInDevelopment");
+
+        //This adds all the missions buttons for external missions
+        var info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
+        var fileInfo = info.GetFiles("*.json");
+        List<TextAsset> customMissionsList = new List<TextAsset>();
+
+        foreach (FileInfo file in fileInfo)
+        {
+            string path = Application.persistentDataPath + "/Custom Missions/" + file.Name;
+            string missionDataString = File.ReadAllText(path);
+            TextAsset missionDataTextAsset = new TextAsset(missionDataString);
+            missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
+            customMissionsList.Add(missionDataTextAsset);
+        }
+
+        Object[] customMissions = customMissionsList.ToArray();
+        CreateMissionButtons(mainMenu, customMissions, "Custom Missions_Settings", "LoadCustomMission");
 
         //This turns off all the sub menus
         foreach (GameObject subMenu in mainMenu.SubMenus)
@@ -388,7 +404,7 @@ public static class MainMenuFunctions
     {
         foreach (GameObject subMenu in mainMenu.SubMenus)
         {
-            if (subMenu.name.Contains(subMenuName))
+            if (subMenu.name == subMenuName)
             {
                 float buttonDrop = 20;
 
@@ -484,7 +500,7 @@ public static class MainMenuFunctions
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
     {
         string[] messages = new string[10];
-        messages[0] = "Welcome to Open Galaxy. Version 0.6.61 adds ground turrent placement for death star missions.";
+        messages[0] = "Welcome to Open Galaxy. Version 0.7.1 adds custom mission loading among other features.";
         messages[1] = "Open Galaxy's aim is to be a platform for X-Wing and Tie Fighter style custom missions.";
         messages[2] = "Need a quick fix? Try out the random battle and ladder modes.";
         messages[3] = "Flying a ship isn't like dusting crops. Remember to complete the training missions.";
@@ -530,7 +546,7 @@ public static class MainMenuFunctions
     //This loads a custom mission
     public static void LoadCustomMission(string name)
     {
-        Task a = new Task(MissionFunctions.RunMission(name, "Data/Files/Missions_Training/")); //This is a dummy address until external loading of missions is added
+        Task a = new Task(MissionFunctions.RunMission(name, Application.persistentDataPath + "/Custom Missions/", true)); //This is a dummy address until external loading of missions is added
 
         GameObject menu = GameObject.Find("Menu");
 

@@ -1,3 +1,4 @@
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public static class MissionFunctions
     #region event system
 
     //This executes the different mission events
-    public static IEnumerator RunMission(string missionName, string missionAddress)
+    public static IEnumerator RunMission(string missionName, string missionAddress, bool addressIsExternal = false)
     {
         //This looks for the mission manager and if it doesn't find one creates one
         MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();      
@@ -26,8 +27,20 @@ public static class MissionFunctions
         float startTime = Time.time;
 
         //This loads the Json file
-        TextAsset missionDataFile = Resources.Load(missionManager.missionAddress + missionName) as TextAsset;
-        Mission mission = JsonUtility.FromJson<Mission>(missionDataFile.text);
+        TextAsset missionDataFile = new TextAsset(); 
+        
+        if (addressIsExternal == false)
+        {
+            missionDataFile = Resources.Load(missionManager.missionAddress + missionName) as TextAsset;
+        }
+        else
+        {
+            string missionDataString = File.ReadAllText(missionManager.missionAddress + missionName + ".json");
+            missionDataFile = new TextAsset(missionDataString);
+        }
+
+        missionManager.missionData = missionDataFile.text;
+        Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
         Scene scene = SceneFunctions.GetScene();
 
         //This loads scene and any ships set to "preload"
@@ -43,7 +56,7 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "loadscene")
             {
-                LoadScene(missionName, missionAddress, missionEvent);
+                LoadScene(missionName, missionAddress, addressIsExternal, missionEvent);
             }
         }
 
@@ -339,15 +352,11 @@ public static class MissionFunctions
 
         if (nextEvent != "none" & missionManager != null)
         {
-            TextAsset missionDataFile = Resources.Load(missionManager.missionAddress + missionName) as TextAsset;
             Mission mission = null;
 
-            if (missionDataFile != null)
-            {
-                mission = JsonUtility.FromJson<Mission>(missionDataFile.text);
-            }
+            mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
             
-            if (missionDataFile == null || mission == null)
+            if (mission == null)
             {
                 missionManager.running = false;
             }
@@ -381,7 +390,7 @@ public static class MissionFunctions
     #region main scene loading function
 
     //This creates the scene 
-    public static void LoadScene(string missionName, string missionAddress, MissionEvent missionEvent)
+    public static void LoadScene(string missionName, string missionAddress, bool addressIsExternal, MissionEvent missionEvent)
     {
         string location = missionEvent.conditionLocation;
         float sceneRadius = 15000;
@@ -411,7 +420,7 @@ public static class MissionFunctions
         LoadScreenFunctions.AddLogToLoadingScreen("Hud created.", Time.unscaledTime - time);
 
         //THis loads the audio and music manager
-        AudioFunctions.CreateAudioManager(missionAddress + missionName + "_audio" + "/", false);
+        AudioFunctions.CreateAudioManager(missionAddress + missionName + "_audio/", addressIsExternal);
         LoadScreenFunctions.AddLogToLoadingScreen("Audio Manager created", Time.unscaledTime - time);
         MusicFunctions.CreateMusicManager();
         LoadScreenFunctions.AddLogToLoadingScreen("Music Manager created", Time.unscaledTime - time);
@@ -1124,7 +1133,7 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            TargetingFunctions.GetClosestEnemy(smallShip, "smallship", true);
+                            TargetingFunctions.GetClosestEnemy(smallShip, true);
                         }
                     }
                 }

@@ -393,12 +393,10 @@ public static class SmallShipAIFunctions
             if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
             {
                 TargetingFunctions.GetClosestEnemyLargeShip_AI(smallShip);
-                Debug.Log("Run 1 " + smallShip.name);
             }
             else
             {
                 TargetingFunctions.GetClosestEnemySmallShip_AI(smallShip);
-                Debug.Log("Run 2 " + smallShip.name);
             }  
         }
         else if (smallShip.target != null)
@@ -408,12 +406,10 @@ public static class SmallShipAIFunctions
                 if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
                 {
                     TargetingFunctions.GetClosestEnemyLargeShip_AI(smallShip);
-                    Debug.Log("Run 3 " + smallShip.name);
                 }
                 else
                 {
                     TargetingFunctions.GetClosestEnemySmallShip_AI(smallShip);
-                    Debug.Log("Run 4 " + smallShip.name);
                 }                              
             }
         }

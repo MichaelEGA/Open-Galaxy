@@ -1,5 +1,7 @@
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 using UnityEngine;
 
 public static class AudioFunctions
@@ -17,7 +19,7 @@ public static class AudioFunctions
 
         if (address != "none")
         {
-            LoadMissionAudioClips(audioManagerScript, address, filesAreExternal);
+            Task a = new Task(LoadMissionAudioClips(audioManagerScript, address, filesAreExternal));
         }
 
     }
@@ -31,11 +33,39 @@ public static class AudioFunctions
     }
 
     //This loads all availble mission audio files
-    public static void LoadMissionAudioClips(Audio audio, string address, bool filesAreExternal = false)
+    public static IEnumerator LoadMissionAudioClips(Audio audio, string address, bool filesAreExternal = false)
     {
-        AudioClip[] missionAudioClips = Resources.LoadAll<AudioClip>(address);
-        audio.missionAudioClips = new AudioClip[missionAudioClips.Length];
-        audio.missionAudioClips = missionAudioClips;
+        if (filesAreExternal == false)
+        {
+            AudioClip[] missionAudioClips = Resources.LoadAll<AudioClip>(address);
+            audio.missionAudioClips = missionAudioClips;
+        }
+        else
+        {
+            var info = new DirectoryInfo(address);
+            var fileInfo = info.GetFiles("*.wav");
+            List<AudioClip> missionAudioClipsList = new List<AudioClip>();
+
+            foreach (FileInfo file in fileInfo)
+            {
+                UnityWebRequest audioFile = UnityWebRequestMultimedia.GetAudioClip(address + string.Format("{0}", file.Name), AudioType.WAV);
+                yield return audioFile.SendWebRequest();
+
+                if (audioFile.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    Debug.Log(audioFile.error);
+                    Debug.Log(address + string.Format("{0}", file.Name));
+                }
+                else
+                {
+                    AudioClip clip = DownloadHandlerAudioClip.GetContent(audioFile);
+                    clip.name = System.IO.Path.GetFileNameWithoutExtension(address + file.Name);
+                    missionAudioClipsList.Add(clip);
+                }
+            }
+
+            audio.missionAudioClips = missionAudioClipsList.ToArray();
+        }
     }
 
     #endregion
@@ -129,11 +159,20 @@ public static class AudioFunctions
             //This finds and plays the audio clip
             if (dontPlay == false)
             {
+                Debug.Log("Playing Audio Clip 1");
+
                 AudioClip audioClip = GetMissionAudioClip(audioManager, audioName);
                 AudioSource audioSource = GetAudioSource(audioManager);
 
+                if (audioClip == null)
+                {
+                    Debug.Log("Audio clip is null");
+                }
+
                 if (audioClip != null & audioSource != null)
                 {
+                    Debug.Log("Playing Audio Clip 2");
+
                     audioSource.clip = audioClip;
                     audioSource.pitch = pitch;
                     audioSource.spatialBlend = spatialBlend;

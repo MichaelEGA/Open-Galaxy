@@ -4,14 +4,15 @@ using UnityEngine;
 
 public static class TargetingFunctions 
 {
-    #region small ship targetting
+    #region player small ship targetting
 
     //This gets the next target of any kind
-    public static void GetNextTarget(SmallShip smallShip = null, string mode = "none")
+    public static void GetNextTarget(SmallShip smallShip = null)
     {
+
         bool automaticSearch = false;
 
-        if (smallShip.target != null)
+        if (smallShip.target != null & smallShip.isAI == false)
         {
             if (smallShip.target.activeSelf == false)
             {
@@ -57,13 +58,13 @@ public static class TargetingFunctions
                         SmallShip targetSmallShip = scene.objectPool[i].GetComponent<SmallShip>();
                         LargeShip targetLargeShip = scene.objectPool[i].GetComponent<LargeShip>();
 
-                        if (targetSmallShip != null & mode != "largeship")
+                        if (targetSmallShip != null)
                         {
                             smallShip.targetSmallShip = targetSmallShip;
                             smallShip.targetLargeShip = null;
                             smallShip.targetPrefabName = targetSmallShip.prefabName;
                         }
-                        else if (targetLargeShip != null & mode != "smallship")
+                        else if (targetLargeShip != null)
                         {
                             smallShip.targetSmallShip = null;
                             smallShip.targetLargeShip = targetLargeShip;
@@ -92,11 +93,11 @@ public static class TargetingFunctions
     }
 
     //This gets the next enemy target
-    public static void GetNextEnemy(SmallShip smallShip = null, string mode = "none", bool forceSearch = false)
+    public static void GetNextEnemy(SmallShip smallShip = null, bool forceSearch = false)
     {
         bool automaticSearch = false;
 
-        if (smallShip.target != null)
+        if (smallShip.target != null & smallShip.isAI == false)
         {
             if (smallShip.target.activeSelf == false)
             {
@@ -161,13 +162,13 @@ public static class TargetingFunctions
                                 smallShip.targetName = scene.objectPool[i].name;
                                 smallShip.targetNumber = i;
 
-                                if (targetSmallShip != null & mode != "largeship")
+                                if (targetSmallShip != null)
                                 {
                                     smallShip.targetSmallShip = targetSmallShip;
                                     smallShip.targetLargeShip = null;
                                     smallShip.targetPrefabName = targetSmallShip.prefabName;
                                 }
-                                else if (targetLargeShip != null & mode != "smallship")
+                                else if (targetLargeShip != null)
                                 {
                                     smallShip.targetSmallShip = null;
                                     smallShip.targetLargeShip = targetLargeShip;
@@ -189,13 +190,13 @@ public static class TargetingFunctions
                                 smallShip.targetName = scene.objectPool[i].name;
                                 smallShip.targetNumber = i;
 
-                                if (targetSmallShip != null & mode != "largeship")
+                                if (targetSmallShip != null)
                                 {
                                     smallShip.targetSmallShip = targetSmallShip;
                                     smallShip.targetLargeShip = null;
                                     smallShip.targetPrefabName = targetSmallShip.prefabName;
                                 }
-                                else if (targetLargeShip != null & mode != "smallship")
+                                else if (targetLargeShip != null)
                                 {
                                     smallShip.targetSmallShip = null;
                                     smallShip.targetLargeShip = targetLargeShip;
@@ -227,11 +228,11 @@ public static class TargetingFunctions
     }
 
     //This gets the closesd enemy target
-    public static void GetClosestEnemy(SmallShip smallShip = null, string mode = "none", bool externalActivation = false)
+    public static void GetClosestEnemy(SmallShip smallShip = null, bool externalActivation = false)
     {
         bool automaticSearch = false;
 
-        if (smallShip.target != null)
+        if (smallShip.target != null & smallShip.isAI == false)
         {
             if (smallShip.target.activeSelf == false & smallShip.isAI == false)
             {
@@ -325,7 +326,7 @@ public static class TargetingFunctions
                 smallShip.target = target;
                 smallShip.targetName = target.name;
 
-                if (targetSmallShip != null & mode != "largeship")
+                if (targetSmallShip != null)
                 {
                     smallShip.targetSmallShip = targetSmallShip;
                     smallShip.targetLargeShip = null;
@@ -337,7 +338,7 @@ public static class TargetingFunctions
                     }
 
                 }
-                else if (targetLargeShip != null & mode != "smallship")
+                else if (targetLargeShip != null)
                 {
                     smallShip.targetSmallShip = null;
                     smallShip.targetLargeShip = targetLargeShip;
@@ -525,7 +526,6 @@ public static class TargetingFunctions
     //This checks whether a target is hostile or not
     public static bool GetHostility(SmallShip smallShip = null, string targetAllegiance = "none")
     {
-
         bool isHostile = false;
 
         //This gets the Json ship data

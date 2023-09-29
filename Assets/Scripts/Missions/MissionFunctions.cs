@@ -114,11 +114,6 @@ public static class MissionFunctions
 
         //This tells the player to get ready
         LoadScreenFunctions.AddLogToLoadingScreen(missionName + " loaded.", 0);
-        LoadScreenFunctions.AddLogToLoadingScreen("Get ready to launch in 5 seconds...", 0);
-
-        float delay = Time.unscaledTime + 5;
-
-        while (Time.unscaledTime < delay) { yield return null; }
 
         Time.timeScale = 1;
 
@@ -222,6 +217,11 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "displayloadingscreen")
         {
             DisplayLoadingScreen(missionName, bool.Parse(missionEvent.data1));
+            FindNextEvent(missionName, missionEvent.nextEvent1);
+        }
+        else if (missionEvent.eventType == "displaymissionbriefing")
+        {
+            DisplayMissionBriefing(missionEvent);
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
         else if (missionEvent.eventType == "iftypeofshipisactive")
@@ -545,6 +545,12 @@ public static class MissionFunctions
         {
             LoadScreenFunctions.LoadingScreen(false);
         }
+    }
+
+    //This displays the mission briefing screen
+    public static void DisplayMissionBriefing(MissionEvent missionEvent)
+    {
+        MIssionBriefingFunctions.ActivateMissionBriefing(missionEvent.data1);
     }
 
     //This checks whether there are any active ships of a certain allegiance, i.e. are there any imperial ships left
@@ -919,7 +925,7 @@ public static class MissionFunctions
 
         if (audio != "none" & internalAudioFile != "true")
         {
-            AudioFunctions.PlayVoiceClip(null, audio, new Vector3(0,0,0), 0, 1, 500, 1f, 1);
+            AudioFunctions.PlayMissionAudioClip(null, audio, new Vector3(0,0,0), 0, 1, 500, 1f, 1);
         }
         else if (audio != "none" & internalAudioFile == "true")
         {

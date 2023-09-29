@@ -8,16 +8,4 @@ public class Audio : MonoBehaviour
     public AudioClip[] audioClips;
     public AudioClip[] missionAudioClips;
     public List<AudioSource> audioSources;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

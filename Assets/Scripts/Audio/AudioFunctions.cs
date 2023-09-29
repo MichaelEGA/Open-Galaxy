@@ -35,37 +35,41 @@ public static class AudioFunctions
     //This loads all availble mission audio files
     public static IEnumerator LoadMissionAudioClips(Audio audio, string address, bool filesAreExternal = false)
     {
-        if (filesAreExternal == false)
+        if (filesAreExternal == false) //This loads the audio files from the internal mission folder
         {
             AudioClip[] missionAudioClips = Resources.LoadAll<AudioClip>(address);
             audio.missionAudioClips = missionAudioClips;
         }
-        else
+        else //This loads the audio files from the external mission folder
         {
             var info = new DirectoryInfo(address);
-            var fileInfo = info.GetFiles("*.wav");
-            List<AudioClip> missionAudioClipsList = new List<AudioClip>();
 
-            foreach (FileInfo file in fileInfo)
+            if (info.Exists == true)
             {
-                UnityWebRequest audioFile = UnityWebRequestMultimedia.GetAudioClip(address + string.Format("{0}", file.Name), AudioType.WAV);
-                yield return audioFile.SendWebRequest();
+                var fileInfo = info.GetFiles("*.wav");
+                List<AudioClip> missionAudioClipsList = new List<AudioClip>();
 
-                if (audioFile.result == UnityWebRequest.Result.ConnectionError)
+                foreach (FileInfo file in fileInfo)
                 {
-                    Debug.Log(audioFile.error);
-                    Debug.Log(address + string.Format("{0}", file.Name));
+                    UnityWebRequest audioFile = UnityWebRequestMultimedia.GetAudioClip(address + string.Format("{0}", file.Name), AudioType.WAV);
+                    yield return audioFile.SendWebRequest();
+
+                    if (audioFile.result == UnityWebRequest.Result.ConnectionError)
+                    {
+                        Debug.Log(audioFile.error);
+                        Debug.Log(address + string.Format("{0}", file.Name));
+                    }
+                    else
+                    {
+                        AudioClip clip = DownloadHandlerAudioClip.GetContent(audioFile);
+                        clip.name = System.IO.Path.GetFileNameWithoutExtension(address + file.Name);
+                        missionAudioClipsList.Add(clip);
+                    }
                 }
-                else
-                {
-                    AudioClip clip = DownloadHandlerAudioClip.GetContent(audioFile);
-                    clip.name = System.IO.Path.GetFileNameWithoutExtension(address + file.Name);
-                    missionAudioClipsList.Add(clip);
-                }
+
+                audio.missionAudioClips = missionAudioClipsList.ToArray();
             }
-
-            audio.missionAudioClips = missionAudioClipsList.ToArray();
-        }
+        }      
     }
 
     #endregion
@@ -128,7 +132,7 @@ public static class AudioFunctions
     }
 
     //This plays the requested voice audio file
-    public static void PlayVoiceClip(Audio audioManager, string audioName, Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
+    public static void PlayMissionAudioClip(Audio audioManager, string audioName, Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
     {
         if (audioManager == null)
         {
@@ -159,20 +163,11 @@ public static class AudioFunctions
             //This finds and plays the audio clip
             if (dontPlay == false)
             {
-                Debug.Log("Playing Audio Clip 1");
-
                 AudioClip audioClip = GetMissionAudioClip(audioManager, audioName);
                 AudioSource audioSource = GetAudioSource(audioManager);
 
-                if (audioClip == null)
-                {
-                    Debug.Log("Audio clip is null");
-                }
-
                 if (audioClip != null & audioSource != null)
                 {
-                    Debug.Log("Playing Audio Clip 2");
-
                     audioSource.clip = audioClip;
                     audioSource.pitch = pitch;
                     audioSource.spatialBlend = spatialBlend;

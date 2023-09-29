@@ -83,40 +83,37 @@ public class Hud : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.timeScale != 0)
-        {
-            HudFunctions.UpdateKeyReferences(this);
+        HudFunctions.UpdateKeyReferences(this);
 
-            HudFunctions.DisplayShipInfo(this);
-            HudFunctions.DisplayShieldMeter(this);
-            HudFunctions.DisplayEngineMeter(this);
-            HudFunctions.DisplayLaserMeter(this);
-            HudFunctions.DisplayWEPMeter(this);
+        HudFunctions.DisplayShipInfo(this);
+        HudFunctions.DisplayShieldMeter(this);
+        HudFunctions.DisplayEngineMeter(this);
+        HudFunctions.DisplayLaserMeter(this);
+        HudFunctions.DisplayWEPMeter(this);
 
-            HudFunctions.DisplayShipSpeed(this);
-            HudFunctions.DisplayMatchSpeed(this);
-            HudFunctions.DisplayWEP(this);
-            HudFunctions.DisplayActiveWeapon(this);
-            HudFunctions.DisplayWeaponMode(this);
-            HudFunctions.DisplayWeaponNumber(this);
-            HudFunctions.DisplayShieldAndHull(this);
+        HudFunctions.DisplayShipSpeed(this);
+        HudFunctions.DisplayMatchSpeed(this);
+        HudFunctions.DisplayWEP(this);
+        HudFunctions.DisplayActiveWeapon(this);
+        HudFunctions.DisplayWeaponMode(this);
+        HudFunctions.DisplayWeaponNumber(this);
+        HudFunctions.DisplayShieldAndHull(this);
 
-            HudFunctions.DisplayTargetDistance(this);
-            HudFunctions.DisplayTargetType(this);
-            HudFunctions.DisplayTargetName(this);
-            HudFunctions.DisplayTargetSpeed(this);
-            HudFunctions.DisplayTargetShield(this);
-            HudFunctions.DisplayTargetHull(this);
+        HudFunctions.DisplayTargetDistance(this);
+        HudFunctions.DisplayTargetType(this);
+        HudFunctions.DisplayTargetName(this);
+        HudFunctions.DisplayTargetSpeed(this);
+        HudFunctions.DisplayTargetShield(this);
+        HudFunctions.DisplayTargetHull(this);
 
-            HudFunctions.MoveReticule(this);
+        HudFunctions.MoveReticule(this);
 
-            HudFunctions.DisplayFrontRadar(this);
-            HudFunctions.DisplayRearRadar(this);
+        HudFunctions.DisplayFrontRadar(this);
+        HudFunctions.DisplayRearRadar(this);
 
-            HudFunctions.DisplaySelectionBraces(this);
-            HudFunctions.DisplayTargetLockReticule(this);
+        HudFunctions.DisplaySelectionBraces(this);
+        HudFunctions.DisplayTargetLockReticule(this);
 
-            HudFunctions.DisplayShipPreview(this);
-        }       
+        HudFunctions.DisplayShipPreview(this);             
     }
 }

@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 
 public static class HudFunctions
 {
-
     #region start functions
 
     //This loads the hud prefab
@@ -202,7 +201,7 @@ public static class HudFunctions
     //Display ship info
     public static void DisplayShipInfo(Hud hud)
     {
-        if (hud.shipInfo != null & hud.shipName != null & hud.smallShip != null)
+        if (hud.shipInfo != null & hud.shipName != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.shipInfo.text = "FLYING " + hud.smallShip.allegiance.ToUpper() + " " + hud.smallShip.type.ToUpper();
             hud.shipName.text = hud.smallShip.name.ToUpper();
@@ -212,7 +211,7 @@ public static class HudFunctions
     //Display preview of ship
     public static void DisplayShipPreview(Hud hud)
     {
-        if (hud.radarPool != null & hud.smallShip != null)
+        if (hud.radarPool != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
             {
@@ -275,7 +274,7 @@ public static class HudFunctions
     //This displays shield meter of the ship
     public static void DisplayShieldMeter(Hud hud)
     {
-        if (hud.shieldMeter != null & hud.smallShip != null)
+        if (hud.shieldMeter != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.shieldMeter.value = hud.smallShip.shieldPower;
         }
@@ -284,7 +283,7 @@ public static class HudFunctions
     //This displays engine meter
     public static void DisplayEngineMeter(Hud hud)
     {
-        if (hud.engineMeter != null & hud.smallShip != null)
+        if (hud.engineMeter != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.engineMeter.value = hud.smallShip.enginePower;
         }
@@ -293,7 +292,7 @@ public static class HudFunctions
     //This displays laser meter
     public static void DisplayLaserMeter(Hud hud)
     {
-        if (hud.laserMeter != null & hud.smallShip != null)
+        if (hud.laserMeter != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.laserMeter.value = hud.smallShip.laserPower;
         }
@@ -302,7 +301,7 @@ public static class HudFunctions
     //This displays WEP meter
     public static void DisplayWEPMeter(Hud hud)
     {
-        if (hud.WEPMeter != null & hud.smallShip != null)
+        if (hud.WEPMeter != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.WEPMeter.value = hud.smallShip.wepLevel;
         }
@@ -311,7 +310,7 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayShipSpeed(Hud hud)
     {
-        if (hud.speedText != null & hud.smallShip != null)
+        if (hud.speedText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.shipRigidbody != null)
             {
@@ -323,7 +322,7 @@ public static class HudFunctions
     //This displays the match speed icon
     public static void DisplayMatchSpeed(Hud hud)
     {
-        if (hud.matchSpeedText != null & hud.smallShip != null)
+        if (hud.matchSpeedText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.matchSpeed == true)
             {
@@ -339,7 +338,7 @@ public static class HudFunctions
     //This displays the shield and hull meter
     public static void DisplayShieldAndHull(Hud hud)
     {
-        if (hud.shieldForwardOutside != null & hud.shieldForwardInside != null & hud.hull != null & hud.shieldRearInside != null & hud.shieldRearOutside != null & hud.smallShip != null)
+        if (hud.shieldForwardOutside != null & hud.shieldForwardInside != null & hud.hull != null & hud.shieldRearInside != null & hud.shieldRearOutside != null & hud.smallShip != null & Time.timeScale != 0)
         {
             float shieldRating = hud.smallShip.shieldRating / 4f;
             float hullRating = hud.smallShip.hullRating;
@@ -381,7 +380,7 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayActiveWeapon(Hud hud)
     {
-        if (hud.activeWeaponText != null & hud.smallShip != null)
+        if (hud.activeWeaponText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.activeWeapon == "lasers")
             {
@@ -401,7 +400,7 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayWeaponMode(Hud hud)
     {
-        if (hud.weaponModeText != null & hud.smallShip != null)
+        if (hud.weaponModeText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.weaponMode == "single")
             {
@@ -425,7 +424,7 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayWeaponNumber(Hud hud)
     {
-        if (hud.weaponNumberText != null & hud.smallShip != null)
+        if (hud.weaponNumberText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.activeWeapon == "lasers")
             {
@@ -441,7 +440,7 @@ public static class HudFunctions
     //This displays whether the WEP boost is on or not
     public static void DisplayWEP(Hud hud)
     {
-        if (hud.WEPText != null & hud.smallShip != null)
+        if (hud.WEPText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.wep == true)
             {
@@ -461,7 +460,7 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetDistance(Hud hud)
     {
-        if (hud.targetDistance != null & hud.smallShip != null)
+        if (hud.targetDistance != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
             {
@@ -477,7 +476,7 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetType(Hud hud)
     {
-        if (hud.targetType != null & hud.smallShip != null)
+        if (hud.targetType != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null & hud.smallShip.targetAllegiance != null & hud.smallShip.targetType != null) 
             {
@@ -493,7 +492,7 @@ public static class HudFunctions
     //Display target name
     public static void DisplayTargetName(Hud hud)
     {
-        if (hud.targetName != null & hud.smallShip != null)
+        if (hud.targetName != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
             {
@@ -509,7 +508,7 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetSpeed(Hud hud)
     {
-        if (hud.targetSpeedText != null & hud.smallShip != null)
+        if (hud.targetSpeedText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
             {
@@ -561,7 +560,7 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetShield(Hud hud)
     {
-        if (hud.targetShieldsText != null & hud.smallShip != null)
+        if (hud.targetShieldsText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
             {
@@ -577,7 +576,7 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetHull(Hud hud)
     {
-        if (hud.targetHullText != null & hud.smallShip != null)
+        if (hud.targetHullText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
             {
@@ -597,238 +596,242 @@ public static class HudFunctions
     //This displays active ships in the area on the front Radar
     public static void DisplayFrontRadar(Hud hud)
     {
-
-        GameObject playerTarget = null;
-
-        if (hud.smallShip != null)
+        if (Time.timeScale != 0)
         {
-            playerTarget = hud.smallShip.target;
-        }
-        Vector2 radarPosition = new Vector2();
-        Vector2 radarDirection = new Vector2();
-        float yPositionRadar;
-        float xPositionRadar;
-        float forwardRadar;
-        int radarNumber = 0;
+            GameObject playerTarget = null;
 
-        float radarRadius = ((hud.frontRadarCircle.GetComponent<RectTransform>().rect.width / 2f) / 100f) * 90f;
-
-        if (hud.frontRadarDotsPool == null)
-        {
-            hud.frontRadarDotsPool = new List<GameObject>();
-        }
-
-        if (hud.frontRadarDot != null & hud.scene.objectPool != null & hud.frontRadarDotsPool != null)
-        {
-            //This generates the radar icons
-            if (hud.frontRadarDotsPool.Count < hud.scene.objectPool.Count)
+            if (hud.smallShip != null)
             {
-                var clone = GameObject.Instantiate(hud.frontRadarDot) as GameObject;
-                clone.transform.SetParent(hud.frontRadarCircle.transform);
-                hud.frontRadarDotsPool.Add(clone);
+                playerTarget = hud.smallShip.target;
             }
-            else if (hud.frontRadarDotsPool.Count > hud.scene.objectPool.Count)
+            Vector2 radarPosition = new Vector2();
+            Vector2 radarDirection = new Vector2();
+            float yPositionRadar;
+            float xPositionRadar;
+            float forwardRadar;
+            int radarNumber = 0;
+
+            float radarRadius = ((hud.frontRadarCircle.GetComponent<RectTransform>().rect.width / 2f) / 100f) * 90f;
+
+            if (hud.frontRadarDotsPool == null)
             {
-                //This clears the radar dots when there are too many
-                foreach (GameObject radarDotTemp in hud.frontRadarDotsPool)
+                hud.frontRadarDotsPool = new List<GameObject>();
+            }
+
+            if (hud.frontRadarDot != null & hud.scene.objectPool != null & hud.frontRadarDotsPool != null)
+            {
+                //This generates the radar icons
+                if (hud.frontRadarDotsPool.Count < hud.scene.objectPool.Count)
                 {
-                    GameObject.Destroy(radarDotTemp);
+                    var clone = GameObject.Instantiate(hud.frontRadarDot) as GameObject;
+                    clone.transform.SetParent(hud.frontRadarCircle.transform);
+                    hud.frontRadarDotsPool.Add(clone);
+                }
+                else if (hud.frontRadarDotsPool.Count > hud.scene.objectPool.Count)
+                {
+                    //This clears the radar dots when there are too many
+                    foreach (GameObject radarDotTemp in hud.frontRadarDotsPool)
+                    {
+                        GameObject.Destroy(radarDotTemp);
+                    }
+
+                    hud.frontRadarDotsPool.Clear();
                 }
 
-                hud.frontRadarDotsPool.Clear();
-            }
-
-            //This cycles through all the ships in the list
-            foreach (GameObject ship in hud.scene.objectPool)
-            {
-                if (ship != null)
+                //This cycles through all the ships in the list
+                foreach (GameObject ship in hud.scene.objectPool)
                 {
-                    GameObject mainShip = hud.scene.mainShip;
-
-                    if (mainShip != null)
+                    if (ship != null)
                     {
-                        //This gets the vector3 of the target
-                        Vector3 targetPositionRadar = ship.transform.position - mainShip.transform.position;
+                        GameObject mainShip = hud.scene.mainShip;
 
-                        //This displays the radar dot in the correct relative position
-
-                        //This determines the objects relative position and size
-                        yPositionRadar = Vector3.Dot(mainShip.transform.up, targetPositionRadar.normalized);
-                        xPositionRadar = Vector3.Dot(mainShip.transform.right, targetPositionRadar.normalized);
-                        forwardRadar = Vector3.Dot(mainShip.transform.forward, targetPositionRadar.normalized);
-
-                        if (forwardRadar > 0)
+                        if (mainShip != null)
                         {
-                            radarPosition = new Vector2(xPositionRadar * radarRadius, yPositionRadar * radarRadius);
-                        }
-                        else
-                        {
-                            radarDirection = new Vector2(xPositionRadar, yPositionRadar) - new Vector2(0, 0);
-                            radarDirection = radarDirection.normalized * radarRadius;
-                            radarPosition = new Vector2(0, 0) + radarDirection;
-                        }
+                            //This gets the vector3 of the target
+                            Vector3 targetPositionRadar = ship.transform.position - mainShip.transform.position;
 
-                        //Activates the dots
-                        if (radarNumber <= hud.frontRadarDotsPool.Count - 1)
-                        {
+                            //This displays the radar dot in the correct relative position
 
-                            if (ship.activeSelf == false)
+                            //This determines the objects relative position and size
+                            yPositionRadar = Vector3.Dot(mainShip.transform.up, targetPositionRadar.normalized);
+                            xPositionRadar = Vector3.Dot(mainShip.transform.right, targetPositionRadar.normalized);
+                            forwardRadar = Vector3.Dot(mainShip.transform.forward, targetPositionRadar.normalized);
+
+                            if (forwardRadar > 0)
                             {
-                                hud.frontRadarDotsPool[radarNumber].SetActive(false);
+                                radarPosition = new Vector2(xPositionRadar * radarRadius, yPositionRadar * radarRadius);
                             }
                             else
                             {
-                                hud.frontRadarDotsPool[radarNumber].SetActive(true);
+                                radarDirection = new Vector2(xPositionRadar, yPositionRadar) - new Vector2(0, 0);
+                                radarDirection = radarDirection.normalized * radarRadius;
+                                radarPosition = new Vector2(0, 0) + radarDirection;
                             }
 
-                            hud.frontRadarDotsPool[radarNumber].transform.localPosition = radarPosition;
-
-                            //This activates the target braces
-                            if (playerTarget != null)
+                            //Activates the dots
+                            if (radarNumber <= hud.frontRadarDotsPool.Count - 1)
                             {
-                                if (ship == hud.smallShip.target)
+
+                                if (ship.activeSelf == false)
                                 {
-                                    hud.frontRadarBrace.SetActive(true);
-                                    hud.frontRadarBrace.transform.SetParent(hud.frontRadarCircle.transform);
-                                    hud.frontRadarBrace.transform.localPosition = radarPosition;
+                                    hud.frontRadarDotsPool[radarNumber].SetActive(false);
                                 }
+                                else
+                                {
+                                    hud.frontRadarDotsPool[radarNumber].SetActive(true);
+                                }
+
+                                hud.frontRadarDotsPool[radarNumber].transform.localPosition = radarPosition;
+
+                                //This activates the target braces
+                                if (playerTarget != null)
+                                {
+                                    if (ship == hud.smallShip.target)
+                                    {
+                                        hud.frontRadarBrace.SetActive(true);
+                                        hud.frontRadarBrace.transform.SetParent(hud.frontRadarCircle.transform);
+                                        hud.frontRadarBrace.transform.localPosition = radarPosition;
+                                    }
+                                }
+                                else
+                                {
+                                    hud.frontRadarBrace.SetActive(false);
+                                }
+
+                            }
+
+                            //This moves onto the next radar dot
+                            if (radarNumber >= hud.scene.objectPool.Count - 1)
+                            {
+                                radarNumber = 0;
                             }
                             else
                             {
-                                hud.frontRadarBrace.SetActive(false);
+                                radarNumber = radarNumber + 1;
                             }
-
-                        }
-
-                        //This moves onto the next radar dot
-                        if (radarNumber >= hud.scene.objectPool.Count - 1)
-                        {
-                            radarNumber = 0;
-                        }
-                        else
-                        {
-                            radarNumber = radarNumber + 1;
                         }
                     }
                 }
             }
-        }
+        }   
     }
 
     //This displays active ships in the area on the rear Radar
     public static void DisplayRearRadar(Hud hud)
     {
-
-        GameObject playerTarget = null;
-
-        if (hud.smallShip != null)
+        if (Time.timeScale != 0)
         {
-            playerTarget = hud.smallShip.target;
-        }
-        Vector2 radarPosition = new Vector2();
-        Vector2 radarDirection = new Vector2();
-        float yPositionRadar;
-        float xPositionRadar;
-        float rearRadar;
-        int radarNumber = 0;
+            GameObject playerTarget = null;
 
-        float radarRadius = ((hud.rearRadarCircle.GetComponent<RectTransform>().rect.width / 2f) / 100f) * 90f;
-
-        if (hud.rearRadarDotsPool == null)
-        {
-            hud.rearRadarDotsPool = new List<GameObject>();
-        }
-
-        if (hud.rearRadarDot != null & hud.scene.objectPool != null & hud.rearRadarDotsPool != null)
-        {
-            //This generates the radar icons
-            if (hud.rearRadarDotsPool.Count < hud.scene.objectPool.Count)
+            if (hud.smallShip != null)
             {
-                var clone = GameObject.Instantiate(hud.rearRadarDot) as GameObject;
-                clone.transform.SetParent(hud.rearRadarCircle.transform);
-                hud.rearRadarDotsPool.Add(clone);
+                playerTarget = hud.smallShip.target;
             }
-            else if (hud.rearRadarDotsPool.Count > hud.scene.objectPool.Count)
+            Vector2 radarPosition = new Vector2();
+            Vector2 radarDirection = new Vector2();
+            float yPositionRadar;
+            float xPositionRadar;
+            float rearRadar;
+            int radarNumber = 0;
+
+            float radarRadius = ((hud.rearRadarCircle.GetComponent<RectTransform>().rect.width / 2f) / 100f) * 90f;
+
+            if (hud.rearRadarDotsPool == null)
             {
-                //This clears the radar dots when there are too many
-                foreach (GameObject radarDotTemp in hud.rearRadarDotsPool)
+                hud.rearRadarDotsPool = new List<GameObject>();
+            }
+
+            if (hud.rearRadarDot != null & hud.scene.objectPool != null & hud.rearRadarDotsPool != null)
+            {
+                //This generates the radar icons
+                if (hud.rearRadarDotsPool.Count < hud.scene.objectPool.Count)
                 {
-                    GameObject.Destroy(radarDotTemp);
+                    var clone = GameObject.Instantiate(hud.rearRadarDot) as GameObject;
+                    clone.transform.SetParent(hud.rearRadarCircle.transform);
+                    hud.rearRadarDotsPool.Add(clone);
+                }
+                else if (hud.rearRadarDotsPool.Count > hud.scene.objectPool.Count)
+                {
+                    //This clears the radar dots when there are too many
+                    foreach (GameObject radarDotTemp in hud.rearRadarDotsPool)
+                    {
+                        GameObject.Destroy(radarDotTemp);
+                    }
+
+                    hud.rearRadarDotsPool.Clear();
                 }
 
-                hud.rearRadarDotsPool.Clear();
-            }
-
-            //This cycles through all the ships in the list
-            foreach (GameObject ship in hud.scene.objectPool)
-            {
-                if (ship != null)
+                //This cycles through all the ships in the list
+                foreach (GameObject ship in hud.scene.objectPool)
                 {
-                    GameObject mainShip = hud.scene.mainShip;
-
-                    if (mainShip != null)
+                    if (ship != null)
                     {
-                        //This gets the vector3 of the target
-                        Vector3 targetPositionRadar = ship.transform.position - mainShip.transform.position;
+                        GameObject mainShip = hud.scene.mainShip;
 
-                        //This displays the radar dot in the correct relative position
-
-                        //This determines the objects relative position and size
-                        yPositionRadar = Vector3.Dot(mainShip.transform.up, targetPositionRadar.normalized);
-                        xPositionRadar = Vector3.Dot(mainShip.transform.right, targetPositionRadar.normalized);
-                        rearRadar = -Vector3.Dot(mainShip.transform.forward, targetPositionRadar.normalized);
-
-                        if (rearRadar > 0)
+                        if (mainShip != null)
                         {
-                            radarPosition = new Vector2(xPositionRadar * radarRadius, yPositionRadar * radarRadius);
-                        }
-                        else
-                        {
-                            radarDirection = new Vector2(xPositionRadar, yPositionRadar) - new Vector2(0, 0);
-                            radarDirection = radarDirection.normalized * radarRadius;
-                            radarPosition = new Vector2(0, 0) + radarDirection;
-                        }
+                            //This gets the vector3 of the target
+                            Vector3 targetPositionRadar = ship.transform.position - mainShip.transform.position;
 
-                        //Activates the dots
-                        if (radarNumber <= hud.rearRadarDotsPool.Count - 1)
-                        {
+                            //This displays the radar dot in the correct relative position
 
-                            if (ship.activeSelf == false)
+                            //This determines the objects relative position and size
+                            yPositionRadar = Vector3.Dot(mainShip.transform.up, targetPositionRadar.normalized);
+                            xPositionRadar = Vector3.Dot(mainShip.transform.right, targetPositionRadar.normalized);
+                            rearRadar = -Vector3.Dot(mainShip.transform.forward, targetPositionRadar.normalized);
+
+                            if (rearRadar > 0)
                             {
-                                hud.rearRadarDotsPool[radarNumber].SetActive(false);
+                                radarPosition = new Vector2(xPositionRadar * radarRadius, yPositionRadar * radarRadius);
                             }
                             else
                             {
-                                hud.rearRadarDotsPool[radarNumber].SetActive(true);
+                                radarDirection = new Vector2(xPositionRadar, yPositionRadar) - new Vector2(0, 0);
+                                radarDirection = radarDirection.normalized * radarRadius;
+                                radarPosition = new Vector2(0, 0) + radarDirection;
                             }
 
-                            hud.rearRadarDotsPool[radarNumber].transform.localPosition = radarPosition;
-
-                            //This activates the target braces
-                            if (playerTarget != null)
+                            //Activates the dots
+                            if (radarNumber <= hud.rearRadarDotsPool.Count - 1)
                             {
-                                if (ship == hud.smallShip.target)
+
+                                if (ship.activeSelf == false)
                                 {
-                                    hud.rearRadarBrace.SetActive(true);
-                                    hud.rearRadarBrace.transform.SetParent(hud.rearRadarCircle.transform);
-                                    hud.rearRadarBrace.transform.localPosition = radarPosition;
+                                    hud.rearRadarDotsPool[radarNumber].SetActive(false);
                                 }
+                                else
+                                {
+                                    hud.rearRadarDotsPool[radarNumber].SetActive(true);
+                                }
+
+                                hud.rearRadarDotsPool[radarNumber].transform.localPosition = radarPosition;
+
+                                //This activates the target braces
+                                if (playerTarget != null)
+                                {
+                                    if (ship == hud.smallShip.target)
+                                    {
+                                        hud.rearRadarBrace.SetActive(true);
+                                        hud.rearRadarBrace.transform.SetParent(hud.rearRadarCircle.transform);
+                                        hud.rearRadarBrace.transform.localPosition = radarPosition;
+                                    }
+                                }
+                                else
+                                {
+                                    hud.rearRadarBrace.SetActive(false);
+                                }
+
+                            }
+
+                            //This moves onto the next radar dot
+                            if (radarNumber >= hud.scene.objectPool.Count - 1)
+                            {
+                                radarNumber = 0;
                             }
                             else
                             {
-                                hud.rearRadarBrace.SetActive(false);
+                                radarNumber = radarNumber + 1;
                             }
-
-                        }
-
-                        //This moves onto the next radar dot
-                        if (radarNumber >= hud.scene.objectPool.Count - 1)
-                        {
-                            radarNumber = 0;
-                        }
-                        else
-                        {
-                            radarNumber = radarNumber + 1;
                         }
                     }
                 }
@@ -839,204 +842,206 @@ public static class HudFunctions
     //This displays a brace around the target when onscreen and an arrow pointing to the target when offscreen
     public static void DisplaySelectionBraces(Hud hud)
     {
-
-        GameObject selectionBrace = hud.selectionBrace;
-        GameObject directionArrow = hud.directionArrow;
-
-        if (selectionBrace != null & directionArrow != null)
+        if (Time.timeScale != 0)
         {
-            selectionBrace.SetActive(false);
-            directionArrow.SetActive(false);
-        }
+            GameObject selectionBrace = hud.selectionBrace;
+            GameObject directionArrow = hud.directionArrow;
 
-        if (hud.mainCamera == null)
-        {
-            if (hud.smallShip != null)
+            if (selectionBrace != null & directionArrow != null)
             {
-                if (hud.smallShip.mainCamera != null)
+                selectionBrace.SetActive(false);
+                directionArrow.SetActive(false);
+            }
+
+            if (hud.mainCamera == null)
+            {
+                if (hud.smallShip != null)
                 {
-                    hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
+                    if (hud.smallShip.mainCamera != null)
+                    {
+                        hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
+                    }
                 }
             }
-        }
 
-        if (hud.mainCamera != null)
-        {
-            if (hud.smallShip != null & selectionBrace != null & directionArrow != null)
+            if (hud.mainCamera != null)
             {
-                if (hud.smallShip.target != null)
+                if (hud.smallShip != null & selectionBrace != null & directionArrow != null)
                 {
-                    if (hud.smallShip.target.activeSelf != false)
+                    if (hud.smallShip.target != null)
                     {
-                        GameObject target = hud.smallShip.target;
-                        GameObject mainShip = hud.smallShip.gameObject;
-
-                        //This gets the targets position on the camera
-                        Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(target.transform.position);
-
-                        //This sets key values
-                        Vector3 targetPosition = target.transform.position - mainShip.transform.position;
-                        float forward = Vector3.Dot(mainShip.transform.forward, targetPosition.normalized);
-                        float up = Vector3.Dot(mainShip.transform.up, targetPosition.normalized);
-                        float right = Vector3.Dot(mainShip.transform.right, targetPosition.normalized);
-
-                        //This checks that the target is on screen
-                        if (target.GetComponentInChildren<Renderer>().isVisible == true & forward > 0)
+                        if (hud.smallShip.target.activeSelf != false)
                         {
-                            //This sets the braces to active when the target is on screen
-                            selectionBrace.SetActive(true);
-                            directionArrow.SetActive(false);
+                            GameObject target = hud.smallShip.target;
+                            GameObject mainShip = hud.smallShip.gameObject;
 
-                            //This translates that position to the selection brace
-                            selectionBrace.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+                            //This gets the targets position on the camera
+                            Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(target.transform.position);
 
-                            //This scales the brace according to world distance
-                            if (screenPosition.z > 500)
+                            //This sets key values
+                            Vector3 targetPosition = target.transform.position - mainShip.transform.position;
+                            float forward = Vector3.Dot(mainShip.transform.forward, targetPosition.normalized);
+                            float up = Vector3.Dot(mainShip.transform.up, targetPosition.normalized);
+                            float right = Vector3.Dot(mainShip.transform.right, targetPosition.normalized);
+
+                            //This checks that the target is on screen
+                            if (target.GetComponentInChildren<Renderer>().isVisible == true & forward > 0)
                             {
-                                selectionBrace.transform.localScale = new Vector2(1, 1);
-                            }
-                            else
-                            {
-                                selectionBrace.transform.localScale = new Vector2(2f - (0.002f * screenPosition.z), 2f - (0.002f * screenPosition.z));
-                            }
+                                //This sets the braces to active when the target is on screen
+                                selectionBrace.SetActive(true);
+                                directionArrow.SetActive(false);
 
-                        }
-                        else
-                        {
-                            //This sets the braces to inactive when the target is behind the camera
-                            selectionBrace.SetActive(false);
-                            directionArrow.SetActive(true);
+                                //This translates that position to the selection brace
+                                selectionBrace.transform.position = new Vector2(screenPosition.x, screenPosition.y);
 
-                            //This gets values from atlasCommon
-                            RectTransform rectTransform = hud.gameObject.GetComponent<RectTransform>();
-                            float previousArrowRotation = hud.previousArrowRotation;
-                            float arrowTargetRotation = hud.arrowTargetRotation;
-                            float arrowLerpTime = hud.arrowLerpTime;
-
-                            //This gets screen width and height values
-                            float screenWidth = rectTransform.rect.width;
-                            float screenHeight = rectTransform.rect.height;
-
-                            //This controls the arrow rotation
-                            arrowLerpTime += 5f * Time.deltaTime;
-                            float arrowRotation = Mathf.Lerp(previousArrowRotation, arrowTargetRotation, arrowLerpTime);
-                            directionArrow.transform.localRotation = Quaternion.Euler(0, 0, arrowRotation);
-
-                            if (right > 0)
-                            {
-                                if (up > 0.5f)
+                                //This scales the brace according to world distance
+                                if (screenPosition.z > 500)
                                 {
-                                    directionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f - (up - 0.5f)) * 2f), screenHeight / 2f);
-
-                                    if (arrowTargetRotation != -90)
-                                    {
-                                        previousArrowRotation = arrowRotation;
-                                        arrowTargetRotation = -90;
-                                        arrowLerpTime = 0;
-                                    }
-
+                                    selectionBrace.transform.localScale = new Vector2(1, 1);
                                 }
-
-                                else if (up < 0.5f & up > 0f)
+                                else
                                 {
-                                    directionArrow.transform.localPosition = new Vector2(screenWidth / 2f, (screenHeight / 2f) * up * 2f);
-
-                                    if (arrowTargetRotation != -90)
-                                    {
-                                        previousArrowRotation = arrowRotation;
-                                        arrowTargetRotation = -90;
-                                        arrowLerpTime = 0;
-                                    }
-
-                                }
-
-                                else if (up < 0f & up > -0.5f)
-                                {
-                                    directionArrow.transform.localPosition = new Vector2(screenWidth / 2f, (screenHeight / 2f) * up * 2f);
-
-                                    if (arrowTargetRotation != -180)
-                                    {
-                                        previousArrowRotation = arrowRotation;
-                                        arrowTargetRotation = -180;
-                                        arrowLerpTime = 0;
-                                    }
-
-                                }
-
-                                else if (up < -0.5)
-                                {
-                                    directionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f + (up + 0.5f)) * 2f), -screenHeight / 2f);
-
-                                    if (arrowTargetRotation != -180)
-                                    {
-                                        previousArrowRotation = arrowRotation;
-                                        arrowTargetRotation = -180;
-                                        arrowLerpTime = 0;
-                                    }
-
+                                    selectionBrace.transform.localScale = new Vector2(2f - (0.002f * screenPosition.z), 2f - (0.002f * screenPosition.z));
                                 }
 
                             }
                             else
                             {
-                                if (up > 0.5f)
-                                {
-                                    directionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f - (up - 0.5f)) * -2f), screenHeight / 2f);
+                                //This sets the braces to inactive when the target is behind the camera
+                                selectionBrace.SetActive(false);
+                                directionArrow.SetActive(true);
 
-                                    if (arrowTargetRotation != 0)
+                                //This gets values from atlasCommon
+                                RectTransform rectTransform = hud.gameObject.GetComponent<RectTransform>();
+                                float previousArrowRotation = hud.previousArrowRotation;
+                                float arrowTargetRotation = hud.arrowTargetRotation;
+                                float arrowLerpTime = hud.arrowLerpTime;
+
+                                //This gets screen width and height values
+                                float screenWidth = rectTransform.rect.width;
+                                float screenHeight = rectTransform.rect.height;
+
+                                //This controls the arrow rotation
+                                arrowLerpTime += 5f * Time.deltaTime;
+                                float arrowRotation = Mathf.Lerp(previousArrowRotation, arrowTargetRotation, arrowLerpTime);
+                                directionArrow.transform.localRotation = Quaternion.Euler(0, 0, arrowRotation);
+
+                                if (right > 0)
+                                {
+                                    if (up > 0.5f)
                                     {
-                                        previousArrowRotation = arrowRotation;
-                                        arrowTargetRotation = 0;
-                                        arrowLerpTime = 0;
+                                        directionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f - (up - 0.5f)) * 2f), screenHeight / 2f);
+
+                                        if (arrowTargetRotation != -90)
+                                        {
+                                            previousArrowRotation = arrowRotation;
+                                            arrowTargetRotation = -90;
+                                            arrowLerpTime = 0;
+                                        }
+
+                                    }
+
+                                    else if (up < 0.5f & up > 0f)
+                                    {
+                                        directionArrow.transform.localPosition = new Vector2(screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+
+                                        if (arrowTargetRotation != -90)
+                                        {
+                                            previousArrowRotation = arrowRotation;
+                                            arrowTargetRotation = -90;
+                                            arrowLerpTime = 0;
+                                        }
+
+                                    }
+
+                                    else if (up < 0f & up > -0.5f)
+                                    {
+                                        directionArrow.transform.localPosition = new Vector2(screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+
+                                        if (arrowTargetRotation != -180)
+                                        {
+                                            previousArrowRotation = arrowRotation;
+                                            arrowTargetRotation = -180;
+                                            arrowLerpTime = 0;
+                                        }
+
+                                    }
+
+                                    else if (up < -0.5)
+                                    {
+                                        directionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f + (up + 0.5f)) * 2f), -screenHeight / 2f);
+
+                                        if (arrowTargetRotation != -180)
+                                        {
+                                            previousArrowRotation = arrowRotation;
+                                            arrowTargetRotation = -180;
+                                            arrowLerpTime = 0;
+                                        }
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    if (up > 0.5f)
+                                    {
+                                        directionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f - (up - 0.5f)) * -2f), screenHeight / 2f);
+
+                                        if (arrowTargetRotation != 0)
+                                        {
+                                            previousArrowRotation = arrowRotation;
+                                            arrowTargetRotation = 0;
+                                            arrowLerpTime = 0;
+                                        }
+
+                                    }
+
+                                    else if (up < 0.5f & up > 0f)
+                                    {
+                                        directionArrow.transform.localPosition = new Vector2(-screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+
+                                        if (arrowTargetRotation != 0)
+                                        {
+                                            previousArrowRotation = arrowRotation;
+                                            arrowTargetRotation = 0;
+                                            arrowLerpTime = 0;
+                                        }
+
+                                    }
+
+                                    else if (up < 0f & up > -0.5f)
+                                    {
+                                        directionArrow.transform.localPosition = new Vector2(-screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+
+                                        if (arrowTargetRotation != -270)
+                                        {
+                                            previousArrowRotation = arrowRotation;
+                                            arrowTargetRotation = -270;
+                                            arrowLerpTime = 0;
+                                        }
+
+                                    }
+
+                                    else if (up < -0.5)
+                                    {
+                                        directionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f + (up + 0.5f)) * -2f), -screenHeight / 2f);
+
+                                        if (arrowTargetRotation != -270)
+                                        {
+                                            previousArrowRotation = arrowRotation;
+                                            arrowTargetRotation = -270;
+                                            arrowLerpTime = 0;
+                                        }
+
                                     }
 
                                 }
 
-                                else if (up < 0.5f & up > 0f)
-                                {
-                                    directionArrow.transform.localPosition = new Vector2(-screenWidth / 2f, (screenHeight / 2f) * up * 2f);
-
-                                    if (arrowTargetRotation != 0)
-                                    {
-                                        previousArrowRotation = arrowRotation;
-                                        arrowTargetRotation = 0;
-                                        arrowLerpTime = 0;
-                                    }
-
-                                }
-
-                                else if (up < 0f & up > -0.5f)
-                                {
-                                    directionArrow.transform.localPosition = new Vector2(-screenWidth / 2f, (screenHeight / 2f) * up * 2f);
-
-                                    if (arrowTargetRotation != -270)
-                                    {
-                                        previousArrowRotation = arrowRotation;
-                                        arrowTargetRotation = -270;
-                                        arrowLerpTime = 0;
-                                    }
-
-                                }
-
-                                else if (up < -0.5)
-                                {
-                                    directionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f + (up + 0.5f)) * -2f), -screenHeight / 2f);
-
-                                    if (arrowTargetRotation != -270)
-                                    {
-                                        previousArrowRotation = arrowRotation;
-                                        arrowTargetRotation = -270;
-                                        arrowLerpTime = 0;
-                                    }
-
-                                }
+                                hud.previousArrowRotation = previousArrowRotation;
+                                hud.arrowTargetRotation = arrowTargetRotation;
+                                hud.arrowLerpTime = arrowLerpTime;
 
                             }
-
-                            hud.previousArrowRotation = previousArrowRotation;
-                            hud.arrowTargetRotation = arrowTargetRotation;
-                            hud.arrowLerpTime = arrowLerpTime;
-
                         }
                     }
                 }
@@ -1047,7 +1052,7 @@ public static class HudFunctions
     //This displays the target lock reticule
     public static void DisplayTargetLockReticule(Hud hud)
     {
-        if (hud.targetLockingReticule != null & hud.targetLockedReticule != null & hud.smallShip != null)
+        if (hud.targetLockingReticule != null & hud.targetLockedReticule != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.activeWeapon == "torpedos")
             {
@@ -1105,11 +1110,14 @@ public static class HudFunctions
     //This adds a message to the ship log
     public static void AddToShipLog(string message)
     {
-        Hud hud = GetHudScript();
-
-        if (hud != null)
+        if (Time.timeScale != 0)
         {
-            hud.shipLog.text = (Time.time - hud.loadTime).ToString("00:00") + " " + message + "\n" + hud.shipLog.text;
+            Hud hud = GetHudScript();
+
+            if (hud != null)
+            {
+                hud.shipLog.text = (Time.time - hud.loadTime).ToString("00:00") + " " + message + "\n" + hud.shipLog.text;
+            }
         }
     }
 
@@ -1120,17 +1128,20 @@ public static class HudFunctions
     //This briefly displays a message in large text in the middle of the screen
     public static void DisplayLargeMessage(string location)
     {
-        Hud hud = GetHudScript();
-
-        if (hud != null)
+        if (Time.timeScale != 0)
         {
-            if (hud.locationInfo != null & hud.reticule != null)
+            Hud hud = GetHudScript();
+
+            if (hud != null)
             {
-                hud.locationInfo.text = location;
-                Task a = new Task(FadeTextInAndOut(hud.locationInfo, 0.5f, 3, 0.5f));
-                Task b = new Task(FadeImageOutAndIn(hud.reticule, 0.25f, 4, 0.5f));
+                if (hud.locationInfo != null & hud.reticule != null)
+                {
+                    hud.locationInfo.text = location;
+                    Task a = new Task(FadeTextInAndOut(hud.locationInfo, 0.5f, 3, 0.5f));
+                    Task b = new Task(FadeImageOutAndIn(hud.reticule, 0.25f, 4, 0.5f));
+                }
             }
-        }
+        } 
     }
 
     #endregion

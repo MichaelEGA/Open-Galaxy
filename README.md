@@ -35,6 +35,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Updated: Improved SmallShip AI target selection
   - Updated: Reduced cost of looking for target
   - Fixed: Bombers not attacking capital ships
+  - Fixed: Event loop at the beginning of mission three
 
 24/09/23 - v.0.6.61
   - Added: Don't Attack Large Ships Function to Mission Functions

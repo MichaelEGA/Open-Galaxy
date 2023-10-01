@@ -277,16 +277,27 @@ public static class MainMenuFunctions
 
         //This adds all the missions buttons for external missions
         var info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
-        var fileInfo = info.GetFiles("*.json");
+
+        if (info.Exists != true)
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/Custom Missions/");
+            info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
+        }
+
         List<TextAsset> customMissionsList = new List<TextAsset>();
 
-        foreach (FileInfo file in fileInfo)
+        if (info.Exists == false)
         {
-            string path = Application.persistentDataPath + "/Custom Missions/" + file.Name;
-            string missionDataString = File.ReadAllText(path);
-            TextAsset missionDataTextAsset = new TextAsset(missionDataString);
-            missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
-            customMissionsList.Add(missionDataTextAsset);
+            var fileInfo = info.GetFiles("*.json");
+
+            foreach (FileInfo file in fileInfo)
+            {
+                string path = Application.persistentDataPath + "/Custom Missions/" + file.Name;
+                string missionDataString = File.ReadAllText(path);
+                TextAsset missionDataTextAsset = new TextAsset(missionDataString);
+                missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
+                customMissionsList.Add(missionDataTextAsset);
+            }
         }
 
         Object[] customMissions = customMissionsList.ToArray();

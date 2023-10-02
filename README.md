@@ -10,15 +10,14 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Cockpits (Implemented)
   - Capital ships (Implemented)
   - Tile Generation for Cities and Death Star (Implemented)
-  - Easy to use mission editor (In Progress)
-  - External mission loading (Not implemented yet)
+  - Easy to use mission editor (Not implemented yet)
+  - External mission loading (Implemented)
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
   - Explore mode where you can explore the whole Star Wars galaxy (In progress)
 
-**Latest Release:** 0.6.61
+**Latest Release:** 0.7.6
 
-  - Play version: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.61/Open.Galaxy.0.6.61.zip
-  - Debug version: https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.6.61/Open.Galaxy.0.6.61_Debug.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.7.6/Open.Galaxy.0.7.6.zip
 
 **Other Info**
 
@@ -28,6 +27,15 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
 
 **Changelog**
+
+01/10/23 - v0.7.6
+  - Fixed: Menu doesn't load when custom mission folder doesn't exist
+  - Updated: General Code Cleanup
+  - Added: External Mission Loading
+  - Updated: Improved SmallShip AI target selection
+  - Updated: Reduced cost of looking for target
+  - Fixed: Bombers not attacking capital ships
+  - Fixed: Event loop at the beginning of mission three
 
 24/09/23 - v.0.6.61
   - Added: Don't Attack Large Ships Function to Mission Functions

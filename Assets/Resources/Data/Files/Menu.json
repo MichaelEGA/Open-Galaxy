@@ -24,6 +24,14 @@
 		"Type": "LeftBarButton_Settings",
 		"Variable": "Settings"
         },
+	{
+		"ParentMenu": "none",
+            "Name": "Mission Editor",
+            "Description": "none",
+            "Function": "ActivateSubMenu",
+		"Type": "LeftBarButton_Editor",
+		"Variable": "MissionEditor"
+        },   
 	  {
 		"ParentMenu": "none",
             "Name": "Credits",
@@ -831,6 +839,46 @@
             "Function": "ToggleDebugging",
 		"Type": "ContentButton02",
 		"Variable": "False"
+        },
+  	{
+		"ParentMenu": "MissionEditor",
+            "Name": "Run Mission Editor",
+            "Description": "Create Your Own Custom Missions",
+            "Function": "LoadMissionEditor",
+		"Type": "ContentButton01",
+		"Variable": "none"
+        },
+	{
+		"ParentMenu": "MissionEditor",
+            "Name": "Set Editor Window Mode",
+            "Description": "Set whether editor opens in window or fullscreen mode",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton01",
+		"Variable": "Set Editor Window Mode"
+        },
+	{
+		"ParentMenu": "Set Editor Window Mode",
+            "Name": "Back to Editor Menu",
+            "Description": "Returns to edtiro sub menu",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton02",
+		"Variable": "MissionEditor"
+        },
+	{
+		"ParentMenu": "Set Editor Window Mode",
+            "Name": "Fullscreen Mode",
+            "Description": "Set whether editor opens in window or fullscreen mode",
+            "Function": "SetEditorWindowMode",
+		"Type": "ContentButton02",
+		"Variable": "fullscreen"
+        },
+	{
+		"ParentMenu": "Set Editor Window Mode",
+            "Name": "Window Mode",
+            "Description": "Set whether editor opens in window or fullscreen mode",
+            "Function": "SetEditorWindowMode",
+		"Type": "ContentButton02",
+		"Variable": "window"
         },
 	  {
 		"ParentMenu": "Credits",

@@ -140,10 +140,12 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("LoadOtherGameModes", new System.Action<string>(LoadOtherGameModes));
         mainMenu.functions.Add("LoadInDevelopment", new System.Action<string>(LoadInDevelopment));
         mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
+        mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadMissionEditor));
         mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
         mainMenu.functions.Add("QuitToMainMenu", new System.Action(QuitToMainMenu));
         mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
         mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
+        mainMenu.functions.Add("SetEditorWindowMode", new System.Action<string>(SetEditorWindowMode));
         mainMenu.functions.Add("ToggleDebugging", new System.Action<string>(ToggleDebugging));
         mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
         mainMenu.functions.Add("ChangePlanetTextureResolution", new System.Action<string>(ChangePlanetTextureResolution));
@@ -540,6 +542,21 @@ public static class MainMenuFunctions
         }
     }
 
+    //This loads the mission editor
+    public static void LoadMissionEditor()
+    {
+        GameObject missionEditor = GameObject.Find("MissionEditor");
+        
+        if (missionEditor == null)
+        {
+            GameObject tempMissionEditor = Resources.Load("MissionEditor/MissionEditor") as GameObject;
+            missionEditor = GameObject.Instantiate(tempMissionEditor);
+            missionEditor.name = "MissionEditor";
+        }
+
+        missionEditor.SetActive(true);
+    }
+
     //This loads a training missino
     public static void LoadTrainingMission(string name)
     {
@@ -825,6 +842,18 @@ public static class MainMenuFunctions
 
         ActivateSubMenu("Settings");
 
+    }
+
+    //This sets the window mode
+    public static void SetEditorWindowMode(string windowMode)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.editorWindowMode = windowMode;
+
+        OGSettingsFunctions.SaveSettingsData();
+
+        ActivateSubMenu("MissionEditor");
     }
 
     //Stand in function for inverting the horizontal view

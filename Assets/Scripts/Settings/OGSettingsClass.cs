@@ -10,6 +10,7 @@ public class OGSettingData
     public bool invertY;
     public bool invertX;
     public string cockpitAssetsAddress;
+    public string editorWindowMode;
 }
 
 [System.Serializable]

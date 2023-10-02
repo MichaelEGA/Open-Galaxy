@@ -160,7 +160,6 @@ public static class LargeShipAIFunctions
     //This allows the ship to evade attacks and avoid collisions with other objects and ships
     public static IEnumerator Evade(LargeShip largeShip, float time, string mode, int direction)
     {
-
         if (largeShip != null)
         {
             largeShip.aiOverideMode = mode;
@@ -223,41 +222,19 @@ public static class LargeShipAIFunctions
 
         if (largeShip.target == null)
         {
-            Task a = new Task(SelectEnemyTarget(largeShip));
+            TargetingFunctions.GetClosestEnemyLargeShip_LargeShip(largeShip);
         }
         else if (largeShip.target != null)
         {
             if (largeShip.target.activeSelf == false)
             {
-                Task a = new Task(SelectEnemyTarget(largeShip));
+                TargetingFunctions.GetClosestEnemyLargeShip_LargeShip(largeShip);
             }
         }
 
         yield return new WaitForSeconds(Random.Range(2f, 3f));
 
         largeShip.lookingForTarget = false;
-    }
-
-    //This presses the select enemy target button
-    public static IEnumerator SelectEnemyTarget(LargeShip largeShip)
-    {
-        largeShip.getNextEnemy = true;
-
-        yield return new WaitForSeconds(0.1f);
-
-        largeShip.getNextEnemy = false;
-    }
-
-    //This presses the select target button
-    public static IEnumerator SelectNextTarget(LargeShip largeShip)
-    {
-
-        largeShip.getNextTarget = true;
-
-        yield return new WaitForSeconds(0.1f);
-
-        largeShip.getNextTarget = false;
-
     }
 
     //This selects a random waypoint
@@ -478,6 +455,5 @@ public static class LargeShipAIFunctions
     }
 
     #endregion
-
 
 }

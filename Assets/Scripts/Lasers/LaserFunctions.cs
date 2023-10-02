@@ -403,12 +403,7 @@ public static class LaserFunctions
 
                 smallShip.laserfiring = false;
             }
-        }
-       
-
-
-       
-
+        } 
     }
 
     #endregion

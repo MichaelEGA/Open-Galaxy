@@ -87,6 +87,8 @@ public class OnLaserHit : MonoBehaviour
         }
     }
 
+    #region on laser hit utils
+
     //Calculates the damage done by the laser
     private float CalculateLaserDamage(SmallShip smallShip, Turret turret)
     {
@@ -149,6 +151,6 @@ public class OnLaserHit : MonoBehaviour
         return parent;
     }
 
-
+    #endregion
 
 }

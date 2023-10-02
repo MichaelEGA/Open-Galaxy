@@ -7,16 +7,14 @@ public class Turret : MonoBehaviour
     public LargeShip largeShip;
     public GameObject turretBase;
     public GameObject turretArm;
-    public Transform[] firepoints;
     public GameObject turretParticleSystem;
     public GameObject target;
+    public Transform[] firepoints;
     public Audio audioManager;
     public string allegiance;
     public string laserColor = "red";
     public string audioFile = "Turbolaser";
     public string turretType;
-    public bool yRotationIsRestricted = false;
-    public bool lookingForTarget = false;
     public float turretSpeed = 100; //Percentage
     public float turnInput;
     public float pitchInput;
@@ -35,6 +33,8 @@ public class Turret : MonoBehaviour
     public float fireDelayCount;
     public bool turretFiring;
     public bool isUpsideDown;
+    public bool yRotationIsRestricted = false;
+    public bool lookingForTarget = false;
 
     void Update()
     {

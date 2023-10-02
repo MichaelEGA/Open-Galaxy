@@ -54,6 +54,7 @@ public static class DialogueBoxFunctions
         }
     }
 
+    //This returns to the game
     public static void ReturnToGame(DialogueBox dialogueBox, GameObject dialogue)
     {
         if (dialogueBox.loadTime + 2.5f < Time.unscaledTime) //This is used to prevent the dialogue box disappearing straight away if the player is pressing a button when it's loaded

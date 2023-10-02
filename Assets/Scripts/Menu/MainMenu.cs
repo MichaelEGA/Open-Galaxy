@@ -52,6 +52,7 @@ public class MainMenu: MonoBehaviour
         GoBack();
     }
 
+    //This allows you to "go back up the menu" by pressing the back button on the controller or by pressing escape
     private void GoBack()
     {
         Keyboard keyboard = Keyboard.current;

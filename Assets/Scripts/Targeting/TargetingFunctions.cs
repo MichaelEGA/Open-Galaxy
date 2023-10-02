@@ -592,7 +592,7 @@ public static class TargetingFunctions
     #region AI smallship targetting
 
     //This gets the closesd enemy target
-    public static void GetClosestEnemySmallShip_AI(SmallShip smallShip)
+    public static void GetClosestEnemySmallShip(SmallShip smallShip)
     {
         Scene scene = smallShip.scene;
 
@@ -657,7 +657,7 @@ public static class TargetingFunctions
     }
 
     //This gets the closesd enemy target
-    public static void GetClosestEnemyLargeShip_AI(SmallShip smallShip)
+    public static void GetClosestEnemyLargeShip(SmallShip smallShip)
     {
         Scene scene = smallShip.scene;
 
@@ -720,211 +720,27 @@ public static class TargetingFunctions
 
     #region large ship targetting
 
-    //This gets the next target of any kind
-    public static void GetNextTarget_LargeShip(LargeShip largeShip = null, string mode = "none")
-    {
-        bool automaticSearch = false;
-
-        if (largeShip.target != null)
-        {
-            if (largeShip.target.activeSelf == false)
-            {
-                automaticSearch = true;
-            }
-        }
-
-        if (largeShip.targetPressedTime < Time.time & largeShip.getNextTarget == true || automaticSearch == true)
-        {
-            Scene scene = largeShip.scene;
-            int countStart = 0;
-
-            //This sets the count start according to the current target the ship has selected
-            if (largeShip.targetNumber > scene.objectPool.Count - 1)
-            {
-                countStart = 0;
-            }
-            else
-            {
-                countStart = largeShip.targetNumber;
-            }
-
-            //This cycles through all the possible targets ignoring objects that are null or inactive
-            for (int i = countStart; i <= scene.objectPool.Count; i++)
-            {
-                if (i > scene.objectPool.Count - 1) //This clears the target at the end of the list
-                {
-                    largeShip.target = null;
-                    largeShip.targetName = " ";
-                    largeShip.targetNumber = i;
-                    largeShip.targetSmallShip = null;
-                    largeShip.targetRigidbody = null;
-                    largeShip.targetPrefabName = " ";
-                    break;
-                }
-                else if (scene.objectPool[i] != null & largeShip.targetNumber != i) //This gets any type of ship in the scene
-                {
-                    if (scene.objectPool[i].activeSelf == true) //This ignores objects that are inactive
-                    {
-                        largeShip.target = scene.objectPool[i];
-                        largeShip.targetName = scene.objectPool[i].name;
-
-                        SmallShip targetSmallShip = scene.objectPool[i].GetComponent<SmallShip>();
-                        LargeShip targetLargeShip = scene.objectPool[i].GetComponent<LargeShip>();
-
-                        if (targetSmallShip != null & mode != "largeship")
-                        {
-                            largeShip.targetSmallShip = targetSmallShip;
-                            largeShip.targetLargeShip = null;
-                            largeShip.targetPrefabName = targetSmallShip.prefabName;
-                        }
-                        else if (targetLargeShip != null & mode != "smallship")
-                        {
-                            largeShip.targetSmallShip = null;
-                            largeShip.targetLargeShip = targetLargeShip;
-                            largeShip.targetPrefabName = targetLargeShip.prefabName;
-                        }
-
-                        largeShip.targetRigidbody = scene.objectPool[i].GetComponent<Rigidbody>();
-                        largeShip.targetNumber = i;
-                        break;
-                    }
-                }
-            }
-
-            largeShip.targetPressedTime = Time.time + 0.2f;
-        }
-    }
-
-    //This gets the next enemy target
-    public static void GetNextEnemy_LargeShip(LargeShip largeShip = null, string mode = "none")
-    {
-        bool automaticSearch = false;
-
-        if (largeShip.target != null)
-        {
-            if (largeShip.target.activeSelf == false)
-            {
-                automaticSearch = true;
-            }
-        }
-
-        if (largeShip.targetPressedTime < Time.time & largeShip.getNextEnemy == true || automaticSearch == true)
-        {
-            Scene scene = largeShip.scene;
-            int countStart = 0;
-
-            //This sets the count start according to the current target the ship has selected
-            if (largeShip.targetNumber > scene.objectPool.Count - 1)
-            {
-                countStart = 0;
-            }
-            else
-            {
-                countStart = largeShip.targetNumber;
-            }
-
-            for (int i = countStart; i <= scene.objectPool.Count; i++)
-            {
-                if (i > scene.objectPool.Count - 1) //This clears the target at the end of the list
-                {
-                    largeShip.target = null;
-                    largeShip.targetName = " ";
-                    largeShip.targetNumber = i;
-                    largeShip.targetSmallShip = null;
-                    largeShip.targetRigidbody = null;
-                    largeShip.targetPrefabName = " ";
-                    break;
-                }
-                else if (scene.objectPool[i] != null & largeShip.targetNumber != i) //This gets enemy ships in the scene
-                {
-                    if (scene.objectPool[i].activeSelf == true) //This ignores objects that are inactive
-                    {
-                        bool isHostile = false;
-                        int numberTargetting = 0;
-
-                        SmallShip targetSmallShip = scene.objectPool[i].GetComponent<SmallShip>();
-                        LargeShip targetLargeShip = scene.objectPool[i].GetComponent<LargeShip>();
-
-                        if (targetSmallShip != null)
-                        {
-                            numberTargetting = targetSmallShip.numberTargeting;
-                            isHostile = GetHostility_LargeShip(largeShip, targetSmallShip.allegiance);
-                        }
-                        else if (targetLargeShip != null)
-                        {
-                            isHostile = GetHostility_LargeShip(largeShip, targetLargeShip.allegiance);
-                        }
-
-
-                        if (isHostile == true)
-                        {
-                            if (numberTargetting <= 1)
-                            {
-                                if (targetSmallShip != null & mode != "largeship")
-                                {
-                                    largeShip.target = scene.objectPool[i];
-                                    largeShip.targetName = scene.objectPool[i].name;
-                                    largeShip.targetNumber = i;
-                                    largeShip.targetSmallShip = targetSmallShip;
-                                    largeShip.targetLargeShip = null;
-                                    largeShip.targetPrefabName = targetSmallShip.prefabName;
-                                }
-                                else if (targetLargeShip != null & mode != "smallship")
-                                {
-                                    largeShip.target = scene.objectPool[i];
-                                    largeShip.targetName = scene.objectPool[i].name;
-                                    largeShip.targetNumber = i;
-                                    largeShip.targetSmallShip = null;
-                                    largeShip.targetLargeShip = targetLargeShip;
-                                    largeShip.targetPrefabName = targetLargeShip.prefabName;
-                                }
-
-                                largeShip.targetRigidbody = scene.objectPool[i].GetComponent<Rigidbody>();
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            largeShip.targetPressedTime = Time.time + 0.2f;
-        }
-    }
-
     //This gets the closesd enemy target
-    public static void GetClosestEnemy_LargeShip(LargeShip largeShip = null, string mode = "none", bool externalActivation = false)
+    public static void GetClosestEnemyLargeShip_LargeShip(LargeShip largeShip)
     {
-        bool automaticSearch = false;
+        Scene scene = largeShip.scene;
 
-        if (largeShip.target != null)
+        GameObject target = null;
+        LargeShip tempLargeShip = null;
+        LargeShip targetLargeShip = null;
+
+        float distance = Mathf.Infinity;
+
+        //If the target is still null it looks for the closest large ship
+        if (target == null)
         {
-            if (largeShip.target.activeSelf == false)
-            {
-                automaticSearch = true;
-            }
-        }
-
-        if (largeShip.targetPressedTime < Time.time & largeShip.getClosestEnemy == true || automaticSearch == true || externalActivation == true)
-        {
-            Scene scene = largeShip.scene;
-
-            GameObject target = null;
-            SmallShip tempSmallShip = null;
-            SmallShip targetSmallShip = null;
-            LargeShip tempLargeShip = null;
-            LargeShip targetLargeShip = null;
-
-            float distance = Mathf.Infinity;
-
-            //This looks for a largeship first
             foreach (GameObject ship in scene.objectPool)
             {
                 if (ship != null)
                 {
-                    tempSmallShip = ship.GetComponent<SmallShip>();
                     tempLargeShip = ship.GetComponent<LargeShip>();
 
-                    if (ship.activeSelf == true & tempLargeShip != null & mode != "smallship")
+                    if (ship.activeSelf == true & tempLargeShip != null)
                     {
                         bool isHostile = GetHostility_LargeShip(largeShip, tempLargeShip.allegiance);
 
@@ -942,64 +758,21 @@ public static class TargetingFunctions
                     }
                 }
             }
+        }
 
-            //Then if it can't find a small ship it looks for a smallship
-            if (target == null)
+        if (target != null)
+        {
+            largeShip.target = target;
+            largeShip.targetName = target.name;
+
+            if (targetLargeShip != null)
             {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship != null)
-                    {
-                        tempSmallShip = ship.GetComponent<SmallShip>();
-                        tempLargeShip = ship.GetComponent<LargeShip>();
-
-                        if (ship.activeSelf == true & tempSmallShip != null & mode != "largeship")
-                        {
-                            bool isHostile = GetHostility_LargeShip(largeShip, tempSmallShip.allegiance);
-
-                            if (isHostile == true)
-                            {
-                                float tempDistance = Vector3.Distance(ship.transform.position, largeShip.gameObject.transform.position);
-
-                                if (tempDistance < distance)
-                                {
-                                    target = ship;
-                                    targetSmallShip = tempSmallShip;
-                                    distance = tempDistance;
-                                }
-                            }
-                        }
-                    }
-                }
+                largeShip.targetSmallShip = null;
+                largeShip.targetLargeShip = targetLargeShip;
+                largeShip.targetPrefabName = targetLargeShip.prefabName;
             }
 
-            if (target != null)
-            {
-                largeShip.target = target;
-                largeShip.targetName = target.name;
-
-                if (targetSmallShip != null)
-                {
-                    largeShip.targetSmallShip = targetSmallShip;
-                    largeShip.targetLargeShip = null;
-                    largeShip.targetPrefabName = targetSmallShip.prefabName;
-                }
-                else if (targetLargeShip != null)
-                {
-                    largeShip.targetSmallShip = null;
-                    largeShip.targetLargeShip = targetLargeShip;
-                    largeShip.targetPrefabName = targetLargeShip.prefabName;
-                }
-
-                largeShip.targetRigidbody = target.GetComponent<Rigidbody>();
-
-                if (targetSmallShip != null)
-                {
-                    targetSmallShip.numberTargeting += 1;
-                }     
-            }
-
-            largeShip.targetPressedTime = Time.time + 0.2f;
+            largeShip.targetRigidbody = target.GetComponent<Rigidbody>();
         }
     }
 

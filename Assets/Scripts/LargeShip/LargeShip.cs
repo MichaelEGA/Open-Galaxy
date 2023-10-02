@@ -134,10 +134,6 @@ public class LargeShip : MonoBehaviour
             LargeShipFunctions.CalculatePitchTurnRollSpeeds(this);
 
             //Targetting functions
-
-            TargetingFunctions.GetClosestEnemy_LargeShip(this, mode);
-            TargetingFunctions.GetNextEnemy_LargeShip(this, mode);
-            TargetingFunctions.GetNextTarget_LargeShip(this, mode);
             TargetingFunctions.GetTargetInfo_LargeShip(this);
         }
 

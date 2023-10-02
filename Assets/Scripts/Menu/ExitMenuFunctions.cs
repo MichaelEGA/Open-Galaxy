@@ -56,9 +56,11 @@ public static class ExitMenuFunctions
 
         ExitMenu exitMenu = GameObject.FindObjectOfType<ExitMenu>();
         GameObject loadingScreen = GameObject.Find("LoadingScreen");
+        GameObject missionBriefing = GameObject.Find("MissionBriefing");
 
         if (exitMenu != null) { GameObject.Destroy(exitMenu.gameObject); }
         if (loadingScreen != null) { GameObject.Destroy(loadingScreen); }
+        if (missionBriefing != null) { GameObject.Destroy(missionBriefing); }
 
         MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>(true);
 

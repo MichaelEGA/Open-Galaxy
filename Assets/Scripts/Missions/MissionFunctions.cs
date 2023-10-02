@@ -550,7 +550,7 @@ public static class MissionFunctions
     //This displays the mission briefing screen
     public static void DisplayMissionBriefing(MissionEvent missionEvent)
     {
-        MIssionBriefingFunctions.ActivateMissionBriefing(missionEvent.data1);
+        MissionBriefingFunctions.ActivateMissionBriefing(missionEvent.data1);
     }
 
     //This checks whether there are any active ships of a certain allegiance, i.e. are there any imperial ships left

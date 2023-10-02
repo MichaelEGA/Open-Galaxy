@@ -6,6 +6,6 @@ public class MissionBriefing : MonoBehaviour
 {
     public void StartGame()
     {
-        MIssionBriefingFunctions.StartGame(this);
+        MissionBriefingFunctions.StartGame(this);
     }
 }

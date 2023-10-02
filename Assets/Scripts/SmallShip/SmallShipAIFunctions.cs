@@ -392,11 +392,11 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
             {
-                TargetingFunctions.GetClosestEnemyLargeShip_AI(smallShip);
+                TargetingFunctions.GetClosestEnemyLargeShip(smallShip);
             }
             else
             {
-                TargetingFunctions.GetClosestEnemySmallShip_AI(smallShip);
+                TargetingFunctions.GetClosestEnemySmallShip(smallShip);
             }  
         }
         else if (smallShip.target != null)
@@ -405,11 +405,11 @@ public static class SmallShipAIFunctions
             {
                 if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
                 {
-                    TargetingFunctions.GetClosestEnemyLargeShip_AI(smallShip);
+                    TargetingFunctions.GetClosestEnemyLargeShip(smallShip);
                 }
                 else
                 {
-                    TargetingFunctions.GetClosestEnemySmallShip_AI(smallShip);
+                    TargetingFunctions.GetClosestEnemySmallShip(smallShip);
                 }                              
             }
         }

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public static class MIssionBriefingFunctions
+public static class MissionBriefingFunctions
 {
+    //This deactivates the menu and sets the time scale to zero so the player can start playing the game
     public static void StartGame(MissionBriefing missionBriefing)
     {
         Time.timeScale = 1;
@@ -13,6 +14,7 @@ public static class MIssionBriefingFunctions
         missionBriefing.gameObject.SetActive(false);
     }
 
+    //This activates the mission briefing when called by a mission event
     public static void ActivateMissionBriefing(string briefingText)
     {
         MissionBriefing missionBriefing = GameObject.FindObjectOfType<MissionBriefing>();
@@ -21,6 +23,7 @@ public static class MIssionBriefingFunctions
         {
             GameObject missionBriefingPrefab = Resources.Load("Menu/MissionBriefing") as GameObject;
             GameObject missionBriefingGO = GameObject.Instantiate(missionBriefingPrefab);
+            missionBriefingGO.name = "MissionBriefing";
         }
 
         GameObject missionBriefingTextGO = GameObject.Find("MissionInfo");

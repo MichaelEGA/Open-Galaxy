@@ -9,27 +9,14 @@ public class MissionEditor : MonoBehaviour
     public Canvas canvas;
     public RectTransform EditorContentRect;
     public float scale = 1;
+    public string gameWindowMode;
 
-    // Start is called before the first frame update
     void Start()
     {
         GameObject EditorContentGo = GameObject.Find("EditorContent");
         EditorContentRect = EditorContentGo.GetComponent<RectTransform>();
 
-        OGSettings settings = OGSettingsFunctions.GetSettings();
-
-        if (settings.editorWindowMode == "fullscreen")
-        {
-            int widthRes = Screen.currentResolution.width;
-            int heightRes = Screen.currentResolution.height;
-            Screen.SetResolution(widthRes, heightRes, FullScreenMode.FullScreenWindow);
-        }
-        else if (settings.editorWindowMode == "window")
-        {
-            int widthRes = Screen.currentResolution.width /2;
-            int heightRes = Screen.currentResolution.height /2;
-            Screen.SetResolution(widthRes, heightRes, FullScreenMode.Windowed);
-        }
+        MissionEditorFunctions.SetWindowMode(this);
     }
 
     // Update is called once per frame
@@ -40,17 +27,19 @@ public class MissionEditor : MonoBehaviour
 
     void OnGUI()
     {
-        scale += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 20;
-
-        if (EditorContentRect != null)
-        {
-            EditorContentRect.localScale = new Vector3(scale, scale);
-        }
+        MissionEditorFunctions.ScaleGrid(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("I was clicked");
     }
+
+    public void ExitMissionEditor()
+    {
+        MissionEditorFunctions.ExitMissionEditor(this);
+    }
+
+
 
 }

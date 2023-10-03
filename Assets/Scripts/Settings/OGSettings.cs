@@ -10,5 +10,6 @@ public class OGSettings : MonoBehaviour
     public bool invertY = true;
     public bool invertX = true;
     public string cockpitAssetsAddress = "CockpitPrefabs/fs_cockpits/";
+    public string gameWindowMode = "FullScreenWindow";
     public string editorWindowMode = "fullscreen";
 }

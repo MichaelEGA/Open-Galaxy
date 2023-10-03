@@ -8,4 +8,6 @@ public class MissionBriefing : MonoBehaviour
     {
         MissionBriefingFunctions.StartGame(this);
     }
+
+
 }

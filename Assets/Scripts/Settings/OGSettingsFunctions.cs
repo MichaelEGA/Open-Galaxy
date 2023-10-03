@@ -5,6 +5,8 @@ using UnityEngine;
 
 public static class OGSettingsFunctions
 {
+    #region loading and saving settings
+
     //This loads the settings data from an external file or if it doesn't find one makes a new one
     public static void LoadSettingsData()
     {
@@ -39,6 +41,8 @@ public static class OGSettingsFunctions
             settings.screenResX = ogSettingsClass.ogSettingsData[0].screenResX;
             settings.screenResY = ogSettingsClass.ogSettingsData[0].screenResY;
             settings.cockpitAssetsAddress = ogSettingsClass.ogSettingsData[0].cockpitAssetsAddress;
+            settings.gameWindowMode = ogSettingsClass.ogSettingsData[0].gameWindowMode;
+            settings.editorWindowMode = ogSettingsClass.ogSettingsData[0].editorWindowMode;
             CheckSettingsData();
         }
     }
@@ -157,5 +161,41 @@ public static class OGSettingsFunctions
         }
 
     }
+
+    #endregion
+
+    #region change settings functions
+
+    //This sets the window mode for the game
+    public static void SetGameWindowMode(string windowMode)
+    {
+        int widthRes = Screen.currentResolution.width;
+        int heightRes = Screen.currentResolution.height;
+
+        if (windowMode == "Windowed")
+        {
+            Screen.SetResolution(widthRes, heightRes, FullScreenMode.Windowed);
+        }
+        else if (windowMode == "MaximizedWindow")
+        {
+            Screen.SetResolution(widthRes, heightRes, FullScreenMode.MaximizedWindow);
+        }
+        else if (windowMode == "FullScreenWindow")
+        {
+            Screen.SetResolution(widthRes, heightRes, FullScreenMode.FullScreenWindow);
+        }
+        else if (windowMode == "ExclusiveFullScreen")
+        {
+            Screen.SetResolution(widthRes, heightRes, FullScreenMode.ExclusiveFullScreen);
+        }
+
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.gameWindowMode = windowMode;
+
+        OGSettingsFunctions.SaveSettingsData();
+    }
+
+    #endregion
 
 }

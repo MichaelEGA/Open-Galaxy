@@ -819,29 +819,9 @@ public static class MainMenuFunctions
     //This sets the window mode
     public static void SetWindowMode(string windowMode)
     {
-
-        int widthRes = Screen.currentResolution.width;
-        int heightRes = Screen.currentResolution.height;
-
-        if (windowMode == "Windowed")
-        {
-            Screen.SetResolution(widthRes, heightRes, FullScreenMode.Windowed);
-        }
-        else if (windowMode == "MaximizedWindow")
-        {
-            Screen.SetResolution(widthRes, heightRes, FullScreenMode.MaximizedWindow);
-        }
-        else if (windowMode == "FullScreenWindow")
-        {
-            Screen.SetResolution(widthRes, heightRes, FullScreenMode.FullScreenWindow);
-        }
-        else if (windowMode == "ExclusiveFullScreen")
-        {
-            Screen.SetResolution(widthRes, heightRes, FullScreenMode.ExclusiveFullScreen);
-        }
+        OGSettingsFunctions.SetGameWindowMode(windowMode);
 
         ActivateSubMenu("Settings");
-
     }
 
     //This sets the window mode

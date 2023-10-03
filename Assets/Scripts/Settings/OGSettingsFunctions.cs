@@ -79,6 +79,8 @@ public static class OGSettingsFunctions
         ogSettingsClass.ogSettingsData[0].screenResX = settings.screenResX;
         ogSettingsClass.ogSettingsData[0].screenResY = settings.screenResY;
         ogSettingsClass.ogSettingsData[0].cockpitAssetsAddress = settings.cockpitAssetsAddress;
+        ogSettingsClass.ogSettingsData[0].gameWindowMode = settings.gameWindowMode;
+        ogSettingsClass.ogSettingsData[0].editorWindowMode = settings.editorWindowMode;
 
         // Write JSON to file.
         string stringOFSettingsData = JsonUtility.ToJson(ogSettingsClass, true);
@@ -172,19 +174,19 @@ public static class OGSettingsFunctions
         int widthRes = Screen.currentResolution.width;
         int heightRes = Screen.currentResolution.height;
 
-        if (windowMode == "Windowed")
+        if (windowMode == "window")
         {
             Screen.SetResolution(widthRes, heightRes, FullScreenMode.Windowed);
         }
-        else if (windowMode == "MaximizedWindow")
+        else if (windowMode == "maximisedwindow")
         {
             Screen.SetResolution(widthRes, heightRes, FullScreenMode.MaximizedWindow);
         }
-        else if (windowMode == "FullScreenWindow")
+        else if (windowMode == "fullscreen")
         {
             Screen.SetResolution(widthRes, heightRes, FullScreenMode.FullScreenWindow);
         }
-        else if (windowMode == "ExclusiveFullScreen")
+        else if (windowMode == "exclusivefullscreen")
         {
             Screen.SetResolution(widthRes, heightRes, FullScreenMode.ExclusiveFullScreen);
         }

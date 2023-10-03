@@ -9,9 +9,16 @@ public class StartGame : MonoBehaviour
     void Start()
     {
         SceneFunctions.CreateCameras();
+
         Task special = new Task(SceneFunctions.GenerateStarField());
+
         Task a = new Task(MainMenuFunctions.RunMenu());
+    
         OGSettingsFunctions.LoadSettingsData();
+
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+        OGSettingsFunctions.SetGameWindowMode(settings.gameWindowMode);
+
         Debug.developerConsoleVisible = false;
     }
 

@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class MissionEditor : MonoBehaviour
 {
-    public Node[] nodes;
+    public List<Node> nodes;
     public Canvas canvas;
     public RectTransform EditorContentRect;
     public float scale = 1;
@@ -17,6 +17,13 @@ public class MissionEditor : MonoBehaviour
         EditorContentRect = EditorContentGo.GetComponent<RectTransform>();
 
         MissionEditorFunctions.SetWindowMode(this);
+
+        nodes = new List<Node>();
+        GameObject editorContent = GameObject.Find("EditorContent");
+        GameObject nodeGO = new GameObject();
+        nodeGO.transform.SetParent(editorContent.transform);
+        Node node = nodeGO.AddComponent<Node>();
+        nodes.Add(node);
     }
 
     // Update is called once per frame

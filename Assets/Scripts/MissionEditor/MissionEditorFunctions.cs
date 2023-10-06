@@ -43,4 +43,11 @@ public static class MissionEditorFunctions
 
     }
 
+    public static MissionEditor GetMissionEditor()
+    {
+        MissionEditor missionEditor = GameObject.FindObjectOfType<MissionEditor>();
+
+        return missionEditor;
+    }
+
 }

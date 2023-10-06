@@ -9,9 +9,9 @@ public static class MissionEditorFunctions
     {
         missionEditor.scale += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 20;
 
-        if (missionEditor.EditorContentRect != null)
+        if (missionEditor.editorContentRect != null)
         {
-            missionEditor.EditorContentRect.localScale = new Vector3(missionEditor.scale, missionEditor.scale);
+            missionEditor.editorContentRect.localScale = new Vector3(missionEditor.scale, missionEditor.scale);
         }
     }
 
@@ -48,6 +48,20 @@ public static class MissionEditorFunctions
         MissionEditor missionEditor = GameObject.FindObjectOfType<MissionEditor>();
 
         return missionEditor;
+    }
+
+    public static void ToggleScrolling(MissionEditor missionEditor)
+    {
+        if (missionEditor.scrolling == true)
+        {
+            missionEditor.scrollRect.horizontal = true;
+            missionEditor.scrollRect.vertical = true;
+        }
+        else
+        {
+            missionEditor.scrollRect.horizontal = false;
+            missionEditor.scrollRect.vertical = false;
+        }
     }
 
 }

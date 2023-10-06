@@ -2,19 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MissionEditor : MonoBehaviour
 {
     public List<Node> nodes;
     public Canvas canvas;
-    public RectTransform EditorContentRect;
+    public RectTransform editorContentRect;
+    public ScrollRect scrollRect;
     public float scale = 1;
     public string gameWindowMode;
+    public bool scrolling;
 
     void Start()
     {
-        GameObject EditorContentGo = GameObject.Find("EditorContent");
-        EditorContentRect = EditorContentGo.GetComponent<RectTransform>();
+        GameObject editorContentGo = GameObject.Find("EditorContent");
+        editorContentRect = editorContentGo.GetComponent<RectTransform>();
+        scrollRect = editorContentGo.GetComponentInParent<ScrollRect>();
 
         MissionEditorFunctions.SetWindowMode(this);
 
@@ -24,6 +28,8 @@ public class MissionEditor : MonoBehaviour
         nodeGO.transform.SetParent(editorContent.transform);
         Node node = nodeGO.AddComponent<Node>();
         nodes.Add(node);
+
+
     }
 
     // Update is called once per frame
@@ -35,6 +41,7 @@ public class MissionEditor : MonoBehaviour
     void OnGUI()
     {
         MissionEditorFunctions.ScaleGrid(this);
+        MissionEditorFunctions.ToggleScrolling(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)

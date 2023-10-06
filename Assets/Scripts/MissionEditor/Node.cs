@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Node : MonoBehaviour, IPointerDownHandler
+public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     public float xPos = 0;
     public float yPos = 0;
@@ -14,6 +14,7 @@ public class Node : MonoBehaviour, IPointerDownHandler
     private float sizeX = 100;
     private float sizeZ = 200;
     private bool dragging;
+    private bool scrollReset;
 
     MissionEditor missionEditor;
 
@@ -31,20 +32,29 @@ public class Node : MonoBehaviour, IPointerDownHandler
         background.pixelsPerUnitMultiplier = 5;
         nodeRect.sizeDelta = new Vector2(sizeX, sizeZ);
         nodeRect.localPosition = new Vector2(xPos, yPos);
+
+        this.gameObject.AddComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (dragging == true)
-        {
-            transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-        }
+        
     }
 
     void OnGUI()
     {
-        
+        if (dragging == true)
+        {
+            transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            missionEditor.scrolling = false;
+            scrollReset = false;
+        }
+        else if (scrollReset == false)
+        {
+            missionEditor.scrolling = true;
+            scrollReset = true;
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -55,6 +65,11 @@ public class Node : MonoBehaviour, IPointerDownHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         dragging = false;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+
     }
 
 }

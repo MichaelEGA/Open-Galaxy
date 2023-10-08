@@ -6,15 +6,21 @@ using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
+    public string eventType;
+    public Rect eventTypeRect;
+    public GUI textfieldGUI;
     public float xPos = 0;
     public float yPos = 0;
 
-    private RectTransform nodeRect;
+    public RectTransform rectTransform;
+    public float sizeX = 100;
+    public float sizeZ = 200;
+
     private Image background;
-    private float sizeX = 100;
-    private float sizeZ = 200;
     private bool dragging;
     private bool scrollReset;
+
+    private bool nodeDrawn;
 
     MissionEditor missionEditor;
 
@@ -25,13 +31,14 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         missionEditor = MissionEditorFunctions.GetMissionEditor();
 
         //This sets up the node background
-        nodeRect = this.gameObject.AddComponent<RectTransform>();
+        rectTransform = this.gameObject.AddComponent<RectTransform>();
+       
         background = this.gameObject.AddComponent<Image>();
         background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeBox");
         background.type = Image.Type.Sliced;
         background.pixelsPerUnitMultiplier = 5;
-        nodeRect.sizeDelta = new Vector2(sizeX, sizeZ);
-        nodeRect.localPosition = new Vector2(xPos, yPos);
+        rectTransform.sizeDelta = new Vector2(sizeX, sizeZ);
+        rectTransform.localPosition = new Vector2(xPos, yPos);
 
         this.gameObject.AddComponent<BoxCollider2D>();
     }
@@ -55,6 +62,12 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
             missionEditor.scrolling = true;
             scrollReset = true;
         }
+
+        if (nodeDrawn == false)
+        {
+            NodeFunctions.DrawCustomNode(this);
+            nodeDrawn = true;
+        }     
     }
 
     public void OnPointerDown(PointerEventData eventData)

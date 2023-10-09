@@ -5,28 +5,30 @@ using UnityEngine.UI;
 
 public class NodeFunctions : MonoBehaviour
 {
+    //This generates the test node
     public static void DrawTestNode(Node node)
     {
-        DrawTitle(node, "Test Node", 8, 5, -5, 12.5f, 90);
+        DrawNodeLink(node, 5, -6.5f, 10, 10);
 
-        DrawButton(node, 83, -6.5f, 10, 10, "cross", "none");
+        DrawTitle(node, "Test Node", 8, 17.5f, -5, 12.5f, 90);
 
-        DrawLineBreak(node, 0, -20, 1, 100);
+        DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        DrawLineBreak(node, "#808080", 0, -20, 1, 100);
 
         DrawInputField(node, "Event Type", "none", 7, 5, -25, 12.5f, 90, 5f);
 
         DrawDropDownMenu(node, "Ship Type", "none", 7, 5, -40, 12.5f, 90, 5f);
     }
 
+    //This generates the main menu node
     public static void DrawControlNode(Node node)
     {
         DrawTitle(node, "Main Menu", 8, 5, -5, 12.5f, 90);
 
-        DrawButton(node, 83, -6.5f, 10, 10, "cross", "none");
+        DrawLineBreak(node, "#808080", 0, -20, 1, 100);
 
-        DrawLineBreak(node, 0, -20, 1, 100);
-
-        DrawButton(node, 10, -25, 25, 25, "exit", "none");
+        DrawButton(node, 10, -25, 25, 25, "exit", "ExitMissionEditor");
 
         DrawButton(node, 60, -25, 25, 25, "import", "none");
 
@@ -57,7 +59,7 @@ public class NodeFunctions : MonoBehaviour
 
         node.name = "Node_" + node.nodeType + "_" + node.eventID;
     }
-    
+
     //This draws a title
     public static void DrawTitle(Node node, string title, int fontSize, float xPos, float yPos, float height, float width)
     {
@@ -85,7 +87,7 @@ public class NodeFunctions : MonoBehaviour
     }
 
     //This draws a line break
-    public static void DrawLineBreak(Node node, float xPos, float yPos, float height, float width)
+    public static void DrawLineBreak(Node node, string color, float xPos, float yPos, float height, float width)
     {
         GameObject lineBreakGO = new GameObject();
 
@@ -99,7 +101,15 @@ public class NodeFunctions : MonoBehaviour
         rectTransform.localScale = new Vector3(1, 1, 1);
 
         Image lineBreakImage = lineBreakGO.AddComponent<Image>();
-        lineBreakImage.color = Color.black;
+
+        if (!ColorUtility.TryParseHtmlString(color, out Color myColor))
+        {
+            lineBreakImage.color = Color.black;
+        }
+        else
+        {
+            lineBreakImage.color = myColor;
+        }
 
         lineBreakGO.name = "linebreak";
     }
@@ -108,7 +118,7 @@ public class NodeFunctions : MonoBehaviour
     public static void DrawInputField(Node node, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
     {
         float halfwidth = (width - gap) / 2f;
-        float shiftedXPosition = xPos + halfwidth + (gap/2f);
+        float shiftedXPosition = xPos + halfwidth + (gap / 2f);
 
         //This draws the input label
         GameObject labelGO = new GameObject();
@@ -234,7 +244,7 @@ public class NodeFunctions : MonoBehaviour
         captionText.alignment = TextAnchor.MiddleLeft;
 
         //This draws the template item
-        GameObject templateGO = new GameObject();        
+        GameObject templateGO = new GameObject();
         GameObject viewportGO = new GameObject();
         GameObject contentGO = new GameObject();
         GameObject itemGO = new GameObject();
@@ -348,8 +358,47 @@ public class NodeFunctions : MonoBehaviour
         Button button = buttonGO.AddComponent<Button>();
         button.image = buttonImage;
 
+        if (functionType == "ExitMissionEditor")
+        {
+            button.onClick.AddListener(() => { MissionEditorFunctions.ExitMissionEditor(); });
+        }
+        else if (functionType == "DeleteNode")
+        {
+            button.onClick.AddListener(() => { DeleteNode(node); });
+        }
+
         buttonGO.name = "button_" + functionType;
     }
 
+    //This draws a node link for connection the node with other nodes
+    public static void DrawNodeLink(Node node, float xPos, float yPos, float height, float width)
+    {
+        GameObject nodeLinkGO = new GameObject();
+        nodeLinkGO.name = "NodeLink";
+
+        nodeLinkGO.transform.SetParent(node.rectTransform.transform);
+        RectTransform rectTransform = nodeLinkGO.AddComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform.sizeDelta = new Vector2(width, height);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Image nodeLinkImage = nodeLinkGO.AddComponent<Image>();
+        nodeLinkImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/target");
+    }
+
     #endregion
+
+    #region general node functions
+
+    //This deletes the node
+    public static void DeleteNode (Node node)
+    {
+        GameObject.Destroy(node.gameObject);
+    }
+
+    #endregion
+
 }

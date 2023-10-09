@@ -54,12 +54,4 @@ public class MissionEditor : MonoBehaviour
     {
         Debug.Log("I was clicked");
     }
-
-    public void ExitMissionEditor()
-    {
-        MissionEditorFunctions.ExitMissionEditor(this);
-    }
-
-
-
 }

@@ -33,14 +33,18 @@ public static class MissionEditorFunctions
         }
     }
 
-    public static void ExitMissionEditor(MissionEditor missionEditor)
+    public static void ExitMissionEditor()
     {
+        MissionEditor missionEditor = GetMissionEditor();
+
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
         OGSettingsFunctions.SetGameWindowMode(settings.gameWindowMode);
 
-        missionEditor.gameObject.SetActive(false);
-
+        if (missionEditor != null)
+        {
+            missionEditor.gameObject.SetActive(false);
+        }
     }
 
     public static MissionEditor GetMissionEditor()

@@ -24,12 +24,18 @@ public class MissionEditor : MonoBehaviour
 
         nodes = new List<Node>();
         GameObject editorContent = GameObject.Find("EditorContent");
-        GameObject nodeGO = new GameObject();
-        nodeGO.transform.SetParent(editorContent.transform);
-        Node node = nodeGO.AddComponent<Node>();
+
+        GameObject node1GO = new GameObject();
+        node1GO.transform.SetParent(editorContent.transform);
+        Node node = node1GO.AddComponent<Node>();
+        node.nodeType = "testnode";
         nodes.Add(node);
 
-
+        GameObject node2GO = new GameObject();
+        node2GO.transform.SetParent(editorContent.transform);
+        Node node2 = node2GO.AddComponent<Node>();
+        node2.nodeType = "menunode";
+        nodes.Add(node2);
     }
 
     // Update is called once per frame

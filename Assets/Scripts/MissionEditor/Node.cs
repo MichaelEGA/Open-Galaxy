@@ -59,7 +59,15 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
         if (nodeDrawn == false)
         {
-            NodeFunctions.DrawCustomNode(this);
+            if (nodeType == "testnode")
+            {
+                NodeFunctions.DrawTestNode(this);
+            }
+            else if (nodeType == "menunode")
+            {
+                NodeFunctions.DrawControlNode(this);
+            }
+            
             nodeDrawn = true;
         }     
     }

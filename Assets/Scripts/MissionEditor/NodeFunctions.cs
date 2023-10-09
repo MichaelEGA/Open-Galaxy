@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class NodeFunctions : MonoBehaviour
 {
-    public static void DrawCustomNode(Node node)
+    public static void DrawTestNode(Node node)
     {
-        DrawTitle(node, "Custom Node", 8, 5, -5, 12.5f, 90);
+        DrawTitle(node, "Test Node", 8, 5, -5, 12.5f, 90);
+
+        DrawButton(node, 83, -6.5f, 10, 10, "cross", "none");
 
         DrawLineBreak(node, 0, -20, 1, 100);
 
@@ -15,6 +17,29 @@ public class NodeFunctions : MonoBehaviour
 
         DrawDropDownMenu(node, "Ship Type", "none", 7, 5, -40, 12.5f, 90, 5f);
     }
+
+    public static void DrawControlNode(Node node)
+    {
+        DrawTitle(node, "Main Menu", 8, 5, -5, 12.5f, 90);
+
+        DrawButton(node, 83, -6.5f, 10, 10, "cross", "none");
+
+        DrawLineBreak(node, 0, -20, 1, 100);
+
+        DrawButton(node, 10, -25, 25, 25, "exit", "none");
+
+        DrawButton(node, 60, -25, 25, 25, "import", "none");
+
+        DrawButton(node, 10, -50, 25, 25, "plus", "none");
+
+        DrawButton(node, 60, -50, 25, 25, "save", "none");
+
+        DrawButton(node, 10, -75, 25, 25, "star", "none");
+
+        DrawButton(node, 60, -75, 25, 25, "trashcan", "none");
+    }
+
+    #region node drawing functions
 
     //This draws the base node gameobject
     public static void DrawNodeBase(Node node)
@@ -302,4 +327,29 @@ public class NodeFunctions : MonoBehaviour
 
         dropdown.AddOptions(options);
     }
+
+    //This draws a button and allocates a function
+    public static void DrawButton(Node node, float xPos, float yPos, float height, float width, string imageName, string functionType)
+    {
+        GameObject buttonGO = new GameObject();
+
+        buttonGO.transform.SetParent(node.rectTransform.transform);
+        RectTransform rectTransform = buttonGO.AddComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform.sizeDelta = new Vector2(width, height);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Image buttonImage = buttonGO.AddComponent<Image>();
+        buttonImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/" + imageName);
+
+        Button button = buttonGO.AddComponent<Button>();
+        button.image = buttonImage;
+
+        buttonGO.name = "button_" + functionType;
+    }
+
+    #endregion
 }

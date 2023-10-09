@@ -6,7 +6,9 @@ using UnityEngine.EventSystems;
 
 public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
+    public string nodeType = "Custom Node";
     public string eventType;
+    public string eventID = "01";
     public Rect eventTypeRect;
     public GUI textfieldGUI;
     public float xPos = 0;
@@ -15,8 +17,8 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     public RectTransform rectTransform;
     public float sizeX = 100;
     public float sizeZ = 200;
+    public Image background;
 
-    private Image background;
     private bool dragging;
     private bool scrollReset;
 
@@ -30,17 +32,9 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         //This gets the reference to the mission editor
         missionEditor = MissionEditorFunctions.GetMissionEditor();
 
-        //This sets up the node background
-        rectTransform = this.gameObject.AddComponent<RectTransform>();
-       
-        background = this.gameObject.AddComponent<Image>();
-        background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeBox");
-        background.type = Image.Type.Sliced;
-        background.pixelsPerUnitMultiplier = 5;
-        rectTransform.sizeDelta = new Vector2(sizeX, sizeZ);
-        rectTransform.localPosition = new Vector2(xPos, yPos);
+        NodeFunctions.DrawNodeBase(this);
 
-        this.gameObject.AddComponent<BoxCollider2D>();
+        
     }
 
     // Update is called once per frame

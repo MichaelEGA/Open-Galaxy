@@ -4,13 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-    public string nodeType = "Custom Node";
-    public string eventType;
-    public string eventID = "01";
-    public Rect eventTypeRect;
-    public GUI textfieldGUI;
+    public string menuType = "Add Node";
     public float xPos = 0;
     public float yPos = 0;
 
@@ -20,9 +16,8 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     public Image background;
 
     private bool dragging;
-    private bool scrollReset;
 
-    private bool nodeDrawn;
+    private bool MenuDrawn;
 
     MissionEditor missionEditor;
 
@@ -32,15 +27,13 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         //This gets the reference to the mission editor
         missionEditor = MissionEditorFunctions.GetMissionEditor();
 
-        NodeFunctions.DrawNodeBase(this);
-
-        
+        MenuFunctions.DrawMenuBase(this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void OnGUI()
@@ -48,29 +41,19 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         if (dragging == true)
         {
             transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            missionEditor.scrolling = false;
-            scrollReset = false;
-        }
-        else if (scrollReset == false)
-        {
-            missionEditor.scrolling = true;
-            scrollReset = true;
         }
 
-        if (nodeDrawn == false)
+        if (MenuDrawn == false)
         {
-            if (nodeType == "testnode")
-            {
-                NodeFunctions.DrawTestNode(this);
-            }
-            
-            nodeDrawn = true;
-        }     
+            MenuFunctions.DrawMainMenu(this);
+            MenuDrawn = true;
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         dragging = true;
+        Debug.Log("dragging is true");
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -82,5 +65,4 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     {
 
     }
-
 }

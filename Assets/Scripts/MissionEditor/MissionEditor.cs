@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class MissionEditor : MonoBehaviour
 {
     public List<Node> nodes;
+    public List<Menu> menus;
     public Canvas canvas;
     public RectTransform editorContentRect;
     public ScrollRect scrollRect;
@@ -31,11 +32,14 @@ public class MissionEditor : MonoBehaviour
         node.nodeType = "testnode";
         nodes.Add(node);
 
-        GameObject node2GO = new GameObject();
-        node2GO.transform.SetParent(editorContent.transform);
-        Node node2 = node2GO.AddComponent<Node>();
-        node2.nodeType = "menunode";
-        nodes.Add(node2);
+        menus = new List<Menu>();
+
+        GameObject menu1GO = new GameObject();
+        menu1GO.transform.SetParent(gameObject.transform);
+        Menu menu1 = menu1GO.AddComponent<Menu>();
+        menu1.menuType = "mainmenu";
+        menus.Add(menu1);
+        
     }
 
     // Update is called once per frame

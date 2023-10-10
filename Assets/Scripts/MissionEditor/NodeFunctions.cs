@@ -21,26 +21,6 @@ public class NodeFunctions : MonoBehaviour
         DrawDropDownMenu(node, "Ship Type", "none", 7, 5, -40, 12.5f, 90, 5f);
     }
 
-    //This generates the main menu node
-    public static void DrawControlNode(Node node)
-    {
-        DrawTitle(node, "Main Menu", 8, 5, -5, 12.5f, 90);
-
-        DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        DrawButton(node, 10, -25, 25, 25, "exit", "ExitMissionEditor");
-
-        DrawButton(node, 60, -25, 25, 25, "import", "none");
-
-        DrawButton(node, 10, -50, 25, 25, "plus", "none");
-
-        DrawButton(node, 60, -50, 25, 25, "save", "none");
-
-        DrawButton(node, 10, -75, 25, 25, "star", "none");
-
-        DrawButton(node, 60, -75, 25, 25, "trashcan", "none");
-    }
-
     #region node drawing functions
 
     //This draws the base node gameobject

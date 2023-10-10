@@ -45,7 +45,15 @@ public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
         if (MenuDrawn == false)
         {
-            MenuFunctions.DrawMainMenu(this);
+            if (menuType == "mainmenu")
+            {
+                MenuFunctions.DrawMainMenu(this);
+            }
+            else if (menuType == "addnodes")
+            {
+                MenuFunctions.DrawAddNode(this);
+            }
+
             MenuDrawn = true;
         }
     }
@@ -53,7 +61,6 @@ public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     public void OnPointerDown(PointerEventData eventData)
     {
         dragging = true;
-        Debug.Log("dragging is true");
     }
 
     public void OnPointerUp(PointerEventData eventData)

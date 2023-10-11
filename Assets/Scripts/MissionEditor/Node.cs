@@ -59,7 +59,7 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
         if (nodeDrawn == false)
         {
-            if (nodeType == "testnode")
+            if (nodeType == "Test Node")
             {
                 NodeFunctions.DrawTestNode(this);
             }

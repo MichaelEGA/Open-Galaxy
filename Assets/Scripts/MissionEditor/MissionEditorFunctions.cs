@@ -1,9 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class MissionEditorFunctions
 {
+
+    public static void SelectNodeType(string nodeType)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        missionEditor.selectedNodeTypeToLoad = nodeType;
+
+        if (missionEditor.AddNodeTextBox == null)
+        {
+            GameObject AddNodeTextBoxGO = GameObject.Find("AddNodeTextBox");
+
+            if (AddNodeTextBoxGO != null)
+            {
+                missionEditor.AddNodeTextBox = AddNodeTextBoxGO.GetComponentInChildren<Text>();
+            }
+        }
+
+        if (missionEditor.AddNodeTextBox != null)
+        {
+            if (nodeType == "Test Node")
+            {
+                missionEditor.AddNodeTextBox.text = "This node is used to test the node system during development";
+            }
+            else if (nodeType == "Start Node")
+            {
+                missionEditor.AddNodeTextBox.text = "This is the first node the game looks for and is used to indicate what event is to be run first.";
+            }
+            else
+            {
+                missionEditor.AddNodeTextBox.text = "";
+            }
+        }     
+    }
+
+    public static void AddNode()
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (missionEditor.nodes ==  null)
+        {
+            missionEditor.nodes = new List<Node>();
+        }
+        
+        GameObject editorContent = GameObject.Find("EditorContent");
+
+        GameObject node1GO = new GameObject();
+        node1GO.transform.SetParent(editorContent.transform);
+        Node node = node1GO.AddComponent<Node>();
+        node.nodeType = missionEditor.selectedNodeTypeToLoad;
+        missionEditor.nodes.Add(node);
+    }
 
     public static void ScaleGrid(MissionEditor missionEditor)
     {

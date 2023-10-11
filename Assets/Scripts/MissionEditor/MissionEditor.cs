@@ -11,9 +11,11 @@ public class MissionEditor : MonoBehaviour
     public Canvas canvas;
     public RectTransform editorContentRect;
     public ScrollRect scrollRect;
+    public Text AddNodeTextBox;
     public float scale = 1;
     public string gameWindowMode;
     public bool scrolling;
+    public string selectedNodeTypeToLoad;
 
     void Start()
     {
@@ -22,15 +24,6 @@ public class MissionEditor : MonoBehaviour
         scrollRect = editorContentGo.GetComponentInParent<ScrollRect>();
 
         MissionEditorFunctions.SetWindowMode(this);
-
-        nodes = new List<Node>();
-        GameObject editorContent = GameObject.Find("EditorContent");
-
-        GameObject node1GO = new GameObject();
-        node1GO.transform.SetParent(editorContent.transform);
-        Node node = node1GO.AddComponent<Node>();
-        node.nodeType = "testnode";
-        nodes.Add(node);
 
         menus = new List<Menu>();
 
@@ -45,7 +38,6 @@ public class MissionEditor : MonoBehaviour
         Menu menu2 = menu2GO.AddComponent<Menu>();
         menu2.menuType = "addnodes";
         menus.Add(menu2);
-
     }
 
     // Update is called once per frame

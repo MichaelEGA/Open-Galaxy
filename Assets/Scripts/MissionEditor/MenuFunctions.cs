@@ -32,10 +32,13 @@ public static class MenuFunctions
         DrawLineBreak(menu, "#808080", 0, -20, 1, 100);
 
         string[] buttons = new string[] { "Test Node", "Start Node", "Load Ship", "Load Planet" };
+        string[] functions = new string[] { "SelectNodeTypeToLoad", "SelectNodeTypeToLoad", "SelectNodeTypeToLoad", "SelectNodeTypeToLoad" };
 
-        DrawScrollableButtons(menu, 5, -25, 100, 90, 10, 7, buttons);
+        DrawScrollableButtons(menu, 5, -25, 100, 90, 10, 7, buttons, functions);
 
-        DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Load Node", 7, "none", TextAnchor.MiddleCenter);
+        DrawTextBox(menu, 5, -100, 60, 90, "NodeSprite_Dark", "Information about nodes", 7, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
+
+        DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
 
     #region draw menu functions
@@ -205,11 +208,19 @@ public static class MenuFunctions
         {
             button.onClick.AddListener(() => { MissionEditorFunctions.ExitMissionEditor(); });
         }
+        else if (functionType == "SelectNodeTypeToLoad")
+        {
+            button.onClick.AddListener(() => { MissionEditorFunctions.SelectNodeType(buttonText); });
+        }
+        else if (functionType == "AddNode")
+        {
+            button.onClick.AddListener(() => { MissionEditorFunctions.AddNode(); });
+        }
 
         buttonGO.name = "button_" + functionType;
     }
 
-    public static void DrawScrollableButtons(Menu menu, float xPos, float yPos, float height, float width, float buttonHeight, int fontSize, string[] buttons)
+    public static void DrawScrollableButtons(Menu menu, float xPos, float yPos, float height, float width, float buttonHeight, int fontSize, string[] buttons, string[] functions)
     {
         GameObject baseGO = new GameObject();
         GameObject viewportGO = new GameObject();
@@ -250,12 +261,77 @@ public static class MenuFunctions
         scrollRect.viewport = viewportRectTransform;
 
         float buttonDrop = 0;
+        int i = 0;
 
         foreach (string button in buttons)
         {
-            DrawTextButton(menu, 0, buttonDrop, buttonHeight, width, "none", button, fontSize, "none", TextAnchor.MiddleLeft, false, contentGO.transform);
+            DrawTextButton(menu, 0, buttonDrop, buttonHeight, width, "none", button, fontSize, functions[i], TextAnchor.MiddleLeft, false, contentGO.transform);
             buttonDrop -= buttonHeight;
+            i++;
         }
+    }
+
+    //This draws a text box
+    public static void DrawTextBox(Menu menu, float xPos, float yPos, float height, float width, string backgroundImageName, string textBoxText, int fontSize, TextAnchor alignement = TextAnchor.MiddleCenter, bool parentToNode = true, Transform differentTransform = null, string name = "none")
+    {
+        GameObject textboxGO = new GameObject();
+        GameObject textBoxTextGO = new GameObject();
+
+        if (parentToNode == true)
+        {
+            textboxGO.transform.SetParent(menu.rectTransform.transform);
+        }
+        else
+        {
+            textboxGO.transform.SetParent(differentTransform);
+        }
+
+        textBoxTextGO.transform.SetParent(textboxGO.transform);
+
+        RectTransform rectTransform1 = textboxGO.AddComponent<RectTransform>();
+        rectTransform1.anchorMax = new Vector2(0, 1);
+        rectTransform1.anchorMin = new Vector2(0, 1);
+        rectTransform1.pivot = new Vector2(0, 1);
+        rectTransform1.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform1.sizeDelta = new Vector2(width, height);
+        rectTransform1.localScale = new Vector3(1, 1, 1);
+
+        RectTransform rectTransform2 = textBoxTextGO.AddComponent<RectTransform>();
+        rectTransform2.anchorMax = new Vector2(0, 1);
+        rectTransform2.anchorMin = new Vector2(0, 1);
+        rectTransform2.pivot = new Vector2(0, 1);
+        rectTransform2.anchoredPosition = new Vector2(1, -1);
+        rectTransform2.sizeDelta = new Vector2(width - 2, height -2);
+        rectTransform2.localScale = new Vector3(1, 1, 1);
+
+        Image backgroundImage = textboxGO.AddComponent<Image>();
+        backgroundImage.type = Image.Type.Sliced;
+        backgroundImage.pixelsPerUnitMultiplier = 30;
+
+        if (backgroundImageName != "none" & backgroundImageName != "")
+        {
+            backgroundImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/" + backgroundImageName);
+        }
+        else
+        {
+            backgroundImage.color = Color.gray;
+        }
+
+        Text text = textBoxTextGO.AddComponent<Text>();
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.fontSize = fontSize;
+        text.text = textBoxText;
+        text.alignment = alignement;
+
+        if (name != "none")
+        {
+            textboxGO.name = name;
+        }
+        else
+        {
+            textboxGO.name = "textbox";
+        }
+
     }
 
     #endregion

@@ -8,6 +8,7 @@ public class MissionEditor : MonoBehaviour
 {
     public List<Node> nodes;
     public List<Menu> menus;
+    public List<NodeLink> nodeLinks;
     public Canvas canvas;
     public RectTransform editorContentRect;
     public ScrollRect scrollRect;

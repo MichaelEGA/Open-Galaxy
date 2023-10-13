@@ -8,7 +8,7 @@ public class NodeFunctions : MonoBehaviour
     //This generates the test node
     public static void DrawTestNode(Node node)
     {
-        DrawNodeLink(node, 5, -6.5f, 10, 10, "female");
+        DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
         DrawTitle(node, "Test Node", 8, 17.5f, -5, 12.5f, 90);
 
@@ -20,7 +20,7 @@ public class NodeFunctions : MonoBehaviour
 
         DrawDropDownMenu(node, "Ship Type", "none", 7, 5, -40, 12.5f, 90, 5f);
 
-        DrawNodeLink(node, 85, -60, 10, 10, "male");
+        DrawNodeLink(node, 87.5f, -62.5f, 10, 10, "male");
     }
 
     #region node drawing functions
@@ -356,6 +356,7 @@ public class NodeFunctions : MonoBehaviour
     public static void DrawNodeLink(Node node, float xPos, float yPos, float height, float width, string mode = "male")
     {
         GameObject nodeLinkGO = new GameObject();
+        GameObject nodeLinkImageGO = new GameObject();
         nodeLinkGO.name = "NodeLink";
 
         nodeLinkGO.transform.SetParent(node.rectTransform.transform);
@@ -367,7 +368,16 @@ public class NodeFunctions : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(width, height);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
-        Image nodeLinkImage = nodeLinkGO.AddComponent<Image>();
+        nodeLinkImageGO.transform.SetParent(nodeLinkGO.transform);
+        RectTransform rectTransform2 = nodeLinkImageGO.AddComponent<RectTransform>();
+        rectTransform2.anchorMax = new Vector2(0.5f, 0.5f);
+        rectTransform2.anchorMin = new Vector2(0.5f, 0.5f);
+        rectTransform2.pivot = new Vector2(0.5f, 0.5f);
+        rectTransform2.anchoredPosition = new Vector2(-5, 5);
+        rectTransform2.sizeDelta = new Vector2(width, height);
+        rectTransform2.localScale = new Vector3(1, 1, 1);
+
+        Image nodeLinkImage = nodeLinkImageGO.AddComponent<Image>();
         nodeLinkImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/target");
 
         NodeLink nodeLink = nodeLinkGO.AddComponent<NodeLink>();

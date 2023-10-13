@@ -120,6 +120,7 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
             var tempColor = NewImage.color;
             tempColor.a = 0.5f;
             NewImage.color = tempColor;
+            line.name = "link";
         }
 
         RectTransform rect = line.GetComponent<RectTransform>();
@@ -131,7 +132,8 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         float by = secondlocalpoint.y;
 
         rect.localScale = Vector3.one;
-        Vector2 graphScale = missionEditor.editorContentRect.transform.localScale;
+        //Vector2 graphScale = missionEditor.editorContentRect.transform.localScale;
+        Vector2 graphScale = Vector3.one;
 
         Vector3 a = new Vector3(ax * graphScale.x, ay * graphScale.y, 0);
         Vector3 b = new Vector3(bx * graphScale.x, by * graphScale.y, 0);

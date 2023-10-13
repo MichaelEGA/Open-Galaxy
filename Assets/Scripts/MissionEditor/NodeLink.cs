@@ -8,10 +8,10 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 {
     public NodeLink connectedNode;
     public string nodeID;
-    public string mode = "male"; 
+    public string mode = "male";
+    public GameObject line;
 
     MissionEditor missionEditor;
-    LineRenderer line;
     Vector2 targetPosition;
     bool dragging;
     bool distanceChecked;
@@ -20,6 +20,13 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     void Start()
     {
         missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor.nodeLinks == null)
+        {
+            missionEditor.nodeLinks = new List<NodeLink>();
+        }
+
+        missionEditor.nodeLinks.Add(this);
     }
 
     // Update is called once per frame
@@ -41,16 +48,15 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         {
             if (dragging == true)
             {
-                if (line == null)
+                if (line != null)
                 {
-                    line = GetComponent<LineRenderer>();
+                    line.SetActive(true);
                 }
 
-                targetPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+                targetPosition = transform.parent.parent.InverseTransformPoint(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+                Vector2 currentPos = transform.parent.parent.InverseTransformPoint(transform.position);
 
-                Vector3[] pathPoints = { transform.position, targetPosition };
-                line.positionCount = 2;
-                line.SetPositions(pathPoints);
+                DrawLine(currentPos, targetPosition, 2);
 
                 distanceChecked = false;
             }
@@ -58,9 +64,11 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
             {
                 foreach (NodeLink nodeLink in missionEditor.nodeLinks)
                 {
-                    float distance = Vector2.Distance(targetPosition, nodeLink.transform.position);
+                    Vector2 targetNodeLink = transform.parent.parent.InverseTransformPoint(nodeLink.transform.position);
 
-                    if (distance < 2)
+                    float distance = Vector2.Distance(targetPosition, targetNodeLink);
+
+                    if (distance < 10)
                     {
                         connectedNode = nodeLink;
                         break;
@@ -75,13 +83,13 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
             }
             else if (connectedNode != null)
             {
-                Vector3[] pathPoints = { transform.position, connectedNode.transform.position };
-                line.positionCount = 2;
-                line.SetPositions(pathPoints);
+                Vector2 currentPos = transform.parent.parent.InverseTransformPoint(transform.position);
+                Vector2 currentTargetPos = transform.parent.parent.InverseTransformPoint(connectedNode.transform.position);
+                DrawLine(currentPos, currentTargetPos, 2);
             }
-            else
+            else if (line != null)
             {
-                line.positionCount = 0;
+                line.SetActive(false);
             }
         }
     }
@@ -99,6 +107,39 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     public void OnDrag(PointerEventData eventData) //This is needed otherwise mouse it is not possible to drag the mouse
     {
 
+    }
+
+    //Makes a line on the ui canvas between two points
+    public void DrawLine(Vector2 firstlocalpoint, Vector2 secondlocalpoint, float lineWidth)
+    {
+        if (line == null)
+        {
+            line = new GameObject();
+            Image NewImage = line.AddComponent<Image>();        
+            line.transform.SetParent(missionEditor.editorContentRect.transform);
+            var tempColor = NewImage.color;
+            tempColor.a = 0.5f;
+            NewImage.color = tempColor;
+        }
+
+        RectTransform rect = line.GetComponent<RectTransform>();
+
+        float ax = firstlocalpoint.x;
+        float ay = firstlocalpoint.y;
+
+        float bx = secondlocalpoint.x;
+        float by = secondlocalpoint.y;
+
+        rect.localScale = Vector3.one;
+        Vector2 graphScale = missionEditor.editorContentRect.transform.localScale;
+
+        Vector3 a = new Vector3(ax * graphScale.x, ay * graphScale.y, 0);
+        Vector3 b = new Vector3(bx * graphScale.x, by * graphScale.y, 0);
+
+        rect.localPosition = (a + b) / 2;
+        Vector3 dif = a - b;
+        rect.sizeDelta = new Vector3(dif.magnitude, lineWidth);
+        rect.rotation = Quaternion.Euler(new Vector3(0, 0, 180 * Mathf.Atan(dif.y / dif.x) / Mathf.PI));
     }
 
 }

@@ -8,7 +8,7 @@ public class NodeFunctions : MonoBehaviour
     //This generates the test node
     public static void DrawTestNode(Node node)
     {
-        DrawNodeLink(node, 5, -6.5f, 10, 10);
+        DrawNodeLink(node, 5, -6.5f, 10, 10, "female");
 
         DrawTitle(node, "Test Node", 8, 17.5f, -5, 12.5f, 90);
 
@@ -19,6 +19,8 @@ public class NodeFunctions : MonoBehaviour
         DrawInputField(node, "Event Type", "none", 7, 5, -25, 12.5f, 90, 5f);
 
         DrawDropDownMenu(node, "Ship Type", "none", 7, 5, -40, 12.5f, 90, 5f);
+
+        DrawNodeLink(node, 85, -60, 10, 10, "male");
     }
 
     #region node drawing functions
@@ -351,7 +353,7 @@ public class NodeFunctions : MonoBehaviour
     }
 
     //This draws a node link for connection the node with other nodes
-    public static void DrawNodeLink(Node node, float xPos, float yPos, float height, float width)
+    public static void DrawNodeLink(Node node, float xPos, float yPos, float height, float width, string mode = "male")
     {
         GameObject nodeLinkGO = new GameObject();
         nodeLinkGO.name = "NodeLink";
@@ -367,6 +369,9 @@ public class NodeFunctions : MonoBehaviour
 
         Image nodeLinkImage = nodeLinkGO.AddComponent<Image>();
         nodeLinkImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/target");
+
+        NodeLink nodeLink = nodeLinkGO.AddComponent<NodeLink>();
+        nodeLink.mode = mode;
     }
 
     #endregion

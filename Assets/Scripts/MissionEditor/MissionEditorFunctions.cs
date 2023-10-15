@@ -53,7 +53,7 @@ public static class MissionEditorFunctions
         GameObject node1GO = new GameObject();
         node1GO.transform.SetParent(editorContent.transform);
         Node node = node1GO.AddComponent<Node>();
-        node.nodeType = missionEditor.selectedNodeTypeToLoad;
+        node.eventType = missionEditor.selectedNodeTypeToLoad;
         missionEditor.nodes.Add(node);
     }
 
@@ -118,6 +118,183 @@ public static class MissionEditorFunctions
             missionEditor.scrollRect.horizontal = false;
             missionEditor.scrollRect.vertical = false;
         }
+    }
+
+    //This passes the data from text boxes back into a format that can be easily handled
+    public static MissionEvent[] SaveNodeData(MissionEditor missionEditor)
+    {
+        List<MissionEvent> missionEvents = new List<MissionEvent>();
+
+        foreach (Node node in missionEditor.nodes)
+        {
+            MissionEvent missionEvent = new MissionEvent();
+
+            missionEvent.eventID = node.eventID;
+            missionEvent.eventType = node.eventType;
+
+            if (node.conditionTimeText != null)
+            {
+                if (int.TryParse(node.conditionTimeText.text, out _))
+                {
+                    missionEvent.conditionTime = int.Parse(node.conditionTimeText.text);
+                }
+            }
+
+            if (node.conditionLocationText != null)
+            {
+                missionEvent.conditionLocation = node.conditionLocationText.text;
+            }
+
+            if (node.xText != null)
+            {
+                if (int.TryParse(node.xText.text, out _))
+                {
+                    missionEvent.x = int.Parse(node.xText.text);
+                }
+            }
+
+            if (node.yText != null)
+            {
+                if (int.TryParse(node.yText.text, out _))
+                {
+                    missionEvent.y = int.Parse(node.yText.text);
+                }
+            }
+
+            if (node.zText != null)
+            {
+                if (int.TryParse(node.zText.text, out _))
+                {
+                    missionEvent.z = int.Parse(node.zText.text);
+                }
+            }
+
+            if (node.xRotationText != null)
+            {
+                if (int.TryParse(node.xRotationText.text, out _))
+                {
+                    missionEvent.xRotation = int.Parse(node.xRotationText.text);
+                }
+            }
+
+            if (node.yRotationText != null)
+            {
+                if (int.TryParse(node.yRotationText.text, out _))
+                {
+                    missionEvent.yRotation = int.Parse(node.yRotationText.text);
+                }
+            }
+
+            if (node.zRotationText != null)
+            {
+                if (int.TryParse(node.zRotationText.text, out _))
+                {
+                    missionEvent.zRotation = int.Parse(node.zRotationText.text);
+                }
+            }
+
+            if (node.data1Text != null)
+            {
+                missionEvent.data1 = node.data1Text.text;
+            }
+
+            if (node.data2Text != null)
+            {
+                missionEvent.data2 = node.data2Text.text;
+            }
+
+            if (node.data3Text != null)
+            {
+                missionEvent.data3 = node.data3Text.text;
+            }
+
+            if (node.data4Text != null)
+            {
+                missionEvent.data4 = node.data4Text.text;
+            }
+
+            if (node.data5Text != null)
+            {
+                missionEvent.data5 = node.data5Text.text;
+            }
+
+            if (node.data6Text != null)
+            {
+                missionEvent.data6 = node.data6Text.text;
+            }
+
+            if (node.data7Text != null)
+            {
+                missionEvent.data7 = node.data7Text.text;
+            }
+
+            if (node.data8Text != null)
+            {
+                missionEvent.data8 = node.data8Text.text;
+            }
+
+            if (node.data9Text != null)
+            {
+                missionEvent.data9 = node.data9Text.text;
+            }
+
+            if (node.data10Text != null)
+            {
+                missionEvent.data10 = node.data10Text.text;
+            }
+
+            if (node.data11Text != null)
+            {
+                missionEvent.data11 = node.data11Text.text;
+            }
+
+            if (node.data12Text != null)
+            {
+                missionEvent.data12 = node.data12Text.text;
+            }
+
+            if (node.data13Text != null)
+            {
+                missionEvent.data13 = node.data13Text.text;
+            }
+
+            if (node.data14Text != null)
+            {
+                missionEvent.data14 = node.data14Text.text;
+            }
+
+            if (node.data15Text != null)
+            {
+                missionEvent.data15 = node.data15Text.text;
+            }
+
+            if (node.nextEvent1Text != null)
+            {
+                missionEvent.nextEvent1 = node.nextEvent1Text.text;
+            }
+
+            if (node.nextEvent2Text != null)
+            {
+                missionEvent.nextEvent2 = node.nextEvent2Text.text;
+            }
+
+            if (node.nextEvent3Text != null)
+            {
+                missionEvent.nextEvent3 = node.nextEvent3Text.text;
+            }
+
+            if (node.nextEvent4Text != null)
+            {
+                missionEvent.nextEvent4 = node.nextEvent4Text.text;
+            }
+
+            missionEvent.nodePosX = node.transform.localPosition.x;
+            missionEvent.nodePosY = node.transform.localPosition.y;
+
+            missionEvents.Add(missionEvent);
+        }
+
+        return missionEvents[];
     }
 
 }

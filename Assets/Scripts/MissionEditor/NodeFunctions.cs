@@ -23,6 +23,11 @@ public class NodeFunctions : MonoBehaviour
         DrawNodeLink(node, 87.5f, -62.5f, 10, 10, "male");
     }
 
+    public static void DrawCustomNode(Node node)
+    {
+
+    }
+
     #region node drawing functions
 
     //This draws the base node gameobject
@@ -31,15 +36,15 @@ public class NodeFunctions : MonoBehaviour
         //This sets up the node background
         node.rectTransform = node.gameObject.AddComponent<RectTransform>();
 
-        node.background = node.gameObject.AddComponent<Image>();
-        node.background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Dark");
-        node.background.type = Image.Type.Sliced;
-        node.background.pixelsPerUnitMultiplier = 5;
+        Image background = node.gameObject.AddComponent<Image>();
+        background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Dark");
+        background.type = Image.Type.Sliced;
+        background.pixelsPerUnitMultiplier = 5;
         node.rectTransform.sizeDelta = new Vector2(node.sizeX, node.sizeZ);
-        node.rectTransform.localPosition = new Vector2(node.xPos, node.yPos);
+        node.rectTransform.localPosition = new Vector2(node.nodePosX, node.nodePosY);
         node.rectTransform.localScale = new Vector3(1, 1, 1);
 
-        node.name = "Node_" + node.nodeType + "_" + node.eventID;
+        node.name = "Node_" + node.eventType + "_" + node.eventID;
     }
 
     //This draws a title

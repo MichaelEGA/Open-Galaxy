@@ -6,10 +6,12 @@ using UnityEngine.EventSystems;
 
 public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
+    public Node node;
+
     public NodeLink connectedNode;
-    public string nodeID;
     public string mode = "male";
     public GameObject line;
+    public Text textbox;
 
     MissionEditor missionEditor;
     Vector2 targetPosition;
@@ -32,13 +34,13 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     // Update is called once per frame
     void Update()
     {
-        if (connectedNode != null)
+        if (connectedNode != null & textbox != null)
         {
-            nodeID = connectedNode.nodeID;
+            textbox.text = connectedNode.node.eventID.text;
         }      
-        else
+        else if (textbox != null)
         {
-            nodeID = "";
+            textbox.text = "";
         }
     }
 

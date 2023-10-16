@@ -1,44 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
 
     //Mission Event data carried by the node, strings are data that is not displayed
-    public string eventID;
-    public string eventType;
-    public Text conditionTimeText;
-    public Text conditionLocationText;
-    public Text xText;
-    public Text yText;
-    public Text zText;
-    public Text xRotationText;
-    public Text yRotationText;
-    public Text zRotationText;
-    public Text data1Text;
-    public Text data2Text;
-    public Text data3Text;
-    public Text data4Text;
-    public Text data5Text;
-    public Text data6Text;
-    public Text data7Text;
-    public Text data8Text;
-    public Text data9Text;
-    public Text data10Text;
-    public Text data11Text;
-    public Text data12Text;
-    public Text data13Text;
-    public Text data14Text;
-    public Text data15Text;
-    public Text nextEvent1Text;
-    public Text nextEvent2Text;
-    public Text nextEvent3Text;
-    public Text nextEvent4Text;
+    public Text eventID;
+    public Text eventType;
+    public Text conditionTime;
+    public Text conditionLocation;
+    public Text x;
+    public Text y;
+    public Text z;
+    public Text xRotation;
+    public Text yRotation;
+    public Text zRotation;
+    public Text data1;
+    public Text data2;
+    public Text data3;
+    public Text data4;
+    public Text data5;
+    public Text data6;
+    public Text data7;
+    public Text data8;
+    public Text data9;
+    public Text data10;
+    public Text data11;
+    public Text data12;
+    public Text data13;
+    public Text data14;
+    public Text data15;
+    public Text nextEvent1;
+    public Text nextEvent2;
+    public Text nextEvent3;
+    public Text nextEvent4;
     public float nodePosX;
     public float nodePosY;
+
+    public string nodeType;
 
     public RectTransform rectTransform;
     public float sizeX = 100;
@@ -47,17 +47,21 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     private bool dragging; //Indicates whether the node is being dragged
     private bool scrollReset; //Tells the mission editor not to drag the canvas when the node is being dragged
 
-    MissionEditor missionEditor;
+    public MissionEditor missionEditor;
 
     // Start is called before the first frame update
     void Start()
     {
-        //This gets the reference to the mission editor
-        missionEditor = MissionEditorFunctions.GetMissionEditor();
+        NodeFunctions.SelectNodeToDraw(this);
 
-        NodeFunctions.DrawNodeBase(this);
+        if (eventID != null)
+        {
+            if (eventID.text == "")
+            {
+                eventID.text = "E" + Random.Range(1000, 9999);
+            }
+        }
 
-        NodeFunctions.DrawTestNode(this);
     }
 
     // Update is called once per frame

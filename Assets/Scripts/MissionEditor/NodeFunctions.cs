@@ -5,30 +5,61 @@ using UnityEngine.UI;
 
 public class NodeFunctions : MonoBehaviour
 {
-    //This generates the test node
-    public static void DrawTestNode(Node node)
+    #region select node functions
+
+    //This selects and draws the chosen node type
+    public static void SelectNodeToDraw(Node node)
     {
-        DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+        //This gets the reference to the mission editor
+        node.missionEditor = MissionEditorFunctions.GetMissionEditor();
 
-        DrawTitle(node, "Test Node", 8, 17.5f, -5, 12.5f, 90);
-
-        DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        DrawInputField(node, "Event Type", "none", 7, 5, -25, 12.5f, 90, 5f);
-
-        DrawDropDownMenu(node, "Ship Type", "none", 7, 5, -40, 12.5f, 90, 5f);
-
-        DrawNodeLink(node, 87.5f, -62.5f, 10, 10, "male");
+        if (node.nodeType == "Custom Node")
+        {
+            NodeTypes.DrawCustomNode(node);
+        }
+        if (node.nodeType == "Test Node")
+        {
+            NodeTypes.DrawTestNode(node);
+        }
     }
 
-    public static void DrawCustomNode(Node node)
-    {
+    #endregion
 
+    #region general node functions
+
+    //This deletes the node
+    public static void DeleteNode(Node node)
+    {
+        GameObject.Destroy(node.gameObject);
     }
+
+    #endregion
 
     #region node drawing functions
+
+    //This sets the nodes size
+    public static void SetNodeSize(Node node, float sizeX, float sizeY)
+    {
+        node.sizeX = sizeX;
+        node.sizeX = sizeY;
+
+        if (node.rectTransform != null)
+        {
+            node.rectTransform.sizeDelta = new Vector2(sizeX, sizeY);
+        }       
+    }
+
+    //This sets the nodes position
+    public static void SetNodePosition(Node node, float nodePosX, float nodePosY)
+    {
+        node.nodePosX = nodePosX;
+        node.nodePosY = nodePosY;
+
+        if (node.rectTransform != null)
+        {
+            node.rectTransform.localPosition = new Vector2(nodePosX, nodePosY);
+        }        
+    }
 
     //This draws the base node gameobject
     public static void DrawNodeBase(Node node)
@@ -48,7 +79,7 @@ public class NodeFunctions : MonoBehaviour
     }
 
     //This draws a title
-    public static void DrawTitle(Node node, string title, int fontSize, float xPos, float yPos, float height, float width)
+    public static Text DrawText(Node node, string title, int fontSize, float xPos, float yPos, float height, float width)
     {
         //This draws the input label
         GameObject titleGO = new GameObject();
@@ -62,15 +93,17 @@ public class NodeFunctions : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(width, height);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
-        Text labelText = titleGO.AddComponent<Text>();
-        labelText.supportRichText = false;
-        labelText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        labelText.text = title;
-        labelText.fontSize = fontSize;
-        labelText.color = Color.white;
-        labelText.alignment = TextAnchor.MiddleLeft;
+        Text text = titleGO.AddComponent<Text>();
+        text.supportRichText = false;
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.text = title;
+        text.fontSize = fontSize;
+        text.color = Color.white;
+        text.alignment = TextAnchor.MiddleLeft;
 
         titleGO.name = "Title_" + title;
+
+        return text;
     }
 
     //This draws a line break
@@ -102,7 +135,7 @@ public class NodeFunctions : MonoBehaviour
     }
 
     //This draws an empty input field
-    public static void DrawInputField(Node node, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
+    public static Text DrawInputField(Node node, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
     {
         float halfwidth = (width - gap) / 2f;
         float shiftedXPosition = xPos + halfwidth + (gap / 2f);
@@ -165,10 +198,12 @@ public class NodeFunctions : MonoBehaviour
         inputFieldText.alignment = TextAnchor.MiddleLeft;
         InputField inputField = inputFieldGO.AddComponent<InputField>();
         inputField.textComponent = inputFieldText;
+
+        return inputFieldText;
     }
 
     //This draws a drop down box
-    public static void DrawDropDownMenu(Node node, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
+    public static Text DrawDropDownMenu(Node node, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
     {
         float halfwidth = (width - gap) / 2f;
         float shiftedXPosition = xPos + halfwidth + (gap / 2f);
@@ -323,6 +358,8 @@ public class NodeFunctions : MonoBehaviour
         options.Add("b-wing");
 
         dropdown.AddOptions(options);
+
+        return captionText;
     }
 
     //This draws a button and allocates a function
@@ -358,8 +395,14 @@ public class NodeFunctions : MonoBehaviour
     }
 
     //This draws a node link for connection the node with other nodes
-    public static void DrawNodeLink(Node node, float xPos, float yPos, float height, float width, string mode = "male")
+    public static Text DrawNodeLink(Node node, float xPos, float yPos, float height, float width, string mode = "male", string title = "none", int fontsize = 7, float gap = 10)
     {
+        Text textbox = null;
+
+        float halfwidth = (width - gap) / 2f;
+        float shiftedXPosition1 = xPos + halfwidth + (gap / 2f);
+        float shiftedXPosition2 = shiftedXPosition1 + halfwidth -1;
+
         GameObject nodeLinkGO = new GameObject();
         GameObject nodeLinkImageGO = new GameObject();
         nodeLinkGO.name = "NodeLink";
@@ -370,33 +413,73 @@ public class NodeFunctions : MonoBehaviour
         rectTransform.anchorMin = new Vector2(0, 1);
         rectTransform.pivot = new Vector2(0, 1);
         rectTransform.anchoredPosition = new Vector2(xPos, yPos);
-        rectTransform.sizeDelta = new Vector2(width, height);
+        rectTransform.sizeDelta = new Vector2(10, 10);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
         nodeLinkImageGO.transform.SetParent(nodeLinkGO.transform);
-        RectTransform rectTransform2 = nodeLinkImageGO.AddComponent<RectTransform>();
-        rectTransform2.anchorMax = new Vector2(0.5f, 0.5f);
-        rectTransform2.anchorMin = new Vector2(0.5f, 0.5f);
-        rectTransform2.pivot = new Vector2(0.5f, 0.5f);
-        rectTransform2.anchoredPosition = new Vector2(-5, 5);
-        rectTransform2.sizeDelta = new Vector2(width, height);
-        rectTransform2.localScale = new Vector3(1, 1, 1);
+        RectTransform rectTransform1 = nodeLinkImageGO.AddComponent<RectTransform>();
+        rectTransform1.anchorMax = new Vector2(0.5f, 0.5f);
+        rectTransform1.anchorMin = new Vector2(0.5f, 0.5f);
+        rectTransform1.pivot = new Vector2(0.5f, 0.5f);
+        rectTransform1.anchoredPosition = new Vector2(-5, 5);
+        rectTransform1.sizeDelta = new Vector2(10, 10);
+        rectTransform1.localScale = new Vector3(1, 1, 1);
 
         Image nodeLinkImage = nodeLinkImageGO.AddComponent<Image>();
         nodeLinkImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/target");
 
         NodeLink nodeLink = nodeLinkGO.AddComponent<NodeLink>();
+        nodeLink.node = node;
         nodeLink.mode = mode;
-    }
 
-    #endregion
+        if (mode == "male")
+        {
+            GameObject labelGO = new GameObject();
 
-    #region general node functions
+            labelGO.transform.SetParent(node.rectTransform.transform);
+            RectTransform rectTransform2 = labelGO.AddComponent<RectTransform>();
+            rectTransform2.anchorMax = new Vector2(0, 1);
+            rectTransform2.anchorMin = new Vector2(0, 1);
+            rectTransform2.pivot = new Vector2(0, 1);
+            rectTransform2.anchoredPosition = new Vector2(xPos, yPos);
+            rectTransform2.sizeDelta = new Vector2(halfwidth, height);
+            rectTransform2.localScale = new Vector3(1, 1, 1);
 
-    //This deletes the node
-    public static void DeleteNode (Node node)
-    {
-        GameObject.Destroy(node.gameObject);
+            Text text = labelGO.AddComponent<Text>();
+            text.supportRichText = false;
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.text = title;
+            text.fontSize = fontsize;
+            text.color = Color.white;
+            text.alignment = TextAnchor.MiddleLeft;
+
+            GameObject textBoxGO = new GameObject();
+
+            textBoxGO.transform.SetParent(node.rectTransform.transform);
+            RectTransform rectTransform3 = textBoxGO.AddComponent<RectTransform>();
+            rectTransform3.anchorMax = new Vector2(0, 1);
+            rectTransform3.anchorMin = new Vector2(0, 1);
+            rectTransform3.pivot = new Vector2(0, 1);
+            rectTransform3.anchoredPosition = new Vector2(shiftedXPosition1, yPos);
+            rectTransform3.sizeDelta = new Vector2(halfwidth - 1, height);
+            rectTransform3.localScale = new Vector3(1, 1, 1);
+
+            Text text2 = textBoxGO.AddComponent<Text>();
+            text2.supportRichText = false;
+            text2.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text2.text = "none";
+            text2.fontSize = fontsize;
+            text2.color = Color.white;
+            text2.alignment = TextAnchor.MiddleLeft;
+
+            //This moves the node line inline with the text boxes
+            rectTransform.anchoredPosition = new Vector2(shiftedXPosition2, yPos -7.5f);
+
+            textbox = text2;
+            nodeLink.textbox = text2;
+        }    
+
+        return textbox;
     }
 
     #endregion

@@ -55,6 +55,6 @@ public class MissionEditor : MonoBehaviour
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("I was clicked");
+        
     }
 }

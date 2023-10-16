@@ -39,22 +39,35 @@ public static class MissionEditorFunctions
         }     
     }
 
-    public static void AddNode()
+    public static void AddSelectedNodeType()
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+        AddNode(missionEditor.selectedNodeTypeToLoad);
+    }
+
+    public static Node AddNode(string nodeType, bool setPosition = false, float nodePosX = 0, float nodePosY = 0)
     {
         MissionEditor missionEditor = GetMissionEditor();
 
-        if (missionEditor.nodes ==  null)
+        if (missionEditor.nodes == null)
         {
             missionEditor.nodes = new List<Node>();
         }
-        
+
         GameObject editorContent = GameObject.Find("EditorContent");
 
-        GameObject node1GO = new GameObject();
-        node1GO.transform.SetParent(editorContent.transform);
-        Node node = node1GO.AddComponent<Node>();
-        node.eventType = missionEditor.selectedNodeTypeToLoad;
+        GameObject nodeGO = new GameObject();
+        nodeGO.transform.SetParent(editorContent.transform);
+        Node node = nodeGO.AddComponent<Node>();
+        node.nodeType = nodeType;
         missionEditor.nodes.Add(node);
+
+        if (setPosition == true)
+        {
+            NodeFunctions.SetNodePosition(node, nodePosX, nodePosY);
+        }
+
+        return node;
     }
 
     public static void ScaleGrid(MissionEditor missionEditor)
@@ -120,7 +133,6 @@ public static class MissionEditorFunctions
         }
     }
 
-    //This passes the data from text boxes back into a format that can be easily handled
     public static MissionEvent[] SaveNodeData(MissionEditor missionEditor)
     {
         List<MissionEvent> missionEvents = new List<MissionEvent>();
@@ -129,163 +141,170 @@ public static class MissionEditorFunctions
         {
             MissionEvent missionEvent = new MissionEvent();
 
-            missionEvent.eventID = node.eventID;
-            missionEvent.eventType = node.eventType;
-
-            if (node.conditionTimeText != null)
+            if (node.eventID != null)
             {
-                if (int.TryParse(node.conditionTimeText.text, out _))
+                missionEvent.eventID = node.eventID.text;
+            }
+
+            if (node.eventType != null)
+            {
+                missionEvent.eventType = node.eventType.text;
+            }
+
+            if (node.conditionTime != null)
+            {
+                if (int.TryParse(node.conditionTime.text, out _))
                 {
-                    missionEvent.conditionTime = int.Parse(node.conditionTimeText.text);
+                    missionEvent.conditionTime = int.Parse(node.conditionTime.text);
                 }
             }
 
-            if (node.conditionLocationText != null)
+            if (node.conditionLocation != null)
             {
-                missionEvent.conditionLocation = node.conditionLocationText.text;
+                missionEvent.conditionLocation = node.conditionLocation.text;
             }
 
-            if (node.xText != null)
+            if (node.x != null)
             {
-                if (int.TryParse(node.xText.text, out _))
+                if (int.TryParse(node.x.text, out _))
                 {
-                    missionEvent.x = int.Parse(node.xText.text);
+                    missionEvent.x = int.Parse(node.x.text);
                 }
             }
 
-            if (node.yText != null)
+            if (node.y != null)
             {
-                if (int.TryParse(node.yText.text, out _))
+                if (int.TryParse(node.y.text, out _))
                 {
-                    missionEvent.y = int.Parse(node.yText.text);
+                    missionEvent.y = int.Parse(node.y.text);
                 }
             }
 
-            if (node.zText != null)
+            if (node.z != null)
             {
-                if (int.TryParse(node.zText.text, out _))
+                if (int.TryParse(node.z.text, out _))
                 {
-                    missionEvent.z = int.Parse(node.zText.text);
+                    missionEvent.z = int.Parse(node.z.text);
                 }
             }
 
-            if (node.xRotationText != null)
+            if (node.xRotation != null)
             {
-                if (int.TryParse(node.xRotationText.text, out _))
+                if (int.TryParse(node.xRotation.text, out _))
                 {
-                    missionEvent.xRotation = int.Parse(node.xRotationText.text);
+                    missionEvent.xRotation = int.Parse(node.xRotation.text);
                 }
             }
 
-            if (node.yRotationText != null)
+            if (node.yRotation != null)
             {
-                if (int.TryParse(node.yRotationText.text, out _))
+                if (int.TryParse(node.yRotation.text, out _))
                 {
-                    missionEvent.yRotation = int.Parse(node.yRotationText.text);
+                    missionEvent.yRotation = int.Parse(node.yRotation.text);
                 }
             }
 
-            if (node.zRotationText != null)
+            if (node.zRotation != null)
             {
-                if (int.TryParse(node.zRotationText.text, out _))
+                if (int.TryParse(node.zRotation.text, out _))
                 {
-                    missionEvent.zRotation = int.Parse(node.zRotationText.text);
+                    missionEvent.zRotation = int.Parse(node.zRotation.text);
                 }
             }
 
-            if (node.data1Text != null)
+            if (node.data1 != null)
             {
-                missionEvent.data1 = node.data1Text.text;
+                missionEvent.data1 = node.data1.text;
             }
 
-            if (node.data2Text != null)
+            if (node.data2 != null)
             {
-                missionEvent.data2 = node.data2Text.text;
+                missionEvent.data2 = node.data2.text;
             }
 
-            if (node.data3Text != null)
+            if (node.data3 != null)
             {
-                missionEvent.data3 = node.data3Text.text;
+                missionEvent.data3 = node.data3.text;
             }
 
-            if (node.data4Text != null)
+            if (node.data4 != null)
             {
-                missionEvent.data4 = node.data4Text.text;
+                missionEvent.data4 = node.data4.text;
             }
 
-            if (node.data5Text != null)
+            if (node.data5 != null)
             {
-                missionEvent.data5 = node.data5Text.text;
+                missionEvent.data5 = node.data5.text;
             }
 
-            if (node.data6Text != null)
+            if (node.data6 != null)
             {
-                missionEvent.data6 = node.data6Text.text;
+                missionEvent.data6 = node.data6.text;
             }
 
-            if (node.data7Text != null)
+            if (node.data7 != null)
             {
-                missionEvent.data7 = node.data7Text.text;
+                missionEvent.data7 = node.data7.text;
             }
 
-            if (node.data8Text != null)
+            if (node.data8 != null)
             {
-                missionEvent.data8 = node.data8Text.text;
+                missionEvent.data8 = node.data8.text;
             }
 
-            if (node.data9Text != null)
+            if (node.data9 != null)
             {
-                missionEvent.data9 = node.data9Text.text;
+                missionEvent.data9 = node.data9.text;
             }
 
-            if (node.data10Text != null)
+            if (node.data10 != null)
             {
-                missionEvent.data10 = node.data10Text.text;
+                missionEvent.data10 = node.data10.text;
             }
 
-            if (node.data11Text != null)
+            if (node.data11 != null)
             {
-                missionEvent.data11 = node.data11Text.text;
+                missionEvent.data11 = node.data11.text;
             }
 
-            if (node.data12Text != null)
+            if (node.data12 != null)
             {
-                missionEvent.data12 = node.data12Text.text;
+                missionEvent.data12 = node.data12.text;
             }
 
-            if (node.data13Text != null)
+            if (node.data13 != null)
             {
-                missionEvent.data13 = node.data13Text.text;
+                missionEvent.data13 = node.data13.text;
             }
 
-            if (node.data14Text != null)
+            if (node.data14 != null)
             {
-                missionEvent.data14 = node.data14Text.text;
+                missionEvent.data14 = node.data14.text;
             }
 
-            if (node.data15Text != null)
+            if (node.data15 != null)
             {
-                missionEvent.data15 = node.data15Text.text;
+                missionEvent.data15 = node.data15.text;
             }
 
-            if (node.nextEvent1Text != null)
+            if (node.nextEvent1 != null)
             {
-                missionEvent.nextEvent1 = node.nextEvent1Text.text;
+                missionEvent.nextEvent1 = node.nextEvent1.text;
             }
 
-            if (node.nextEvent2Text != null)
+            if (node.nextEvent2 != null)
             {
-                missionEvent.nextEvent2 = node.nextEvent2Text.text;
+                missionEvent.nextEvent2 = node.nextEvent2.text;
             }
 
-            if (node.nextEvent3Text != null)
+            if (node.nextEvent3 != null)
             {
-                missionEvent.nextEvent3 = node.nextEvent3Text.text;
+                missionEvent.nextEvent3 = node.nextEvent3.text;
             }
 
-            if (node.nextEvent4Text != null)
+            if (node.nextEvent4 != null)
             {
-                missionEvent.nextEvent4 = node.nextEvent4Text.text;
+                missionEvent.nextEvent4 = node.nextEvent4.text;
             }
 
             missionEvent.nodePosX = node.transform.localPosition.x;
@@ -294,7 +313,83 @@ public static class MissionEditorFunctions
             missionEvents.Add(missionEvent);
         }
 
-        return missionEvents[];
+        return missionEvents.ToArray();
+    }
+
+    public static void LoadMission()
+    {
+        TextAsset missionDataFile = new TextAsset();
+        missionDataFile = Resources.Load("Data/Files/Missions_Main/7 ABY - The Krytos Trap 01 - Corrans Nightmare - Part 1") as TextAsset;
+        Mission mission = JsonUtility.FromJson<Mission>(missionDataFile.text);
+        Task a = new Task(LoadMissionData(mission));
+    }
+
+    public static IEnumerator LoadMissionData(Mission mission)
+    {
+        float xPos = -900;
+        float yPos = 0;
+        float count = 0;
+
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+            Node node = AddNode("Custom Node", true, xPos, yPos);
+
+            xPos += 110;
+            count += 1;
+
+            if (count > 14)
+            {
+                count = 0;
+                yPos -= 500;
+                xPos = -900;
+            }            
+
+            yield return new WaitForEndOfFrame();
+
+            InputData(node.eventID, missionEvent.eventID);
+            InputData(node.eventType, missionEvent.eventType);
+            InputData(node.conditionTime, missionEvent.conditionTime.ToString());
+            InputData(node.conditionLocation, missionEvent.conditionLocation);
+            InputData(node.x, missionEvent.x.ToString());
+            InputData(node.y, missionEvent.y.ToString());
+            InputData(node.z, missionEvent.z.ToString());
+            InputData(node.xRotation, missionEvent.xRotation.ToString());
+            InputData(node.yRotation, missionEvent.yRotation.ToString());
+            InputData(node.zRotation, missionEvent.zRotation.ToString());
+            InputData(node.data1, missionEvent.data1);
+            InputData(node.data2, missionEvent.data2);
+            InputData(node.data3, missionEvent.data3);
+            InputData(node.data4, missionEvent.data4);
+            InputData(node.data5, missionEvent.data5);
+            InputData(node.data6, missionEvent.data6);
+            InputData(node.data7, missionEvent.data7);
+            InputData(node.data8, missionEvent.data8);
+            InputData(node.data9, missionEvent.data9);
+            InputData(node.data10, missionEvent.data10);
+            InputData(node.data11, missionEvent.data11);
+            InputData(node.data12, missionEvent.data12);
+            InputData(node.data13, missionEvent.data13);
+            InputData(node.data14, missionEvent.data14);
+            InputData(node.data15, missionEvent.data5);
+            InputData(node.nextEvent1, missionEvent.nextEvent1);
+            InputData(node.nextEvent2, missionEvent.nextEvent2);
+            InputData(node.nextEvent3, missionEvent.nextEvent3);
+            InputData(node.nextEvent4, missionEvent.nextEvent4);
+            node.nodePosX = missionEvent.nodePosX;
+            node.nodePosY = missionEvent.nodePosY;
+        }
+    }
+
+    public static void InputData(Text text, string input)
+    {
+        text.text = input;
+
+        InputField inputField = text.GetComponent<InputField>();
+
+        if(inputField != null)
+        {
+            inputField.text = input;
+        }
     }
 
 }

@@ -31,7 +31,7 @@ public static class MenuFunctions
 
         DrawLineBreak(menu, "#808080", 0, -20, 1, 100);
 
-        string[] buttons = new string[] { "Test Node", "Start Node", "Load Ship", "Load Planet" };
+        string[] buttons = new string[] { "Test Node", "Custom Node" };
         string[] functions = new string[] { "SelectNodeTypeToLoad", "SelectNodeTypeToLoad", "SelectNodeTypeToLoad", "SelectNodeTypeToLoad" };
 
         DrawScrollableButtons(menu, 5, -25, 100, 90, 10, 7, buttons, functions);
@@ -214,7 +214,7 @@ public static class MenuFunctions
         }
         else if (functionType == "AddNode")
         {
-            button.onClick.AddListener(() => { MissionEditorFunctions.AddNode(); });
+            button.onClick.AddListener(() => { MissionEditorFunctions.AddSelectedNodeType(); });
         }
 
         buttonGO.name = "button_" + functionType;

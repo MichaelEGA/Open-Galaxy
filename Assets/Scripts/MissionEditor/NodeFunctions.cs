@@ -13,13 +13,17 @@ public class NodeFunctions : MonoBehaviour
         //This gets the reference to the mission editor
         node.missionEditor = MissionEditorFunctions.GetMissionEditor();
 
-        if (node.nodeType == "Custom Node")
+        if (node.nodeType == "custom_node")
         {
             NodeTypes.DrawCustomNode(node);
         }
-        if (node.nodeType == "Test Node")
+        else if (node.nodeType == "preload_loadasteroids")
         {
-            NodeTypes.DrawTestNode(node);
+            NodeTypes.DrawPreLoad_LoadAsteroids(node);
+        }
+        else
+        {
+            NodeTypes.DrawNodeNotAvaible(node);   
         }
     }
 

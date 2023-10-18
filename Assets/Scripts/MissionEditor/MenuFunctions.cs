@@ -8,7 +8,7 @@ public static class MenuFunctions
     //This generates the main menu node
     public static void DrawMainMenu(Menu menu)
     {
-        DrawTitle(menu, "Main Menu", 8, 5, -5, 12.5f, 90);
+        DrawText(menu, "Mission Editor", 8, 5, -5, 12.5f, 90);
 
         DrawLineBreak(menu, "#808080", 0, -20, 1, 100);
 
@@ -27,16 +27,62 @@ public static class MenuFunctions
 
     public static void DrawAddNode(Menu menu)
     {
-        DrawTitle(menu, "Add Node", 8, 5, -5, 12.5f, 90);
+        DrawText(menu, "Add Event Node", 8, 5, -5, 12.5f, 90);
 
         DrawLineBreak(menu, "#808080", 0, -20, 1, 100);
 
-        string[] buttons = new string[] { "Test Node", "Custom Node" };
-        string[] functions = new string[] { "SelectNodeTypeToLoad", "SelectNodeTypeToLoad", "SelectNodeTypeToLoad", "SelectNodeTypeToLoad" };
+        List<string> buttonList = new List<string>();
 
-        DrawScrollableButtons(menu, 5, -25, 100, 90, 10, 7, buttons, functions);
+        buttonList.Add("custom_node");
+        buttonList.Add("preload_loadasteroids");
+        buttonList.Add("preload_loadplanet");
+        buttonList.Add("preload_loadtiles");
+        buttonList.Add("preload_loadmultipleshipsonground");
+        buttonList.Add("preload_loadship");
+        buttonList.Add("preload_loadshipsbyname");
+        buttonList.Add("preload_loadshipsbytypeandallegiance");
+        buttonList.Add("preload_setskybox");
+        buttonList.Add("changemusicvolume");
+        buttonList.Add("clearaioverride");
+        buttonList.Add("displaylargemessagethenexit");
+        buttonList.Add("dialoguebox");
+        buttonList.Add("displaylargemessage");
+        buttonList.Add("displaylocation");
+        buttonList.Add("displayloadingscreen");
+        buttonList.Add("displaymissionbriefing");
+        buttonList.Add("iftypeofshipisactive");
+        buttonList.Add("loadship");
+        buttonList.Add("loadshipatdistanceandanglefromplayer");
+        buttonList.Add("loadmultipleshipsonground");
+        buttonList.Add("loadshipsbyname");
+        buttonList.Add("loadshipsbytypeandallegiance");
+        buttonList.Add("lockmainshipweapons");
+        buttonList.Add("message");
+        buttonList.Add("movetowaypoint");
+        buttonList.Add("playmusictype");
+        buttonList.Add("setaioverride");
+        buttonList.Add("setdontattacklargeships");
+        buttonList.Add("setshipallegiance");
+        buttonList.Add("setshiptarget");
+        buttonList.Add("setshiptargettoclosestenemy");
+        buttonList.Add("setshiptoinvincible");
+        buttonList.Add("setweaponslock");
+        buttonList.Add("shipshullislessthan");
+        buttonList.Add("shipislessthandistancetowaypoint");
 
-        DrawTextBox(menu, 5, -100, 60, 90, "NodeSprite_Dark", "Information about nodes", 7, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
+        List<string> functionList = new List<string>();
+
+        foreach (string button in buttonList)
+        {
+            functionList.Add("SelectNodeTypeToLoad");
+        }
+
+        string[] buttons = buttonList.ToArray();
+        string[] functions = functionList.ToArray();
+
+        DrawScrollableButtons(menu, 5, -25, 70, 90, 10, 7, buttons, functions);
+
+        DrawTextBox(menu, 5, -100, 70, 90, "NodeSprite_Dark", "Information about nodes", 5, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
 
         DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
@@ -59,7 +105,7 @@ public static class MenuFunctions
     }
 
     //This draws a title
-    public static void DrawTitle(Menu menu, string title, int fontSize, float xPos, float yPos, float height, float width)
+    public static void DrawText(Menu menu, string title, int fontSize, float xPos, float yPos, float height, float width)
     {
         //This draws the input label
         GameObject titleGO = new GameObject();
@@ -234,6 +280,10 @@ public static class MenuFunctions
         RectTransform viewportRectTransform = viewportGO.AddComponent<RectTransform>();
         RectTransform contentRectTransform = contentGO.AddComponent<RectTransform>();
 
+        baseRectTransform.name = "Scrollable_Buttons";
+        viewportRectTransform.name = "Viewport";
+        contentRectTransform.name = "ContentRect";
+
         baseRectTransform.anchorMax = new Vector2(0, 1);
         baseRectTransform.anchorMin = new Vector2(0, 1);
         baseRectTransform.pivot = new Vector2(0, 1);
@@ -257,8 +307,19 @@ public static class MenuFunctions
         contentRectTransform.sizeDelta = new Vector2(width, contentRectHeight);
         contentRectTransform.localScale = new Vector3(1, 1, 1);
 
+        Image maskImage = viewportGO.AddComponent<Image>();
+        maskImage.type = Image.Type.Sliced;
+        maskImage.pixelsPerUnitMultiplier = 30;
+        maskImage.color = Color.gray;
+
+        Mask mask = viewportGO.AddComponent<Mask>();
+        
         ScrollRect scrollRect = baseGO.AddComponent<ScrollRect>();
+        scrollRect.content = contentRectTransform;
         scrollRect.viewport = viewportRectTransform;
+        scrollRect.horizontal = false;
+        scrollRect.inertia = false;
+        scrollRect.elasticity = 0;
 
         float buttonDrop = 0;
         int i = 0;

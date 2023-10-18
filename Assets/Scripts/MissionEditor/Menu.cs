@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public string menuType = "Add Node";
     public float xPos = 0;
@@ -16,8 +16,11 @@ public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     public Image background;
 
     private bool dragging;
+    public bool scaling;
 
     private bool MenuDrawn;
+
+    public ScrollRect scrollRect;
 
     MissionEditor missionEditor;
 
@@ -58,6 +61,16 @@ public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         }
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        scaling = false;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        scaling = true;
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         dragging = true;
@@ -72,4 +85,7 @@ public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     {
 
     }
+
+
+
 }

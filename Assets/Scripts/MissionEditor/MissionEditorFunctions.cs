@@ -24,13 +24,13 @@ public static class MissionEditorFunctions
 
         if (missionEditor.AddNodeTextBox != null)
         {
-            if (nodeType == "Test Node")
+            if (nodeType == "custom_node")
             {
-                missionEditor.AddNodeTextBox.text = "This node is used to test the node system during development";
+                missionEditor.AddNodeTextBox.text = "This node is for manually inputing event information. If a node doesn't exist for a specific event or function you can use the custom node to access it.";
             }
-            else if (nodeType == "Start Node")
+            else if (nodeType == "preload_loadasteroids")
             {
-                missionEditor.AddNodeTextBox.text = "This is the first node the game looks for and is used to indicate what event is to be run first.";
+                missionEditor.AddNodeTextBox.text = "Use this node to generate an asteroid field before the mission starts. Preload functions will automatically execute before the mission starts and do not need to be linked to any other events.";
             }
             else
             {
@@ -72,12 +72,25 @@ public static class MissionEditorFunctions
 
     public static void ScaleGrid(MissionEditor missionEditor)
     {
-        missionEditor.scale += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 20;
+        bool scaling = true;
 
-        if (missionEditor.editorContentRect != null)
+        foreach (Menu menu in missionEditor.menus)
         {
-            missionEditor.editorContentRect.localScale = new Vector3(missionEditor.scale, missionEditor.scale);
+            if (menu.scaling == false)
+            {
+                scaling = false;
+            }
         }
+
+        if (scaling == true)
+        {
+            missionEditor.scale += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 20;
+
+            if (missionEditor.editorContentRect != null)
+            {
+                missionEditor.editorContentRect.localScale = new Vector3(missionEditor.scale, missionEditor.scale);
+            }
+        }      
     }
 
     public static void SetWindowMode(MissionEditor missionEditor)

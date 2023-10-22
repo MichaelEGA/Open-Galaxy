@@ -17,9 +17,41 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.DrawCustomNode(node);
         }
+        else if (node.nodeType == "loadscene")
+        {
+            NodeTypes.DrawLoadScene(node);
+        }
         else if (node.nodeType == "preload_loadasteroids")
         {
             NodeTypes.DrawPreLoad_LoadAsteroids(node);
+        }
+        else if (node.nodeType == "preload_loadplanet")
+        {
+            NodeTypes.DrawPreLoad_LoadPlanet(node);
+        }
+        else if (node.nodeType == "preload_loadtiles")
+        {
+            NodeTypes.DrawPreLoad_LoadTiles(node);
+        }
+        else if (node.nodeType == "preload_loadmultipleshipsonground")
+        {
+            NodeTypes.DrawPreLoad_LoadMultipleShipsOnGround(node);
+        }
+        else if (node.nodeType == "preload_loadship")
+        {
+            NodeTypes.DrawPreLoad_LoadShip(node);
+        }
+        else if (node.nodeType == "preload_loadshipsbyname")
+        {
+            NodeTypes.DrawPreLoad_LoadShipsByName(node);
+        }
+        else if (node.nodeType == "preload_loadshipsbytypeandallegiance")
+        {
+            NodeTypes.DrawPreLoad_LoadShipsByTypeAndAllegiance(node);
+        }
+        else if (node.nodeType == "preload_setskybox")
+        {
+            NodeTypes.DrawPreLoad_SetSkybox(node);
         }
         else
         {
@@ -207,7 +239,7 @@ public class NodeFunctions : MonoBehaviour
     }
 
     //This draws a drop down box
-    public static Text DrawDropDownMenu(Node node, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
+    public static Text DrawDropDownMenu(Node node, List<string> options, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
     {
         float halfwidth = (width - gap) / 2f;
         float shiftedXPosition = xPos + halfwidth + (gap / 2f);
@@ -355,11 +387,6 @@ public class NodeFunctions : MonoBehaviour
         dropdown.captionText = captionText;
         dropdown.itemText = templateText;
         dropdown.template = templateRectTransform;
-
-        List<string> options = new List<string>();
-        options.Add("x-wing");
-        options.Add("y-wing");
-        options.Add("b-wing");
 
         dropdown.AddOptions(options);
 

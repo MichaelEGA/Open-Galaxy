@@ -829,7 +829,7 @@ public static class MissionFunctions
         if (missionEvent.data2 != "none") { allegiance = missionEvent.data2; }
 
         string skillLevel = "easy";
-        if (missionEvent.data3 != "none") { skillLevel = missionEvent.data3; }
+        //if (missionEvent.data3 != "none") { skillLevel = missionEvent.data3; }
 
         int shipNo = 1;
         if (missionEvent.data4 != "none") { shipNo = int.Parse(missionEvent.data4); }
@@ -873,7 +873,7 @@ public static class MissionFunctions
             playerNo = Random.Range(0, shipNo - 1);
         }
 
-        Task c = new Task(SceneFunctions.LoadMultipleShipByType(shipType, allegiance, missionEvent.data3, shipNo, groupsOf, shipDistance, groupDistance, false, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadMultipleShipByType(shipType, allegiance, skillLevel, shipNo, groupsOf, shipDistance, groupDistance, false, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
     }
 

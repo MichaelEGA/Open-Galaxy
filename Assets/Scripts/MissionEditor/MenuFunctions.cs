@@ -34,6 +34,7 @@ public static class MenuFunctions
         List<string> buttonList = new List<string>();
 
         buttonList.Add("custom_node");
+        buttonList.Add("loadscene");
         buttonList.Add("preload_loadasteroids");
         buttonList.Add("preload_loadplanet");
         buttonList.Add("preload_loadtiles");

@@ -66,14 +66,21 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
             {
                 foreach (NodeLink nodeLink in missionEditor.nodeLinks)
                 {
-                    Vector2 targetNodeLink = transform.parent.parent.InverseTransformPoint(nodeLink.transform.position);
-
-                    float distance = Vector2.Distance(targetPosition, targetNodeLink);
-
-                    if (distance < 10)
+                    if (nodeLink != null)
                     {
-                        connectedNode = nodeLink;
-                        break;
+                        Vector2 targetNodeLink = transform.parent.parent.InverseTransformPoint(nodeLink.transform.position);
+
+                        float distance = Vector2.Distance(targetPosition, targetNodeLink);
+
+                        if (distance < 10)
+                        {
+                            connectedNode = nodeLink;
+                            break;
+                        }
+                        else
+                        {
+                            connectedNode = null;
+                        }
                     }
                     else
                     {

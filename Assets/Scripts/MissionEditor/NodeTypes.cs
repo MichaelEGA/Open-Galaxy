@@ -201,6 +201,10 @@ public static class NodeTypes
 
         float drop = -25;
 
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadscene", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
         node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
@@ -223,6 +227,10 @@ public static class NodeTypes
         NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
 
         float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadasteroids", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
 
         node.data1 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -247,6 +255,10 @@ public static class NodeTypes
 
         float drop = -25;
 
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadplanet", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
         NodeFunctions.DrawText(node, "This node loads the planet set at the location set in the 'Load Scene' node.", 5, 5, drop, 20, 90);
 
         drop -= 30;
@@ -265,6 +277,10 @@ public static class NodeTypes
         NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
 
         float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadtiles", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
 
         node.data1 = NodeFunctions.DrawInputField(node, "tile type", "none", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -300,6 +316,10 @@ public static class NodeTypes
         NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
 
         float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadmultipleshipsonground", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
 
         node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -398,6 +418,10 @@ public static class NodeTypes
 
         float drop = -25;
 
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadship", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
         node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
@@ -474,6 +498,8 @@ public static class NodeTypes
         NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
 
         float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadshipsbyname", 7, 5, drop, 12.5f, 90);
 
         node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -567,6 +593,10 @@ public static class NodeTypes
         NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
 
         float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadshipsbytypeandallegiance", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
 
         node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -669,11 +699,142 @@ public static class NodeTypes
 
         float drop = -25;
 
+        node.eventType = NodeFunctions.DrawText(node, "preload_setskybox", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
         List<string> options2 = new List<string>();
         options2.Add("space");
         options2.Add("sky");
 
         node.data1 = NodeFunctions.DrawDropDownMenu(node, options2, "mode", "space", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    #endregion
+
+    #region event nodes
+
+    public static void Draw_ChangeMusicVolume(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "changemusicvolume", 8, 17.5f, -5, 12.5f, 90);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "changemusicvolume", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "volume", "100", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_ClearAIOverride(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "clearaioverride", 8, 17.5f, -5, 12.5f, 90);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "clearaioverride", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "ship name", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_DisplayLargeMessageThenExit(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "displaylargemessagethenexit", 8, 17.5f, -5, 12.5f, 90);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "displaylargemessagethenexit", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
 
         drop -= 30;
 

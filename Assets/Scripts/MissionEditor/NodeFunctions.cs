@@ -53,6 +53,114 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.DrawPreLoad_SetSkybox(node);
         }
+        else if (node.nodeType == "changemusicvolume")
+        {
+            NodeTypes.Draw_ChangeMusicVolume(node);
+        }
+        else if (node.nodeType == "clearaioverride")
+        {
+            NodeTypes.Draw_ClearAIOverride(node);
+        }
+        else if (node.nodeType == "displaylargemessagethenexit")
+        {
+            NodeTypes.Draw_DisplayLargeMessageThenExit(node);
+        }
+        else if (node.nodeType == "dialoguebox") //24
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "displaylargemessage")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "displaylocation")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "displayloadingscreen")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "displaymissionbriefing")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "iftypeofshipisactive")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "loadship")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "loadshipatdistanceandanglefromplayer")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "loadmultipleshipsonground")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "loadshipsbyname")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "loadshipsbytypeandallegiance")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "lockmainshipweapons")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "message")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "movetowaypoint")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "playmusictype")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "setaioverride")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "setdontattacklargeships")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "setshipallegiance")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "setshiptarget")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "setshiptargettoclosestenemy")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "setshiptoinvincible")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "setweaponslock")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "shipshullislessthan")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
+        else if (node.nodeType == "shipislessthandistancetowaypoint")
+        {
+            NodeTypes.DrawNodeNotAvaible(node);
+        }
         else
         {
             NodeTypes.DrawNodeNotAvaible(node);   
@@ -66,6 +174,20 @@ public class NodeFunctions : MonoBehaviour
     //This deletes the node
     public static void DeleteNode(Node node)
     {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        foreach (NodeLink nodeLink in missionEditor.nodeLinks)
+        {
+            if (nodeLink != null)
+            {
+                if (nodeLink.node == node)
+                {
+                    GameObject.Destroy(nodeLink.line);
+                    GameObject.Destroy(nodeLink.gameObject);
+                }
+            }
+        }
+
         GameObject.Destroy(node.gameObject);
     }
 
@@ -277,7 +399,7 @@ public class NodeFunctions : MonoBehaviour
         rectTransform3.localScale = new Vector3(1, 1, 1);
 
         Image inputFieldImage = dropdownGO.AddComponent<Image>();
-        inputFieldImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
+        inputFieldImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Grey");
         inputFieldImage.type = Image.Type.Sliced;
         inputFieldImage.pixelsPerUnitMultiplier = 30;
 
@@ -298,7 +420,7 @@ public class NodeFunctions : MonoBehaviour
         captionText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         captionText.text = startvalue;
         captionText.fontSize = fontSize;
-        captionText.color = Color.gray;
+        captionText.color = Color.white;
         captionText.alignment = TextAnchor.MiddleLeft;
 
         //This draws the template item
@@ -336,21 +458,21 @@ public class NodeFunctions : MonoBehaviour
         templateRectTransform.anchorMin = new Vector2(0, 1);
         templateRectTransform.pivot = new Vector2(0, 1);
         templateRectTransform.anchoredPosition = new Vector2(0, -height);
-        templateRectTransform.sizeDelta = new Vector2(halfwidth, height + 50);
+        templateRectTransform.sizeDelta = new Vector2(halfwidth, height * options.Count);
         templateRectTransform.localScale = new Vector3(1, 1, 1);
 
         viewportRectTransform.anchorMax = new Vector2(0, 1);
         viewportRectTransform.anchorMin = new Vector2(0, 1);
         viewportRectTransform.pivot = new Vector2(0, 1);
         viewportRectTransform.anchoredPosition = new Vector2(0, 0);
-        viewportRectTransform.sizeDelta = new Vector2(halfwidth - 2, height + 50);
+        viewportRectTransform.sizeDelta = new Vector2(halfwidth - 2, height * options.Count);
         viewportRectTransform.localScale = new Vector3(1, 1, 1);
 
         contentRectTransform.anchorMax = new Vector2(0, 1);
         contentRectTransform.anchorMin = new Vector2(0, 1);
         contentRectTransform.pivot = new Vector2(0, 1);
         contentRectTransform.anchoredPosition = new Vector2(0, 0);
-        contentRectTransform.sizeDelta = new Vector2(halfwidth - 2, height + 50);
+        contentRectTransform.sizeDelta = new Vector2(halfwidth - 2, height * options.Count);
         contentRectTransform.localScale = new Vector3(1, 1, 1);
 
         itemRectTransform.anchorMax = new Vector2(0, 1);
@@ -372,11 +494,11 @@ public class NodeFunctions : MonoBehaviour
         templateText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         templateText.text = startvalue;
         templateText.fontSize = fontSize;
-        templateText.color = Color.gray;
+        templateText.color = Color.white;
         templateText.alignment = TextAnchor.MiddleLeft;
 
         Image templateBackground = templateGO.AddComponent<Image>();
-        templateBackground.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
+        templateBackground.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Grey");
         templateBackground.type = Image.Type.Sliced;
         templateBackground.pixelsPerUnitMultiplier = 30;
 

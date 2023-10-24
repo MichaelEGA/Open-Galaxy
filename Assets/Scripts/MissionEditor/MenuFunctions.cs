@@ -49,7 +49,6 @@ public static class MenuFunctions
         buttonList.Add("dialoguebox");
         buttonList.Add("displaylargemessage");
         buttonList.Add("displaylocation");
-        buttonList.Add("displayloadingscreen");
         buttonList.Add("displaymissionbriefing");
         buttonList.Add("iftypeofshipisactive");
         buttonList.Add("loadship");

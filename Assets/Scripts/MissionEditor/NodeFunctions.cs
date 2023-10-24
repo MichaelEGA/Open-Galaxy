@@ -65,25 +65,21 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DisplayLargeMessageThenExit(node);
         }
-        else if (node.nodeType == "dialoguebox") //24
+        else if (node.nodeType == "dialoguebox")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_DialogueBox(node);
         }
         else if (node.nodeType == "displaylargemessage")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_DisplayLargeMessage(node);
         }
         else if (node.nodeType == "displaylocation")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_DisplayLocation(node);
         }
-        else if (node.nodeType == "displayloadingscreen")
+        else if (node.nodeType == "displaymissionbriefing") //20
         {
-            NodeTypes.DrawNodeNotAvaible(node);
-        }
-        else if (node.nodeType == "displaymissionbriefing")
-        {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_DisplayMissionBriefing(node);
         }
         else if (node.nodeType == "iftypeofshipisactive")
         {
@@ -163,7 +159,7 @@ public class NodeFunctions : MonoBehaviour
         }
         else
         {
-            NodeTypes.DrawNodeNotAvaible(node);   
+            NodeTypes.DrawNodeNotAvaible(node);
         }
     }
 

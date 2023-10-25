@@ -53,6 +53,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_SetSkybox(node);
         }
+        else if (node.nodeType == "startmission")
+        {
+            NodeTypes.Draw_StartMission(node);
+        }
         else if (node.nodeType == "changemusicvolume")
         {
             NodeTypes.Draw_ChangeMusicVolume(node);

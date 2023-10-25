@@ -56,6 +56,10 @@ public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
             {
                 MenuFunctions.DrawAddNode(this);
             }
+            else if (menuType == "savemission")
+            {
+                MenuFunctions.Draw_SaveMission(this);
+            }
 
             MenuDrawn = true;
         }

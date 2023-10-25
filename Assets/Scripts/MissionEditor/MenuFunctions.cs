@@ -43,6 +43,7 @@ public static class MenuFunctions
         buttonList.Add("preload_loadshipsbyname");
         buttonList.Add("preload_loadshipsbytypeandallegiance");
         buttonList.Add("preload_setskybox");
+        buttonList.Add("startmission");
         buttonList.Add("changemusicvolume");
         buttonList.Add("clearaioverride");
         buttonList.Add("displaylargemessagethenexit");
@@ -85,6 +86,21 @@ public static class MenuFunctions
         DrawTextBox(menu, 5, -100, 70, 90, "NodeSprite_Dark", "Information about nodes", 5, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
 
         DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
+    }
+
+    public static void Draw_SaveMission(Menu menu)
+    {
+        DrawText(menu, "Save Mission", 8, 5, -5, 12.5f, 90);
+
+        DrawLineBreak(menu, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        MenuFunctions.DrawInputField(menu, "Mission Name", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Save Mission", 7, "SaveMission", TextAnchor.MiddleCenter);
     }
 
     #region draw menu functions
@@ -157,7 +173,6 @@ public static class MenuFunctions
 
         lineBreakGO.name = "linebreak";
     }
-
 
     //This draws a button and allocates a function
     public static void DrawImageButton(Menu menu, float xPos, float yPos, float height, float width, string imageName, string functionType, bool parentToNode = true, Transform differentTransform = null)
@@ -261,6 +276,10 @@ public static class MenuFunctions
         else if (functionType == "AddNode")
         {
             button.onClick.AddListener(() => { MissionEditorFunctions.AddSelectedNodeType(); });
+        }
+        else if (functionType == "SaveMission")
+        {
+            Debug.Log("Mission was saved");
         }
 
         buttonGO.name = "button_" + functionType;
@@ -393,6 +412,73 @@ public static class MenuFunctions
             textboxGO.name = "textbox";
         }
 
+    }
+
+    public static Text DrawInputField(Menu menu, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
+    {
+        float halfwidth = (width - gap) / 2f;
+        float shiftedXPosition = xPos + halfwidth + (gap / 2f);
+
+        //This draws the input label
+        GameObject labelGO = new GameObject();
+
+        labelGO.transform.SetParent(menu.rectTransform.transform);
+        RectTransform rectTransform2 = labelGO.AddComponent<RectTransform>();
+        rectTransform2.anchorMax = new Vector2(0, 1);
+        rectTransform2.anchorMin = new Vector2(0, 1);
+        rectTransform2.pivot = new Vector2(0, 1);
+        rectTransform2.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform2.sizeDelta = new Vector2(halfwidth, height);
+        rectTransform2.localScale = new Vector3(1, 1, 1);
+
+        Text labelText = labelGO.AddComponent<Text>();
+        labelText.supportRichText = false;
+        labelText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        labelText.text = label;
+        labelText.fontSize = fontSize;
+        labelText.color = Color.white;
+        labelText.alignment = TextAnchor.MiddleLeft;
+
+        //This draws the background of the input field
+        GameObject inputFieldBackgroundGO = new GameObject();
+
+        inputFieldBackgroundGO.transform.SetParent(menu.rectTransform.transform);
+        RectTransform rectTransform3 = inputFieldBackgroundGO.AddComponent<RectTransform>();
+        rectTransform3.anchorMax = new Vector2(0, 1);
+        rectTransform3.anchorMin = new Vector2(0, 1);
+        rectTransform3.pivot = new Vector2(0, 1);
+        rectTransform3.anchoredPosition = new Vector2(shiftedXPosition, yPos);
+        rectTransform3.sizeDelta = new Vector2(halfwidth, height);
+        rectTransform3.localScale = new Vector3(1, 1, 1);
+
+        Image inputFieldImage = inputFieldBackgroundGO.AddComponent<Image>();
+        inputFieldImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
+        inputFieldImage.type = Image.Type.Sliced;
+        inputFieldImage.pixelsPerUnitMultiplier = 30;
+
+        //This draws the input field
+        GameObject inputFieldGO = new GameObject();
+
+        inputFieldGO.transform.SetParent(menu.rectTransform.transform);
+        RectTransform rectTransform = inputFieldGO.AddComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(shiftedXPosition + 1, yPos);
+        rectTransform.sizeDelta = new Vector2(halfwidth - 2, height);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Text inputFieldText = inputFieldGO.AddComponent<Text>();
+        inputFieldText.supportRichText = false;
+        inputFieldText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        inputFieldText.text = startvalue;
+        inputFieldText.fontSize = fontSize;
+        inputFieldText.color = Color.gray;
+        inputFieldText.alignment = TextAnchor.MiddleLeft;
+        InputField inputField = inputFieldGO.AddComponent<InputField>();
+        inputField.textComponent = inputFieldText;
+
+        return inputFieldText;
     }
 
     #endregion

@@ -15,43 +15,43 @@ public class NodeFunctions : MonoBehaviour
 
         if (node.nodeType == "custom_node")
         {
-            NodeTypes.DrawCustomNode(node);
+            NodeTypes.Draw_CustomNode(node);
         }
         else if (node.nodeType == "loadscene")
         {
-            NodeTypes.DrawLoadScene(node);
+            NodeTypes.Draw_LoadScene(node);
         }
         else if (node.nodeType == "preload_loadasteroids")
         {
-            NodeTypes.DrawPreLoad_LoadAsteroids(node);
+            NodeTypes.Draw_PreLoad_LoadAsteroids(node);
         }
         else if (node.nodeType == "preload_loadplanet")
         {
-            NodeTypes.DrawPreLoad_LoadPlanet(node);
+            NodeTypes.Draw_PreLoad_LoadPlanet(node);
         }
         else if (node.nodeType == "preload_loadtiles")
         {
-            NodeTypes.DrawPreLoad_LoadTiles(node);
+            NodeTypes.Draw_PreLoad_LoadTiles(node);
         }
         else if (node.nodeType == "preload_loadmultipleshipsonground")
         {
-            NodeTypes.DrawPreLoad_LoadMultipleShipsOnGround(node);
+            NodeTypes.Draw_PreLoad_LoadMultipleShipsOnGround(node);
         }
         else if (node.nodeType == "preload_loadship")
         {
-            NodeTypes.DrawPreLoad_LoadShip(node);
+            NodeTypes.Draw_PreLoad_LoadShip(node);
         }
         else if (node.nodeType == "preload_loadshipsbyname")
         {
-            NodeTypes.DrawPreLoad_LoadShipsByName(node);
+            NodeTypes.Draw_PreLoad_LoadShipsByName(node);
         }
         else if (node.nodeType == "preload_loadshipsbytypeandallegiance")
         {
-            NodeTypes.DrawPreLoad_LoadShipsByTypeAndAllegiance(node);
+            NodeTypes.Draw_PreLoad_LoadShipsByTypeAndAllegiance(node);
         }
         else if (node.nodeType == "preload_setskybox")
         {
-            NodeTypes.DrawPreLoad_SetSkybox(node);
+            NodeTypes.Draw_PreLoad_SetSkybox(node);
         }
         else if (node.nodeType == "changemusicvolume")
         {
@@ -77,89 +77,89 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DisplayLocation(node);
         }
-        else if (node.nodeType == "displaymissionbriefing") //20
+        else if (node.nodeType == "displaymissionbriefing")
         {
             NodeTypes.Draw_DisplayMissionBriefing(node);
         }
         else if (node.nodeType == "iftypeofshipisactive")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_IfTypeOfShipIsActive(node);
         }
         else if (node.nodeType == "loadship")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_LoadShip(node);
         }
         else if (node.nodeType == "loadshipatdistanceandanglefromplayer")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_LoadShipAtDistanceAndAngleFromPlayer(node);
         }
         else if (node.nodeType == "loadmultipleshipsonground")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_LoadMultipleShipsOnGround(node);
         }
         else if (node.nodeType == "loadshipsbyname")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_LoadShipsByName(node);
         }
         else if (node.nodeType == "loadshipsbytypeandallegiance")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_LoadShipsByTypeAndAllegiance(node);
         }
         else if (node.nodeType == "lockmainshipweapons")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_LockMainShipWeapons(node);
         }
         else if (node.nodeType == "message")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_Message(node);
         }
         else if (node.nodeType == "movetowaypoint")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_MoveToWayPoint(node);
         }
         else if (node.nodeType == "playmusictype")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_PlayMusicType(node);
         }
         else if (node.nodeType == "setaioverride")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_SetAIOverride(node);
         }
         else if (node.nodeType == "setdontattacklargeships")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_SetDontAttackLargeShips(node);
         }
         else if (node.nodeType == "setshipallegiance")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_SetShipAllegiance(node);
         }
         else if (node.nodeType == "setshiptarget")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_SetShipTarget(node);
         }
         else if (node.nodeType == "setshiptargettoclosestenemy")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_SetShipTargetToClosestEnemy(node);
         }
         else if (node.nodeType == "setshiptoinvincible")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_SetShipToInvincible(node);
         }
-        else if (node.nodeType == "setweaponslock")
+        else if (node.nodeType == "setweaponslock") 
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_NodeNotAvaible(node);
         }
         else if (node.nodeType == "shipshullislessthan")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_ShipsHullIsLessThan(node);
         }
         else if (node.nodeType == "shipislessthandistancetowaypoint")
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_ShipIsLessThanDistanceToWaypoint(node);
         }
         else
         {
-            NodeTypes.DrawNodeNotAvaible(node);
+            NodeTypes.Draw_NodeNotAvaible(node);
         }
     }
 

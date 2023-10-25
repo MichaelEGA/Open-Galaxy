@@ -684,7 +684,7 @@ public static class MissionFunctions
             }
         }
 
-        SceneFunctions.LoadSingleShip(ship, bool.Parse(missionEvent.data2), newPosition, rotation, allegiance, false, "easy", squadronName);
+        SceneFunctions.LoadSingleShip(ship, true, newPosition, rotation, allegiance, false, "easy", squadronName);
     }
 
     //This loads multiple ships by name
@@ -921,7 +921,10 @@ public static class MissionFunctions
         string message = missionEvent.data1;
         string internalAudioFile = missionEvent.data3;
 
-        HudFunctions.AddToShipLog(message);
+        if (message != "none")
+        {
+            HudFunctions.AddToShipLog(message);
+        }       
 
         if (audio != "none" & internalAudioFile != "true")
         {

@@ -412,15 +412,12 @@ public static class MissionEditorFunctions
 
         MissionEditor missionEditor = GetMissionEditor();
 
-        Debug.Log("Run 1");
+        UpdateMissionName();
 
         foreach (Node node in missionEditor.nodes)
         {
-            Debug.Log("Run 2");
-
             if (node != null)
             {
-                Debug.Log("Run 3");
 
                 MissionEvent missionEvent = new MissionEvent();
 
@@ -435,9 +432,7 @@ public static class MissionEditorFunctions
 
                 if (node.eventType != null)
                 {
-                    Debug.Log("event type is " + node.eventType.text);
                     missionEvent.eventType = node.eventType.text;
-                    Debug.Log("saved data is " + missionEvent.eventType);
                 }
                 else
                 {
@@ -693,15 +688,28 @@ public static class MissionEditorFunctions
 
         MissionEvent[] missionEventData = missionList.ToArray();
 
-        Debug.Log(missionEventData.Length + " " + missionEventData[0].eventType);
-
         string jsonString = JsonHelper.ToJson(missionEventData, true);
 
-        Debug.Log(jsonString);
-
-        string saveFile = Application.persistentDataPath + "/Custom Missions/" + "testSave.json";
+        string saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName + ".json";
 
         File.WriteAllText(saveFile, jsonString);
+    }
+
+    public static void UpdateMissionName()
+    {
+        GameObject MissionNameField = GameObject.Find("MissionNameField");
+
+        if (MissionNameField != null)
+        {
+            Text missionName = MissionNameField.GetComponent<Text>();
+
+            MissionEditor missionEditor = GetMissionEditor();
+
+            if (missionEditor != null)
+            {
+                missionEditor.missionName = missionName.text;
+            }
+        }
     }
 
 }

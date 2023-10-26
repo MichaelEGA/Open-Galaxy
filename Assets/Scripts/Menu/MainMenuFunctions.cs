@@ -299,7 +299,6 @@ public static class MainMenuFunctions
                 TextAsset missionDataTextAsset = new TextAsset(missionDataString);
                 missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
                 customMissionsList.Add(missionDataTextAsset);
-                Debug.Log(file.Name + "name of file in custom missions folder");
             }
         }
 

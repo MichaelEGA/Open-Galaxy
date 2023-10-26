@@ -354,10 +354,36 @@ public class NodeFunctions : MonoBehaviour
         inputFieldText.fontSize = fontSize;
         inputFieldText.color = Color.gray;
         inputFieldText.alignment = TextAnchor.MiddleLeft;
+        inputFieldText.verticalOverflow = VerticalWrapMode.Overflow;
+        inputFieldText.horizontalOverflow = HorizontalWrapMode.Overflow;
         InputField inputField = inputFieldGO.AddComponent<InputField>();
         inputField.textComponent = inputFieldText;
+        inputField.lineType = InputField.LineType.MultiLineSubmit;
+        inputField.characterLimit = 2000;
 
-        return inputFieldText;
+        GameObject transitionTextGO = new GameObject();
+
+        transitionTextGO.transform.SetParent(node.rectTransform.transform);
+        RectTransform rectTransform4 = transitionTextGO.AddComponent<RectTransform>();
+        rectTransform4.anchorMax = new Vector2(0, 1);
+        rectTransform4.anchorMin = new Vector2(0, 1);
+        rectTransform4.pivot = new Vector2(0, 1);
+        rectTransform4.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform4.sizeDelta = new Vector2(halfwidth, height);
+        rectTransform4.localScale = new Vector3(1, 1, 1);
+
+        Text transitionText = transitionTextGO.AddComponent<Text>();
+        transitionText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        transitionText.horizontalOverflow = HorizontalWrapMode.Overflow;
+        transitionText.verticalOverflow = VerticalWrapMode.Overflow;
+        Color transparent = Color.black;
+        transparent.a = 0;
+        transitionText.color = transparent;
+        InputFieldToText inputFieldToText = transitionTextGO.AddComponent<InputFieldToText>();
+        inputFieldToText.text = transitionText;
+        inputFieldToText.inputField = inputField;
+
+        return transitionText;
     }
 
     //This draws a drop down box

@@ -96,7 +96,7 @@ public static class MenuFunctions
 
         float drop = -25;
 
-        MenuFunctions.DrawInputField(menu, "Mission Name", "none", 7, 5, drop, 12.5f, 90, 5f);
+        MenuFunctions.DrawInputField(menu, "Mission Name", "none", 7, 5, drop, 12.5f, 90, 5f, "MissionNameField");
 
         drop -= 15;
 
@@ -414,7 +414,7 @@ public static class MenuFunctions
 
     }
 
-    public static Text DrawInputField(Menu menu, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
+    public static Text DrawInputField(Menu menu, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10, string name = "none")
     {
         float halfwidth = (width - gap) / 2f;
         float shiftedXPosition = xPos + halfwidth + (gap / 2f);
@@ -475,10 +475,45 @@ public static class MenuFunctions
         inputFieldText.fontSize = fontSize;
         inputFieldText.color = Color.gray;
         inputFieldText.alignment = TextAnchor.MiddleLeft;
+        inputFieldText.verticalOverflow = VerticalWrapMode.Overflow;
+        inputFieldText.horizontalOverflow = HorizontalWrapMode.Overflow;
         InputField inputField = inputFieldGO.AddComponent<InputField>();
         inputField.textComponent = inputFieldText;
+        inputField.lineType = InputField.LineType.MultiLineSubmit;
+        inputField.characterLimit = 2000;
 
-        return inputFieldText;
+        GameObject transitionTextGO = new GameObject();
+
+        transitionTextGO.transform.SetParent(menu.rectTransform.transform);
+        RectTransform rectTransform4 = transitionTextGO.AddComponent<RectTransform>();
+        rectTransform4.anchorMax = new Vector2(0, 1);
+        rectTransform4.anchorMin = new Vector2(0, 1);
+        rectTransform4.pivot = new Vector2(0, 1);
+        rectTransform4.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform4.sizeDelta = new Vector2(halfwidth, height);
+        rectTransform4.localScale = new Vector3(1, 1, 1);
+
+        Text transitionText = transitionTextGO.AddComponent<Text>();
+        transitionText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        transitionText.horizontalOverflow = HorizontalWrapMode.Overflow;
+        transitionText.verticalOverflow = VerticalWrapMode.Overflow;
+        Color transparent = Color.black;
+        transparent.a = 0;
+        transitionText.color = transparent;
+        InputFieldToText inputFieldToText = transitionTextGO.AddComponent<InputFieldToText>();
+        inputFieldToText.text = transitionText;
+        inputFieldToText.inputField = inputField;
+
+        if (name != "none")
+        {
+            transitionTextGO.name = name;
+        }
+        else
+        {
+            transitionTextGO.name = "inputfield";
+        }
+
+        return transitionText;
     }
 
     #endregion

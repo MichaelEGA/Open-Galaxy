@@ -205,7 +205,7 @@ public static class MenuFunctions
         if (functionType == "ExitMissionEditor")
         {
             button.onClick.AddListener(() => { MissionEditorFunctions.ExitMissionEditor(); });
-        }
+        }      
 
         buttonGO.name = "button_" + functionType;
     }
@@ -279,7 +279,7 @@ public static class MenuFunctions
         }
         else if (functionType == "SaveMission")
         {
-            Debug.Log("Mission was saved");
+            button.onClick.AddListener(() => { MissionEditorFunctions.SaveMission(); });
         }
 
         buttonGO.name = "button_" + functionType;

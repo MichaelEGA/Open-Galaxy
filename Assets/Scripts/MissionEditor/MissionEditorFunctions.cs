@@ -330,33 +330,19 @@ public static class MissionEditorFunctions
         return missionEvents.ToArray();
     }
 
-    public static void LoadMission()
+    public static void LoadMission(string missionAddress)
     {
         TextAsset missionDataFile = new TextAsset();
-        missionDataFile = Resources.Load("Data/Files/Missions_Main/7 ABY - The Krytos Trap 01 - Corrans Nightmare - Part 1") as TextAsset;
+        missionDataFile = Resources.Load(missionAddress) as TextAsset;
         Mission mission = JsonUtility.FromJson<Mission>(missionDataFile.text);
         Task a = new Task(LoadMissionData(mission));
     }
 
     public static IEnumerator LoadMissionData(Mission mission)
     {
-        float xPos = -900;
-        float yPos = 0;
-        float count = 0;
-
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-            Node node = AddNode("Custom Node", true, xPos, yPos);
-
-            xPos += 110;
-            count += 1;
-
-            if (count > 14)
-            {
-                count = 0;
-                yPos -= 500;
-                xPos = -900;
-            }            
+            Node node = AddNode(missionEvent.eventType, true, missionEvent.nodePosX, missionEvent.nodePosY);     
 
             yield return new WaitForEndOfFrame();
 
@@ -392,6 +378,94 @@ public static class MissionEditorFunctions
             node.nodePosX = missionEvent.nodePosX;
             node.nodePosY = missionEvent.nodePosY;
         }
+
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+            MissionEditor missionEditor = GetMissionEditor();
+
+            Node firstNode = SearchNodes(missionEvent.eventID);
+
+            if (firstNode != null)
+            {
+                if (missionEvent.nextEvent1 != "none")
+                {
+                    Node nextEvent1 = SearchNodes(missionEvent.nextEvent1);
+                    
+                    if (nextEvent1 != null & firstNode.maleNodeLinks[0] != null)
+                    {
+                        if (nextEvent1.femaleNodeLink != null)
+                        {
+                            firstNode.maleNodeLinks[0] = nextEvent1.femaleNodeLink;
+                        }
+                    }
+                }
+
+                if (missionEvent.nextEvent1 != "none")
+                {
+                    Node nextEvent2 = SearchNodes(missionEvent.nextEvent2);
+
+                    if (nextEvent2 != null & firstNode.maleNodeLinks[1] != null)
+                    {
+                        if (nextEvent2.femaleNodeLink != null)
+                        {
+                            firstNode.maleNodeLinks[1] = nextEvent2.femaleNodeLink;
+                        }
+                    }
+                }
+
+                if (missionEvent.nextEvent1 != "none")
+                {
+                    Node nextEvent3 = SearchNodes(missionEvent.nextEvent3);
+
+                    if (nextEvent3 != null & firstNode.maleNodeLinks[2] != null)
+                    {
+                        if (nextEvent3.femaleNodeLink != null)
+                        {
+                            firstNode.maleNodeLinks[2] = nextEvent3.femaleNodeLink;
+                        }
+                    }
+                }
+
+                if (missionEvent.nextEvent1 != "none")
+                {
+                    Node nextEvent4 = SearchNodes(missionEvent.nextEvent4);
+
+                    if (nextEvent4 != null & firstNode.maleNodeLinks[3] != null)
+                    {
+                        if (nextEvent4.femaleNodeLink != null)
+                        {
+                            firstNode.maleNodeLinks[3] = nextEvent4.femaleNodeLink;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static Node SearchNodes(string eventID)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        Node node = null;
+
+        if (missionEditor != null)
+        {
+            if (missionEditor.nodes != null)
+            {
+                foreach (Node tempNode in missionEditor.nodes)
+                {
+                    if (tempNode != null)
+                    {
+                        if (tempNode.eventID.text == eventID)
+                        {
+                            node = tempNode;
+                        }
+                    } 
+                }
+            }
+        }
+
+        return node;
     }
 
     public static void InputData(Text text, string input)

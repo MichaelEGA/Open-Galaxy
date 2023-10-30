@@ -610,6 +610,26 @@ public class NodeFunctions : MonoBehaviour
         NodeLink nodeLink = nodeLinkGO.AddComponent<NodeLink>();
         nodeLink.node = node;
         nodeLink.mode = mode;
+        
+        if (mode == "male")
+        {
+            if (node.maleNodeLinks == null)
+            {
+                node.maleNodeLinks = new List<NodeLink>();
+                node.maleNodeLinks.Add(nodeLink);
+            }
+            else
+            {
+                node.maleNodeLinks.Add(nodeLink);
+            }
+        }
+        else
+        {
+            if (node.femaleNodeLink == null)
+            {
+                node.femaleNodeLink = nodeLink;
+            }
+        }
 
         if (mode == "male")
         {

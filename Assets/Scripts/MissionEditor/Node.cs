@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -40,6 +42,9 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     public string nodeType;
 
+    public NodeLink femaleNodeLink;
+    public List<NodeLink> maleNodeLinks;
+
     public RectTransform rectTransform;
     public float sizeX = 100;
     public float sizeZ = 200;
@@ -74,7 +79,8 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     {
         if (dragging == true)
         {
-            transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            Vector2 mousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            transform.position = mousePosition;
             missionEditor.scrolling = false;
             scrollReset = false;
         }
@@ -82,7 +88,10 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         {
             missionEditor.scrolling = true;
             scrollReset = true;
-        }  
+        }
+
+        nodePosX = transform.localPosition.x;
+        nodePosY = transform.localPosition.y;
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -92,12 +101,14 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        dragging = false;
+        dragging = false;        
     }
 
     public void OnDrag(PointerEventData eventData)
     {
 
     }
+
+
 
 }

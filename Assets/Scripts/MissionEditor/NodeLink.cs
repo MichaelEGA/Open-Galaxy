@@ -17,6 +17,7 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     Vector2 targetPosition;
     bool dragging;
     bool distanceChecked;
+    bool clickReleased;
 
     // Start is called before the first frame update
     void Start()
@@ -99,6 +100,28 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
             else if (line != null)
             {
                 line.SetActive(false);
+            }
+        }
+        else if (mode == "female")
+        {
+            if (dragging == true)
+            {
+                clickReleased = false;
+            }
+            else if (dragging == false & clickReleased == false)
+            {
+                foreach (NodeLink nodeLink in missionEditor.nodeLinks)
+                {
+                    if (nodeLink != null)
+                    {
+                        if (nodeLink.connectedNode == this)
+                        {
+                            nodeLink.connectedNode = null;
+                        }
+                    }
+                }
+
+                clickReleased = true;
             }
         }
     }

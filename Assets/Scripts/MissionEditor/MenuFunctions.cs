@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public static class MenuFunctions
 {
     //This generates the main menu node
-    public static void DrawMainMenu(Menu menu)
+    public static void Draw_MainMenu(Menu menu)
     {
         DrawText(menu, "Mission Editor", 8, 5, -5, 12.5f, 90);
 
@@ -25,7 +26,7 @@ public static class MenuFunctions
         DrawImageButton(menu, 60, -75, 25, 25, "trashcan", "none");
     }
 
-    public static void DrawAddNode(Menu menu)
+    public static void Draw_AddNode(Menu menu)
     {
         DrawText(menu, "Add Event Node", 8, 5, -5, 12.5f, 90);
 
@@ -86,6 +87,32 @@ public static class MenuFunctions
         DrawTextBox(menu, 5, -100, 70, 90, "NodeSprite_Dark", "Information about nodes", 5, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
 
         DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
+    }
+
+    public static void Draw_LoadMission(Menu menu)
+    {
+        DrawText(menu, "Load Mission", 8, 5, -5, 12.5f, 90);
+
+        DrawLineBreak(menu, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        var missionList = GetMissionList();
+
+        string[] buttons = missionList.buttonList;
+
+        List<string> functionList = new List<string>();
+
+        foreach (string button in buttons)
+        {
+            functionList.Add("SelectMissionToLoad");
+        }
+
+        string[] functions = functionList.ToArray();
+
+        DrawScrollableButtons(menu, 5, -25, 70, 90, 10, 7, buttons, functions);
+
+        DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
     }
 
     public static void Draw_SaveMission(Menu menu)
@@ -517,4 +544,33 @@ public static class MenuFunctions
     }
 
     #endregion
+
+    public static (string[] buttonList, string[] functionList) GetMissionList()
+    {
+        List<string> buttonList = new List<string>();
+        List<string> addressList = new List<string>();
+
+        var info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
+
+        if (info.Exists == false)
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/Custom Missions/");
+            info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
+        }
+
+        List<TextAsset> customMissionsList = new List<TextAsset>();
+
+        if (info.Exists == true)
+        {
+            var fileInfo = info.GetFiles("*.json");
+
+            foreach (FileInfo file in fileInfo)
+            {
+                buttonList.Add(file.Name);
+                addressList.Add(Application.persistentDataPath + "/Custom Missions/" + file.Name);
+            }
+        }
+
+        return (buttonList.ToArray(), addressList.ToArray());
+    }
 }

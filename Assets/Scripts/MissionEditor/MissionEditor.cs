@@ -46,6 +46,12 @@ public class MissionEditor : MonoBehaviour
         Menu menu3 = menu3GO.AddComponent<Menu>();
         menu3.menuType = "savemission";
         menus.Add(menu3);
+
+        GameObject menu4GO = new GameObject();
+        menu4GO.transform.SetParent(gameObject.transform);
+        Menu menu4 = menu4GO.AddComponent<Menu>();
+        menu4.menuType = "loadmission";
+        menus.Add(menu4);
     }
 
     // Update is called once per frame

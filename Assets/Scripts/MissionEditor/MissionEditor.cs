@@ -17,6 +17,7 @@ public class MissionEditor : MonoBehaviour
     public string gameWindowMode;
     public bool scrolling;
     public string selectedNodeTypeToLoad;
+    public string selectedMissionToLoad;
     public string missionName = "Untitled Mission";
 
     void Start()

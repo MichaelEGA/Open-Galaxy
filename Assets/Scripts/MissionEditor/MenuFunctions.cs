@@ -97,9 +97,7 @@ public static class MenuFunctions
 
         float drop = -25;
 
-        var missionList = GetMissionList();
-
-        string[] buttons = missionList.buttonList;
+        string[] buttons = GetMissionList();
 
         List<string> functionList = new List<string>();
 
@@ -303,6 +301,14 @@ public static class MenuFunctions
         else if (functionType == "AddNode")
         {
             button.onClick.AddListener(() => { MissionEditorFunctions.AddSelectedNodeType(); });
+        }
+        else if (functionType == "SelectMissionToLoad")
+        {
+            button.onClick.AddListener(() => { MissionEditorFunctions.SelectMission(buttonText); });
+        }
+        else if (functionType == "LoadMission")
+        {
+            button.onClick.AddListener(() => { MissionEditorFunctions.LoadMission(); });
         }
         else if (functionType == "SaveMission")
         {
@@ -545,10 +551,9 @@ public static class MenuFunctions
 
     #endregion
 
-    public static (string[] buttonList, string[] functionList) GetMissionList()
+    public static string[] GetMissionList()
     {
         List<string> buttonList = new List<string>();
-        List<string> addressList = new List<string>();
 
         var info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
 
@@ -566,11 +571,11 @@ public static class MenuFunctions
 
             foreach (FileInfo file in fileInfo)
             {
-                buttonList.Add(file.Name);
-                addressList.Add(Application.persistentDataPath + "/Custom Missions/" + file.Name);
+                string missionName = file.Name;
+                buttonList.Add(missionName);
             }
         }
 
-        return (buttonList.ToArray(), addressList.ToArray());
+        return buttonList.ToArray();
     }
 }

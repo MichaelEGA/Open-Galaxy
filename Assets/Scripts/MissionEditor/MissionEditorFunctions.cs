@@ -40,6 +40,13 @@ public static class MissionEditorFunctions
         }     
     }
 
+    public static void SelectMission(string mission)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        missionEditor.selectedMissionToLoad = mission;
+    }
+
     public static void AddSelectedNodeType()
     {
         MissionEditor missionEditor = GetMissionEditor();
@@ -330,12 +337,18 @@ public static class MissionEditorFunctions
         return missionEvents.ToArray();
     }
 
-    public static void LoadMission(string missionAddress)
+    public static void LoadMission()
     {
-        TextAsset missionDataFile = new TextAsset();
-        missionDataFile = Resources.Load(missionAddress) as TextAsset;
-        Mission mission = JsonUtility.FromJson<Mission>(missionDataFile.text);
-        Task a = new Task(LoadMissionData(mission));
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (missionEditor != null)
+        {
+            string missionAddress = Application.persistentDataPath + "/Custom Missions/" + missionEditor.selectedMissionToLoad;
+            string missionDataString = File.ReadAllText(missionAddress);
+            TextAsset missionDataTextAsset = new TextAsset(missionDataString);
+            Mission mission = JsonUtility.FromJson<Mission>(missionDataTextAsset.text);
+            Task a = new Task(LoadMissionData(mission));
+        }
     }
 
     public static IEnumerator LoadMissionData(Mission mission)
@@ -387,57 +400,62 @@ public static class MissionEditorFunctions
 
             if (firstNode != null)
             {
-                if (missionEvent.nextEvent1 != "none")
+                if (firstNode.maleNodeLinks != null)
                 {
-                    Node nextEvent1 = SearchNodes(missionEvent.nextEvent1);
-                    
-                    if (nextEvent1 != null & firstNode.maleNodeLinks[0] != null)
+                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 0)
                     {
-                        if (nextEvent1.femaleNodeLink != null)
+                        Node nextEvent1 = SearchNodes(missionEvent.nextEvent1);
+
+                        if (nextEvent1 != null & firstNode.maleNodeLinks[0] != null)
                         {
-                            firstNode.maleNodeLinks[0] = nextEvent1.femaleNodeLink;
+                            if (nextEvent1.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[0].connectedNode = nextEvent1.femaleNodeLink;
+                            }
+                        }
+                    }
+
+                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 1)
+                    {
+                        Node nextEvent2 = SearchNodes(missionEvent.nextEvent2);
+
+                        if (nextEvent2 != null & firstNode.maleNodeLinks[1] != null)
+                        {
+                            if (nextEvent2.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[1].connectedNode = nextEvent2.femaleNodeLink;
+                            }
+                        }
+                    }
+
+                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 2)
+                    {
+                        Node nextEvent3 = SearchNodes(missionEvent.nextEvent3);
+
+                        if (nextEvent3 != null & firstNode.maleNodeLinks[2] != null)
+                        {
+                            if (nextEvent3.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[2].connectedNode = nextEvent3.femaleNodeLink;
+                            }
+                        }
+                    }
+
+                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 3)
+                    {
+                        Node nextEvent4 = SearchNodes(missionEvent.nextEvent4);
+
+                        if (nextEvent4 != null & firstNode.maleNodeLinks[3] != null)
+                        {
+                            if (nextEvent4.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[3].connectedNode = nextEvent4.femaleNodeLink;
+                            }
                         }
                     }
                 }
 
-                if (missionEvent.nextEvent1 != "none")
-                {
-                    Node nextEvent2 = SearchNodes(missionEvent.nextEvent2);
-
-                    if (nextEvent2 != null & firstNode.maleNodeLinks[1] != null)
-                    {
-                        if (nextEvent2.femaleNodeLink != null)
-                        {
-                            firstNode.maleNodeLinks[1] = nextEvent2.femaleNodeLink;
-                        }
-                    }
-                }
-
-                if (missionEvent.nextEvent1 != "none")
-                {
-                    Node nextEvent3 = SearchNodes(missionEvent.nextEvent3);
-
-                    if (nextEvent3 != null & firstNode.maleNodeLinks[2] != null)
-                    {
-                        if (nextEvent3.femaleNodeLink != null)
-                        {
-                            firstNode.maleNodeLinks[2] = nextEvent3.femaleNodeLink;
-                        }
-                    }
-                }
-
-                if (missionEvent.nextEvent1 != "none")
-                {
-                    Node nextEvent4 = SearchNodes(missionEvent.nextEvent4);
-
-                    if (nextEvent4 != null & firstNode.maleNodeLinks[3] != null)
-                    {
-                        if (nextEvent4.femaleNodeLink != null)
-                        {
-                            firstNode.maleNodeLinks[3] = nextEvent4.femaleNodeLink;
-                        }
-                    }
-                }
+                
             }
         }
     }
@@ -456,9 +474,12 @@ public static class MissionEditorFunctions
                 {
                     if (tempNode != null)
                     {
-                        if (tempNode.eventID.text == eventID)
+                        if (tempNode.eventID != null)
                         {
-                            node = tempNode;
+                            if (tempNode.eventID.text == eventID)
+                            {
+                                node = tempNode;
+                            }
                         }
                     } 
                 }
@@ -470,13 +491,16 @@ public static class MissionEditorFunctions
 
     public static void InputData(Text text, string input)
     {
-        text.text = input;
-
-        InputField inputField = text.GetComponent<InputField>();
-
-        if(inputField != null)
+        if (text != null)
         {
-            inputField.text = input;
+            text.text = input;
+
+            InputField inputField = text.GetComponent<InputField>();
+
+            if (inputField != null)
+            {
+                inputField.text = input;
+            }
         }
     }
 

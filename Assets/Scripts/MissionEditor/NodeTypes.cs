@@ -786,6 +786,10 @@ public static class NodeTypes
 
         float drop = -25;
 
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
         node.eventType = NodeFunctions.DrawText(node, "startmission", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;

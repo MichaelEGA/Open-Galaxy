@@ -171,8 +171,10 @@ public static class OGSettingsFunctions
     //This sets the window mode for the game
     public static void SetGameWindowMode(string windowMode)
     {
-        int widthRes = Screen.currentResolution.width;
-        int heightRes = Screen.currentResolution.height;
+        OGSettings settings = GetSettings();
+
+        int widthRes = settings.screenResX;
+        int heightRes = settings.screenResY;
 
         if (windowMode == "window")
         {
@@ -191,9 +193,37 @@ public static class OGSettingsFunctions
             Screen.SetResolution(widthRes, heightRes, FullScreenMode.ExclusiveFullScreen);
         }
 
-        OGSettings settings = OGSettingsFunctions.GetSettings();
-
         settings.gameWindowMode = windowMode;
+
+        OGSettingsFunctions.SaveSettingsData();
+    }
+
+    //This sets the window mode for the game
+    public static void SetEditorWindowMode(string windowMode)
+    {
+        OGSettings settings = GetSettings();
+
+        int widthRes = settings.screenResX;
+        int heightRes = settings.screenResY;
+
+        if (windowMode == "window")
+        {
+            Screen.SetResolution(widthRes, heightRes, FullScreenMode.Windowed);
+        }
+        else if (windowMode == "maximisedwindow")
+        {
+            Screen.SetResolution(widthRes, heightRes, FullScreenMode.MaximizedWindow);
+        }
+        else if (windowMode == "fullscreen")
+        {
+            Screen.SetResolution(widthRes, heightRes, FullScreenMode.FullScreenWindow);
+        }
+        else if (windowMode == "exclusivefullscreen")
+        {
+            Screen.SetResolution(widthRes, heightRes, FullScreenMode.ExclusiveFullScreen);
+        }
+
+        settings.editorWindowMode = windowMode;
 
         OGSettingsFunctions.SaveSettingsData();
     }

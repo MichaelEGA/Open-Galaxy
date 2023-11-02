@@ -363,7 +363,7 @@ public class NodeFunctions : MonoBehaviour
 
         GameObject transitionTextGO = new GameObject();
 
-        transitionTextGO.transform.SetParent(node.rectTransform.transform);
+        transitionTextGO.transform.SetParent(inputFieldGO.transform);
         RectTransform rectTransform4 = transitionTextGO.AddComponent<RectTransform>();
         rectTransform4.anchorMax = new Vector2(0, 1);
         rectTransform4.anchorMin = new Vector2(0, 1);

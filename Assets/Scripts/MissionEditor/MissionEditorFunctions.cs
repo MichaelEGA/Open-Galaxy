@@ -105,18 +105,7 @@ public static class MissionEditorFunctions
     {
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
-        if (settings.editorWindowMode == "fullscreen")
-        {
-            int widthRes = Screen.currentResolution.width;
-            int heightRes = Screen.currentResolution.height;
-            Screen.SetResolution(widthRes, heightRes, FullScreenMode.FullScreenWindow);
-        }
-        else if (settings.editorWindowMode == "window")
-        {
-            int widthRes = Screen.currentResolution.width / 2;
-            int heightRes = Screen.currentResolution.height / 2;
-            Screen.SetResolution(widthRes, heightRes, FullScreenMode.Windowed);
-        }
+        OGSettingsFunctions.SetEditorWindowMode(settings.editorWindowMode);
     }
 
     public static void ExitMissionEditor()
@@ -152,189 +141,6 @@ public static class MissionEditorFunctions
             missionEditor.scrollRect.horizontal = false;
             missionEditor.scrollRect.vertical = false;
         }
-    }
-
-    public static MissionEvent[] SaveNodeData(MissionEditor missionEditor)
-    {
-        List<MissionEvent> missionEvents = new List<MissionEvent>();
-
-        foreach (Node node in missionEditor.nodes)
-        {
-            MissionEvent missionEvent = new MissionEvent();
-
-            if (node.eventID != null)
-            {
-                missionEvent.eventID = node.eventID.text;
-            }
-
-            if (node.eventType != null)
-            {
-                missionEvent.eventType = node.eventType.text;
-            }
-
-            if (node.conditionTime != null)
-            {
-                if (int.TryParse(node.conditionTime.text, out _))
-                {
-                    missionEvent.conditionTime = int.Parse(node.conditionTime.text);
-                }
-            }
-
-            if (node.conditionLocation != null)
-            {
-                missionEvent.conditionLocation = node.conditionLocation.text;
-            }
-
-            if (node.x != null)
-            {
-                if (int.TryParse(node.x.text, out _))
-                {
-                    missionEvent.x = int.Parse(node.x.text);
-                }
-            }
-
-            if (node.y != null)
-            {
-                if (int.TryParse(node.y.text, out _))
-                {
-                    missionEvent.y = int.Parse(node.y.text);
-                }
-            }
-
-            if (node.z != null)
-            {
-                if (int.TryParse(node.z.text, out _))
-                {
-                    missionEvent.z = int.Parse(node.z.text);
-                }
-            }
-
-            if (node.xRotation != null)
-            {
-                if (int.TryParse(node.xRotation.text, out _))
-                {
-                    missionEvent.xRotation = int.Parse(node.xRotation.text);
-                }
-            }
-
-            if (node.yRotation != null)
-            {
-                if (int.TryParse(node.yRotation.text, out _))
-                {
-                    missionEvent.yRotation = int.Parse(node.yRotation.text);
-                }
-            }
-
-            if (node.zRotation != null)
-            {
-                if (int.TryParse(node.zRotation.text, out _))
-                {
-                    missionEvent.zRotation = int.Parse(node.zRotation.text);
-                }
-            }
-
-            if (node.data1 != null)
-            {
-                missionEvent.data1 = node.data1.text;
-            }
-
-            if (node.data2 != null)
-            {
-                missionEvent.data2 = node.data2.text;
-            }
-
-            if (node.data3 != null)
-            {
-                missionEvent.data3 = node.data3.text;
-            }
-
-            if (node.data4 != null)
-            {
-                missionEvent.data4 = node.data4.text;
-            }
-
-            if (node.data5 != null)
-            {
-                missionEvent.data5 = node.data5.text;
-            }
-
-            if (node.data6 != null)
-            {
-                missionEvent.data6 = node.data6.text;
-            }
-
-            if (node.data7 != null)
-            {
-                missionEvent.data7 = node.data7.text;
-            }
-
-            if (node.data8 != null)
-            {
-                missionEvent.data8 = node.data8.text;
-            }
-
-            if (node.data9 != null)
-            {
-                missionEvent.data9 = node.data9.text;
-            }
-
-            if (node.data10 != null)
-            {
-                missionEvent.data10 = node.data10.text;
-            }
-
-            if (node.data11 != null)
-            {
-                missionEvent.data11 = node.data11.text;
-            }
-
-            if (node.data12 != null)
-            {
-                missionEvent.data12 = node.data12.text;
-            }
-
-            if (node.data13 != null)
-            {
-                missionEvent.data13 = node.data13.text;
-            }
-
-            if (node.data14 != null)
-            {
-                missionEvent.data14 = node.data14.text;
-            }
-
-            if (node.data15 != null)
-            {
-                missionEvent.data15 = node.data15.text;
-            }
-
-            if (node.nextEvent1 != null)
-            {
-                missionEvent.nextEvent1 = node.nextEvent1.text;
-            }
-
-            if (node.nextEvent2 != null)
-            {
-                missionEvent.nextEvent2 = node.nextEvent2.text;
-            }
-
-            if (node.nextEvent3 != null)
-            {
-                missionEvent.nextEvent3 = node.nextEvent3.text;
-            }
-
-            if (node.nextEvent4 != null)
-            {
-                missionEvent.nextEvent4 = node.nextEvent4.text;
-            }
-
-            missionEvent.nodePosX = node.transform.localPosition.x;
-            missionEvent.nodePosY = node.transform.localPosition.y;
-
-            missionEvents.Add(missionEvent);
-        }
-
-        return missionEvents.ToArray();
     }
 
     public static void LoadMission()
@@ -493,14 +299,14 @@ public static class MissionEditorFunctions
     {
         if (text != null)
         {
-            text.text = input;
-
-            InputField inputField = text.GetComponent<InputField>();
+            InputField inputField = text.GetComponentInParent<InputField>();
 
             if (inputField != null)
-            {
+            {              
                 inputField.text = input;
             }
+
+            text.text = input;
         }
     }
 
@@ -779,6 +585,9 @@ public static class MissionEditorFunctions
                 {
                     missionEvent.nextEvent4 = "none";
                 }
+
+                missionEvent.nodePosX = node.nodePosX;
+                missionEvent.nodePosY = node.nodePosY;
 
                 missionList.Add(missionEvent);
             }

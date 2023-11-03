@@ -237,6 +237,19 @@ public static class MissionFunctions
                 FindNextEvent(missionName, missionEvent.nextEvent2);
             }
         }
+        else if (missionEvent.eventType == "ifshipisactive")
+        {
+            bool shipTypeIsActive = IfShipIsActive(missionEvent);
+
+            if (shipTypeIsActive == true)
+            {
+                FindNextEvent(missionName, missionEvent.nextEvent1);
+            }
+            else
+            {
+                FindNextEvent(missionName, missionEvent.nextEvent2);
+            }
+        }
         else if (missionEvent.eventType == "loadship")
         {
             LoadSingleShip(missionEvent);
@@ -581,6 +594,34 @@ public static class MissionFunctions
         }
 
         return shipTypeIsActive;
+    }
+
+    //This checks whether the requested ship is present and active
+    public static bool IfShipIsActive(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipIsActive = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                       if (ship.activeSelf == true)
+                       {
+                            shipIsActive = true;
+                            break;
+                       }
+                    }
+                }
+            }
+        }
+
+        return shipIsActive;
     }
 
     //This loads the asteroid field

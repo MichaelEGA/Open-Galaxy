@@ -52,6 +52,7 @@ public static class MenuFunctions
         buttonList.Add("displaylargemessage");
         buttonList.Add("displaylocation");
         buttonList.Add("displaymissionbriefing");
+        buttonList.Add("ifshipisactive");
         buttonList.Add("iftypeofshipisactive");
         buttonList.Add("loadship");
         buttonList.Add("loadshipatdistanceandanglefromplayer");

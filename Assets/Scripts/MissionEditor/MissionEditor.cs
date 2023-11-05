@@ -13,6 +13,7 @@ public class MissionEditor : MonoBehaviour
     public RectTransform editorContentRect;
     public ScrollRect scrollRect;
     public Text AddNodeTextBox;
+    public Text zoomIndicator;
     public float scale = 1;
     public string gameWindowMode;
     public bool scrolling;
@@ -27,6 +28,7 @@ public class MissionEditor : MonoBehaviour
         scrollRect = editorContentGo.GetComponentInParent<ScrollRect>();
 
         MissionEditorFunctions.SetWindowMode(this);
+        MissionEditorFunctions.Draw_MissionEditor(this);
 
         menus = new List<Menu>();
 
@@ -58,13 +60,14 @@ public class MissionEditor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
     }
 
     void OnGUI()
     {
         MissionEditorFunctions.ScaleGrid(this);
         MissionEditorFunctions.ToggleScrolling(this);
+        MissionEditorFunctions.ZoomIndicator(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)

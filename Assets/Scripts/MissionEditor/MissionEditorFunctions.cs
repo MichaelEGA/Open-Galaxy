@@ -7,6 +7,43 @@ using System.IO;
 public static class MissionEditorFunctions
 {
 
+    #region draw mission editor
+
+    public static void Draw_MissionEditor(MissionEditor missionEditor)
+    {
+        Draw_ZoomIndicator(missionEditor);
+    }
+
+    public static void Draw_ZoomIndicator(MissionEditor missionEditor)
+    {
+        //This draws the input label
+        GameObject titleGO = new GameObject();
+
+        titleGO.transform.SetParent(missionEditor.transform);
+        RectTransform rectTransform = titleGO.AddComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(0, 0);
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.pivot = new Vector2(0, 0);
+        rectTransform.anchoredPosition = new Vector2(10, 10);
+        rectTransform.sizeDelta = new Vector2(90, 12.5f);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Text text = titleGO.AddComponent<Text>();
+        text.supportRichText = false;
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.text = "100%";
+        text.fontSize = 8;
+        text.color = Color.white;
+        text.horizontalOverflow = HorizontalWrapMode.Wrap;
+        text.alignment = TextAnchor.MiddleLeft;
+
+        titleGO.name = "Zoom Indicator";
+
+        missionEditor.zoomIndicator = text;
+    }
+
+    #endregion
+
     public static void SelectNodeType(string nodeType)
     {
         MissionEditor missionEditor = GetMissionEditor();
@@ -37,7 +74,7 @@ public static class MissionEditorFunctions
             {
                 missionEditor.AddNodeTextBox.text = "";
             }
-        }     
+        }
     }
 
     public static void SelectMission(string mission)
@@ -98,7 +135,7 @@ public static class MissionEditorFunctions
             {
                 missionEditor.editorContentRect.localScale = new Vector3(missionEditor.scale, missionEditor.scale);
             }
-        }      
+        }
     }
 
     public static void SetWindowMode(MissionEditor missionEditor)
@@ -161,7 +198,7 @@ public static class MissionEditorFunctions
     {
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-            Node node = AddNode(missionEvent.eventType, true, missionEvent.nodePosX, missionEvent.nodePosY);     
+            Node node = AddNode(missionEvent.eventType, true, missionEvent.nodePosX, missionEvent.nodePosY);
 
             yield return new WaitForEndOfFrame();
 
@@ -261,7 +298,7 @@ public static class MissionEditorFunctions
                     }
                 }
 
-                
+
             }
         }
     }
@@ -287,7 +324,7 @@ public static class MissionEditorFunctions
                                 node = tempNode;
                             }
                         }
-                    } 
+                    }
                 }
             }
         }
@@ -302,7 +339,7 @@ public static class MissionEditorFunctions
             InputField inputField = text.GetComponentInParent<InputField>();
 
             if (inputField != null)
-            {              
+            {
                 inputField.text = input;
             }
 
@@ -616,6 +653,16 @@ public static class MissionEditorFunctions
             {
                 missionEditor.missionName = missionName.text;
             }
+        }
+    }
+
+    public static void ZoomIndicator(MissionEditor missionEditor)
+    {
+        float percentage = ((Mathf.Abs(missionEditor.scale) - 0.3f) / 0.7f) * 100;      
+        
+        if (missionEditor.zoomIndicator != null)
+        {
+            missionEditor.zoomIndicator.text = percentage.ToString("000") + "%";
         }
     }
 

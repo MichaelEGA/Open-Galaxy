@@ -913,9 +913,11 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f, 90, 5f);
+        float multiplySize = 2;
 
-        drop -= 15;
+        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
+
+        drop -= 15 * multiplySize;
 
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
 
@@ -954,9 +956,11 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f, 90, 5f);
+        float multiplySize = 5;
 
-        drop -= 15;
+        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
+
+        drop -= 15 * multiplySize;
 
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
 
@@ -995,9 +999,11 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f, 90, 5f);
+        float multiplySize = 2;
 
-        drop -= 15;
+        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
+
+        drop -= 15 * multiplySize;
 
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
 
@@ -1085,9 +1091,11 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "briefing", "none", 7, 5, drop, 12.5f, 90, 5f);
+        float multiplySize = 5;
 
-        drop -= 15;
+        node.data1 = NodeFunctions.DrawInputField(node, "briefing", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
+
+        drop -= 15 * multiplySize;
 
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
 
@@ -1842,8 +1850,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "message" +
-            "", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "message" + "", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -1855,9 +1862,11 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f, 90, 5f);
+        float multiplySize = 5;
 
-        drop -= 15;
+        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
+
+        drop -= 15 * multiplySize;
 
         node.data2 = NodeFunctions.DrawInputField(node, "audio file", "none", 7, 5, drop, 12.5f, 90, 5f);
 

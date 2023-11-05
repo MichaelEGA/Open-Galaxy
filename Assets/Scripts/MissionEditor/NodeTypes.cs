@@ -12,7 +12,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "Test Node", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "Test Node", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -34,7 +34,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "node not avaible", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "node not avaible", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -55,7 +55,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "custom_node", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "custom_node", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -190,7 +190,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "loadscene", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "loadscene", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -217,7 +217,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadasteroids", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "pl_loadasteroids", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -244,7 +244,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadplanet", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "pl_loadplanet", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -267,7 +267,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadtiles", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "pl_loadtiles", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -306,7 +306,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadmultipleshipsonground", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "pl_loadmultipleshipsonground", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -426,7 +426,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadship", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "pl_loadship", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -526,7 +526,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadshipsbyname", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "pl_loadshipsbyname", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -642,7 +642,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadshipsbytype", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "pl_loadshipsbytype", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -747,7 +747,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_setskybox", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "pl_setskybox", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -778,7 +778,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "startmission", 8, 5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "startmission", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -807,7 +807,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "changemusicvolume", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "changemusicvolume", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -848,7 +848,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "clearaioverride", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "clearaioverride", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -889,7 +889,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "displaylargemessagethenexit", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "displaylargemessagethenexit", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -930,7 +930,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "dialoguebox", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "dialoguebox", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -971,7 +971,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "displaylargemessage", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "displaylargemessage", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1012,7 +1012,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "displaylocation", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "displaylocation", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1061,7 +1061,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "displaymissionbriefing", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "displaymissionbriefing", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1102,7 +1102,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "iftypeofshipisactive", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "iftypeofshipisactive", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1151,7 +1151,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "ifshipisactive", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "ifshipisactive", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1196,7 +1196,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "loadship", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "loadship", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1306,7 +1306,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "loadshipatdistanceandanglefromplayer", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "loadshipatdistanceandanglefromplayer", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1413,7 +1413,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "loadmultipleshipsonground", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "loadmultipleshipsonground", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1544,7 +1544,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "loadshipsbyname", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "loadshipsbyname", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1670,7 +1670,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "loadshipsbytypeandallegiance", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "loadshipsbytypeandallegiance", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1785,7 +1785,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "lockmainshipweapons", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "lockmainshipweapons", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1830,7 +1830,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "message", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "message", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1884,7 +1884,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "movetowaypoint", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "movetowaypoint", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1929,7 +1929,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "playmusictype", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "playmusictype", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1975,7 +1975,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "setaioverride", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "setaioverride", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -2026,7 +2026,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "setdontattacklargeships", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "setdontattacklargeships", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -2075,7 +2075,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "setshipallegiance", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "setshipallegiance", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -2124,7 +2124,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "setshiptarget", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "setshiptarget", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -2169,7 +2169,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "setshiptargettoclosestenemy", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "setshiptargettoclosestenemy", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -2210,7 +2210,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "setshiptoinvincible", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "setshiptoinvincible", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -2259,7 +2259,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "setweaponslock", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "setweaponslock", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -2308,7 +2308,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "shipshullislessthan", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "shipshullislessthan", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -2357,7 +2357,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "shipislessthandistancetowaypoint", 8, 17.5f, -5, 12.5f, 90);
+        NodeFunctions.DrawText(node, "shipislessthandistancetowaypoint", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 

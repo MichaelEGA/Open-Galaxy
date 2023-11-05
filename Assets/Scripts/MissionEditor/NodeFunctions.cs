@@ -261,6 +261,7 @@ public class NodeFunctions : MonoBehaviour
         text.text = title;
         text.fontSize = fontSize;
         text.color = Color.white;
+        text.horizontalOverflow = HorizontalWrapMode.Wrap;
         text.alignment = TextAnchor.MiddleLeft;
 
         titleGO.name = "Title_" + title;
@@ -362,7 +363,7 @@ public class NodeFunctions : MonoBehaviour
         inputFieldText.horizontalOverflow = HorizontalWrapMode.Overflow;
         InputField inputField = inputFieldGO.AddComponent<InputField>();
         inputField.textComponent = inputFieldText;
-        inputField.lineType = InputField.LineType.MultiLineSubmit;
+        inputField.lineType = InputField.LineType.MultiLineNewline;
         inputField.characterLimit = 2000;
 
         GameObject transitionTextGO = new GameObject();

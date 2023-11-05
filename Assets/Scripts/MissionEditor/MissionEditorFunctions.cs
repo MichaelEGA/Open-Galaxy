@@ -11,10 +11,10 @@ public static class MissionEditorFunctions
 
     public static void Draw_MissionEditor(MissionEditor missionEditor)
     {
-        Draw_ZoomIndicator(missionEditor);
+        Draw_ScaleIndicator(missionEditor);
     }
 
-    public static void Draw_ZoomIndicator(MissionEditor missionEditor)
+    public static void Draw_ScaleIndicator(MissionEditor missionEditor)
     {
         //This draws the input label
         GameObject titleGO = new GameObject();
@@ -37,9 +37,9 @@ public static class MissionEditorFunctions
         text.horizontalOverflow = HorizontalWrapMode.Wrap;
         text.alignment = TextAnchor.MiddleLeft;
 
-        titleGO.name = "Zoom Indicator";
+        titleGO.name = "Scale Indicator";
 
-        missionEditor.zoomIndicator = text;
+        missionEditor.scaleIndicator = text;
     }
 
     #endregion
@@ -119,6 +119,7 @@ public static class MissionEditorFunctions
     {
         bool scaling = true;
 
+        //Checks whether mouse is in position to scale
         foreach (Menu menu in missionEditor.menus)
         {
             if (menu.scaling == false)
@@ -127,14 +128,39 @@ public static class MissionEditorFunctions
             }
         }
 
+        //This changes the scale
         if (scaling == true)
         {
             missionEditor.scale += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 20;
+        }
 
+        //This locks the scale within certain bounds
+        float percentage = ((Mathf.Abs(missionEditor.scale) - 0.3f) / 0.7f) * 100;
+
+        if (percentage > 200)
+        {
+            missionEditor.scale = 1.7f;
+            percentage = 200;
+        }
+        else if (percentage < 0)
+        {
+            missionEditor.scale = 0.3f;
+            percentage = 0;
+        }
+
+        //This applies the scale
+        if (scaling == true)
+        {
             if (missionEditor.editorContentRect != null)
             {
                 missionEditor.editorContentRect.localScale = new Vector3(missionEditor.scale, missionEditor.scale);
             }
+        }
+
+        //This outputs the scale to the indicator
+        if (missionEditor.scaleIndicator != null)
+        {
+            missionEditor.scaleIndicator.text = percentage.ToString("000") + "%";
         }
     }
 
@@ -653,16 +679,6 @@ public static class MissionEditorFunctions
             {
                 missionEditor.missionName = missionName.text;
             }
-        }
-    }
-
-    public static void ZoomIndicator(MissionEditor missionEditor)
-    {
-        float percentage = ((Mathf.Abs(missionEditor.scale) - 0.3f) / 0.7f) * 100;      
-        
-        if (missionEditor.zoomIndicator != null)
-        {
-            missionEditor.zoomIndicator.text = percentage.ToString("000") + "%";
         }
     }
 

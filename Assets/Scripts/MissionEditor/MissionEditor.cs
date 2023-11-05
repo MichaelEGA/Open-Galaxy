@@ -13,7 +13,7 @@ public class MissionEditor : MonoBehaviour
     public RectTransform editorContentRect;
     public ScrollRect scrollRect;
     public Text AddNodeTextBox;
-    public Text zoomIndicator;
+    public Text scaleIndicator;
     public float scale = 1;
     public string gameWindowMode;
     public bool scrolling;
@@ -67,7 +67,6 @@ public class MissionEditor : MonoBehaviour
     {
         MissionEditorFunctions.ScaleGrid(this);
         MissionEditorFunctions.ToggleScrolling(this);
-        MissionEditorFunctions.ZoomIndicator(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)

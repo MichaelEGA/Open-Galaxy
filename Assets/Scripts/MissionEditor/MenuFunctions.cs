@@ -513,7 +513,7 @@ public static class MenuFunctions
         inputFieldText.horizontalOverflow = HorizontalWrapMode.Overflow;
         InputField inputField = inputFieldGO.AddComponent<InputField>();
         inputField.textComponent = inputFieldText;
-        inputField.lineType = InputField.LineType.MultiLineSubmit;
+        inputField.lineType = InputField.LineType.MultiLineNewline;
         inputField.characterLimit = 2000;
 
         GameObject transitionTextGO = new GameObject();
@@ -547,7 +547,23 @@ public static class MenuFunctions
             transitionTextGO.name = "inputfield";
         }
 
+        //If this is not run the caret will display behind the text box...
+        ModifyCaretPosition(menu);
+
         return transitionText;
+    }
+
+    //This modifies the caret position to ensure its on top
+    public static void ModifyCaretPosition(Menu menu)
+    {
+        Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(menu.transform, "Caret");
+
+        int childNumber = menu.transform.childCount;
+
+        foreach (Transform caret in carets)
+        {
+            caret.SetAsLastSibling();
+        }
     }
 
     #endregion

@@ -344,6 +344,7 @@ public class NodeFunctions : MonoBehaviour
         GameObject inputFieldGO = new GameObject();
 
         inputFieldGO.transform.SetParent(node.rectTransform.transform);
+
         RectTransform rectTransform = inputFieldGO.AddComponent<RectTransform>();
         rectTransform.anchorMax = new Vector2(0, 1);
         rectTransform.anchorMin = new Vector2(0, 1);
@@ -361,10 +362,12 @@ public class NodeFunctions : MonoBehaviour
         inputFieldText.alignment = TextAnchor.MiddleLeft;
         inputFieldText.verticalOverflow = VerticalWrapMode.Overflow;
         inputFieldText.horizontalOverflow = HorizontalWrapMode.Overflow;
+
         InputField inputField = inputFieldGO.AddComponent<InputField>();
         inputField.textComponent = inputFieldText;
         inputField.lineType = InputField.LineType.MultiLineNewline;
         inputField.characterLimit = 2000;
+        inputField.caretColor = Color.gray;
 
         GameObject transitionTextGO = new GameObject();
 
@@ -387,6 +390,9 @@ public class NodeFunctions : MonoBehaviour
         InputFieldToText inputFieldToText = transitionTextGO.AddComponent<InputFieldToText>();
         inputFieldToText.text = transitionText;
         inputFieldToText.inputField = inputField;
+
+        //If this is not run the caret will display behind the text box...
+        ModifyCaretPosition(node);
 
         return transitionText;
     }
@@ -684,6 +690,19 @@ public class NodeFunctions : MonoBehaviour
         }    
 
         return textbox;
+    }
+
+    //This modifies the caret position to ensure its on top
+    public static void ModifyCaretPosition (Node node)
+    {
+        Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(node.transform, "Caret");
+
+        int childNumber = node.transform.childCount;
+
+        foreach (Transform caret in carets)
+        {
+            caret.SetAsLastSibling();
+        }
     }
 
     #endregion

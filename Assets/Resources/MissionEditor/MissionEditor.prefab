@@ -71,8 +71,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 20
-    height: 20
+    width: 60
+    height: 60
 --- !u!1 &3800620623806029625
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,10 +305,14 @@ MonoBehaviour:
   editorContentRect: {fileID: 0}
   scrollRect: {fileID: 0}
   AddNodeTextBox: {fileID: 0}
+  scaleIndicator: {fileID: 0}
+  messageTextbox: {fileID: 0}
   scale: 1
   gameWindowMode: 
   scrolling: 0
   selectedNodeTypeToLoad: 
+  selectedMissionToLoad: 
+  missionName: Untitled Mission
 --- !u!1 &4130780379106737530
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,8 +492,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 20
-    height: 20
+    width: 60
+    height: 60
 --- !u!1 &5386399720917709527
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,5 +621,5 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 3135.601, y: 2738.0728}
+  m_SizeDelta: {x: 10000, y: 10000}
   m_Pivot: {x: 0.5, y: 0.5}

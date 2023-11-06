@@ -14,6 +14,7 @@ public class MissionEditor : MonoBehaviour
     public ScrollRect scrollRect;
     public Text AddNodeTextBox;
     public Text scaleIndicator;
+    public Text messageTextbox;
     public float scale = 1;
     public string gameWindowMode;
     public bool scrolling;

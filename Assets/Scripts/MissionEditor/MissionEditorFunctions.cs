@@ -11,7 +11,10 @@ public static class MissionEditorFunctions
 
     public static void Draw_MissionEditor(MissionEditor missionEditor)
     {
+        Draw_MenuBar(missionEditor);
+        Draw_InfoBar(missionEditor);
         Draw_ScaleIndicator(missionEditor);
+        Draw_MesssageTextBox(missionEditor);
     }
 
     public static void Draw_ScaleIndicator(MissionEditor missionEditor)
@@ -24,15 +27,15 @@ public static class MissionEditorFunctions
         rectTransform.anchorMax = new Vector2(0, 0);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.pivot = new Vector2(0, 0);
-        rectTransform.anchoredPosition = new Vector2(10, 10);
-        rectTransform.sizeDelta = new Vector2(90, 12.5f);
+        rectTransform.anchoredPosition = new Vector2(10, 0);
+        rectTransform.sizeDelta = new Vector2(90, 12f);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
         Text text = titleGO.AddComponent<Text>();
         text.supportRichText = false;
         text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         text.text = "100%";
-        text.fontSize = 8;
+        text.fontSize = 7;
         text.color = Color.white;
         text.horizontalOverflow = HorizontalWrapMode.Wrap;
         text.alignment = TextAnchor.MiddleLeft;
@@ -40,6 +43,86 @@ public static class MissionEditorFunctions
         titleGO.name = "Scale Indicator";
 
         missionEditor.scaleIndicator = text;
+    }
+
+    public static void Draw_MesssageTextBox(MissionEditor missionEditor)
+    {
+        //This draws the input label
+        GameObject messageTextboxGO = new GameObject();
+
+        messageTextboxGO.transform.SetParent(missionEditor.transform);
+        RectTransform rectTransform = messageTextboxGO.AddComponent<RectTransform>();
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.anchorMax = new Vector2(1, 0);
+        rectTransform.pivot = new Vector2(0.5f, 0);
+        rectTransform.anchoredPosition = new Vector2(0, 0);
+        rectTransform.sizeDelta = new Vector2(0, 12f);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Text text = messageTextboxGO.AddComponent<Text>();
+        text.supportRichText = false;
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.text = "Mission Editor Loaded";
+        text.fontSize = 7;
+        text.color = Color.white;
+        text.horizontalOverflow = HorizontalWrapMode.Wrap;
+        text.alignment = TextAnchor.MiddleCenter;
+
+        messageTextboxGO.name = "Action Indicator";
+
+        missionEditor.messageTextbox = text;
+    }
+
+    public static void Draw_MenuBar(MissionEditor missionEditor)
+    {
+        //This draws the input label
+        GameObject menuBarGO = new GameObject();
+
+        menuBarGO.transform.SetParent(missionEditor.transform);
+        RectTransform rectTransform = menuBarGO.AddComponent<RectTransform>();
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.anchorMax = new Vector2(1, 1);
+        rectTransform.pivot = new Vector2(0.5f, 1);
+        rectTransform.anchoredPosition = new Vector2(0, 0);
+        rectTransform.sizeDelta = new Vector2(0, 12f);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Image image = menuBarGO.AddComponent<Image>();
+
+        Color color = Color.red;
+
+        if (ColorUtility.TryParseHtmlString("#FFFFFF", out color))
+        {
+            image.color = color;
+        }
+
+        menuBarGO.name = "Menu Bar";
+    }
+
+    public static void Draw_InfoBar(MissionEditor missionEditor)
+    {
+        //This draws the input label
+        GameObject infoBarGO = new GameObject();
+
+        infoBarGO.transform.SetParent(missionEditor.transform);
+        RectTransform rectTransform = infoBarGO.AddComponent<RectTransform>();
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.anchorMax = new Vector2(1, 0);
+        rectTransform.pivot = new Vector2(0.5f, 0);
+        rectTransform.anchoredPosition = new Vector2(0, 0);
+        rectTransform.sizeDelta = new Vector2(0, 12f);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Image image = infoBarGO.AddComponent<Image>();
+
+        Color color = Color.red;
+
+        if (ColorUtility.TryParseHtmlString("#D13737", out color))
+        {
+            image.color = color;
+        }
+
+        infoBarGO.name = "Info Bar";
     }
 
     #endregion
@@ -88,6 +171,7 @@ public static class MissionEditorFunctions
     {
         MissionEditor missionEditor = GetMissionEditor();
         AddNode(missionEditor.selectedNodeTypeToLoad);
+        DisplayMessage("Added " + missionEditor.selectedNodeTypeToLoad);
     }
 
     public static Node AddNode(string nodeType, bool setPosition = false, float nodePosX = 0, float nodePosY = 0)
@@ -217,6 +301,8 @@ public static class MissionEditorFunctions
             TextAsset missionDataTextAsset = new TextAsset(missionDataString);
             Mission mission = JsonUtility.FromJson<Mission>(missionDataTextAsset.text);
             Task a = new Task(LoadMissionData(mission));
+
+            DisplayMessage("Loaded " + missionEditor.selectedMissionToLoad);
         }
     }
 
@@ -663,6 +749,8 @@ public static class MissionEditorFunctions
         string saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName + ".json";
 
         File.WriteAllText(saveFile, jsonString);
+
+        DisplayMessage(missionEditor.missionName + " saved to " + Application.persistentDataPath + "/Custom Missions/");
     }
 
     public static void UpdateMissionName()
@@ -680,6 +768,20 @@ public static class MissionEditorFunctions
                 missionEditor.missionName = missionName.text;
             }
         }
+    }
+
+    public static void DisplayMessage(string message)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (missionEditor != null)
+        {
+            if (missionEditor.messageTextbox != null)
+            {
+                missionEditor.messageTextbox.text = message;
+            }
+        }
+
     }
 
 }

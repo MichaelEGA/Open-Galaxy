@@ -28,7 +28,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
 **Changelog**
 
-01/10/23 - v0.7.6
+01/10/23 - v0.7.6 (Unity 2022.2.9f1)
   - Fixed: Menu doesn't load when custom mission folder doesn't exist
   - Updated: General Code Cleanup
   - Added: External Mission Loading
@@ -38,14 +38,14 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Fixed: Event loop at the beginning of mission three
   - Added: Optional mission briefing screen event
 
-24/09/23 - v.0.6.61
+24/09/23 - v.0.6.61 (Unity 2022.2.9f1)
   - Added: Don't Attack Large Ships Function to Mission Functions
   - Fixed: Smallships targetting largeships before smallships
   - Updated: A-Wing cockpit lightmap texture added
   - Fixed: Ship now spins in a consistent direction
   - Updated: Turret placement code is complete
 
-18/09/23 - v.0.6.5
+18/09/23 - v.0.6.5 (Unity 2022.2.9f1)
   - Updated: Misc improvements
   - Updated: Radar prefabs
   - Added: Basic Ground Turret Code
@@ -60,7 +60,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Fixed: ships firing when no enemy is present
   - Updated: More checks to prevent loading errors from incorrect settings
 
-10/09/23 - v.0.6.3
+10/09/23 - v.0.6.3 (Unity 2022.2.9f1)
   - Updated: Cleaned up some mission functions
   - Fixed: Missions that broke with capital ship support
   - Updated: Minor modifications to prepare for node-based mission editor
@@ -71,7 +71,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Updated: Scene now unloads tiles when mission is over
   - Fixed: Various reported loading problems
 
-03/09/23 - v.0.6.2
+03/09/23 - v.0.6.2 (Unity 2022.2.9f1)
   - Updated: Death Star test mission with new messages and enemies
   - Added: Tile Loading to mission functions. 
   - Added: Death Star Mission - Our Moment of Triumph
@@ -83,7 +83,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Added: high resolution cockpit textures for FS
   - Updated: GC X-Wing cockpit improved
 
-27/08/23 - v.0.5.7
+27/08/23 - v.0.5.7 (Unity 2022.2.9f1)
   - Added: Galactic Conquest Cockpits, Bomber attack pattern, dynamic thruster placement
   - Added: Turret explodes on destruction + some general cleaning up
   - Added: Cockpit rotation for lighting effects
@@ -91,7 +91,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Fixed: turret tracking bud
   - Added: Turrets can be destroyed
 
-21/08/23 - v.0.5.21
+21/08/23 - v.0.5.21 (Unity 2022.2.9f1)
   - WARNING: This version may temporarily break some missions like 'Assault on Empress Station' 
   - Fixed: Upside Down Turret Rotation Fixed, and Capital Ships are Destroyed
   - Added: All turret prefabs set up, initial code for upside down turrets
@@ -104,7 +104,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Added: rotation restrictions on turrets
   - Updated: turret rotation improvements
 
-13/08/23 - v.0.5.2
+13/08/23 - v.0.5.2 (Unity 2022.2.9f1)
   - Added: capital ship turret loading
   - Added: "In Development" mission category
   - Updated: Correctly Implemented Code for Avoiding Collisions with large objects
@@ -112,17 +112,17 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Added: Rudimentary capital ship support complete
   - Added: Created base functions for capital ships
 
-08/08/23 - v.0.5.1
+08/08/23 - v.0.5.1 (Unity 2022.2.9f1)
   - Added: real cockpits, removed hud shake and hud glass
   - Added: dynamic head movement
   - Added: cockpit shake
 
-05/08/23 - v.0.5.01
+05/08/23 - v.0.5.01 (Unity 2022.2.9f1)
   - Updated: aes_b1.wav
   - Fixed: torpedoes locking on instantly
   - Fixed: target representation not showing
 
-02/08/23 - v.0.5.0
+02/08/23 - v.0.5.0 (Unity 2022.2.9f1)
   - Updated: cursor and fixed loading placement problems
   - Updated: all three training missions and the menu script
   - Updated: Minor changes to several missions
@@ -130,7 +130,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Added: the ladder rebel game mode
   - Added: dynamic messages to title and load screens
 
-30/07/23 - v.0.49.1
+30/07/23 - v.0.49.1 (Unity 2022.2.9f1)
   - Added: new mission functions: set target, set ai override mode
   - Added: invert options and planet heightmap resolution options
   - Added: external loading and saving of game settings from the persistent data file

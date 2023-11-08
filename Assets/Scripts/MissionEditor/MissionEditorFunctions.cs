@@ -15,6 +15,7 @@ public static class MissionEditorFunctions
         Draw_InfoBar(missionEditor);
         Draw_ScaleIndicator(missionEditor);
         Draw_MesssageTextBox(missionEditor);
+        Draw_MainMenu(missionEditor);
     }
 
     public static void Draw_ScaleIndicator(MissionEditor missionEditor)
@@ -87,6 +88,8 @@ public static class MissionEditorFunctions
         rectTransform.sizeDelta = new Vector2(0, 12f);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
+        missionEditor.menuBarRectTransform = rectTransform;
+
         Image image = menuBarGO.AddComponent<Image>();
 
         Color color = Color.red;
@@ -101,11 +104,11 @@ public static class MissionEditorFunctions
 
     public static void Draw_InfoBar(MissionEditor missionEditor)
     {
-        //This draws the input label
-        GameObject infoBarGO = new GameObject();
+        //This creates the button bar
+        GameObject infoBar1GO = new GameObject();
 
-        infoBarGO.transform.SetParent(missionEditor.transform);
-        RectTransform rectTransform = infoBarGO.AddComponent<RectTransform>();
+        infoBar1GO.transform.SetParent(missionEditor.transform);
+        RectTransform rectTransform = infoBar1GO.AddComponent<RectTransform>();
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(1, 0);
         rectTransform.pivot = new Vector2(0.5f, 0);
@@ -113,19 +116,209 @@ public static class MissionEditorFunctions
         rectTransform.sizeDelta = new Vector2(0, 12f);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
-        Image image = infoBarGO.AddComponent<Image>();
+        Image image = infoBar1GO.AddComponent<Image>();
 
-        Color color = Color.red;
+        Color color = Color.black;
 
-        if (ColorUtility.TryParseHtmlString("#D13737", out color))
+        if (ColorUtility.TryParseHtmlString("#404040", out color))
         {
             image.color = color;
         }
+    }
 
-        infoBarGO.name = "Info Bar";
+    public static void Draw_MainMenu(MissionEditor missionEditor)
+    {
+        if (missionEditor.menuBarRectTransform != null)
+        {
+            DrawTextButton(missionEditor.menuBarRectTransform.transform, 0, 0, 12, 25, "File", 7, "ActivateMenu", TextAnchor.MiddleCenter);
+            DrawTextButton(missionEditor.menuBarRectTransform.transform, 25, 0, 12, 45, "Add Event", 7, "ActivateMenu", TextAnchor.MiddleCenter);
+            DrawTextButton(missionEditor.menuBarRectTransform.transform, 70, 0, 12, 30, "Window", 7, "ActivateMenu", TextAnchor.MiddleCenter);
+            DrawTextButton(missionEditor.menuBarRectTransform.transform, 100, 0, 12, 25, "Help", 7, "ActivateMenu", TextAnchor.MiddleCenter);
+        }
+
+        float shift = 0;
+        string spaces = "        ";
+
+        List<string> file_Buttons = new List<string>();
+        file_Buttons.Add(spaces + "New");
+        file_Buttons.Add(spaces + "Open");
+        file_Buttons.Add(spaces + "Exit to Open Galaxy");
+        file_Buttons.Add(spaces + "Exit to Windows");
+
+        List<string> file_Functions = new List<string>();
+        file_Functions.Add("none");
+        file_Functions.Add("none");
+        file_Functions.Add("none");
+        file_Functions.Add("none");
+        file_Functions.Add("none");
+
+        GameObject fileMenu = DrawDropDownMenu(missionEditor.transform, "File", shift, file_Buttons.ToArray(), file_Functions.ToArray());
+
+        List<string> addEvent_Buttons = new List<string>();
+        addEvent_Buttons.Add(spaces + "Add New Event");
+
+        List<string> addEvent_Functions = new List<string>();
+        addEvent_Functions.Add("none");
+
+        shift += 25;
+
+        GameObject addEventMenu = DrawDropDownMenu(missionEditor.transform, "Add Event", shift, addEvent_Buttons.ToArray(), addEvent_Functions.ToArray());
+
+        List<string> window_Buttons = new List<string>();
+        window_Buttons.Add(spaces + "Make Fullscreen");
+        window_Buttons.Add(spaces + "Make Windowed");
+
+        List<string> window_Functions = new List<string>();
+        window_Functions.Add("none");
+        window_Functions.Add("none");
+
+        shift += 45;
+
+        GameObject windowMenu = DrawDropDownMenu(missionEditor.transform, "Window", shift, window_Buttons.ToArray(), window_Functions.ToArray());
+
+        List<string> help_Buttons = new List<string>();
+        help_Buttons.Add(spaces + "About OG Mission Editor");
+        help_Buttons.Add(spaces + "Open Mission Editor Wiki");
+
+        List<string> help_Functions = new List<string>();
+        help_Functions.Add("none");
+        help_Functions.Add("none");
+
+        shift += 30;
+
+        GameObject helpMenu = DrawDropDownMenu(missionEditor.transform, "Help", shift, help_Buttons.ToArray(), help_Functions.ToArray());
+
+        if (missionEditor.menus == null)
+        {
+            missionEditor.menus = new List<GameObject>();
+        }
+        else
+        {
+            missionEditor.menus.Add(fileMenu);
+            missionEditor.menus.Add(addEventMenu);
+            missionEditor.menus.Add(windowMenu);
+            missionEditor.menus.Add(helpMenu);
+
+            foreach (GameObject menu in missionEditor.menus)
+            {
+                menu.SetActive(false);
+            }
+        }
+    }
+
+    public static void DrawTextButton(Transform parent, float xPos, float yPos, float height, float width, string buttonText, int fontSize, string functionType, TextAnchor alignement = TextAnchor.MiddleCenter)
+    {
+        GameObject buttonGO = new GameObject();
+        GameObject buttonTextGO = new GameObject();
+ 
+        buttonGO.transform.SetParent(parent);
+        buttonTextGO.transform.SetParent(buttonGO.transform);
+
+        RectTransform rectTransform1 = buttonGO.AddComponent<RectTransform>();
+        rectTransform1.anchorMax = new Vector2(0, 1);
+        rectTransform1.anchorMin = new Vector2(0, 1);
+        rectTransform1.pivot = new Vector2(0, 1);
+        rectTransform1.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform1.sizeDelta = new Vector2(width, height);
+        rectTransform1.localScale = new Vector3(1, 1, 1);
+
+        RectTransform rectTransform2 = buttonTextGO.AddComponent<RectTransform>();
+        rectTransform2.anchorMax = new Vector2(0, 1);
+        rectTransform2.anchorMin = new Vector2(0, 1);
+        rectTransform2.pivot = new Vector2(0, 1);
+        rectTransform2.anchoredPosition = new Vector2(0, 0);
+        rectTransform2.sizeDelta = new Vector2(width, height);
+        rectTransform2.localScale = new Vector3(1, 1, 1);
+
+        Text text = buttonTextGO.AddComponent<Text>();
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.fontSize = fontSize;
+        text.text = buttonText;
+        text.alignment = alignement;
+        text.color = Color.black;
+
+        Image buttonImage = buttonGO.AddComponent<Image>();
+        buttonImage.color = Color.white;
+
+        Button button = buttonGO.AddComponent<Button>();
+        button.targetGraphic = buttonImage;
+
+        Color color = Color.white;
+
+        if (ColorUtility.TryParseHtmlString("#C3C3C3", out color))
+        {
+            ColorBlock colorVar = button.colors;
+            colorVar.highlightedColor = color;
+        }
+
+        if (functionType == "ActivateMenu")
+        {
+            button.onClick.AddListener(() => { MissionEditorFunctions.ActivateMenu(buttonText); });
+        }
+
+        buttonGO.name = "button_" + functionType;
+    }
+
+    public static GameObject DrawDropDownMenu(Transform parent, string name, float xPosition, string[] buttons, string[] functions)
+    {
+        GameObject menuBaseGO = new GameObject();
+
+        menuBaseGO.name = name;
+
+        menuBaseGO.transform.SetParent(parent);
+
+        //This sets up the node background
+        RectTransform rectTransform = menuBaseGO.AddComponent<RectTransform>();
+
+        float height = buttons.Length * 12;
+        float drop = 0;
+        int buttonNo = 0;
+
+        Image background = menuBaseGO.AddComponent<Image>();
+        background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
+        background.type = Image.Type.Sliced;
+        background.pixelsPerUnitMultiplier = 20;
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(xPosition, -12);
+        rectTransform.sizeDelta = new Vector2(150, height);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        foreach (string button in buttons)
+        {
+            DrawTextButton(rectTransform.transform, 2, drop, 12, 146, button, 7, functions[buttonNo], TextAnchor.MiddleLeft);
+            drop -= 12;
+            buttonNo += 1;
+        }
+
+        return menuBaseGO;
     }
 
     #endregion
+
+    public static void ActivateMenu(string menuName)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (missionEditor.menus != null)
+        {
+            foreach (GameObject menu in missionEditor.menus)
+            {
+                if (menu != null)
+                {
+                    if (menu.name == menuName)
+                    {
+                        menu.SetActive(true);
+                    }
+                    else
+                    {
+                        menu.SetActive(false);
+                    }
+                }
+            }
+        }
+    }
 
     public static void SelectNodeType(string nodeType)
     {
@@ -204,7 +397,7 @@ public static class MissionEditorFunctions
         bool scaling = true;
 
         //Checks whether mouse is in position to scale
-        foreach (Menu menu in missionEditor.menus)
+        foreach (Window menu in missionEditor.windows)
         {
             if (menu.scaling == false)
             {

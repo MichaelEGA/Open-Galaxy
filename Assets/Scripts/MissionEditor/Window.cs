@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
+public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    public string menuType = "Add Node";
+    public string windowType = "Add Node";
     public float xPos = 0;
     public float yPos = 0;
 
@@ -18,7 +18,7 @@ public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     private bool dragging;
     public bool scaling;
 
-    private bool MenuDrawn;
+    private bool windowDrawn;
 
     public ScrollRect scrollRect;
 
@@ -30,7 +30,7 @@ public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         //This gets the reference to the mission editor
         missionEditor = MissionEditorFunctions.GetMissionEditor();
 
-        MenuFunctions.DrawMenuBase(this);
+        WindowFunctions.DrawWindowBase(this);
     }
 
     // Update is called once per frame
@@ -46,26 +46,26 @@ public class Menu : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
             transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         }
 
-        if (MenuDrawn == false)
+        if (windowDrawn == false)
         {
-            if (menuType == "mainmenu")
+            if (windowType == "mainmenu")
             {
-                MenuFunctions.Draw_MainMenu(this);
+                WindowFunctions.Draw_MainMenu(this);
             }
-            else if (menuType == "addnodes")
+            else if (windowType == "addnodes")
             {
-                MenuFunctions.Draw_AddNode(this);
+                WindowFunctions.Draw_AddNode(this);
             }
-            else if (menuType == "loadmission")
+            else if (windowType == "loadmission")
             {
-                MenuFunctions.Draw_LoadMission(this);
+                WindowFunctions.Draw_LoadMission(this);
             }
-            else if (menuType == "savemission")
+            else if (windowType == "savemission")
             {
-                MenuFunctions.Draw_SaveMission(this);
+                WindowFunctions.Draw_SaveMission(this);
             }
 
-            MenuDrawn = true;
+            windowDrawn = true;
         }
     }
 

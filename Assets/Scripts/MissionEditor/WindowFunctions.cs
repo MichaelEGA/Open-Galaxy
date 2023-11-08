@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 
-public static class MenuFunctions
+public static class WindowFunctions
 {
     //This generates the main menu node
-    public static void Draw_MainMenu(Menu menu)
+    public static void Draw_MainMenu(Window menu)
     {
         DrawText(menu, "Mission Editor", 8, 5, -5, 12.5f, 90);
 
@@ -26,7 +26,7 @@ public static class MenuFunctions
         DrawImageButton(menu, 60, -75, 25, 25, "trashcan", "none");
     }
 
-    public static void Draw_AddNode(Menu menu)
+    public static void Draw_AddNode(Window menu)
     {
         DrawText(menu, "Add Event Node", 8, 5, -5, 12.5f, 90);
 
@@ -90,7 +90,7 @@ public static class MenuFunctions
         DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
 
-    public static void Draw_LoadMission(Menu menu)
+    public static void Draw_LoadMission(Window menu)
     {
         DrawText(menu, "Load Mission", 8, 5, -5, 12.5f, 90);
 
@@ -114,7 +114,7 @@ public static class MenuFunctions
         DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
     }
 
-    public static void Draw_SaveMission(Menu menu)
+    public static void Draw_SaveMission(Window menu)
     {
         DrawText(menu, "Save Mission", 8, 5, -5, 12.5f, 90);
 
@@ -122,7 +122,7 @@ public static class MenuFunctions
 
         float drop = -25;
 
-        MenuFunctions.DrawInputField(menu, "Mission Name", "none", 7, 5, drop, 12.5f, 90, 5f, "MissionNameField");
+        WindowFunctions.DrawInputField(menu, "Mission Name", "none", 7, 5, drop, 12.5f, 90, 5f, "MissionNameField");
 
         drop -= 15;
 
@@ -132,7 +132,7 @@ public static class MenuFunctions
     #region draw menu functions
 
     //This draws the base node gameobject
-    public static void DrawMenuBase(Menu menu)
+    public static void DrawWindowBase(Window menu)
     {
         //This sets up the node background
         menu.rectTransform = menu.gameObject.AddComponent<RectTransform>();
@@ -147,7 +147,7 @@ public static class MenuFunctions
     }
 
     //This draws a title
-    public static void DrawText(Menu menu, string title, int fontSize, float xPos, float yPos, float height, float width)
+    public static void DrawText(Window menu, string title, int fontSize, float xPos, float yPos, float height, float width)
     {
         //This draws the input label
         GameObject titleGO = new GameObject();
@@ -173,7 +173,7 @@ public static class MenuFunctions
     }
 
     //This draws a line break
-    public static void DrawLineBreak(Menu menu, string color, float xPos, float yPos, float height, float width)
+    public static void DrawLineBreak(Window menu, string color, float xPos, float yPos, float height, float width)
     {
         GameObject lineBreakGO = new GameObject();
 
@@ -201,7 +201,7 @@ public static class MenuFunctions
     }
 
     //This draws a button and allocates a function
-    public static void DrawImageButton(Menu menu, float xPos, float yPos, float height, float width, string imageName, string functionType, bool parentToNode = true, Transform differentTransform = null)
+    public static void DrawImageButton(Window menu, float xPos, float yPos, float height, float width, string imageName, string functionType, bool parentToNode = true, Transform differentTransform = null)
     {
         GameObject buttonGO = new GameObject();
 
@@ -237,7 +237,7 @@ public static class MenuFunctions
     }
 
     //This draws a button and allocates a function
-    public static void DrawTextButton(Menu menu, float xPos, float yPos, float height, float width, string buttonImageName, string buttonText, int fontSize, string functionType, TextAnchor alignement = TextAnchor.MiddleCenter, bool parentToNode = true, Transform differentTransform = null)
+    public static void DrawTextButton(Window menu, float xPos, float yPos, float height, float width, string buttonImageName, string buttonText, int fontSize, string functionType, TextAnchor alignement = TextAnchor.MiddleCenter, bool parentToNode = true, Transform differentTransform = null)
     {
         GameObject buttonGO = new GameObject();
         GameObject buttonTextGO = new GameObject();
@@ -319,7 +319,7 @@ public static class MenuFunctions
         buttonGO.name = "button_" + functionType;
     }
 
-    public static void DrawScrollableButtons(Menu menu, float xPos, float yPos, float height, float width, float buttonHeight, int fontSize, string[] buttons, string[] functions)
+    public static void DrawScrollableButtons(Window menu, float xPos, float yPos, float height, float width, float buttonHeight, int fontSize, string[] buttons, string[] functions)
     {
         GameObject baseGO = new GameObject();
         GameObject viewportGO = new GameObject();
@@ -386,7 +386,7 @@ public static class MenuFunctions
     }
 
     //This draws a text box
-    public static void DrawTextBox(Menu menu, float xPos, float yPos, float height, float width, string backgroundImageName, string textBoxText, int fontSize, TextAnchor alignement = TextAnchor.MiddleCenter, bool parentToNode = true, Transform differentTransform = null, string name = "none")
+    public static void DrawTextBox(Window menu, float xPos, float yPos, float height, float width, string backgroundImageName, string textBoxText, int fontSize, TextAnchor alignement = TextAnchor.MiddleCenter, bool parentToNode = true, Transform differentTransform = null, string name = "none")
     {
         GameObject textboxGO = new GameObject();
         GameObject textBoxTextGO = new GameObject();
@@ -448,7 +448,7 @@ public static class MenuFunctions
 
     }
 
-    public static Text DrawInputField(Menu menu, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10, string name = "none")
+    public static Text DrawInputField(Window menu, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10, string name = "none")
     {
         float halfwidth = (width - gap) / 2f;
         float shiftedXPosition = xPos + halfwidth + (gap / 2f);
@@ -554,7 +554,7 @@ public static class MenuFunctions
     }
 
     //This modifies the caret position to ensure its on top
-    public static void ModifyCaretPosition(Menu menu)
+    public static void ModifyCaretPosition(Window menu)
     {
         Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(menu.transform, "Caret");
 

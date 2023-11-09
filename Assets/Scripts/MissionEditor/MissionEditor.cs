@@ -33,32 +33,6 @@ public class MissionEditor : MonoBehaviour
 
         MissionEditorFunctions.SetWindowMode(this);
         MissionEditorFunctions.Draw_MissionEditor(this);
-
-        windows = new List<Window>();
-
-        GameObject menu1GO = new GameObject();
-        menu1GO.transform.SetParent(gameObject.transform);
-        Window menu1 = menu1GO.AddComponent<Window>();
-        menu1.windowType = "mainmenu";
-        windows.Add(menu1);
-
-        GameObject menu2GO = new GameObject();
-        menu2GO.transform.SetParent(gameObject.transform);
-        Window menu2 = menu2GO.AddComponent<Window>();
-        menu2.windowType = "addnodes";
-        windows.Add(menu2);
-
-        GameObject menu3GO = new GameObject();
-        menu3GO.transform.SetParent(gameObject.transform);
-        Window menu3 = menu3GO.AddComponent<Window>();
-        menu3.windowType = "savemission";
-        windows.Add(menu3);
-
-        GameObject menu4GO = new GameObject();
-        menu4GO.transform.SetParent(gameObject.transform);
-        Window menu4 = menu4GO.AddComponent<Window>();
-        menu4.windowType = "loadmission";
-        windows.Add(menu4);
     }
 
     // Update is called once per frame

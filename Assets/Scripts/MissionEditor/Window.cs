@@ -18,8 +18,6 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
     private bool dragging;
     public bool scaling;
 
-    private bool windowDrawn;
-
     public ScrollRect scrollRect;
 
     MissionEditor missionEditor;
@@ -29,30 +27,7 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
     {
         //This gets the reference to the mission editor
         missionEditor = MissionEditorFunctions.GetMissionEditor();
-
-        WindowFunctions.DrawWindowBase(this);
-
-        if (windowDrawn == false)
-        {
-            if (windowType == "mainmenu")
-            {
-                WindowFunctions.Draw_MainMenu(this);
-            }
-            else if (windowType == "addnodes")
-            {
-                WindowFunctions.Draw_AddNode(this);
-            }
-            else if (windowType == "loadmission")
-            {
-                WindowFunctions.Draw_LoadMission(this);
-            }
-            else if (windowType == "savemission")
-            {
-                WindowFunctions.Draw_SaveMission(this);
-            }
-
-            windowDrawn = true;
-        }
+        WindowFunctions.SelectWindowType(this);
     }
 
     // Update is called once per frame

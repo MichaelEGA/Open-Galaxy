@@ -6,31 +6,36 @@ using System.IO;
 
 public static class WindowFunctions
 {
-    //This generates the main menu node
-    public static void Draw_MainMenu(Window menu)
+    #region Window Types
+
+    //This selects the type of window to load according to the name
+    public static void SelectWindowType(Window window)
     {
-        DrawText(menu, "Mission Editor", 8, 5, -5, 12.5f, 90);
+        if (window.windowType == "addnodes")
+        {
+            WindowFunctions.Draw_AddNode(window);
+        }
+        else if (window.windowType == "loadmission")
+        {
+            WindowFunctions.Draw_LoadMission(window);
+        }
+        else if (window.windowType == "savemission")
+        {
+            WindowFunctions.Draw_SaveMission(window);
+        }
 
-        DrawLineBreak(menu, "#808080", 0, -20, 1, 100);
-
-        DrawImageButton(menu, 10, -25, 25, 25, "exit", "ExitMissionEditor");
-
-        DrawImageButton(menu, 60, -25, 25, 25, "import", "none");
-
-        DrawImageButton(menu, 10, -50, 25, 25, "plus", "none");
-
-        DrawImageButton(menu, 60, -50, 25, 25, "save", "none");
-
-        DrawImageButton(menu, 10, -75, 25, 25, "star", "none");
-
-        DrawImageButton(menu, 60, -75, 25, 25, "trashcan", "none");
+        //This closes all menus when a new window is being added
+        MissionEditorFunctions.CloseAllMenus();
     }
 
-    public static void Draw_AddNode(Window menu)
+    //This draws the add now window
+    public static void Draw_AddNode(Window window)
     {
-        DrawText(menu, "Add Event Node", 8, 5, -5, 12.5f, 90);
+        DrawWindowBase(window);
 
-        DrawLineBreak(menu, "#808080", 0, -20, 1, 100);
+        DrawText(window, "Add Event Node", 8, 5, -5, 12.5f, 90);
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 100);
 
         List<string> buttonList = new List<string>();
 
@@ -83,18 +88,21 @@ public static class WindowFunctions
         string[] buttons = buttonList.ToArray();
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(menu, 5, -25, 70, 90, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -25, 70, 90, 10, 7, buttons, functions);
 
-        DrawTextBox(menu, 5, -100, 70, 90, "NodeSprite_Dark", "Information about nodes", 5, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
+        DrawTextBox(window, 5, -100, 70, 90, "NodeSprite_Dark", "Information about nodes", 5, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
 
-        DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 5, -180, 10, 90, "NodeSprite_Dark", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
 
-    public static void Draw_LoadMission(Window menu)
+    //This draws the load mission window
+    public static void Draw_LoadMission(Window window)
     {
-        DrawText(menu, "Load Mission", 8, 5, -5, 12.5f, 90);
+        DrawWindowBase(window);
 
-        DrawLineBreak(menu, "#808080", 0, -20, 1, 100);
+        DrawText(window, "Load Mission", 8, 5, -5, 12.5f, 90);
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 100);
 
         float drop = -25;
 
@@ -109,50 +117,55 @@ public static class WindowFunctions
 
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(menu, 5, -25, 70, 90, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -25, 70, 90, 10, 7, buttons, functions);
 
-        DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 5, -180, 10, 90, "NodeSprite_Dark", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
     }
 
-    public static void Draw_SaveMission(Window menu)
+    //This draws the save mission window
+    public static void Draw_SaveMission(Window window)
     {
-        DrawText(menu, "Save Mission", 8, 5, -5, 12.5f, 90);
+        DrawWindowBase(window);
 
-        DrawLineBreak(menu, "#808080", 0, -20, 1, 100);
+        DrawText(window, "Save Mission", 8, 5, -5, 12.5f, 90);
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 100);
 
         float drop = -25;
 
-        WindowFunctions.DrawInputField(menu, "Mission Name", "none", 7, 5, drop, 12.5f, 90, 5f, "MissionNameField");
+        WindowFunctions.DrawInputField(window, "Mission Name", "none", 7, 5, drop, 12.5f, 90, 5f, "MissionNameField");
 
         drop -= 15;
 
-        DrawTextButton(menu, 5, -180, 10, 90, "NodeSprite_Dark", "Save Mission", 7, "SaveMission", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 5, -180, 10, 90, "NodeSprite_Dark", "Save Mission", 7, "SaveMission", TextAnchor.MiddleCenter);
     }
 
-    #region draw menu functions
+    #endregion
+
+    #region Draw Window Functions
 
     //This draws the base node gameobject
-    public static void DrawWindowBase(Window menu)
+    public static void DrawWindowBase(Window window)
     {
         //This sets up the node background
-        menu.rectTransform = menu.gameObject.AddComponent<RectTransform>();
+        window.rectTransform = window.gameObject.AddComponent<RectTransform>();
 
-        menu.background = menu.gameObject.AddComponent<Image>();
-        menu.background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Grey");
-        menu.background.type = Image.Type.Sliced;
-        menu.background.pixelsPerUnitMultiplier = 5;
-        menu.rectTransform.sizeDelta = new Vector2(menu.sizeX, menu.sizeZ);
-        menu.rectTransform.localPosition = new Vector2(menu.xPos, menu.yPos);
-        menu.rectTransform.localScale = new Vector3(1, 1, 1);
+        window.background = window.gameObject.AddComponent<Image>();
+        window.background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Grey");
+        window.background.type = Image.Type.Sliced;
+        window.background.pixelsPerUnitMultiplier = 5;
+        window.rectTransform.sizeDelta = new Vector2(window.sizeX, window.sizeZ);
+        window.rectTransform.localPosition = new Vector2(window.xPos, window.yPos);
+        window.rectTransform.localScale = new Vector3(1, 1, 1);
     }
 
     //This draws a title
-    public static void DrawText(Window menu, string title, int fontSize, float xPos, float yPos, float height, float width)
+    public static void DrawText(Window window, string title, int fontSize, float xPos, float yPos, float height, float width)
     {
         //This draws the input label
         GameObject titleGO = new GameObject();
 
-        titleGO.transform.SetParent(menu.rectTransform.transform);
+        titleGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform = titleGO.AddComponent<RectTransform>();
         rectTransform.anchorMax = new Vector2(0, 1);
         rectTransform.anchorMin = new Vector2(0, 1);
@@ -173,11 +186,11 @@ public static class WindowFunctions
     }
 
     //This draws a line break
-    public static void DrawLineBreak(Window menu, string color, float xPos, float yPos, float height, float width)
+    public static void DrawLineBreak(Window window, string color, float xPos, float yPos, float height, float width)
     {
         GameObject lineBreakGO = new GameObject();
 
-        lineBreakGO.transform.SetParent(menu.rectTransform.transform);
+        lineBreakGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform = lineBreakGO.AddComponent<RectTransform>();
         rectTransform.anchorMax = new Vector2(0, 1);
         rectTransform.anchorMin = new Vector2(0, 1);
@@ -201,13 +214,13 @@ public static class WindowFunctions
     }
 
     //This draws a button and allocates a function
-    public static void DrawImageButton(Window menu, float xPos, float yPos, float height, float width, string imageName, string functionType, bool parentToNode = true, Transform differentTransform = null)
+    public static void DrawImageButton(Window window, float xPos, float yPos, float height, float width, string imageName, string functionType, bool parentToNode = true, Transform differentTransform = null)
     {
         GameObject buttonGO = new GameObject();
 
         if (parentToNode == true)
         {
-            buttonGO.transform.SetParent(menu.rectTransform.transform);
+            buttonGO.transform.SetParent(window.rectTransform.transform);
         }
         else
         {
@@ -237,14 +250,14 @@ public static class WindowFunctions
     }
 
     //This draws a button and allocates a function
-    public static void DrawTextButton(Window menu, float xPos, float yPos, float height, float width, string buttonImageName, string buttonText, int fontSize, string functionType, TextAnchor alignement = TextAnchor.MiddleCenter, bool parentToNode = true, Transform differentTransform = null)
+    public static void DrawTextButton(Window window, float xPos, float yPos, float height, float width, string buttonImageName, string buttonText, int fontSize, string functionType, TextAnchor alignement = TextAnchor.MiddleCenter, bool parentToNode = true, Transform differentTransform = null)
     {
         GameObject buttonGO = new GameObject();
         GameObject buttonTextGO = new GameObject();
 
         if (parentToNode == true)
         {
-            buttonGO.transform.SetParent(menu.rectTransform.transform);
+            buttonGO.transform.SetParent(window.rectTransform.transform);
         }
         else
         {
@@ -319,13 +332,13 @@ public static class WindowFunctions
         buttonGO.name = "button_" + functionType;
     }
 
-    public static void DrawScrollableButtons(Window menu, float xPos, float yPos, float height, float width, float buttonHeight, int fontSize, string[] buttons, string[] functions)
+    public static void DrawScrollableButtons(Window window, float xPos, float yPos, float height, float width, float buttonHeight, int fontSize, string[] buttons, string[] functions)
     {
         GameObject baseGO = new GameObject();
         GameObject viewportGO = new GameObject();
         GameObject contentGO = new GameObject();
 
-        baseGO.transform.SetParent(menu.transform);
+        baseGO.transform.SetParent(window.transform);
         viewportGO.transform.SetParent(baseGO.transform);
         contentGO.transform.SetParent(viewportGO.transform);
 
@@ -379,21 +392,21 @@ public static class WindowFunctions
 
         foreach (string button in buttons)
         {
-            DrawTextButton(menu, 0, buttonDrop, buttonHeight, width, "none", button, fontSize, functions[i], TextAnchor.MiddleLeft, false, contentGO.transform);
+            DrawTextButton(window, 0, buttonDrop, buttonHeight, width, "none", button, fontSize, functions[i], TextAnchor.MiddleLeft, false, contentGO.transform);
             buttonDrop -= buttonHeight;
             i++;
         }
     }
 
     //This draws a text box
-    public static void DrawTextBox(Window menu, float xPos, float yPos, float height, float width, string backgroundImageName, string textBoxText, int fontSize, TextAnchor alignement = TextAnchor.MiddleCenter, bool parentToNode = true, Transform differentTransform = null, string name = "none")
+    public static void DrawTextBox(Window window, float xPos, float yPos, float height, float width, string backgroundImageName, string textBoxText, int fontSize, TextAnchor alignement = TextAnchor.MiddleCenter, bool parentToNode = true, Transform differentTransform = null, string name = "none")
     {
         GameObject textboxGO = new GameObject();
         GameObject textBoxTextGO = new GameObject();
 
         if (parentToNode == true)
         {
-            textboxGO.transform.SetParent(menu.rectTransform.transform);
+            textboxGO.transform.SetParent(window.rectTransform.transform);
         }
         else
         {
@@ -448,7 +461,7 @@ public static class WindowFunctions
 
     }
 
-    public static Text DrawInputField(Window menu, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10, string name = "none")
+    public static Text DrawInputField(Window window, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10, string name = "none")
     {
         float halfwidth = (width - gap) / 2f;
         float shiftedXPosition = xPos + halfwidth + (gap / 2f);
@@ -456,7 +469,7 @@ public static class WindowFunctions
         //This draws the input label
         GameObject labelGO = new GameObject();
 
-        labelGO.transform.SetParent(menu.rectTransform.transform);
+        labelGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform2 = labelGO.AddComponent<RectTransform>();
         rectTransform2.anchorMax = new Vector2(0, 1);
         rectTransform2.anchorMin = new Vector2(0, 1);
@@ -476,7 +489,7 @@ public static class WindowFunctions
         //This draws the background of the input field
         GameObject inputFieldBackgroundGO = new GameObject();
 
-        inputFieldBackgroundGO.transform.SetParent(menu.rectTransform.transform);
+        inputFieldBackgroundGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform3 = inputFieldBackgroundGO.AddComponent<RectTransform>();
         rectTransform3.anchorMax = new Vector2(0, 1);
         rectTransform3.anchorMin = new Vector2(0, 1);
@@ -493,7 +506,7 @@ public static class WindowFunctions
         //This draws the input field
         GameObject inputFieldGO = new GameObject();
 
-        inputFieldGO.transform.SetParent(menu.rectTransform.transform);
+        inputFieldGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform = inputFieldGO.AddComponent<RectTransform>();
         rectTransform.anchorMax = new Vector2(0, 1);
         rectTransform.anchorMin = new Vector2(0, 1);
@@ -518,7 +531,7 @@ public static class WindowFunctions
 
         GameObject transitionTextGO = new GameObject();
 
-        transitionTextGO.transform.SetParent(menu.rectTransform.transform);
+        transitionTextGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform4 = transitionTextGO.AddComponent<RectTransform>();
         rectTransform4.anchorMax = new Vector2(0, 1);
         rectTransform4.anchorMin = new Vector2(0, 1);
@@ -548,17 +561,17 @@ public static class WindowFunctions
         }
 
         //If this is not run the caret will display behind the text box...
-        ModifyCaretPosition(menu);
+        ModifyCaretPosition(window);
 
         return transitionText;
     }
 
     //This modifies the caret position to ensure its on top
-    public static void ModifyCaretPosition(Window menu)
+    public static void ModifyCaretPosition(Window window)
     {
-        Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(menu.transform, "Caret");
+        Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(window.transform, "Caret");
 
-        int childNumber = menu.transform.childCount;
+        int childNumber = window.transform.childCount;
 
         foreach (Transform caret in carets)
         {
@@ -567,6 +580,8 @@ public static class WindowFunctions
     }
 
     #endregion
+
+    #region Misc Windows Functions
 
     public static string[] GetMissionList()
     {
@@ -595,4 +610,6 @@ public static class WindowFunctions
 
         return buttonList.ToArray();
     }
+
+    #endregion
 }

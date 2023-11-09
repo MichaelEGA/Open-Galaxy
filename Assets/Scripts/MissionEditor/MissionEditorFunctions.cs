@@ -142,15 +142,18 @@ public static class MissionEditorFunctions
         List<string> file_Buttons = new List<string>();
         file_Buttons.Add(spaces + "New");
         file_Buttons.Add(spaces + "Open");
+        file_Buttons.Add(spaces + "Merge");
+        file_Buttons.Add(spaces + "Save");
         file_Buttons.Add(spaces + "Exit to Open Galaxy");
         file_Buttons.Add(spaces + "Exit to Windows");
 
         List<string> file_Functions = new List<string>();
-        file_Functions.Add("none");
-        file_Functions.Add("none");
-        file_Functions.Add("none");
-        file_Functions.Add("none");
-        file_Functions.Add("none");
+        file_Functions.Add("OpenNewWindow");
+        file_Functions.Add("OpenOpenWindow");
+        file_Functions.Add("OpenMergeWindow");
+        file_Functions.Add("OpenSaveWindow");
+        file_Functions.Add("ExitMissionEditor");
+        file_Functions.Add("ExitToWindows");
 
         GameObject fileMenu = DrawDropDownMenu(missionEditor.transform, "File", shift, file_Buttons.ToArray(), file_Functions.ToArray());
 
@@ -158,7 +161,7 @@ public static class MissionEditorFunctions
         addEvent_Buttons.Add(spaces + "Add New Event");
 
         List<string> addEvent_Functions = new List<string>();
-        addEvent_Functions.Add("none");
+        addEvent_Functions.Add("OpenAddNewEvent");
 
         shift += 25;
 
@@ -253,7 +256,35 @@ public static class MissionEditorFunctions
 
         if (functionType == "ActivateMenu")
         {
-            button.onClick.AddListener(() => { MissionEditorFunctions.ActivateMenu(buttonText); });
+            button.onClick.AddListener(() => { ActivateMenu(buttonText); });
+        }
+        else if (functionType == "ExitMissionEditor")
+        {
+            button.onClick.AddListener(() => { ExitMissionEditor(); });
+        }
+        else if (functionType == "ExitToWindows")
+        {
+            button.onClick.AddListener(() => { ExitToWindows(); });
+        }
+        else if (functionType == "OpenSaveWindow")
+        {
+            button.onClick.AddListener(() => { OpenWindow("savemission"); });
+        }
+        else if (functionType == "OpenOpenWindow")
+        {
+            button.onClick.AddListener(() => { OpenWindow("loadmission"); });
+        }
+        else if (functionType == "OpenMergeWindow")
+        {
+            button.onClick.AddListener(() => { OpenWindow("loadmission"); });
+        }
+        else if (functionType == "OpenNewWindow")
+        {
+            //button.onClick.AddListener(() => { OpenWindow("loadmission"); });
+        }
+        else if (functionType == "OpenAddNewEvent")
+        {
+            button.onClick.AddListener(() => { OpenWindow("addnodes"); });
         }
 
         buttonGO.name = "button_" + functionType;
@@ -297,6 +328,8 @@ public static class MissionEditorFunctions
 
     #endregion
 
+    #region menus
+
     public static void ActivateMenu(string menuName)
     {
         MissionEditor missionEditor = GetMissionEditor();
@@ -338,6 +371,28 @@ public static class MissionEditorFunctions
             }
         }
     }
+
+    #endregion
+
+    #region windows
+
+    public static void OpenWindow(string windowName)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (missionEditor.windows == null)
+        {
+            missionEditor.windows = new List<Window>();
+        }
+
+        GameObject windowGO = new GameObject();
+        windowGO.transform.SetParent(missionEditor.gameObject.transform);
+        Window window = windowGO.AddComponent<Window>();
+        window.windowType = windowName;
+        missionEditor.windows.Add(window);
+    }
+
+    #endregion
 
     public static void SelectNodeType(string nodeType)
     {
@@ -479,6 +534,13 @@ public static class MissionEditorFunctions
         {
             missionEditor.gameObject.SetActive(false);
         }
+    }
+
+    public static void ExitToWindows()
+    {
+        Debug.Log("Quitting to windows - NOTE: Only works in build");
+
+        Application.Quit();
     }
 
     public static MissionEditor GetMissionEditor()

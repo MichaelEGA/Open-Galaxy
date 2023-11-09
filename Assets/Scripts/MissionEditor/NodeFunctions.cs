@@ -397,6 +397,106 @@ public class NodeFunctions : MonoBehaviour
         return transitionText;
     }
 
+    //This draws an empty input field
+    public static Text DrawInputFieldLarge(Node node, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
+    {
+        float shiftedYPosition = yPos - 12.5f;
+        float modifiedHeight = height - 12.5f;
+
+        //This draws the input label
+        GameObject labelGO = new GameObject();
+
+        labelGO.transform.SetParent(node.rectTransform.transform);
+        RectTransform rectTransform2 = labelGO.AddComponent<RectTransform>();
+        rectTransform2.anchorMax = new Vector2(0, 1);
+        rectTransform2.anchorMin = new Vector2(0, 1);
+        rectTransform2.pivot = new Vector2(0, 1);
+        rectTransform2.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform2.sizeDelta = new Vector2(width, 12);
+        rectTransform2.localScale = new Vector3(1, 1, 1);
+
+        Text labelText = labelGO.AddComponent<Text>();
+        labelText.supportRichText = false;
+        labelText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        labelText.text = label;
+        labelText.fontSize = fontSize;
+        labelText.color = Color.white;
+        labelText.alignment = TextAnchor.MiddleLeft;
+
+        //This draws the background of the input field
+        GameObject inputFieldBackgroundGO = new GameObject();
+
+        inputFieldBackgroundGO.transform.SetParent(node.rectTransform.transform);
+        RectTransform rectTransform3 = inputFieldBackgroundGO.AddComponent<RectTransform>();
+        rectTransform3.anchorMax = new Vector2(0, 1);
+        rectTransform3.anchorMin = new Vector2(0, 1);
+        rectTransform3.pivot = new Vector2(0, 1);
+        rectTransform3.anchoredPosition = new Vector2(xPos, shiftedYPosition);
+        rectTransform3.sizeDelta = new Vector2(width, modifiedHeight);
+        rectTransform3.localScale = new Vector3(1, 1, 1);
+
+        Image inputFieldImage = inputFieldBackgroundGO.AddComponent<Image>();
+        inputFieldImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
+        inputFieldImage.type = Image.Type.Sliced;
+        inputFieldImage.pixelsPerUnitMultiplier = 30;
+
+        //This draws the input field
+        GameObject inputFieldGO = new GameObject();
+
+        inputFieldGO.transform.SetParent(node.rectTransform.transform);
+
+        RectTransform rectTransform = inputFieldGO.AddComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(xPos + 1, shiftedYPosition);
+        rectTransform.sizeDelta = new Vector2(width, modifiedHeight);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Text inputFieldText = inputFieldGO.AddComponent<Text>();
+        inputFieldText.supportRichText = false;
+        inputFieldText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        inputFieldText.text = startvalue;
+        inputFieldText.fontSize = fontSize;
+        inputFieldText.color = Color.gray;
+        inputFieldText.alignment = TextAnchor.UpperLeft;
+        inputFieldText.verticalOverflow = VerticalWrapMode.Overflow;
+        inputFieldText.horizontalOverflow = HorizontalWrapMode.Overflow;
+
+        InputField inputField = inputFieldGO.AddComponent<InputField>();
+        inputField.textComponent = inputFieldText;
+        inputField.lineType = InputField.LineType.MultiLineNewline;
+        inputField.characterLimit = 2000;
+        inputField.caretColor = Color.gray;
+
+        GameObject transitionTextGO = new GameObject();
+
+        transitionTextGO.transform.SetParent(inputFieldGO.transform);
+        RectTransform rectTransform4 = transitionTextGO.AddComponent<RectTransform>();
+        rectTransform4.anchorMax = new Vector2(0, 1);
+        rectTransform4.anchorMin = new Vector2(0, 1);
+        rectTransform4.pivot = new Vector2(0, 1);
+        rectTransform4.anchoredPosition = new Vector2(xPos, shiftedYPosition);
+        rectTransform4.sizeDelta = new Vector2(width, modifiedHeight);
+        rectTransform4.localScale = new Vector3(1, 1, 1);
+
+        Text transitionText = transitionTextGO.AddComponent<Text>();
+        transitionText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        transitionText.horizontalOverflow = HorizontalWrapMode.Overflow;
+        transitionText.verticalOverflow = VerticalWrapMode.Overflow;
+        Color transparent = Color.black;
+        transparent.a = 0;
+        transitionText.color = transparent;
+        InputFieldToText inputFieldToText = transitionTextGO.AddComponent<InputFieldToText>();
+        inputFieldToText.text = transitionText;
+        inputFieldToText.inputField = inputField;
+
+        //If this is not run the caret will display behind the text box...
+        ModifyCaretPosition(node);
+
+        return transitionText;
+    }
+
     //This draws a drop down box
     public static Text DrawDropDownMenu(Node node, List<string> options, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
     {

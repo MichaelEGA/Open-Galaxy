@@ -794,7 +794,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "next event", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -835,7 +835,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -876,7 +876,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -915,11 +915,11 @@ public static class NodeTypes
 
         float multiplySize = 2;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
+        node.data1 = NodeFunctions.DrawInputFieldLarge(node, "Message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
 
         drop -= 15 * multiplySize;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -962,7 +962,7 @@ public static class NodeTypes
 
         drop -= 15 * multiplySize;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1001,11 +1001,11 @@ public static class NodeTypes
 
         float multiplySize = 2;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
+        node.data1 = NodeFunctions.DrawInputFieldLarge(node, "Message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
 
         drop -= 15 * multiplySize;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1054,7 +1054,7 @@ public static class NodeTypes
 
         drop -= 15 +5;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1093,11 +1093,11 @@ public static class NodeTypes
 
         float multiplySize = 5;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "briefing", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
+        node.data1 = NodeFunctions.DrawInputFieldLarge(node, "Briefing", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
 
         drop -= 15 * multiplySize;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1142,11 +1142,11 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "True Event", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "True", 7, 5);
 
         drop -= 15;
 
-        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "False Event", 7, 5);
+        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "False", 7, 5);
 
         drop -= 30;
 
@@ -1187,11 +1187,11 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "True Event", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "True", 7, 5);
 
         drop -= 15;
 
-        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "False Event", 7, 5);
+        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "False", 7, 5);
 
         drop -= 30;
 
@@ -1301,7 +1301,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1408,7 +1408,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1539,7 +1539,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1665,7 +1665,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1780,7 +1780,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1825,7 +1825,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1864,7 +1864,7 @@ public static class NodeTypes
 
         float multiplySize = 5;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
+        node.data1 = NodeFunctions.DrawInputFieldLarge(node, "Message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
 
         drop -= 15 * multiplySize;
 
@@ -1880,7 +1880,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1925,7 +1925,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1971,7 +1971,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -2022,7 +2022,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -2071,7 +2071,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -2120,7 +2120,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -2165,7 +2165,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -2206,7 +2206,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -2255,7 +2255,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -2304,7 +2304,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 

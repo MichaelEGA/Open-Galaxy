@@ -20,6 +20,7 @@ public class MissionEditor : MonoBehaviour
     public float scale = 1;
     public string gameWindowMode;
     public bool scrolling;
+    public bool menusClosed = true;
     public string selectedNodeTypeToLoad;
     public string selectedMissionToLoad;
     public string missionName = "Untitled Mission";

@@ -31,20 +31,6 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
         missionEditor = MissionEditorFunctions.GetMissionEditor();
 
         WindowFunctions.DrawWindowBase(this);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void OnGUI()
-    {
-        if (dragging == true)
-        {
-            transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-        }
 
         if (windowDrawn == false)
         {
@@ -69,6 +55,20 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
         }
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void OnGUI()
+    {
+        if (dragging == true)
+        {
+            transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        }  
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         scaling = false;
@@ -82,6 +82,7 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
     public void OnPointerDown(PointerEventData eventData)
     {
         dragging = true;
+        MissionEditorFunctions.CloseAllMenus();
     }
 
     public void OnPointerUp(PointerEventData eventData)

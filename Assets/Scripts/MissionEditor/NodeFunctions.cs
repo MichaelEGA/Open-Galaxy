@@ -449,8 +449,8 @@ public class NodeFunctions : MonoBehaviour
         rectTransform.anchorMax = new Vector2(0, 1);
         rectTransform.anchorMin = new Vector2(0, 1);
         rectTransform.pivot = new Vector2(0, 1);
-        rectTransform.anchoredPosition = new Vector2(xPos + 1, shiftedYPosition);
-        rectTransform.sizeDelta = new Vector2(width, modifiedHeight);
+        rectTransform.anchoredPosition = new Vector2(xPos + 1, shiftedYPosition - 1);
+        rectTransform.sizeDelta = new Vector2(width, modifiedHeight - 2);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
         Text inputFieldText = inputFieldGO.AddComponent<Text>();

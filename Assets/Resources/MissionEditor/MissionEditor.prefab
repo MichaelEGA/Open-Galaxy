@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3731694288546423290}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -109,7 +108,6 @@ RectTransform:
   m_Children:
   - {fileID: 4045755161281532138}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -133,6 +131,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -299,10 +298,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nodes: []
+  windows: []
   menus: []
   nodeLinks: []
   canvas: {fileID: 0}
   editorContentRect: {fileID: 0}
+  menuBarRectTransform: {fileID: 0}
   scrollRect: {fileID: 0}
   AddNodeTextBox: {fileID: 0}
   scaleIndicator: {fileID: 0}
@@ -310,6 +311,7 @@ MonoBehaviour:
   scale: 1
   gameWindowMode: 
   scrolling: 0
+  menusClosed: 1
   selectedNodeTypeToLoad: 
   selectedMissionToLoad: 
   missionName: Untitled Mission
@@ -346,7 +348,6 @@ RectTransform:
   m_Children:
   - {fileID: 2856990925555553500}
   m_Father: {fileID: 4970133458962090508}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -432,6 +433,7 @@ GameObject:
   - component: {fileID: 4695697374452908927}
   - component: {fileID: 1347662012216079275}
   - component: {fileID: 7062930774773392996}
+  - component: {fileID: 6310126689681659656}
   m_Layer: 5
   m_Name: grid
   m_TagString: Untagged
@@ -452,7 +454,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3731694288546423290}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -494,6 +495,18 @@ MonoBehaviour:
     y: 0
     width: 60
     height: 60
+--- !u!114 &6310126689681659656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4837817025419727335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 890bf717b0ac93b4084f335067e1d487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5386399720917709527
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,7 +540,6 @@ RectTransform:
   m_Children:
   - {fileID: 3731694288546423290}
   m_Father: {fileID: 4045755161281532138}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -616,7 +628,6 @@ RectTransform:
   - {fileID: 2835764764319036748}
   - {fileID: 4695697374452908927}
   m_Father: {fileID: 2856990925555553500}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

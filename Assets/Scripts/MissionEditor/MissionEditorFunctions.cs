@@ -310,11 +310,30 @@ public static class MissionEditorFunctions
                     if (menu.name == menuName)
                     {
                         menu.SetActive(true);
+                        menu.transform.SetAsLastSibling();
+                        missionEditor.menusClosed = false;
                     }
                     else
                     {
                         menu.SetActive(false);
                     }
+                }
+            }
+        }
+    }
+
+    public static void CloseAllMenus()
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (missionEditor.menus != null)
+        {
+            foreach (GameObject menu in missionEditor.menus)
+            {
+                if (menu != null)
+                {
+                    menu.SetActive(false);
+                    missionEditor.menusClosed = true;
                 }
             }
         }

@@ -97,6 +97,7 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     public void OnPointerDown(PointerEventData eventData)
     {
         dragging = true;
+        MissionEditorFunctions.CloseAllMenus();
     }
 
     public void OnPointerUp(PointerEventData eventData)

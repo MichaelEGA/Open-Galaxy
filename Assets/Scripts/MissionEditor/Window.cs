@@ -11,8 +11,6 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
     public float yPos = 0;
 
     public RectTransform rectTransform;
-    public float sizeX = 100;
-    public float sizeZ = 200;
     public Image background;
 
     private bool dragging;

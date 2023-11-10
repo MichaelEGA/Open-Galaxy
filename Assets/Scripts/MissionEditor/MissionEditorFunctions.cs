@@ -308,7 +308,7 @@ public static class MissionEditorFunctions
         Image background = menuBaseGO.AddComponent<Image>();
         background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
         background.type = Image.Type.Sliced;
-        background.pixelsPerUnitMultiplier = 20;
+        background.pixelsPerUnitMultiplier = 40;
         rectTransform.anchorMin = new Vector2(0, 1);
         rectTransform.anchorMax = new Vector2(0, 1);
         rectTransform.pivot = new Vector2(0, 1);

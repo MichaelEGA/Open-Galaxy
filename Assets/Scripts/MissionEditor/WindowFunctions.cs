@@ -31,11 +31,11 @@ public static class WindowFunctions
     //This draws the add now window
     public static void Draw_AddNode(Window window)
     {
-        DrawWindowBase(window);
+        DrawWindowBase(window, 250, 200);
 
         DrawText(window, "Add Event Node", 8, 5, -5, 12.5f, 90);
 
-        DrawLineBreak(window, "#808080", 0, -20, 1, 100);
+        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
 
         List<string> buttonList = new List<string>();
 
@@ -88,17 +88,17 @@ public static class WindowFunctions
         string[] buttons = buttonList.ToArray();
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(window, 5, -25, 70, 90, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -25, 167.5f, 115, 10, 7, buttons, functions);
 
-        DrawTextBox(window, 5, -100, 70, 90, "NodeSprite_Dark", "Information about nodes", 5, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
+        DrawTextBox(window, 130, -25, 160, 115, "NodeSprite_Dark", "Information about nodes", 7, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
 
-        DrawTextButton(window, 5, -180, 10, 90, "NodeSprite_Dark", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 130, -182.5f, 10, 115, "none", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
 
     //This draws the load mission window
     public static void Draw_LoadMission(Window window)
     {
-        DrawWindowBase(window);
+        DrawWindowBase(window, 100, 200);
 
         DrawText(window, "Load Mission", 8, 5, -5, 12.5f, 90);
 
@@ -125,7 +125,7 @@ public static class WindowFunctions
     //This draws the save mission window
     public static void Draw_SaveMission(Window window)
     {
-        DrawWindowBase(window);
+        DrawWindowBase(window, 100, 200);
 
         DrawText(window, "Save Mission", 8, 5, -5, 12.5f, 90);
 
@@ -145,16 +145,16 @@ public static class WindowFunctions
     #region Draw Window Functions
 
     //This draws the base node gameobject
-    public static void DrawWindowBase(Window window)
+    public static void DrawWindowBase(Window window, float width, float height)
     {
         //This sets up the node background
         window.rectTransform = window.gameObject.AddComponent<RectTransform>();
 
         window.background = window.gameObject.AddComponent<Image>();
-        window.background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Grey");
+        window.background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Dark");
         window.background.type = Image.Type.Sliced;
-        window.background.pixelsPerUnitMultiplier = 5;
-        window.rectTransform.sizeDelta = new Vector2(window.sizeX, window.sizeZ);
+        window.background.pixelsPerUnitMultiplier = 40;
+        window.rectTransform.sizeDelta = new Vector2(width, height);
         window.rectTransform.localPosition = new Vector2(window.xPos, window.yPos);
         window.rectTransform.localScale = new Vector3(1, 1, 1);
     }
@@ -292,7 +292,12 @@ public static class WindowFunctions
         }
         else
         {
-            buttonImage.color = Color.gray;
+            Color color = Color.black;
+
+            if (ColorUtility.TryParseHtmlString("#404040", out color))
+            {
+                buttonImage.color = color;
+            }
         }
 
         Button button = buttonGO.AddComponent<Button>();
@@ -376,7 +381,13 @@ public static class WindowFunctions
         Image maskImage = viewportGO.AddComponent<Image>();
         maskImage.type = Image.Type.Sliced;
         maskImage.pixelsPerUnitMultiplier = 30;
-        maskImage.color = Color.gray;
+
+        Color color = Color.black;
+
+        if (ColorUtility.TryParseHtmlString("#404040", out color))
+        {
+            maskImage.color = color;
+        }
 
         Mask mask = viewportGO.AddComponent<Mask>();
         
@@ -441,7 +452,12 @@ public static class WindowFunctions
         }
         else
         {
-            backgroundImage.color = Color.gray;
+            Color color = Color.black;
+
+            if (ColorUtility.TryParseHtmlString("#404040", out color))
+            {
+                backgroundImage.color = color;
+            }
         }
 
         Text text = textBoxTextGO.AddComponent<Text>();

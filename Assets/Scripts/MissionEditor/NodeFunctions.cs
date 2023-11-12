@@ -398,7 +398,7 @@ public class NodeFunctions : MonoBehaviour
     }
 
     //This draws an empty input field
-    public static Text DrawInputFieldLarge(Node node, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10)
+    public static Text DrawInputFieldLarge(Node node, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width)
     {
         float shiftedYPosition = yPos - 12.5f;
         float modifiedHeight = height - 12.5f;

@@ -90,23 +90,23 @@ public static class WindowFunctions
         string[] buttons = buttonList.ToArray();
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(window, 5, -25, 167.5f, 115, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -25, 170f, 115, 10, 7, buttons, functions);
 
-        DrawTextBox(window, 130, -25, 160, 115, "NodeSprite_Dark", "Information about nodes", 7, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
+        DrawTextBox(window, 127.5f, -25, 162.5f, 115, "NodeSprite_Dark", "Information about nodes", 7, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
 
-        DrawTextButton(window, 130, -182.5f, 10, 115, "none", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 127.5f, -182.5f, 10, 117.5f, "none", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
 
     //This draws the load mission window
     public static void Draw_LoadMission(Window window)
     {
-        DrawWindowBase(window, 100, 200);
+        DrawWindowBase(window, 250, 100);
 
         DrawText(window, "Load Mission", 8, 5, -5, 12.5f, 90);
 
-        DrawLineBreak(window, "#808080", 0, -20, 1, 100);
+        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
 
-        float drop = -25;
+        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
 
         string[] buttons = GetMissionList();
 
@@ -119,27 +119,29 @@ public static class WindowFunctions
 
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(window, 5, -25, 70, 90, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -25, 50, 240, 10, 7, buttons, functions);
 
-        DrawTextButton(window, 5, -180, 10, 90, "NodeSprite_Dark", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 80, -80, 10, 90, "none", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
     }
 
     //This draws the save mission window
     public static void Draw_SaveMission(Window window)
     {
-        DrawWindowBase(window, 100, 200);
+        DrawWindowBase(window, 250, 100);
 
         DrawText(window, "Save Mission", 8, 5, -5, 12.5f, 90);
 
-        DrawLineBreak(window, "#808080", 0, -20, 1, 100);
+        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
 
         float drop = -25;
 
-        WindowFunctions.DrawInputField(window, "Mission Name", "none", 7, 5, drop, 12.5f, 90, 5f, "MissionNameField");
+        WindowFunctions.DrawInputField(window, "Mission Name", "none", 7, 5, drop, 12.5f, 240f, 5, "MissionNameField");
 
         drop -= 15;
 
-        DrawTextButton(window, 5, -180, 10, 90, "NodeSprite_Dark", "Save Mission", 7, "SaveMission", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 80, -80, 10, 90, "none", "Save Mission", 7, "SaveMission", TextAnchor.MiddleCenter);
     }
 
     #endregion
@@ -413,6 +415,64 @@ public static class WindowFunctions
             buttonDrop -= buttonHeight;
             i++;
         }
+
+        DrawVerticalScrollBar(baseGO.transform, scrollRect, 5);
+    }
+
+    public static void DrawVerticalScrollBar(Transform parent, ScrollRect scrollRect, float width)
+    {
+        GameObject scrollbarVertical = new GameObject();
+        GameObject slidingArea = new GameObject();
+        GameObject handle = new GameObject();
+
+        scrollbarVertical.transform.SetParent(parent.transform);
+        slidingArea.transform.SetParent(scrollbarVertical.transform);
+        handle.transform.SetParent(slidingArea.transform);
+
+        scrollbarVertical.name = "Scrollbar Vertical";
+        slidingArea.name = "Sliding Area";
+        handle.name = "Handle";
+
+        RectTransform scrollBarRect = scrollbarVertical.AddComponent<RectTransform>();
+        RectTransform slidingAreaRect = slidingArea.AddComponent<RectTransform>();
+        RectTransform handleRect = handle.AddComponent<RectTransform>();
+
+        scrollBarRect.anchorMin = new Vector2(1, 0);
+        scrollBarRect.anchorMax = new Vector2(1, 1);
+        scrollBarRect.pivot = new Vector2(1, 1);
+        scrollBarRect.anchoredPosition = new Vector2(0, 0);
+        scrollBarRect.sizeDelta = new Vector2(width, 0);
+        scrollBarRect.localScale = new Vector3(1, 1, 1);
+
+        slidingAreaRect.anchorMin = new Vector2(0, 0);
+        slidingAreaRect.anchorMax = new Vector2(1, 1);
+        slidingAreaRect.pivot = new Vector2(0.5f, 0.5f);
+        slidingAreaRect.anchoredPosition = new Vector2(0, 0);
+        slidingAreaRect.sizeDelta = new Vector2(10, 10);
+        slidingAreaRect.localScale = new Vector3(1, 1, 1);
+
+        handleRect.anchorMin = new Vector2(0, 0);
+        handleRect.anchorMax = new Vector2(0, 0);
+        handleRect.pivot = new Vector2(0.5f, 0.5f);
+        handleRect.anchoredPosition = new Vector2(0, 0);
+        handleRect.sizeDelta = new Vector2(-10, -10);
+        handleRect.localScale = new Vector3(1, 1, 1);
+
+        Image scrollbarImage = scrollbarVertical.AddComponent<Image>();
+        Image handleImage = handle.AddComponent<Image>();
+
+        scrollbarImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Dark");
+        scrollbarImage.type = Image.Type.Sliced;
+        scrollbarImage.pixelsPerUnitMultiplier = 40;
+
+        handleImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Grey");
+        handleImage.type = Image.Type.Sliced;
+        handleImage.pixelsPerUnitMultiplier = 40;
+
+        scrollRect.verticalScrollbar = scrollbarVertical.AddComponent<Scrollbar>();
+        scrollRect.verticalScrollbar.direction = Scrollbar.Direction.BottomToTop;
+        scrollRect.verticalScrollbar.targetGraphic = handleImage;
+        scrollRect.verticalScrollbar.handleRect = handleRect;
     }
 
     //This draws a text box
@@ -580,6 +640,115 @@ public static class WindowFunctions
         else
         {
             transitionTextGO.name = "inputfield";
+        }
+
+        //If this is not run the caret will display behind the text box...
+        ModifyCaretPosition(window);
+
+        return transitionText;
+    }
+
+    //This draws an empty input field
+    public static Text DrawInputFieldLarge(Window window, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, string name = "none")
+    {
+        float shiftedYPosition = yPos - 12.5f;
+        float modifiedHeight = height - 12.5f;
+
+        //This draws the input label
+        GameObject labelGO = new GameObject();
+
+        labelGO.transform.SetParent(window.rectTransform.transform);
+        RectTransform rectTransform2 = labelGO.AddComponent<RectTransform>();
+        rectTransform2.anchorMax = new Vector2(0, 1);
+        rectTransform2.anchorMin = new Vector2(0, 1);
+        rectTransform2.pivot = new Vector2(0, 1);
+        rectTransform2.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform2.sizeDelta = new Vector2(width, 12);
+        rectTransform2.localScale = new Vector3(1, 1, 1);
+
+        Text labelText = labelGO.AddComponent<Text>();
+        labelText.supportRichText = false;
+        labelText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        labelText.text = label;
+        labelText.fontSize = fontSize;
+        labelText.color = Color.white;
+        labelText.alignment = TextAnchor.MiddleLeft;
+
+        //This draws the background of the input field
+        GameObject inputFieldBackgroundGO = new GameObject();
+
+        inputFieldBackgroundGO.transform.SetParent(window.rectTransform.transform);
+        RectTransform rectTransform3 = inputFieldBackgroundGO.AddComponent<RectTransform>();
+        rectTransform3.anchorMax = new Vector2(0, 1);
+        rectTransform3.anchorMin = new Vector2(0, 1);
+        rectTransform3.pivot = new Vector2(0, 1);
+        rectTransform3.anchoredPosition = new Vector2(xPos, shiftedYPosition);
+        rectTransform3.sizeDelta = new Vector2(width, modifiedHeight);
+        rectTransform3.localScale = new Vector3(1, 1, 1);
+
+        Image inputFieldImage = inputFieldBackgroundGO.AddComponent<Image>();
+        inputFieldImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
+        inputFieldImage.type = Image.Type.Sliced;
+        inputFieldImage.pixelsPerUnitMultiplier = 30;
+
+        //This draws the input field
+        GameObject inputFieldGO = new GameObject();
+
+        inputFieldGO.transform.SetParent(window.rectTransform.transform);
+
+        RectTransform rectTransform = inputFieldGO.AddComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(xPos + 1, shiftedYPosition - 1);
+        rectTransform.sizeDelta = new Vector2(width, modifiedHeight - 2);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Text inputFieldText = inputFieldGO.AddComponent<Text>();
+        inputFieldText.supportRichText = false;
+        inputFieldText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        inputFieldText.text = startvalue;
+        inputFieldText.fontSize = fontSize;
+        inputFieldText.color = Color.gray;
+        inputFieldText.alignment = TextAnchor.UpperLeft;
+        inputFieldText.verticalOverflow = VerticalWrapMode.Overflow;
+        inputFieldText.horizontalOverflow = HorizontalWrapMode.Overflow;
+
+        InputField inputField = inputFieldGO.AddComponent<InputField>();
+        inputField.textComponent = inputFieldText;
+        inputField.lineType = InputField.LineType.MultiLineNewline;
+        inputField.characterLimit = 2000;
+        inputField.caretColor = Color.gray;
+
+        GameObject transitionTextGO = new GameObject();
+
+        transitionTextGO.transform.SetParent(inputFieldGO.transform);
+        RectTransform rectTransform4 = transitionTextGO.AddComponent<RectTransform>();
+        rectTransform4.anchorMax = new Vector2(0, 1);
+        rectTransform4.anchorMin = new Vector2(0, 1);
+        rectTransform4.pivot = new Vector2(0, 1);
+        rectTransform4.anchoredPosition = new Vector2(xPos, shiftedYPosition);
+        rectTransform4.sizeDelta = new Vector2(width, modifiedHeight);
+        rectTransform4.localScale = new Vector3(1, 1, 1);
+
+        Text transitionText = transitionTextGO.AddComponent<Text>();
+        transitionText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        transitionText.horizontalOverflow = HorizontalWrapMode.Overflow;
+        transitionText.verticalOverflow = VerticalWrapMode.Overflow;
+        Color transparent = Color.black;
+        transparent.a = 0;
+        transitionText.color = transparent;
+        InputFieldToText inputFieldToText = transitionTextGO.AddComponent<InputFieldToText>();
+        inputFieldToText.text = transitionText;
+        inputFieldToText.inputField = inputField;
+
+        if (name != "none")
+        {
+            transitionTextGO.name = name;
+        }
+        else
+        {
+            transitionTextGO.name = "inputfieldlarge";
         }
 
         //If this is not run the caret will display behind the text box...

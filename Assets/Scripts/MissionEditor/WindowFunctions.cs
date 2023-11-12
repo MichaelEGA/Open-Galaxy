@@ -35,6 +35,8 @@ public static class WindowFunctions
 
         DrawText(window, "Add Event Node", 8, 5, -5, 12.5f, 90);
 
+        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
+
         DrawLineBreak(window, "#808080", 0, -20, 1, 250);
 
         List<string> buttonList = new List<string>();
@@ -244,7 +246,11 @@ public static class WindowFunctions
         if (functionType == "ExitMissionEditor")
         {
             button.onClick.AddListener(() => { MissionEditorFunctions.ExitMissionEditor(); });
-        }      
+        }  
+        else if (functionType == "DeleteWindow")
+        {
+            button.onClick.AddListener(() => { DeleteWindow(window); });
+        }
 
         buttonGO.name = "button_" + functionType;
     }
@@ -598,6 +604,11 @@ public static class WindowFunctions
     #endregion
 
     #region Misc Windows Functions
+
+    public static void DeleteWindow(Window window)
+    {
+        GameObject.Destroy(window.gameObject);
+    }
 
     public static string[] GetMissionList()
     {

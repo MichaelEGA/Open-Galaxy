@@ -15,6 +15,7 @@ public static class MissionEditorFunctions
         Draw_InfoBar(missionEditor);
         Draw_ScaleIndicator(missionEditor);
         Draw_MesssageTextBox(missionEditor);
+        Draw_CurrentFileTextBox(missionEditor);
         Draw_MainMenu(missionEditor);
     }
 
@@ -72,6 +73,34 @@ public static class MissionEditorFunctions
         messageTextboxGO.name = "Action Indicator";
 
         missionEditor.messageTextbox = text;
+    }
+
+    public static void Draw_CurrentFileTextBox(MissionEditor missionEditor)
+    {
+        //This draws the input label
+        GameObject currentMissionTextboxGO = new GameObject();
+
+        currentMissionTextboxGO.transform.SetParent(missionEditor.transform);
+        RectTransform rectTransform = currentMissionTextboxGO.AddComponent<RectTransform>();
+        rectTransform.anchorMin = new Vector2(0.5f, 1);
+        rectTransform.anchorMax = new Vector2(0.5f, 1);
+        rectTransform.pivot = new Vector2(0.5f, 1);
+        rectTransform.anchoredPosition = new Vector2(0, 0);
+        rectTransform.sizeDelta = new Vector2(200f, 12f);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Text text = currentMissionTextboxGO.AddComponent<Text>();
+        text.supportRichText = false;
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.text = "Untitled Mission";
+        text.fontSize = 7;
+        text.color = Color.black;
+        text.horizontalOverflow = HorizontalWrapMode.Wrap;
+        text.alignment = TextAnchor.MiddleCenter;
+
+        currentMissionTextboxGO.name = "Mission Name";
+
+        missionEditor.missionName = text;
     }
 
     public static void Draw_MenuBar(MissionEditor missionEditor)
@@ -144,6 +173,7 @@ public static class MissionEditorFunctions
         file_Buttons.Add(spaces + "Open");
         file_Buttons.Add(spaces + "Merge");
         file_Buttons.Add(spaces + "Save");
+        file_Buttons.Add(spaces + "SaveAs");
         file_Buttons.Add(spaces + "Exit to Open Galaxy");
         file_Buttons.Add(spaces + "Exit to Windows");
 
@@ -151,7 +181,8 @@ public static class MissionEditorFunctions
         file_Functions.Add("OpenNewWindow");
         file_Functions.Add("OpenOpenWindow");
         file_Functions.Add("OpenMergeWindow");
-        file_Functions.Add("OpenSaveWindow");
+        file_Functions.Add("Save");
+        file_Functions.Add("OpenSaveAsWindow");
         file_Functions.Add("ExitMissionEditor");
         file_Functions.Add("ExitToWindows");
 
@@ -266,9 +297,13 @@ public static class MissionEditorFunctions
         {
             button.onClick.AddListener(() => { ExitToWindows(); });
         }
-        else if (functionType == "OpenSaveWindow")
+        else if (functionType == "Save")
         {
             button.onClick.AddListener(() => { OpenWindow("savemission"); });
+        }
+        else if (functionType == "OpenSaveAsWindow")
+        {
+            button.onClick.AddListener(() => { OpenWindow("savemissionas"); });
         }
         else if (functionType == "OpenOpenWindow")
         {
@@ -276,11 +311,11 @@ public static class MissionEditorFunctions
         }
         else if (functionType == "OpenMergeWindow")
         {
-            button.onClick.AddListener(() => { OpenWindow("loadmission"); });
+            button.onClick.AddListener(() => { OpenWindow("mergemissions"); });
         }
         else if (functionType == "OpenNewWindow")
         {
-            //button.onClick.AddListener(() => { OpenWindow("loadmission"); });
+            button.onClick.AddListener(() => { NodeFunctions.DeleteAllNodes(); });
         }
         else if (functionType == "OpenAddNewEvent")
         {
@@ -471,11 +506,17 @@ public static class MissionEditorFunctions
         bool scaling = true;
 
         //Checks whether mouse is in position to scale
-        foreach (Window menu in missionEditor.windows)
+        foreach (Window window in missionEditor.windows)
         {
-            if (menu.scaling == false)
+            if (window != null)
             {
-                scaling = false;
+                if (window.gameObject.activeSelf == true)
+                {
+                    if (window.scaling == false)
+                    {
+                        scaling = false;
+                    }
+                }
             }
         }
 
@@ -564,7 +605,29 @@ public static class MissionEditorFunctions
         }
     }
 
-    public static void LoadMission()
+    public static void LoadMission(Window window)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        NodeFunctions.DeleteAllNodes();
+
+        if (missionEditor != null)
+        {
+            string missionAddress = Application.persistentDataPath + "/Custom Missions/" + missionEditor.selectedMissionToLoad;
+            string missionDataString = File.ReadAllText(missionAddress);
+            TextAsset missionDataTextAsset = new TextAsset(missionDataString);
+            Mission mission = JsonUtility.FromJson<Mission>(missionDataTextAsset.text);
+            Task a = new Task(LoadMissionData(mission));
+
+            DisplayMessage("Loaded " + missionEditor.selectedMissionToLoad);
+        }
+
+        UpdateMissionName(missionEditor.selectedMissionToLoad);
+
+        WindowFunctions.DeleteWindow(window);
+    }
+
+    public static void MergeMissions(Window window)
     {
         MissionEditor missionEditor = GetMissionEditor();
 
@@ -578,6 +641,8 @@ public static class MissionEditorFunctions
 
             DisplayMessage("Loaded " + missionEditor.selectedMissionToLoad);
         }
+
+        WindowFunctions.DeleteWindow(window);
     }
 
     public static IEnumerator LoadMissionData(Mission mission)
@@ -733,13 +798,15 @@ public static class MissionEditorFunctions
         }
     }
 
-    public static void SaveMission()
+    public static void SaveMission(Window window)
     {
         List<MissionEvent> missionList = new List<MissionEvent>();
 
         MissionEditor missionEditor = GetMissionEditor();
 
-        UpdateMissionName();
+        string missionName = GetMissionNameFromSaveDialog();
+
+        UpdateMissionName(missionName);
 
         foreach (Node node in missionEditor.nodes)
         {
@@ -1020,28 +1087,42 @@ public static class MissionEditorFunctions
 
         string jsonString = JsonHelper.ToJson(missionEventData, true);
 
-        string saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName + ".json";
+        string saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName.text + ".json";
 
         File.WriteAllText(saveFile, jsonString);
 
         DisplayMessage(missionEditor.missionName + " saved to " + Application.persistentDataPath + "/Custom Missions/");
+
+        WindowFunctions.DeleteWindow(window);
     }
 
-    public static void UpdateMissionName()
+    public static void UpdateMissionName(string name)
     {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (missionEditor != null & name != "none")
+        {
+            missionEditor.missionName.text = name;
+        }
+    }
+
+    public static string GetMissionNameFromSaveDialog()
+    {
+        string name = "none";
+
         GameObject MissionNameField = GameObject.Find("MissionNameField");
 
         if (MissionNameField != null)
         {
             Text missionName = MissionNameField.GetComponent<Text>();
 
-            MissionEditor missionEditor = GetMissionEditor();
-
-            if (missionEditor != null)
+            if (missionName != null)
             {
-                missionEditor.missionName = missionName.text;
+                name = missionName.text;
             }
         }
+
+        return name;
     }
 
     public static void DisplayMessage(string message)

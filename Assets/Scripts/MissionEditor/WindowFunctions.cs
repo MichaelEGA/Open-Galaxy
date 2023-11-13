@@ -19,9 +19,17 @@ public static class WindowFunctions
         {
             WindowFunctions.Draw_LoadMission(window);
         }
+        else if (window.windowType == "mergemissions")
+        {
+            WindowFunctions.Draw_MergeMissions(window);
+        }
         else if (window.windowType == "savemission")
         {
-            WindowFunctions.Draw_SaveMission(window);
+            WindowFunctions.Draw_SaveMissionAs(window);
+        }
+        else if (window.windowType == "savemissionas")
+        {
+            WindowFunctions.Draw_SaveMissionAs(window);
         }
 
         //This closes all menus when a new window is being added
@@ -124,24 +132,66 @@ public static class WindowFunctions
         DrawTextButton(window, 80, -80, 10, 90, "none", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
     }
 
-    //This draws the save mission window
-    public static void Draw_SaveMission(Window window)
+    //This draws the load mission window
+    public static void Draw_MergeMissions(Window window)
     {
         DrawWindowBase(window, 250, 100);
 
-        DrawText(window, "Save Mission", 8, 5, -5, 12.5f, 90);
+        DrawText(window, "Merge Missions", 8, 5, -5, 12.5f, 90);
 
         DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
 
         DrawLineBreak(window, "#808080", 0, -20, 1, 250);
 
-        float drop = -25;
+        string[] buttons = GetMissionList();
 
-        WindowFunctions.DrawInputField(window, "Mission Name", "none", 7, 5, drop, 12.5f, 240f, 5, "MissionNameField");
+        List<string> functionList = new List<string>();
+
+        foreach (string button in buttons)
+        {
+            functionList.Add("SelectMissionToLoad");
+        }
+
+        string[] functions = functionList.ToArray();
+
+        DrawScrollableButtons(window, 5, -25, 50, 240, 10, 7, buttons, functions);
+
+        DrawTextButton(window, 80, -80, 10, 90, "none", "Merge Mission", 7, "MergeMission", TextAnchor.MiddleCenter);
+    }
+
+    //This draws the save mission window
+    public static void Draw_SaveMissionAs(Window window)
+    {
+        DrawWindowBase(window, 250, 100);
+
+        DrawText(window, "Save Mission As", 8, 5, -5, 12.5f, 90);
+
+        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
+
+        float drop = -35f;
+
+        WindowFunctions.DrawInputFieldLarge(window, "Mission Name", "none", 7, 5, drop, 25, 240f, "MissionNameField");
 
         drop -= 15;
 
-        DrawTextButton(window, 80, -80, 10, 90, "none", "Save Mission", 7, "SaveMission", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 80, -80, 10, 90, "none", "Save Mission As", 7, "SaveMissionAs", TextAnchor.MiddleCenter);
+    }
+
+    public static void Draw_SaveContinueButton(Window window)
+    {
+
+    }
+
+    public static void Draw_LoadContinueButton(Window window)
+    {
+
+    }
+
+    public static void Draw_MergeContinueButton(Window window)
+    {
+
     }
 
     #endregion
@@ -335,11 +385,19 @@ public static class WindowFunctions
         }
         else if (functionType == "LoadMission")
         {
-            button.onClick.AddListener(() => { MissionEditorFunctions.LoadMission(); });
+            button.onClick.AddListener(() => { MissionEditorFunctions.LoadMission(window); });
+        }
+        else if (functionType == "MergeMission")
+        {
+            button.onClick.AddListener(() => { MissionEditorFunctions.MergeMissions(window); });
         }
         else if (functionType == "SaveMission")
         {
-            button.onClick.AddListener(() => { MissionEditorFunctions.SaveMission(); });
+            button.onClick.AddListener(() => { MissionEditorFunctions.SaveMission(window); });
+        }
+        else if (functionType == "SaveMissionAs")
+        {
+            button.onClick.AddListener(() => { MissionEditorFunctions.SaveMission(window); });
         }
 
         buttonGO.name = "button_" + functionType;

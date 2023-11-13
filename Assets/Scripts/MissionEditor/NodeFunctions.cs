@@ -195,6 +195,30 @@ public class NodeFunctions : MonoBehaviour
         GameObject.Destroy(node.gameObject);
     }
 
+    public static void DeleteAllNodes()
+    {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        foreach (NodeLink nodeLink in missionEditor.nodeLinks)
+        {
+            if (nodeLink != null)
+            {
+                GameObject.Destroy(nodeLink.line);
+                GameObject.Destroy(nodeLink.gameObject);
+            }
+        }
+
+        foreach (Node node in missionEditor.nodes)
+        {
+            if (node != null)
+            {
+                GameObject.Destroy(node.gameObject);
+            }
+        }
+
+        MissionEditorFunctions.UpdateMissionName("Untitled Mission");
+    }
+
     #endregion
 
     #region node drawing functions

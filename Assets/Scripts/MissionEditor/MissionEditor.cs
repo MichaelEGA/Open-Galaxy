@@ -23,7 +23,7 @@ public class MissionEditor : MonoBehaviour
     public bool menusClosed = true;
     public string selectedNodeTypeToLoad;
     public string selectedMissionToLoad;
-    public string missionName = "Untitled Mission";
+    public Text missionName;
 
     void Start()
     {

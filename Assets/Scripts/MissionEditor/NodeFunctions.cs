@@ -380,7 +380,6 @@ public class NodeFunctions : MonoBehaviour
         Text inputFieldText = inputFieldGO.AddComponent<Text>();
         inputFieldText.supportRichText = false;
         inputFieldText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        inputFieldText.text = startvalue;
         inputFieldText.fontSize = fontSize;
         inputFieldText.color = Color.gray;
         inputFieldText.alignment = TextAnchor.MiddleLeft;
@@ -392,6 +391,7 @@ public class NodeFunctions : MonoBehaviour
         inputField.lineType = InputField.LineType.MultiLineNewline;
         inputField.characterLimit = 2000;
         inputField.caretColor = Color.gray;
+        inputField.text = startvalue;
 
         GameObject transitionTextGO = new GameObject();
 
@@ -480,7 +480,6 @@ public class NodeFunctions : MonoBehaviour
         Text inputFieldText = inputFieldGO.AddComponent<Text>();
         inputFieldText.supportRichText = false;
         inputFieldText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        inputFieldText.text = startvalue;
         inputFieldText.fontSize = fontSize;
         inputFieldText.color = Color.gray;
         inputFieldText.alignment = TextAnchor.UpperLeft;
@@ -492,6 +491,7 @@ public class NodeFunctions : MonoBehaviour
         inputField.lineType = InputField.LineType.MultiLineNewline;
         inputField.characterLimit = 2000;
         inputField.caretColor = Color.gray;
+        inputField.text = startvalue;
 
         GameObject transitionTextGO = new GameObject();
 

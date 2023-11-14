@@ -647,16 +647,17 @@ public static class WindowFunctions
         Text inputFieldText = inputFieldGO.AddComponent<Text>();
         inputFieldText.supportRichText = false;
         inputFieldText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        inputFieldText.text = startvalue;
         inputFieldText.fontSize = fontSize;
         inputFieldText.color = Color.gray;
         inputFieldText.alignment = TextAnchor.MiddleLeft;
         inputFieldText.verticalOverflow = VerticalWrapMode.Overflow;
         inputFieldText.horizontalOverflow = HorizontalWrapMode.Overflow;
+
         InputField inputField = inputFieldGO.AddComponent<InputField>();
         inputField.textComponent = inputFieldText;
         inputField.lineType = InputField.LineType.MultiLineNewline;
         inputField.characterLimit = 2000;
+        inputField.text = startvalue;
 
         GameObject transitionTextGO = new GameObject();
 
@@ -754,7 +755,6 @@ public static class WindowFunctions
         Text inputFieldText = inputFieldGO.AddComponent<Text>();
         inputFieldText.supportRichText = false;
         inputFieldText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        inputFieldText.text = startvalue;
         inputFieldText.fontSize = fontSize;
         inputFieldText.color = Color.gray;
         inputFieldText.alignment = TextAnchor.UpperLeft;
@@ -766,6 +766,7 @@ public static class WindowFunctions
         inputField.lineType = InputField.LineType.MultiLineNewline;
         inputField.characterLimit = 2000;
         inputField.caretColor = Color.gray;
+        inputField.text = startvalue;
 
         GameObject transitionTextGO = new GameObject();
 

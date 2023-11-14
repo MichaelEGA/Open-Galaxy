@@ -212,11 +212,11 @@ public static class MissionEditorFunctions
         GameObject windowMenu = DrawDropDownMenu(missionEditor.transform, "Window", shift, window_Buttons.ToArray(), window_Functions.ToArray());
 
         List<string> help_Buttons = new List<string>();
+        help_Buttons.Add(spaces + "Open Open-Galaxy Github");
         help_Buttons.Add(spaces + "About OG Mission Editor");
-        help_Buttons.Add(spaces + "Open Mission Editor Wiki");
 
         List<string> help_Functions = new List<string>();
-        help_Functions.Add("none");
+        help_Functions.Add("OpenGitHub");
         help_Functions.Add("none");
 
         shift += 30;
@@ -321,6 +321,10 @@ public static class MissionEditorFunctions
         else if (functionType == "OpenAddNewEvent")
         {
             button.onClick.AddListener(() => { OpenWindow("addnodes"); });
+        }
+        else if (functionType == "OpenGitHub")
+        {
+            button.onClick.AddListener(() => { OpenWebAddress("https://github.com/MichaelEGA/Open-Galaxy"); });
         }
 
         buttonGO.name = "button_" + functionType;
@@ -958,6 +962,12 @@ public static class MissionEditorFunctions
         }
 
         return input;
+    }
+
+    public static void OpenWebAddress(string url)
+    {
+        Application.OpenURL(url);
+        CloseAllMenus();
     }
 
 }

@@ -11,6 +11,9 @@ public static class MainMenuFunctions
     //This displays the disclaimer, the title, then loads the menu
     public static IEnumerator RunMenu()
     {
+        //This changes the cursor from unity's default to the open galaxy cursor
+        OGSettingsFunctions.SetOGCursor();
+
         GameObject background = LoadBackground();
         GameObject disclaimer = LoadDisclaimer();
         GameObject title = LoadTitle();
@@ -107,7 +110,7 @@ public static class MainMenuFunctions
         return title;
     }
 
-    //This loads the disclaimer
+    //This loads the background
     public static GameObject LoadBackground()
     {
         GameObject menuPrefab = Resources.Load("Menu/Background") as GameObject;

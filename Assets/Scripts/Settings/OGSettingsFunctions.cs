@@ -228,6 +228,20 @@ public static class OGSettingsFunctions
         OGSettingsFunctions.SaveSettingsData();
     }
 
+    //Set Open Galaxy cursor
+    public static void SetOGCursor()
+    {
+        Texture2D cursorTexture = Resources.Load<Texture2D>("Data/HudAssets/Cursor");
+
+        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
+    }
+
+    //Revert to default cursor
+    public static void SetDefaultCursor()
+    {
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
+
     #endregion
 
 }

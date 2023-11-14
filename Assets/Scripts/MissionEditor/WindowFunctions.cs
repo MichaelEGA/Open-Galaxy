@@ -172,26 +172,11 @@ public static class WindowFunctions
 
         float drop = -35f;
 
-        WindowFunctions.DrawInputFieldLarge(window, "Mission Name", "none", 7, 5, drop, 25, 240f, "MissionNameField");
+        DrawInputFieldLarge(window, "Mission Name", "none", 7, 5, drop, 25, 240f, "MissionNameField");
 
         drop -= 15;
 
         DrawTextButton(window, 80, -80, 10, 90, "none", "Save Mission As", 7, "SaveMissionAs", TextAnchor.MiddleCenter);
-    }
-
-    public static void Draw_SaveContinueButton(Window window)
-    {
-
-    }
-
-    public static void Draw_LoadContinueButton(Window window)
-    {
-
-    }
-
-    public static void Draw_MergeContinueButton(Window window)
-    {
-
     }
 
     #endregion
@@ -398,6 +383,10 @@ public static class WindowFunctions
         else if (functionType == "SaveMissionAs")
         {
             button.onClick.AddListener(() => { MissionEditorFunctions.SaveMission(window); });
+        }
+        else if (functionType == "DeleteWindow")
+        {
+            button.onClick.AddListener(() => { DeleteWindow(window); });
         }
 
         buttonGO.name = "button_" + functionType;

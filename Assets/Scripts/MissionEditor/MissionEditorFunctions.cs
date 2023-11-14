@@ -820,267 +820,35 @@ public static class MissionEditorFunctions
 
                     MissionEvent missionEvent = new MissionEvent();
 
-                    if (node.eventID != null)
-                    {
-                        missionEvent.eventID = node.eventID.text;
-                    }
-                    else
-                    {
-                        missionEvent.eventID = "none";
-                    }
-
-                    if (node.eventType != null)
-                    {
-                        missionEvent.eventType = node.eventType.text;
-                    }
-                    else
-                    {
-                        missionEvent.eventType = "none";
-                    }
-
-                    if (node.conditionLocation != null)
-                    {
-                        missionEvent.conditionLocation = node.conditionLocation.text;
-                    }
-                    else
-                    {
-                        missionEvent.conditionLocation = "none";
-                    }
-
-                    if (node.conditionTime != null)
-                    {
-                        missionEvent.conditionTime = float.Parse(node.conditionTime.text);
-                    }
-                    else
-                    {
-                        missionEvent.conditionTime = 0;
-                    }
-
-                    if (node.x != null)
-                    {
-                        missionEvent.x = float.Parse(node.x.text);
-                    }
-                    else
-                    {
-                        missionEvent.x = 0;
-                    }
-
-                    if (node.y != null)
-                    {
-                        missionEvent.y = float.Parse(node.y.text);
-                    }
-                    else
-                    {
-                        missionEvent.y = 0;
-                    }
-
-                    if (node.z != null)
-                    {
-                        missionEvent.z = float.Parse(node.z.text);
-                    }
-                    else
-                    {
-                        missionEvent.z = 0;
-                    }
-
-                    if (node.xRotation != null)
-                    {
-                        missionEvent.xRotation = float.Parse(node.xRotation.text);
-                    }
-                    else
-                    {
-                        missionEvent.xRotation = 0;
-                    }
-
-                    if (node.yRotation != null)
-                    {
-                        missionEvent.yRotation = float.Parse(node.yRotation.text);
-                    }
-                    else
-                    {
-                        missionEvent.yRotation = 0;
-                    }
-
-                    if (node.zRotation != null)
-                    {
-                        missionEvent.zRotation = float.Parse(node.zRotation.text);
-                    }
-                    else
-                    {
-                        missionEvent.zRotation = 0;
-                    }
-
-                    if (node.data1 != null)
-                    {
-                        missionEvent.data1 = node.data1.text;
-                    }
-                    else
-                    {
-                        missionEvent.data1 = "none";
-                    }
-
-                    if (node.data2 != null)
-                    {
-                        missionEvent.data2 = node.data2.text;
-                    }
-                    else
-                    {
-                        missionEvent.data2 = "none";
-                    }
-
-                    if (node.data3 != null)
-                    {
-                        missionEvent.data3 = node.data3.text;
-                    }
-                    else
-                    {
-                        missionEvent.data3 = "none";
-                    }
-
-                    if (node.data4 != null)
-                    {
-                        missionEvent.data4 = node.data4.text;
-                    }
-                    else
-                    {
-                        missionEvent.data4 = "none";
-                    }
-
-                    if (node.data5 != null)
-                    {
-                        missionEvent.data5 = node.data5.text;
-                    }
-                    else
-                    {
-                        missionEvent.data5 = "none";
-                    }
-
-                    if (node.data6 != null)
-                    {
-                        missionEvent.data6 = node.data6.text;
-                    }
-                    else
-                    {
-                        missionEvent.data6 = "none";
-                    }
-
-                    if (node.data7 != null)
-                    {
-                        missionEvent.data7 = node.data7.text;
-                    }
-                    else
-                    {
-                        missionEvent.data7 = "none";
-                    }
-
-                    if (node.data8 != null)
-                    {
-                        missionEvent.data8 = node.data8.text;
-                    }
-                    else
-                    {
-                        missionEvent.data8 = "none";
-                    }
-
-                    if (node.data9 != null)
-                    {
-                        missionEvent.data9 = node.data9.text;
-                    }
-                    else
-                    {
-                        missionEvent.data9 = "none";
-                    }
-
-                    if (node.data10 != null)
-                    {
-                        missionEvent.data10 = node.data10.text;
-                    }
-                    else
-                    {
-                        missionEvent.data10 = "none";
-                    }
-
-                    if (node.data10 != null)
-                    {
-                        missionEvent.data11 = node.data11.text;
-                    }
-                    else
-                    {
-                        missionEvent.data11 = "none";
-                    }
-
-                    if (node.data12 != null)
-                    {
-                        missionEvent.data12 = node.data12.text;
-                    }
-                    else
-                    {
-                        missionEvent.data12 = "none";
-                    }
-
-                    if (node.data13 != null)
-                    {
-                        missionEvent.data13 = node.data13.text;
-                    }
-                    else
-                    {
-                        missionEvent.data13 = "none";
-                    }
-
-                    if (node.data14 != null)
-                    {
-                        missionEvent.data14 = node.data14.text;
-                    }
-                    else
-                    {
-                        missionEvent.data14 = "none";
-                    }
-
-                    if (node.data15 != null)
-                    {
-                        missionEvent.data15 = node.data15.text;
-                    }
-                    else
-                    {
-                        missionEvent.data15 = "none";
-                    }
-
-                    if (node.nextEvent1 != null)
-                    {
-                        missionEvent.nextEvent1 = node.nextEvent1.text;
-                    }
-                    else
-                    {
-                        missionEvent.nextEvent1 = "none";
-                    }
-
-                    if (node.nextEvent2 != null)
-                    {
-                        missionEvent.nextEvent2 = node.nextEvent2.text;
-                    }
-                    else
-                    {
-                        missionEvent.nextEvent2 = "none";
-                    }
-
-                    if (node.nextEvent3 != null)
-                    {
-                        missionEvent.nextEvent3 = node.nextEvent3.text;
-                    }
-                    else
-                    {
-                        missionEvent.nextEvent3 = "none";
-                    }
-
-                    if (node.nextEvent4 != null)
-                    {
-                        missionEvent.nextEvent4 = node.nextEvent4.text;
-                    }
-                    else
-                    {
-                        missionEvent.nextEvent4 = "none";
-                    }
-
+                    missionEvent.eventID = ParseTextToString(node.eventID);
+                    missionEvent.eventType = ParseTextToString(node.eventType);
+                    missionEvent.conditionLocation = ParseTextToString(node.conditionLocation);
+                    missionEvent.conditionTime = ParseTextToFloat(node.conditionTime);
+                    missionEvent.x = ParseTextToFloat(node.x);
+                    missionEvent.y = ParseTextToFloat(node.y);
+                    missionEvent.z = ParseTextToFloat(node.z);
+                    missionEvent.xRotation = ParseTextToFloat(node.xRotation);
+                    missionEvent.yRotation = ParseTextToFloat(node.yRotation);
+                    missionEvent.zRotation = ParseTextToFloat(node.zRotation);
+                    missionEvent.data1 = ParseTextToString(node.data1);
+                    missionEvent.data2 = ParseTextToString(node.data2);
+                    missionEvent.data3 = ParseTextToString(node.data3);
+                    missionEvent.data4 = ParseTextToString(node.data4);
+                    missionEvent.data5 = ParseTextToString(node.data5);
+                    missionEvent.data6 = ParseTextToString(node.data6);
+                    missionEvent.data7 = ParseTextToString(node.data7);
+                    missionEvent.data8 = ParseTextToString(node.data8);
+                    missionEvent.data9 = ParseTextToString(node.data9);
+                    missionEvent.data10 = ParseTextToString(node.data10);
+                    missionEvent.data11 = ParseTextToString(node.data11);
+                    missionEvent.data12 = ParseTextToString(node.data12);
+                    missionEvent.data13 = ParseTextToString(node.data13);
+                    missionEvent.data14 = ParseTextToString(node.data14);
+                    missionEvent.data15 = ParseTextToString(node.data15);
+                    missionEvent.nextEvent1 = ParseTextToString(node.nextEvent1);
+                    missionEvent.nextEvent2 = ParseTextToString(node.nextEvent2);
+                    missionEvent.nextEvent3 = ParseTextToString(node.nextEvent3);
+                    missionEvent.nextEvent4 = ParseTextToString(node.nextEvent4);
                     missionEvent.nodePosX = node.nodePosX;
                     missionEvent.nodePosY = node.nodePosY;
 
@@ -1159,6 +927,37 @@ public static class MissionEditorFunctions
             }
         }
 
+    }
+
+    public static float ParseTextToFloat(Text text)
+    {
+        float input = 0;
+
+        if (text != null)
+        {
+            if (float.TryParse(text.text, out _))
+            {
+                input = float.Parse(text.text);
+            }
+        }
+
+        return input;
+    }
+
+    public static string ParseTextToString(Text text)
+    {
+        string input = "none";
+
+        if (text != null)
+        {
+            if (text.text != "")
+            {
+                input = text.text;
+            }
+
+        }
+
+        return input;
     }
 
 }

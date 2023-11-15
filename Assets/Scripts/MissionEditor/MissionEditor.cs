@@ -31,7 +31,7 @@ public class MissionEditor : MonoBehaviour
         editorContentRect = editorContentGo.GetComponent<RectTransform>();
         scrollRect = editorContentGo.GetComponentInParent<ScrollRect>();
 
-        MissionEditorFunctions.SetWindowMode(this);
+        MissionEditorFunctions.SetWindowMode();
         MissionEditorFunctions.Draw_MissionEditor(this);
     }
 

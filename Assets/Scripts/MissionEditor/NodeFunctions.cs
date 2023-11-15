@@ -219,6 +219,38 @@ public class NodeFunctions : MonoBehaviour
         MissionEditorFunctions.UpdateMissionName("Untitled Mission");
     }
 
+    public static void GetUniqueNodeID(Node node)
+    {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (node.eventID != null)
+        {
+            if (node.eventID.text == "")
+            {
+                node.eventID.text = "E" + Random.Range(0, 99999).ToString("00000");
+            }
+        }
+
+        int i = 0;
+
+        foreach (Node tempNode in missionEditor.nodes)
+        {
+            if (tempNode != null)
+            {
+                if (tempNode.eventID != null)
+                {
+                    if (tempNode.eventID.text == node.eventID.text)
+                    {
+                        node.eventID.text = node.eventID.text + i;
+                        break;
+                    }
+                }
+            }
+
+            i += 1;
+        }
+    }
+
     #endregion
 
     #region node drawing functions

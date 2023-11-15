@@ -204,8 +204,8 @@ public static class MissionEditorFunctions
         window_Buttons.Add(spaces + "Make Windowed");
 
         List<string> window_Functions = new List<string>();
-        window_Functions.Add("none");
-        window_Functions.Add("none");
+        window_Functions.Add("MakeFullscreen");
+        window_Functions.Add("MakeWindowed");
 
         shift += 45;
 
@@ -217,7 +217,7 @@ public static class MissionEditorFunctions
 
         List<string> help_Functions = new List<string>();
         help_Functions.Add("OpenGitHub");
-        help_Functions.Add("none");
+        help_Functions.Add("OpenAbout");
 
         shift += 30;
 
@@ -322,9 +322,21 @@ public static class MissionEditorFunctions
         {
             button.onClick.AddListener(() => { OpenWindow("addnodes"); });
         }
+        else if (functionType == "MakeFullscreen")
+        {
+            button.onClick.AddListener(() => { SetWindowMode("fullscreen"); });
+        }
+        else if (functionType == "MakeWindowed")
+        {
+            button.onClick.AddListener(() => { SetWindowMode("window"); });
+        }
         else if (functionType == "OpenGitHub")
         {
             button.onClick.AddListener(() => { OpenWebAddress("https://github.com/MichaelEGA/Open-Galaxy"); });
+        }
+        else if (functionType == "OpenAbout")
+        {
+            button.onClick.AddListener(() => { OpenWindow("abouteditor"); });
         }
 
         buttonGO.name = "button_" + functionType;
@@ -561,11 +573,16 @@ public static class MissionEditorFunctions
         }
     }
 
-    public static void SetWindowMode(MissionEditor missionEditor)
+    public static void SetWindowMode(string mode = "none")
     {
-        OGSettings settings = OGSettingsFunctions.GetSettings();
+        if (mode != "window" & mode != "fullscreen" || mode == "none")
+        {
+            OGSettings settings = OGSettingsFunctions.GetSettings();
 
-        OGSettingsFunctions.SetEditorWindowMode(settings.editorWindowMode);
+            mode = settings.editorWindowMode;
+        }
+
+        OGSettingsFunctions.SetEditorWindowMode(mode);
     }
 
     public static void ExitMissionEditor()

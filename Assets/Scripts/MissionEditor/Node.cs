@@ -58,15 +58,7 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     void Start()
     {
         NodeFunctions.SelectNodeToDraw(this);
-
-        if (eventID != null)
-        {
-            if (eventID.text == "")
-            {
-                eventID.text = "E" + Random.Range(1000, 9999);
-            }
-        }
-
+        NodeFunctions.GetUniqueNodeID(this);
     }
 
     // Update is called once per frame

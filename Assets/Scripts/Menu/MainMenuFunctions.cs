@@ -155,6 +155,7 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
         mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
         mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
+        mainMenu.functions.Add("OpenWebAddress", new System.Action<string>(OpenWebAddress));
     }
 
     #endregion
@@ -239,6 +240,12 @@ public static class MainMenuFunctions
             subMenu.transform.localPosition = new Vector3(0, 0, 0);
             subMenu.transform.localScale = new Vector3(1, 1, 1);
             subMenu.name = tempMenu + "_Settings";
+
+            //This stores the custom mission menu for later access
+            if (subMenu.name == "Custom Missions_Settings")
+            {
+                mainMenu.CustomMissionMenu = subMenu;
+            }
         }
 
         //This adds the menu buttons to the left bar
@@ -389,7 +396,6 @@ public static class MainMenuFunctions
         button.transform.localPosition = new Vector3(20, 0, 0);
         button.GetComponent<RectTransform>().SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, buttonDrop, 20);
         button.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-
        
         if (button.GetComponent<Button>() != null)
         {
@@ -436,6 +442,48 @@ public static class MainMenuFunctions
                 rt.sizeDelta = new Vector2(0, buttonDrop);
             }
         }
+    }
+
+    //This reloads the custom missions
+    public static void ReloadCustomMissions()
+    {
+        //This gets rid of the old custom menu buttons
+        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+
+        Transform[] buttons = GameObjectUtils.GetAllChildTransforms(mainMenu.CustomMissionMenu.transform);
+
+        foreach (Transform button in buttons)
+        {
+            GameObject.Destroy(button.gameObject);
+        }
+
+        //This generates new custom mission buttons
+        var info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
+
+        if (info.Exists == false)
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/Custom Missions/");
+            info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
+        }
+
+        List<TextAsset> customMissionsList = new List<TextAsset>();
+
+        if (info.Exists == true)
+        {
+            var fileInfo = info.GetFiles("*.json");
+
+            foreach (FileInfo file in fileInfo)
+            {
+                string path = Application.persistentDataPath + "/Custom Missions/" + file.Name;
+                string missionDataString = File.ReadAllText(path);
+                TextAsset missionDataTextAsset = new TextAsset(missionDataString);
+                missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
+                customMissionsList.Add(missionDataTextAsset);
+            }
+        }
+
+        Object[] customMissions = customMissionsList.ToArray();
+        CreateMissionButtons(mainMenu, customMissions, "Custom Missions_Settings", "LoadCustomMission");
     }
 
     #endregion
@@ -910,6 +958,12 @@ public static class MainMenuFunctions
         Debug.Log("Quitting the Game - NOTE: Only works in build");
 
         Application.Quit();
+    }
+
+    //THis opens a website
+    public static void OpenWebAddress(string url)
+    {
+        Application.OpenURL(url);
     }
 
     #endregion

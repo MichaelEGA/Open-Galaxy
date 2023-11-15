@@ -14,6 +14,7 @@ public class MainMenu: MonoBehaviour
     public GameObject[] buttons;
     public GameObject MenuBar;
     public GameObject MenuContent;
+    public GameObject CustomMissionMenu;
     public Text MenuTitle;
     public Text MenuTime;
     public List<GameObject> SubMenus;

@@ -237,12 +237,15 @@ public class NodeFunctions : MonoBehaviour
         {
             if (tempNode != null)
             {
-                if (tempNode.eventID != null)
+                if (tempNode.eventID != null & node.eventID != null)
                 {
-                    if (tempNode.eventID.text == node.eventID.text)
+                    if (tempNode != node)
                     {
-                        node.eventID.text = node.eventID.text + i;
-                        break;
+                        if (tempNode.eventID.text == node.eventID.text)
+                        {
+                            node.eventID.text = node.eventID.text + i;
+                            break;
+                        }
                     }
                 }
             }

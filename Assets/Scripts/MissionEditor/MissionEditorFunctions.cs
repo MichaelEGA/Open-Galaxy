@@ -595,6 +595,8 @@ public static class MissionEditorFunctions
 
         OGSettingsFunctions.SetOGCursor();
 
+        MainMenuFunctions.ReloadCustomMissions();
+
         if (missionEditor != null)
         {
             missionEditor.gameObject.SetActive(false);

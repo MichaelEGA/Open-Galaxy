@@ -19,6 +19,9 @@ public static class MainMenuFunctions
         GameObject title = LoadTitle();
         GameObject menu = LoadMenu();
 
+        //This starts the menu background music
+        PlayBackgroundMusic(true);
+
         if (background != null)
         {
             CanvasGroup canvasGroup = background.GetComponent<CanvasGroup>();
@@ -145,7 +148,6 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
         mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadMissionEditor));
         mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
-        mainMenu.functions.Add("QuitToMainMenu", new System.Action(QuitToMainMenu));
         mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
         mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
         mainMenu.functions.Add("SetEditorWindowMode", new System.Action<string>(SetEditorWindowMode));
@@ -606,6 +608,8 @@ public static class MainMenuFunctions
         }
 
         missionEditor.SetActive(true);
+
+        PlayBackgroundMusic(false);
     }
 
     //This loads a training missino
@@ -674,6 +678,8 @@ public static class MainMenuFunctions
         OGSettingsFunctions.SaveSettingsData();
 
         ActivateSubMenu("Settings");
+
+        OutputMenuMessage("The planet resolution was set to " + resolution);
     }
 
     //This sets the screen resolution
@@ -682,6 +688,8 @@ public static class MainMenuFunctions
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
         FullScreenMode screenMode = Screen.fullScreenMode;
+
+        OutputMenuMessage("The resolutionwas set to " + resolution);
 
         if (resolution == "Detect Screen Resolution")
         {
@@ -865,6 +873,8 @@ public static class MainMenuFunctions
         OGSettingsFunctions.SelectCockpitAssets(type);
 
         ActivateSubMenu("Settings");
+
+        OutputMenuMessage("The cockpit assets were set to " + type);
     }
 
     //This sets the window mode
@@ -873,6 +883,8 @@ public static class MainMenuFunctions
         OGSettingsFunctions.SetGameWindowMode(windowMode);
 
         ActivateSubMenu("Settings");
+
+        OutputMenuMessage("The window mode was set to " + windowMode);
     }
 
     //This sets the window mode
@@ -885,6 +897,8 @@ public static class MainMenuFunctions
         OGSettingsFunctions.SaveSettingsData();
 
         ActivateSubMenu("MissionEditor");
+
+        OutputMenuMessage("The editor window was set to " + windowMode);
     }
 
     //Stand in function for inverting the horizontal view
@@ -895,10 +909,12 @@ public static class MainMenuFunctions
         if (choice == "true")
         {
             settings.invertX = true;
+            OutputMenuMessage("The x-axis was inverted.");
         }
         else
         {
             settings.invertX = false;
+            OutputMenuMessage("The x-axis was set to normal.");
         }
 
         OGSettingsFunctions.SaveSettingsData();
@@ -915,10 +931,12 @@ public static class MainMenuFunctions
         if (choice == "true")
         {
             settings.invertY = true;
+            OutputMenuMessage("The y-axis was inverted.");
         }
         else
         {
             settings.invertY = false;
+            OutputMenuMessage("The y-axis was set to normal.");
         }
 
         OGSettingsFunctions.SaveSettingsData();
@@ -943,15 +961,6 @@ public static class MainMenuFunctions
         ActivateSubMenu("Settings");
     }
 
-    //Stand in funciton for returning to the main menu
-    public static void QuitToMainMenu()
-    {
-        //Close game and return to main menu
-
-        Debug.Log("Return to Main Menu");
-
-    }
-
     //This quits the application and return you to the desk. NOTE: doesn't work in editor (obviously) only build
     public static void QuitToDesktop()
     {
@@ -966,9 +975,38 @@ public static class MainMenuFunctions
         Application.OpenURL(url);
     }
 
+    //This outputs a message to the menu
+    public static void OutputMenuMessage(string message)
+    {
+        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+
+        if (mainMenu.menuMessage != null)
+        {
+            mainMenu.menuMessage.text = message;
+        }
+    }
+
     #endregion
 
     #region menu utils
+
+    //This toggles the menu music
+    public static void PlayBackgroundMusic (bool input)
+    {
+        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+
+        if (mainMenu.menuMusic != null)
+        {
+            if (input == true)
+            {
+                mainMenu.menuMusic.Play();
+            }
+            else
+            {
+                mainMenu.menuMusic.Pause();
+            }
+        }
+    } 
 
     //This allows you to pause the game when the menu is active
     public static void PauseGame(bool isPaused)

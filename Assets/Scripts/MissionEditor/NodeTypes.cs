@@ -422,11 +422,11 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_PreLoad_LoadShip(Node node)
+    public static void Draw_PreLoad_LoadSingleShip(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadship", 8, 5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "pl_loadsingleship", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -434,7 +434,7 @@ public static class NodeTypes
 
         float drop = -25;
 
-        node.eventType = NodeFunctions.DrawText(node, "preload_loadship", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadsingleship", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -522,11 +522,11 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_PreLoad_LoadShipsByName(Node node)
+    public static void Draw_PreLoad_LoadMultipleShips(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadshipsbyname", 8, 5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "pl_loadmultipleships", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -534,7 +534,7 @@ public static class NodeTypes
 
         float drop = -25;
 
-        node.eventType = NodeFunctions.DrawText(node, "preload_loadshipsbyname", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadmultipleships", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -638,11 +638,11 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_PreLoad_LoadShipsByTypeAndAllegiance(Node node)
+    public static void Draw_PreLoad_LoadMultipleShipsByType(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadshipsbytype", 8, 5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "pl_loadmultipleshipsbytype", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -650,7 +650,7 @@ public static class NodeTypes
 
         float drop = -25;
 
-        node.eventType = NodeFunctions.DrawText(node, "preload_loadshipsbytypeandallegiance", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadmultipleshipsbytype", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -1204,7 +1204,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "loadship", 8, 17.5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "loadsingleship", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1216,7 +1216,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "loadship", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "loadsingleship", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -1316,13 +1316,13 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_LoadShipAtDistanceAndAngleFromPlayer(Node node)
+    public static void Draw_LoadSingleShipAtDistanceAndAngleFromPlayer(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "loadshipatdistanceandanglefromplayer", 8, 17.5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "loadsingleshipatdistanceandanglefromplayer", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1334,7 +1334,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "loadshipatdistanceandanglefromplayer", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "loadsingleshipatdistanceandanglefromplayer", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -1569,13 +1569,13 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_LoadShipsByName(Node node)
+    public static void Draw_LoadMultipleShips(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "loadshipsbyname", 8, 17.5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "loadmultipleships", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1587,7 +1587,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "loadshipsbyname", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "loadmultipleships", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -1703,13 +1703,13 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_LoadShipsByTypeAndAllegiance(Node node)
+    public static void Draw_LoadMultipleShipsByType(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "loadshipsbytypeandallegiance", 8, 17.5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "loadmultipleshipsbytype", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1721,7 +1721,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "loadshipsbytypeandallegiance", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "loadmultipleshipsbytype", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 

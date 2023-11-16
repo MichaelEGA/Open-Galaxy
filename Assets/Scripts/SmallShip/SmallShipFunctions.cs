@@ -990,7 +990,7 @@ public static class SmallShipFunctions
 
         if (smallShip.isAI == false)
         {
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "crash", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
         }        
     }
 
@@ -1105,7 +1105,7 @@ public static class SmallShipFunctions
             ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion02", 12);
 
             //This makes an explosion sound
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", smallShip.gameObject.transform.position, 1, 1, 1000, 1, 100);
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "explosion01_xwing", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
 
             //This turns of the engine sound and release the ship audio source from the ship
             if (smallShip.audioManager != null)

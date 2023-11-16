@@ -59,9 +59,9 @@ public static class WindowFunctions
         buttonList.Add("preload_loadplanet");
         buttonList.Add("preload_loadtiles");
         buttonList.Add("preload_loadmultipleshipsonground");
-        buttonList.Add("preload_loadship");
-        buttonList.Add("preload_loadshipsbyname");
-        buttonList.Add("preload_loadshipsbytypeandallegiance");
+        buttonList.Add("preload_loadsingleship");
+        buttonList.Add("preload_loadmultipleships");
+        buttonList.Add("preload_loadmultipleshipsbytype");
         buttonList.Add("preload_setskybox");
         buttonList.Add("startmission");
         buttonList.Add("changemusicvolume");
@@ -73,11 +73,11 @@ public static class WindowFunctions
         buttonList.Add("displaymissionbriefing");
         buttonList.Add("ifshipisactive");
         buttonList.Add("iftypeofshipisactive");
-        buttonList.Add("loadship");
-        buttonList.Add("loadshipatdistanceandanglefromplayer");
+        buttonList.Add("loadsingleship");
+        buttonList.Add("loadsingleshipatdistanceandanglefromplayer");
         buttonList.Add("loadmultipleshipsonground");
-        buttonList.Add("loadshipsbyname");
-        buttonList.Add("loadshipsbytypeandallegiance");
+        buttonList.Add("loadmultipleshipsbytype");
+        buttonList.Add("loadmultipleships");
         buttonList.Add("lockmainshipweapons");
         buttonList.Add("message");
         buttonList.Add("movetowaypoint");
@@ -104,7 +104,7 @@ public static class WindowFunctions
 
         DrawScrollableButtons(window, 5, -25, 170f, 115, 10, 7, buttons, functions);
 
-        DrawTextBox(window, 127.5f, -25, 162.5f, 115, "NodeSprite_Dark", "Information about nodes", 7, TextAnchor.UpperLeft, true, null, "AddNodeTextBox");
+        DrawScrollableText(window, 127.5f, -25, 150f, 115, 7, "None", "AddNodeTextBox");
 
         DrawTextButton(window, 127.5f, -182.5f, 10, 117.5f, "none", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
@@ -480,6 +480,90 @@ public static class WindowFunctions
             buttonDrop -= buttonHeight;
             i++;
         }
+
+        DrawVerticalScrollBar(baseGO.transform, scrollRect, 5);
+    }
+
+    public static void DrawScrollableText(Window window, float xPos, float yPos, float height, float width, int fontSize, string text, string textBoxName = "textbox")
+    {
+        //This draws the scrollview
+        GameObject baseGO = new GameObject();
+        GameObject viewportGO = new GameObject();
+        GameObject contentGO = new GameObject();
+
+        baseGO.transform.SetParent(window.transform);
+        viewportGO.transform.SetParent(baseGO.transform);
+        contentGO.transform.SetParent(viewportGO.transform);
+
+        RectTransform baseRectTransform = baseGO.AddComponent<RectTransform>();
+        RectTransform viewportRectTransform = viewportGO.AddComponent<RectTransform>();
+        RectTransform contentRectTransform = contentGO.AddComponent<RectTransform>();
+
+        baseRectTransform.name = "Scrollable_Buttons";
+        viewportRectTransform.name = "Viewport";
+        contentRectTransform.name = "ContentRect";
+
+        baseRectTransform.anchorMax = new Vector2(0, 1);
+        baseRectTransform.anchorMin = new Vector2(0, 1);
+        baseRectTransform.pivot = new Vector2(0, 1);
+        baseRectTransform.anchoredPosition = new Vector2(xPos, yPos);
+        baseRectTransform.sizeDelta = new Vector2(width, height);
+        baseRectTransform.localScale = new Vector3(1, 1, 1);
+
+        viewportRectTransform.anchorMax = new Vector2(0, 1);
+        viewportRectTransform.anchorMin = new Vector2(0, 1);
+        viewportRectTransform.pivot = new Vector2(0, 1);
+        viewportRectTransform.anchoredPosition = new Vector2(0, 0);
+        viewportRectTransform.sizeDelta = new Vector2(width, height);
+        viewportRectTransform.localScale = new Vector3(1, 1, 1);
+
+        contentRectTransform.anchorMax = new Vector2(0, 1);
+        contentRectTransform.anchorMin = new Vector2(0, 1);
+        contentRectTransform.pivot = new Vector2(0, 1);
+        contentRectTransform.anchoredPosition = new Vector2(0, 0);
+        contentRectTransform.sizeDelta = new Vector2(width, height * 2);
+        contentRectTransform.localScale = new Vector3(1, 1, 1);
+
+        Image maskImage = viewportGO.AddComponent<Image>();
+        maskImage.type = Image.Type.Sliced;
+        maskImage.pixelsPerUnitMultiplier = 30;
+
+        Color color = Color.black;
+
+        if (ColorUtility.TryParseHtmlString("#404040", out color))
+        {
+            maskImage.color = color;
+        }
+
+        Mask mask = viewportGO.AddComponent<Mask>();
+
+        ScrollRect scrollRect = baseGO.AddComponent<ScrollRect>();
+        scrollRect.content = contentRectTransform;
+        scrollRect.viewport = viewportRectTransform;
+        scrollRect.horizontal = false;
+        scrollRect.inertia = false;
+        scrollRect.elasticity = 0;
+
+        //This draws the text box
+        GameObject textBoxGO = new GameObject();
+        textBoxGO.name = textBoxName;
+
+        textBoxGO.transform.SetParent(contentGO.transform);
+        RectTransform rectTransform = textBoxGO.AddComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(0, 0);
+        rectTransform.sizeDelta = new Vector2(width - 5, height * 2);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Text textBoxText = textBoxGO.AddComponent<Text>();
+        textBoxText.supportRichText = false;
+        textBoxText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        textBoxText.text = text;
+        textBoxText.fontSize = fontSize;
+        textBoxText.color = Color.white;
+        textBoxText.alignment = TextAnchor.UpperLeft;
 
         DrawVerticalScrollBar(baseGO.transform, scrollRect, 5);
     }

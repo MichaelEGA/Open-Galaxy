@@ -19,7 +19,7 @@ public class MissionEditor : MonoBehaviour
     public Text messageTextbox;
     public float scale = 1;
     public string gameWindowMode;
-    public bool scrolling;
+    public bool scrolling = true;
     public bool menusClosed = true;
     public string selectedNodeTypeToLoad;
     public string selectedMissionToLoad;

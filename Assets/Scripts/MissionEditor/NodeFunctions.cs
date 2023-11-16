@@ -37,17 +37,17 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShipsOnGround(node);
         }
-        else if (node.nodeType == "preload_loadship")
+        else if (node.nodeType == "preload_loadsingleship")
         {
-            NodeTypes.Draw_PreLoad_LoadShip(node);
+            NodeTypes.Draw_PreLoad_LoadSingleShip(node);
         }
-        else if (node.nodeType == "preload_loadshipsbyname")
+        else if (node.nodeType == "preload_loadmultipleships")
         {
-            NodeTypes.Draw_PreLoad_LoadShipsByName(node);
+            NodeTypes.Draw_PreLoad_LoadMultipleShips(node);
         }
-        else if (node.nodeType == "preload_loadshipsbytypeandallegiance")
+        else if (node.nodeType == "preload_loadmultipleshipsbytype")
         {
-            NodeTypes.Draw_PreLoad_LoadShipsByTypeAndAllegiance(node);
+            NodeTypes.Draw_PreLoad_LoadMultipleShipsByType(node);
         }
         else if (node.nodeType == "preload_setskybox")
         {
@@ -93,25 +93,25 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfShipIsActive(node);
         }
-        else if (node.nodeType == "loadship")
+        else if (node.nodeType == "loadsingleship")
         {
             NodeTypes.Draw_LoadShip(node);
         }
-        else if (node.nodeType == "loadshipatdistanceandanglefromplayer")
+        else if (node.nodeType == "loadsingleshipatdistanceandanglefromplayer")
         {
-            NodeTypes.Draw_LoadShipAtDistanceAndAngleFromPlayer(node);
+            NodeTypes.Draw_LoadSingleShipAtDistanceAndAngleFromPlayer(node);
         }
         else if (node.nodeType == "loadmultipleshipsonground")
         {
             NodeTypes.Draw_LoadMultipleShipsOnGround(node);
         }
-        else if (node.nodeType == "loadshipsbyname")
+        else if (node.nodeType == "loadmultipleships")
         {
-            NodeTypes.Draw_LoadShipsByName(node);
+            NodeTypes.Draw_LoadMultipleShips(node);
         }
-        else if (node.nodeType == "loadshipsbytypeandallegiance")
+        else if (node.nodeType == "loadmultipleshipsbytype")
         {
-            NodeTypes.Draw_LoadShipsByTypeAndAllegiance(node);
+            NodeTypes.Draw_LoadMultipleShipsByType(node);
         }
         else if (node.nodeType == "lockmainshipweapons")
         {

@@ -17,10 +17,12 @@ public class MainMenu: MonoBehaviour
     public GameObject CustomMissionMenu;
     public Text MenuTitle;
     public Text MenuTime;
+    public Text menuMessage;
     public List<GameObject> SubMenus;
     public string firstMenu;
     public string activeMenu;
     private float pressTime;
+    public AudioSource menuMusic;
 
     void Start()
     {

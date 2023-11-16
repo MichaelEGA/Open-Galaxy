@@ -49,8 +49,8 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     public float sizeX = 100;
     public float sizeZ = 200;
 
-    private bool dragging; //Indicates whether the node is being dragged
-    private bool scrollReset; //Tells the mission editor not to drag the canvas when the node is being dragged
+    private bool dragging = false; //Indicates whether the node is being dragged
+    private bool scrollReset = true; //Tells the mission editor not to drag the canvas when the node is being dragged
 
     public MissionEditor missionEditor;
 

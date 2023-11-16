@@ -464,18 +464,7 @@ public static class MissionEditorFunctions
 
         if (missionEditor.AddNodeTextBox != null)
         {
-            if (nodeType == "custom_node")
-            {
-                missionEditor.AddNodeTextBox.text = "This node is for manually inputing event information. If a node doesn't exist for a specific event or function you can use the custom node to access it.";
-            }
-            else if (nodeType == "preload_loadasteroids")
-            {
-                missionEditor.AddNodeTextBox.text = "Use this node to generate an asteroid field before the mission starts. Preload functions will automatically execute before the mission starts and do not need to be linked to any other events.";
-            }
-            else
-            {
-                missionEditor.AddNodeTextBox.text = "";
-            }
+            missionEditor.AddNodeTextBox.text = NodeDescriptions.GetNodeDescription(nodeType);
         }
     }
 
@@ -489,7 +478,21 @@ public static class MissionEditorFunctions
     public static void AddSelectedNodeType()
     {
         MissionEditor missionEditor = GetMissionEditor();
-        AddNode(missionEditor.selectedNodeTypeToLoad);
+
+        int x = (Screen.width / 2);
+        int y = (Screen.height / 2);
+        Vector2 centerPoint = new Vector2(x,y);
+        Vector2 pointOnGrid = new Vector2();
+
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(missionEditor.editorContentRect, centerPoint, Camera.main, out pointOnGrid))
+        {
+            AddNode(missionEditor.selectedNodeTypeToLoad, true, pointOnGrid.x, pointOnGrid.y);
+        }
+        else
+        {
+            AddNode(missionEditor.selectedNodeTypeToLoad);
+        }
+
         DisplayMessage("Added " + missionEditor.selectedNodeTypeToLoad);
     }
 
@@ -583,6 +586,8 @@ public static class MissionEditorFunctions
         }
 
         OGSettingsFunctions.SetEditorWindowMode(mode);
+
+        CloseAllMenus();
     }
 
     public static void ExitMissionEditor()
@@ -596,6 +601,8 @@ public static class MissionEditorFunctions
         OGSettingsFunctions.SetOGCursor();
 
         MainMenuFunctions.ReloadCustomMissions();
+
+        MainMenuFunctions.PlayBackgroundMusic(true);
 
         if (missionEditor != null)
         {

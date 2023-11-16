@@ -88,18 +88,18 @@ public static class MissionFunctions
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadship" )
+            else if (missionEvent.eventType == "preload_loadsingleship")
             {
                 LoadSingleShip(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadshipsbyname")
+            else if (missionEvent.eventType == "preload_loadmultipleships")
             {
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadshipsbytypeandallegiance")
+            else if (missionEvent.eventType == "preload_loadmultipleshipsbytype")
             {
                 Task a = new Task(LoadMultipleShipsByType(missionEvent));
                 while (a.Running == true) { yield return null; }
@@ -250,12 +250,12 @@ public static class MissionFunctions
                 FindNextEvent(missionName, missionEvent.nextEvent2);
             }
         }
-        else if (missionEvent.eventType == "loadship")
+        else if (missionEvent.eventType == "loadsingleship")
         {
             LoadSingleShip(missionEvent);
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
-        else if (missionEvent.eventType == "loadshipatdistanceandanglefromplayer")
+        else if (missionEvent.eventType == "loadsingleshipatdistanceandanglefromplayer")
         {
             LoadSingleShipAtDistanceAndAngleFromPlayer(missionEvent);
             FindNextEvent(missionName, missionEvent.nextEvent1);
@@ -265,12 +265,12 @@ public static class MissionFunctions
             Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
-        else if (missionEvent.eventType == "loadshipsbyname")
+        else if (missionEvent.eventType == "loadmultipleships")
         {
             Task a = new Task(LoadMultipleShips(missionEvent));
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
-        else if (missionEvent.eventType == "loadshipsbytypeandallegiance")
+        else if (missionEvent.eventType == "loadmultipleshipsbytype")
         {
             Task a = new Task(LoadMultipleShipsByType(missionEvent));
             FindNextEvent(missionName, missionEvent.nextEvent1);

@@ -629,7 +629,7 @@ public static class MissionFunctions
     {
         Scene scene = SceneFunctions.GetScene();
 
-        if (missionEvent.data1 != "none")
+        if (missionEvent.data1 != "none" & missionEvent.data1 != "0")
         {
             Task b = new Task(SceneFunctions.GenerateAsteroidField(scene.planetSeed, true, int.Parse(missionEvent.data1)));
             while (b.Running == true) { yield return null; }

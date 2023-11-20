@@ -22,7 +22,9 @@ public class MainMenu: MonoBehaviour
     public string firstMenu;
     public string activeMenu;
     private float pressTime;
-    public AudioSource menuMusic;
+    public AudioSource musicAudioSoure;
+    public AudioSource buttonAudioSource;
+    public AudioClip buttonHighlight;
 
     void Start()
     {

@@ -104,7 +104,7 @@ public static class WindowFunctions
 
         DrawScrollableButtons(window, 5, -25, 170f, 115, 10, 7, buttons, functions);
 
-        DrawScrollableText(window, 127.5f, -25, 150f, 115, 7, "None", "AddNodeTextBox");
+        DrawScrollableText(window, 127.5f, -25, 150f, 115, 7, "No Event Selected", 200f, "AddNodeTextBox");
 
         DrawTextButton(window, 127.5f, -182.5f, 10, 117.5f, "none", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
@@ -484,7 +484,7 @@ public static class WindowFunctions
         DrawVerticalScrollBar(baseGO.transform, scrollRect, 5);
     }
 
-    public static void DrawScrollableText(Window window, float xPos, float yPos, float height, float width, int fontSize, string text, string textBoxName = "textbox")
+    public static void DrawScrollableText(Window window, float xPos, float yPos, float height, float width, int fontSize, string text, float textBoxHeight, string textBoxName = "textbox")
     {
         //This draws the scrollview
         GameObject baseGO = new GameObject();
@@ -521,7 +521,7 @@ public static class WindowFunctions
         contentRectTransform.anchorMin = new Vector2(0, 1);
         contentRectTransform.pivot = new Vector2(0, 1);
         contentRectTransform.anchoredPosition = new Vector2(0, 0);
-        contentRectTransform.sizeDelta = new Vector2(width, height * 2);
+        contentRectTransform.sizeDelta = new Vector2(width, textBoxHeight);
         contentRectTransform.localScale = new Vector3(1, 1, 1);
 
         Image maskImage = viewportGO.AddComponent<Image>();
@@ -554,7 +554,7 @@ public static class WindowFunctions
         rectTransform.anchorMin = new Vector2(0, 1);
         rectTransform.pivot = new Vector2(0, 1);
         rectTransform.anchoredPosition = new Vector2(0, 0);
-        rectTransform.sizeDelta = new Vector2(width - 5, height * 2);
+        rectTransform.sizeDelta = new Vector2(width - 5, textBoxHeight);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
         Text textBoxText = textBoxGO.AddComponent<Text>();

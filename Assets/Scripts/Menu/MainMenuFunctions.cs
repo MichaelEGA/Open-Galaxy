@@ -995,15 +995,15 @@ public static class MainMenuFunctions
     {
         MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
 
-        if (mainMenu.menuMusic != null)
+        if (mainMenu.musicAudioSoure != null)
         {
             if (input == true)
             {
-                mainMenu.menuMusic.Play();
+                mainMenu.musicAudioSoure.Play();
             }
             else
             {
-                mainMenu.menuMusic.Pause();
+                mainMenu.musicAudioSoure.Pause();
             }
         }
     } 

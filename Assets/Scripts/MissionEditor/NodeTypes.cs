@@ -958,7 +958,7 @@ public static class NodeTypes
 
         float multiplySize = 5;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "message", "none", 7, 5, drop, 12.5f * multiplySize, 90, 5f);
+        node.data1 = NodeFunctions.DrawInputFieldLarge(node, "message", "none", 7, 5, drop, 12.5f * multiplySize, 90);
 
         drop -= 15 * multiplySize;
 

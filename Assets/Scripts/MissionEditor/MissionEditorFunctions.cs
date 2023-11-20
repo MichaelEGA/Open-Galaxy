@@ -890,7 +890,16 @@ public static class MissionEditorFunctions
 
             string jsonString = JsonHelper.ToJson(missionEventData, true);
 
-            string saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName.text + ".json";
+            string saveFile = "none";
+
+            if (missionEditor.missionName.text.Contains(".json"))
+            {
+                saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName.text;
+            }
+            else
+            {
+                saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName.text + ".json";
+            }
 
             File.WriteAllText(saveFile, jsonString);
 

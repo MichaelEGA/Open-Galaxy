@@ -73,6 +73,8 @@ public static class WindowFunctions
         buttonList.Add("displaymissionbriefing");
         buttonList.Add("ifshipisactive");
         buttonList.Add("iftypeofshipisactive");
+        buttonList.Add("ifshiphasbeenscanned");
+        buttonList.Add("ifshiphasntbeenscanned");
         buttonList.Add("loadsingleship");
         buttonList.Add("loadsingleshipatdistanceandanglefromplayer");
         buttonList.Add("loadmultipleshipsonground");

@@ -218,6 +218,31 @@ public static class NodeDescriptions
             "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n";
         }
+        else if (name == "ifshiphasbeenscanned")
+        {
+            description =
+            "If Ship has been scanned \n " +
+            "\n " +
+            "This node checks to see whether a particular ship has been scanned or not. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+            "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
+            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n";
+        }
+        else if (name == "ifshiphasntbeenscanned")
+        {
+            description =
+            "If Ship hasn't been scanned \n " +
+            "\n " +
+            "This node checks to see whether a ship hasn't been scanned or not. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- This node will return a result on the first ship it finds that hasn't been scanned. For example if you type 'Container', the node will check all ships that have 'Container' in the name. If it finds one that hasn't been scanned it returns true. \n" +
+            "- This node is useful for checking if a player has finished scanning a group of ships/containers with a similar name. \n" +
+            "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
+            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n";
+        }
         else if (name == "loadsingleship")
         {
             description =

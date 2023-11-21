@@ -250,6 +250,32 @@ public static class MissionFunctions
                 FindNextEvent(missionName, missionEvent.nextEvent2);
             }
         }
+        else if (missionEvent.eventType == "ifshiphasbeenscanned")
+        {
+            bool shiphasbeenscanned = IfShipHasBeenScanned(missionEvent);
+
+            if (shiphasbeenscanned == true)
+            {
+                FindNextEvent(missionName, missionEvent.nextEvent1);
+            }
+            else
+            {
+                FindNextEvent(missionName, missionEvent.nextEvent2);
+            }
+        }
+        else if (missionEvent.eventType == "ifshiphasntbeenscanned")
+        {
+            bool shiphasntbeenscanned = IfShipHasntBeenScanned(missionEvent);
+
+            if (shiphasntbeenscanned == true)
+            {
+                FindNextEvent(missionName, missionEvent.nextEvent1);
+            }
+            else
+            {
+                FindNextEvent(missionName, missionEvent.nextEvent2);
+            }
+        }
         else if (missionEvent.eventType == "loadsingleship")
         {
             LoadSingleShip(missionEvent);
@@ -609,19 +635,112 @@ public static class MissionFunctions
             {
                 foreach (GameObject ship in scene.objectPool)
                 {
-                    if (ship.name.Contains(missionEvent.data1))
+                    if (ship != null)
                     {
-                       if (ship.activeSelf == true)
-                       {
-                            shipIsActive = true;
-                            break;
-                       }
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            if (ship.activeSelf == true)
+                            {
+                                shipIsActive = true;
+                                break;
+                            }
+                        }
                     }
                 }
             }
         }
 
         return shipIsActive;
+    }
+
+    //This checks a single ship as to whether it has been scanned
+    public static bool IfShipHasBeenScanned(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipHasBeenScanned = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                            if (smallShip != null)
+                            {
+                                if (smallShip.scanned == true)
+                                {
+                                    shipHasBeenScanned = true;
+                                    break;
+                                }
+                            }
+                            else if (largeShip != null)
+                            {
+                                if (largeShip.scanned == true)
+                                {
+                                    shipHasBeenScanned = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return shipHasBeenScanned;
+    }
+
+    //This checks a group of ships to check if one has not been scanned
+    public static bool IfShipHasntBeenScanned(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipHasntBeenScanned = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                            if (smallShip != null)
+                            {
+                                if (smallShip.scanned == false)
+                                {
+                                    shipHasntBeenScanned = true;
+                                    break;
+                                }
+                            }
+                            else if (largeShip != null)
+                            {
+                                if (largeShip.scanned == false)
+                                {
+                                    shipHasntBeenScanned = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return shipHasntBeenScanned;
     }
 
     //This loads the asteroid field
@@ -659,6 +778,7 @@ public static class MissionFunctions
         float z = missionEvent.z;
         string allegiance = missionEvent.data4;
         string name = missionEvent.data5;
+        string cargo = missionEvent.data6;
 
         float xRotation = missionEvent.xRotation;
         float yRotation = missionEvent.yRotation;
@@ -683,7 +803,7 @@ public static class MissionFunctions
             z = Random.Range(-10000, 10000);
         }
 
-        SceneFunctions.LoadSingleShip(ship, bool.Parse(missionEvent.data2), new Vector3(x, y, z), rotation, allegiance, false, "easy", name);
+        SceneFunctions.LoadSingleShip(ship, bool.Parse(missionEvent.data2), new Vector3(x, y, z), rotation, allegiance, false, "easy", name, false, cargo);
     }
 
     //This loads a single ship at a certain distance and angle from the player
@@ -696,6 +816,7 @@ public static class MissionFunctions
         string allegiance = missionEvent.data4;
         float distance = float.Parse(missionEvent.data5);
         string squadronName = missionEvent.data6;
+        string cargo = missionEvent.data7;
 
         float xRotation = missionEvent.xRotation;
         float yRotation = missionEvent.yRotation;
@@ -725,7 +846,7 @@ public static class MissionFunctions
             }
         }
 
-        SceneFunctions.LoadSingleShip(ship, true, newPosition, rotation, allegiance, false, "easy", squadronName);
+        SceneFunctions.LoadSingleShip(ship, true, newPosition, rotation, allegiance, false, "easy", squadronName, false, cargo);
     }
 
     //This loads multiple ships by name
@@ -775,7 +896,10 @@ public static class MissionFunctions
         bool ifRaycastFailsStillLoad = false;
         if (bool.TryParse(missionEvent.data11, out _)) { ifRaycastFailsStillLoad = bool.Parse(missionEvent.data11); }
 
-        Task c = new Task(SceneFunctions.LoadMultipleShipsOnGround(type, name, allegiance, number, numberPerLength, positionVariance, length, width, distanceAboveGround, centerPoint, rotation, randomise, ifRaycastFailsStillLoad));
+        string cargo = "none";
+        if (missionEvent.data12 != "none") { cargo = missionEvent.data12; }
+
+        Task c = new Task(SceneFunctions.LoadMultipleShipsOnGround(type, name, allegiance, number, numberPerLength, positionVariance, length, width, distanceAboveGround, centerPoint, rotation, randomise, ifRaycastFailsStillLoad, cargo));
         while (c.Running == true) { yield return null; }
     }
 
@@ -825,6 +949,9 @@ public static class MissionFunctions
         int playerNo = 0;
         if (missionEvent.data12 != "none" & missionEvent.data12 != null) { playerNo = int.Parse(missionEvent.data12); }
 
+        string cargo = "none";
+        if (missionEvent.data13 != "none") { cargo = missionEvent.data13; }
+
         if (playerNo > shipNo - 1)
         {
             playerNo = shipNo - 1;
@@ -846,7 +973,7 @@ public static class MissionFunctions
             positionVariance = 10;
         }
 
-        Task c = new Task(SceneFunctions.LoadMultipleShips(shipType, shipNo, skillLevel, groupsOf, shipDistance, groupDistance, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadMultipleShips(shipType, shipNo, skillLevel, groupsOf, shipDistance, groupDistance, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo, cargo));
         while (c.Running == true) { yield return null; }
     }
 
@@ -899,6 +1026,9 @@ public static class MissionFunctions
         int playerNo = 0;
         if (missionEvent.data13 != "none" & missionEvent.data13 != null) { playerNo = int.Parse(missionEvent.data13); }
 
+        string cargo = "none";
+        if (missionEvent.data14 != "none") { cargo = missionEvent.data14; }
+
         if (randomise == true)
         {
             xRotation = Random.Range(0, 360);
@@ -914,7 +1044,7 @@ public static class MissionFunctions
             playerNo = Random.Range(0, shipNo - 1);
         }
 
-        Task c = new Task(SceneFunctions.LoadMultipleShipByType(shipType, allegiance, skillLevel, shipNo, groupsOf, shipDistance, groupDistance, false, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadMultipleShipByType(shipType, allegiance, skillLevel, shipNo, groupsOf, shipDistance, groupDistance, false, positionVariance, new Vector3(x, y, z), rotation, shipName, includePlayer, playerNo, cargo));
         while (c.Running == true) { yield return null; }
     }
 

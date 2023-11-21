@@ -968,7 +968,7 @@ public static class SceneFunctions
     #region ship creation
 
     //This loads an individual ship in the scene
-    public static void LoadSingleShip(string shipTypeName, bool isAI = true, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string allegiance = "none", bool attachCameraToAI = false, string aiSkillLevel = "easy", string name = "none", bool dontModifyPosition = false)
+    public static void LoadSingleShip(string shipTypeName, bool isAI = true, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string allegiance = "none", bool attachCameraToAI = false, string aiSkillLevel = "easy", string name = "none", bool dontModifyPosition = false, string cargo = "no cargo")
     {
         //Get scene script reference
         Scene scene = GetScene();
@@ -1062,6 +1062,7 @@ public static class SceneFunctions
                 smallShip.scene = scene;
                 smallShip.audioManager = audioManager;
                 smallShip.loadTime = Time.time;
+                smallShip.cargo = cargo;
                 ship.name = smallShip.name;
 
                 if (smallShip.torpedoNumber == 0)
@@ -1131,6 +1132,7 @@ public static class SceneFunctions
                 largeShip.audioManager = audioManager;
                 largeShip.classType = shipType.classType;
                 largeShip.loadTime = Time.time;
+                largeShip.cargo = cargo;
                 ship.name = largeShip.name;
             }
 
@@ -1188,7 +1190,7 @@ public static class SceneFunctions
         }
     }
 
-    public static IEnumerator LoadMultipleShips(string name, int number = 1, string aiSkillLevel = "easy", int groupsOf = 1, float shipDistance = 50, float groupDistance = 250, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
+    public static IEnumerator LoadMultipleShips(string name, int number = 1, string aiSkillLevel = "easy", int groupsOf = 1, float shipDistance = 50, float groupDistance = 250, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0, string cargo = "no cargo")
     {
 
         //This gets the scene reference
@@ -1240,7 +1242,7 @@ public static class SceneFunctions
                 isAI = false;
             }
 
-            LoadSingleShip(name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
+            LoadSingleShip(name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"), false, cargo);
 
             gNumber++;
 
@@ -1257,7 +1259,7 @@ public static class SceneFunctions
         }
     }
 
-    public static IEnumerator LoadMultipleShipByType(string type, string allegiance, string aiSkillLevel = "easy", int number = 1, int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = true, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0)
+    public static IEnumerator LoadMultipleShipByType(string type, string allegiance, string aiSkillLevel = "easy", int number = 1, int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = true, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0, string cargo = "no cargo")
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1321,7 +1323,7 @@ public static class SceneFunctions
 
                 int shipCallNumber = i + 1;
 
-                LoadSingleShip(shipTypesList[shipTypeCount].name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"));
+                LoadSingleShip(shipTypesList[shipTypeCount].name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"), false, cargo);
 
                 gNumber++;
 
@@ -1348,7 +1350,7 @@ public static class SceneFunctions
      
     }
 
-    public static IEnumerator LoadMultipleShipsOnGround(string type, string name, string allegiance, int number = 1, int numberPerLength = 1, float positionVar = 0, float length = 1000, float width = 1000, float distanceAboveGround = 0, Vector2 centerPoint = new Vector2(), Quaternion rotation = new Quaternion(),  bool randomise = false, bool ifRaycastFailsStillLoad = false)
+    public static IEnumerator LoadMultipleShipsOnGround(string type, string name, string allegiance, int number = 1, int numberPerLength = 1, float positionVar = 0, float length = 1000, float width = 1000, float distanceAboveGround = 0, Vector2 centerPoint = new Vector2(), Quaternion rotation = new Quaternion(),  bool randomise = false, bool ifRaycastFailsStillLoad = false, string cargo = "no cargo")
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1409,12 +1411,12 @@ public static class SceneFunctions
                 if (Physics.Raycast(raycastPos, Vector3.down, out hit, 5000, mask))
                 {
                     Vector3 newPosition = hit.point;
-                    LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name, true);
+                    LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name, true, cargo);
                 }
                 else if (ifRaycastFailsStillLoad == true)
                 {
                     Vector3 newPosition = new Vector3(xPos, 0, zPos);
-                    LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name);
+                    LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name, false, cargo);
                 }
 
                 yield return null;

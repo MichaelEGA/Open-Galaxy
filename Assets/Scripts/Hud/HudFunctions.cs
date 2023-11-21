@@ -105,6 +105,7 @@ public static class HudFunctions
             GameObject targetDistance = GameObject.Find("TargetDistance");
             GameObject targetType = GameObject.Find("TargetType");
             GameObject targetName = GameObject.Find("TargetName");
+            GameObject targetCargo = GameObject.Find("TargetCargo");
             GameObject targetSpeedText = GameObject.Find("TargetSpeedText");
             GameObject targetShieldsText = GameObject.Find("TargetShieldsText");
             GameObject targetHullText = GameObject.Find("TargetHullText");
@@ -112,6 +113,7 @@ public static class HudFunctions
             if (targetDistance != null) { hud.targetDistance = targetDistance.GetComponent<Text>(); }
             if (targetType != null) { hud.targetType = targetType.GetComponent<Text>(); }
             if (targetName != null) { hud.targetName = targetName.GetComponent<Text>(); }
+            if (targetCargo != null) { hud.targetCargo = targetCargo.GetComponent<Text>(); }
             if (targetSpeedText != null) { hud.targetSpeedText = targetSpeedText.GetComponent<Text>(); }
             if (targetShieldsText != null) { hud.targetShieldsText = targetShieldsText.GetComponent<Text>(); }
             if (targetHullText != null) { hud.targetHullText = targetHullText.GetComponent<Text>(); }
@@ -585,6 +587,53 @@ public static class HudFunctions
             else
             {
                 hud.targetHullText.text = " ";
+            }
+        }
+    }
+
+    //Display the target cargo
+    public static void DisplayTargetCargo(Hud hud)
+    {
+        if (hud.targetCargo != null & hud.smallShip != null)
+        {
+            if (hud.smallShip.target != null)
+            {
+                if (hud.smallShip.targetSmallShip != null)
+                {
+                    if (hud.smallShip.targetSmallShip.scanned == false & hud.smallShip.targetDistance > 250)
+                    {
+                        hud.targetCargo.text = "-";
+                    }
+                    else if (hud.smallShip.targetSmallShip.scanned == false & hud.smallShip.targetDistance < 250)
+                    {
+                        hud.targetCargo.text = hud.smallShip.targetSmallShip.cargo.ToUpper();
+                        hud.smallShip.targetSmallShip.scanned = true;
+                    }
+                    else if (hud.smallShip.targetSmallShip.scanned == true)
+                    {
+                        hud.targetCargo.text = hud.smallShip.targetSmallShip.cargo.ToUpper();
+                    }
+                }
+                else if (hud.smallShip.targetLargeShip != null)
+                {
+                    if (hud.smallShip.targetLargeShip.scanned == false & hud.smallShip.targetDistance > 600)
+                    {
+                        hud.targetCargo.text = "-";
+                    }
+                    else if (hud.smallShip.targetLargeShip.scanned == false & hud.smallShip.targetDistance < 600)
+                    {
+                        hud.targetCargo.text = hud.smallShip.targetLargeShip.cargo.ToUpper();
+                        hud.smallShip.targetLargeShip.scanned = true;
+                    }
+                    else if (hud.smallShip.targetLargeShip.scanned == true)
+                    {
+                        hud.targetCargo.text = hud.smallShip.targetLargeShip.cargo.ToUpper();
+                    }
+                }
+            }
+            else
+            {
+                hud.targetCargo.text = "-";
             }
         }
     }

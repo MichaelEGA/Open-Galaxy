@@ -93,6 +93,14 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfShipIsActive(node);
         }
+        else if (node.nodeType == "ifshiphasbeenscanned")
+        {
+            NodeTypes.Draw_IfShipHasBeenScanned(node);
+        }
+        else if (node.nodeType == "ifshiphasntbeenscanned")
+        {
+            NodeTypes.Draw_IfShipHasntBeenScanned(node);
+        }
         else if (node.nodeType == "loadsingleship")
         {
             NodeTypes.Draw_LoadShip(node);

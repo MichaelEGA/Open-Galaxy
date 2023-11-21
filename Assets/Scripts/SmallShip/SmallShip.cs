@@ -13,6 +13,8 @@ public class SmallShip : MonoBehaviour
     public float loadTime;
     public string thrustType;
     public bool exploded;
+    public bool scanned = false;
+    public string cargo = "no cargo";
 
     [Header("Ship Components")]
     public Rigidbody shipRigidbody;

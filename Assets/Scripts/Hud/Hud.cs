@@ -39,6 +39,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public Text targetDistance;
     [HideInInspector] public Text targetType;
     [HideInInspector] public Text targetName;
+    [HideInInspector] public Text targetCargo;
     [HideInInspector] public Text targetSpeedText;
     [HideInInspector] public Text targetShieldsText;
     [HideInInspector] public Text targetHullText;
@@ -102,6 +103,7 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplayTargetDistance(this);
         HudFunctions.DisplayTargetType(this);
         HudFunctions.DisplayTargetName(this);
+        HudFunctions.DisplayTargetCargo(this);
         HudFunctions.DisplayTargetSpeed(this);
         HudFunctions.DisplayTargetShield(this);
         HudFunctions.DisplayTargetHull(this);

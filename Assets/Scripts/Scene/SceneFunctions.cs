@@ -1350,7 +1350,7 @@ public static class SceneFunctions
      
     }
 
-    public static IEnumerator LoadMultipleShipsOnGround(string type, string name, string allegiance, int number = 1, int numberPerLength = 1, float positionVar = 0, float length = 1000, float width = 1000, float distanceAboveGround = 0, Vector2 centerPoint = new Vector2(), Quaternion rotation = new Quaternion(),  bool randomise = false, bool ifRaycastFailsStillLoad = false, string cargo = "no cargo")
+    public static IEnumerator LoadMultipleShipsOnGround(string type, string name, string allegiance, int shipNumber = 1, int shipsPerLine = 1, float positionVariance = 0, float length = 1000, float width = 1000, float distanceAboveGround = 0, Vector2 centerPoint = new Vector2(), Quaternion rotation = new Quaternion(),  bool randomise = false, bool ifRaycastFailsStillLoad = false, string cargo = "no cargo")
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1371,59 +1371,98 @@ public static class SceneFunctions
             }
         }
 
-        float lengthUnit = length / (float)numberPerLength;
-        float widthUnit = width / ((float)number / (float)numberPerLength);
+        Vector3[] positions = RectangleHorizontal_Pattern(centerPoint, width, length, shipNumber, shipsPerLine, positionVariance);  
 
+        foreach (Vector3 position in positions)
+        {
+            Vector3 raycastPos = new Vector3(position.x, 2000, position.z);
+
+            RaycastHit hit;
+
+            LayerMask mask = ~0;
+
+            Debug.DrawRay(raycastPos, Vector3.down * 5000, Color.red, 500);
+
+            //NOTE: Raycasts only work when the time scale is set to zero IF "Auto Sync Transform" is set to true in the project settings
+
+            if (Physics.Raycast(raycastPos, Vector3.down, out hit, 5000, mask))
+            {
+                Vector3 newPosition = hit.point + new Vector3(0,distanceAboveGround,0);
+                LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name, true, cargo);
+            }
+            else if (ifRaycastFailsStillLoad == true)
+            {
+                Vector3 newPosition = new Vector3(position.x, 0, position.z);
+                LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name, false, cargo);
+            }
+
+            yield return null;
+        }
+    }
+
+    //This returns a set of positions in the shape of a rectangle
+    public static Vector3[] RectangleHorizontal_Pattern(Vector3 centerPoint, float width, float length, int shipNumber, int shipsPerLine, float positionVariance = 0)
+    {
+        List<Vector3> shipPositions = new List<Vector3>();
+
+        float increment_width = width / (float)shipsPerLine;
+        float increment_length = length / (Mathf.Floor((float)shipNumber / (float)shipsPerLine));
         float lengthRadius = length / 2;
         float widthRadius = width / 2;
+        float positionX = 0;
+        float positionZ = 0;
 
-        for (int l = 0; l < length; l += (int)lengthUnit)
+        //This makes the ships load in a square around the designated point
+        Vector3 adjustedCenterPoint = new Vector3(centerPoint.x - widthRadius, centerPoint.y, centerPoint.z - lengthRadius);
+
+        for (int i = 0; i < shipNumber; i++)
         {
-            for (int w = 0; w < width; w += (int)widthUnit)
+            for (int i2 = 0; i2 < shipsPerLine; i2++)
             {
-                float xPos = l + (centerPoint.x - lengthRadius);
-                float zPos = w + (centerPoint.y - widthRadius);
+                float varianceX = Random.Range(0, positionVariance);
+                float varianceY = 0;
+                float varianceZ = Random.Range(0, positionVariance);
 
-                if (randomise == true)
-                {
-                    //This radomises the position within the give width and length
-                    xPos = Random.Range(0, lengthRadius) - lengthRadius;
-                    zPos = Random.Range(0, widthRadius) - widthRadius;
+                Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
+                Vector3 relativeShipPosition = new Vector3(positionX, 0, positionZ);
+                Vector3 actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
 
-                    //This randomises the rotation
-                    float xRot = Random.Range(0, 360);
-                    float yRot = Random.Range(0, 360);
-                    float zRot = Random.Range(0, 360);
+                shipPositions.Add(actualShipPosition);
 
-                    rotation = Quaternion.Euler(xRot, yRot, zRot);
-                }
-
-                Vector3 raycastPos = new Vector3(xPos, 2000, zPos);
-
-                RaycastHit hit;
-
-                LayerMask mask = ~0;
-
-                Debug.DrawRay(raycastPos, Vector3.down * 5000, Color.red, 500);
-
-                //NOTE: Raycasts only work when the time scale is set to zero IF "Auto Sync Transform" is set to true in the project settings
-
-                if (Physics.Raycast(raycastPos, Vector3.down, out hit, 5000, mask))
-                {
-                    Vector3 newPosition = hit.point;
-                    LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name, true, cargo);
-                }
-                else if (ifRaycastFailsStillLoad == true)
-                {
-                    Vector3 newPosition = new Vector3(xPos, 0, zPos);
-                    LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name, false, cargo);
-                }
-
-                yield return null;
+                positionX += increment_width;
+                i++;
             }
+
+            positionX = 0;
+            positionZ += increment_length;
         }
-        
-        yield return null;
+
+        return shipPositions.ToArray();
+    }
+
+    public static void RectangleVertical_Pattern()
+    {
+
+    }
+
+    public static void ArrowHorizontal_Pattern()
+    {
+
+    }
+
+    public static void LineVertical_Pattern()
+    {
+
+    }
+
+    public static void LineHorizontal_Pattern()
+    {
+
+    }
+
+    public static void RandomInsideSphere_Pattern()
+    {
+
     }
 
     #endregion

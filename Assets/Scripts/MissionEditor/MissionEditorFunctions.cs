@@ -380,7 +380,7 @@ public static class MissionEditorFunctions
 
     #endregion
 
-    #region menus
+    #region menus functions
 
     public static void ActivateMenu(string menuName)
     {
@@ -426,7 +426,7 @@ public static class MissionEditorFunctions
 
     #endregion
 
-    #region windows
+    #region windows functions
 
     public static void OpenWindow(string windowName)
     {
@@ -445,6 +445,8 @@ public static class MissionEditorFunctions
     }
 
     #endregion
+
+    #region node functions
 
     public static void SelectNodeType(string nodeType)
     {
@@ -468,20 +470,13 @@ public static class MissionEditorFunctions
         }
     }
 
-    public static void SelectMission(string mission)
-    {
-        MissionEditor missionEditor = GetMissionEditor();
-
-        missionEditor.selectedMissionToLoad = mission;
-    }
-
     public static void AddSelectedNodeType()
     {
         MissionEditor missionEditor = GetMissionEditor();
 
         int x = (Screen.width / 2);
         int y = (Screen.height / 2);
-        Vector2 centerPoint = new Vector2(x,y);
+        Vector2 centerPoint = new Vector2(x, y);
         Vector2 pointOnGrid = new Vector2();
 
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(missionEditor.editorContentRect, centerPoint, Camera.main, out pointOnGrid))
@@ -521,122 +516,181 @@ public static class MissionEditorFunctions
         return node;
     }
 
-    public static void ScaleGrid(MissionEditor missionEditor)
-    {
-        bool scaling = true;
+    #endregion
 
-        //Checks whether mouse is in position to scale
-        foreach (Window window in missionEditor.windows)
+    #region saving
+
+    public static void SaveMission(Window window = null)
+    {
+        List<MissionEvent> missionList = new List<MissionEvent>();
+
+        MissionEditor missionEditor = GetMissionEditor();
+
+        string missionName = GetMissionNameFromSaveDialog();
+
+        UpdateMissionName(missionName);
+
+        if (missionName != "Untitled Mission")
         {
-            if (window != null)
+            foreach (Node node in missionEditor.nodes)
             {
-                if (window.gameObject.activeSelf == true)
+                if (node != null)
                 {
-                    if (window.scaling == false)
-                    {
-                        scaling = false;
-                    }
+
+                    MissionEvent missionEvent = new MissionEvent();
+
+                    missionEvent.eventID = ParseTextToString(node.eventID);
+                    missionEvent.eventType = ParseTextToString(node.eventType);
+                    missionEvent.conditionLocation = ParseTextToString(node.conditionLocation);
+                    missionEvent.conditionTime = ParseTextToFloat(node.conditionTime);
+                    missionEvent.x = ParseTextToFloat(node.x);
+                    missionEvent.y = ParseTextToFloat(node.y);
+                    missionEvent.z = ParseTextToFloat(node.z);
+                    missionEvent.xRotation = ParseTextToFloat(node.xRotation);
+                    missionEvent.yRotation = ParseTextToFloat(node.yRotation);
+                    missionEvent.zRotation = ParseTextToFloat(node.zRotation);
+                    missionEvent.data1 = ParseTextToString(node.data1);
+                    missionEvent.data2 = ParseTextToString(node.data2);
+                    missionEvent.data3 = ParseTextToString(node.data3);
+                    missionEvent.data4 = ParseTextToString(node.data4);
+                    missionEvent.data5 = ParseTextToString(node.data5);
+                    missionEvent.data6 = ParseTextToString(node.data6);
+                    missionEvent.data7 = ParseTextToString(node.data7);
+                    missionEvent.data8 = ParseTextToString(node.data8);
+                    missionEvent.data9 = ParseTextToString(node.data9);
+                    missionEvent.data10 = ParseTextToString(node.data10);
+                    missionEvent.data11 = ParseTextToString(node.data11);
+                    missionEvent.data12 = ParseTextToString(node.data12);
+                    missionEvent.data13 = ParseTextToString(node.data13);
+                    missionEvent.data14 = ParseTextToString(node.data14);
+                    missionEvent.data15 = ParseTextToString(node.data15);
+                    missionEvent.nextEvent1 = ParseTextToString(node.nextEvent1);
+                    missionEvent.nextEvent2 = ParseTextToString(node.nextEvent2);
+                    missionEvent.nextEvent3 = ParseTextToString(node.nextEvent3);
+                    missionEvent.nextEvent4 = ParseTextToString(node.nextEvent4);
+                    missionEvent.nodePosX = node.nodePosX;
+                    missionEvent.nodePosY = node.nodePosY;
+
+                    missionList.Add(missionEvent);
                 }
             }
-        }
 
-        //This changes the scale
-        if (scaling == true)
-        {
-            missionEditor.scale += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 20;
-        }
+            MissionEvent[] missionEventData = missionList.ToArray();
 
-        //This locks the scale within certain bounds
-        float percentage = ((Mathf.Abs(missionEditor.scale) - 0.3f) / 0.7f) * 100;
+            string jsonString = JsonHelper.ToJson(missionEventData, true);
 
-        if (percentage > 200)
-        {
-            missionEditor.scale = 1.7f;
-            percentage = 200;
-        }
-        else if (percentage < 0)
-        {
-            missionEditor.scale = 0.3f;
-            percentage = 0;
-        }
+            string saveFile = "none";
 
-        //This applies the scale
-        if (scaling == true)
-        {
-            if (missionEditor.editorContentRect != null)
+            if (missionEditor.missionName.text.Contains(".json"))
             {
-                missionEditor.editorContentRect.localScale = new Vector3(missionEditor.scale, missionEditor.scale);
+                saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName.text;
+            }
+            else
+            {
+                saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName.text + ".json";
+            }
+
+            File.WriteAllText(saveFile, jsonString);
+
+            DisplayMessage(missionEditor.missionName.text + " saved to " + Application.persistentDataPath + "/Custom Missions/");
+
+            if (window != null)
+            {
+                WindowFunctions.DeleteWindow(window);
             }
         }
-
-        //This outputs the scale to the indicator
-        if (missionEditor.scaleIndicator != null)
+        else
         {
-            missionEditor.scaleIndicator.text = percentage.ToString("000") + "%";
+            OpenWindow("savemissionas");
         }
-    }
-
-    public static void SetWindowMode(string mode = "none")
-    {
-        if (mode != "window" & mode != "fullscreen" || mode == "none")
-        {
-            OGSettings settings = OGSettingsFunctions.GetSettings();
-
-            mode = settings.editorWindowMode;
-        }
-
-        OGSettingsFunctions.SetEditorWindowMode(mode);
 
         CloseAllMenus();
     }
 
-    public static void ExitMissionEditor()
+    public static void UpdateMissionName(string name)
     {
         MissionEditor missionEditor = GetMissionEditor();
 
-        OGSettings settings = OGSettingsFunctions.GetSettings();
+        if (missionEditor != null)
+        {
+            missionEditor.missionName.text = name;
+        }
+    }
 
-        OGSettingsFunctions.SetGameWindowMode(settings.gameWindowMode);
+    public static string GetMissionNameFromSaveDialog()
+    {
+        MissionEditor missionEditor = GetMissionEditor();
 
-        OGSettingsFunctions.SetOGCursor();
-
-        MainMenuFunctions.ReloadCustomMissions();
-
-        MainMenuFunctions.PlayBackgroundMusic(true);
+        string name = "Untitled Mission";
 
         if (missionEditor != null)
         {
-            missionEditor.gameObject.SetActive(false);
+            name = missionEditor.missionName.text;
         }
-    }
 
-    public static void ExitToWindows()
-    {
-        Debug.Log("Quitting to windows - NOTE: Only works in build");
+        GameObject MissionNameField = GameObject.Find("MissionNameField");
 
-        Application.Quit();
-    }
-
-    public static MissionEditor GetMissionEditor()
-    {
-        MissionEditor missionEditor = GameObject.FindObjectOfType<MissionEditor>();
-
-        return missionEditor;
-    }
-
-    public static void ToggleScrolling(MissionEditor missionEditor)
-    {
-        if (missionEditor.scrolling == true)
+        if (MissionNameField != null)
         {
-            missionEditor.scrollRect.horizontal = true;
-            missionEditor.scrollRect.vertical = true;
+            Text missionName = MissionNameField.GetComponent<Text>();
+
+            if (missionName != null)
+            {
+                name = missionName.text;
+            }
         }
-        else
-        {
-            missionEditor.scrollRect.horizontal = false;
-            missionEditor.scrollRect.vertical = false;
-        }
+
+        return name;
     }
+
+    public static void DisplayMessage(string message)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (missionEditor != null)
+        {
+            if (missionEditor.messageTextbox != null)
+            {
+                missionEditor.messageTextbox.text = message;
+            }
+        }
+
+    }
+
+    public static float ParseTextToFloat(Text text)
+    {
+        float input = 0;
+
+        if (text != null)
+        {
+            if (float.TryParse(text.text, out _))
+            {
+                input = float.Parse(text.text);
+            }
+        }
+
+        return input;
+    }
+
+    public static string ParseTextToString(Text text)
+    {
+        string input = "none";
+
+        if (text != null)
+        {
+            if (text.text != "")
+            {
+                input = text.text;
+            }
+
+        }
+
+        return input;
+    }
+
+    #endregion
+
+    #region loading
 
     public static void LoadMission(Window window)
     {
@@ -831,172 +885,125 @@ public static class MissionEditorFunctions
         }
     }
 
-    public static void SaveMission(Window window = null)
+    public static void SelectMission(string mission)
     {
-        List<MissionEvent> missionList = new List<MissionEvent>();
-
         MissionEditor missionEditor = GetMissionEditor();
 
-        string missionName = GetMissionNameFromSaveDialog();
+        missionEditor.selectedMissionToLoad = mission;
+    }
 
-        UpdateMissionName(missionName);
+    #endregion
 
-        if (missionName != "Untitled Mission")
+    #region mission editor functions
+
+    public static void ScaleGrid(MissionEditor missionEditor)
+    {
+        bool scaling = true;
+
+        //Checks whether mouse is in position to scale
+        foreach (Window window in missionEditor.windows)
         {
-            foreach (Node node in missionEditor.nodes)
-            {
-                if (node != null)
-                {
-
-                    MissionEvent missionEvent = new MissionEvent();
-
-                    missionEvent.eventID = ParseTextToString(node.eventID);
-                    missionEvent.eventType = ParseTextToString(node.eventType);
-                    missionEvent.conditionLocation = ParseTextToString(node.conditionLocation);
-                    missionEvent.conditionTime = ParseTextToFloat(node.conditionTime);
-                    missionEvent.x = ParseTextToFloat(node.x);
-                    missionEvent.y = ParseTextToFloat(node.y);
-                    missionEvent.z = ParseTextToFloat(node.z);
-                    missionEvent.xRotation = ParseTextToFloat(node.xRotation);
-                    missionEvent.yRotation = ParseTextToFloat(node.yRotation);
-                    missionEvent.zRotation = ParseTextToFloat(node.zRotation);
-                    missionEvent.data1 = ParseTextToString(node.data1);
-                    missionEvent.data2 = ParseTextToString(node.data2);
-                    missionEvent.data3 = ParseTextToString(node.data3);
-                    missionEvent.data4 = ParseTextToString(node.data4);
-                    missionEvent.data5 = ParseTextToString(node.data5);
-                    missionEvent.data6 = ParseTextToString(node.data6);
-                    missionEvent.data7 = ParseTextToString(node.data7);
-                    missionEvent.data8 = ParseTextToString(node.data8);
-                    missionEvent.data9 = ParseTextToString(node.data9);
-                    missionEvent.data10 = ParseTextToString(node.data10);
-                    missionEvent.data11 = ParseTextToString(node.data11);
-                    missionEvent.data12 = ParseTextToString(node.data12);
-                    missionEvent.data13 = ParseTextToString(node.data13);
-                    missionEvent.data14 = ParseTextToString(node.data14);
-                    missionEvent.data15 = ParseTextToString(node.data15);
-                    missionEvent.nextEvent1 = ParseTextToString(node.nextEvent1);
-                    missionEvent.nextEvent2 = ParseTextToString(node.nextEvent2);
-                    missionEvent.nextEvent3 = ParseTextToString(node.nextEvent3);
-                    missionEvent.nextEvent4 = ParseTextToString(node.nextEvent4);
-                    missionEvent.nodePosX = node.nodePosX;
-                    missionEvent.nodePosY = node.nodePosY;
-
-                    missionList.Add(missionEvent);
-                }
-            }
-
-            MissionEvent[] missionEventData = missionList.ToArray();
-
-            string jsonString = JsonHelper.ToJson(missionEventData, true);
-
-            string saveFile = "none";
-
-            if (missionEditor.missionName.text.Contains(".json"))
-            {
-                saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName.text;
-            }
-            else
-            {
-                saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName.text + ".json";
-            }
-
-            File.WriteAllText(saveFile, jsonString);
-
-            DisplayMessage(missionEditor.missionName.text + " saved to " + Application.persistentDataPath + "/Custom Missions/");
-
             if (window != null)
             {
-                WindowFunctions.DeleteWindow(window);
+                if (window.gameObject.activeSelf == true)
+                {
+                    if (window.scaling == false)
+                    {
+                        scaling = false;
+                    }
+                }
             }
         }
-        else
+
+        //This changes the scale
+        if (scaling == true)
         {
-            OpenWindow("savemissionas");
+            missionEditor.scale += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 20;
         }
+
+        //This locks the scale within certain bounds
+        float percentage = ((Mathf.Abs(missionEditor.scale) - 0.3f) / 0.7f) * 100;
+
+        if (percentage > 200)
+        {
+            missionEditor.scale = 1.7f;
+            percentage = 200;
+        }
+        else if (percentage < 0)
+        {
+            missionEditor.scale = 0.3f;
+            percentage = 0;
+        }
+
+        //This applies the scale
+        if (scaling == true)
+        {
+            if (missionEditor.editorContentRect != null)
+            {
+                missionEditor.editorContentRect.localScale = new Vector3(missionEditor.scale, missionEditor.scale);
+            }
+        }
+
+        //This outputs the scale to the indicator
+        if (missionEditor.scaleIndicator != null)
+        {
+            missionEditor.scaleIndicator.text = percentage.ToString("000") + "%";
+        }
+    }
+
+    public static void SetWindowMode(string mode = "none")
+    {
+        if (mode != "window" & mode != "fullscreen" || mode == "none")
+        {
+            OGSettings settings = OGSettingsFunctions.GetSettings();
+
+            mode = settings.editorWindowMode;
+        }
+
+        OGSettingsFunctions.SetEditorWindowMode(mode);
 
         CloseAllMenus();
     }
 
-    public static void UpdateMissionName(string name)
+    public static void ExitMissionEditor()
     {
         MissionEditor missionEditor = GetMissionEditor();
 
-        if (missionEditor != null)
-        {
-            missionEditor.missionName.text = name;
-        }
-    }
+        OGSettings settings = OGSettingsFunctions.GetSettings();
 
-    public static string GetMissionNameFromSaveDialog()
-    {
-        MissionEditor missionEditor = GetMissionEditor();
+        OGSettingsFunctions.SetGameWindowMode(settings.gameWindowMode);
 
-        string name = "Untitled Mission";
+        OGSettingsFunctions.SetOGCursor();
+
+        MainMenuFunctions.ReloadCustomMissions();
+
+        MainMenuFunctions.PlayBackgroundMusic(true);
 
         if (missionEditor != null)
         {
-            name = missionEditor.missionName.text;
+            missionEditor.gameObject.SetActive(false);
         }
-
-        GameObject MissionNameField = GameObject.Find("MissionNameField");
-
-        if (MissionNameField != null)
-        {
-            Text missionName = MissionNameField.GetComponent<Text>();
-
-            if (missionName != null)
-            {
-                name = missionName.text;
-            }
-        }
-
-        return name;
     }
 
-    public static void DisplayMessage(string message)
+    public static void ExitToWindows()
     {
-        MissionEditor missionEditor = GetMissionEditor();
+        Debug.Log("Quitting to windows - NOTE: Only works in build");
 
-        if (missionEditor != null)
-        {
-            if (missionEditor.messageTextbox != null)
-            {
-                missionEditor.messageTextbox.text = message;
-            }
-        }
-
+        Application.Quit();
     }
 
-    public static float ParseTextToFloat(Text text)
+    public static void ToggleScrolling(MissionEditor missionEditor)
     {
-        float input = 0;
-
-        if (text != null)
+        if (missionEditor.scrolling == true)
         {
-            if (float.TryParse(text.text, out _))
-            {
-                input = float.Parse(text.text);
-            }
+            missionEditor.scrollRect.horizontal = true;
+            missionEditor.scrollRect.vertical = true;
         }
-
-        return input;
-    }
-
-    public static string ParseTextToString(Text text)
-    {
-        string input = "none";
-
-        if (text != null)
+        else
         {
-            if (text.text != "")
-            {
-                input = text.text;
-            }
-
+            missionEditor.scrollRect.horizontal = false;
+            missionEditor.scrollRect.vertical = false;
         }
-
-        return input;
     }
 
     public static void OpenWebAddress(string url)
@@ -1004,5 +1011,18 @@ public static class MissionEditorFunctions
         Application.OpenURL(url);
         CloseAllMenus();
     }
+
+    #endregion
+
+    #region mission editor utils
+
+    public static MissionEditor GetMissionEditor()
+    {
+        MissionEditor missionEditor = GameObject.FindObjectOfType<MissionEditor>();
+
+        return missionEditor;
+    }
+
+    #endregion
 
 }

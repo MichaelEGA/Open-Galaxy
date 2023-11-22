@@ -338,36 +338,36 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("tiefighter");
-        options.Add("tieinterceptor");
-        options.Add("tieadvanced");
-        options.Add("tiebomber");
-        options.Add("assaultgunboat");
-        options.Add("xwing");
-        options.Add("ywing");
-        options.Add("awing");
-        options.Add("dx9shuttle");
-        options.Add("lambdashuttle");
-        options.Add("z95headhunter");
-        options.Add("escapepod");
-        options.Add("bulkfreighter");
-        options.Add("container");
-        options.Add("corelliancorvette");
-        options.Add("gr75transport");
-        options.Add("stardestroyer");
-        options.Add("superstardestroyer");
-        options.Add("homeone");
-        options.Add("nebulonbfrigate");
-        options.Add("xq1station");
-        options.Add("dsturrettall");
-        options.Add("dsturretshort");
+        List<string> options1 = new List<string>();
+        options1.Add("tiefighter");
+        options1.Add("tieinterceptor");
+        options1.Add("tieadvanced");
+        options1.Add("tiebomber");
+        options1.Add("assaultgunboat");
+        options1.Add("xwing");
+        options1.Add("ywing");
+        options1.Add("awing");
+        options1.Add("dx9shuttle");
+        options1.Add("lambdashuttle");
+        options1.Add("z95headhunter");
+        options1.Add("escapepod");
+        options1.Add("bulkfreighter");
+        options1.Add("container");
+        options1.Add("corelliancorvette");
+        options1.Add("gr75transport");
+        options1.Add("stardestroyer");
+        options1.Add("superstardestroyer");
+        options1.Add("homeone");
+        options1.Add("nebulonbfrigate");
+        options1.Add("xq1station");
+        options1.Add("dsturrettall");
+        options1.Add("dsturretshort");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "ship type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "dsturrettall", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "ship name", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "tower", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -379,35 +379,45 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data4 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data5 = NodeFunctions.DrawInputField(node, "no. per length", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "variance", "10", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data7 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data8 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data9 = NodeFunctions.DrawInputField(node, "height", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data5 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("true");
-        options3.Add("false");
+        options3.Add("rectanglehorizontal");
+        options3.Add("rectanglevertical");
+        options3.Add("arrowhorizontal");
+        options3.Add("arrowhorizontalinverted");
+        options3.Add("linehorizontallongways");
+        options3.Add("linehorizontalsideways");
+        options3.Add("linevertical");
+        options3.Add("randominsidecube");
 
-        node.data10 = NodeFunctions.DrawDropDownMenu(node, options3, "randomise", "true", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "pattern", "rectanglehorizontal", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data7 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data8 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawInputField(node, "above ground", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawInputField(node, "pos variance", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -415,11 +425,7 @@ public static class NodeTypes
         options4.Add("true");
         options4.Add("false");
 
-        node.data11 = NodeFunctions.DrawDropDownMenu(node, options4, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data12 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -466,64 +472,56 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("tiefighter");
-        options.Add("tieinterceptor");
-        options.Add("tieadvanced");
-        options.Add("tiebomber");
-        options.Add("assaultgunboat");
-        options.Add("xwing");
-        options.Add("ywing");
-        options.Add("awing");
-        options.Add("dx9shuttle");
-        options.Add("lambdashuttle");
-        options.Add("z95headhunter");
-        options.Add("escapepod");
-        options.Add("bulkfreighter");
-        options.Add("container");
-        options.Add("corelliancorvette");
-        options.Add("gr75transport");
-        options.Add("stardestroyer");
-        options.Add("superstardestroyer");
-        options.Add("homeone");
-        options.Add("nebulonbfrigate");
-        options.Add("xq1station");
-        options.Add("dsturrettall");
-        options.Add("dsturretshort");
+        List<string> options1 = new List<string>();
+        options1.Add("tiefighter");
+        options1.Add("tieinterceptor");
+        options1.Add("tieadvanced");
+        options1.Add("tiebomber");
+        options1.Add("assaultgunboat");
+        options1.Add("xwing");
+        options1.Add("ywing");
+        options1.Add("awing");
+        options1.Add("dx9shuttle");
+        options1.Add("lambdashuttle");
+        options1.Add("z95headhunter");
+        options1.Add("escapepod");
+        options1.Add("bulkfreighter");
+        options1.Add("container");
+        options1.Add("corelliancorvette");
+        options1.Add("gr75transport");
+        options1.Add("stardestroyer");
+        options1.Add("superstardestroyer");
+        options1.Add("homeone");
+        options1.Add("nebulonbfrigate");
+        options1.Add("xq1station");
+        options1.Add("dsturrettall");
+        options1.Add("dsturretshort");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "ship type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("true");
-        options1.Add("false");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "is AI", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options2 = new List<string>();
-        options2.Add("true");
-        options2.Add("false");
+        options2.Add("imperial");
+        options2.Add("rebel");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "randomise", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("imperial");
-        options3.Add("rebel");
+        options3.Add("true");
+        options3.Add("false");
 
-        node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data5 = NodeFunctions.DrawInputField(node, "name", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "is AI", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -595,55 +593,73 @@ public static class NodeTypes
         options.Add("dsturrettall");
         options.Add("dsturretshort");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "ship type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "number", "1", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data4 = NodeFunctions.DrawInputField(node, "groups of", "4", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data5 = NodeFunctions.DrawInputField(node, "ship distance", "50", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "group distance", "250", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data8 = NodeFunctions.DrawInputField(node, "variance", "10", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options2 = new List<string>();
-        options2.Add("true");
-        options2.Add("false");
+        options2.Add("imperial");
+        options2.Add("rebel");
 
-        node.data9 = NodeFunctions.DrawDropDownMenu(node, options2, "randomise", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data10 = NodeFunctions.DrawInputField(node, "name", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("true");
-        options3.Add("false");
+        options3.Add("rectanglehorizontal");
+        options3.Add("rectanglevertical");
+        options3.Add("arrowhorizontal");
+        options3.Add("arrowhorizontalinverted");
+        options3.Add("linehorizontallongways");
+        options3.Add("linehorizontalsideways");
+        options3.Add("linevertical");
+        options3.Add("randominsidecube");
 
-        node.data11 = NodeFunctions.DrawDropDownMenu(node, options3, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "pattern", "rectanglehorizontal", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data12 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data7 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data13 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+        node.data8 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawInputField(node, "height", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawInputField(node, "pos variance", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("true");
+        options4.Add("false");
+
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data13 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -654,7 +670,7 @@ public static class NodeTypes
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_loadmultipleshipsbytype", 8, 5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "pl_loadmultipleshipsbyclassandallegiance", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -662,7 +678,7 @@ public static class NodeTypes
 
         float drop = -25;
 
-        node.eventType = NodeFunctions.DrawText(node, "preload_loadmultipleshipsbytype", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadmultipleshipsbyclassandallegiance", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -693,66 +709,79 @@ public static class NodeTypes
         List<string> options = new List<string>();
         options.Add("fighter");
         options.Add("bomber");
+        options.Add("shuttle");
+        options.Add("container");
+        options.Add("freighter");
         options.Add("capital");
         options.Add("station");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "ship type", "fighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "class", "fighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("imperial");
-        options1.Add("rebel");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data4 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data5 = NodeFunctions.DrawInputField(node, "groups of", "4", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "ship distance", "50", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data7 = NodeFunctions.DrawInputField(node, "group distance", "250", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data9 = NodeFunctions.DrawInputField(node, "variance", "10", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options2 = new List<string>();
-        options2.Add("true");
-        options2.Add("false");
+        options2.Add("imperial");
+        options2.Add("rebel");
 
-        node.data10 = NodeFunctions.DrawDropDownMenu(node, options2, "randomise", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data11 = NodeFunctions.DrawInputField(node, "name", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("true");
-        options3.Add("false");
+        options3.Add("rectanglehorizontal");
+        options3.Add("rectanglevertical");
+        options3.Add("arrowhorizontal");
+        options3.Add("arrowhorizontalinverted");
+        options3.Add("linehorizontallongways");
+        options3.Add("linehorizontalsideways");
+        options3.Add("linevertical");
+        options3.Add("randominsidecube");
 
-        node.data12 = NodeFunctions.DrawDropDownMenu(node, options3, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "pattern", "rectanglehorizontal", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data13 = NodeFunctions.DrawInputField(node, "player no", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data7 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data14 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+        node.data8 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawInputField(node, "height", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawInputField(node, "pos variance", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("true");
+        options4.Add("false");
+
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data13 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -1304,7 +1333,7 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_LoadShip(Node node)
+    public static void Draw_LoadSingleShip(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
@@ -1358,64 +1387,58 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("tiefighter");
-        options.Add("tieinterceptor");
-        options.Add("tieadvanced");
-        options.Add("tiebomber");
-        options.Add("assaultgunboat");
-        options.Add("xwing");
-        options.Add("ywing");
-        options.Add("awing");
-        options.Add("dx9shuttle");
-        options.Add("lambdashuttle");
-        options.Add("z95headhunter");
-        options.Add("escapepod");
-        options.Add("bulkfreighter");
-        options.Add("container");
-        options.Add("corelliancorvette");
-        options.Add("gr75transport");
-        options.Add("stardestroyer");
-        options.Add("superstardestroyer");
-        options.Add("homeone");
-        options.Add("nebulonbfrigate");
-        options.Add("xq1station");
-        options.Add("dsturrettall");
-        options.Add("dsturretshort");
+        List<string> options1 = new List<string>();
+        options1.Add("tiefighter");
+        options1.Add("tieinterceptor");
+        options1.Add("tieadvanced");
+        options1.Add("tiebomber");
+        options1.Add("assaultgunboat");
+        options1.Add("xwing");
+        options1.Add("ywing");
+        options1.Add("awing");
+        options1.Add("dx9shuttle");
+        options1.Add("lambdashuttle");
+        options1.Add("z95headhunter");
+        options1.Add("escapepod");
+        options1.Add("bulkfreighter");
+        options1.Add("container");
+        options1.Add("corelliancorvette");
+        options1.Add("gr75transport");
+        options1.Add("stardestroyer");
+        options1.Add("superstardestroyer");
+        options1.Add("homeone");
+        options1.Add("nebulonbfrigate");
+        options1.Add("xq1station");
+        options1.Add("dsturrettall");
+        options1.Add("dsturretshort");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "ship type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("true");
-        options1.Add("false");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "is AI", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options2 = new List<string>();
-        options2.Add("true");
-        options2.Add("false");
+        options2.Add("imperial");
+        options2.Add("rebel");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "randomise", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("imperial");
-        options3.Add("rebel");
+        options3.Add("true");
+        options3.Add("false");
 
-        node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data5 = NodeFunctions.DrawInputField(node, "name", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "is AI", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
 
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
@@ -1478,60 +1501,52 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("tiefighter");
-        options.Add("tieinterceptor");
-        options.Add("tieadvanced");
-        options.Add("tiebomber");
-        options.Add("assaultgunboat");
-        options.Add("xwing");
-        options.Add("ywing");
-        options.Add("awing");
-        options.Add("dx9shuttle");
-        options.Add("lambdashuttle");
-        options.Add("z95headhunter");
-        options.Add("escapepod");
-        options.Add("bulkfreighter");
-        options.Add("container");
-        options.Add("corelliancorvette");
-        options.Add("gr75transport");
-        options.Add("stardestroyer");
-        options.Add("superstardestroyer");
-        options.Add("homeone");
-        options.Add("nebulonbfrigate");
-        options.Add("xq1station");
-        options.Add("dsturrettall");
-        options.Add("dsturretshort");
+        List<string> options1 = new List<string>();
+        options1.Add("tiefighter");
+        options1.Add("tieinterceptor");
+        options1.Add("tieadvanced");
+        options1.Add("tiebomber");
+        options1.Add("assaultgunboat");
+        options1.Add("xwing");
+        options1.Add("ywing");
+        options1.Add("awing");
+        options1.Add("dx9shuttle");
+        options1.Add("lambdashuttle");
+        options1.Add("z95headhunter");
+        options1.Add("escapepod");
+        options1.Add("bulkfreighter");
+        options1.Add("container");
+        options1.Add("corelliancorvette");
+        options1.Add("gr75transport");
+        options1.Add("stardestroyer");
+        options1.Add("superstardestroyer");
+        options1.Add("homeone");
+        options1.Add("nebulonbfrigate");
+        options1.Add("xq1station");
+        options1.Add("dsturrettall");
+        options1.Add("dsturretshort");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "ship type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options2 = new List<string>();
-        options2.Add("true");
-        options2.Add("false");
+        options2.Add("imperial");
+        options2.Add("rebel");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "randomise", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        List<string> options3 = new List<string>();
-        options3.Add("imperial");
-        options3.Add("rebel");
-
-        node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         node.data5 = NodeFunctions.DrawInputField(node, "distance", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "name", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1592,36 +1607,36 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("tiefighter");
-        options.Add("tieinterceptor");
-        options.Add("tieadvanced");
-        options.Add("tiebomber");
-        options.Add("assaultgunboat");
-        options.Add("xwing");
-        options.Add("ywing");
-        options.Add("awing");
-        options.Add("dx9shuttle");
-        options.Add("lambdashuttle");
-        options.Add("z95headhunter");
-        options.Add("escapepod");
-        options.Add("bulkfreighter");
-        options.Add("container");
-        options.Add("corelliancorvette");
-        options.Add("gr75transport");
-        options.Add("stardestroyer");
-        options.Add("superstardestroyer");
-        options.Add("homeone");
-        options.Add("nebulonbfrigate");
-        options.Add("xq1station");
-        options.Add("dsturrettall");
-        options.Add("dsturretshort");
+        List<string> options1 = new List<string>();
+        options1.Add("tiefighter");
+        options1.Add("tieinterceptor");
+        options1.Add("tieadvanced");
+        options1.Add("tiebomber");
+        options1.Add("assaultgunboat");
+        options1.Add("xwing");
+        options1.Add("ywing");
+        options1.Add("awing");
+        options1.Add("dx9shuttle");
+        options1.Add("lambdashuttle");
+        options1.Add("z95headhunter");
+        options1.Add("escapepod");
+        options1.Add("bulkfreighter");
+        options1.Add("container");
+        options1.Add("corelliancorvette");
+        options1.Add("gr75transport");
+        options1.Add("stardestroyer");
+        options1.Add("superstardestroyer");
+        options1.Add("homeone");
+        options1.Add("nebulonbfrigate");
+        options1.Add("xq1station");
+        options1.Add("dsturrettall");
+        options1.Add("dsturretshort");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "ship type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "dsturrettall", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "ship name", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "tower", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1633,48 +1648,53 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data4 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data5 = NodeFunctions.DrawInputField(node, "no. per length", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "variance", "10", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data7 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data8 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data9 = NodeFunctions.DrawInputField(node, "height", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data5 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("true");
-        options3.Add("false");
+        options3.Add("rectanglehorizontal");
+        options3.Add("rectanglevertical");
+        options3.Add("arrowhorizontal");
+        options3.Add("arrowhorizontalinverted");
+        options3.Add("linehorizontallongways");
+        options3.Add("linehorizontalsideways");
+        options3.Add("linevertical");
+        options3.Add("randominsidecube");
 
-        node.data10 = NodeFunctions.DrawDropDownMenu(node, options3, "randomise", "true", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "pattern", "rectanglehorizontal", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
+        node.data7 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data8 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawInputField(node, "above ground", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawInputField(node, "pos variance", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
 
         List<string> options4 = new List<string>();
         options4.Add("true");
         options4.Add("false");
 
-        node.data11 = NodeFunctions.DrawDropDownMenu(node, options4, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data12 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1739,80 +1759,98 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("tiefighter");
-        options.Add("tieinterceptor");
-        options.Add("tieadvanced");
-        options.Add("tiebomber");
-        options.Add("assaultgunboat");
-        options.Add("xwing");
-        options.Add("ywing");
-        options.Add("awing");
-        options.Add("dx9shuttle");
-        options.Add("lambdashuttle");
-        options.Add("z95headhunter");
-        options.Add("escapepod");
-        options.Add("bulkfreighter");
-        options.Add("container");
-        options.Add("corelliancorvette");
-        options.Add("gr75transport");
-        options.Add("stardestroyer");
-        options.Add("superstardestroyer");
-        options.Add("homeone");
-        options.Add("nebulonbfrigate");
-        options.Add("xq1station");
-        options.Add("dsturrettall");
-        options.Add("dsturretshort");
+        List<string> options1 = new List<string>();
+        options1.Add("tiefighter");
+        options1.Add("tieinterceptor");
+        options1.Add("tieadvanced");
+        options1.Add("tiebomber");
+        options1.Add("assaultgunboat");
+        options1.Add("xwing");
+        options1.Add("ywing");
+        options1.Add("awing");
+        options1.Add("dx9shuttle");
+        options1.Add("lambdashuttle");
+        options1.Add("z95headhunter");
+        options1.Add("escapepod");
+        options1.Add("bulkfreighter");
+        options1.Add("container");
+        options1.Add("corelliancorvette");
+        options1.Add("gr75transport");
+        options1.Add("stardestroyer");
+        options1.Add("superstardestroyer");
+        options1.Add("homeone");
+        options1.Add("nebulonbfrigate");
+        options1.Add("xq1station");
+        options1.Add("dsturrettall");
+        options1.Add("dsturretshort");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "ship type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data2 = NodeFunctions.DrawInputField(node, "number", "1", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data4 = NodeFunctions.DrawInputField(node, "groups of", "4", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data5 = NodeFunctions.DrawInputField(node, "ship distance", "50", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "group distance", "250", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data8 = NodeFunctions.DrawInputField(node, "variance", "10", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options2 = new List<string>();
-        options2.Add("true");
-        options2.Add("false");
+        options2.Add("imperial");
+        options2.Add("rebel");
 
-        node.data9 = NodeFunctions.DrawDropDownMenu(node, options2, "randomise", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data10 = NodeFunctions.DrawInputField(node, "name", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("true");
-        options3.Add("false");
+        options3.Add("rectanglehorizontal");
+        options3.Add("rectanglevertical");
+        options3.Add("arrowhorizontal");
+        options3.Add("arrowhorizontalinverted");
+        options3.Add("linehorizontallongways");
+        options3.Add("linehorizontalsideways");
+        options3.Add("linevertical");
+        options3.Add("randominsidecube");
 
-        node.data11 = NodeFunctions.DrawDropDownMenu(node, options3, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "pattern", "rectanglehorizontal", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data12 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data7 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data13 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+        node.data8 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawInputField(node, "height", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawInputField(node, "pos variance", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4= new List<string>();
+        options4.Add("true");
+        options4.Add("false");
+
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data13 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1823,13 +1861,13 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_LoadMultipleShipsByType(Node node)
+    public static void Draw_LoadMultipleShipsByClassAndAllegiance(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "loadmultipleshipsbytype", 8, 17.5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "loadmultipleshipsbyclassandallegiance", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1841,7 +1879,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "loadmultipleshipsbytype", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "loadmultipleshipsbyclassandallegiance", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -1880,66 +1918,79 @@ public static class NodeTypes
         List<string> options = new List<string>();
         options.Add("fighter");
         options.Add("bomber");
+        options.Add("shuttle");
+        options.Add("container");
+        options.Add("freighter");
         options.Add("capital");
         options.Add("station");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "ship type", "fighter", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options1 = new List<string>();
-        options1.Add("imperial");
-        options1.Add("rebel");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "class", "fighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data4 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data5 = NodeFunctions.DrawInputField(node, "groups of", "4", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "ship distance", "50", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data7 = NodeFunctions.DrawInputField(node, "group distance", "250", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data9 = NodeFunctions.DrawInputField(node, "variance", "10", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options2 = new List<string>();
-        options2.Add("true");
-        options2.Add("false");
+        options2.Add("imperial");
+        options2.Add("rebel");
 
-        node.data10 = NodeFunctions.DrawDropDownMenu(node, options2, "randomise", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data11 = NodeFunctions.DrawInputField(node, "name", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("true");
-        options3.Add("false");
+        options3.Add("rectanglehorizontal");
+        options3.Add("rectanglevertical");
+        options3.Add("arrowhorizontal");
+        options3.Add("arrowhorizontalinverted");
+        options3.Add("linehorizontallongways");
+        options3.Add("linehorizontalsideways");
+        options3.Add("linevertical");
+        options3.Add("randominsidecube");
 
-        node.data12 = NodeFunctions.DrawDropDownMenu(node, options3, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "pattern", "rectanglehorizontal", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data13 = NodeFunctions.DrawInputField(node, "player no", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data7 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data14 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+        node.data8 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawInputField(node, "height", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawInputField(node, "pos variance", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("true");
+        options4.Add("false");
+
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data13 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

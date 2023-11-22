@@ -61,7 +61,7 @@ public static class WindowFunctions
         buttonList.Add("preload_loadmultipleshipsonground");
         buttonList.Add("preload_loadsingleship");
         buttonList.Add("preload_loadmultipleships");
-        buttonList.Add("preload_loadmultipleshipsbytype");
+        buttonList.Add("preload_loadmultipleshipsbyclassandallegiance");
         buttonList.Add("preload_setskybox");
         buttonList.Add("startmission");
         buttonList.Add("changemusicvolume");
@@ -78,7 +78,7 @@ public static class WindowFunctions
         buttonList.Add("loadsingleship");
         buttonList.Add("loadsingleshipatdistanceandanglefromplayer");
         buttonList.Add("loadmultipleshipsonground");
-        buttonList.Add("loadmultipleshipsbytype");
+        buttonList.Add("loadmultipleshipsbyclassandallegiance");
         buttonList.Add("loadmultipleships");
         buttonList.Add("lockmainshipweapons");
         buttonList.Add("message");

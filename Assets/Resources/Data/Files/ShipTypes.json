@@ -2,11 +2,11 @@
     "shipTypeData": 
     [
 	  {     
-		"name": "tiefighter",
+		"type": "tiefighter",
 		"prefab": "tf",
 		"cockpitPrefab": "tie_cockpit",
 		"laserColor": "green",
-		"type": "fighter",
+		"shipClass": "fighter",
             	"allegiance": "imperial",
 		"callsign": "tf",
 		"scriptType": "smallship",
@@ -27,11 +27,11 @@
 
         },
  	{     
-		"name": "tieinterceptor",
+		"type": "tieinterceptor",
 		"prefab": "ti",
 		"cockpitPrefab": "tie_cockpit",
 		"laserColor": "green",
-		"type": "fighter",
+		"shipClass": "fighter",
             	"allegiance": "imperial",
 		"callsign": "ti",
 		"scriptType": "smallship",
@@ -51,11 +51,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "tieadvanced",		
+		"type": "tieadvanced",		
 		"prefab": "ta",
 		"cockpitPrefab": "tie_cockpit",
 		"laserColor": "green",
-		"type": "fighter",
+		"shipClass": "fighter",
             	"allegiance": "imperial",
 		"callsign": "ta",
 		"scriptType": "smallship",
@@ -75,11 +75,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "tiebomber",		
+		"type": "tiebomber",		
 		"prefab": "tb",
 		"cockpitPrefab": "tie_cockpit",
 		"laserColor": "green",
-		"type": "fighter_bomber",
+		"shipClass": "fighter_bomber",
             	"allegiance": "imperial",
 		"callsign": "tb",
 		"scriptType": "smallship",
@@ -99,11 +99,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "assaultgunboat",	
+		"type": "assaultgunboat",	
 		"prefab": "agb",
 		"cockpitPrefab": "none",
 		"laserColor": "green",
-		"type": "fighter_bomber",
+		"shipClass": "fighter_bomber",
             	"allegiance": "imperial",
 		"callsign": "agb",
 		"scriptType": "smallship",
@@ -123,11 +123,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "xwing",	
+		"type": "xwing",	
 		"prefab": "xw",
 		"cockpitPrefab": "xwing_cockpit",
 		"laserColor": "red",
-		"type": "fighter_bomber",
+		"shipClass": "fighter_bomber",
             	"allegiance": "rebel",
 		"callsign": "xw",
 		"scriptType": "smallship",
@@ -147,11 +147,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "ywing",	
+		"type": "ywing",	
 		"prefab": "yw",
 		"cockpitPrefab": "ywing_cockpit",
 		"laserColor": "red",
-		"type": "fighter_bomber",
+		"shipClass": "fighter_bomber",
             	"allegiance": "rebel",
 		"callsign": "yw",
 		"scriptType": "smallship",
@@ -171,11 +171,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "awing",	
+		"type": "awing",	
 		"prefab": "aw",
 		"cockpitPrefab": "awing_cockpit",
 		"laserColor": "red",
-		"type": "fighter_bomber",
+		"shipClass": "fighter_bomber",
             	"allegiance": "rebel",
 		"callsign": "aw",
 		"scriptType": "smallship",
@@ -195,11 +195,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "dx9shuttle",	
+		"type": "dx9shuttle",	
 		"prefab": "dx9",
 		"cockpitPrefab": "none",
 		"laserColor": "red",
-		"type": "shuttle",
+		"shipClass": "shuttle",
             	"allegiance": "imperial",
 		"callsign": "dx9",
 		"scriptType": "smallship",
@@ -219,11 +219,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "lambdashuttle",	
+		"type": "lambdashuttle",	
 		"prefab": "lcs",
 		"cockpitPrefab": "lambda_cockpit",
 		"laserColor": "red",
-		"type": "shuttle",
+		"shipClass": "shuttle",
             	"allegiance": "imperial",
 		"callsign": "ls",
 		"scriptType": "smallship",
@@ -243,11 +243,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "z95headhunter",	
+		"type": "z95headhunter",	
 		"prefab": "z95",
 		"cockpitPrefab": "z95_cockpit",
 		"laserColor": "red",
-		"type": "fighter",
+		"shipClass": "fighter",
             	"allegiance": "rebel",
 		"callsign": "z95",
 		"scriptType": "smallship",
@@ -267,11 +267,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "escapepod",	
+		"type": "escapepod",	
 		"prefab": "ep",
 		"cockpitPrefab": "none",
 		"laserColor": "red",
-		"type": "shuttle",
+		"shipClass": "shuttle",
             	"allegiance": "imperial",
 		"callsign": "ep",
 		"scriptType": "smallship",
@@ -291,11 +291,11 @@
 		"classType": "none"
         },
  	{     
-		"name": "bulkfreighter",	
+		"type": "bulkfreighter",	
 		"prefab": "bff1",
 		"cockpitPrefab": "none",
 		"laserColor": "red",
-		"type": "freighter",
+		"shipClass": "freighter",
             	"allegiance": "imperial",
 		"callsign": "bff1",
 		"scriptType": "largeship",
@@ -315,11 +315,11 @@
 		"classType": "civilian"
         },
  	{     
-		"name": "container",	
+		"type": "container",	
 		"prefab": "c01",
 		"cockpitPrefab": "none",
 		"laserColor": "red",
-		"type": "container",
+		"shipClass": "container",
             	"allegiance": "imperial",
 		"callsign": "c",
 		"scriptType": "largeship",
@@ -339,11 +339,11 @@
 		"classType": "container"
         },
  	{     
-		"name": "corelliancorvette",	
+		"type": "corelliancorvette",	
 		"prefab": "cr90",
 		"cockpitPrefab": "none",
 		"laserColor": "red",
-		"type": "capital",
+		"shipClass": "capital",
             	"allegiance": "imperial",
 		"callsign": "cr90 - ",
 		"scriptType": "largeship",
@@ -363,11 +363,11 @@
 		"classType": "small"
         },
  	{     
-		"name": "gr75transport",	
+		"type": "gr75transport",	
 		"prefab": "gr75",
 		"cockpitPrefab": "none",
 		"laserColor": "red",
-		"type": "capital",
+		"shipClass": "capital",
             	"allegiance": "rebel",
 		"callsign": "c",
 		"scriptType": "largeship",
@@ -387,11 +387,11 @@
 		"classType": "civilian"
         },
  	{     
-		"name": "stardestroyer",	
+		"type": "stardestroyer",	
 		"prefab": "isd",
 		"cockpitPrefab": "none",
 		"laserColor": "green",
-		"type": "capital",
+		"shipClass": "capital",
             	"allegiance": "imperial",
 		"callsign": "isd",
 		"scriptType": "largeship",
@@ -411,11 +411,11 @@
 		"classType": "large"
         },
 	{     
-		"name": "superstardestroyer",	
+		"type": "superstardestroyer",	
 		"prefab": "ssd",
 		"cockpitPrefab": "none",
 		"laserColor": "green",
-		"type": "capital",
+		"shipClass": "capital",
             	"allegiance": "imperial",
 		"callsign": "ssd",
 		"scriptType": "largeship",
@@ -435,11 +435,11 @@
 		"classType": "large"
         },
  	{     
-		"name": "homeone",	
+		"type": "homeone",	
 		"prefab": "mc80a",
 		"cockpitPrefab": "none",
 		"laserColor": "red",
-		"type": "capital",
+		"shipClass": "capital",
             	"allegiance": "rebel",
 		"callsign": "mc80a",
 		"scriptType": "largeship",
@@ -459,11 +459,11 @@
 		"classType": "large"
         },
  	{     
-		"name": "nebulonbfrigate",	
+		"type": "nebulonbfrigate",	
 		"prefab": "nbf",
 		"cockpitPrefab": "none",
 		"laserColor": "red",
-		"type": "capital",
+		"shipClass": "capital",
             	"allegiance": "rebel",
 		"callsign": "nbf",
 		"scriptType": "largeship",
@@ -483,11 +483,11 @@
 		"classType": "medium"
         },
  	{     
-		"name": "xq1station",	
+		"type": "xq1station",	
 		"prefab": "xq1",
 		"cockpitPrefab": "none",
 		"laserColor": "red",
-		"type": "station",
+		"shipClass": "station",
             	"allegiance": "imperial",
 		"callsign": "nbf",
 		"scriptType": "largeship",
@@ -507,11 +507,11 @@
 		"classType": "station"
         },
  	{     
-		"name": "dsturrettall",	
+		"type": "dsturrettall",	
 		"prefab": "tt_tall",
 		"cockpitPrefab": "none",
 		"laserColor": "green",
-		"type": "station",
+		"shipClass": "station",
             	"allegiance": "imperial",
 		"callsign": "tt",
 		"scriptType": "largeship",
@@ -531,11 +531,11 @@
 		"classType": "station"
         },
  	{     
-		"name": "dsturretshort",	
+		"type": "dsturretshort",	
 		"prefab": "tt_short",
 		"cockpitPrefab": "none",
 		"laserColor": "green",
-		"type": "station",
+		"shipClass": "station",
             	"allegiance": "imperial",
 		"callsign": "tt",
 		"scriptType": "largeship",

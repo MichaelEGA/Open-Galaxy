@@ -4,11 +4,11 @@ using System.Collections;
 [System.Serializable]
 public class ShipType
 {
-    public string name;
+    public string type;
     public string prefab;
     public string cockpitPrefab;
     public string laserColor;
-    public string type;
+    public string shipClass;
     public string allegiance;
     public string callsign;
     public string scriptType;

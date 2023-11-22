@@ -45,7 +45,7 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShips(node);
         }
-        else if (node.nodeType == "preload_loadmultipleshipsbytype")
+        else if (node.nodeType == "preload_loadmultipleshipsbyclassandallegiance")
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShipsByType(node);
         }
@@ -103,7 +103,7 @@ public class NodeFunctions : MonoBehaviour
         }
         else if (node.nodeType == "loadsingleship")
         {
-            NodeTypes.Draw_LoadShip(node);
+            NodeTypes.Draw_LoadSingleShip(node);
         }
         else if (node.nodeType == "loadsingleshipatdistanceandanglefromplayer")
         {
@@ -117,9 +117,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_LoadMultipleShips(node);
         }
-        else if (node.nodeType == "loadmultipleshipsbytype")
+        else if (node.nodeType == "loadmultipleshipsbyclassandallegiance")
         {
-            NodeTypes.Draw_LoadMultipleShipsByType(node);
+            NodeTypes.Draw_LoadMultipleShipsByClassAndAllegiance(node);
         }
         else if (node.nodeType == "lockmainshipweapons")
         {

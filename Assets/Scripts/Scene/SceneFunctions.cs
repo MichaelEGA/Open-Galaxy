@@ -968,7 +968,15 @@ public static class SceneFunctions
     #region ship creation
 
     //This loads an individual ship in the scene
-    public static void LoadSingleShip(string shipTypeName, bool isAI = true, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string allegiance = "none", bool attachCameraToAI = false, string aiSkillLevel = "easy", string name = "none", bool dontModifyPosition = false, string cargo = "no cargo")
+    public static void LoadSingleShip(       
+        Vector3 position,
+        Quaternion rotation,
+        string type,
+        string name,
+        string allegiance,
+        string cargo,
+        bool isAI, 
+        bool dontModifyPosition)
     {
         //Get scene script reference
         Scene scene = GetScene();
@@ -983,7 +991,7 @@ public static class SceneFunctions
 
         foreach (ShipType tempShipType in shipTypes.shipTypeData)
         {
-            if (tempShipType.name == shipTypeName)
+            if (tempShipType.type == type)
             {
                 shipType = tempShipType;
                 break;
@@ -1047,13 +1055,12 @@ public static class SceneFunctions
                 smallShip.rearShieldLevel = shipType.shieldRating / 2f;
                 smallShip.speedRating = shipType.speedRating;
                 smallShip.laserColor = shipType.laserColor;
-                smallShip.attachCameraToAI = attachCameraToAI;
                 smallShip.healthSave = shipType.shieldRating + shipType.hullRating;  
-                smallShip.aiSkillLevel = aiSkillLevel;
-                smallShip.type = shipTypeName;
+                smallShip.aiSkillLevel = "easy";
+                smallShip.type = type;
                 smallShip.thrustType = shipType.thrustType;
                 smallShip.prefabName = shipType.prefab;
-                smallShip.classType = shipType.type;
+                smallShip.classType = shipType.shipClass;
                 smallShip.laserAudio = shipType.laserAudio;
                 smallShip.engineAudio = shipType.engineAudio;
                 smallShip.torpedoNumber = shipType.torpedoRating;
@@ -1124,8 +1131,8 @@ public static class SceneFunctions
                 largeShip.rearShieldLevel = shipType.shieldRating / 2f;
                 largeShip.speedRating = shipType.speedRating;
                 largeShip.laserColor = shipType.laserColor;
-                largeShip.aiSkillLevel = aiSkillLevel;
-                largeShip.type = shipTypeName;
+                largeShip.aiSkillLevel = "easy";
+                largeShip.type = type;
                 largeShip.prefabName = shipType.prefab;
                 largeShip.thrustType = shipType.thrustType;
                 largeShip.scene = scene;
@@ -1190,7 +1197,22 @@ public static class SceneFunctions
         }
     }
 
-    public static IEnumerator LoadMultipleShips(string name, int number = 1, string aiSkillLevel = "easy", int groupsOf = 1, float shipDistance = 50, float groupDistance = 250, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0, string cargo = "no cargo")
+    public static IEnumerator LoadMultipleShips( 
+        Vector3 position,
+        Quaternion rotation,
+        string type,
+        string name,
+        string allegiance,
+        string cargo,
+        int number, 
+        string pattern, 
+        float width, 
+        float length, 
+        float height, 
+        int shipsPerLine, 
+        float positionVariance,  
+        bool includePlayer, 
+        int playerNo)
     {
 
         //This gets the scene reference
@@ -1205,61 +1227,58 @@ public static class SceneFunctions
 
         foreach (ShipType tempShipType in shipTypes.shipTypeData)
         {
-            if (tempShipType.name == name)
+            if (tempShipType.type == type)
             {
                 shipType = tempShipType;
                 break;
             }
         }
 
-        //This loads the ships according to the number set
-        float gDistance = 0; //The distance between grouped ships
-        float gDifferentiation = 0; //The distance between groups
-        float gNumber = 0; //Counts through the number of groups
-
-        if (squadronName == "none")
+        if (name == "none")
         {
             string[] names = new string[] { "alpha", "beta", "gamma", "delta", "epislon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron" };
             int nameNo = names.Length;
             int selectName = Random.Range(0, names.Length - 1);
-            squadronName = names[selectName];
+            name = names[selectName];
         }
 
-        for (int i = 0; i < number; i++)
+        Vector3[] positions = GetPositions(pattern, position, width, length, height, number, shipsPerLine, positionVariance);
+
+        int shipCallNumber = 0;
+
+        foreach (Vector3 tempPosition in positions)
         {
-            float posVarX = Random.Range(0, positionVariance);
-            float posVarY = Random.Range(0, positionVariance);
-            float posVarZ = Random.Range(0, positionVariance);
-
-            Vector3 adjustedPosition = position + new Vector3(gDistance, 0, 0) + new Vector3(0, gDifferentiation, 0) + new Vector3(posVarX, posVarY, posVarZ);
-
-            int shipCallNumber = i + 1;
+            shipCallNumber += 1;
 
             bool isAI = true;
 
-            if (includePlayer == true & i == playerNo)
+            if (includePlayer == true & shipCallNumber == playerNo)
             {
                 isAI = false;
             }
 
-            LoadSingleShip(name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"), false, cargo);
-
-            gNumber++;
-
-            gDifferentiation += groupDistance;
-
-            if (gNumber >= groupsOf)
-            {
-                gNumber = 0;
-                gDifferentiation = 0;
-                gDistance += shipDistance;
-            }
+            LoadSingleShip(tempPosition, rotation, type, name + shipCallNumber.ToString("00"), allegiance, cargo, isAI, false);
 
             yield return null;
         }
     }
 
-    public static IEnumerator LoadMultipleShipByType(string type, string allegiance, string aiSkillLevel = "easy", int number = 1, int groupsOf = 1, float groupingDistance = 50, float groupingdifferentiation = 250, bool randomisePosition = true, float positionVariance = 10, Vector3 position = new Vector3(), Quaternion rotation = new Quaternion(), string squadronName = "none", bool includePlayer = false, int playerNo = 0, string cargo = "no cargo")
+    public static IEnumerator LoadMultipleShipByClassAndAllegiance(     
+        Vector3 position,
+        Quaternion rotation,
+        string shipClass,
+        string name,
+        string allegiance,
+        string cargo,
+        int number, 
+        string pattern,
+        float width,
+        float length, 
+        float height, 
+        int shipsPerLine, 
+        float positionVariance, 
+        bool includePlayer, 
+        int playerNo)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1273,84 +1292,60 @@ public static class SceneFunctions
 
         foreach (ShipType tempShipType in shipTypes.shipTypeData)
         {
-            if (tempShipType.allegiance == allegiance & tempShipType.type.Contains(type))
+            if (tempShipType.allegiance == allegiance & tempShipType.shipClass.Contains(shipClass))
             {
                 shipTypesList.Add(tempShipType);
             }
         }
 
-        if (squadronName == "none")
+        if (name == "none")
         {
             string[] names = new string[] { "alpha", "beta", "gamma", "delta", "epislon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron" };
             int nameNo = names.Length;
             int selectName = Random.Range(0, names.Length - 1);
-            squadronName = names[selectName];
+            name = names[selectName];
         }
 
-        if (shipTypesList.Count > 0) //This checks whether there are any ships to load
+        Vector3[] positions = GetPositions(pattern, position, width, length, height, number, shipsPerLine, positionVariance);
+
+        int i = 0;
+        int shipType = 0;
+
+        foreach (Vector3 tempPosition in positions)
         {
+            bool isAI = true;
 
-            //This randomises the position
-            if (randomisePosition == true)
+            if (includePlayer == true & i == playerNo)
             {
-                float randomX = Random.Range(-10000, 1000);
-                float randomY = Random.Range(-10000, 10000);
-                float randomZ = Random.Range(-10000, 10000);
-                position = new Vector3(randomX, randomY, randomZ);
+                isAI = false;
             }
 
-            //This loads the ships according to the number set
-            float gDistance = 0; //The distance between grouped ships
-            float gDifferentiation = 0; //The distance between groups
-            float gNumber = 0; //Counts through the number of groups
-            int shipTypesNumber = shipTypesList.Count;
-            int shipTypeCount = 0;
+            int shipCallNumber = i + 1; //This ensures the ship call number starts at 01 not 00
 
-            for (int i = 0; i < number; i++)
-            {
-                float posVarX = Random.Range(0, positionVariance);
-                float posVarY = Random.Range(0, positionVariance);
-                float posVarZ = Random.Range(0, positionVariance);
+            shipType += Random.Range(0, shipTypesList.Count);
 
-                Vector3 adjustedPosition = position + new Vector3(gDistance, 0, 0) + new Vector3(0, gDifferentiation, 0) + new Vector3(posVarX, posVarY, posVarZ);
+            LoadSingleShip(tempPosition, rotation, shipTypesList[shipType].type, name + shipCallNumber.ToString("00"), allegiance, cargo, isAI, false);
 
-                bool isAI = true;
+            i++;
 
-                if (includePlayer == true & i == playerNo)
-                {
-                    isAI = false;
-                }
-
-                int shipCallNumber = i + 1;
-
-                LoadSingleShip(shipTypesList[shipTypeCount].name, isAI, adjustedPosition, rotation, "none", false, aiSkillLevel, squadronName + shipCallNumber.ToString("00"), false, cargo);
-
-                gNumber++;
-
-                gDifferentiation += groupingdifferentiation;
-
-                if (gNumber >= groupsOf)
-                {
-                    gNumber = 0;
-                    gDifferentiation = 0;
-                    gDistance += groupingDistance;
-                }
-
-                //This increments the ship type
-                shipTypeCount++;
-
-                if (shipTypeCount >= shipTypesNumber)
-                {
-                    shipTypeCount = 0;
-                }
-
-                yield return null;
-            }
-        }
-     
+            yield return null;
+        }    
     }
 
-    public static IEnumerator LoadMultipleShipsOnGround(string type, string name, string allegiance, int shipNumber = 1, int shipsPerLine = 1, float positionVariance = 0, float length = 1000, float width = 1000, float distanceAboveGround = 0, Vector2 centerPoint = new Vector2(), Quaternion rotation = new Quaternion(),  bool randomise = false, bool ifRaycastFailsStillLoad = false, string cargo = "no cargo")
+    public static IEnumerator LoadMultipleShipsOnGround(
+        Vector3 position,
+        Quaternion rotation,
+        string type,
+        string name, 
+        string allegiance,
+        string cargo,
+        int number,  
+        float length, 
+        float width,
+        float distanceAboveGround,
+        int shipsPerLine,
+        float positionVariance,
+        bool ifRaycastFailsStillLoad)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1364,18 +1359,18 @@ public static class SceneFunctions
 
         foreach (ShipType tempShipType in shipTypes.shipTypeData)
         {
-            if (tempShipType.name == type)
+            if (tempShipType.type == type)
             {
                 shipType = tempShipType;
                 break;
             }
         }
 
-        Vector3[] positions = RectangleHorizontal_Pattern(centerPoint, width, length, shipNumber, shipsPerLine, positionVariance);  
-
-        foreach (Vector3 position in positions)
+        Vector3[] positions = GetPositions("special_rectanglehorizontal", position, width, length, 0, number, shipsPerLine, positionVariance);
+            
+        foreach (Vector3 tempPosition in positions)
         {
-            Vector3 raycastPos = new Vector3(position.x, 2000, position.z);
+            Vector3 raycastPos = new Vector3(tempPosition.x, 2000, tempPosition.z);
 
             RaycastHit hit;
 
@@ -1388,32 +1383,362 @@ public static class SceneFunctions
             if (Physics.Raycast(raycastPos, Vector3.down, out hit, 5000, mask))
             {
                 Vector3 newPosition = hit.point + new Vector3(0,distanceAboveGround,0);
-                LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name, true, cargo);
+                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, true, true);
             }
             else if (ifRaycastFailsStillLoad == true)
             {
-                Vector3 newPosition = new Vector3(position.x, 0, position.z);
-                LoadSingleShip(type, true, newPosition, rotation, allegiance, false, "easy", name, false, cargo);
+                Vector3 newPosition = new Vector3(tempPosition.x, 0, tempPosition.z);
+                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, true, true);
             }
 
             yield return null;
         }
     }
 
+    //This grabs the locations using the chosen pattern
+    public static Vector3[] GetPositions(string pattern, Vector3 position, float width, float length, float height, int shipNumber, int shipsPerLine, float positionVariance)
+    {
+        Vector3[] shipPositions = null;
+        
+        if (pattern == "rectanglehorizontal")
+        {
+            shipPositions = Pattern_RectangleHorizontal(position, width, length, shipNumber, shipsPerLine, positionVariance);
+        }
+        else if (pattern == "rectanglevertical")
+        {
+            shipPositions = Pattern_RectangleVertical(position, width, height, shipNumber, shipsPerLine, positionVariance);
+        }
+        else if (pattern == "arrowhorizontal")
+        {
+            shipPositions = Pattern_ArrowHorizontal(position, width, length, shipNumber, positionVariance);
+        }
+        else if (pattern == "arrowhorizontalinverted")
+        {
+            shipPositions = Pattern_ArrowHorizontalInverted(position, width, length, shipNumber, positionVariance);
+        }
+        else if (pattern == "linehorizontallongways")
+        {
+            shipPositions = Pattern_LineHorizontalLongWays(position, length, shipNumber, positionVariance);
+        }
+        else if (pattern == "linehorizontalsideways")
+        {
+            shipPositions = Pattern_LineHorizontalSideWays(position, width, shipNumber, positionVariance);
+        }
+        else if (pattern == "linevertical")
+        {
+            shipPositions = Pattern_LineVertical(position, height, shipNumber, positionVariance);
+        }
+        else if (pattern == "randominsidecube")
+        {
+            shipPositions = Pattern_RandomInsideCube(position, width, length, height, shipNumber);
+        }
+        else if (pattern == "special_randomhorizontal")
+        {
+            shipPositions = SpecialPattern_RectangleHorizontal(position, width, length, shipNumber, shipsPerLine, positionVariance);
+        }
+
+        return shipPositions;
+    }
+
     //This returns a set of positions in the shape of a rectangle
-    public static Vector3[] RectangleHorizontal_Pattern(Vector3 centerPoint, float width, float length, int shipNumber, int shipsPerLine, float positionVariance = 0)
+    public static Vector3[] Pattern_RectangleHorizontal(Vector3 position, float width, float length, int shipNumber, int shipsPerLine, float positionVariance)
     {
         List<Vector3> shipPositions = new List<Vector3>();
 
-        float increment_width = width / (float)shipsPerLine;
-        float increment_length = length / (Mathf.Floor((float)shipNumber / (float)shipsPerLine));
         float lengthRadius = length / 2;
         float widthRadius = width / 2;
+        float increment_width = width / (float)shipsPerLine;
+        float increment_length = length / (Mathf.Floor((float)shipNumber / (float)shipsPerLine));
         float positionX = 0;
         float positionZ = 0;
 
-        //This makes the ships load in a square around the designated point
-        Vector3 adjustedCenterPoint = new Vector3(centerPoint.x - widthRadius, centerPoint.y, centerPoint.z - lengthRadius);
+        Vector3 adjustedCenterPoint = new Vector3(position.x - widthRadius, position.y, position.z - lengthRadius);
+
+        for (int i = 0; i < shipNumber; i++)
+        {
+            for (int i2 = 0; i2 < shipsPerLine; i2++)
+            {
+                float varianceX = Random.Range(0, positionVariance);
+                float varianceY = Random.Range(0, positionVariance);
+                float varianceZ = Random.Range(0, positionVariance);
+
+                Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
+                Vector3 relativeShipPosition = new Vector3(positionX, 0, positionZ);
+                Vector3 actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+
+                shipPositions.Add(actualShipPosition);
+
+                positionX += increment_width;
+                i++;
+            }
+
+            positionX = 0;
+            positionZ += increment_length;
+        }
+
+        return shipPositions.ToArray();
+    }
+
+    //This returns a set of positions in the shape of a rectangle
+    public static Vector3[] Pattern_RectangleVertical(Vector3 position, float width, float height, int shipNumber, int shipsPerLine, float positionVariance)
+    {
+        List<Vector3> shipPositions = new List<Vector3>();
+
+        float heightRadius = height / 2;
+        float widthRadius = width / 2;
+        float increment_width = width / (float)shipsPerLine;
+        float increment_height = height / (Mathf.Floor((float)shipNumber / (float)shipsPerLine));
+        float positionX = 0;
+        float positionY = 0;
+
+        Vector3 adjustedCenterPoint = new Vector3(position.x - widthRadius, position.y - heightRadius, position.z);
+
+        for (int i = 0; i < shipNumber; i++)
+        {
+            for (int i2 = 0; i2 < shipsPerLine; i2++)
+            {
+                float varianceX = Random.Range(0, positionVariance);
+                float varianceY = 0;
+                float varianceZ = Random.Range(0, positionVariance);
+
+                Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
+                Vector3 relativeShipPosition = new Vector3(positionX, positionY, 0);
+                Vector3 actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+
+                shipPositions.Add(actualShipPosition);
+
+                positionX += increment_width;
+                i++;
+            }
+
+            positionX = 0;
+            positionY += increment_height;
+        }
+
+        return shipPositions.ToArray();
+    }
+
+    //This returns a set of positions in the shape of an arrow
+    public static Vector3[] Pattern_ArrowHorizontal(Vector3 position, float width, float length, int shipNumber, float positionVariance)
+    {
+        List<Vector3> shipPositions = new List<Vector3>();
+
+        float lengthRadius = length / 2;
+        float widthRadius = width / 2;
+        float increment_width = widthRadius / ((Mathf.Floor((float)shipNumber - 1f) / 2));
+        float increment_length = length / ((Mathf.Floor((float)shipNumber - 1f) / 2) + 1);
+        float positionX = 0;
+        float positionZ = 0;
+
+        Vector3 adjustedCenterPoint = new Vector3(position.x - widthRadius, position.y, position.z - lengthRadius);
+
+        for (int i = 0; i < shipNumber; i++)
+        {
+            float varianceX = Random.Range(0, positionVariance);
+            float varianceY = Random.Range(0, positionVariance);
+            float varianceZ = Random.Range(0, positionVariance);
+
+            Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
+            Vector3 relativeShipPosition = new Vector3();
+            Vector3 actualShipPosition = new Vector3();
+
+            if (i == 0)
+            {
+                relativeShipPosition = new Vector3(positionX, 0, positionZ);
+                actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+                shipPositions.Add(actualShipPosition);
+            }
+            else
+            {
+                relativeShipPosition = new Vector3(positionX, 0, positionZ);
+                actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+                shipPositions.Add(actualShipPosition);
+
+                relativeShipPosition = new Vector3(-positionX, 0, positionZ);
+                actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+                shipPositions.Add(actualShipPosition);
+                i++;
+            }
+
+            positionX += increment_width;
+            positionZ += increment_length;
+        }
+
+        return shipPositions.ToArray();
+    }
+
+    //This returns a set of positions in the shape of an arrow pointing in the opposite direction
+    public static Vector3[] Pattern_ArrowHorizontalInverted(Vector3 position, float width, float length, int shipNumber, float positionVariance)
+    {
+        List<Vector3> shipPositions = new List<Vector3>();
+
+        float lengthRadius = length / 2;
+        float widthRadius = width / 2;
+        float increment_width = widthRadius / ((Mathf.Floor((float)shipNumber - 1f) / 2));
+        float increment_length = length / ((Mathf.Floor((float)shipNumber - 1f) / 2) + 1);
+        float positionX = 0;
+        float positionZ = 0;
+
+        Vector3 adjustedCenterPoint = new Vector3(position.x + widthRadius, position.y, position.z + lengthRadius);
+
+        for (int i = 0; i < shipNumber; i++)
+        {
+            float varianceX = Random.Range(0, positionVariance);
+            float varianceY = Random.Range(0, positionVariance);
+            float varianceZ = Random.Range(0, positionVariance);
+
+            Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
+            Vector3 relativeShipPosition = new Vector3();
+            Vector3 actualShipPosition = new Vector3();
+
+            if (i == 0)
+            {
+                relativeShipPosition = new Vector3(positionX, 0, positionZ);
+                actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+                shipPositions.Add(actualShipPosition);
+            }
+            else
+            {
+                relativeShipPosition = new Vector3(positionX, 0, positionZ);
+                actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+                shipPositions.Add(actualShipPosition);
+
+                relativeShipPosition = new Vector3(-positionX, 0, positionZ);
+                actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+                shipPositions.Add(actualShipPosition);
+                i++;
+            }
+
+            positionX -= increment_width;
+            positionZ -= increment_length;
+        }
+
+        return shipPositions.ToArray();
+    }
+
+    //This returns a set of positions in a line
+    public static Vector3[] Pattern_LineHorizontalLongWays(Vector3 position, float length, int shipNumber, float positionVariance)
+    {
+        List<Vector3> shipPositions = new List<Vector3>();
+
+        float lengthRadius = length / 2;
+        float increment_length = length / (float)shipNumber;
+        float positionZ = 0;
+
+        Vector3 adjustedCenterPoint = new Vector3(position.x, position.y, position.z - lengthRadius);
+
+        for (int i = 0; i < shipNumber; i++)
+        {
+            float varianceX = Random.Range(0, positionVariance);
+            float varianceY = Random.Range(0, positionVariance);
+            float varianceZ = Random.Range(0, positionVariance);
+
+            Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
+            Vector3 relativeShipPosition = new Vector3(0, 0, positionZ);
+            Vector3 actualShipPosition = relativeShipPosition + variancePosition + adjustedCenterPoint;
+
+            shipPositions.Add(actualShipPosition);
+            positionZ += increment_length;
+        }
+
+        return shipPositions.ToArray();
+    }
+
+    //This returns a set of positions in a line
+    public static Vector3[] Pattern_LineHorizontalSideWays(Vector3 position, float width, int shipNumber, float positionVariance)
+    {
+        List<Vector3> shipPositions = new List<Vector3>();
+
+        float widthRadius = width / 2;
+        float increment_width = width / (float)shipNumber;
+        float positionX = 0;
+
+        Vector3 adjustedCenterPoint = new Vector3(position.x - widthRadius, position.y, position.z);
+
+        for (int i = 0; i < shipNumber; i++)
+        {
+            float varianceX = Random.Range(0, positionVariance);
+            float varianceY = Random.Range(0, positionVariance);
+            float varianceZ = Random.Range(0, positionVariance);
+
+            Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
+            Vector3 relativeShipPosition = new Vector3(positionX, 0, 0);
+            Vector3 actualShipPosition = relativeShipPosition + variancePosition + adjustedCenterPoint;
+
+            shipPositions.Add(actualShipPosition);
+            positionX += increment_width;
+        }
+
+        return shipPositions.ToArray();
+    }
+
+    //This returns a set of positions in a line
+    public static Vector3[] Pattern_LineVertical(Vector3 position, float height, int shipNumber, float positionVariance)
+    {
+        List<Vector3> shipPositions = new List<Vector3>();
+
+        float heightRadius = height / 2;
+        float increment_height = height / (float)shipNumber;
+        float positionY = 0;
+
+        Vector3 adjustedCenterPoint = new Vector3(position.x, position.y - heightRadius, position.z);
+
+        for (int i = 0; i < shipNumber; i++)
+        {
+            float varianceX = Random.Range(0, positionVariance);
+            float varianceY = Random.Range(0, positionVariance);
+            float varianceZ = Random.Range(0, positionVariance);
+
+            Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
+            Vector3 relativeShipPosition = new Vector3(0, positionY, 0);
+            Vector3 actualShipPosition = relativeShipPosition + variancePosition + adjustedCenterPoint;
+
+            shipPositions.Add(actualShipPosition);
+            positionY += increment_height;
+        }
+
+        return shipPositions.ToArray();
+    }
+
+    //This returns a set of random positions inside a rectangle
+    public static Vector3[] Pattern_RandomInsideCube(Vector3 position, float width, float length, float height, int shipNumber)
+    {
+        List<Vector3> shipPositions = new List<Vector3>();
+
+        float lengthRadius = length / 2;
+        float widthRadius = width / 2;
+        float heightRadius = height / 2;
+
+        Vector3 adjustedCenterPoint = new Vector3(position.x - widthRadius, position.y - heightRadius, position.z - lengthRadius);
+
+        for (int i = 0; i < shipNumber; i++)
+        {
+            float varianceX = Random.Range(0, width);
+            float varianceY = Random.Range(0, height);
+            float varianceZ = Random.Range(0, length);
+
+            Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
+            Vector3 actualShipPosition = variancePosition + adjustedCenterPoint;
+
+            shipPositions.Add(actualShipPosition);
+        }
+
+        return shipPositions.ToArray();
+    }
+
+    //This returns a set of positions in the shape of a rectangle
+    public static Vector3[] SpecialPattern_RectangleHorizontal(Vector3 position, float width, float length, int shipNumber, int shipsPerLine, float positionVariance)
+    {
+        List<Vector3> shipPositions = new List<Vector3>();
+
+        float lengthRadius = length / 2;
+        float widthRadius = width / 2;
+        float increment_width = width / (float)shipsPerLine;
+        float increment_length = length / (Mathf.Floor((float)shipNumber / (float)shipsPerLine));
+        float positionX = 0;
+        float positionZ = 0;
+
+        Vector3 adjustedCenterPoint = new Vector3(position.x - widthRadius, position.y, position.z - lengthRadius);
 
         for (int i = 0; i < shipNumber; i++)
         {
@@ -1438,31 +1763,6 @@ public static class SceneFunctions
         }
 
         return shipPositions.ToArray();
-    }
-
-    public static void RectangleVertical_Pattern()
-    {
-
-    }
-
-    public static void ArrowHorizontal_Pattern()
-    {
-
-    }
-
-    public static void LineVertical_Pattern()
-    {
-
-    }
-
-    public static void LineHorizontal_Pattern()
-    {
-
-    }
-
-    public static void RandomInsideSphere_Pattern()
-    {
-
     }
 
     #endregion

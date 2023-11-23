@@ -975,6 +975,7 @@ public static class SceneFunctions
         string name,
         string allegiance,
         string cargo,
+        bool exitingHyperspace,
         bool isAI, 
         bool dontModifyPosition)
     {
@@ -1089,7 +1090,6 @@ public static class SceneFunctions
 
                     scene.mainShip = smallShip.gameObject;
                 }
-
             }
 
             if (shipType.scriptType == "largeship")
@@ -1194,6 +1194,24 @@ public static class SceneFunctions
                 GameObjectUtils.SetLayerAllChildren(ship.transform, LayerMask.NameToLayer("collision_player"));
             }
 
+            //This causes the ship to come out of hyperspace on loading
+            if (exitingHyperspace == true)
+            {
+
+                ship.transform.localPosition = ship.transform.localPosition + (- ship.transform.forward * 10000);
+
+                if (shipType.scriptType == "largeship")
+                {
+                    LargeShip largeShip = ship.GetComponent<LargeShip>();
+                    Task a = new Task(LargeShipFunctions.ExitHyperspace(largeShip));
+                }
+                else if (shipType.scriptType == "smallship")
+                {
+                    SmallShip smallShip = ship.GetComponent<SmallShip>();
+                    Task a = new Task(SmallShipFunctions.ExitHyperspace(smallShip));
+                }
+            }
+
         }
     }
 
@@ -1210,7 +1228,8 @@ public static class SceneFunctions
         float length, 
         float height, 
         int shipsPerLine, 
-        float positionVariance,  
+        float positionVariance,
+        bool exitingHyperspace,
         bool includePlayer, 
         int playerNo)
     {
@@ -1257,7 +1276,7 @@ public static class SceneFunctions
                 isAI = false;
             }
 
-            LoadSingleShip(tempPosition, rotation, type, name + shipCallNumber.ToString("00"), allegiance, cargo, isAI, false);
+            LoadSingleShip(tempPosition, rotation, type, name + shipCallNumber.ToString("00"), allegiance, cargo, exitingHyperspace, isAI, false);
 
             yield return null;
         }
@@ -1276,7 +1295,8 @@ public static class SceneFunctions
         float length, 
         float height, 
         int shipsPerLine, 
-        float positionVariance, 
+        float positionVariance,
+        bool exitingHyperspace,
         bool includePlayer, 
         int playerNo)
     {
@@ -1324,7 +1344,7 @@ public static class SceneFunctions
 
             shipType += Random.Range(0, shipTypesList.Count);
 
-            LoadSingleShip(tempPosition, rotation, shipTypesList[shipType].type, name + shipCallNumber.ToString("00"), allegiance, cargo, isAI, false);
+            LoadSingleShip(tempPosition, rotation, shipTypesList[shipType].type, name + shipCallNumber.ToString("00"), allegiance, cargo, exitingHyperspace, isAI, false);
 
             i++;
 
@@ -1383,12 +1403,12 @@ public static class SceneFunctions
             if (Physics.Raycast(raycastPos, Vector3.down, out hit, 5000, mask))
             {
                 Vector3 newPosition = hit.point + new Vector3(0,distanceAboveGround,0);
-                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, true, true);
+                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, true, true);
             }
             else if (ifRaycastFailsStillLoad == true)
             {
                 Vector3 newPosition = new Vector3(tempPosition.x, 0, tempPosition.z);
-                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, true, true);
+                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, true, true);
             }
 
             yield return null;

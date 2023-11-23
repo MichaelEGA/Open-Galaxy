@@ -14,6 +14,8 @@ public class SmallShip : MonoBehaviour
     public string thrustType;
     public bool exploded;
     public bool scanned = false;
+    public bool jumpingToHyperspace;
+    public bool exitingHyperspace;
     public string cargo = "no cargo";
 
     [Header("Ship Components")]

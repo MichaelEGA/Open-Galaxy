@@ -734,11 +734,12 @@ public static class MissionEditorFunctions
 
     public static IEnumerator LoadMissionData(Mission mission)
     {
+
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
             Node node = AddNode(missionEvent.eventType, true, missionEvent.nodePosX, missionEvent.nodePosY);
 
-            yield return new WaitForEndOfFrame();
+            yield return null;
 
             InputData(node.eventID, missionEvent.eventID);
             InputData(node.eventType, missionEvent.eventType);
@@ -764,7 +765,7 @@ public static class MissionEditorFunctions
             InputData(node.data12, missionEvent.data12);
             InputData(node.data13, missionEvent.data13);
             InputData(node.data14, missionEvent.data14);
-            InputData(node.data15, missionEvent.data5);
+            InputData(node.data15, missionEvent.data15);
             InputData(node.nextEvent1, missionEvent.nextEvent1);
             InputData(node.nextEvent2, missionEvent.nextEvent2);
             InputData(node.nextEvent3, missionEvent.nextEvent3);
@@ -838,6 +839,8 @@ public static class MissionEditorFunctions
 
 
             }
+
+            yield return null;
         }
     }
 

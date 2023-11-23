@@ -213,7 +213,8 @@ public static class LargeShipFunctions
         {
             largeShip.shipRigidbody = largeShip.gameObject.GetComponent<Rigidbody>();
         }
-        else
+
+        if (largeShip.jumpingToHyperspace == false & largeShip.exitingHyperspace == false) 
         {
             //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
             float step = +Time.deltaTime / 0.1f;
@@ -235,6 +236,48 @@ public static class LargeShipFunctions
 
             largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime * largeShip.maneuvarabilityActual, Space.World);
         }
+    }
+
+    //Jump to Hyperspace
+    public static IEnumerator JumpToHyperspace(LargeShip largeShip)
+    {
+        largeShip.jumpingToHyperspace = true;
+
+        Vector3 startPosition = largeShip.gameObject.transform.localPosition;
+        Vector3 endPosition = largeShip.transform.localPosition + largeShip.gameObject.transform.forward * 10000;
+        float time = 1f;
+
+        for (float t = 0; t < time; t += Time.deltaTime / time)
+        {
+            largeShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+            yield return null;
+        }
+
+        HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " jumped to hyperspace");
+
+        largeShip.jumpingToHyperspace = false;
+
+        DeactivateShip(largeShip);
+    }
+
+    //Exit Hyperspace
+    public static IEnumerator ExitHyperspace(LargeShip largeShip)
+    {
+        largeShip.exitingHyperspace = true;
+
+        Vector3 endPosition = largeShip.transform.localPosition + largeShip.gameObject.transform.forward * 10000;
+        Vector3 startPosition = largeShip.gameObject.transform.localPosition;
+        float time = 1f;
+
+        for (float t = 0; t < time; t += Time.deltaTime / time)
+        {
+            largeShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+            yield return null;
+        }
+
+        HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " just exited hyperspace");
+
+        largeShip.exitingHyperspace = false;
     }
 
     #endregion
@@ -328,6 +371,13 @@ public static class LargeShipFunctions
 
         ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion02", 1000);
 
+        HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
+
+        DeactivateShip(largeShip);
+    }
+
+    public static void DeactivateShip(LargeShip largeShip)
+    {
         //This sets the ship up for the next time it is loaded from the pool
         largeShip.spinShip = false;
         largeShip.explode = false;

@@ -184,6 +184,12 @@ public static class MissionFunctions
     public static void RunEvent(string missionName, MissionEvent missionEvent)
     {
         //This runs the requested function
+
+        if (missionEvent.eventType == "activatehyperspace")
+        {
+            ActivateHyperspace(missionEvent);
+            FindNextEvent(missionName, missionEvent.nextEvent1);
+        }
         if (missionEvent.eventType == "changemusicvolume")
         {
             ChangeMusicVolume(float.Parse(missionEvent.data1));
@@ -194,10 +200,9 @@ public static class MissionFunctions
             ClearAIOverride(missionEvent.data1);
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
-        else if (missionEvent.eventType == "displaylargemessagethenexit")
+        else if (missionEvent.eventType == "exitmission")
         {
-            Task a = new Task(DisplayLargeMesssageThenExit(missionEvent.data1));
-            FindNextEvent(missionName, missionEvent.nextEvent1);
+            ExitMission();
         }
         else if (missionEvent.eventType == "dialoguebox")
         {
@@ -224,11 +229,24 @@ public static class MissionFunctions
             DisplayMissionBriefing(missionEvent);
             FindNextEvent(missionName, missionEvent.nextEvent1);
         }
-        else if (missionEvent.eventType == "iftypeofshipisactive")
+        else if (missionEvent.eventType == "ifshipshullislessthan")
         {
-            bool shipTypeIsActive = IfTypeOfShipIsActive(missionEvent.data1);
+            bool isLessThan = IfShipsHullIsLessThan(missionEvent);
 
-            if (shipTypeIsActive == true)
+            if (isLessThan == true)
+            {
+                FindNextEvent(missionName, missionEvent.nextEvent1);
+            }
+            else
+            {
+                FindNextEvent(missionName, missionEvent.nextEvent2);
+            }
+        }
+        else if (missionEvent.eventType == "ifshipislessthandistancetowaypoint")
+        {
+            bool isLessThanDistance = IfShipIsLessThanDistanceToWaypoint(missionEvent);
+
+            if (isLessThanDistance == true)
             {
                 FindNextEvent(missionName, missionEvent.nextEvent1);
             }
@@ -268,6 +286,19 @@ public static class MissionFunctions
             bool shiphasntbeenscanned = IfShipHasntBeenScanned(missionEvent);
 
             if (shiphasntbeenscanned == true)
+            {
+                FindNextEvent(missionName, missionEvent.nextEvent1);
+            }
+            else
+            {
+                FindNextEvent(missionName, missionEvent.nextEvent2);
+            }
+        }
+        else if (missionEvent.eventType == "iftypeofshipisactive")
+        {
+            bool shipTypeIsActive = IfTypeOfShipIsActive(missionEvent.data1);
+
+            if (shipTypeIsActive == true)
             {
                 FindNextEvent(missionName, missionEvent.nextEvent1);
             }
@@ -355,32 +386,6 @@ public static class MissionFunctions
         {
             SetWeaponsLock(missionEvent);
             FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "shipshullislessthan")
-        {
-            bool isLessThan = ShipsHullIsLessThan(missionEvent);
-
-            if (isLessThan == true)
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent1);
-            }
-            else
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent2);
-            }
-        }
-        else if (missionEvent.eventType == "shipislessthandistancetowaypoint")
-        {
-            bool isLessThanDistance = ShipIsLessThanDistanceToWaypoint(missionEvent);
-
-            if (isLessThanDistance == true)
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent1);
-            }
-            else
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent2);
-            }
         }
     }
 
@@ -482,7 +487,40 @@ public static class MissionFunctions
 
     #region event functions
 
-    //THis changes the volume of the music 
+    //This causes the designated ships to jump to hyperspace
+    public static void ActivateHyperspace(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            Task a = new Task(SmallShipFunctions.JumpToHyperspace(smallShip));
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            Task a = new Task(LargeShipFunctions.JumpToHyperspace(largeShip));
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    //This changes the volume of the music 
     public static void ChangeMusicVolume(float volume)
     {
         Music musicManager = GameObject.FindObjectOfType<Music>();
@@ -518,13 +556,9 @@ public static class MissionFunctions
         }
     }
 
-    //This displays "[Allegiance] Victory" and then returns the player to the main screen after five seconds
-    public static IEnumerator DisplayLargeMesssageThenExit(string message)
+    //This exits the mission back to the main menu
+    public static void ExitMission()
     {
-        DisplayLargeMessage(message.ToUpper());
-
-        yield return new WaitForSeconds(5);
-
         ExitMenuFunctions.ExitAndUnload();
     }
 
@@ -592,12 +626,19 @@ public static class MissionFunctions
         MissionBriefingFunctions.ActivateMissionBriefing(missionEvent.data1);
     }
 
-    //This checks whether there are any active ships of a certain allegiance, i.e. are there any imperial ships left
-    public static bool IfTypeOfShipIsActive(string allegiance)
+    //This checks the ship distance to its waypoint
+    public static bool IfShipsHullIsLessThan(MissionEvent missionEvent)
     {
+        bool islessthanamount = false;
+
         Scene scene = SceneFunctions.GetScene();
 
-        bool shipTypeIsActive = false;
+        float hullLevel = Mathf.Infinity;
+
+        if (missionEvent.data2 != "none")
+        {
+            hullLevel = float.Parse(missionEvent.data2);
+        }
 
         if (scene != null)
         {
@@ -605,21 +646,80 @@ public static class MissionFunctions
             {
                 foreach (GameObject ship in scene.objectPool)
                 {
-                    SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                    if (smallShip != null)
+                    if (ship.name.Contains(missionEvent.data1))
                     {
-                        if (ship.activeSelf == true & smallShip.allegiance == allegiance)
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (smallShip != null)
                         {
-                            shipTypeIsActive = true;
-                            break;
+                            if (smallShip.hullLevel < hullLevel)
+                            {
+                                islessthanamount = true;
+                                break;
+                            }
+                        }
+                        else if (largeShip != null)
+                        {
+                            if (largeShip.hullLevel < hullLevel)
+                            {
+                                islessthanamount = true;
+                                break;
+                            }
                         }
                     }
                 }
             }
         }
 
-        return shipTypeIsActive;
+        return islessthanamount;
+    }
+
+    //This checks the ship distance to its waypoint
+    public static bool IfShipIsLessThanDistanceToWaypoint(MissionEvent missionEvent)
+    {
+        bool isLessThanDistance = false;
+
+        Scene scene = SceneFunctions.GetScene();
+
+        float distance = Mathf.Infinity;
+
+        if (missionEvent.data2 != "none")
+        {
+            distance = float.Parse(missionEvent.data2);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            smallShip.aiOverideMode = "MoveToWaypoint";
+
+                            if (smallShip.waypoint != null)
+                            {
+                                float tempDistance = Vector3.Distance(smallShip.transform.position, smallShip.waypoint.transform.position);
+
+                                if (tempDistance < distance)
+                                {
+                                    isLessThanDistance = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return isLessThanDistance;
     }
 
     //This checks whether the requested ship is present and active
@@ -743,6 +843,36 @@ public static class MissionFunctions
         return shipHasntBeenScanned;
     }
 
+    //This checks whether there are any active ships of a certain allegiance, i.e. are there any imperial ships left
+    public static bool IfTypeOfShipIsActive(string allegiance)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipTypeIsActive = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                    if (smallShip != null)
+                    {
+                        if (ship.activeSelf == true & smallShip.allegiance == allegiance)
+                        {
+                            shipTypeIsActive = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return shipTypeIsActive;
+    }
+
     //This loads the asteroid field
     public static IEnumerator LoadAsteroids(MissionEvent missionEvent)
     {
@@ -796,14 +926,21 @@ public static class MissionFunctions
         string cargo = "no cargo";
         if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
 
-        bool isAI = false;
+        bool exitingHyperspace = false;
 
         if (bool.TryParse(missionEvent.data5, out _))
         {
-            isAI = bool.Parse(missionEvent.data5);
+            exitingHyperspace = bool.Parse(missionEvent.data5);
         }
 
-        SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, isAI, false);
+        bool isAI = false;
+
+        if (bool.TryParse(missionEvent.data6, out _))
+        {
+            isAI = bool.Parse(missionEvent.data6);
+        }
+
+        SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, exitingHyperspace, isAI, false);
     }
 
     //This loads a single ship at a certain distance and angle from the player
@@ -840,6 +977,13 @@ public static class MissionFunctions
             distance = float.Parse(missionEvent.data5);
         }
 
+        bool exitingHyperspace = false;
+
+        if (bool.TryParse(missionEvent.data6, out _))
+        {
+            exitingHyperspace = bool.Parse(missionEvent.data6);
+        }
+
         Scene scene = SceneFunctions.GetScene();
 
         Vector3 newPosition = new Vector3(0, 0, 0);
@@ -852,7 +996,7 @@ public static class MissionFunctions
             }
         }
 
-        SceneFunctions.LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, true, false);
+        SceneFunctions.LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, exitingHyperspace, true, false);
     }
 
     //This loads multiple ships by name
@@ -1010,18 +1154,25 @@ public static class MissionFunctions
             positionVariance = float.Parse(missionEvent.data11);
         }
 
-        bool includePlayer = false;
+        bool exitingHyperspace = false;
 
         if (bool.TryParse(missionEvent.data12, out _))
         {
-            includePlayer = bool.Parse(missionEvent.data12);
+            exitingHyperspace = bool.Parse(missionEvent.data12);
+        }
+
+        bool includePlayer = false;
+
+        if (bool.TryParse(missionEvent.data13, out _))
+        {
+            includePlayer = bool.Parse(missionEvent.data13);
         }
 
         int playerNo = 0;
 
-        if (int.TryParse(missionEvent.data13, out _))
+        if (int.TryParse(missionEvent.data14, out _))
         {
-            playerNo = int.Parse(missionEvent.data13);
+            playerNo = int.Parse(missionEvent.data14);
         }
 
         if (playerNo > number - 1)
@@ -1029,7 +1180,7 @@ public static class MissionFunctions
             playerNo = number - 1;
         }
 
-        Task c = new Task(SceneFunctions.LoadMultipleShips(position, rotation, type, name, allegiance, cargo, number, pattern, width, length, height, shipsPerLine, positionVariance, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadMultipleShips(position, rotation, type, name, allegiance, cargo, number, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
     }
 
@@ -1105,18 +1256,25 @@ public static class MissionFunctions
             positionVariance = float.Parse(missionEvent.data11);
         }
 
-        bool includePlayer = false;
+        bool exitingHyperspace = false;
 
         if (bool.TryParse(missionEvent.data12, out _))
         {
-            includePlayer = bool.Parse(missionEvent.data12);
+            exitingHyperspace = bool.Parse(missionEvent.data12);
+        }
+
+        bool includePlayer = false;
+
+        if (bool.TryParse(missionEvent.data13, out _))
+        {
+            includePlayer = bool.Parse(missionEvent.data13);
         }
 
         int playerNo = 0;
 
-        if (int.TryParse(missionEvent.data13, out _))
+        if (int.TryParse(missionEvent.data14, out _))
         {
-            playerNo = int.Parse(missionEvent.data13);
+            playerNo = int.Parse(missionEvent.data14);
         }
 
         if (playerNo > number - 1)
@@ -1124,7 +1282,7 @@ public static class MissionFunctions
             playerNo = number - 1;
         }
 
-        Task c = new Task(SceneFunctions.LoadMultipleShipByClassAndAllegiance(position, rotation, shipClass, name, allegiance, cargo, number, pattern, width, length, height, shipsPerLine, positionVariance, includePlayer, playerNo));
+        Task c = new Task(SceneFunctions.LoadMultipleShipByClassAndAllegiance(position, rotation, shipClass, name, allegiance, cargo, number, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
     }
 
@@ -1444,93 +1602,6 @@ public static class MissionFunctions
                 }
             }
         }
-    }
-
-    //This checks the ship distance to its waypoint
-    public static bool ShipsHullIsLessThan(MissionEvent missionEvent)
-    {
-        bool islessthanamount = false;
-
-        Scene scene = SceneFunctions.GetScene();
-
-        float hullLevel = Mathf.Infinity;
-
-        if (missionEvent.data2 != "none")
-        {
-            hullLevel = float.Parse(missionEvent.data2);
-        }
-
-        if (scene != null)
-        {
-            if (scene.objectPool != null)
-            {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship.name.Contains(missionEvent.data1))
-                    {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                        if (smallShip != null)
-                        {
-                            if (smallShip.hullLevel < hullLevel)
-                            {
-                                islessthanamount = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return islessthanamount;
-    }
-
-    //This checks the ship distance to its waypoint
-    public static bool ShipIsLessThanDistanceToWaypoint(MissionEvent missionEvent)
-    {
-        bool isLessThanDistance = false;
-
-        Scene scene = SceneFunctions.GetScene();
-
-        float distance = Mathf.Infinity;
-
-        if (missionEvent.data2 != "none")
-        {
-            distance = float.Parse(missionEvent.data2);
-        }
-
-        if (scene != null)
-        {
-            if (scene.objectPool != null)
-            {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship.name.Contains(missionEvent.data1))
-                    {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                        if (smallShip != null)
-                        {
-                            smallShip.aiOverideMode = "MoveToWaypoint";
-
-                            if (smallShip.waypoint != null)
-                            {
-                                float tempDistance = Vector3.Distance(smallShip.transform.position, smallShip.waypoint.transform.position);
-
-                                if (tempDistance < distance)
-                                {
-                                    isLessThanDistance = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return isLessThanDistance;
     }
 
     #endregion

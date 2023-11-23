@@ -11,6 +11,8 @@ public class LargeShip : MonoBehaviour
     public float loadTime;
     public string classType = "large";
     public bool scanned = false;
+    public bool jumpingToHyperspace;
+    public bool exitingHyperspace;
     public string cargo = "no cargo";
     public string thrustType = "thruster_blue_large";
     [HideInInspector] public bool explode;

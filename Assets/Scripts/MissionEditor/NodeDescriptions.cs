@@ -94,9 +94,18 @@ public static class NodeDescriptions
             "This node loads multiple ships of the same type \n" +
             "\n " +
             "Extra Information \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n";
+            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n" +
+            "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
+            "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
+            "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
+            "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
+            "- Pattern: arrowhorizontalinverted uses with and length. Height is ignored. \n" +
+            "- Pattern: linehorizontallongways uses length. Width and height are ignored. \n" +
+            "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
+            "- Pattern: linevertical uses height. Width and length are ignored. \n" +
+            "- Pattern: randominsidecube uses width, length, height. \n";
         }
-        else if (name == "preload_loadmultipleshipsbytype")
+        else if (name == "preload_loadmultipleshipsbyclassandallegiance")
         {
             description =
             "Pre-Load Multiple Ships By Type \n " +
@@ -105,8 +114,16 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n" +
-            "- WARNING: In future versions this node will be renamed as Pre-Load Multiple Ships By Class And Allegiance \n";
+            "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
+            "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
+            "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
+            "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
+            "- Pattern: arrowhorizontalinverted uses with and length. Height is ignored. \n" +
+            "- Pattern: linehorizontallongways uses length. Width and height are ignored. \n" +
+            "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
+            "- Pattern: linevertical uses height. Width and length are ignored. \n" +
+            "- Pattern: randominsidecube uses width, length, height. \n" +
+            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n";
         }
         else if (name == "preload_setskybox")
         {
@@ -129,6 +146,16 @@ public static class NodeDescriptions
            "- All standard event nodes must be linked in a chain beginning with this node to run. \n" +
            "- This node is not required for pre-event nodes. \n";
         }
+        else if (name == "activatehyperspace")
+        {
+            description =
+            "Activate Hyperspace \n " +
+            "\n " +
+            "This node causes a ship or ships to jump to hyperspace" +
+            "\n " +
+           "Extra Information \n" +
+            "- This function will affect any ship whose name contains the designated string. \n";
+        }
         else if (name == "changemusicvolume")
         {
             description =
@@ -146,18 +173,15 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- An ai override forces a ship to deviate from its standard behaviour to perform only one task. \n" +
            "- For a ship to return to its standard behavious the AI override must be cleared. \n" +
-           "- AI overrides inlcude: 'MoveToWayPoint', 'Stationary', 'Patrol'. \n";
+           "- AI overrides inlcude: 'MoveToWayPoint', 'Stationary', 'Patrol'. \n" +
+           "- This function will affect any ship whose name contains the designated string. \n";
         }
-        else if (name == "displaylargemessagethenexit")
+        else if (name == "exitmission")
         {
             description =
            "Display Large Mission Then Exit \n " +
            "\n " +
-           "This node displays a large message like 'MISSION COMPLETE' or 'MISSION FAILED' then exits the game back to the main menu. \n" +
-           "\n " +
-           "Extra Information \n" +
-           "- Leave the message blank if you dont want any message to display on exit. \n" +
-           "- WARNING: This function will soon be deprecated and replaced with a simple exit mission function. Consider using 'displaylargemessage' instead. \n";
+           "This node exits the mission and returns the player to the main menu. \n";
         }
         else if (name == "dialoguebox")
         {
@@ -195,16 +219,27 @@ public static class NodeDescriptions
             "- At the moment you can only add a message to the briefing screen. \n" +
             "- WARNING: This node is under development. Expect it to change over time. \n";
         }
-        else if (name == "iftypeofshipisactive")
+        else if (name == "ifshipshullislessthan")
         {
             description =
-            "If Type of Ship is Active \n " +
-            "\n " +
-            "This node checks to see whether there are any ships active of a particular allegiance i.e. whether there are any imperial ships left in the scene. \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-            "- WARNING: The name of this node may change to accurately represent the function it runs. \n";
+             "Ships Hull is Less Than \n " +
+             "\n " +
+             "This function checks the hull of the designated ship and returns true or false according to whether the ship hull is less or more than the designated amount. \n" +
+             "\n " +
+             "Extra Information \n" +
+             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n";
+        }
+        else if (name == "ifshipislessthandistancetowaypoint")
+        {
+            description =
+             "Ships Is Less Than Distance to Waypoint \n " +
+             "\n " +
+             "This function checks the distance to waypoint of the designated ship and returns true or false according to whether the ship's distance is less or more than the designated amount. \n" +
+             "\n " +
+             "Extra Information \n" +
+             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n";
         }
         else if (name == "ifshipisactive")
         {
@@ -243,6 +278,17 @@ public static class NodeDescriptions
             "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n";
         }
+        else if (name == "iftypeofshipisactive")
+        {
+            description =
+            "If Type of Ship is Active \n " +
+            "\n " +
+            "This node checks to see whether there are any ships active of a particular allegiance i.e. whether there are any imperial ships left in the scene. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+            "- WARNING: The name of this node may change to accurately represent the function it runs. \n";
+        }
         else if (name == "loadsingleship")
         {
             description =
@@ -277,9 +323,20 @@ public static class NodeDescriptions
             description =
             "Pre-Load Multiple Ships \n " +
             "\n " +
-            "This node loads multiple ships of the same type \n";
+            "This node loads multiple ships of the same type \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
+            "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
+            "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
+            "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
+            "- Pattern: arrowhorizontalinverted uses with and length. Height is ignored. \n" +
+            "- Pattern: linehorizontallongways uses length. Width and height are ignored. \n" +
+            "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
+            "- Pattern: linevertical uses height. Width and length are ignored. \n" +
+            "- Pattern: randominsidecube uses width, length, height. \n";
         }
-        else if (name == "loadmultipleshipsbytype")
+        else if (name == "loadmultipleshipsbyclassandallegiance")
         {
             description =
             "Pre-Load Multiple Ships By Type \n " +
@@ -288,8 +345,15 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n" +
-            "- WARNING: In future versions this node will be renamed as Load Multiple Ships By Class And Allegiance \n";
+            "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
+            "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
+            "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
+            "- Pattern: arrowhorizontalinverted uses with and length. Height is ignored. \n" +
+            "- Pattern: linehorizontallongways uses length. Width and height are ignored. \n" +
+            "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
+            "- Pattern: linevertical uses height. Width and length are ignored. \n" +
+            "- Pattern: randominsidecube uses width, length, height. \n" +
+            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n";
         }
         else if (name == "lockmainshipweapons")
         {
@@ -404,28 +468,6 @@ public static class NodeDescriptions
              "\n " +
              "Extra Information \n" +
              "- This function will affect any ship whose name contains the designated string. \n";
-        }
-        else if (name == "shipshullislessthan")
-        {
-            description =
-             "Ships Hull is Less Than \n " +
-             "\n " +
-             "This function checks the hull of the designated ship and returns true or false according to whether the ship hull is less or more than the designated amount. \n" +
-             "\n " +
-             "Extra Information \n" +
-             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n";
-        }
-        else if (name == "shipislessthandistancetowaypoint")
-        {
-            description =
-             "Ships Is Less Than Distance to Waypoint \n " +
-             "\n " +
-             "This function checks the distance to waypoint of the designated ship and returns true or false according to whether the ship's distance is less or more than the designated amount. \n" +
-             "\n " +
-             "Extra Information \n" +
-             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n";
         }
 
         return description;

@@ -600,14 +600,15 @@ public static class HudFunctions
             {
                 if (hud.smallShip.targetSmallShip != null)
                 {
-                    if (hud.smallShip.targetSmallShip.scanned == false & hud.smallShip.targetDistance > 250)
+                    if (hud.smallShip.targetSmallShip.scanned == false & hud.smallShip.targetDistance > 200)
                     {
                         hud.targetCargo.text = "-";
                     }
-                    else if (hud.smallShip.targetSmallShip.scanned == false & hud.smallShip.targetDistance < 250)
+                    else if (hud.smallShip.targetSmallShip.scanned == false & hud.smallShip.targetDistance < 200)
                     {
                         hud.targetCargo.text = hud.smallShip.targetSmallShip.cargo.ToUpper();
                         hud.smallShip.targetSmallShip.scanned = true;
+                        AddToShipLog(hud.smallShip.targetName.ToUpper() + " has been scanned: " + hud.smallShip.targetSmallShip.cargo.ToUpper());
                     }
                     else if (hud.smallShip.targetSmallShip.scanned == true)
                     {
@@ -616,14 +617,15 @@ public static class HudFunctions
                 }
                 else if (hud.smallShip.targetLargeShip != null)
                 {
-                    if (hud.smallShip.targetLargeShip.scanned == false & hud.smallShip.targetDistance > 600)
+                    if (hud.smallShip.targetLargeShip.scanned == false & hud.smallShip.targetDistance > 300)
                     {
                         hud.targetCargo.text = "-";
                     }
-                    else if (hud.smallShip.targetLargeShip.scanned == false & hud.smallShip.targetDistance < 600)
+                    else if (hud.smallShip.targetLargeShip.scanned == false & hud.smallShip.targetDistance < 300)
                     {
                         hud.targetCargo.text = hud.smallShip.targetLargeShip.cargo.ToUpper();
                         hud.smallShip.targetLargeShip.scanned = true;
+                        AddToShipLog(hud.smallShip.targetName.ToUpper() + " has been scanned: " + hud.smallShip.targetLargeShip.cargo.ToUpper());
                     }
                     else if (hud.smallShip.targetLargeShip.scanned == true)
                     {

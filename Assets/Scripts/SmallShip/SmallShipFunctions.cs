@@ -35,7 +35,7 @@ public static class SmallShipFunctions
             TargetingFunctions.CreateWaypoint(smallShip);
             smallShip.loaded = true;
         }
-                
+
     }
 
     //This attaches a particle system to the ship engines to simulate thrust
@@ -491,7 +491,7 @@ public static class SmallShipFunctions
             smallShip.powerPressedTime = Time.time + 0.2f;
 
         }
-        
+
 
         //This sets the ships power according the mode
         if (smallShip.powerMode == "lasers")
@@ -683,8 +683,8 @@ public static class SmallShipFunctions
         {
             smallShip.shipRigidbody = smallShip.gameObject.GetComponent<Rigidbody>();
         }
-       
-        if (smallShip.shipRigidbody != null)
+
+        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false)
         {
             //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
             float step = +Time.deltaTime / 0.1f;
@@ -705,6 +705,48 @@ public static class SmallShipFunctions
             Quaternion deltaRotation = Quaternion.Euler(rotationVector * Time.deltaTime);
             smallShip.shipRigidbody.MoveRotation(smallShip.shipRigidbody.rotation * deltaRotation);
         }
+    }
+
+    //Jump to Hyperspace
+    public static IEnumerator JumpToHyperspace(SmallShip smallShip)
+    {
+        smallShip.jumpingToHyperspace = true;
+
+        Vector3 startPosition = smallShip.gameObject.transform.localPosition;
+        Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 10000;
+        float time = 1f;
+
+        for (float t = 0; t < time; t += Time.deltaTime / time)
+        {
+            smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+            yield return null;
+        }
+
+        HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " jumped to hyperspace");
+
+        smallShip.jumpingToHyperspace = false;
+
+        DeactivateShip(smallShip);
+    }
+
+    //Exit Hyperspace
+    public static IEnumerator ExitHyperspace(SmallShip smallShip)
+    {
+        smallShip.exitingHyperspace = true;
+
+        Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 10000; 
+        Vector3 startPosition = smallShip.gameObject.transform.localPosition;
+        float time = 1f;
+
+        for (float t = 0; t < time; t += Time.deltaTime / time)
+        {
+            smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+            yield return null;
+        }
+
+        HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " just exited hyperspace");
+
+        smallShip.exitingHyperspace = false;
     }
 
     //A particle effect that makes the ship look like it's moving
@@ -1093,9 +1135,6 @@ public static class SmallShipFunctions
 
         if (smallShip != null)
         {
-            //This removes the main camera
-            RemoveMainCamera(smallShip);
-
             if (smallShip.scene == null)
             {
                 smallShip.scene = SceneFunctions.GetScene();
@@ -1107,27 +1146,11 @@ public static class SmallShipFunctions
             //This makes an explosion sound
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "explosion01_xwing", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
 
-            //This turns of the engine sound and release the ship audio source from the ship
-            if (smallShip.audioManager != null)
-            {
-                smallShip.engineAudioSource.Stop();
-                smallShip.engineAudioSource = null;
-                smallShip.audioManager = null;
-            }
-
+            //This tells the game that the ship has been destroyed
             HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
 
-            //This deactives the cockpit
-            if (smallShip.cockpit != null)
-            {
-                smallShip.cockpit.SetActive(false);
-            }
-
-            //This resets the ship for the next load if needed
-            smallShip.exploded = false;
-
             //This deactivates the ship
-            smallShip.gameObject.SetActive(false);
+            DeactivateShip(smallShip);
         } 
     }
 
@@ -1141,6 +1164,32 @@ public static class SmallShipFunctions
         }
 
         smallShip.spinShip = false;
+    }
+
+    public static void DeactivateShip(SmallShip smallShip)
+    {
+        //This removes the main camera
+        RemoveMainCamera(smallShip);
+
+        //This turns of the engine sound and release the ship audio source from the ship
+        if (smallShip.audioManager != null)
+        {
+            smallShip.engineAudioSource.Stop();
+            smallShip.engineAudioSource = null;
+            smallShip.audioManager = null;
+        }
+
+        //This deactives the cockpit
+        if (smallShip.cockpit != null)
+        {
+            smallShip.cockpit.SetActive(false);
+        }
+
+        //This resets the ship for the next load if needed
+        smallShip.exploded = false;
+
+        //This deactivates the ship
+        smallShip.gameObject.SetActive(false);
     }
 
     #endregion

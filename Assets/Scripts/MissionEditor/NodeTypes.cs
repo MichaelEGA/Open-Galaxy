@@ -521,7 +521,15 @@ public static class NodeTypes
         options3.Add("true");
         options3.Add("false");
 
-        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "is AI", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("true");
+        options4.Add("false");
+
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options4, "is AI", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -655,18 +663,26 @@ public static class NodeTypes
         options4.Add("true");
         options4.Add("false");
 
-        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data13 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
+        List<string> options5 = new List<string>();
+        options5.Add("true");
+        options5.Add("false");
+
+        node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data14 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_PreLoad_LoadMultipleShipsByType(Node node)
+    public static void Draw_PreLoad_LoadMultipleShipsByClassAndAllegiance(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
@@ -777,11 +793,19 @@ public static class NodeTypes
         options4.Add("true");
         options4.Add("false");
 
-        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data13 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
+        List<string> options5 = new List<string>();
+        options5.Add("true");
+        options5.Add("false");
+
+        node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data14 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -836,6 +860,47 @@ public static class NodeTypes
         drop -= 15;
 
         node.eventType = NodeFunctions.DrawText(node, "startmission", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_ActivateHyperspace(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "activatehyperspace", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "activatehyperspace", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -928,13 +993,13 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_DisplayLargeMessageThenExit(Node node)
+    public static void Draw_ExitMission(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "displaylargemessagethenexit", 8, 17.5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "exitmission", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -946,7 +1011,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "displaylargemessagethenexit", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "exitmission", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -955,16 +1020,6 @@ public static class NodeTypes
         drop -= 15;
 
         node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        float multiplySize = 2;
-
-        node.data1 = NodeFunctions.DrawInputFieldLarge(node, "Message", "none", 7, 5, drop, 12.5f * multiplySize, 90);
-
-        drop -= 15 * multiplySize;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
 
@@ -1149,13 +1204,13 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_IfTypeOfShipIsActive(Node node)
+    public static void Draw_IfShipsHullIsLessThan(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "iftypeofshipisactive", 8, 17.5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "ifshipshullislessthan", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1167,7 +1222,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "iftypeofshipisactive", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "ifshipshullislessthan", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -1179,11 +1234,60 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("imperial");
-        options1.Add("rebel");
+        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "is less than", "50", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "True", 7, 5);
+
+        drop -= 15;
+
+        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "False", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_IfShipIsLessThanDistanceToWaypoint(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "ifshipislessthandistancetowaypoint", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "ifshipislessthandistancetowaypoint", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "is less than", "50", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1333,6 +1437,55 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
+    public static void Draw_IfTypeOfShipIsActive(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "iftypeofshipisactive", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "iftypeofshipisactive", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options1 = new List<string>();
+        options1.Add("imperial");
+        options1.Add("rebel");
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "True", 7, 5);
+
+        drop -= 15;
+
+        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "False", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
     public static void Draw_LoadSingleShip(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -1436,7 +1589,15 @@ public static class NodeTypes
         options3.Add("true");
         options3.Add("false");
 
-        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "is AI", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("true");
+        options4.Add("false");
+
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options4, "is AI", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1547,6 +1708,14 @@ public static class NodeTypes
         drop -= 15;
 
         node.data5 = NodeFunctions.DrawInputField(node, "distance", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options3 = new List<string>();
+        options3.Add("true");
+        options3.Add("false");
+
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1842,15 +2011,23 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options4= new List<string>();
+        List<string> options4 = new List<string>();
         options4.Add("true");
         options4.Add("false");
 
-        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data13 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
+        List<string> options5 = new List<string>();
+        options5.Add("true");
+        options5.Add("false");
+
+        node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data14 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1986,11 +2163,19 @@ public static class NodeTypes
         options4.Add("true");
         options4.Add("false");
 
-        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data13 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
+        List<string> options5 = new List<string>();
+        options5.Add("true");
+        options5.Add("false");
+
+        node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data14 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2541,103 +2726,7 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_ShipsHullIsLessThan(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "shipshullislessthan", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "shipshullislessthan", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data2 = NodeFunctions.DrawInputField(node, "is less than", "50", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "True", 7, 5);
-
-        drop -= 15;
-
-        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "False", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
-    public static void Draw_ShipIsLessThanDistanceToWaypoint(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "shipislessthandistancetowaypoint", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "shipislessthandistancetowaypoint", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data2 = NodeFunctions.DrawInputField(node, "is less than", "50", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "True", 7, 5);
-
-        drop -= 15;
-
-        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "False", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
+   
 
     #endregion
 

@@ -47,7 +47,7 @@ public class NodeFunctions : MonoBehaviour
         }
         else if (node.nodeType == "preload_loadmultipleshipsbyclassandallegiance")
         {
-            NodeTypes.Draw_PreLoad_LoadMultipleShipsByType(node);
+            NodeTypes.Draw_PreLoad_LoadMultipleShipsByClassAndAllegiance(node);
         }
         else if (node.nodeType == "preload_setskybox")
         {
@@ -57,6 +57,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_StartMission(node);
         }
+        else if (node.nodeType == "activatehyperspace")
+        {
+            NodeTypes.Draw_ActivateHyperspace(node);
+        }
         else if (node.nodeType == "changemusicvolume")
         {
             NodeTypes.Draw_ChangeMusicVolume(node);
@@ -64,10 +68,6 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "clearaioverride")
         {
             NodeTypes.Draw_ClearAIOverride(node);
-        }
-        else if (node.nodeType == "displaylargemessagethenexit")
-        {
-            NodeTypes.Draw_DisplayLargeMessageThenExit(node);
         }
         else if (node.nodeType == "dialoguebox")
         {
@@ -85,9 +85,17 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DisplayMissionBriefing(node);
         }
-        else if (node.nodeType == "iftypeofshipisactive")
+        else if (node.nodeType == "exitmission")
         {
-            NodeTypes.Draw_IfTypeOfShipIsActive(node);
+            NodeTypes.Draw_ExitMission(node);
+        }
+        else if (node.nodeType == "ifshipshullislessthan")
+        {
+            NodeTypes.Draw_IfShipsHullIsLessThan(node);
+        }
+        else if (node.nodeType == "ifshipislessthandistancetowaypoint")
+        {
+            NodeTypes.Draw_IfShipIsLessThanDistanceToWaypoint(node);
         }
         else if (node.nodeType == "ifshipisactive")
         {
@@ -100,6 +108,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "ifshiphasntbeenscanned")
         {
             NodeTypes.Draw_IfShipHasntBeenScanned(node);
+        }
+        else if (node.nodeType == "iftypeofshipisactive")
+        {
+            NodeTypes.Draw_IfTypeOfShipIsActive(node);
         }
         else if (node.nodeType == "loadsingleship")
         {
@@ -164,14 +176,6 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "setweaponslock") 
         {
             NodeTypes.Draw_NodeNotAvaible(node);
-        }
-        else if (node.nodeType == "shipshullislessthan")
-        {
-            NodeTypes.Draw_ShipsHullIsLessThan(node);
-        }
-        else if (node.nodeType == "shipislessthandistancetowaypoint")
-        {
-            NodeTypes.Draw_ShipIsLessThanDistanceToWaypoint(node);
         }
         else
         {

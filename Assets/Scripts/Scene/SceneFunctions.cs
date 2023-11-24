@@ -1013,7 +1013,15 @@ public static class SceneFunctions
                 }
             }
         }
-       
+
+        if (cargo.ToLower().Contains("random") || cargo.ToLower().Contains("randomise"))
+        {
+            string[] cargoTypes = new string[] { "Food Stuffs", "Ship Parts" };
+            int cargoTypeNo = cargoTypes.Length;
+            int randomChoice = Random.Range(0, cargoTypeNo - 1);
+            cargo = cargoTypes[randomChoice];
+        }
+
         if (ship != null)
         {
 
@@ -1198,7 +1206,7 @@ public static class SceneFunctions
             if (exitingHyperspace == true)
             {
 
-                ship.transform.localPosition = ship.transform.localPosition + (- ship.transform.forward * 10000);
+                ship.transform.localPosition = ship.transform.localPosition + (- ship.transform.forward * 30000);
 
                 if (shipType.scriptType == "largeship")
                 {

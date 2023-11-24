@@ -72,6 +72,7 @@ public static class NodeDescriptions
             "This loads multiple ships on ground, usually turrets, but can also be used to place normal ships as well \n" +
             "\n " +
             "Extra Information \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- For this node to work you need to also use the load tiles event node. \n" +
             "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n";
@@ -84,6 +85,7 @@ public static class NodeDescriptions
            "This node loads a single ship \n" +
            "\n " +
            "Extra Information \n" +
+           "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n";
         }
         else if (name == "preload_loadmultipleships")
@@ -95,7 +97,7 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n" +
-            "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
             "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
             "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
@@ -114,7 +116,7 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
-            "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
             "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
             "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
@@ -135,15 +137,17 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n";
         }
-        else if (name == "startmission")
+        else if (name == "starteventseries")
         {
             description =
-           "Start Mission \n " +
+           "Start Event Series \n " +
            "\n " +
-           "This is the first node in the event series. OG looks for this node to tell it which event to run first. \n" +
+           "This is the first node in an event series. OG looks for this node to tell it which event to run first. \n" +
            "\n " +
            "Extra Information \n" +
-           "- All standard event nodes must be linked in a chain beginning with this node to run. \n" +
+           "- All standard event nodes must be linked in a chain beginning with this a 'startevenseries' node to run. \n" +
+           "- You can have as many event series as you want. \n" +
+           "- This node is particulary helpful for creating different series of events for primary and secondary objectives. \n" +
            "- This node is not required for pre-event nodes. \n";
         }
         else if (name == "activatehyperspace")
@@ -294,7 +298,10 @@ public static class NodeDescriptions
             description =
             "Single Ship \n " +
             "\n " +
-            "This node loads a single ship \n";
+            "This node loads a single ship \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n";
         }
         else if (name == "loadsingleshipatdistanceandanglefromplayer")
         {
@@ -304,6 +311,7 @@ public static class NodeDescriptions
             "This node loads a single ship at the designated distance and angle from the player. \n" +
             "\n " +
             "Extra Information \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- The angles are euler i.e. 360 degrees beginning at the from of the ship. \n" +
             "- This not is helpful if you want to deliberately load an enemy ship behind the player for example. \n";
         }
@@ -315,6 +323,7 @@ public static class NodeDescriptions
             "This loads multiple ships on ground, usually turrets, but can also be used to place normal ships as well \n" +
             "\n " +
             "Extra Information \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- For this node to work you need to also use the load tiles event node. \n" +
             "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n";
         }
@@ -327,6 +336,7 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
             "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
             "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
@@ -345,6 +355,7 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
             "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
             "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
@@ -407,6 +418,18 @@ public static class NodeDescriptions
            "- This function will affect any ship whose name contains the designated string. \n" +
            "- This is an ai override. An ai override forces a ship to deviate from its standard behaviour to perform only one task (move to waypoint). For a ship to return to its standard behavious the AI override must be cleared using the clearaioverride function. \n" +
            "- AI overrides inlcude: 'MoveToWayPoint', 'Stationary', 'Patrol'. \n";
+        }
+        else if (name == "setcargo")
+        {
+            description =
+           "Set Cargo \n " +
+           "\n " +
+           "This function sets the ships cargo. \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- This function will affect any ship whose name contains the designated string. \n" +
+           "- This function is particulary useful when making group of ships where you want one ship to have a specific cargo. \n" +
+           "- If you write 'random' or 'randomise' the game will automatically randomise the ships cargo using preset list \n";
         }
         else if (name == "setdontattacklargeships")
         {

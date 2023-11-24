@@ -43,7 +43,7 @@ public static class MissionFunctions
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
         Scene scene = SceneFunctions.GetScene();
 
-        //This loads scene and any ships set to "preload"
+        //This loads the scene
         Time.timeScale = 0;
 
         float time = Time.unscaledTime;
@@ -57,9 +57,58 @@ public static class MissionFunctions
             if (missionEvent.eventType == "loadscene")
             {
                 LoadScene(missionName, missionAddress, addressIsExternal, missionEvent);
+                break;
             }
         }
 
+        //This runs all the preload events like loading the planet and asteroids and objects already in scene
+        Task a = new Task(FindAndRunPreLoadEvents(mission, time));
+
+        while (a.Running == true) { yield return null; }
+
+        //This tells the player to get ready, starts the game, locks the cursor and gets rid of the loading screen
+        LoadScreenFunctions.AddLogToLoadingScreen(missionName + " loaded.", 0);
+
+        Time.timeScale = 1;
+
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
+
+        DisplayLoadingScreen(missionName, false);
+
+        //This sets the mission manager to running
+        missionManager.running = true;
+
+        //This checks how many event series exist in the mission file
+        int eventSeriesTotal = 0;
+
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+            if (missionEvent.eventType == "starteventseries")
+            {
+                eventSeriesTotal++;
+            }
+        }
+
+        missionManager.eventNo = new int[eventSeriesTotal];
+
+        //This starts running the event series
+        int eventSeriesNo = 0;
+
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+            if (missionEvent.eventType == "starteventseries")
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeriesNo);
+                Task b = new Task(RunEventSeries(mission, eventSeriesNo));
+                eventSeriesNo++;
+            }
+        }
+    }
+
+    //This looks for and runs preload events
+    public static IEnumerator FindAndRunPreLoadEvents(Mission mission, float time)
+    {
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
             if (missionEvent.eventType == "preload_loadasteroids")
@@ -111,42 +160,20 @@ public static class MissionFunctions
                 LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);
             }
         }
+    }
 
-        //This tells the player to get ready
-        LoadScreenFunctions.AddLogToLoadingScreen(missionName + " loaded.", 0);
+    //This runs a series of events
+    public static IEnumerator RunEventSeries(Mission mission, int eventSeries)
+    {
+        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
 
-        Time.timeScale = 1;
-
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false;
-
-        DisplayLoadingScreen(missionName, false);
-
-        //This sets the mission manager to running
-        missionManager.running = true;
-
-        //This finds the first event number
-        int eventNo = 0;
-
-        foreach (MissionEvent missionEvent in mission.missionEventData)
-        {
-            if (missionEvent.eventType == "startmission")
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent1);
-                break;
-            }
-
-            eventNo++;
-        }
-
-        //This runs the events according to the logic of the mission file
         while (missionManager.running == true)
         {
-            MissionEvent missionEvent = mission.missionEventData[missionManager.eventNo];
+            MissionEvent missionEvent = mission.missionEventData[missionManager.eventNo[eventSeries]];
 
             float markTime = Time.time;
 
-            if  (!missionEvent.eventType.Contains("preload") & missionEvent.eventType != "loadscene")
+            if (!missionEvent.eventType.Contains("preload") & missionEvent.eventType != "loadscene")
             {
                 //This makes the event run at the correct time
                 if (missionEvent.conditionTime != 0)
@@ -160,18 +187,18 @@ public static class MissionFunctions
                 //This makes the event run in the correct location
                 if (missionEvent.conditionLocation != "none")
                 {
-                    if (missionEvent.conditionLocation != scene.location)
+                    if (missionEvent.conditionLocation != missionManager.scene.location)
                     {
                         float startPause = Time.time;
-                        yield return new WaitUntil(() => missionEvent.conditionLocation == scene.location);
+                        yield return new WaitUntil(() => missionEvent.conditionLocation == missionManager.scene.location);
                     }
                 }
 
-                RunEvent(missionName, missionEvent);
+                RunEvent(missionEvent, eventSeries);
             }
 
             //This makes sure the mission that mission events aren't run when the mission manager has been deleted
-            if (missionManager == null)
+            if (missionManager == null || missionManager.eventNo[eventSeries] == 11111)
             {
                 break;
             }
@@ -180,217 +207,8 @@ public static class MissionFunctions
         }
     }
 
-    //This runs the appropriate event function
-    public static void RunEvent(string missionName, MissionEvent missionEvent)
-    {
-        //This runs the requested function
-
-        if (missionEvent.eventType == "activatehyperspace")
-        {
-            ActivateHyperspace(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        if (missionEvent.eventType == "changemusicvolume")
-        {
-            ChangeMusicVolume(float.Parse(missionEvent.data1));
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "clearaioverride")
-        {
-            ClearAIOverride(missionEvent.data1);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "exitmission")
-        {
-            ExitMission();
-        }
-        else if (missionEvent.eventType == "dialoguebox")
-        {
-            DialogueBox(missionEvent.data1);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "displaylargemessage")
-        {
-            DisplayLargeMessage(missionEvent.data1);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "displaylocation")
-        {
-            DisplayLocation(missionEvent.data1, missionEvent.data2);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "displayloadingscreen")
-        {
-            DisplayLoadingScreen(missionName, bool.Parse(missionEvent.data1));
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "displaymissionbriefing")
-        {
-            DisplayMissionBriefing(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "ifshipshullislessthan")
-        {
-            bool isLessThan = IfShipsHullIsLessThan(missionEvent);
-
-            if (isLessThan == true)
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent1);
-            }
-            else
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent2);
-            }
-        }
-        else if (missionEvent.eventType == "ifshipislessthandistancetowaypoint")
-        {
-            bool isLessThanDistance = IfShipIsLessThanDistanceToWaypoint(missionEvent);
-
-            if (isLessThanDistance == true)
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent1);
-            }
-            else
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent2);
-            }
-        }
-        else if (missionEvent.eventType == "ifshipisactive")
-        {
-            bool shipTypeIsActive = IfShipIsActive(missionEvent);
-
-            if (shipTypeIsActive == true)
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent1);
-            }
-            else
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent2);
-            }
-        }
-        else if (missionEvent.eventType == "ifshiphasbeenscanned")
-        {
-            bool shiphasbeenscanned = IfShipHasBeenScanned(missionEvent);
-
-            if (shiphasbeenscanned == true)
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent1);
-            }
-            else
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent2);
-            }
-        }
-        else if (missionEvent.eventType == "ifshiphasntbeenscanned")
-        {
-            bool shiphasntbeenscanned = IfShipHasntBeenScanned(missionEvent);
-
-            if (shiphasntbeenscanned == true)
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent1);
-            }
-            else
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent2);
-            }
-        }
-        else if (missionEvent.eventType == "iftypeofshipisactive")
-        {
-            bool shipTypeIsActive = IfTypeOfShipIsActive(missionEvent.data1);
-
-            if (shipTypeIsActive == true)
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent1);
-            }
-            else
-            {
-                FindNextEvent(missionName, missionEvent.nextEvent2);
-            }
-        }
-        else if (missionEvent.eventType == "loadsingleship")
-        {
-            LoadSingleShip(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "loadsingleshipatdistanceandanglefromplayer")
-        {
-            LoadSingleShipAtDistanceAndAngleFromPlayer(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "loadmultipleshipsonground")
-        {
-            Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "loadmultipleships")
-        {
-            Task a = new Task(LoadMultipleShips(missionEvent));
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "loadmultipleshipsbyclassandallegiance")
-        {
-            Task a = new Task(LoadMultipleShipsByClassAndAllegiance(missionEvent));
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "lockmainshipweapons")
-        {
-            LockMainShipWeapons(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "message")
-        {
-            Message(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "movetowaypoint")
-        {
-            MoveToWaypoint(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "playmusictype")
-        {
-            PlayMusicType(missionEvent.data1);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "setaioverride")
-        {
-            SetAIOverride(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "setdontattacklargeships")
-        {
-            SetDontAttackLargeShips(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "setshipallegiance")
-        {
-            SetShipAllegiance(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "setshiptarget")
-        {
-            SetShipTarget(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "setshiptargettoclosestenemy")
-        {
-            SetShipTargetToClosestEnemy(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "setshiptoinvincible")
-        {
-            SetShipToInvincible(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-        else if (missionEvent.eventType == "setweaponslock")
-        {
-            SetWeaponsLock(missionEvent);
-            FindNextEvent(missionName, missionEvent.nextEvent1);
-        }
-    }
-
     //This looks for the next event to run
-    public static void FindNextEvent(string missionName, string nextEvent)
+    public static void FindNextEvent(string nextEvent, int eventSeries)
     {
         MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
 
@@ -399,7 +217,7 @@ public static class MissionFunctions
             Mission mission = null;
 
             mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
-            
+
             if (mission == null)
             {
                 missionManager.running = false;
@@ -412,7 +230,7 @@ public static class MissionFunctions
                 {
                     if (missionEvent.eventID == nextEvent)
                     {
-                        missionManager.eventNo = i;
+                        missionManager.eventNo[eventSeries] = i;
                         break;
                     }
 
@@ -420,12 +238,217 @@ public static class MissionFunctions
                 }
             }
         }
-        else
+        else if (missionManager != null)
         {
-            if (missionManager != null)
+            missionManager.eventNo[eventSeries] = 11111;
+        }
+    }
+
+    //This runs the appropriate event function
+    public static void RunEvent(MissionEvent missionEvent, int eventSeries)
+    {
+        //This runs the requested function
+        if (missionEvent.eventType == "activatehyperspace")
+        {
+            ActivateHyperspace(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        if (missionEvent.eventType == "changemusicvolume")
+        {
+            ChangeMusicVolume(float.Parse(missionEvent.data1));
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "clearaioverride")
+        {
+            ClearAIOverride(missionEvent.data1);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "exitmission")
+        {
+            ExitMission();
+        }
+        else if (missionEvent.eventType == "dialoguebox")
+        {
+            DialogueBox(missionEvent.data1);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "displaylargemessage")
+        {
+            DisplayLargeMessage(missionEvent.data1);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "displaylocation")
+        {
+            DisplayLocation(missionEvent.data1, missionEvent.data2);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "displaymissionbriefing")
+        {
+            DisplayMissionBriefing(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "ifshipshullislessthan")
+        {
+            bool isLessThan = IfShipsHullIsLessThan(missionEvent);
+
+            if (isLessThan == true)
             {
-                missionManager.running = false;
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
             }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
+        else if (missionEvent.eventType == "ifshipislessthandistancetowaypoint")
+        {
+            bool isLessThanDistance = IfShipIsLessThanDistanceToWaypoint(missionEvent);
+
+            if (isLessThanDistance == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
+        else if (missionEvent.eventType == "ifshipisactive")
+        {
+            bool shipTypeIsActive = IfShipIsActive(missionEvent);
+
+            if (shipTypeIsActive == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
+        else if (missionEvent.eventType == "ifshiphasbeenscanned")
+        {
+            bool shiphasbeenscanned = IfShipHasBeenScanned(missionEvent);
+
+            if (shiphasbeenscanned == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
+        else if (missionEvent.eventType == "ifshiphasntbeenscanned")
+        {
+            bool shiphasntbeenscanned = IfShipHasntBeenScanned(missionEvent);
+
+            if (shiphasntbeenscanned == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
+        else if (missionEvent.eventType == "iftypeofshipisactive")
+        {
+            bool shipTypeIsActive = IfTypeOfShipIsActive(missionEvent.data1);
+
+            if (shipTypeIsActive == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
+        else if (missionEvent.eventType == "loadsingleship")
+        {
+            LoadSingleShip(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "loadsingleshipatdistanceandanglefromplayer")
+        {
+            LoadSingleShipAtDistanceAndAngleFromPlayer(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "loadmultipleshipsonground")
+        {
+            Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "loadmultipleships")
+        {
+            Task a = new Task(LoadMultipleShips(missionEvent));
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "loadmultipleshipsbyclassandallegiance")
+        {
+            Task a = new Task(LoadMultipleShipsByClassAndAllegiance(missionEvent));
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "lockmainshipweapons")
+        {
+            LockMainShipWeapons(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "message")
+        {
+            Message(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "movetowaypoint")
+        {
+            MoveToWaypoint(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "playmusictype")
+        {
+            PlayMusicType(missionEvent.data1);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setaioverride")
+        {
+            SetAIOverride(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setcargo")
+        {
+            SetCargo(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setdontattacklargeships")
+        {
+            SetDontAttackLargeShips(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setshipallegiance")
+        {
+            SetShipAllegiance(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setshiptarget")
+        {
+            SetShipTarget(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setshiptargettoclosestenemy")
+        {
+            SetShipTargetToClosestEnemy(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setshiptoinvincible")
+        {
+            SetShipToInvincible(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setweaponslock")
+        {
+            SetWeaponsLock(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
     }
 
@@ -481,6 +504,31 @@ public static class MissionFunctions
 
         //This sets the scene skybox to the default: space
         SceneFunctions.SetSkybox("space");
+    }
+
+    //This displays the loading screen
+    public static void DisplayLoadingScreen(string missionName, bool display)
+    {
+        if (display == true)
+        {
+            string[] messages = new string[10];
+            messages[0] = "Settle into your seat pilot. Flying a starfighter requires practice, skill, and focus.";
+            messages[1] = "If you constantly fly at top speed you will almost always overshoot your target.";
+            messages[2] = "Linking your lasers is a good way to compensate when you need power for other systems.";
+            messages[3] = "Even if your shields are at full strength, your ship will take damage from physical impacts.";
+            messages[4] = "In more maneuvarable craft you can hold down the match speed button to stay on someone's tail.";
+            messages[5] = "In less maneuvrable craft you will need to lower your speed manually to perform sharp turns.";
+            messages[6] = "Your ship is most maneuverable at half speed, so try slowing down if you can't track a target.";
+            messages[7] = "When you push all your energy to engines or lasers your shields will start to lose strength.";
+            messages[8] = "When you push all your energy to engines your WEP system becomes availible.";
+            messages[9] = "Remember you can link your torpedoes and lasers for greater impact.";
+            int randomMessageNo = Random.Range(0, 9);
+            LoadScreenFunctions.LoadingScreen(true, missionName, messages[randomMessageNo]);
+        }
+        else
+        {
+            LoadScreenFunctions.LoadingScreen(false);
+        }
     }
 
     #endregion
@@ -559,7 +607,15 @@ public static class MissionFunctions
     //This exits the mission back to the main menu
     public static void ExitMission()
     {
+        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+        
+        if (missionManager != null)
+        {
+            missionManager.running = false;
+        }
+
         ExitMenuFunctions.ExitAndUnload();
+
     }
 
     //This displays the dialogue box with a message
@@ -593,31 +649,6 @@ public static class MissionFunctions
         {
             HudFunctions.DisplayLargeMessage(textBefore.ToUpper() + scene.location.ToUpper() + textAfter.ToUpper());
         }       
-    }
-
-    //This displays the loading screen
-    public static void DisplayLoadingScreen(string missionName, bool display)
-    {
-        if (display == true)
-        {
-            string[] messages = new string[10];
-            messages[0] = "Settle into your seat pilot. Flying a starfighter requires practice, skill, and focus.";
-            messages[1] = "If you constantly fly at top speed you will almost always overshoot your target.";
-            messages[2] = "Linking your lasers is a good way to compensate when you need power for other systems.";
-            messages[3] = "Even if your shields are at full strength, your ship will take damage from physical impacts.";
-            messages[4] = "In more maneuvarable craft you can hold down the match speed button to stay on someone's tail.";
-            messages[5] = "In less maneuvrable craft you will need to lower your speed manually to perform sharp turns.";
-            messages[6] = "Your ship is most maneuverable at half speed, so try slowing down if you can't track a target.";
-            messages[7] = "When you push all your energy to engines or lasers your shields will start to lose strength.";
-            messages[8] = "When you push all your energy to engines your WEP system becomes availible.";
-            messages[9] = "Remember you can link your torpedoes and lasers for greater impact.";
-            int randomMessageNo = Random.Range(0, 9);
-            LoadScreenFunctions.LoadingScreen(true, missionName, messages[randomMessageNo]);
-        }
-        else
-        {
-            LoadScreenFunctions.LoadingScreen(false);
-        }
     }
 
     //This displays the mission briefing screen
@@ -1410,6 +1441,49 @@ public static class MissionFunctions
                         {
                             smallShip.aiOverideMode = missionEvent.data2;
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    //This changes the selected ship/s cargo
+    public static void SetCargo(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string cargo = missionEvent.data2;
+
+        if (cargo.ToLower().Contains("random") || cargo.ToLower().Contains("randomise"))
+        {
+            string[] cargoTypes = new string[] { "Food Stuffs", "Ship Parts"};
+            int cargoTypeNo = cargoTypes.Length;
+            int randomChoice = Random.Range(0, cargoTypeNo - 1);
+            cargo = cargoTypes[randomChoice];
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            smallShip.cargo = cargo;
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            largeShip.cargo = cargo;
+                        }
+
                     }
                 }
             }

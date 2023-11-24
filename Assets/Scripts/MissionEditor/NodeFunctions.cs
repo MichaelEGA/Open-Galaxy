@@ -53,9 +53,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_SetSkybox(node);
         }
-        else if (node.nodeType == "startmission")
+        else if (node.nodeType == "starteventseries")
         {
-            NodeTypes.Draw_StartMission(node);
+            NodeTypes.Draw_StartEventSeries(node);
         }
         else if (node.nodeType == "activatehyperspace")
         {
@@ -152,6 +152,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "setaioverride")
         {
             NodeTypes.Draw_SetAIOverride(node);
+        }
+        else if (node.nodeType == "setcargo")
+        {
+            NodeTypes.Draw_SetCargo(node);
         }
         else if (node.nodeType == "setdontattacklargeships")
         {

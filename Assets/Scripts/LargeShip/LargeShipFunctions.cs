@@ -244,7 +244,7 @@ public static class LargeShipFunctions
         largeShip.jumpingToHyperspace = true;
 
         Vector3 startPosition = largeShip.gameObject.transform.localPosition;
-        Vector3 endPosition = largeShip.transform.localPosition + largeShip.gameObject.transform.forward * 10000;
+        Vector3 endPosition = largeShip.transform.localPosition + largeShip.gameObject.transform.forward * 30000;
         float time = 1f;
 
         for (float t = 0; t < time; t += Time.deltaTime / time)
@@ -265,7 +265,7 @@ public static class LargeShipFunctions
     {
         largeShip.exitingHyperspace = true;
 
-        Vector3 endPosition = largeShip.transform.localPosition + largeShip.gameObject.transform.forward * 10000;
+        Vector3 endPosition = largeShip.transform.localPosition + largeShip.gameObject.transform.forward * 30000;
         Vector3 startPosition = largeShip.gameObject.transform.localPosition;
         float time = 1f;
 

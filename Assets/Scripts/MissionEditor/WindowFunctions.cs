@@ -63,7 +63,7 @@ public static class WindowFunctions
         buttonList.Add("preload_loadmultipleships");
         buttonList.Add("preload_loadmultipleshipsbyclassandallegiance");
         buttonList.Add("preload_setskybox");
-        buttonList.Add("startmission");
+        buttonList.Add("starteventseries");
         buttonList.Add("activatehyperspace");
         buttonList.Add("changemusicvolume");
         buttonList.Add("clearaioverride");
@@ -88,6 +88,7 @@ public static class WindowFunctions
         buttonList.Add("movetowaypoint");
         buttonList.Add("playmusictype");
         buttonList.Add("setaioverride");
+        buttonList.Add("setcargo");
         buttonList.Add("setdontattacklargeships");
         buttonList.Add("setshipallegiance");
         buttonList.Add("setshiptarget");

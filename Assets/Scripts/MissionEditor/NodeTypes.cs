@@ -843,11 +843,11 @@ public static class NodeTypes
 
     #region event nodes
 
-    public static void Draw_StartMission(Node node)
+    public static void Draw_StartEventSeries(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "startmission", 8, 5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "starteventseries", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -859,7 +859,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "startmission", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "starteventseries", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -2444,6 +2444,51 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
+    public static void Draw_SetCargo(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "setcargo", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "setcargo", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
     public static void Draw_SetDontAttackLargeShips(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -2725,8 +2770,6 @@ public static class NodeTypes
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
-
-   
 
     #endregion
 

@@ -160,13 +160,6 @@ public static class NodeDescriptions
            "Extra Information \n" +
             "- This function will affect any ship whose name contains the designated string. \n";
         }
-        else if (name == "changemusicvolume")
-        {
-            description =
-            "Change Music Volume \n " +
-            "\n " +
-            "This node changes the volume of the background music.";
-        }
         else if (name == "clearaioverride")
         {
             description =
@@ -187,10 +180,10 @@ public static class NodeDescriptions
            "\n " +
            "This node exits the mission and returns the player to the main menu. \n";
         }
-        else if (name == "dialoguebox")
+        else if (name == "displaydialoguebox")
         {
             description =
-           "Dialogue Box \n " +
+           "Display Dialogue Box \n " +
            "\n " +
            "This node pauses the game and displays a dialogue box with a message. When the button on the dialogue box is pressed the box disappears and the game resumes. \n";
         }
@@ -211,6 +204,18 @@ public static class NodeDescriptions
             "Extra Information \n" +
             "- You can add text before or after the location like 'BATTLE OF' or similar. \n" +
             "- This node is particulary helpful when you use a radomised location, but want to display it to the player. \n";
+        }
+        else if (name == "displaymessage")
+        {
+            description =
+            "Display Message \n " +
+            "\n " +
+            "This node sends an in game message i.e. 'Rouge 01: I'm starting my attack run now.' \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- You can link an audio file (.wav) to run at the same time the message is sent. Simply make a folder in the custom missions folder. Name the folder 'YOURMISSIONNAME_audio'. Paste your audio file in the folder, type the name of the audio file (without the .wav extension) in the designated area on the node, and select the 'External Audio' option. \n" +
+            "- You can also access several inbuilt audio files. Use the names listed below and select the option 'Internal Audio'. \n" +
+            "- Internal Audio Files: beep01_toggle, beep02_targetlock, beep03_weaponchange, engine01_tiefighter, engine02_xwing, explosion01_xwing, explosion02_protontorpedo, impact01_laserhitshield, impact02_unshieldedhit, impact03_crash, r2d2, r5, shaking01, Turbolaser, turbolaser_ac, turbolaser_ac_3p, turbolaser_af, turbolaser_af_3p, weapon01_tiefighterlaser, weapon02_xwinglaser, weapon03_protontorpedo ";
         }
         else if (name == "displaymissionbriefing")
         {
@@ -366,46 +371,18 @@ public static class NodeDescriptions
             "- Pattern: randominsidecube uses width, length, height. \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n";
         }
-        else if (name == "lockmainshipweapons")
+        else if (name == "setwaypoint")
         {
             description =
-            "Lock Main Ship Weapons \n " +
+            "Set Waypoint \n " +
             "\n " +
-            "This node toggles whether the player ship can fire its weapons or not.";
-        }
-        else if (name == "message")
-        {
-            description =
-            "Message \n " +
-            "\n " +
-            "This node sends an in game message i.e. 'Rouge 01: I'm starting my attack run now.' \n" +
+            "Allows you to set the position of the ships waypoint \n" +
             "\n " +
             "Extra Information \n" +
-            "- You can link an audio file (.wav) to run at the same time the message is sent. Simply make a folder in the custom missions folder. Name the folder 'YOURMISSIONNAME_audio'. Paste your audio file in the folder, type the name of the audio file (without the .wav extension) in the designated area on the node, and select the 'External Audio' option. \n" +
-            "- You can also access several inbuilt audio files. Use the names listed below and select the option 'Internal Audio'. \n" +
-            "- Internal Audio Files: beep01_toggle, beep02_targetlock, beep03_weaponchange, engine01_tiefighter, engine02_xwing, explosion01_xwing, explosion02_protontorpedo, impact01_laserhitshield, impact02_unshieldedhit, impact03_crash, r2d2, r5, shaking01, Turbolaser, turbolaser_ac, turbolaser_ac_3p, turbolaser_af, turbolaser_af_3p, weapon01_tiefighterlaser, weapon02_xwinglaser, weapon03_protontorpedo ";
-        }
-        else if (name == "movetowaypoint")
-        {
-            description =
-            "Move to Waypoint \n " +
-            "\n " +
-            "Causes the designated ship to move towards the designated waypoint \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- This function will affect any ship whose name contains the designated string. \n" +
-            "- This is an ai override. An ai override forces a ship to deviate from its standard behaviour to perform only one task (move to waypoint). For a ship to return to its standard behavious the AI override must be cleared using the clearaioverride function. \n" +
-            "- A ship moving towards a waypoint will still attempt to evade large objects, other ships, and attacks. \n";
-        }
-        else if (name == "playmusictype")
-        {
-            description =
-            "Play Music Type \n " +
-            "\n " +
-            "This function plays the selected type of music. \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- WARNING: This node will soon be deprecated and replaced by a playmusictrack node. \n";
+            "- Every ship has a waypoint. Settings its position can be useful for a number of purposes. \n" +
+            "- You can check a ships distance to its waypoint using the 'ifshipislessthandistancetowaypoint' function. \n" +
+            "- You can direct an ai ship to fly toward its waypoint by setting the ai override to 'movetowaypoint'. \n" +
+            "- This function will affect any ship whose name contains the designated string. \n";
         }
         else if (name == "setaioverride")
         {
@@ -440,6 +417,23 @@ public static class NodeDescriptions
            "\n " +
            "Extra Information \n" +
            "- This function will affect any ship whose name contains the designated string. \n";
+        }
+        else if (name == "setmusicvolume")
+        {
+            description =
+            "Set Music Volume \n " +
+            "\n " +
+            "This node changes the volume of the background music.";
+        }
+        else if (name == "setmusictype")
+        {
+            description =
+            "Set Music Type \n " +
+            "\n " +
+            "This function plays the selected type of music. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- WARNING: This node will soon be deprecated and replaced by a setmusictrack node. \n";
         }
         else if (name == "setshipallegiance")
         {

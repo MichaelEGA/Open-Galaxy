@@ -253,11 +253,6 @@ public static class MissionFunctions
             ActivateHyperspace(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
-        if (missionEvent.eventType == "changemusicvolume")
-        {
-            ChangeMusicVolume(float.Parse(missionEvent.data1));
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
         else if (missionEvent.eventType == "clearaioverride")
         {
             ClearAIOverride(missionEvent.data1);
@@ -267,9 +262,9 @@ public static class MissionFunctions
         {
             ExitMission();
         }
-        else if (missionEvent.eventType == "dialoguebox")
+        else if (missionEvent.eventType == "displaydialoguebox")
         {
-            DialogueBox(missionEvent.data1);
+            DisplayDialogueBox(missionEvent.data1);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "displaylargemessage")
@@ -280,6 +275,11 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "displaylocation")
         {
             DisplayLocation(missionEvent.data1, missionEvent.data2);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "displaymessage")
+        {
+            DisplayMessage(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "displaymissionbriefing")
@@ -390,26 +390,6 @@ public static class MissionFunctions
             Task a = new Task(LoadMultipleShipsByClassAndAllegiance(missionEvent));
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
-        else if (missionEvent.eventType == "lockmainshipweapons")
-        {
-            LockMainShipWeapons(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "message")
-        {
-            Message(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "movetowaypoint")
-        {
-            MoveToWaypoint(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "playmusictype")
-        {
-            PlayMusicType(missionEvent.data1);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
         else if (missionEvent.eventType == "setaioverride")
         {
             SetAIOverride(missionEvent);
@@ -423,6 +403,16 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "setdontattacklargeships")
         {
             SetDontAttackLargeShips(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        if (missionEvent.eventType == "setmusicvolume")
+        {
+            SetMusicVolume(float.Parse(missionEvent.data1));
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setmusictype")
+        {
+            SetMusicType(missionEvent.data1);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setshipallegiance")
@@ -443,6 +433,11 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "setshiptoinvincible")
         {
             SetShipToInvincible(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setwaypoint")
+        {
+            SetWaypoint(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setweaponslock")
@@ -569,7 +564,7 @@ public static class MissionFunctions
     }
 
     //This changes the volume of the music 
-    public static void ChangeMusicVolume(float volume)
+    public static void SetMusicVolume(float volume)
     {
         Music musicManager = GameObject.FindObjectOfType<Music>();
 
@@ -619,7 +614,7 @@ public static class MissionFunctions
     }
 
     //This displays the dialogue box with a message
-    public static void DialogueBox(string message)
+    public static void DisplayDialogueBox(string message)
     {
         DialogueBoxFunctions.DisplayDialogueBox(true, message);
     }
@@ -649,6 +644,28 @@ public static class MissionFunctions
         {
             HudFunctions.DisplayLargeMessage(textBefore.ToUpper() + scene.location.ToUpper() + textAfter.ToUpper());
         }       
+    }
+
+    //This adds a message to the log and can also play an audio file
+    public static void DisplayMessage(MissionEvent missionEvent)
+    {
+        string audio = missionEvent.data2;
+        string message = missionEvent.data1;
+        string internalAudioFile = missionEvent.data3;
+
+        if (message != "none")
+        {
+            HudFunctions.AddToShipLog(message);
+        }
+
+        if (audio != "none" & internalAudioFile != "true")
+        {
+            AudioFunctions.PlayMissionAudioClip(null, audio, new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
+        }
+        else if (audio != "none" & internalAudioFile == "true")
+        {
+            AudioFunctions.PlayAudioClip(null, audio, new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
+        }
     }
 
     //This displays the mission briefing screen
@@ -1335,84 +1352,8 @@ public static class MissionFunctions
         while (a.Running == true) { yield return null; }
     }
 
-    //This toggles whether the player can fire their weapons or not
-    public static void LockMainShipWeapons(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        if (scene != null)
-        {
-            if (scene.mainShip != null)
-            {
-                SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
-
-                if (smallShip != null)
-                {
-                    smallShip.weaponsLock = bool.Parse(missionEvent.data1);
-                }
-            }
-        }
-    }
-
-    //This adds a message to the log and can also play an audio file
-    public static void Message(MissionEvent missionEvent)
-    {
-        string audio = missionEvent.data2;
-        string message = missionEvent.data1;
-        string internalAudioFile = missionEvent.data3;
-
-        if (message != "none")
-        {
-            HudFunctions.AddToShipLog(message);
-        }       
-
-        if (audio != "none" & internalAudioFile != "true")
-        {
-            AudioFunctions.PlayMissionAudioClip(null, audio, new Vector3(0,0,0), 0, 1, 500, 1f, 1);
-        }
-        else if (audio != "none" & internalAudioFile == "true")
-        {
-            AudioFunctions.PlayAudioClip(null, audio, new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
-        }
-    }
-
-    //This tells a ship or ships to move toward a waypoint by position its waypoint and setting its ai override mode
-    public static void MoveToWaypoint(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        if (scene != null)
-        {
-            if (scene.objectPool != null)
-            {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship.name.Contains(missionEvent.data1))
-                    {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                        if (smallShip != null)
-                        {
-                            smallShip.aiOverideMode = "MoveToWaypoint";
-
-                            if (smallShip.waypoint != null)
-                            {
-                                float x = missionEvent.x;
-                                float y = missionEvent.y;
-                                float z = missionEvent.z;
-                                Vector3 waypoint = scene.transform.position + new Vector3(x,y,z);
-
-                                smallShip.waypoint.transform.position = waypoint;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     //This changes the type of music that is playing
-    public static void PlayMusicType(string musicType)
+    public static void SetMusicType(string musicType)
     {
         Music musicManager = GameObject.FindObjectOfType<Music>();
 
@@ -1637,6 +1578,39 @@ public static class MissionFunctions
     public static void SetSkyBox(MissionEvent missionEvent)
     {
         SceneFunctions.SetSkybox(missionEvent.data1);
+    }
+
+    //This tells a ship or ships to move toward a waypoint by position its waypoint and setting its ai override mode
+    public static void SetWaypoint(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            if (smallShip.waypoint != null)
+                            {
+                                float x = missionEvent.x;
+                                float y = missionEvent.y;
+                                float z = missionEvent.z;
+                                Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
+
+                                smallShip.waypoint.transform.position = waypoint;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //This toggles whether a ship can fire their weapons or not

@@ -65,11 +65,11 @@ public static class WindowFunctions
         buttonList.Add("preload_setskybox");
         buttonList.Add("starteventseries");
         buttonList.Add("activatehyperspace");
-        buttonList.Add("changemusicvolume");
         buttonList.Add("clearaioverride");
-        buttonList.Add("dialoguebox");
+        buttonList.Add("displaydialoguebox");
         buttonList.Add("displaylargemessage");
         buttonList.Add("displaylocation");
+        buttonList.Add("displaymessage");
         buttonList.Add("displaymissionbriefing");
         buttonList.Add("exitmission");
         buttonList.Add("ifshipisactive");
@@ -83,17 +83,16 @@ public static class WindowFunctions
         buttonList.Add("loadmultipleshipsonground");
         buttonList.Add("loadmultipleshipsbyclassandallegiance");
         buttonList.Add("loadmultipleships");
-        buttonList.Add("lockmainshipweapons");
-        buttonList.Add("message");
-        buttonList.Add("movetowaypoint");
-        buttonList.Add("playmusictype");
         buttonList.Add("setaioverride");
         buttonList.Add("setcargo");
         buttonList.Add("setdontattacklargeships");
+        buttonList.Add("setmusicvolume");
+        buttonList.Add("setmusictype");
         buttonList.Add("setshipallegiance");
         buttonList.Add("setshiptarget");
         buttonList.Add("setshiptargettoclosestenemy");
         buttonList.Add("setshiptoinvincible");
+        buttonList.Add("setwaypoint");
         buttonList.Add("setweaponslock");
 
         List<string> functionList = new List<string>();

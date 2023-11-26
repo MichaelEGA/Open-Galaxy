@@ -63,7 +63,7 @@ public class NodeFunctions : MonoBehaviour
         }
         else if (node.nodeType == "changemusicvolume")
         {
-            NodeTypes.Draw_ChangeMusicVolume(node);
+            NodeTypes.Draw_SetMusicVolume(node);
         }
         else if (node.nodeType == "clearaioverride")
         {
@@ -71,7 +71,7 @@ public class NodeFunctions : MonoBehaviour
         }
         else if (node.nodeType == "dialoguebox")
         {
-            NodeTypes.Draw_DialogueBox(node);
+            NodeTypes.Draw_DisplayDialogueBox(node);
         }
         else if (node.nodeType == "displaylargemessage")
         {
@@ -80,6 +80,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "displaylocation")
         {
             NodeTypes.Draw_DisplayLocation(node);
+        }
+        else if (node.nodeType == "displaymessage")
+        {
+            NodeTypes.Draw_DisplayMessage(node);
         }
         else if (node.nodeType == "displaymissionbriefing")
         {
@@ -133,21 +137,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_LoadMultipleShipsByClassAndAllegiance(node);
         }
-        else if (node.nodeType == "lockmainshipweapons")
+        else if (node.nodeType == "setmusictype")
         {
-            NodeTypes.Draw_LockMainShipWeapons(node);
-        }
-        else if (node.nodeType == "message")
-        {
-            NodeTypes.Draw_Message(node);
-        }
-        else if (node.nodeType == "movetowaypoint")
-        {
-            NodeTypes.Draw_MoveToWayPoint(node);
-        }
-        else if (node.nodeType == "playmusictype")
-        {
-            NodeTypes.Draw_PlayMusicType(node);
+            NodeTypes.Draw_SetMusicType(node);
         }
         else if (node.nodeType == "setaioverride")
         {
@@ -177,13 +169,17 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_SetShipToInvincible(node);
         }
+        else if (node.nodeType == "setwaypoint")
+        {
+            NodeTypes.Draw_SetWayPoint(node);
+        }
         else if (node.nodeType == "setweaponslock") 
         {
-            NodeTypes.Draw_NodeNotAvaible(node);
+            NodeTypes.Draw_SetWeaponsLock(node);
         }
         else
         {
-            NodeTypes.Draw_NodeNotAvaible(node);
+            NodeTypes.Draw_CustomNode(node);
         }
     }
 

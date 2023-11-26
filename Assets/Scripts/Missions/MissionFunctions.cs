@@ -255,7 +255,7 @@ public static class MissionFunctions
         }
         else if (missionEvent.eventType == "clearaioverride")
         {
-            ClearAIOverride(missionEvent.data1);
+            ClearAIOverride(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "exitmission")
@@ -264,17 +264,17 @@ public static class MissionFunctions
         }
         else if (missionEvent.eventType == "displaydialoguebox")
         {
-            DisplayDialogueBox(missionEvent.data1);
+            DisplayDialogueBox(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "displaylargemessage")
         {
-            DisplayLargeMessage(missionEvent.data1);
+            DisplayLargeMessage(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "displaylocation")
         {
-            DisplayLocation(missionEvent.data1, missionEvent.data2);
+            DisplayLocation(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "displaymessage")
@@ -354,7 +354,7 @@ public static class MissionFunctions
         }
         else if (missionEvent.eventType == "iftypeofshipisactive")
         {
-            bool shipTypeIsActive = IfTypeOfShipIsActive(missionEvent.data1);
+            bool shipTypeIsActive = IfTypeOfShipIsActive(missionEvent);
 
             if (shipTypeIsActive == true)
             {
@@ -407,12 +407,12 @@ public static class MissionFunctions
         }
         if (missionEvent.eventType == "setmusicvolume")
         {
-            SetMusicVolume(float.Parse(missionEvent.data1));
+            SetMusicVolume(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setmusictype")
         {
-            SetMusicType(missionEvent.data1);
+            SetMusicType(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setshipallegiance")
@@ -563,19 +563,8 @@ public static class MissionFunctions
         }
     }
 
-    //This changes the volume of the music 
-    public static void SetMusicVolume(float volume)
-    {
-        Music musicManager = GameObject.FindObjectOfType<Music>();
-
-        if (musicManager != null)
-        {
-            MusicFunctions.ChangeMusicVolume(musicManager, volume);
-        }
-    }
-
     //This clears any AI overides on a ship/ships i.e. "waypoint", "dontattack" etc
-    public static void ClearAIOverride(string shipName)
+    public static void ClearAIOverride(MissionEvent missionEvent)
     {
         Scene scene = SceneFunctions.GetScene();
 
@@ -585,7 +574,7 @@ public static class MissionFunctions
             {
                 foreach (GameObject ship in scene.objectPool)
                 {
-                    if (ship.name.Contains(shipName))
+                    if (ship.name.Contains(missionEvent.data1))
                     {
                         SmallShip smallShip = ship.GetComponent<SmallShip>();
 
@@ -614,21 +603,24 @@ public static class MissionFunctions
     }
 
     //This displays the dialogue box with a message
-    public static void DisplayDialogueBox(string message)
+    public static void DisplayDialogueBox(MissionEvent missionEvent)
     {
-        DialogueBoxFunctions.DisplayDialogueBox(true, message);
+        DialogueBoxFunctions.DisplayDialogueBox(true, missionEvent.data1);
     }
 
     //This temporary displays a large message in the center of the screen
-    public static void DisplayLargeMessage(string message)
+    public static void DisplayLargeMessage(MissionEvent missionEvent)
     {
-        HudFunctions.DisplayLargeMessage(message);
+        HudFunctions.DisplayLargeMessage(missionEvent.data1);
     }
 
     //This displays the location + text before and after if desired
-    public static void DisplayLocation(string textBefore, string textAfter)
+    public static void DisplayLocation(MissionEvent missionEvent)
     {
         Scene scene = SceneFunctions.GetScene();
+
+        string textBefore = missionEvent.data1;
+        string textAfter = missionEvent.data2;
 
         if (textAfter == "none")
         {
@@ -892,7 +884,7 @@ public static class MissionFunctions
     }
 
     //This checks whether there are any active ships of a certain allegiance, i.e. are there any imperial ships left
-    public static bool IfTypeOfShipIsActive(string allegiance)
+    public static bool IfTypeOfShipIsActive(MissionEvent missionEvent)
     {
         Scene scene = SceneFunctions.GetScene();
 
@@ -908,7 +900,7 @@ public static class MissionFunctions
 
                     if (smallShip != null)
                     {
-                        if (ship.activeSelf == true & smallShip.allegiance == allegiance)
+                        if (ship.activeSelf == true & smallShip.allegiance == missionEvent.data1)
                         {
                             shipTypeIsActive = true;
                             break;
@@ -1352,14 +1344,32 @@ public static class MissionFunctions
         while (a.Running == true) { yield return null; }
     }
 
+    //This changes the volume of the music 
+    public static void SetMusicVolume(MissionEvent missionEvent)
+    {
+        Music musicManager = GameObject.FindObjectOfType<Music>();
+
+        float volume = 0;
+
+        if (float.TryParse(missionEvent.data1, out _))
+        {
+            volume = float.Parse(missionEvent.data1);
+        }
+
+        if (musicManager != null)
+        {
+            MusicFunctions.ChangeMusicVolume(musicManager, volume);
+        }
+    }
+
     //This changes the type of music that is playing
-    public static void SetMusicType(string musicType)
+    public static void SetMusicType(MissionEvent missionEvent)
     {
         Music musicManager = GameObject.FindObjectOfType<Music>();
 
         if (musicManager != null)
         {
-            MusicFunctions.PlayMusicType(musicManager, musicType, true);
+            MusicFunctions.PlayMusicType(musicManager, missionEvent.data1, true);
         }       
     }
 

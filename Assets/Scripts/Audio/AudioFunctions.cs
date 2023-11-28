@@ -11,17 +11,16 @@ public static class AudioFunctions
     //This creates the audio manager and loads all availible audio clips
     public static void CreateAudioManager(string address = "none", bool filesAreExternal = false)
     {
-        GameObject audioManager = new GameObject();
-        audioManager.name = "Audio Manager";
-        Audio audioManagerScript = audioManager.AddComponent<Audio>();
+        GameObject audioManagerGO = new GameObject();
+        audioManagerGO.name = "Audio Manager";
+        Audio audioManager = audioManagerGO.AddComponent<Audio>();
 
-        LoadAudioClips(audioManagerScript);
+        LoadAudioClips(audioManager);
 
         if (address != "none")
         {
-            Task a = new Task(LoadMissionAudioClips(audioManagerScript, address, filesAreExternal));
+            Task a = new Task(LoadMissionAudioClips(audioManager, address, filesAreExternal));
         }
-
     }
 
     //This loads all the availible audio clips

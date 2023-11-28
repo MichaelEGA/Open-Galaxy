@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Audio : MonoBehaviour
 {
@@ -8,4 +9,5 @@ public class Audio : MonoBehaviour
     public AudioClip[] audioClips;
     public AudioClip[] missionAudioClips;
     public List<AudioSource> audioSources;
+    public AudioMixer AudioMixer;
 }

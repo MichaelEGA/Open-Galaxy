@@ -374,6 +374,13 @@ public static class NodeTypes
         List<string> options2 = new List<string>();
         options2.Add("imperial");
         options2.Add("rebel");
+        options2.Add("pirate");
+        options2.Add("smuggler");
+        options2.Add("hutt");
+        options2.Add("hostile");
+        options2.Add("corporatesector");
+        options2.Add("independent");
+        options2.Add("neutral");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -508,6 +515,13 @@ public static class NodeTypes
         List<string> options2 = new List<string>();
         options2.Add("imperial");
         options2.Add("rebel");
+        options2.Add("pirate");
+        options2.Add("smuggler");
+        options2.Add("hutt");
+        options2.Add("hostile");
+        options2.Add("corporatesector");
+        options2.Add("independent");
+        options2.Add("neutral");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -612,6 +626,13 @@ public static class NodeTypes
         List<string> options2 = new List<string>();
         options2.Add("imperial");
         options2.Add("rebel");
+        options2.Add("pirate");
+        options2.Add("smuggler");
+        options2.Add("hutt");
+        options2.Add("hostile");
+        options2.Add("corporatesector");
+        options2.Add("independent");
+        options2.Add("neutral");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -742,6 +763,13 @@ public static class NodeTypes
         List<string> options2 = new List<string>();
         options2.Add("imperial");
         options2.Add("rebel");
+        options2.Add("pirate");
+        options2.Add("smuggler");
+        options2.Add("hutt");
+        options2.Add("hostile");
+        options2.Add("corporatesector");
+        options2.Add("independent");
+        options2.Add("neutral");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -910,8 +938,6 @@ public static class NodeTypes
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
-
-   
 
     public static void Draw_ClearAIOverride(Node node)
     {
@@ -1592,6 +1618,13 @@ public static class NodeTypes
         List<string> options2 = new List<string>();
         options2.Add("imperial");
         options2.Add("rebel");
+        options2.Add("pirate");
+        options2.Add("smuggler");
+        options2.Add("hutt");
+        options2.Add("hostile");
+        options2.Add("corporatesector");
+        options2.Add("independent");
+        options2.Add("neutral");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -1714,6 +1747,13 @@ public static class NodeTypes
         List<string> options2 = new List<string>();
         options2.Add("imperial");
         options2.Add("rebel");
+        options2.Add("pirate");
+        options2.Add("smuggler");
+        options2.Add("hutt");
+        options2.Add("hostile");
+        options2.Add("corporatesector");
+        options2.Add("independent");
+        options2.Add("neutral");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -1828,6 +1868,13 @@ public static class NodeTypes
         List<string> options2 = new List<string>();
         options2.Add("imperial");
         options2.Add("rebel");
+        options2.Add("pirate");
+        options2.Add("smuggler");
+        options2.Add("hutt");
+        options2.Add("hostile");
+        options2.Add("corporatesector");
+        options2.Add("independent");
+        options2.Add("neutral");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -1980,6 +2027,13 @@ public static class NodeTypes
         List<string> options2 = new List<string>();
         options2.Add("imperial");
         options2.Add("rebel");
+        options2.Add("pirate");
+        options2.Add("smuggler");
+        options2.Add("hutt");
+        options2.Add("hostile");
+        options2.Add("corporatesector");
+        options2.Add("independent");
+        options2.Add("neutral");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2128,6 +2182,13 @@ public static class NodeTypes
         List<string> options2 = new List<string>();
         options2.Add("imperial");
         options2.Add("rebel");
+        options2.Add("pirate");
+        options2.Add("smuggler");
+        options2.Add("hutt");
+        options2.Add("hostile");
+        options2.Add("corporatesector");
+        options2.Add("independent");
+        options2.Add("neutral");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2471,6 +2532,13 @@ public static class NodeTypes
         List<string> options = new List<string>();
         options.Add("imperial");
         options.Add("rebel");
+        options.Add("pirate");
+        options.Add("smuggler");
+        options.Add("hutt");
+        options.Add("hostile");
+        options.Add("corporatesector");
+        options.Add("independent");
+        options.Add("neutral");
 
         node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 

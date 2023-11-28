@@ -1016,7 +1016,7 @@ public static class SceneFunctions
 
         if (cargo.ToLower().Contains("random") || cargo.ToLower().Contains("randomise"))
         {
-            string[] cargoTypes = new string[] { "Food Stuffs", "Ship Parts" };
+            string[] cargoTypes = GetCargoTypesList();
             int cargoTypeNo = cargoTypes.Length;
             int randomChoice = Random.Range(0, cargoTypeNo - 1);
             cargo = cargoTypes[randomChoice];
@@ -1791,6 +1791,14 @@ public static class SceneFunctions
         }
 
         return shipPositions.ToArray();
+    }
+
+    //This is a list of all possible types of randomised cargo
+    public static string[] GetCargoTypesList()
+    {
+        string[] cargoTypesList = new string[] {"Food Stuffs", "Ship Parts", "Machinery", "Passengers", "Workers", "Ag Equipement", "Weapons", "Crew", "No Cargo", "Medical Supplies", "Refrigerated Goods", "Fuel", "Chemicals", "Duracrete", "Durasteel" };
+
+        return cargoTypesList;
     }
 
     #endregion

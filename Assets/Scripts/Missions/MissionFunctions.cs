@@ -1407,7 +1407,7 @@ public static class MissionFunctions
 
         if (cargo.ToLower().Contains("random") || cargo.ToLower().Contains("randomise"))
         {
-            string[] cargoTypes = new string[] { "Food Stuffs", "Ship Parts"};
+            string[] cargoTypes = SceneFunctions.GetCargoTypesList();
             int cargoTypeNo = cargoTypes.Length;
             int randomChoice = Random.Range(0, cargoTypeNo - 1);
             cargo = cargoTypes[randomChoice];

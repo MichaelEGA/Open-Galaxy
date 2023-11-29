@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public static class AudioFunctions
 {
@@ -14,6 +15,7 @@ public static class AudioFunctions
         GameObject audioManagerGO = new GameObject();
         audioManagerGO.name = "Audio Manager";
         Audio audioManager = audioManagerGO.AddComponent<Audio>();
+        audioManager.audioMixer = Resources.Load<AudioMixer>("AudioMixers/OGAudio");
 
         LoadAudioClips(audioManager);
 
@@ -76,7 +78,7 @@ public static class AudioFunctions
     #region play audio functions
 
     //This plays the requested sound
-    public static void PlayAudioClip(Audio audioManager, string audioName, Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
+    public static void PlayAudioClip(Audio audioManager, string audioName, string mixer = "external", Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
     {
         if (audioManager == null)
         {
@@ -125,13 +127,14 @@ public static class AudioFunctions
                     audioSource.loop = false;
                     audioSource.Play();
                     audioSource.gameObject.transform.position = location;
+                    ConnectAudioMixerGroup(audioManager, audioSource, mixer);
                 }
             }
         }
     }
 
     //This plays the requested voice audio file
-    public static void PlayMissionAudioClip(Audio audioManager, string audioName, Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
+    public static void PlayMissionAudioClip(Audio audioManager, string audioName, string mixer = "voice", Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
     {
         if (audioManager == null)
         {
@@ -179,6 +182,7 @@ public static class AudioFunctions
                     audioSource.loop = false;
                     audioSource.Play();
                     audioSource.gameObject.transform.position = location;
+                    ConnectAudioMixerGroup(audioManager, audioSource, mixer);
                 }
             }
         }
@@ -361,6 +365,15 @@ public static class AudioFunctions
         }
 
         return audioSource;
+    }
+
+    //This returns an audio source connected to the designated mixer group
+    public static void ConnectAudioMixerGroup(Audio audioManager, AudioSource audioSource, string mixer)
+    {
+        if (audioManager.audioMixer != null)
+        {
+            audioSource.outputAudioMixerGroup = audioManager.audioMixer.FindMatchingGroups(mixer)[0];
+        }
     }
 
     #endregion

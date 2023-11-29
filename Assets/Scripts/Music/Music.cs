@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Music : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Music : MonoBehaviour
     public List<AudioClip> themeTracks;
     public AudioSource track1;
     public AudioSource track2;
+    public AudioMixer audioMixer;
     public string musicType = "action";
 
     // Start is called before the first frame update

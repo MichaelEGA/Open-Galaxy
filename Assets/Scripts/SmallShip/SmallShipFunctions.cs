@@ -453,7 +453,7 @@ public static class SmallShipFunctions
 
                 if (smallShip.isAI == false)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                 }
 
             }
@@ -463,7 +463,7 @@ public static class SmallShipFunctions
 
                 if (smallShip.isAI == false)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                 }
 
             }
@@ -473,7 +473,7 @@ public static class SmallShipFunctions
 
                 if (smallShip.isAI == false)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                 }
 
             }
@@ -483,7 +483,7 @@ public static class SmallShipFunctions
 
                 if (smallShip.isAI == false)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                 }
 
             }
@@ -932,7 +932,7 @@ public static class SmallShipFunctions
 
                 if (smallShip.isAI == false)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                 }
 
                 smallShip.toggleWeapons = false;
@@ -1032,7 +1032,7 @@ public static class SmallShipFunctions
 
         if (smallShip.isAI == false)
         {
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
         }        
     }
 
@@ -1144,7 +1144,7 @@ public static class SmallShipFunctions
             ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion02", 12);
 
             //This makes an explosion sound
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "explosion01_xwing", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "explosion01_xwing", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
 
             //This tells the game that the ship has been destroyed
             HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");

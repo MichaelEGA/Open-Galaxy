@@ -97,6 +97,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfShipsHullIsLessThan(node);
         }
+        else if (node.nodeType == "ifshipislessthandistancetoothership")
+        {
+            NodeTypes.Draw_IfShipIsLessThanDistanceToOtherShip(node);
+        }
         else if (node.nodeType == "ifshipislessthandistancetowaypoint")
         {
             NodeTypes.Draw_IfShipIsLessThanDistanceToWaypoint(node);

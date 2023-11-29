@@ -76,6 +76,7 @@ public static class WindowFunctions
         buttonList.Add("ifshiphasbeenscanned");
         buttonList.Add("ifshiphasntbeenscanned");
         buttonList.Add("ifshipshullislessthan");
+        buttonList.Add("ifshipislessthandistancetoothership");
         buttonList.Add("ifshipislessthandistancetowaypoint");
         buttonList.Add("iftypeofshipisactive");
         buttonList.Add("loadsingleship");

@@ -115,10 +115,12 @@ public static class TorpedoFunctions
         if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.fireWeapon == true & smallShip.activeWeapon == "torpedos" & smallShip.torpedoPressedTime < Time.time & smallShip.weaponsLock == false)
         {
             float spatialBlend = 1;
+            string mixer = "External";
 
             if (smallShip.isAI == false)
             {
                 spatialBlend = 0;
+                mixer = "Cockpit";
             }
 
             List<GameObject> torpedoTubes = new List<GameObject>();
@@ -150,7 +152,7 @@ public static class TorpedoFunctions
 
                 if (torpedo != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo.launchAudio, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 smallShip.torpedoCycleNumber += 1;
@@ -165,7 +167,7 @@ public static class TorpedoFunctions
 
                 if (torpedo01 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo01.launchAudio, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }  
                 
                 smallShip.torpedoCycleNumber += 1;
@@ -175,7 +177,7 @@ public static class TorpedoFunctions
 
                 if (torpedo02 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 smallShip.torpedoCycleNumber += 1;
@@ -190,7 +192,7 @@ public static class TorpedoFunctions
 
                 if (torpedo01 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo01.launchAudio, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 smallShip.torpedoCycleNumber += 1;
@@ -200,7 +202,7 @@ public static class TorpedoFunctions
 
                 if (torpedo02 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 smallShip.torpedoCycleNumber += 1;
@@ -210,7 +212,7 @@ public static class TorpedoFunctions
 
                 if (torpedo03 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo03.launchAudio, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo03.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 smallShip.torpedoCycleNumber += 1;
@@ -220,7 +222,7 @@ public static class TorpedoFunctions
 
                 if (torpedo04 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo04.launchAudio, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo04.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
 
                 }
                 smallShip.torpedoCycleNumber += 1;
@@ -398,7 +400,7 @@ public static class TorpedoFunctions
 
             if (smallShip.isAI == false)
             {
-                AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
         }

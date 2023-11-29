@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public static class MusicFunctions
 {
@@ -13,6 +14,7 @@ public static class MusicFunctions
         GameObject musicManager = new GameObject();
         Music musicManagerScript = musicManager.AddComponent<Music>();
         musicManager.name = "Music Manager";
+        musicManagerScript.audioMixer = Resources.Load<AudioMixer>("AudioMixers/OGAudio");
 
         //This creates the audio sources for the different music tracks
         CreateAudioSources(musicManagerScript);
@@ -47,7 +49,6 @@ public static class MusicFunctions
                 musicManager.themeTracks.Add(musicClip);
             }
         }
-
     }
 
     //This creates the audio sources for the different music tracks
@@ -58,12 +59,14 @@ public static class MusicFunctions
         musicManager.track1.maxDistance = 2000;
         musicManager.track1.volume = 0.6f;
         musicManager.track1.loop = false;
+        musicManager.track1.outputAudioMixerGroup = musicManager.audioMixer.FindMatchingGroups("Track01")[0];
 
         musicManager.track2 = musicManager.gameObject.AddComponent<AudioSource>();
         musicManager.track2.spatialBlend = 0;
         musicManager.track2.maxDistance = 2000;
         musicManager.track2.volume = 0.6f;
         musicManager.track2.loop = false;
+        musicManager.track2.outputAudioMixerGroup = musicManager.audioMixer.FindMatchingGroups("Track02")[0];
     }
 
     #endregion'
@@ -135,7 +138,6 @@ public static class MusicFunctions
 
         musicManager.track1.volume = volume;
         musicManager.track2.volume = volume;
-
     }
 
     #endregion

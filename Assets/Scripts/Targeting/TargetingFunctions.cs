@@ -82,7 +82,7 @@ public static class TargetingFunctions
 
             if (smallShip.isAI == false)
             {
-                AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
             //This prevents the torpedo from immediately locking on to the new target
@@ -217,7 +217,7 @@ public static class TargetingFunctions
 
             if (smallShip.isAI == false)
             {
-                AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
             //This prevents the torpedo from immediately locking on to the new target
@@ -352,7 +352,7 @@ public static class TargetingFunctions
 
             if (smallShip.isAI == false)
             {
-                AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
             //This prevents the torpedo from immediately locking on to the new target
@@ -426,7 +426,7 @@ public static class TargetingFunctions
 
         if (smallShip.isAI == false)
         {
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
         }
 
         //This prevents the torpedo from immediately locking on to the new target

@@ -547,7 +547,7 @@ public static class TurretFunctions
                     }
                     else
                     {
-                        AudioFunctions.PlayAudioClip(turret.audioManager, turret.audioFile, turret.transform.position, 1, 1, 500, 0.6f);
+                        AudioFunctions.PlayAudioClip(turret.audioManager, turret.audioFile, "External", turret.transform.position, 1, 1, 500, 0.6f);
                     }
                     
                     yield return null;

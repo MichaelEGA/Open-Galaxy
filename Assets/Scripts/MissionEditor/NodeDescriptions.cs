@@ -231,9 +231,20 @@ public static class NodeDescriptions
         else if (name == "ifshipshullislessthan")
         {
             description =
-             "Ships Hull is Less Than \n " +
+             "If Ships Hull is Less Than \n " +
              "\n " +
              "This function checks the hull of the designated ship and returns true or false according to whether the ship hull is less or more than the designated amount. \n" +
+             "\n " +
+             "Extra Information \n" +
+             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n";
+        }
+        else if (name == "ifshipislessthandistancetoothership")
+        {
+            description =
+             "If Ship Is Less Than Distance to Other Ship \n " +
+             "\n " +
+             "This function checks the distance between two ships and returns true or false according to whether the ship's distance is less or more than the designated amount. \n" +
              "\n " +
              "Extra Information \n" +
              "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
@@ -242,7 +253,7 @@ public static class NodeDescriptions
         else if (name == "ifshipislessthandistancetowaypoint")
         {
             description =
-             "Ships Is Less Than Distance to Waypoint \n " +
+             "If Ship Is Less Than Distance to Waypoint \n " +
              "\n " +
              "This function checks the distance to waypoint of the designated ship and returns true or false according to whether the ship's distance is less or more than the designated amount. \n" +
              "\n " +

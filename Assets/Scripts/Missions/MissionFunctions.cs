@@ -300,6 +300,19 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
+        else if (missionEvent.eventType == "ifshipislessthandistancetoothership")
+        {
+            bool isLessThanDistance = IfShipIsLessThanDistanceToOtherShip(missionEvent);
+
+            if (isLessThanDistance == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
         else if (missionEvent.eventType == "ifshipislessthandistancetowaypoint")
         {
             bool isLessThanDistance = IfShipIsLessThanDistanceToWaypoint(missionEvent);
@@ -312,7 +325,7 @@ public static class MissionFunctions
             {
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
-        }
+        }     
         else if (missionEvent.eventType == "ifshipisactive")
         {
             bool shipTypeIsActive = IfShipIsActive(missionEvent);
@@ -652,11 +665,11 @@ public static class MissionFunctions
 
         if (audio != "none" & internalAudioFile != "true")
         {
-            AudioFunctions.PlayMissionAudioClip(null, audio, new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
+            AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
         }
         else if (audio != "none" & internalAudioFile == "true")
         {
-            AudioFunctions.PlayAudioClip(null, audio, new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
+            AudioFunctions.PlayAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
         }
     }
 
@@ -713,6 +726,54 @@ public static class MissionFunctions
         }
 
         return islessthanamount;
+    }
+
+    //This checks the distance between two different ships
+    public static bool IfShipIsLessThanDistanceToOtherShip(MissionEvent missionEvent)
+    {
+        bool isLessThanDistance = false;
+
+        Scene scene = SceneFunctions.GetScene();
+
+        string shipA = missionEvent.data1;
+        string shipB = missionEvent.data2;
+        float distance = Mathf.Infinity;
+
+        if (float.TryParse(missionEvent.data3, out _))
+        {
+            distance = float.Parse(missionEvent.data3);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject tempShipA in scene.objectPool)
+                {
+                    if (tempShipA.name.Contains(shipA))
+                    {
+                        foreach (GameObject tempShipB in scene.objectPool)
+                        {
+                            if (tempShipB.name.Contains(shipB))
+                            {
+                                if (tempShipA.activeSelf == true & tempShipB.activeSelf == true)
+                                {
+                                    float actualDistance = Vector3.Distance(tempShipA.transform.position, tempShipB.transform.position);
+
+                                    if (actualDistance < distance)
+                                    {
+                                        isLessThanDistance = true;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return isLessThanDistance;
     }
 
     //This checks the ship distance to its waypoint

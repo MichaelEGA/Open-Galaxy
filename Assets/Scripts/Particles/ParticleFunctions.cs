@@ -41,7 +41,7 @@ public static class ParticleFunctions
 
             if (audioManager != null)
             {
-                AudioFunctions.PlayAudioClip(audioManager, "impact01_laserhitshield", hitPosition, 1, 1, 500, 0.6f);
+                AudioFunctions.PlayAudioClip(audioManager, "impact01_laserhitshield", "External", hitPosition, 1, 1, 500, 0.6f);
             }
         }
     }

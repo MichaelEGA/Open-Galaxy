@@ -61,10 +61,6 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ActivateHyperspace(node);
         }
-        else if (node.nodeType == "changemusicvolume")
-        {
-            NodeTypes.Draw_SetMusicVolume(node);
-        }
         else if (node.nodeType == "clearaioverride")
         {
             NodeTypes.Draw_ClearAIOverride(node);
@@ -141,9 +137,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_LoadMultipleShipsByClassAndAllegiance(node);
         }
-        else if (node.nodeType == "setmusictype")
+        else if (node.nodeType == "setmusictrack")
         {
-            NodeTypes.Draw_SetMusicType(node);
+            NodeTypes.Draw_SetMusicTrack(node);
         }
         else if (node.nodeType == "setaioverride")
         {

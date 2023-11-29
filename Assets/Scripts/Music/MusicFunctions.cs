@@ -29,26 +29,6 @@ public static class MusicFunctions
         AudioClip[] musicClips = Resources.LoadAll<AudioClip>("MusicClips");
         musicManager.musicClips = new AudioClip[musicClips.Length];
         musicManager.musicClips = musicClips;
-
-        musicManager.actionTracks = new List<AudioClip>();
-        musicManager.tensionTracks = new List<AudioClip>();
-        musicManager.themeTracks = new List<AudioClip>();
-
-        foreach (AudioClip musicClip in musicManager.musicClips)
-        {
-            if (musicClip.name.Contains("action"))
-            {
-                musicManager.actionTracks.Add(musicClip);
-            }
-            else if (musicClip.name.Contains("tension"))
-            {
-                musicManager.tensionTracks.Add(musicClip);
-            }
-            else if (musicClip.name.Contains("theme"))
-            {
-                musicManager.themeTracks.Add(musicClip);
-            }
-        }
     }
 
     //This creates the audio sources for the different music tracks
@@ -88,56 +68,64 @@ public static class MusicFunctions
     #region music functions
 
     //This randomly picks action tracks to play
-    public static void PlayMusicType(Music musicManager, string type, bool forceChange = false)
+    public static IEnumerator PlayMusicTrack(Music musicManager, string trackName)
     {
-        if (musicManager.musicClips != null & musicManager.track1 != null & musicManager.track2 != null)
-        {
-            musicManager.musicType = type;
+        AudioClip track = null;
 
-            if (musicManager.track1.isPlaying == false & musicManager.track2.isPlaying == false || forceChange == true)
+        foreach (AudioClip tempTrack in musicManager.musicClips)
+        {
+            if (tempTrack.name == trackName)
             {
-                if (musicManager.musicType == "action")
-                {
-                    if (musicManager.actionTracks.Count > 0)
-                    {
-                        musicManager.track1.clip = musicManager.actionTracks[Random.Range(0, musicManager.actionTracks.Count - 1)];
-                        musicManager.track1.Play();
-                    }
-                }  
-                else if (musicManager.musicType == "tension")
-                {
-                    if (musicManager.tensionTracks.Count > 0)
-                    {
-                        musicManager.track1.clip = musicManager.tensionTracks[Random.Range(0, musicManager.tensionTracks.Count - 1)];
-                        musicManager.track1.Play();
-                    }
-                }
-                else if (musicManager.musicType == "theme")
-                {
-                    if (musicManager.themeTracks.Count > 0)
-                    {
-                        musicManager.track1.clip = musicManager.themeTracks[Random.Range(0, musicManager.themeTracks.Count - 1)];
-                        musicManager.track1.Play();
-                    }
-                }
+                track = tempTrack;
             }
         }
-    }
 
-    //When called this funciton allows the misison script to change the level of the music
-    public static void ChangeMusicVolume(Music musicManager, float volume)
-    {
-        if (volume > 1)
+        if (musicManager.track1.isPlaying == false)
         {
-            volume = 1;
+            if (musicManager.track2.isPlaying == true)
+            {
+                while (musicManager.track2.volume > 0)
+                {
+                    musicManager.track2.volume -= 0.1f;
+                    yield return new WaitForSeconds(0.1f);
+                }
+            }
+
+            musicManager.track2.Stop();
+
+            musicManager.track1.clip = track;
+            musicManager.track1.Play();
+
+            while (musicManager.track1.volume < 1)
+            {
+                musicManager.track1.volume += 0.1f;
+                yield return new WaitForSeconds(0.1f);
+            }
         }
-        else if (volume < 0)
+        else
         {
-            volume = 0;
+            if (musicManager.track1.isPlaying == true)
+            {
+                while (musicManager.track1.volume > 0)
+                {
+                    musicManager.track1.volume -= 0.1f;
+                    yield return new WaitForSeconds(0.1f);
+                }
+            }
+
+            musicManager.track1.Stop();
+
+            musicManager.track2.clip = track;
+            musicManager.track2.Play();
+
+            while (musicManager.track2.volume < 1)
+            {
+                musicManager.track2.volume += 0.1f;
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
-        musicManager.track1.volume = volume;
-        musicManager.track2.volume = volume;
+        yield return null;
     }
 
     #endregion

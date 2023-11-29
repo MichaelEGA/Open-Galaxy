@@ -2461,48 +2461,7 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_SetMusicVolume(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "setmusicvolume", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "setmusicvolume", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data1 = NodeFunctions.DrawInputField(node, "volume", "100", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
-    public static void Draw_SetMusicType(Node node)
+    public static void Draw_SetMusicTrack(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
@@ -2520,7 +2479,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "setmusictype", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "setmusictrack", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -2533,11 +2492,18 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options = new List<string>();
-        options.Add("action");
-        options.Add("tension");
-        options.Add("theme");
+        options.Add("bon_voyage_traitor");
+        options.Add("death_star");
+        options.Add("endor_ewok");
+        options.Add("exodus");
+        options.Add("first_strike");
+        options.Add("hoth");
+        options.Add("lose");
+        options.Add("mos_espa");
+        options.Add("taloraan");
+        options.Add("win");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "music type", "tension", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "track", "first_strike", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

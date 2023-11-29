@@ -429,22 +429,15 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- This function will affect any ship whose name contains the designated string. \n";
         }
-        else if (name == "setmusicvolume")
+        else if (name == "setmusictrack")
         {
             description =
-            "Set Music Volume \n " +
+            "Set Music Track \n " +
             "\n " +
-            "This node changes the volume of the background music.";
-        }
-        else if (name == "setmusictype")
-        {
-            description =
-            "Set Music Type \n " +
-            "\n " +
-            "This function plays the selected type of music. \n" +
+            "This function plays the selected track on repeat. \n" +
             "\n " +
             "Extra Information \n" +
-            "- WARNING: This node will soon be deprecated and replaced by a setmusictrack node. \n";
+            "- This node will fade out the current track while fading in the new track. \n";
         }
         else if (name == "setshipallegiance")
         {

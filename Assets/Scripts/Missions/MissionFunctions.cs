@@ -418,14 +418,9 @@ public static class MissionFunctions
             SetDontAttackLargeShips(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
-        if (missionEvent.eventType == "setmusicvolume")
+        else if (missionEvent.eventType == "setmusictrack")
         {
-            SetMusicVolume(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "setmusictype")
-        {
-            SetMusicType(missionEvent);
+            SetMusicTrack(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setshipallegiance")
@@ -1405,32 +1400,14 @@ public static class MissionFunctions
         while (a.Running == true) { yield return null; }
     }
 
-    //This changes the volume of the music 
-    public static void SetMusicVolume(MissionEvent missionEvent)
-    {
-        Music musicManager = GameObject.FindObjectOfType<Music>();
-
-        float volume = 0;
-
-        if (float.TryParse(missionEvent.data1, out _))
-        {
-            volume = float.Parse(missionEvent.data1);
-        }
-
-        if (musicManager != null)
-        {
-            MusicFunctions.ChangeMusicVolume(musicManager, volume);
-        }
-    }
-
     //This changes the type of music that is playing
-    public static void SetMusicType(MissionEvent missionEvent)
+    public static void SetMusicTrack(MissionEvent missionEvent)
     {
         Music musicManager = GameObject.FindObjectOfType<Music>();
 
         if (musicManager != null)
         {
-            MusicFunctions.PlayMusicType(musicManager, missionEvent.data1, true);
+            MusicFunctions.PlayMusicTrack(musicManager, missionEvent.data1);
         }       
     }
 

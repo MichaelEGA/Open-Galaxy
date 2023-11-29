@@ -437,7 +437,8 @@ public static class NodeDescriptions
             "This function plays the selected track on repeat. \n" +
             "\n " +
             "Extra Information \n" +
-            "- This node will fade out the current track while fading in the new track. \n";
+            "- This node will fade out the current track while fading in the new track. \n" +
+            "- Select none if you want the music to fade out. \n";
         }
         else if (name == "setshipallegiance")
         {

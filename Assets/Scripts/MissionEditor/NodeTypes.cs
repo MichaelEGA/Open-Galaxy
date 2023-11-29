@@ -1565,6 +1565,13 @@ public static class NodeTypes
         List<string> options1 = new List<string>();
         options1.Add("imperial");
         options1.Add("rebel");
+        options1.Add("pirate");
+        options1.Add("smuggler");
+        options1.Add("hutt");
+        options1.Add("hostile");
+        options1.Add("corporatesector");
+        options1.Add("independent");
+        options1.Add("neutral");
 
         node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2467,7 +2474,7 @@ public static class NodeTypes
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "setmusictype", 8, 17.5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "setmusictrack", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 

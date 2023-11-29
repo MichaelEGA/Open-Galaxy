@@ -11,16 +11,16 @@ public static class MusicFunctions
     public static void CreateMusicManager()
     {
         //This creates the music manager gameobject and attaches the music manager script
-        GameObject musicManager = new GameObject();
-        Music musicManagerScript = musicManager.AddComponent<Music>();
-        musicManager.name = "Music Manager";
-        musicManagerScript.audioMixer = Resources.Load<AudioMixer>("AudioMixers/OGAudio");
+        GameObject musicManagerGO = new GameObject();
+        Music musicManager = musicManagerGO.AddComponent<Music>();
+        musicManagerGO.name = "Music Manager";
+        musicManager.audioMixer = Resources.Load<AudioMixer>("AudioMixers/OGMusic");
 
         //This creates the audio sources for the different music tracks
-        CreateAudioSources(musicManagerScript);
+        CreateAudioSources(musicManager);
 
         //This loads the music clips
-        LoadMusicClips(musicManagerScript);
+        LoadMusicClips(musicManager);
     }
 
     //This loads the music clips
@@ -39,14 +39,14 @@ public static class MusicFunctions
         musicManager.track1.maxDistance = 2000;
         musicManager.track1.volume = 0.6f;
         musicManager.track1.loop = false;
-        musicManager.track1.outputAudioMixerGroup = musicManager.audioMixer.FindMatchingGroups("Track01")[0];
+        musicManager.track1.outputAudioMixerGroup = musicManager.audioMixer.FindMatchingGroups("Track1")[0];
 
         musicManager.track2 = musicManager.gameObject.AddComponent<AudioSource>();
         musicManager.track2.spatialBlend = 0;
         musicManager.track2.maxDistance = 2000;
         musicManager.track2.volume = 0.6f;
         musicManager.track2.loop = false;
-        musicManager.track2.outputAudioMixerGroup = musicManager.audioMixer.FindMatchingGroups("Track02")[0];
+        musicManager.track2.outputAudioMixerGroup = musicManager.audioMixer.FindMatchingGroups("Track2")[0];
     }
 
     #endregion'
@@ -70,7 +70,6 @@ public static class MusicFunctions
     //This randomly picks action tracks to play
     public static IEnumerator PlayMusicTrack(Music musicManager, string trackName)
     {
-
         if (trackName != "none")
         {
             AudioClip track = null;

@@ -1407,7 +1407,7 @@ public static class MissionFunctions
 
         if (musicManager != null)
         {
-            MusicFunctions.PlayMusicTrack(musicManager, missionEvent.data1);
+            Task a = new Task(MusicFunctions.PlayMusicTrack(musicManager, missionEvent.data1));
         }       
     }
 

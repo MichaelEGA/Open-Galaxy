@@ -70,36 +70,64 @@ public static class MusicFunctions
     //This randomly picks action tracks to play
     public static IEnumerator PlayMusicTrack(Music musicManager, string trackName)
     {
-        AudioClip track = null;
 
-        foreach (AudioClip tempTrack in musicManager.musicClips)
+        if (trackName != "none")
         {
-            if (tempTrack.name == trackName)
-            {
-                track = tempTrack;
-            }
-        }
+            AudioClip track = null;
 
-        if (musicManager.track1.isPlaying == false)
-        {
-            if (musicManager.track2.isPlaying == true)
+            foreach (AudioClip tempTrack in musicManager.musicClips)
             {
-                while (musicManager.track2.volume > 0)
+                if (tempTrack.name == trackName)
                 {
-                    musicManager.track2.volume -= 0.1f;
-                    yield return new WaitForSeconds(0.1f);
+                    track = tempTrack;
                 }
             }
 
-            musicManager.track2.Stop();
-
-            musicManager.track1.clip = track;
-            musicManager.track1.Play();
-
-            while (musicManager.track1.volume < 1)
+            if (musicManager.track1.isPlaying == false)
             {
-                musicManager.track1.volume += 0.1f;
-                yield return new WaitForSeconds(0.1f);
+                if (musicManager.track2.isPlaying == true)
+                {
+                    while (musicManager.track2.volume > 0)
+                    {
+                        musicManager.track2.volume -= 0.1f;
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                }
+
+                musicManager.track2.Stop();
+
+                musicManager.track1.clip = track;
+                musicManager.track1.Play();
+                musicManager.track1.loop = true;
+
+                while (musicManager.track1.volume < 1)
+                {
+                    musicManager.track1.volume += 0.1f;
+                    yield return new WaitForSeconds(0.1f);
+                }
+            }
+            else
+            {
+                if (musicManager.track1.isPlaying == true)
+                {
+                    while (musicManager.track1.volume > 0)
+                    {
+                        musicManager.track1.volume -= 0.1f;
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                }
+
+                musicManager.track1.Stop();
+
+                musicManager.track2.clip = track;
+                musicManager.track2.Play();
+                musicManager.track2.loop = true;
+
+                while (musicManager.track2.volume < 1)
+                {
+                    musicManager.track2.volume += 0.1f;
+                    yield return new WaitForSeconds(0.1f);
+                }
             }
         }
         else
@@ -111,17 +139,19 @@ public static class MusicFunctions
                     musicManager.track1.volume -= 0.1f;
                     yield return new WaitForSeconds(0.1f);
                 }
+
+                musicManager.track1.Stop();
             }
 
-            musicManager.track1.Stop();
-
-            musicManager.track2.clip = track;
-            musicManager.track2.Play();
-
-            while (musicManager.track2.volume < 1)
+            if (musicManager.track2.isPlaying == true)
             {
-                musicManager.track2.volume += 0.1f;
-                yield return new WaitForSeconds(0.1f);
+                while (musicManager.track2.volume > 0)
+                {
+                    musicManager.track2.volume -= 0.1f;
+                    yield return new WaitForSeconds(0.1f);
+                }
+
+                musicManager.track2.Stop();
             }
         }
 

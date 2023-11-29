@@ -2502,6 +2502,7 @@ public static class NodeTypes
         options.Add("mos_espa");
         options.Add("taloraan");
         options.Add("win");
+        options.Add("none");
 
         node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "track", "first_strike", 7, 5, drop, 12.5f, 90, 5f);
 

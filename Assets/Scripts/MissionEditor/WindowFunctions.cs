@@ -66,6 +66,7 @@ public static class WindowFunctions
         buttonList.Add("starteventseries");
         buttonList.Add("activatehyperspace");
         buttonList.Add("clearaioverride");
+        buttonList.Add("deactivateship");
         buttonList.Add("displaydialoguebox");
         buttonList.Add("displaylargemessage");
         buttonList.Add("displaylocation");
@@ -84,10 +85,11 @@ public static class WindowFunctions
         buttonList.Add("loadmultipleshipsonground");
         buttonList.Add("loadmultipleshipsbyclassandallegiance");
         buttonList.Add("loadmultipleships");
+        buttonList.Add("playmusictrack");
         buttonList.Add("setaioverride");
         buttonList.Add("setcargo");
+        buttonList.Add("setobjective");
         buttonList.Add("setdontattacklargeships");
-        buttonList.Add("setmusictrack");
         buttonList.Add("setshipallegiance");
         buttonList.Add("setshiptarget");
         buttonList.Add("setshiptargettoclosestenemy");

@@ -52,6 +52,7 @@ public class Hud : MonoBehaviour
 
     [Header("Ship Log")]
     [HideInInspector] public Text shipLog;
+    [HideInInspector] public Text objectiveLog;
 
     [Header("Moving Reticule")]
     [HideInInspector] public GameObject movingReticule;

@@ -12,6 +12,7 @@ public class MissionManager : MonoBehaviour
     public string missionName;
     public string missionAddress;
     public string missionData;
+    public string[] objectiveList;
 
     // Update is called once per frame
     void Update()

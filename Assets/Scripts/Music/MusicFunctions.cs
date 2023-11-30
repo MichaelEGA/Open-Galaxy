@@ -68,7 +68,7 @@ public static class MusicFunctions
     #region music functions
 
     //This randomly picks action tracks to play
-    public static IEnumerator PlayMusicTrack(Music musicManager, string trackName)
+    public static IEnumerator PlayMusicTrack(Music musicManager, string trackName, bool loop)
     {
         if (trackName != "none")
         {
@@ -97,7 +97,7 @@ public static class MusicFunctions
 
                 musicManager.track1.clip = track;
                 musicManager.track1.Play();
-                musicManager.track1.loop = true;
+                musicManager.track1.loop = loop;
 
                 while (musicManager.track1.volume < 1)
                 {
@@ -120,7 +120,7 @@ public static class MusicFunctions
 
                 musicManager.track2.clip = track;
                 musicManager.track2.Play();
-                musicManager.track2.loop = true;
+                musicManager.track2.loop = loop;
 
                 while (musicManager.track2.volume < 1)
                 {

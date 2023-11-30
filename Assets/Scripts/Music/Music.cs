@@ -5,12 +5,10 @@ using UnityEngine.Audio;
 
 public class Music : MonoBehaviour
 {
-
     public AudioClip[] musicClips;
     public AudioSource track1;
     public AudioSource track2;
     public AudioMixer audioMixer;
-    public string musicType = "action";
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +19,6 @@ public class Music : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MusicFunctions.PlayMusicTrack(this, musicType);
+
     }
 }

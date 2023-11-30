@@ -712,6 +712,10 @@ public static class SmallShipFunctions
     {
         smallShip.jumpingToHyperspace = true;
 
+        float randomWaitTime = Random.Range(0, 1.0f);
+
+        yield return new WaitForSeconds(randomWaitTime);
+
         Vector3 startPosition = smallShip.gameObject.transform.localPosition;
         Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 30000;
         float time = 1f;
@@ -733,6 +737,10 @@ public static class SmallShipFunctions
     public static IEnumerator ExitHyperspace(SmallShip smallShip)
     {
         smallShip.exitingHyperspace = true;
+
+        float randomWaitTime = Random.Range(0, 1.0f);
+
+        yield return new WaitForSeconds(randomWaitTime);
 
         Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 30000; 
         Vector3 startPosition = smallShip.gameObject.transform.localPosition;

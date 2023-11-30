@@ -158,7 +158,9 @@ public static class NodeDescriptions
             "This node causes a ship or ships to jump to hyperspace" +
             "\n " +
            "Extra Information \n" +
-            "- This function will affect any ship whose name contains the designated string. \n";
+           "- When activated the ship will jump out of the scene and be deactivated. \n" +
+           "- If you want the ship to 'return' you will need to load a new ship with the same name and parameters. \n" +
+           "- This function will affect any ship whose name contains the designated string. \n";
         }
         else if (name == "clearaioverride")
         {
@@ -179,6 +181,13 @@ public static class NodeDescriptions
            "Display Large Mission Then Exit \n " +
            "\n " +
            "This node exits the mission and returns the player to the main menu. \n";
+        }
+        else if (name == "deactivateship")
+        {
+            description =
+           "Deactivate Ship \n " +
+           "\n " +
+           "This node deactivates a ship so that is is no longer part of the scene. \n";
         }
         else if (name == "displaydialoguebox")
         {
@@ -382,6 +391,18 @@ public static class NodeDescriptions
             "- Pattern: randominsidecube uses width, length, height. \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order before the mission starts. \n";
         }
+        else if (name == "playmusictrack")
+        {
+            description =
+            "Play Music Track \n " +
+            "\n " +
+            "This function plays the selected track on repeat. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- This node will fade out the current track while fading in the new track. \n" +
+            "- If loop is set to false the track will play once and then stop, if set to true it will repeat. \n" +
+            "- Select none if you want the music to fade out. \n";
+        }
         else if (name == "setwaypoint")
         {
             description =
@@ -419,6 +440,13 @@ public static class NodeDescriptions
            "- This function is particulary useful when making group of ships where you want one ship to have a specific cargo. \n" +
            "- If you write 'random' or 'randomise' the game will automatically randomise the ships cargo using preset list \n";
         }
+        else if (name == "setobjective")
+        {
+            description =
+           "Set Objective \n " +
+           "\n " +
+           "This function adds, cancels, completes an objective. It can also clear all objectives. \n";
+        }
         else if (name == "setdontattacklargeships")
         {
             description =
@@ -428,17 +456,6 @@ public static class NodeDescriptions
            "\n " +
            "Extra Information \n" +
            "- This function will affect any ship whose name contains the designated string. \n";
-        }
-        else if (name == "setmusictrack")
-        {
-            description =
-            "Set Music Track \n " +
-            "\n " +
-            "This function plays the selected track on repeat. \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- This node will fade out the current track while fading in the new track. \n" +
-            "- Select none if you want the music to fade out. \n";
         }
         else if (name == "setshipallegiance")
         {

@@ -262,6 +262,11 @@ public static class MissionFunctions
         {
             ExitMission();
         }
+        else if (missionEvent.eventType == "deactivateship")
+        {
+            DeactivateShip(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "displaydialoguebox")
         {
             DisplayDialogueBox(missionEvent);
@@ -403,6 +408,11 @@ public static class MissionFunctions
             Task a = new Task(LoadMultipleShipsByClassAndAllegiance(missionEvent));
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "playmusictrack")
+        {
+            PlayMusicTrack(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "setaioverride")
         {
             SetAIOverride(missionEvent);
@@ -413,14 +423,14 @@ public static class MissionFunctions
             SetCargo(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "setobjective")
+        {
+            SetObjective(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "setdontattacklargeships")
         {
             SetDontAttackLargeShips(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "setmusictrack")
-        {
-            SetMusicTrack(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setshipallegiance")
@@ -608,6 +618,38 @@ public static class MissionFunctions
 
         ExitMenuFunctions.ExitAndUnload();
 
+    }
+
+    //This deactivates a ship so that it is no longer part of the scene
+    public static void DeactivateShip(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            SmallShipFunctions.DeactivateShip(smallShip);
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            LargeShipFunctions.DeactivateShip(largeShip);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //This displays the dialogue box with a message
@@ -1401,13 +1443,21 @@ public static class MissionFunctions
     }
 
     //This changes the type of music that is playing
-    public static void SetMusicTrack(MissionEvent missionEvent)
+    public static void PlayMusicTrack(MissionEvent missionEvent)
     {
         Music musicManager = GameObject.FindObjectOfType<Music>();
 
+        string track = missionEvent.data1;
+        bool loop = false;
+
+        if (bool.TryParse(missionEvent.data2, out _))
+        {
+            loop = bool.Parse(missionEvent.data2);
+        }
+
         if (musicManager != null)
         {
-            Task a = new Task(MusicFunctions.PlayMusicTrack(musicManager, missionEvent.data1));
+            Task a = new Task(MusicFunctions.PlayMusicTrack(musicManager, track, loop));
         }       
     }
 
@@ -1505,6 +1555,77 @@ public static class MissionFunctions
                 }
             }
         }   
+    }
+
+    //This sets an objective for the player to complete, removes an objective, or clears all objectives.
+    public static void SetObjective(MissionEvent missionEvent)
+    {
+        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+
+        string mode = missionEvent.data1;
+        string objective = missionEvent.data2;
+        List<string> newObjectiveList = new List<string>();
+
+        if (missionManager.objectiveList == null)
+        {
+            missionManager.objectiveList = new string[0];
+        }
+
+        if (missionManager != null)
+        {
+            if (mode == "addobjective")
+            {
+                newObjectiveList.Add(objective);
+
+                foreach (string tempObjective in missionManager.objectiveList)
+                {
+                    newObjectiveList.Add(tempObjective);
+                }
+
+                missionManager.objectiveList = newObjectiveList.ToArray();
+
+                HudFunctions.UpdateObjectives(missionManager.objectiveList);
+                HudFunctions.AddToShipLog("NEW OBJECTIVE: " + objective);
+            }
+            else if (mode == "cancelobjective")
+            {
+                foreach (string tempObjective in missionManager.objectiveList)
+                {
+                    if (tempObjective != objective)
+                    {
+                        newObjectiveList.Add(tempObjective);
+                    }
+
+                    missionManager.objectiveList = newObjectiveList.ToArray();
+
+                    HudFunctions.UpdateObjectives(missionManager.objectiveList);               
+                }
+
+                HudFunctions.AddToShipLog("OBJECTIVE CANCELLED: " + objective);
+            }
+            else if (mode == "completeobjective")
+            {
+                foreach (string tempObjective in missionManager.objectiveList)
+                {
+                    if (tempObjective != objective)
+                    {
+                        newObjectiveList.Add(tempObjective);
+                    }
+
+                    missionManager.objectiveList = newObjectiveList.ToArray();
+
+                    HudFunctions.UpdateObjectives(missionManager.objectiveList);                   
+                }
+
+                HudFunctions.AddToShipLog("OBJECTIVE COMPLETED: " + objective);
+            }
+            else if (mode == "clearallobjectives")
+            {
+                missionManager.objectiveList = newObjectiveList.ToArray();
+
+                HudFunctions.UpdateObjectives(missionManager.objectiveList);
+            }
+        }
     }
 
     //This sets the designated ships target to the closest enemy, provided both the ship can be found

@@ -65,6 +65,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ClearAIOverride(node);
         }
+        else if (node.nodeType == "deactivateship")
+        {
+            NodeTypes.Draw_DeactivateShip(node);
+        }
         else if (node.nodeType == "dialoguebox")
         {
             NodeTypes.Draw_DisplayDialogueBox(node);
@@ -137,9 +141,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_LoadMultipleShipsByClassAndAllegiance(node);
         }
-        else if (node.nodeType == "setmusictrack")
+        else if (node.nodeType == "playmusictrack")
         {
-            NodeTypes.Draw_SetMusicTrack(node);
+            NodeTypes.Draw_PlayMusicTrack(node);
         }
         else if (node.nodeType == "setaioverride")
         {
@@ -148,6 +152,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "setcargo")
         {
             NodeTypes.Draw_SetCargo(node);
+        }
+        else if (node.nodeType == "setobjective")
+        {
+            NodeTypes.Draw_SetObjective(node);
         }
         else if (node.nodeType == "setdontattacklargeships")
         {

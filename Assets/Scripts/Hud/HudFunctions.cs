@@ -1167,9 +1167,40 @@ public static class HudFunctions
 
             if (hud != null)
             {
-                hud.shipLog.text = (Time.time - hud.loadTime).ToString("00:00") + " " + message + "\n" + hud.shipLog.text;
+                if (hud.shipLog != null)
+                {
+                    hud.shipLog.text = (Time.time - hud.loadTime).ToString("00:00") + " " + message + "\n" + hud.shipLog.text;
+                }
             }
         }
+    }
+
+    //This updates the ships objectives
+    public static void UpdateObjectives(string[] objectives)
+    {
+        Hud hud = GetHudScript();
+
+        if (hud != null)
+        {
+            //This gets the reference to the text asset if it doesn't already exist
+            if (hud.objectiveLog == null)
+            {
+                GameObject objectiveLog = GameObject.Find("ObjectiveLog");
+
+                if (objectiveLog != null) { hud.objectiveLog = objectiveLog.GetComponent<Text>(); }
+            }
+            
+            //This loads each of the objectives on its own line in the order they appear on the list
+            if (hud.objectiveLog != null)
+            {
+                hud.objectiveLog.text = "";
+
+                foreach (string objective in objectives)
+                {
+                    hud.objectiveLog.text += objective + "\n";
+                }
+            }
+        }      
     }
 
     #endregion

@@ -603,7 +603,7 @@ public static class SmallShipAIFunctions
         }
         else
         {
-            smallShip.thrustInput = 1;
+            smallShip.thrustInput = 0;
         }
     }
 

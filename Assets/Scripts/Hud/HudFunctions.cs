@@ -102,7 +102,7 @@ public static class HudFunctions
             if (shieldRearInside != null) { hud.shieldRearInside = shieldRearInside.GetComponent<RawImage>(); }
             if (shieldRearOutside != null) { hud.shieldRearOutside = shieldRearOutside.GetComponent<RawImage>(); }
 
-            GameObject targetDistance = GameObject.Find("TargetDistance");
+            GameObject targetDistanceText = GameObject.Find("TargetDistanceText");
             GameObject targetType = GameObject.Find("TargetType");
             GameObject targetName = GameObject.Find("TargetName");
             GameObject targetCargo = GameObject.Find("TargetCargo");
@@ -110,7 +110,7 @@ public static class HudFunctions
             GameObject targetShieldsText = GameObject.Find("TargetShieldsText");
             GameObject targetHullText = GameObject.Find("TargetHullText");
 
-            if (targetDistance != null) { hud.targetDistance = targetDistance.GetComponent<Text>(); }
+            if (targetDistanceText != null) { hud.targetDistance = targetDistanceText.GetComponent<Text>(); }
             if (targetType != null) { hud.targetType = targetType.GetComponent<Text>(); }
             if (targetName != null) { hud.targetName = targetName.GetComponent<Text>(); }
             if (targetCargo != null) { hud.targetCargo = targetCargo.GetComponent<Text>(); }
@@ -466,7 +466,7 @@ public static class HudFunctions
         {
             if (hud.smallShip.target != null)
             {
-                hud.targetDistance.text = (hud.smallShip.targetDistance / 1000f).ToString("0.000") + " KLICKS";
+                hud.targetDistance.text = (hud.smallShip.targetDistance / 1000f).ToString("0.000");
             }
             else
             {

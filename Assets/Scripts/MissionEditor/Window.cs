@@ -20,6 +20,8 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
 
     MissionEditor missionEditor;
 
+    Vector3 startPos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +40,7 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
     {
         if (dragging == true)
         {
-            transform.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y) - startPos;
         }  
     }
 
@@ -54,6 +56,7 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        startPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y) - transform.position;
         dragging = true;
         MissionEditorFunctions.CloseAllMenus();
     }

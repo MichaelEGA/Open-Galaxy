@@ -34,9 +34,9 @@ public static class LargeShipAIFunctions
 
                 if (targetLargeShip != null)
                 {
-                    if (largeShip.classType == "medium")
+                    if (largeShip.shipClass == "medium")
                     {
-                        if (targetLargeShip.classType == "large")
+                        if (targetLargeShip.shipClass == "large")
                         {
                             largeShip.aiMode = "AttackPatternBeta";
                         }
@@ -45,9 +45,9 @@ public static class LargeShipAIFunctions
                             largeShip.aiMode = "AttackPatternAlpha";
                         }
                     }
-                    else if (largeShip.classType == "small")
+                    else if (largeShip.shipClass == "small")
                     {
-                        if (targetLargeShip.classType != "small")
+                        if (targetLargeShip.shipClass != "small")
                         {
                             largeShip.aiMode = "AttackPatternBeta";
                         }
@@ -56,7 +56,7 @@ public static class LargeShipAIFunctions
                             largeShip.aiMode = "AttackPatternAlpha";
                         }
                     }
-                    else if (largeShip.classType == "large")
+                    else if (largeShip.shipClass == "large")
                     {
                         largeShip.aiMode = "AttackPatternAlpha";
                     }

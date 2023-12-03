@@ -8,7 +8,6 @@ public class ShipType
     public string prefab;
     public string cockpitPrefab;
     public string laserColor;
-    public string shipClass;
     public string allegiance;
     public string callsign;
     public string scriptType;
@@ -25,7 +24,7 @@ public class ShipType
     public string laserAudio;
     public string engineAudio;
     public string thrustType;
-    public string classType;
+    public string shipClass;
 }
 
 [System.Serializable]

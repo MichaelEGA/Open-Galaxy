@@ -132,11 +132,11 @@ public static class SmallShipAIFunctions
 
         if (smallShip.targetLargeShip != null)
         {
-            if (smallShip.targetLargeShip.classType == "large")
+            if (smallShip.targetLargeShip.shipClass == "large")
             {
                 distance = 1500;
             }
-            else if (smallShip.targetLargeShip.classType == "middle")
+            else if (smallShip.targetLargeShip.shipClass == "middle")
             {
                 distance = 1000;
             }

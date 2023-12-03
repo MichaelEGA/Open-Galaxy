@@ -54,6 +54,8 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     public MissionEditor missionEditor;
 
+    Vector3 startPos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,8 +73,7 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     {
         if (dragging == true)
         {
-            Vector2 mousePosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            transform.position = mousePosition;
+            transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y) - startPos;
             missionEditor.scrolling = false;
             scrollReset = false;
         }
@@ -88,6 +89,7 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        startPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y) - transform.position;
         dragging = true;
         MissionEditorFunctions.CloseAllMenus();
     }

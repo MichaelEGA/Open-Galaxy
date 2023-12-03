@@ -492,32 +492,63 @@ public static class SmallShipFunctions
 
         }
 
-
         //This sets the ships power according the mode
-        if (smallShip.powerMode == "lasers")
+        if (smallShip.shieldRating != 0)
         {
-            if (smallShip.laserPower < 100) { smallShip.laserPower += 1; }
-            if (smallShip.enginePower > 25) { smallShip.enginePower -= 1; }
-            if (smallShip.shieldPower > 25) { smallShip.shieldPower -= 1; }
+            if (smallShip.powerMode == "lasers")
+            {
+                if (smallShip.laserPower < 100) { smallShip.laserPower += 1; }
+                if (smallShip.enginePower > 25) { smallShip.enginePower -= 1; }
+                if (smallShip.shieldPower > 25) { smallShip.shieldPower -= 1; }
+            }
+            else if (smallShip.powerMode == "engines")
+            {
+                if (smallShip.laserPower > 25) { smallShip.laserPower -= 1; }
+                if (smallShip.enginePower < 100) { smallShip.enginePower += 1; }
+                if (smallShip.shieldPower > 25) { smallShip.shieldPower -= 1; }
+            }
+            else if (smallShip.powerMode == "shields")
+            {
+                if (smallShip.laserPower > 25) { smallShip.laserPower -= 1; }
+                if (smallShip.enginePower > 25) { smallShip.enginePower -= 1; }
+                if (smallShip.shieldPower < 100) { smallShip.shieldPower += 1; }
+            }
+            else if (smallShip.powerMode == "reset")
+            {
+                if (smallShip.laserPower > 50) { smallShip.laserPower -= 1; } else if (smallShip.laserPower < 50) { smallShip.laserPower += 1; }
+                if (smallShip.enginePower > 50) { smallShip.enginePower -= 1; } else if (smallShip.enginePower < 50) { smallShip.enginePower += 1; }
+                if (smallShip.shieldPower > 50) { smallShip.shieldPower -= 1; } else if (smallShip.shieldPower < 50) { smallShip.shieldPower += 1; }
+            }
         }
-        else if (smallShip.powerMode == "engines")
+        else
         {
-            if (smallShip.laserPower > 25) { smallShip.laserPower -= 1; }
-            if (smallShip.enginePower < 100) { smallShip.enginePower += 1; }
-            if (smallShip.shieldPower > 25) { smallShip.shieldPower -= 1; }
+            if (smallShip.powerMode == "lasers")
+            {
+                if (smallShip.laserPower < 100) { smallShip.laserPower += 1; }
+                if (smallShip.enginePower > 25) { smallShip.enginePower -= 1; }
+                if (smallShip.shieldPower > 0) { smallShip.shieldPower -= 1; }
+            }
+            else if (smallShip.powerMode == "engines")
+            {
+                if (smallShip.laserPower > 25) { smallShip.laserPower -= 1; }
+                if (smallShip.enginePower < 100) { smallShip.enginePower += 1; }
+                if (smallShip.shieldPower > 0) { smallShip.shieldPower -= 1; }
+            }
+            else if (smallShip.powerMode == "shields")
+            {
+                if (smallShip.laserPower > 50) { smallShip.laserPower -= 1; } else if (smallShip.laserPower < 50) { smallShip.laserPower += 1; }
+                if (smallShip.enginePower > 50) { smallShip.enginePower -= 1; } else if (smallShip.enginePower < 50) { smallShip.enginePower += 1; }
+                if (smallShip.shieldPower > 0) { smallShip.shieldPower -= 1; }
+            }
+            else if (smallShip.powerMode == "reset")
+            {
+                if (smallShip.laserPower > 50) { smallShip.laserPower -= 1; } else if (smallShip.laserPower < 50) { smallShip.laserPower += 1; }
+                if (smallShip.enginePower > 50) { smallShip.enginePower -= 1; } else if (smallShip.enginePower < 50) { smallShip.enginePower += 1; }
+                if (smallShip.shieldPower > 0) { smallShip.shieldPower -= 1; }
+            }
         }
-        else if (smallShip.powerMode == "shields")
-        {
-            if (smallShip.laserPower > 25) { smallShip.laserPower -= 1; }
-            if (smallShip.enginePower > 25) { smallShip.enginePower -= 1; }
-            if (smallShip.shieldPower < 100) { smallShip.shieldPower += 1; }
-        }
-        else if (smallShip.powerMode == "reset")
-        {
-            if (smallShip.laserPower > 50) { smallShip.laserPower -= 1; } else if (smallShip.laserPower < 50) { smallShip.laserPower += 1; }
-            if (smallShip.enginePower > 50) { smallShip.enginePower -= 1; } else if (smallShip.enginePower < 50) { smallShip.enginePower += 1; }
-            if (smallShip.shieldPower > 50) { smallShip.shieldPower -= 1; } else if (smallShip.shieldPower < 50) { smallShip.shieldPower += 1; }
-        }
+
+       
 
     }
 

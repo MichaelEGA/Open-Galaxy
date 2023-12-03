@@ -9,7 +9,7 @@ public class LargeShip : MonoBehaviour
     public string type;
     public string prefabName;
     public float loadTime;
-    public string classType = "large";
+    public string shipClass = "large";
     public bool scanned = false;
     public bool jumpingToHyperspace;
     public bool exitingHyperspace;
@@ -128,7 +128,7 @@ public class LargeShip : MonoBehaviour
         LargeShipFunctions.PrepareShip(this);
         TurretFunctions.LoadTurrets(this);
 
-        if (classType != "station")
+        if (shipClass != "station")
         {
             //Input functions
             LargeShipFunctions.GetAIInput(this);
@@ -147,7 +147,7 @@ public class LargeShip : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (classType != "station")
+        if (shipClass != "station")
         {
             LargeShipFunctions.MoveShip(this);
         }           

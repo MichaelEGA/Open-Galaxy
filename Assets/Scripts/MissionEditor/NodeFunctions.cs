@@ -316,14 +316,16 @@ public class NodeFunctions : MonoBehaviour
         node.rectTransform.localPosition = new Vector2(node.nodePosX, node.nodePosY);
         node.rectTransform.localScale = new Vector3(1, 1, 1);
 
-        node.name = "Node_" + node.eventType + "_" + node.eventID;
+        node.name = "Node";
     }
 
     //This draws a title
-    public static Text DrawText(Node node, string title, int fontSize, float xPos, float yPos, float height, float width)
+    public static Text DrawText(Node node, string textString, int fontSize, float xPos, float yPos, float height, float width)
     {
         //This draws the input label
         GameObject titleGO = new GameObject();
+
+        titleGO.name = "Text_" + textString;
 
         titleGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform = titleGO.AddComponent<RectTransform>();
@@ -337,13 +339,11 @@ public class NodeFunctions : MonoBehaviour
         Text text = titleGO.AddComponent<Text>();
         text.supportRichText = false;
         text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        text.text = title;
+        text.text = textString;
         text.fontSize = fontSize;
         text.color = Color.white;
         text.horizontalOverflow = HorizontalWrapMode.Wrap;
         text.alignment = TextAnchor.MiddleLeft;
-
-        titleGO.name = "Title_" + title;
 
         return text;
     }
@@ -352,6 +352,8 @@ public class NodeFunctions : MonoBehaviour
     public static void DrawLineBreak(Node node, string color, float xPos, float yPos, float height, float width)
     {
         GameObject lineBreakGO = new GameObject();
+
+        lineBreakGO.name = "linebreak";
 
         lineBreakGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform = lineBreakGO.AddComponent<RectTransform>();
@@ -372,8 +374,6 @@ public class NodeFunctions : MonoBehaviour
         {
             lineBreakImage.color = myColor;
         }
-
-        lineBreakGO.name = "linebreak";
     }
 
     //This draws an empty input field
@@ -384,6 +384,7 @@ public class NodeFunctions : MonoBehaviour
 
         //This draws the input label
         GameObject labelGO = new GameObject();
+        labelGO.name = "Label_" + label;
 
         labelGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform2 = labelGO.AddComponent<RectTransform>();
@@ -404,6 +405,7 @@ public class NodeFunctions : MonoBehaviour
 
         //This draws the background of the input field
         GameObject inputFieldBackgroundGO = new GameObject();
+        inputFieldBackgroundGO.name = "InputFieldBackground_" + label;
 
         inputFieldBackgroundGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform3 = inputFieldBackgroundGO.AddComponent<RectTransform>();
@@ -421,6 +423,7 @@ public class NodeFunctions : MonoBehaviour
 
         //This draws the input field
         GameObject inputFieldGO = new GameObject();
+        inputFieldGO.name = "InputFieldGO_" + label;
 
         inputFieldGO.transform.SetParent(node.rectTransform.transform);
 
@@ -449,6 +452,7 @@ public class NodeFunctions : MonoBehaviour
         inputField.text = startvalue;
 
         GameObject transitionTextGO = new GameObject();
+        transitionTextGO.name = "TransitionText_" + label;
 
         transitionTextGO.transform.SetParent(inputFieldGO.transform);
         RectTransform rectTransform4 = transitionTextGO.AddComponent<RectTransform>();
@@ -484,6 +488,7 @@ public class NodeFunctions : MonoBehaviour
 
         //This draws the input label
         GameObject labelGO = new GameObject();
+        labelGO.name = "Label_" + label;
 
         labelGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform2 = labelGO.AddComponent<RectTransform>();
@@ -504,6 +509,7 @@ public class NodeFunctions : MonoBehaviour
 
         //This draws the background of the input field
         GameObject inputFieldBackgroundGO = new GameObject();
+        inputFieldBackgroundGO.name = "InputFieldBackground_" + label;
 
         inputFieldBackgroundGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform3 = inputFieldBackgroundGO.AddComponent<RectTransform>();
@@ -521,6 +527,7 @@ public class NodeFunctions : MonoBehaviour
 
         //This draws the input field
         GameObject inputFieldGO = new GameObject();
+        inputFieldGO.name = "InputField_" + label;
 
         inputFieldGO.transform.SetParent(node.rectTransform.transform);
 
@@ -549,6 +556,7 @@ public class NodeFunctions : MonoBehaviour
         inputField.text = startvalue;
 
         GameObject transitionTextGO = new GameObject();
+        transitionTextGO.name = "TransitionText_" + label;
 
         transitionTextGO.transform.SetParent(inputFieldGO.transform);
         RectTransform rectTransform4 = transitionTextGO.AddComponent<RectTransform>();
@@ -584,6 +592,7 @@ public class NodeFunctions : MonoBehaviour
 
         //This draws the input label
         GameObject exteriorLabelGO = new GameObject();
+        exteriorLabelGO.name = "ExteriorLabel_" + label;
 
         exteriorLabelGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform2 = exteriorLabelGO.AddComponent<RectTransform>();
@@ -604,6 +613,7 @@ public class NodeFunctions : MonoBehaviour
 
         //This draws the background of the input field
         GameObject dropdownGO = new GameObject();
+        dropdownGO.name = "DropDown_" + label;
 
         dropdownGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform3 = dropdownGO.AddComponent<RectTransform>();
@@ -621,6 +631,7 @@ public class NodeFunctions : MonoBehaviour
 
         //This draws the input field
         GameObject labelGO = new GameObject();
+        labelGO.name = "LabelGO_" + label;
 
         labelGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform = labelGO.AddComponent<RectTransform>();
@@ -735,6 +746,7 @@ public class NodeFunctions : MonoBehaviour
     public static void DrawButton(Node node, float xPos, float yPos, float height, float width, string imageName, string functionType)
     {
         GameObject buttonGO = new GameObject();
+        buttonGO.name = "Button_" + functionType;
 
         buttonGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform = buttonGO.AddComponent<RectTransform>();
@@ -759,12 +771,10 @@ public class NodeFunctions : MonoBehaviour
         {
             button.onClick.AddListener(() => { DeleteNode(node); });
         }
-
-        buttonGO.name = "button_" + functionType;
     }
 
     //This draws a node link for connection the node with other nodes
-    public static Text DrawNodeLink(Node node, float xPos, float yPos, float height, float width, string mode = "male", string title = "none", int fontsize = 7, float gap = 10)
+    public static Text DrawNodeLink(Node node, float xPos, float yPos, float height, float width, string mode = "male", string label = "none", int fontsize = 7, float gap = 10)
     {
         Text textbox = null;
 
@@ -774,7 +784,9 @@ public class NodeFunctions : MonoBehaviour
 
         GameObject nodeLinkGO = new GameObject();
         GameObject nodeLinkImageGO = new GameObject();
+
         nodeLinkGO.name = "NodeLink";
+        nodeLinkImageGO.name = "NodeLinkImage";
 
         nodeLinkGO.transform.SetParent(node.rectTransform.transform);
         RectTransform rectTransform = nodeLinkGO.AddComponent<RectTransform>();
@@ -824,6 +836,7 @@ public class NodeFunctions : MonoBehaviour
         if (mode == "male")
         {
             GameObject labelGO = new GameObject();
+            labelGO.name = "Label_" + label;
 
             labelGO.transform.SetParent(node.rectTransform.transform);
             RectTransform rectTransform2 = labelGO.AddComponent<RectTransform>();
@@ -837,12 +850,13 @@ public class NodeFunctions : MonoBehaviour
             Text text = labelGO.AddComponent<Text>();
             text.supportRichText = false;
             text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            text.text = title;
+            text.text = label;
             text.fontSize = fontsize;
             text.color = Color.white;
             text.alignment = TextAnchor.MiddleLeft;
 
             GameObject textBoxGO = new GameObject();
+            textBoxGO.name = "TextBox_" + label;
 
             textBoxGO.transform.SetParent(node.rectTransform.transform);
             RectTransform rectTransform3 = textBoxGO.AddComponent<RectTransform>();

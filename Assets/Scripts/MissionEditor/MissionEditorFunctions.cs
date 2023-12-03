@@ -24,6 +24,7 @@ public static class MissionEditorFunctions
     {
         //This draws the input label
         GameObject titleGO = new GameObject();
+        titleGO.name = "Scale Indicator";
 
         titleGO.transform.SetParent(missionEditor.transform);
         RectTransform rectTransform = titleGO.AddComponent<RectTransform>();
@@ -43,8 +44,6 @@ public static class MissionEditorFunctions
         text.horizontalOverflow = HorizontalWrapMode.Wrap;
         text.alignment = TextAnchor.MiddleLeft;
 
-        titleGO.name = "Scale Indicator";
-
         missionEditor.scaleIndicator = text;
     }
 
@@ -52,6 +51,7 @@ public static class MissionEditorFunctions
     {
         //This draws the input label
         GameObject messageTextboxGO = new GameObject();
+        messageTextboxGO.name = "Action Indicator";
 
         messageTextboxGO.transform.SetParent(missionEditor.transform);
         RectTransform rectTransform = messageTextboxGO.AddComponent<RectTransform>();
@@ -71,8 +71,6 @@ public static class MissionEditorFunctions
         text.horizontalOverflow = HorizontalWrapMode.Wrap;
         text.alignment = TextAnchor.MiddleCenter;
 
-        messageTextboxGO.name = "Action Indicator";
-
         missionEditor.messageTextbox = text;
     }
 
@@ -80,6 +78,7 @@ public static class MissionEditorFunctions
     {
         //This draws the input label
         GameObject currentMissionTextboxGO = new GameObject();
+        currentMissionTextboxGO.name = "Mission Name";
 
         currentMissionTextboxGO.transform.SetParent(missionEditor.transform);
         RectTransform rectTransform = currentMissionTextboxGO.AddComponent<RectTransform>();
@@ -99,8 +98,6 @@ public static class MissionEditorFunctions
         text.horizontalOverflow = HorizontalWrapMode.Wrap;
         text.alignment = TextAnchor.MiddleCenter;
 
-        currentMissionTextboxGO.name = "Mission Name";
-
         missionEditor.missionName = text;
     }
 
@@ -108,6 +105,7 @@ public static class MissionEditorFunctions
     {
         //This draws the input label
         GameObject menuBarGO = new GameObject();
+        menuBarGO.name = "Menu Bar";
 
         menuBarGO.transform.SetParent(missionEditor.transform);
         RectTransform rectTransform = menuBarGO.AddComponent<RectTransform>();
@@ -128,17 +126,16 @@ public static class MissionEditorFunctions
         {
             image.color = color;
         }
-
-        menuBarGO.name = "Menu Bar";
     }
 
     public static void Draw_InfoBar(MissionEditor missionEditor)
     {
         //This creates the button bar
-        GameObject infoBar1GO = new GameObject();
+        GameObject infoBarGO = new GameObject();
+        infoBarGO.name = "InfoBar";
 
-        infoBar1GO.transform.SetParent(missionEditor.transform);
-        RectTransform rectTransform = infoBar1GO.AddComponent<RectTransform>();
+        infoBarGO.transform.SetParent(missionEditor.transform);
+        RectTransform rectTransform = infoBarGO.AddComponent<RectTransform>();
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(1, 0);
         rectTransform.pivot = new Vector2(0.5f, 0);
@@ -146,7 +143,7 @@ public static class MissionEditorFunctions
         rectTransform.sizeDelta = new Vector2(0, 12f);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
-        Image image = infoBar1GO.AddComponent<Image>();
+        Image image = infoBarGO.AddComponent<Image>();
 
         Color color = Color.black;
 
@@ -245,7 +242,10 @@ public static class MissionEditorFunctions
     {
         GameObject buttonGO = new GameObject();
         GameObject buttonTextGO = new GameObject();
- 
+
+        buttonGO.name = "button_" + functionType;
+        buttonTextGO.name = "ButtonText_" + functionType;
+
         buttonGO.transform.SetParent(parent);
         buttonTextGO.transform.SetParent(buttonGO.transform);
 
@@ -316,7 +316,7 @@ public static class MissionEditorFunctions
         }
         else if (functionType == "OpenNewWindow")
         {
-            button.onClick.AddListener(() => { NodeFunctions.DeleteAllNodes(); });
+            button.onClick.AddListener(() => { NewMission(); });
         }
         else if (functionType == "OpenAddNewEvent")
         {
@@ -338,8 +338,6 @@ public static class MissionEditorFunctions
         {
             button.onClick.AddListener(() => { OpenWindow("abouteditor"); });
         }
-
-        buttonGO.name = "button_" + functionType;
     }
 
     public static GameObject DrawDropDownMenu(Transform parent, string name, float xPosition, string[] buttons, string[] functions)
@@ -690,6 +688,16 @@ public static class MissionEditorFunctions
 
     #endregion
 
+    #region new mission
+
+    public static void NewMission()
+    {
+        NodeFunctions.DeleteAllNodes();
+        CloseAllMenus();
+    }
+
+    #endregion
+
     #region loading
 
     public static void LoadMission(Window window)
@@ -705,8 +713,6 @@ public static class MissionEditorFunctions
             TextAsset missionDataTextAsset = new TextAsset(missionDataString);
             Mission mission = JsonUtility.FromJson<Mission>(missionDataTextAsset.text);
             Task a = new Task(LoadMissionData(mission));
-
-            DisplayMessage("Loaded " + missionEditor.selectedMissionToLoad);
         }
 
         UpdateMissionName(missionEditor.selectedMissionToLoad);
@@ -734,6 +740,8 @@ public static class MissionEditorFunctions
 
     public static IEnumerator LoadMissionData(Mission mission)
     {
+        float number = mission.missionEventData.Length * 2;
+        float count = 0;
 
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
@@ -772,6 +780,10 @@ public static class MissionEditorFunctions
             InputData(node.nextEvent4, missionEvent.nextEvent4);
             node.nodePosX = missionEvent.nodePosX;
             node.nodePosY = missionEvent.nodePosY;
+
+            float percentage = (count / number) * 100;
+            DisplayMessage("Loading " + percentage.ToString("00") + "% Complete");
+            count++;
         }
 
         foreach (MissionEvent missionEvent in mission.missionEventData)
@@ -836,12 +848,17 @@ public static class MissionEditorFunctions
                         }
                     }
                 }
-
-
             }
+
+            float percentage = (count / number) * 100;
+            DisplayMessage("Loading " + percentage.ToString("00") + "% Complete");
+            count++;
 
             yield return null;
         }
+
+
+        DisplayMessage("Loading Mission Complete");
     }
 
     public static Node SearchNodes(string eventID)

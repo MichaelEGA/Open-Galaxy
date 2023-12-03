@@ -164,7 +164,6 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         float by = secondlocalpoint.y;
 
         rect.localScale = Vector3.one;
-        //Vector2 graphScale = missionEditor.editorContentRect.transform.localScale;
         Vector2 graphScale = Vector3.one;
 
         Vector3 a = new Vector3(ax * graphScale.x, ay * graphScale.y, 0);
@@ -174,6 +173,9 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         Vector3 dif = a - b;
         rect.sizeDelta = new Vector3(dif.magnitude, lineWidth);
         rect.rotation = Quaternion.Euler(new Vector3(0, 0, 180 * Mathf.Atan(dif.y / dif.x) / Mathf.PI));
+
+        //This ensures that the node links always appear 'on top' of the nodes and not under them
+        line.transform.SetAsLastSibling();
     }
 
 }

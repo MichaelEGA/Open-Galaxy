@@ -338,32 +338,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("tiefighter");
-        options1.Add("tieinterceptor");
-        options1.Add("tieadvanced");
-        options1.Add("tiebomber");
-        options1.Add("assaultgunboat");
-        options1.Add("xwing");
-        options1.Add("ywing");
-        options1.Add("awing");
-        options1.Add("dx9shuttle");
-        options1.Add("lambdashuttle");
-        options1.Add("z95headhunter");
-        options1.Add("escapepod");
-        options1.Add("bulkfreighter");
-        options1.Add("container");
-        options1.Add("corelliancorvette");
-        options1.Add("gr75transport");
-        options1.Add("stardestroyer");
-        options1.Add("superstardestroyer");
-        options1.Add("homeone");
-        options1.Add("nebulonbfrigate");
-        options1.Add("xq1station");
-        options1.Add("dsturrettall");
-        options1.Add("dsturretshort");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "dsturrettall", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "dsturrettall", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -479,32 +454,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("tiefighter");
-        options1.Add("tieinterceptor");
-        options1.Add("tieadvanced");
-        options1.Add("tiebomber");
-        options1.Add("assaultgunboat");
-        options1.Add("xwing");
-        options1.Add("ywing");
-        options1.Add("awing");
-        options1.Add("dx9shuttle");
-        options1.Add("lambdashuttle");
-        options1.Add("z95headhunter");
-        options1.Add("escapepod");
-        options1.Add("bulkfreighter");
-        options1.Add("container");
-        options1.Add("corelliancorvette");
-        options1.Add("gr75transport");
-        options1.Add("stardestroyer");
-        options1.Add("superstardestroyer");
-        options1.Add("homeone");
-        options1.Add("nebulonbfrigate");
-        options1.Add("xq1station");
-        options1.Add("dsturrettall");
-        options1.Add("dsturretshort");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -590,32 +540,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("tiefighter");
-        options.Add("tieinterceptor");
-        options.Add("tieadvanced");
-        options.Add("tiebomber");
-        options.Add("assaultgunboat");
-        options.Add("xwing");
-        options.Add("ywing");
-        options.Add("awing");
-        options.Add("dx9shuttle");
-        options.Add("lambdashuttle");
-        options.Add("z95headhunter");
-        options.Add("escapepod");
-        options.Add("bulkfreighter");
-        options.Add("container");
-        options.Add("corelliancorvette");
-        options.Add("gr75transport");
-        options.Add("stardestroyer");
-        options.Add("superstardestroyer");
-        options.Add("homeone");
-        options.Add("nebulonbfrigate");
-        options.Add("xq1station");
-        options.Add("dsturrettall");
-        options.Add("dsturretshort");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1683,32 +1608,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("tiefighter");
-        options1.Add("tieinterceptor");
-        options1.Add("tieadvanced");
-        options1.Add("tiebomber");
-        options1.Add("assaultgunboat");
-        options1.Add("xwing");
-        options1.Add("ywing");
-        options1.Add("awing");
-        options1.Add("dx9shuttle");
-        options1.Add("lambdashuttle");
-        options1.Add("z95headhunter");
-        options1.Add("escapepod");
-        options1.Add("bulkfreighter");
-        options1.Add("container");
-        options1.Add("corelliancorvette");
-        options1.Add("gr75transport");
-        options1.Add("stardestroyer");
-        options1.Add("superstardestroyer");
-        options1.Add("homeone");
-        options1.Add("nebulonbfrigate");
-        options1.Add("xq1station");
-        options1.Add("dsturrettall");
-        options1.Add("dsturretshort");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1812,32 +1712,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("tiefighter");
-        options1.Add("tieinterceptor");
-        options1.Add("tieadvanced");
-        options1.Add("tiebomber");
-        options1.Add("assaultgunboat");
-        options1.Add("xwing");
-        options1.Add("ywing");
-        options1.Add("awing");
-        options1.Add("dx9shuttle");
-        options1.Add("lambdashuttle");
-        options1.Add("z95headhunter");
-        options1.Add("escapepod");
-        options1.Add("bulkfreighter");
-        options1.Add("container");
-        options1.Add("corelliancorvette");
-        options1.Add("gr75transport");
-        options1.Add("stardestroyer");
-        options1.Add("superstardestroyer");
-        options1.Add("homeone");
-        options1.Add("nebulonbfrigate");
-        options1.Add("xq1station");
-        options1.Add("dsturrettall");
-        options1.Add("dsturretshort");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1933,32 +1808,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("tiefighter");
-        options1.Add("tieinterceptor");
-        options1.Add("tieadvanced");
-        options1.Add("tiebomber");
-        options1.Add("assaultgunboat");
-        options1.Add("xwing");
-        options1.Add("ywing");
-        options1.Add("awing");
-        options1.Add("dx9shuttle");
-        options1.Add("lambdashuttle");
-        options1.Add("z95headhunter");
-        options1.Add("escapepod");
-        options1.Add("bulkfreighter");
-        options1.Add("container");
-        options1.Add("corelliancorvette");
-        options1.Add("gr75transport");
-        options1.Add("stardestroyer");
-        options1.Add("superstardestroyer");
-        options1.Add("homeone");
-        options1.Add("nebulonbfrigate");
-        options1.Add("xq1station");
-        options1.Add("dsturrettall");
-        options1.Add("dsturretshort");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "dsturrettall", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "dsturrettall", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2092,32 +1942,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("tiefighter");
-        options1.Add("tieinterceptor");
-        options1.Add("tieadvanced");
-        options1.Add("tiebomber");
-        options1.Add("assaultgunboat");
-        options1.Add("xwing");
-        options1.Add("ywing");
-        options1.Add("awing");
-        options1.Add("dx9shuttle");
-        options1.Add("lambdashuttle");
-        options1.Add("z95headhunter");
-        options1.Add("escapepod");
-        options1.Add("bulkfreighter");
-        options1.Add("container");
-        options1.Add("corelliancorvette");
-        options1.Add("gr75transport");
-        options1.Add("stardestroyer");
-        options1.Add("superstardestroyer");
-        options1.Add("homeone");
-        options1.Add("nebulonbfrigate");
-        options1.Add("xq1station");
-        options1.Add("dsturrettall");
-        options1.Add("dsturretshort");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2913,6 +2738,42 @@ public static class NodeTypes
         drop -= 30;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    #endregion
+
+    #region standard lists for different dropdown menus
+
+    public static List<string> GetShipList()
+    {
+        List<string> shipList = new List<string>();
+
+        shipList.Add("tiefighter");
+        shipList.Add("tieinterceptor");
+        shipList.Add("tieadvanced");
+        shipList.Add("tiebomber");
+        shipList.Add("assaultgunboat");
+        shipList.Add("xwing");
+        shipList.Add("ywing");
+        shipList.Add("awing");
+        shipList.Add("dx9shuttle");
+        shipList.Add("lambdashuttle");
+        shipList.Add("z95headhunter");
+        shipList.Add("escapepod");
+        shipList.Add("bulkfreighter");
+        shipList.Add("container");
+        shipList.Add("corelliancorvette");
+        shipList.Add("gr75transport");
+        shipList.Add("stardestroyer");
+        shipList.Add("superstardestroyer");
+        shipList.Add("homeone");
+        shipList.Add("nebulonbfrigate");
+        shipList.Add("xq1station");
+        shipList.Add("dsturrettall");
+        shipList.Add("dsturretshort");
+        shipList.Add("navbuoy");
+
+        return shipList;
     }
 
     #endregion

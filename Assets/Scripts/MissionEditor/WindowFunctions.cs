@@ -226,6 +226,7 @@ public static class WindowFunctions
     {
         //This draws the input label
         GameObject titleGO = new GameObject();
+        titleGO.name = "Title_" + title;
 
         titleGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform = titleGO.AddComponent<RectTransform>();
@@ -243,14 +244,13 @@ public static class WindowFunctions
         labelText.fontSize = fontSize;
         labelText.color = Color.white;
         labelText.alignment = TextAnchor.MiddleLeft;
-
-        titleGO.name = "Title_" + title;
     }
 
     //This draws a line break
     public static void DrawLineBreak(Window window, string color, float xPos, float yPos, float height, float width)
     {
         GameObject lineBreakGO = new GameObject();
+        lineBreakGO.name = "LineBreak";
 
         lineBreakGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform = lineBreakGO.AddComponent<RectTransform>();
@@ -279,6 +279,7 @@ public static class WindowFunctions
     public static void DrawImageButton(Window window, float xPos, float yPos, float height, float width, string imageName, string functionType, bool parentToNode = true, Transform differentTransform = null)
     {
         GameObject buttonGO = new GameObject();
+        buttonGO.name = "Button_" + functionType;
 
         if (parentToNode == true)
         {
@@ -311,8 +312,6 @@ public static class WindowFunctions
         {
             button.onClick.AddListener(() => { DeleteWindow(window); });
         }
-
-        buttonGO.name = "button_" + functionType;
     }
 
     //This draws a button and allocates a function
@@ -320,6 +319,9 @@ public static class WindowFunctions
     {
         GameObject buttonGO = new GameObject();
         GameObject buttonTextGO = new GameObject();
+
+        buttonGO.name = "Button_" + functionType;
+        buttonTextGO.name = "ButtonText_" + functionType;
 
         if (parentToNode == true)
         {
@@ -411,10 +413,9 @@ public static class WindowFunctions
         {
             button.onClick.AddListener(() => { DeleteWindow(window); });
         }
-
-        buttonGO.name = "button_" + functionType;
     }
 
+    //This draws a field with scrollable buttons
     public static void DrawScrollableButtons(Window window, float xPos, float yPos, float height, float width, float buttonHeight, int fontSize, string[] buttons, string[] functions)
     {
         GameObject baseGO = new GameObject();
@@ -429,7 +430,7 @@ public static class WindowFunctions
         RectTransform viewportRectTransform = viewportGO.AddComponent<RectTransform>();
         RectTransform contentRectTransform = contentGO.AddComponent<RectTransform>();
 
-        baseRectTransform.name = "Scrollable_Buttons";
+        baseRectTransform.name = "ScrollableButtons";
         viewportRectTransform.name = "Viewport";
         contentRectTransform.name = "ContentRect";
 
@@ -489,6 +490,7 @@ public static class WindowFunctions
         DrawVerticalScrollBar(baseGO.transform, scrollRect, 5);
     }
 
+    //This draws a field with scollable test
     public static void DrawScrollableText(Window window, float xPos, float yPos, float height, float width, int fontSize, string text, float textBoxHeight, string textBoxName = "textbox")
     {
         //This draws the scrollview
@@ -573,6 +575,7 @@ public static class WindowFunctions
         DrawVerticalScrollBar(baseGO.transform, scrollRect, 5);
     }
 
+    //This draws a vertical scrollbar on a scrollable field
     public static void DrawVerticalScrollBar(Transform parent, ScrollRect scrollRect, float width)
     {
         GameObject scrollbarVertical = new GameObject();
@@ -583,8 +586,8 @@ public static class WindowFunctions
         slidingArea.transform.SetParent(scrollbarVertical.transform);
         handle.transform.SetParent(slidingArea.transform);
 
-        scrollbarVertical.name = "Scrollbar Vertical";
-        slidingArea.name = "Sliding Area";
+        scrollbarVertical.name = "ScrollbarVertical";
+        slidingArea.name = "SlidingArea";
         handle.name = "Handle";
 
         RectTransform scrollBarRect = scrollbarVertical.AddComponent<RectTransform>();
@@ -634,6 +637,17 @@ public static class WindowFunctions
     {
         GameObject textboxGO = new GameObject();
         GameObject textBoxTextGO = new GameObject();
+
+        if (name != "none")
+        {
+            textboxGO.name = name;
+        }
+        else
+        {
+            textboxGO.name = "TextBox";
+        }
+
+        textBoxTextGO.name = "TextBoxText";
 
         if (parentToNode == true)
         {
@@ -685,18 +699,9 @@ public static class WindowFunctions
         text.fontSize = fontSize;
         text.text = textBoxText;
         text.alignment = alignement;
-
-        if (name != "none")
-        {
-            textboxGO.name = name;
-        }
-        else
-        {
-            textboxGO.name = "textbox";
-        }
-
     }
 
+    //Thsi draws a standard input field
     public static Text DrawInputField(Window window, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width, float gap = 10, string name = "none")
     {
         float halfwidth = (width - gap) / 2f;
@@ -704,6 +709,7 @@ public static class WindowFunctions
 
         //This draws the input label
         GameObject labelGO = new GameObject();
+        labelGO.name = "Label_" + label;
 
         labelGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform2 = labelGO.AddComponent<RectTransform>();
@@ -724,6 +730,7 @@ public static class WindowFunctions
 
         //This draws the background of the input field
         GameObject inputFieldBackgroundGO = new GameObject();
+        inputFieldBackgroundGO.name = "InputFieldBackground_" + label;
 
         inputFieldBackgroundGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform3 = inputFieldBackgroundGO.AddComponent<RectTransform>();
@@ -741,6 +748,7 @@ public static class WindowFunctions
 
         //This draws the input field
         GameObject inputFieldGO = new GameObject();
+        inputFieldGO.name = "InputField_" + label;
 
         inputFieldGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform = inputFieldGO.AddComponent<RectTransform>();
@@ -768,6 +776,15 @@ public static class WindowFunctions
 
         GameObject transitionTextGO = new GameObject();
 
+        if (name != "none")
+        {
+            transitionTextGO.name = name;
+        }
+        else
+        {
+            transitionTextGO.name = "inputfield";
+        }
+
         transitionTextGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform4 = transitionTextGO.AddComponent<RectTransform>();
         rectTransform4.anchorMax = new Vector2(0, 1);
@@ -788,15 +805,6 @@ public static class WindowFunctions
         inputFieldToText.text = transitionText;
         inputFieldToText.inputField = inputField;
 
-        if (name != "none")
-        {
-            transitionTextGO.name = name;
-        }
-        else
-        {
-            transitionTextGO.name = "inputfield";
-        }
-
         //If this is not run the caret will display behind the text box...
         ModifyCaretPosition(window);
 
@@ -811,6 +819,7 @@ public static class WindowFunctions
 
         //This draws the input label
         GameObject labelGO = new GameObject();
+        labelGO.name = "Label_" + label;
 
         labelGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform2 = labelGO.AddComponent<RectTransform>();
@@ -831,6 +840,7 @@ public static class WindowFunctions
 
         //This draws the background of the input field
         GameObject inputFieldBackgroundGO = new GameObject();
+        inputFieldBackgroundGO.name = "InputFieldBackground_" + label;
 
         inputFieldBackgroundGO.transform.SetParent(window.rectTransform.transform);
         RectTransform rectTransform3 = inputFieldBackgroundGO.AddComponent<RectTransform>();
@@ -848,6 +858,7 @@ public static class WindowFunctions
 
         //This draws the input field
         GameObject inputFieldGO = new GameObject();
+        inputFieldGO.name = "InputField_" + label;
 
         inputFieldGO.transform.SetParent(window.rectTransform.transform);
 
@@ -877,6 +888,15 @@ public static class WindowFunctions
 
         GameObject transitionTextGO = new GameObject();
 
+        if (name != "none")
+        {
+            transitionTextGO.name = name;
+        }
+        else
+        {
+            transitionTextGO.name = "inputfieldlarge";
+        }
+
         transitionTextGO.transform.SetParent(inputFieldGO.transform);
         RectTransform rectTransform4 = transitionTextGO.AddComponent<RectTransform>();
         rectTransform4.anchorMax = new Vector2(0, 1);
@@ -896,15 +916,6 @@ public static class WindowFunctions
         InputFieldToText inputFieldToText = transitionTextGO.AddComponent<InputFieldToText>();
         inputFieldToText.text = transitionText;
         inputFieldToText.inputField = inputField;
-
-        if (name != "none")
-        {
-            transitionTextGO.name = name;
-        }
-        else
-        {
-            transitionTextGO.name = "inputfieldlarge";
-        }
 
         //If this is not run the caret will display behind the text box...
         ModifyCaretPosition(window);

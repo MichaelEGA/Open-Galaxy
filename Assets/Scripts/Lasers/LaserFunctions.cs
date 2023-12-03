@@ -372,35 +372,47 @@ public static class LaserFunctions
 
                 if (lasersToFire == 1 || lasersToFire == 2 || lasersToFire == 4)
                 {
-                    particleSystem.transform.position = firstCannon.transform.position;
-                    particleSystem.transform.rotation = firstCannon.transform.rotation;
-                    particleSystem.Play();
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, 1, 500, 0.6f);
-                    yield return null;
+                    if (particleSystem != null & firstCannon != null & smallShip != null)
+                    {
+                        particleSystem.transform.position = firstCannon.transform.position;
+                        particleSystem.transform.rotation = firstCannon.transform.rotation;
+                        particleSystem.Play();
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                        yield return null;
+                    }  
                 }
 
                 if (lasersToFire == 2 || lasersToFire == 4)
                 {
-                    yield return null;
-                    particleSystem.transform.position = secondCannon.transform.position;
-                    particleSystem.transform.rotation = secondCannon.transform.rotation;
-                    particleSystem.Play();
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, secondCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                    if (particleSystem != null & secondCannon != null & smallShip != null)
+                    {
+                        yield return null;
+                        particleSystem.transform.position = secondCannon.transform.position;
+                        particleSystem.transform.rotation = secondCannon.transform.rotation;
+                        particleSystem.Play();
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, secondCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                    }
                 }
 
                 if (lasersToFire == 4)
                 {
-                    yield return null;
-                    particleSystem.transform.position = thirdCannon.transform.position;
-                    particleSystem.transform.rotation = thirdCannon.transform.rotation;
-                    particleSystem.Play();
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                    if (particleSystem != null & thirdCannon != null & smallShip != null)
+                    {
+                        yield return null;
+                        particleSystem.transform.position = thirdCannon.transform.position;
+                        particleSystem.transform.rotation = thirdCannon.transform.rotation;
+                        particleSystem.Play();
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                    }
 
-                    yield return null;
-                    particleSystem.transform.position = fourthCannon.transform.position;
-                    particleSystem.transform.rotation = fourthCannon.transform.rotation;
-                    particleSystem.Play();
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, fourthCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                    if (particleSystem != null & fourthCannon != null & smallShip != null)
+                    {
+                        yield return null;
+                        particleSystem.transform.position = fourthCannon.transform.position;
+                        particleSystem.transform.rotation = fourthCannon.transform.rotation;
+                        particleSystem.Play();
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, fourthCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                    }
                 }
 
                 smallShip.laserfiring = false;

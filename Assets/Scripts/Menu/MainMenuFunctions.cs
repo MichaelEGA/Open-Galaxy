@@ -213,10 +213,7 @@ public static class MainMenuFunctions
 
         //This adds three extra sub menus just for open galaxy
         subMenus.Add("Missions");
-        subMenus.Add("Training");
-        subMenus.Add("Other Game Modes");
         subMenus.Add("Custom Missions");
-        subMenus.Add("In Development");
 
         //This allows the script to log the first menu created. It will be the first loaded
         bool firstSubMenuLogged = false;
@@ -282,12 +279,6 @@ public static class MainMenuFunctions
         //This adds all the missions buttons for internal missions
         Object[] mainMissions = Resources.LoadAll("Data/Files/Missions_Main", typeof(TextAsset));
         CreateMissionButtons(mainMenu, mainMissions, "Missions_Settings", "LoadMainMission");
-        Object[] trainingMissions = Resources.LoadAll("Data/Files/Missions_Training", typeof(TextAsset));
-        CreateMissionButtons(mainMenu, trainingMissions, "Training_Settings", "LoadTrainingMission");      
-        Object[] otherGameModes = Resources.LoadAll("Data/Files/Missions_Misc", typeof(TextAsset));
-        CreateMissionButtons(mainMenu, otherGameModes, "Other Game Modes_Settings", "LoadOtherGameModes");
-        Object[] inDevelopment = Resources.LoadAll("Data/Files/Missions_InDevelopment", typeof(TextAsset));
-        CreateMissionButtons(mainMenu, inDevelopment, "In Development_Settings", "LoadInDevelopment");
 
         //This adds all the missions buttons for external missions
         var info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
@@ -566,10 +557,10 @@ public static class MainMenuFunctions
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
     {
         string[] messages = new string[10];
-        messages[0] = "Welcome to Open Galaxy. Version 0.7.6 adds custom mission loading among other features.";
+        messages[0] = "Welcome to Open Galaxy. Version 0.9.1 finally adds the mission editor.";
         messages[1] = "Open Galaxy's aim is to be a platform for X-Wing and Tie Fighter style custom missions.";
-        messages[2] = "Need a quick fix? Try out the random battle and ladder modes.";
-        messages[3] = "Flying a ship isn't like dusting crops. Remember to complete the training missions.";
+        messages[2] = "Run out of missions. Why not try you hand at making one using the inbuilt editor.";
+        messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";
         messages[4] = "Open Galaxy generates a real Star Wars galaxy with accurately positioned stars and planets.";
         messages[5] = "You can lower the quality of the planet heightmap for faster loadtimes.";
         messages[6] = "Open Galaxy is best played with a keyboard and mouse. But there is rudimentary controller support.";

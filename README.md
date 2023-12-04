@@ -1,10 +1,10 @@
 # Open-Galaxy
 
-![Screenshot (135)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/7a5a0799-193c-43d4-91a6-944719cace6b)
 Gameplay
+![Screenshot (132)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/c0398f2d-0ecb-44a5-910b-9c2313fa88df)
 
-![Screenshot (130)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/0a2f79a7-66c7-4489-b7fb-925d1e6d50ee)
 Mission Editor
+![Screenshot (130)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/0a2f79a7-66c7-4489-b7fb-925d1e6d50ee)
 
 Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platform for custom missions made by the community. 
 

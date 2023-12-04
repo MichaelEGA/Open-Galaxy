@@ -559,7 +559,7 @@ public static class MainMenuFunctions
         string[] messages = new string[10];
         messages[0] = "Welcome to Open Galaxy. Version 0.9.1 finally adds the mission editor.";
         messages[1] = "Open Galaxy's aim is to be a platform for X-Wing and Tie Fighter style custom missions.";
-        messages[2] = "Run out of missions. Why not try you hand at making one using the inbuilt editor.";
+        messages[2] = "Run out of missions. Why not try you hand at making one using the inbuilt editor?";
         messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";
         messages[4] = "Open Galaxy generates a real Star Wars galaxy with accurately positioned stars and planets.";
         messages[5] = "You can lower the quality of the planet heightmap for faster loadtimes.";

@@ -1,5 +1,10 @@
 # Open-Galaxy
-![screenshot](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/d8400322-e72b-415f-a0b1-1a59dd9299f8)
+
+Gameplay
+![Screenshot (133)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/7d7deffe-c533-4490-acd1-129528188bdf)
+
+Mission Editor
+![Screenshot (130)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/0a2f79a7-66c7-4489-b7fb-925d1e6d50ee)
 
 Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platform for custom missions made by the community. 
 
@@ -10,14 +15,14 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Cockpits (Implemented)
   - Capital ships (Implemented)
   - Tile Generation for Cities and Death Star (Implemented)
-  - Easy to use mission editor (In progress)
+  - Easy to use mission editor (Implemented)
   - External mission loading (Implemented)
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
   - Explore mode where you can explore the whole Star Wars galaxy (In progress)
 
-**Latest Release:** 0.7.6
+**Latest Release:** 0.9.1
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.7.6/Open.Galaxy.0.7.6.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.9.1/Open.Galaxy.0.9.1.zip
 
 **Other Info**
 
@@ -27,6 +32,80 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
 
 **Changelog**
+
+04/12/23 - v.0.9.1 (Unity 2022.3.12f1)
+  - Updated: Hud Updated
+  - Updated: Minor Hud modifications
+  - Removed: Defunct missions and menu options
+  - Fixed: Node dragging in editor plus other things
+  - Added: Nav Buoy
+  - Fixed: Next target not moving on from current selection
+  - Added: Mission Objectives Function
+  - Updated: Multiple editor nodes
+  - Updated: music system
+  - Added: new play track node
+  - Updated: Audio now runs through audio mixer
+  - Updated: Cargo and Allegiance Types
+  - Updated: All mission functions take mission event variable
+  - Updated: Node functions renamed and reorganised
+  - Added: Multi track events
+  - Added: Hyperspace in and out function
+  - Updated: overhauled load ship functions
+  - Added: New loading patterns for ships
+  - Added: Scan ship cargo function
+  - Updated: Clean up mission editor
+  - Updated: Save function now correctly saves over old file
+  - Updated: Added all event descriptions to mission editor
+  - Updated: Add Event Window with scrollable description
+  - Added: Reload main menu function
+  - Added: About window to mission editor
+  - Added: Open Web Links Function
+  - Fixed: base data not loading when new node created
+  - Fixed: Data is correctly parsed when saving
+  - Updated: Save function now closes menu when run
+  - Added: Bar indicating the file that is being edited
+  - Added; Added scrollbar to window scrollview
+  - Added: Close function to editor windows
+  - Updated: Add Mission Event Node
+  - Updated: Menu buttons now work
+  - Updated: Mission Editor menus now close
+  - Added: Large message box
+  - Added: Drop down menus
+  - Added: Information bar at bottom of mission editor
+  - Added: editor scale restrictions
+  - Added: Zoom indicator in editor
+  - Fixed: Editor caret now displays correctly
+  - Added: increase size of some input fields
+  - Fixed: Node titles overflowing
+  - Added: new mission function 'ifshipisactive'
+  - Fixed: editor data not loading and saving
+  - Updated: Missions now load in mission editor
+  - Added: Load Mission Node to Editor
+  - Added: node links connect when loading mission in editor
+  - Added: Save function to mission editor
+  - Added: Save menu in mission editor
+  - Added: Finished adding nodes to mission editor
+  - Added: More mission function nodes to mission editor
+  - Added: Two new node functions to mission editor
+  - Added: All preload functions to mission editor
+  - Updated: Added mission events list to add mission event function
+  - Updated: Node links now fully functional
+  - Added: Mission event data to node and node data saving
+  - Updated: Node link scaling and placement
+  - Added: Draw line function to visually connect nodes
+  - Added: Node links to mission editor
+  - Updated: Add node function now works correctly
+  - Added: New Mission Editor Menu "Add Node"
+  - Added: Menu nodes to mission editor
+  - Added: New Main Menu Node to Node System
+  - Added: Draw button function to node system
+  - Added: Drop down menu to node draw functions
+  - Updated: Correctly implemented node dragging in editor
+  - Added: Initial Code for Dragging Nodes
+  - Added: Added basic node loading functionality to mission editor
+  - Added: Exit button to mission editor
+  - Added: Run editor from main menu
+  - Added: Basic Code for Mission Editor
 
 01/10/23 - v0.7.6 (Unity 2022.2.9f1)
   - Fixed: Menu doesn't load when custom mission folder doesn't exist

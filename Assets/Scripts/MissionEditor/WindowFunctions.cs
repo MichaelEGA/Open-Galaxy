@@ -54,7 +54,7 @@ public static class WindowFunctions
         List<string> buttonList = new List<string>();
 
         buttonList.Add("custom_node");
-        buttonList.Add("loadscene");
+        buttonList.Add("createlocation");
         buttonList.Add("preload_loadasteroids");
         buttonList.Add("preload_loadplanet");
         buttonList.Add("preload_loadtiles");
@@ -62,6 +62,7 @@ public static class WindowFunctions
         buttonList.Add("preload_loadsingleship");
         buttonList.Add("preload_loadmultipleships");
         buttonList.Add("preload_loadmultipleshipsbyclassandallegiance");
+        buttonList.Add("preload_setsceneradius");
         buttonList.Add("preload_setskybox");
         buttonList.Add("starteventseries");
         buttonList.Add("activatehyperspace");

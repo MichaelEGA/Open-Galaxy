@@ -17,9 +17,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_CustomNode(node);
         }
-        else if (node.nodeType == "loadscene")
+        else if (node.nodeType == "createlocation")
         {
-            NodeTypes.Draw_LoadScene(node);
+            NodeTypes.Draw_CreateLocation(node);
         }
         else if (node.nodeType == "preload_loadasteroids")
         {
@@ -48,6 +48,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "preload_loadmultipleshipsbyclassandallegiance")
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShipsByClassAndAllegiance(node);
+        }
+        else if (node.nodeType == "preload_setsceneradius")
+        {
+            NodeTypes.Draw_PreLoad_SetSceneRadius(node);
         }
         else if (node.nodeType == "preload_setskybox")
         {

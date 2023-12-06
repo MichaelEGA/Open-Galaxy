@@ -43,37 +43,46 @@ public static class MissionFunctions
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
         Scene scene = SceneFunctions.GetScene();
 
-        //This loads the scene
+        //This pauses the game to prevent action starting before everything is loaded 
         Time.timeScale = 0;
 
+        //This marks the time using unscaled time
         float time = Time.unscaledTime;
 
+        //This displays the loading screen
         DisplayLoadingScreen(missionName, true);
 
+        //This tells the player that the mission is being loaded
         LoadScreenFunctions.AddLogToLoadingScreen("Start loading " + missionName + ".", Time.unscaledTime - time);
 
-        foreach (MissionEvent missionEvent in mission.missionEventData)
-        {
-            if (missionEvent.eventType == "loadscene")
-            {
-                LoadScene(missionName, missionAddress, addressIsExternal, missionEvent);
-                break;
-            }
-        }
+        //This loads the base game scene
+        LoadScene(missionName, missionAddress, addressIsExternal);
+
+        //This sets the skybox to the default space
+        SceneFunctions.SetSkybox("space");
+
+        //This finds and sets the first location
+        MissionEvent firstLocationNode = FindFirstLocationNode(mission);
+        SetGalaxyLocation(firstLocationNode);
+
+        //This finds all the location you can jump to in the mission
+        FindAllLocations(mission);
 
         //This runs all the preload events like loading the planet and asteroids and objects already in scene
-        Task a = new Task(FindAndRunPreLoadEvents(mission, time));
-
+        Task a = new Task(FindAndRunPreLoadEvents(mission, firstLocationNode.conditionLocation, time));
         while (a.Running == true) { yield return null; }
 
         //This tells the player to get ready, starts the game, locks the cursor and gets rid of the loading screen
         LoadScreenFunctions.AddLogToLoadingScreen(missionName + " loaded.", 0);
 
+        //This unpause the game 
         Time.timeScale = 1;
 
+        //This locks and hides the cursor during gameplay
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
 
+        //This removes the loading screen 
         DisplayLoadingScreen(missionName, false);
 
         //This sets the mission manager to running
@@ -106,55 +115,120 @@ public static class MissionFunctions
         }
     }
 
+    //This finds the first location in the game and loads it
+    public static MissionEvent FindFirstLocationNode(Mission mission)
+    {
+        MissionEvent missionEvent = null;
+
+        foreach (MissionEvent tempMissionEvent in mission.missionEventData)
+        {
+            if (tempMissionEvent.eventType == "createlocation")
+            {
+                if (tempMissionEvent.data1 == "true")
+                {
+                    missionEvent = tempMissionEvent;
+                    LoadScreenFunctions.AddLogToLoadingScreen("Starting location node found", 0);
+                    break;
+                }
+            }
+        }
+
+        if (missionEvent == null)
+        {
+            LoadScreenFunctions.AddLogToLoadingScreen("No starting location node found searching for another location node.", 0);
+
+            foreach (MissionEvent tempMissionEvent in mission.missionEventData)
+            {
+                if (tempMissionEvent.eventType == "createlocation")
+                {
+                    missionEvent = tempMissionEvent;
+                    LoadScreenFunctions.AddLogToLoadingScreen("Secondary location node found.", 0);
+                    break;
+                }
+            }
+        }
+
+        if (missionEvent == null)
+        {
+            LoadScreenFunctions.AddLogToLoadingScreen("No starting location found aborting load", 0);
+        }
+
+        return missionEvent;
+    }
+
+    //This finds all the locations you can visit in the mission
+    public static void FindAllLocations(Mission mission)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene.availibleLocations == null)
+        {
+            scene.availibleLocations = new List<string>();
+        }
+
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+            if (missionEvent.eventType == "createlocation")
+            {
+                scene.availibleLocations.Add(missionEvent.conditionLocation);
+            }
+        }
+    }
+
     //This looks for and runs preload events
-    public static IEnumerator FindAndRunPreLoadEvents(Mission mission, float time)
+    public static IEnumerator FindAndRunPreLoadEvents(Mission mission, string location, float time)
     {
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-            if (missionEvent.eventType == "preload_loadasteroids")
+            if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadAsteroids(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadplanet")
+            else if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
             {
                 LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
                 Task a = new Task(LoadPlanet());
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadtiles")
+            else if (missionEvent.eventType == "preload_loadtiles" & missionEvent.conditionLocation == location)
             {
                 LoadScreenFunctions.AddLogToLoadingScreen("Loading unique tile configuration. This may take a while...", Time.unscaledTime - time);
                 Task a = new Task(LoadTiles(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Tiles loaded", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadmultipleshipsonground")
+            else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadsingleship")
+            else if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
             {
                 LoadSingleShip(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadmultipleships")
+            else if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadmultipleshipsbyclassandallegiance")
+            else if (missionEvent.eventType == "preload_loadmultipleshipsbyclassandallegiance" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShipsByClassAndAllegiance(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by type and allegiance", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_setskybox")
+            else if (missionEvent.eventType == "preload_setsceneradius" & missionEvent.conditionLocation == location)
+            {
+                SetSceneRadius(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", Time.unscaledTime - time);
+            }
+            else if (missionEvent.eventType == "preload_setskybox" & missionEvent.conditionLocation == location)
             {
                 SetSkyBox(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);
@@ -187,10 +261,10 @@ public static class MissionFunctions
                 //This makes the event run in the correct location
                 if (missionEvent.conditionLocation != "none")
                 {
-                    if (missionEvent.conditionLocation != missionManager.scene.location)
+                    if (missionEvent.conditionLocation != missionManager.scene.currentLocation)
                     {
                         float startPause = Time.time;
-                        yield return new WaitUntil(() => missionEvent.conditionLocation == missionManager.scene.location);
+                        yield return new WaitUntil(() => missionEvent.conditionLocation == missionManager.scene.currentLocation);
                     }
                 }
 
@@ -470,21 +544,8 @@ public static class MissionFunctions
     #region main scene loading function
 
     //This creates the scene 
-    public static void LoadScene(string missionName, string missionAddress, bool addressIsExternal, MissionEvent missionEvent)
+    public static void LoadScene(string missionName, string missionAddress, bool addressIsExternal)
     {
-        string location = missionEvent.conditionLocation;
-        float sceneRadius = 15000;
-
-        if (float.TryParse(missionEvent.data1, out _))
-        {
-            float radiusTemp = float.Parse(missionEvent.data1);
-
-            if (radiusTemp >= 1000)
-            {
-                sceneRadius = radiusTemp;
-            }
-        }
-
         Scene scene = SceneFunctions.GetScene();
 
         //This marks the load time using unscaled time
@@ -504,19 +565,6 @@ public static class MissionFunctions
         LoadScreenFunctions.AddLogToLoadingScreen("Audio Manager created", Time.unscaledTime - time);
         MusicFunctions.CreateMusicManager();
         LoadScreenFunctions.AddLogToLoadingScreen("Music Manager created", Time.unscaledTime - time);
-
-        //This gets the planet data
-        var planetData = SceneFunctions.GetSpecificLocation(location);
-        SceneFunctions.MoveStarfieldCamera(planetData.location);
-        scene.location = planetData.planet;
-        scene.planetType = planetData.type;
-        scene.planetSeed = planetData.seed;
-
-        //This sets the radius of the play space
-        scene.sceneRadius = sceneRadius;
-
-        //This sets the scene skybox to the default: space
-        SceneFunctions.SetSkybox("space");
     }
 
     //This displays the loading screen
@@ -684,7 +732,7 @@ public static class MissionFunctions
 
         if (scene != null)
         {
-            HudFunctions.DisplayLargeMessage(textBefore.ToUpper() + scene.location.ToUpper() + textAfter.ToUpper());
+            HudFunctions.DisplayLargeMessage(textBefore.ToUpper() + scene.currentLocation.ToUpper() + textAfter.ToUpper());
         }       
     }
 
@@ -1486,6 +1534,19 @@ public static class MissionFunctions
         }
     }
 
+    //This sets the size of the play area
+    public static void SetSceneRadius(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        float sceneRadius = ParseStringToFloat(missionEvent.data1);
+
+        if (scene != null)
+        {
+            scene.sceneRadius = sceneRadius;
+        }
+    }
+
     //This changes the selected ship/s cargo
     public static void SetCargo(MissionEvent missionEvent)
     {
@@ -1555,6 +1616,20 @@ public static class MissionFunctions
                 }
             }
         }   
+    }
+
+    //This sets the galaxy camera position
+    public static void SetGalaxyLocation(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string location = missionEvent.conditionLocation;
+
+        var planetData = SceneFunctions.GetSpecificLocation(location);
+        scene.currentLocation = planetData.planet;
+        scene.planetType = planetData.type;
+        scene.planetSeed = planetData.seed;
+        SceneFunctions.MoveStarfieldCamera(planetData.location);
     }
 
     //This sets an objective for the player to complete, removes an objective, or clears all objectives.
@@ -1872,6 +1947,45 @@ public static class MissionFunctions
             missionManager.pressedTime = Time.time + 0.5f;
         }
 
+    }
+
+    //This parses a string to a float
+    public static float ParseStringToFloat(string data)
+    {
+        float number = 0;
+
+        if (float.TryParse(data, out _))
+        {
+            number = float.Parse(data);
+        }
+
+        return number;
+    }
+
+    //This parses a string to an int
+    public static int ParseStringToInt(string data)
+    {
+        int number = 0;
+
+        if (int.TryParse(data, out _))
+        {
+            number = int.Parse(data);
+        }
+
+        return number;
+    }
+
+    //This parses a string to a bool
+    public static bool ParseStringToBool(string data)
+    {
+        bool option = false;
+
+        if (bool.TryParse(data, out _))
+        {
+            option = bool.Parse(data);
+        }
+
+        return option;
     }
 
     #endregion

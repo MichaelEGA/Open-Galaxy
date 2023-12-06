@@ -6,10 +6,11 @@ using UnityEngine;
 public class Scene : MonoBehaviour
 {
     [Header("Scene Information")]
-    public string location;
+    public string currentLocation;
     public string planetType;
     public int planetSeed;
     public float sceneRadius = 15000;
+    public List<string> availibleLocations;
 
     [Header("The Main Ship")]
     [HideInInspector] public GameObject mainShip;

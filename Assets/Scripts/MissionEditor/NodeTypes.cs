@@ -186,11 +186,11 @@ public static class NodeTypes
 
     #region pre load event nodes
 
-    public static void Draw_LoadScene(Node node)
+    public static void Draw_CreateLocation(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "loadscene", 8, 5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "createlocation", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -198,15 +198,11 @@ public static class NodeTypes
 
         float drop = -25;
 
-        node.eventType = NodeFunctions.DrawText(node, "loadscene", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "createlocation", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
         node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        NodeFunctions.DrawText(node, "Leave this as 'none' if you want the game to randomly select a location each time.", 5, 5, drop, 20, 90);
 
         drop -= 30;
 
@@ -226,6 +222,10 @@ public static class NodeTypes
         float drop = -25;
 
         node.eventType = NodeFunctions.DrawText(node, "preload_loadasteroids", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -256,7 +256,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        NodeFunctions.DrawText(node, "This node loads the planet set at the location set in the 'Load Scene' node.", 5, 5, drop, 20, 90);
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -276,6 +276,10 @@ public static class NodeTypes
         float drop = -25;
 
         node.eventType = NodeFunctions.DrawText(node, "preload_loadtiles", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -315,6 +319,10 @@ public static class NodeTypes
         float drop = -25;
 
         node.eventType = NodeFunctions.DrawText(node, "preload_loadmultipleshipsonground", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -430,6 +438,10 @@ public static class NodeTypes
 
         drop -= 15;
 
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
@@ -513,6 +525,10 @@ public static class NodeTypes
         float drop = -25;
 
         node.eventType = NodeFunctions.DrawText(node, "preload_loadmultipleships", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -644,6 +660,10 @@ public static class NodeTypes
 
         drop -= 15;
 
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
@@ -765,6 +785,33 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
+    public static void Draw_PreLoad_SetSceneRadius(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "pl_setsceneradius", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_setsceneraidus", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "Radius", "5000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
     public static void Draw_PreLoad_SetSkybox(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -778,6 +825,10 @@ public static class NodeTypes
         float drop = -25;
 
         node.eventType = NodeFunctions.DrawText(node, "preload_setskybox", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

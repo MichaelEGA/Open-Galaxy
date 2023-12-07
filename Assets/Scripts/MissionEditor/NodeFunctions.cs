@@ -65,6 +65,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ActivateHyperspace(node);
         }
+        else if (node.nodeType == "changelocation")
+        {
+            NodeTypes.Draw_ChangeLocation(node);
+        }
         else if (node.nodeType == "clearaioverride")
         {
             NodeTypes.Draw_ClearAIOverride(node);

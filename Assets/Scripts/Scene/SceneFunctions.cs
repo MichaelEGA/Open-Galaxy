@@ -1901,13 +1901,13 @@ public static class SceneFunctions
         {
             AvoidCollisionsFunctions.StopAvoidCollision();
             yield return null;
-            ClearGameObjectPools(scene);
+            ClearScene(scene);
             GameObject.Destroy(scene.gameObject);
         }
     }
 
     //This destroys all gameobjects in the scene and then clears the lists
-    public static void ClearGameObjectPools(Scene scene)
+    public static void ClearScene(Scene scene)
     {
         GameObject Camera = GameObject.Find("Main Camera");
 
@@ -1994,6 +1994,60 @@ public static class SceneFunctions
             }
 
             scene.cockpitPool.Clear();
+        }
+
+        if (scene.planet != null)
+        {
+            GameObject.Destroy(scene.planet);
+        }
+    }
+
+    //This only clears the scene but leaves the scene loaded and the player intact
+    public static void ClearLocation()
+    {
+        Scene scene = GetScene();
+
+        if (scene.objectPool != null)
+        {
+            foreach (GameObject gameobject in scene.objectPool)
+            {
+                if (scene.mainShip != gameobject)
+                {
+                    GameObject.Destroy(gameobject);
+                }
+            }
+
+            scene.objectPool.Clear();
+        }
+
+        if (scene.asteroidPool != null)
+        {
+            foreach (GameObject gameobject in scene.asteroidPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.asteroidPool.Clear();
+        }
+
+        if (scene.tilesPool != null)
+        {
+            foreach (GameObject gameobject in scene.tilesPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.tilesPool.Clear();
+        }
+
+        if (scene.tilesSetPool != null)
+        {
+            foreach (GameObject gameobject in scene.tilesSetPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.tilesSetPool.Clear();
         }
 
         if (scene.planet != null)

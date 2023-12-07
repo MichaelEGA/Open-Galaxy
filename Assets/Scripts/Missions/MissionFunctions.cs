@@ -327,6 +327,11 @@ public static class MissionFunctions
             ActivateHyperspace(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "changelocation")
+        {
+            ChangeLocation(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "clearaioverride")
         {
             ClearAIOverride(missionEvent);
@@ -627,6 +632,24 @@ public static class MissionFunctions
                 }
             }
         }
+    }
+
+    //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
+    public static void ChangeLocation(MissionEvent missionEvent)
+    {
+        string jumpLocation = missionEvent.data1;
+
+        float time = Time.unscaledTime;
+
+        SceneFunctions.ClearLocation();
+
+        MissionManager missionManager = GetMissionManager();
+
+        SetGalaxyLocation2(missionEvent.data1);
+
+        Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
+
+        Task a = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time));
     }
 
     //This clears any AI overides on a ship/ships i.e. "waypoint", "dontattack" etc
@@ -1949,6 +1972,18 @@ public static class MissionFunctions
 
     }
 
+    #endregion
+
+    #region mission utils
+
+    //This returns the mission manager when requested
+    public static MissionManager GetMissionManager()
+    {
+        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+
+        return missionManager;
+    }
+
     //This parses a string to a float
     public static float ParseStringToFloat(string data)
     {
@@ -1986,6 +2021,17 @@ public static class MissionFunctions
         }
 
         return option;
+    }
+
+    //This sets the galaxy camera position
+    public static void SetGalaxyLocation2(string location)
+    {
+        Scene scene = SceneFunctions.GetScene();
+        var planetData = SceneFunctions.GetSpecificLocation(location);
+        scene.currentLocation = planetData.planet;
+        scene.planetType = planetData.type;
+        scene.planetSeed = planetData.seed;
+        SceneFunctions.MoveStarfieldCamera(planetData.location);
     }
 
     #endregion

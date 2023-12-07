@@ -66,6 +66,7 @@ public static class WindowFunctions
         buttonList.Add("preload_setskybox");
         buttonList.Add("starteventseries");
         buttonList.Add("activatehyperspace");
+        buttonList.Add("changelocation");
         buttonList.Add("clearaioverride");
         buttonList.Add("deactivateship");
         buttonList.Add("displaydialoguebox");

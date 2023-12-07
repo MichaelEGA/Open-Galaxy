@@ -169,8 +169,20 @@ public static class NodeDescriptions
             "\n " +
            "Extra Information \n" +
            "- When activated the ship will jump out of the scene and be deactivated. \n" +
+           "- This node should only be used on non-player ships \n" +
+           "- For making the player jump to hyperspace use the 'change location' node. \n" +
            "- If you want the ship to 'return' you will need to load a new ship with the same name and parameters. \n" +
            "- This function will affect any ship whose name contains the designated string. \n";
+        }
+        else if (name == "changelocation")
+        {
+            description =
+            "Change Location \n " +
+            "\n " +
+            "This node unloads the current location and loads a new one while simulating a hyperspace jump" +
+            "\n " +
+           "Extra Information \n" +
+           "- You can only jump to locations you have created in the mission using the 'create location' node. The game will abort changing location if it can't the location.  \n";
         }
         else if (name == "clearaioverride")
         {
@@ -234,7 +246,7 @@ public static class NodeDescriptions
             "Extra Information \n" +
             "- You can link an audio file (.wav) to run at the same time the message is sent. Simply make a folder in the custom missions folder. Name the folder 'YOURMISSIONNAME_audio'. Paste your audio file in the folder, type the name of the audio file (without the .wav extension) in the designated area on the node, and select the 'External Audio' option. \n" +
             "- You can also access several inbuilt audio files. Use the names listed below and select the option 'Internal Audio'. \n" +
-            "- Internal Audio Files: beep01_toggle, beep02_targetlock, beep03_weaponchange, engine01_tiefighter, engine02_xwing, explosion01_xwing, explosion02_protontorpedo, impact01_laserhitshield, impact02_unshieldedhit, impact03_crash, r2d2, r5, shaking01, Turbolaser, turbolaser_ac, turbolaser_ac_3p, turbolaser_af, turbolaser_af_3p, weapon01_tiefighterlaser, weapon02_xwinglaser, weapon03_protontorpedo ";
+            "- Internal Audio Files: beep01_toggle, beep02_targetlock, beep03_weaponchange,  r2d2, r5";
         }
         else if (name == "displaymissionbriefing")
         {

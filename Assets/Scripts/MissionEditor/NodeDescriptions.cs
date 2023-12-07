@@ -172,7 +172,8 @@ public static class NodeDescriptions
            "- This node should only be used on non-player ships \n" +
            "- For making the player jump to hyperspace use the 'change location' node. \n" +
            "- If you want the ship to 'return' you will need to load a new ship with the same name and parameters. \n" +
-           "- This function will affect any ship whose name contains the designated string. \n";
+           "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "changelocation")
         {
@@ -182,7 +183,8 @@ public static class NodeDescriptions
             "This node unloads the current location and loads a new one while simulating a hyperspace jump" +
             "\n " +
            "Extra Information \n" +
-           "- You can only jump to locations you have created in the mission using the 'create location' node. The game will abort changing location if it can't the location.  \n";
+           "- You can only jump to locations you have created in the mission using the 'create location' node. The game will abort changing location if it can't the location.  \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "clearaioverride")
         {
@@ -195,35 +197,48 @@ public static class NodeDescriptions
            "- An ai override forces a ship to deviate from its standard behaviour to perform only one task. \n" +
            "- For a ship to return to its standard behavious the AI override must be cleared. \n" +
            "- AI overrides inlcude: 'MoveToWayPoint', 'Stationary', 'Patrol'. \n" +
-           "- This function will affect any ship whose name contains the designated string. \n";
+           "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "exitmission")
         {
             description =
            "Display Large Mission Then Exit \n " +
            "\n " +
-           "This node exits the mission and returns the player to the main menu. \n";
+           "This node exits the mission and returns the player to the main menu. \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "deactivateship")
         {
             description =
            "Deactivate Ship \n " +
            "\n " +
-           "This node deactivates a ship so that is is no longer part of the scene. \n";
+           "This node deactivates a ship so that is is no longer part of the scene. \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "displaydialoguebox")
         {
             description =
            "Display Dialogue Box \n " +
            "\n " +
-           "This node pauses the game and displays a dialogue box with a message. When the button on the dialogue box is pressed the box disappears and the game resumes. \n";
+           "This node pauses the game and displays a dialogue box with a message. When the button on the dialogue box is pressed the box disappears and the game resumes. \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "displaylargemessage")
         {
             description =
             "Display Large Messgage \n " +
             "\n " +
-            "This node displays a large message in the middle of the screen, like 'MISSION COMPLETE' or similar for a short period of time. \n";
+            "This node displays a large message in the middle of the screen, like 'MISSION COMPLETE' or similar for a short period of time. \n" +
+            "\n " +
+           "Extra Information \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "displaylocation")
         {
@@ -234,7 +249,8 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- You can add text before or after the location like 'BATTLE OF' or similar. \n" +
-            "- This node is particulary helpful when you use a radomised location, but want to display it to the player. \n";
+            "- This node is particulary helpful when you use a radomised location, but want to display it to the player. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "displaymessage")
         {
@@ -246,7 +262,8 @@ public static class NodeDescriptions
             "Extra Information \n" +
             "- You can link an audio file (.wav) to run at the same time the message is sent. Simply make a folder in the custom missions folder. Name the folder 'YOURMISSIONNAME_audio'. Paste your audio file in the folder, type the name of the audio file (without the .wav extension) in the designated area on the node, and select the 'External Audio' option. \n" +
             "- You can also access several inbuilt audio files. Use the names listed below and select the option 'Internal Audio'. \n" +
-            "- Internal Audio Files: beep01_toggle, beep02_targetlock, beep03_weaponchange,  r2d2, r5";
+            "- Internal Audio Files: beep01_toggle, beep02_targetlock, beep03_weaponchange,  r2d2, r5" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "displaymissionbriefing")
         {
@@ -257,7 +274,8 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- At the moment you can only add a message to the briefing screen. \n" +
-            "- WARNING: This node is under development. Expect it to change over time. \n";
+            "- WARNING: This node is under development. Expect it to change over time. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "ifshipshullislessthan")
         {
@@ -268,7 +286,8 @@ public static class NodeDescriptions
              "\n " +
              "Extra Information \n" +
              "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n";
+             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "ifshipislessthandistancetoothership")
         {
@@ -279,7 +298,8 @@ public static class NodeDescriptions
              "\n " +
              "Extra Information \n" +
              "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n";
+             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+             "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "ifshipislessthandistancetowaypoint")
         {
@@ -290,7 +310,8 @@ public static class NodeDescriptions
              "\n " +
              "Extra Information \n" +
              "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n";
+             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+             "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "ifshipisactive")
         {
@@ -302,7 +323,8 @@ public static class NodeDescriptions
             "Extra Information \n" +
             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
             "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
-            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n";
+            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "ifshiphasbeenscanned")
         {
@@ -314,7 +336,8 @@ public static class NodeDescriptions
             "Extra Information \n" +
             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
             "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
-            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n";
+            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "ifshiphasntbeenscanned")
         {
@@ -327,7 +350,8 @@ public static class NodeDescriptions
             "- This node will return a result on the first ship it finds that hasn't been scanned. For example if you type 'Container', the node will check all ships that have 'Container' in the name. If it finds one that hasn't been scanned it returns true. \n" +
             "- This node is useful for checking if a player has finished scanning a group of ships/containers with a similar name. \n" +
             "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
-            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n";
+            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "iftypeofshipisactive")
         {
@@ -338,7 +362,8 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-            "- WARNING: The name of this node may change to accurately represent the function it runs. \n";
+            "- WARNING: The name of this node may change to accurately represent the function it runs. \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "loadsingleship")
         {
@@ -348,7 +373,8 @@ public static class NodeDescriptions
             "This node loads a single ship \n" +
             "\n " +
             "Extra Information \n" +
-            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n";
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "loadsingleshipatdistanceandanglefromplayer")
         {
@@ -360,7 +386,8 @@ public static class NodeDescriptions
             "Extra Information \n" +
             "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- The angles are euler i.e. 360 degrees beginning at the from of the ship. \n" +
-            "- This not is helpful if you want to deliberately load an enemy ship behind the player for example. \n";
+            "- This not is helpful if you want to deliberately load an enemy ship behind the player for example. \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "loadmultipleshipsonground")
         {
@@ -372,7 +399,8 @@ public static class NodeDescriptions
             "Extra Information \n" +
             "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- For this node to work you need to also use the load tiles event node. \n" +
-            "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n";
+            "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "loadmultipleships")
         {
@@ -391,7 +419,8 @@ public static class NodeDescriptions
             "- Pattern: linehorizontallongways uses length. Width and height are ignored. \n" +
             "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
             "- Pattern: linevertical uses height. Width and length are ignored. \n" +
-            "- Pattern: randominsidecube uses width, length, height. \n";
+            "- Pattern: randominsidecube uses width, length, height. \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "loadmultipleshipsbyclassandallegiance")
         {
@@ -411,7 +440,8 @@ public static class NodeDescriptions
             "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
             "- Pattern: linevertical uses height. Width and length are ignored. \n" +
             "- Pattern: randominsidecube uses width, length, height. \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "playmusictrack")
         {
@@ -423,7 +453,8 @@ public static class NodeDescriptions
             "Extra Information \n" +
             "- This node will fade out the current track while fading in the new track. \n" +
             "- If loop is set to false the track will play once and then stop, if set to true it will repeat. \n" +
-            "- Select none if you want the music to fade out. \n";
+            "- Select none if you want the music to fade out. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setwaypoint")
         {
@@ -436,7 +467,8 @@ public static class NodeDescriptions
             "- Every ship has a waypoint. Settings its position can be useful for a number of purposes. \n" +
             "- You can check a ships distance to its waypoint using the 'ifshipislessthandistancetowaypoint' function. \n" +
             "- You can direct an ai ship to fly toward its waypoint by setting the ai override to 'movetowaypoint'. \n" +
-            "- This function will affect any ship whose name contains the designated string. \n";
+            "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setaioverride")
         {
@@ -448,7 +480,8 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- This function will affect any ship whose name contains the designated string. \n" +
            "- This is an ai override. An ai override forces a ship to deviate from its standard behaviour to perform only one task (move to waypoint). For a ship to return to its standard behavious the AI override must be cleared using the clearaioverride function. \n" +
-           "- AI overrides inlcude: 'MoveToWayPoint', 'Stationary', 'Patrol'. \n";
+           "- AI overrides inlcude: 'MoveToWayPoint', 'Stationary', 'Patrol'. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setcargo")
         {
@@ -460,14 +493,16 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- This function will affect any ship whose name contains the designated string. \n" +
            "- This function is particulary useful when making group of ships where you want one ship to have a specific cargo. \n" +
-           "- If you write 'random' or 'randomise' the game will automatically randomise the ships cargo using preset list \n";
+           "- If you write 'random' or 'randomise' the game will automatically randomise the ships cargo using preset list \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setobjective")
         {
             description =
            "Set Objective \n " +
            "\n " +
-           "This function adds, cancels, completes an objective. It can also clear all objectives. \n";
+           "This function adds, cancels, completes an objective. It can also clear all objectives. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setdontattacklargeships")
         {
@@ -477,7 +512,8 @@ public static class NodeDescriptions
            "This function tells the designated small ships to not attack large ships \n" +
            "\n " +
            "Extra Information \n" +
-           "- This function will affect any ship whose name contains the designated string. \n";
+           "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setshipallegiance")
         {
@@ -487,7 +523,8 @@ public static class NodeDescriptions
            "This function changes the designated ship to the designated allegiance \n" +
            "\n " +
            "Extra Information \n" +
-           "- This function will affect any ship whose name contains the designated string. \n";
+           "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setshiptarget")
         {
@@ -497,7 +534,8 @@ public static class NodeDescriptions
             "This function sets the designated ship to the designated target. \n" +
             "\n " +
             "Extra Information \n" +
-            "- This function will affect any ship whose name contains the designated string. \n";
+            "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setshiptargettoclosestenemy")
         {
@@ -507,7 +545,8 @@ public static class NodeDescriptions
             "This function sets the designated ship target to the closest enemy target. \n" +
             "\n " +
             "Extra Information \n" +
-            "- This function will affect any ship whose name contains the designated string. \n";
+            "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setshiptoinvincible")
         {
@@ -518,7 +557,8 @@ public static class NodeDescriptions
              "\n " +
              "Extra Information \n" +
              "- A ship that is set to invincible will still receive damage until it only has 5 points of health left. \n" +
-             "- This function will affect any ship whose name contains the designated string. \n";
+             "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setweaponslock")
         {
@@ -528,7 +568,8 @@ public static class NodeDescriptions
              "This function locks the weapons on the designated ship which prevents the ship from firing its weapons. \n" +
              "\n " +
              "Extra Information \n" +
-             "- This function will affect any ship whose name contains the designated string. \n";
+             "- This function will affect any ship whose name contains the designated string. \n" +
+             "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
 
         return description;

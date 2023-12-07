@@ -1279,6 +1279,14 @@ public static class SmallShipFunctions
                         if (smallShip.cockpitAnchor != null)
                         {
                             smallShip.cockpit.transform.SetParent(smallShip.cockpitAnchor.transform);
+
+                            if (smallShip.scene.hyperspaceTunnel == null)
+                            {
+                                smallShip.scene.hyperspaceTunnel = GameObject.Instantiate(smallShip.scene.hyperspaceTunnelPrefab);
+                            }
+
+                            smallShip.scene.hyperspaceTunnel.transform.SetParent(smallShip.cockpitAnchor.transform);
+                            smallShip.scene.hyperspaceTunnel.SetActive(false);
                         }
                     }
                     else

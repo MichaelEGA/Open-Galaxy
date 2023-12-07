@@ -21,6 +21,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public Object[] particlePrefabPool;
     [HideInInspector] public Object[] tilesPrefabPool;
     [HideInInspector] public Object[] asteroidMaterialsPool;
+    [HideInInspector] public GameObject hyperspaceTunnelPrefab;
 
     [Header("GameObject Pools")]
     [HideInInspector] public List<GameObject> objectPool;
@@ -31,6 +32,10 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> cockpitPool;
     [HideInInspector] public List<GameObject> tilesPool;
     [HideInInspector] public List<GameObject> tilesSetPool;
+    [HideInInspector] public GameObject hyperspaceTunnel;
+
+    [Header("Hyperspace")]
+
 
     [Header("Collision Avoidance")]
     [HideInInspector] public bool avoidSmallObjectsRunning;

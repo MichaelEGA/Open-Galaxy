@@ -329,7 +329,7 @@ public static class MissionFunctions
         }
         else if (missionEvent.eventType == "changelocation")
         {
-            ChangeLocation(missionEvent);
+            Task a = new Task(ChangeLocation(missionEvent));
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "clearaioverride")
@@ -635,7 +635,7 @@ public static class MissionFunctions
     }
 
     //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
-    public static void ChangeLocation(MissionEvent missionEvent)
+    public static IEnumerator ChangeLocation(MissionEvent missionEvent)
     {
         string jumpLocation = missionEvent.data1;
 
@@ -649,7 +649,21 @@ public static class MissionFunctions
 
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
 
+        Scene scene = SceneFunctions.GetScene();
+
+        if(scene.hyperspaceTunnel != null)
+        {
+            scene.hyperspaceTunnel.SetActive(true);
+        }
+
         Task a = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time));
+
+        while(a.Running == true) { yield return null; }
+
+        if (scene.hyperspaceTunnel != null)
+        {
+            scene.hyperspaceTunnel.SetActive(false);
+        }
     }
 
     //This clears any AI overides on a ship/ships i.e. "waypoint", "dontattack" etc

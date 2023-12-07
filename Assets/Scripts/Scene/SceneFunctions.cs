@@ -91,6 +91,8 @@ public static class SceneFunctions
             scene.particlePrefabPool = particlePrefabs;
         }
 
+        scene.hyperspaceTunnelPrefab = Resources.Load("Hyperspace/HyperspaceTunnel") as GameObject;
+        
         scene.space = Resources.Load("Data/SkyboxAssets/Space") as Material;
         scene.sky = Resources.Load("Data/SkyboxAssets/Sky") as Material;      
     }

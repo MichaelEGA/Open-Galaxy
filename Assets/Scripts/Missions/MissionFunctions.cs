@@ -641,33 +641,38 @@ public static class MissionFunctions
 
         float time = Time.unscaledTime;
 
+        Scene scene = SceneFunctions.GetScene();
+
+        scene.mainShip.GetComponent<SmallShip>().controlLock = true;
+
         SceneFunctions.ClearLocation();
 
         MissionManager missionManager = GetMissionManager();
 
-        SetGalaxyLocation2(missionEvent.data1);
-
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
 
-        Scene scene = SceneFunctions.GetScene();
-
-        Task a = new Task(SceneFunctions.StretchStarField());
-
-        yield return new WaitForSeconds(1);
+        Task a = new Task(SceneFunctions.StretchStarfield());
+        while(a.Running == true) { yield return null; }
 
         if(scene.hyperspaceTunnel != null)
         {
             scene.hyperspaceTunnel.SetActive(true);
         }
 
-        Task b = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time));
+        SetGalaxyLocation2(missionEvent.data1);
 
+        Task b = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time));
         while(b.Running == true) { yield return null; }
 
         if (scene.hyperspaceTunnel != null)
         {
             scene.hyperspaceTunnel.SetActive(false);
         }
+
+        Task c = new Task(SceneFunctions.ShrinkStarfield());
+        while (c.Running == true) { yield return null; }
+
+        scene.mainShip.GetComponent<SmallShip>().controlLock = false;
     }
 
     //This clears any AI overides on a ship/ships i.e. "waypoint", "dontattack" etc

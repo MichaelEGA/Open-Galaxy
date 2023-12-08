@@ -267,7 +267,7 @@ public static class SceneFunctions
     }
 
     //Stretch Starfield
-    public static IEnumerator StretchStarField()
+    public static IEnumerator StretchStarfield()
     {
         GameObject starfield = GetStarfield();
         Scene scene = GetScene();
@@ -295,26 +295,58 @@ public static class SceneFunctions
                     particleSystem.SetParticles(points, points.Length);
                     particleSystemRenderer.renderMode = ParticleSystemRenderMode.Stretch;
 
-                    float waitTime = 1f / 1000f;
-                    float addition = 1;
+                    float waitTime = 10f / 1000f;
 
                     while (particleSystemRenderer.lengthScale < 1000)
                     {
-                        particleSystemRenderer.lengthScale += addition;
-                        addition++;
+                        particleSystemRenderer.lengthScale += 10;
                         yield return new WaitForSeconds(waitTime);
                     }
                 }
             }
         }
-
-        yield return null;
     }
 
     //Shrink Starfield
     public static IEnumerator ShrinkStarfield()
     {
-        yield return null;
+        GameObject starfield = GetStarfield();
+        Scene scene = GetScene();
+
+        if (starfield != null & scene != null)
+        {
+            ParticleSystem particleSystem = starfield.GetComponent<ParticleSystem>();
+            ParticleSystemRenderer particleSystemRenderer = starfield.GetComponent<ParticleSystemRenderer>();
+
+            if (particleSystemRenderer != null & scene.mainShip != null)
+            {
+                Rigidbody rigidbody = scene.mainShip.GetComponent<Rigidbody>();
+
+                if (rigidbody != null)
+                {
+                    ParticleSystem.Particle[] points = new ParticleSystem.Particle[particleSystem.particleCount];
+
+                    int particleNo = particleSystem.GetParticles(points);
+
+                    for (int i = 0; i < particleNo; i++)
+                    {
+                        points[i].velocity = rigidbody.velocity;
+                    }
+
+                    particleSystem.SetParticles(points, points.Length);
+                    
+                    float waitTime = 10f / 1000f;
+
+                    while (particleSystemRenderer.lengthScale > 1)
+                    {
+                        particleSystemRenderer.lengthScale -= 10;
+                        yield return new WaitForSeconds(waitTime);
+                    }
+
+                    particleSystemRenderer.renderMode = ParticleSystemRenderMode.Billboard;
+                }
+            }
+        }
     }
 
     //Move starfield camera to planet location

@@ -96,6 +96,7 @@ public class SmallShip : MonoBehaviour
 
     [Header("Ship Controls")]
     public bool keyboadAndMouse = true;
+    public bool controlLock = false;
     public bool invertUpDown;
     public bool invertLeftRight;
     [HideInInspector] public float controllerSenstivity = 0.05f;
@@ -226,6 +227,7 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.DetectInputType(this);
         SmallShipFunctions.TurnShipAround(this);
         SmallShipFunctions.SpinShip(this);
+        SmallShipFunctions.ControlLock(this);
 
         //Start functions
         SmallShipFunctions.PrepareShip(this);

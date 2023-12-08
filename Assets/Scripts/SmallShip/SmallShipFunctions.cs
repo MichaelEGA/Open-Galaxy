@@ -95,7 +95,7 @@ public static class SmallShipFunctions
     //This gets the input from the game controller
     public static void GetGameControllerInput(SmallShip smallShip)
     {
-        if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false)
+        if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false & smallShip.controlLock == false)
         {
             if (smallShip.keyboadAndMouse == false)
             {
@@ -200,7 +200,7 @@ public static class SmallShipFunctions
     //This gets the input from the keyboard and mouse
     public static void GetKeyboardAndMouseInput(SmallShip smallShip)
     {
-        if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false)
+        if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false & smallShip.controlLock == false)
         {
             if (smallShip.keyboadAndMouse == true)
             {
@@ -321,7 +321,7 @@ public static class SmallShipFunctions
     //This gets the AI input
     public static void GetAIInput(SmallShip smallShip)
     {
-        if (smallShip.isAI == true & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false)
+        if (smallShip.isAI == true & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false & smallShip.controlLock == false)
         {
             SmallShipAIFunctions.GetAIInput(smallShip);
         }
@@ -414,6 +414,17 @@ public static class SmallShipFunctions
         else
         {
             smallShip.automaticRotationSpin = false;
+        }
+    }
+
+    //When activated this prevents the ship from turning from its present course
+    public static void ControlLock(SmallShip smallShip)
+    {
+        if (smallShip.controlLock == true)
+        {
+            SmoothTurnInput(smallShip, 0);
+            SmoothPitchInput(smallShip, 0);
+            SmoothRollInput(smallShip, 0);
         }
     }
 

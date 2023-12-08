@@ -266,6 +266,57 @@ public static class SceneFunctions
         particleSystemRenderer.lengthScale = 1;
     }
 
+    //Stretch Starfield
+    public static IEnumerator StretchStarField()
+    {
+        GameObject starfield = GetStarfield();
+        Scene scene = GetScene();
+
+        if (starfield != null & scene != null)
+        {
+            ParticleSystem particleSystem = starfield.GetComponent<ParticleSystem>();
+            ParticleSystemRenderer particleSystemRenderer = starfield.GetComponent<ParticleSystemRenderer>();
+
+            if (particleSystemRenderer != null & scene.mainShip != null)
+            {
+                Rigidbody rigidbody = scene.mainShip.GetComponent<Rigidbody>();
+
+                if (rigidbody != null)
+                {
+                    ParticleSystem.Particle[] points = new ParticleSystem.Particle[particleSystem.particleCount];
+
+                    int particleNo = particleSystem.GetParticles(points);
+
+                    for (int i = 0; i < particleNo; i++)
+                    {
+                        points[i].velocity = rigidbody.velocity;
+                    }
+
+                    particleSystem.SetParticles(points, points.Length);
+                    particleSystemRenderer.renderMode = ParticleSystemRenderMode.Stretch;
+
+                    float waitTime = 1f / 1000f;
+                    float addition = 1;
+
+                    while (particleSystemRenderer.lengthScale < 1000)
+                    {
+                        particleSystemRenderer.lengthScale += addition;
+                        addition++;
+                        yield return new WaitForSeconds(waitTime);
+                    }
+                }
+            }
+        }
+
+        yield return null;
+    }
+
+    //Shrink Starfield
+    public static IEnumerator ShrinkStarfield()
+    {
+        yield return null;
+    }
+
     //Move starfield camera to planet location
     public static void MoveStarfieldCamera(Vector3 location)
     {
@@ -275,6 +326,16 @@ public static class SceneFunctions
         {
             starfieldCamera.transform.position = location;
         }
+    }
+
+    //This grabs the starfield
+    public static GameObject GetStarfield()
+    {
+        GameObject starfield = null;
+
+        starfield = GameObject.Find("starfield");
+
+        return starfield;
     }
 
     #endregion

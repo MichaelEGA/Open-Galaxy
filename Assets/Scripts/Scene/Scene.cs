@@ -34,9 +34,6 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> tilesSetPool;
     [HideInInspector] public GameObject hyperspaceTunnel;
 
-    [Header("Hyperspace")]
-
-
     [Header("Collision Avoidance")]
     [HideInInspector] public bool avoidSmallObjectsRunning;
     [HideInInspector] public bool avoidLargeObjectsRunning;

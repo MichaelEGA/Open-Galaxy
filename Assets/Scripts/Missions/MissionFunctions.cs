@@ -651,14 +651,18 @@ public static class MissionFunctions
 
         Scene scene = SceneFunctions.GetScene();
 
+        Task a = new Task(SceneFunctions.StretchStarField());
+
+        yield return new WaitForSeconds(1);
+
         if(scene.hyperspaceTunnel != null)
         {
             scene.hyperspaceTunnel.SetActive(true);
         }
 
-        Task a = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time));
+        Task b = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time));
 
-        while(a.Running == true) { yield return null; }
+        while(b.Running == true) { yield return null; }
 
         if (scene.hyperspaceTunnel != null)
         {

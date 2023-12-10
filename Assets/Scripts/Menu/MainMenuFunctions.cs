@@ -141,11 +141,9 @@ public static class MainMenuFunctions
         mainMenu.functions = new Dictionary<string, System.Delegate>();
 
         //Add your functions here
-        mainMenu.functions.Add("LoadMainMission", new System.Action<string>(LoadMainMission));
-        mainMenu.functions.Add("LoadTrainingMission", new System.Action<string>(LoadTrainingMission));
-        mainMenu.functions.Add("LoadOtherGameModes", new System.Action<string>(LoadOtherGameModes));
-        mainMenu.functions.Add("LoadInDevelopment", new System.Action<string>(LoadInDevelopment));
+        mainMenu.functions.Add("LoadMainMission", new System.Action<string>(LoadMission));
         mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
+        mainMenu.functions.Add("LoadExploreMode", new System.Action(LoadExploreMode));
         mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadMissionEditor));
         mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
         mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
@@ -572,8 +570,36 @@ public static class MainMenuFunctions
         titleScreenMessageBox.text = messages[randomMessageNo];
     }
 
+    //This loads a custom mission
+    public static void LoadCustomMission(string name)
+    {
+        Task a = new Task(MissionFunctions.RunMission(name, Application.persistentDataPath + "/Custom Missions/", true));
+
+        GameObject menu = GameObject.Find("Menu");
+
+        if (menu != null)
+        {
+            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
+            Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
+        }
+    }
+
+    //This loads a custom mission
+    public static void LoadExploreMode()
+    {
+        Task a = new Task(ExploreFunctions.RunExplore());
+
+        GameObject menu = GameObject.Find("Menu");
+
+        if (menu != null)
+        {
+            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
+            Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
+        }
+    }
+
     //This loads a main mission
-    public static void LoadMainMission(string name)
+    public static void LoadMission(string name)
     {
         Task a = new Task(MissionFunctions.RunMission(name, "Data/Files/Missions_Main/"));
 
@@ -602,63 +628,7 @@ public static class MainMenuFunctions
 
         PlayBackgroundMusic(false);
     }
-
-    //This loads a training missino
-    public static void LoadTrainingMission(string name)
-    {
-        Task a = new Task(MissionFunctions.RunMission(name, "Data/Files/Missions_Training/"));
-
-        GameObject menu = GameObject.Find("Menu");
-
-        if (menu != null)
-        {
-            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-            Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
-        }
-    }
-
-    //This loads a custom mission
-    public static void LoadCustomMission(string name)
-    {
-        Task a = new Task(MissionFunctions.RunMission(name, Application.persistentDataPath + "/Custom Missions/", true)); //This is a dummy address until external loading of missions is added
-
-        GameObject menu = GameObject.Find("Menu");
-
-        if (menu != null)
-        {
-            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-            Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
-        }
-    }
-
-    //Stand in function for starting the game
-    public static void LoadOtherGameModes(string name)
-    {
-        Task a = new Task(MissionFunctions.RunMission(name, "Data/Files/Missions_Misc/"));
-
-        GameObject menu = GameObject.Find("Menu");
-
-        if (menu != null)
-        {
-            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-            Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
-        }
-    }
-
-    //This loads a training missino
-    public static void LoadInDevelopment(string name)
-    {
-        Task a = new Task(MissionFunctions.RunMission(name, "Data/Files/Missions_InDevelopment/"));
-
-        GameObject menu = GameObject.Find("Menu");
-
-        if (menu != null)
-        {
-            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-            Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
-        }
-    }
-
+    
     //This changes the heightmap resolution
     public static void ChangePlanetTextureResolution(string resolution)
     {

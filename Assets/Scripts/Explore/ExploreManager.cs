@@ -13,4 +13,12 @@ public class ExploreManager : MonoBehaviour
     public string playerShipType = "lambdashuttle";
     public string playerShipName = "Star of the Outer Rim";
     public string playerAllegiance = "neutral";
+
+    public float pressedTime;
+
+    // Update is called once per frame
+    void Update()
+    {
+        ExploreFunctions.ActivateExitMenu(this);
+    }
 }

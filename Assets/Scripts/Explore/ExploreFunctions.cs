@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public static class ExploreFunctions
 {
+
+    #region run explore mode
+
     //This executes the different mission events
     public static IEnumerator RunExplore()
     {
@@ -44,6 +48,9 @@ public static class ExploreFunctions
         //This loads the player in the scene
         LoadPlayerShip();
 
+        //This grabs all jump locations within range
+        exploreManager.availibleLocations = GetLocations("Tatooine", 500);
+
         //This tells the player to get ready, starts the game, locks the cursor and gets rid of the loading screen
         LoadScreenFunctions.AddLogToLoadingScreen("Explore mode loaded.", Time.unscaledTime - time);
 
@@ -60,6 +67,10 @@ public static class ExploreFunctions
         //This sets the mission manager to running
         exploreManager.running = true;
     }
+
+    #endregion
+
+    #region load functions
 
     //This displays the loading screen
     public static void DisplayLoadingScreen(bool display)
@@ -147,17 +158,91 @@ public static class ExploreFunctions
         SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, false, false, false);
     }
 
+    #endregion
+
+    #region hyperspace functions
+
+    //This returns all jump locations within the requested distance
+    public static string[] GetLocations(string currentLocation, float distance)
+    {
+        Vector3 locationA = new Vector3();
+        Vector3 locationB = new Vector3();
+
+        List<string> locations = new List<string>();
+
+        //This loads the Json file
+        TextAsset starSystemFile = Resources.Load("Data/Files/StarSystems") as TextAsset;
+        StarSystems starSystems = JsonUtility.FromJson<StarSystems>(starSystemFile.text);
+
+        bool locationFound = false;
+
+        //This finds specific data on the location
+        foreach (StarSystem starSystem in starSystems.starSystemsData)
+        {
+            if (starSystem.Planet == currentLocation)
+            {
+                locationA.x = starSystem.X;
+                locationA.y = starSystem.Z * 0.5f; //The y coord is actaully the z coord and vice versa b/c original data was vector 2 
+                locationA.z = starSystem.Y;
+                locationFound = true;
+                break;
+            }
+        }
+
+        if (locationFound == true)
+        {
+            foreach (StarSystem starSystem in starSystems.starSystemsData)
+            {
+                locationB.x = starSystem.X;
+                locationB.y = starSystem.Z * 0.5f; //The y coord is actaully the z coord and vice versa b/c original data was vector 2 
+                locationB.z = starSystem.Y;
+
+                float tempDistance = Vector3.Distance(locationA, locationB);
+
+                if (tempDistance < distance)
+                {
+                    locations.Add(starSystem.Planet);
+                }
+            }
+        }
+
+        return locations.ToArray();
+    }
+
+    #endregion
+
+    #region exit functions
+
+    //This activates the exit menu
+    public static void ActivateExitMenu(ExploreManager missionManager)
+    {
+        Keyboard keyboard = Keyboard.current;
+
+        if (keyboard.escapeKey.isPressed == true & missionManager.pressedTime < Time.time)
+        {
+            ExitMenuFunctions.DisplayExitMenu(true);
+            missionManager.pressedTime = Time.time + 0.5f;
+        }
+
+    }
+
+    #endregion
+
+    #region Explore Manager Utils
+
     public static ExploreManager GetExploreManager()
     {
         ExploreManager exploreManager = GameObject.FindObjectOfType<ExploreManager>();
 
         if (exploreManager == null)
         {
-            GameObject missionManagerGO = new GameObject();
-            missionManagerGO.name = "MissionManager";
-            exploreManager = missionManagerGO.AddComponent<ExploreManager>();
+            GameObject exploreManagerGO = new GameObject();
+            exploreManagerGO.name = "ExploreManager";
+            exploreManager = exploreManagerGO.AddComponent<ExploreManager>();
         }
 
         return exploreManager;
     }
+
+    #endregion
 }

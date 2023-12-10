@@ -8,14 +8,7 @@ public static class ExploreFunctions
     public static IEnumerator RunExplore()
     {
         //This looks for the mission manager and if it doesn't find one creates one
-        ExploreManager exploreManager = GameObject.FindObjectOfType<ExploreManager>();
-
-        if (exploreManager == null)
-        {
-            GameObject missionManagerGO = new GameObject();
-            missionManagerGO.name = "MissionManager";
-            exploreManager = missionManagerGO.AddComponent<ExploreManager>();
-        }
+        ExploreManager exploreManager = GetExploreManager();
 
         //This marks the start time of the script
         float startTime = Time.time;
@@ -48,7 +41,8 @@ public static class ExploreFunctions
 
         //UNFINISHED: This loads the ships in the scene
 
-        //UNFINISHED: This loads the player in the scene
+        //This loads the player in the scene
+        LoadPlayerShip();
 
         //This tells the player to get ready, starts the game, locks the cursor and gets rid of the loading screen
         LoadScreenFunctions.AddLogToLoadingScreen("Explore mode loaded.", Time.unscaledTime - time);
@@ -137,5 +131,33 @@ public static class ExploreFunctions
         Task b = new Task(SceneFunctions.GeneratePlanetHeightmap(type, seed));
         while (b.Running == true) { yield return null; }
         LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
+    }
+
+    public static void LoadPlayerShip()
+    {
+        ExploreManager exploreManager = GetExploreManager();
+
+        Vector3 position = exploreManager.playerPosition;
+        Quaternion rotation = exploreManager.playerRotation;
+        string type = exploreManager.playerShipType;
+        string name = exploreManager.playerShipName;
+        string allegiance = exploreManager.playerAllegiance;
+        string cargo = "none";
+
+        SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, false, false, false);
+    }
+
+    public static ExploreManager GetExploreManager()
+    {
+        ExploreManager exploreManager = GameObject.FindObjectOfType<ExploreManager>();
+
+        if (exploreManager == null)
+        {
+            GameObject missionManagerGO = new GameObject();
+            missionManagerGO.name = "MissionManager";
+            exploreManager = missionManagerGO.AddComponent<ExploreManager>();
+        }
+
+        return exploreManager;
     }
 }

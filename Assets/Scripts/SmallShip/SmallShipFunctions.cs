@@ -1080,7 +1080,7 @@ public static class SmallShipFunctions
     {
         smallShip.isCurrentlyColliding = true;
 
-        if (smallShip.isAI == false)
+        if (smallShip.isAI == false & smallShip.invincible == false)
         {
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
         }        

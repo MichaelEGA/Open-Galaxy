@@ -637,42 +637,83 @@ public static class MissionFunctions
     //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
     public static IEnumerator ChangeLocation(MissionEvent missionEvent)
     {
+        //This gets all the required data from the event node
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        float xRotation = missionEvent.x;
+        float yRotation = missionEvent.y;
+        float zRotation = missionEvent.z;
+
         string jumpLocation = missionEvent.data1;
 
-        float time = Time.unscaledTime;
-
+        //This gets several important references
         Scene scene = SceneFunctions.GetScene();
-
-        scene.mainShip.GetComponent<SmallShip>().controlLock = true;
-
-        SceneFunctions.ClearLocation();
-
+        SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
         MissionManager missionManager = GetMissionManager();
-
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
 
+        smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
+        smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
+
+        //This plays the hyperspace entry sound
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceEntry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+
+        yield return new WaitForSeconds(4); //This gives the audio clip time to play
+
+        //This marks the jump time
+        float time = Time.unscaledTime;
+
+        //This clears the current location
+        SceneFunctions.ClearLocation();
+
+        //This makes the stars stretch out
         Task a = new Task(SceneFunctions.StretchStarfield());
         while(a.Running == true) { yield return null; }
 
+        //This activates the hyperspace tunnel
         if(scene.hyperspaceTunnel != null)
         {
             scene.hyperspaceTunnel.SetActive(true);
         }
 
+        //This changes the ships position in the galaxy
         SetGalaxyLocation2(missionEvent.data1);
 
+        //This finds and loads all 'preload' nodes for the new location
         Task b = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time));
         while(b.Running == true) { yield return null; }
 
+        //This sets the position of the ship in the new location designated in the node
+        smallShip.transform.localPosition = new Vector3(x, y, z);
+        smallShip.transform.rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        //This yield allows the new position and rotation to be registered in the rigidbody component which is needed for the shrinkstarfield function
+        yield return null;
+
+        //This ensures that hyperspace continues for atleast ten seconds
+        while (time + 10 > Time.unscaledTime)
+        {
+            yield return null;
+        }
+
+        //This deactivates the hyperspace tunnel
         if (scene.hyperspaceTunnel != null)
         {
             scene.hyperspaceTunnel.SetActive(false);
         }
 
+        //This plays the hyperspace exit
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceExit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+
+        //This shrinks the starfield
         Task c = new Task(SceneFunctions.ShrinkStarfield());
         while (c.Running == true) { yield return null; }
 
-        scene.mainShip.GetComponent<SmallShip>().controlLock = false;
+        //This unlocks the player controls and turns off invincibility on the player ship
+        smallShip.controlLock = false;
+        smallShip.invincible = false;
     }
 
     //This clears any AI overides on a ship/ships i.e. "waypoint", "dontattack" etc
@@ -1671,7 +1712,7 @@ public static class MissionFunctions
 
         string location = missionEvent.conditionLocation;
 
-        var planetData = SceneFunctions.GetSpecificLocation(location);
+        var planetData = SceneFunctions.FindLocation(location);
         scene.currentLocation = planetData.planet;
         scene.planetType = planetData.type;
         scene.planetSeed = planetData.seed;
@@ -2050,7 +2091,7 @@ public static class MissionFunctions
     public static void SetGalaxyLocation2(string location)
     {
         Scene scene = SceneFunctions.GetScene();
-        var planetData = SceneFunctions.GetSpecificLocation(location);
+        var planetData = SceneFunctions.FindLocation(location);
         scene.currentLocation = planetData.planet;
         scene.planetType = planetData.type;
         scene.planetSeed = planetData.seed;

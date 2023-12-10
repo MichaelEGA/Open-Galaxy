@@ -299,7 +299,7 @@ public static class SceneFunctions
 
                     while (particleSystemRenderer.lengthScale < 1000)
                     {
-                        particleSystemRenderer.lengthScale += 10;
+                        particleSystemRenderer.lengthScale += 20;
                         yield return new WaitForSeconds(waitTime);
                     }
                 }
@@ -339,7 +339,7 @@ public static class SceneFunctions
 
                     while (particleSystemRenderer.lengthScale > 1)
                     {
-                        particleSystemRenderer.lengthScale -= 10;
+                        particleSystemRenderer.lengthScale -= 20;
                         yield return new WaitForSeconds(waitTime);
                     }
 
@@ -582,7 +582,7 @@ public static class SceneFunctions
     }
 
     //This returns the data of a specific location
-    public static (string planet, string type, Vector3 location, int seed) GetSpecificLocation(string name)
+    public static (string planet, string type, Vector3 location, int seed) FindLocation(string name)
     {
         LoadScreenFunctions.AddLogToLoadingScreen("Searching for planet data.", 0, false);
 

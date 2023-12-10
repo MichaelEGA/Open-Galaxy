@@ -953,6 +953,30 @@ public static class NodeTypes
 
         drop -= 15;
 
+        node.x = NodeFunctions.DrawInputField(node, "exit pos x", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.y = NodeFunctions.DrawInputField(node, "exit pos y", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.z = NodeFunctions.DrawInputField(node, "exit pos z", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.xRotation = NodeFunctions.DrawInputField(node, "exit rot x", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.yRotation = NodeFunctions.DrawInputField(node, "exit rot y", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.zRotation = NodeFunctions.DrawInputField(node, "exit rot z", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         node.data1 = NodeFunctions.DrawInputField(node, "Jump to", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;

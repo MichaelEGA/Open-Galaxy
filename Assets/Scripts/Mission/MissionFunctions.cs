@@ -2033,7 +2033,6 @@ public static class MissionFunctions
             ExitMenuFunctions.DisplayExitMenu(true);
             missionManager.pressedTime = Time.time + 0.5f;
         }
-
     }
 
     #endregion

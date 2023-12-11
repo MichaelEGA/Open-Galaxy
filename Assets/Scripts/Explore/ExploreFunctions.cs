@@ -144,6 +144,7 @@ public static class ExploreFunctions
         LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
     }
 
+    //This loads the player ship according to the details in the explore manager
     public static void LoadPlayerShip()
     {
         ExploreManager exploreManager = GetExploreManager();
@@ -209,6 +210,165 @@ public static class ExploreFunctions
         return locations.ToArray();
     }
 
+    //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
+    public static IEnumerator ChangeLocation(string location, Vector3 entryPosition = new Vector3(), Quaternion entryRotation = new Quaternion())
+    {
+        HudFunctions.AddToShipLog("Course set: " + location.ToUpper());
+
+        //This gets several important references
+        Scene scene = SceneFunctions.GetScene();
+        SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+        ExploreManager exploreManager = GetExploreManager();
+
+        smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
+        smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
+
+        //This plays the hyperspace entry sound
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceEntry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+
+        yield return new WaitForSeconds(4); //This gives the audio clip time to play
+
+        //This marks the jump time
+        float time = Time.unscaledTime;
+
+        //This clears the current location
+        SceneFunctions.ClearLocation();
+
+        HudFunctions.AddToShipLog("Hyperdrive Activated");
+
+        //This makes the stars stretch out
+        Task a = new Task(SceneFunctions.StretchStarfield());
+        while (a.Running == true) { yield return null; }
+
+        //This activates the hyperspace tunnel
+        if (scene.hyperspaceTunnel != null)
+        {
+            scene.hyperspaceTunnel.SetActive(true);
+        }
+
+        //This changes the ships position in the galaxy
+        SetGalaxyLocation(location);
+
+        //This finds and loads all 'preload' nodes for the new location
+        Task b = new Task(LoadLocationScenery(location));
+        while (b.Running == true) { yield return null; }
+
+        //This sets the position of the ship in the new location designated in the node
+        smallShip.transform.localPosition = entryPosition;
+        smallShip.transform.rotation = entryRotation;
+
+        //This yield allows the new position and rotation to be registered in the rigidbody component which is needed for the shrinkstarfield function
+        yield return null;
+
+        //This ensures that hyperspace continues for atleast ten seconds
+        while (time + 10 > Time.unscaledTime)
+        {
+            yield return null;
+        }
+
+        //This deactivates the hyperspace tunnel
+        if (scene.hyperspaceTunnel != null)
+        {
+            scene.hyperspaceTunnel.SetActive(false);
+        }
+
+        //This plays the hyperspace exit
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceExit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+
+        //This shrinks the starfield
+        Task c = new Task(SceneFunctions.ShrinkStarfield());
+        while (c.Running == true) { yield return null; }
+
+        HudFunctions.AddToShipLog("Exiting Hyperspace at: " + location.ToUpper());
+
+        //This gets a new list of jump points
+        exploreManager.availibleLocations = GetLocations(location, 500);
+
+        //This unlocks the player controls and turns off invincibility on the player ship
+        smallShip.controlLock = false;
+        smallShip.invincible = false;
+
+        HudFunctions.DisplayLargeMessage(location.ToUpper());
+    }
+
+    //This sets the galaxy camera position
+    public static void SetGalaxyLocation(string location)
+    {
+        Scene scene = SceneFunctions.GetScene();
+        var planetData = SceneFunctions.FindLocation(location);
+        scene.currentLocation = planetData.planet;
+        scene.planetType = planetData.type;
+        scene.planetSeed = planetData.seed;
+        SceneFunctions.MoveStarfieldCamera(planetData.location);
+    }
+
+    //This selects the next avaiblible jump location
+    public static void SelectNextJumpLocation(ExploreManager exploreManager)
+    {
+        Keyboard keyboard = Keyboard.current;
+
+        if (keyboard.nKey.isPressed == true & exploreManager.pressedTime + 0.25f < Time.time)
+        {
+            exploreManager.pressedTime = Time.time + 0.5f;
+
+            bool nextLocation = false;
+            string newLocation = "none";
+
+            foreach(string location in exploreManager.availibleLocations)
+            {
+                if (exploreManager.selectedLocation == "none")
+                {
+                    newLocation = location;
+                    break;
+                }
+                else if (nextLocation == false)
+                {
+                    if (location == exploreManager.selectedLocation)
+                    {
+                        nextLocation = true;
+                    }
+                }
+                else if (nextLocation == true)
+                {
+                    newLocation = location;
+                    break;
+                }
+            }
+
+            if (newLocation == "none")
+            {
+                if (exploreManager.availibleLocations.Length > 0)
+                {
+                    newLocation = exploreManager.availibleLocations[0];
+                }
+            }
+
+            exploreManager.selectedLocation = newLocation;
+
+            HudFunctions.AddToShipLog("New hyperspace location set: " + newLocation.ToUpper());
+
+            exploreManager.pressedTime = Time.time;
+        }
+    }
+
+    //This activates the hyperdrive
+    public static void ActivateHyperspace(ExploreManager exploreManager)
+    {
+        Keyboard keyboard = Keyboard.current;
+
+        if (keyboard.spaceKey.isPressed == true & exploreManager.pressedTime + 0.5f < Time.time)
+        {
+            string location = exploreManager.selectedLocation;
+
+            if (location != "none")
+            {
+                Task a = new Task(ChangeLocation(location));
+            }
+
+            exploreManager.pressedTime = Time.time;
+        }
+    }
+
     #endregion
 
     #region exit functions
@@ -230,6 +390,7 @@ public static class ExploreFunctions
 
     #region Explore Manager Utils
 
+    //This returns the explore manager
     public static ExploreManager GetExploreManager()
     {
         ExploreManager exploreManager = GameObject.FindObjectOfType<ExploreManager>();

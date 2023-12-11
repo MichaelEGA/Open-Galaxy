@@ -15,6 +15,7 @@ public class ExploreManager : MonoBehaviour
     public string currentLocation;
     public string[] availibleLocations;
     public string selectedLocation = "none";
+    public bool hyperspace = false;
 
     public float pressedTime;
 

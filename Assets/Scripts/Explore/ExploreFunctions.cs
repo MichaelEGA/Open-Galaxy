@@ -135,12 +135,16 @@ public static class ExploreFunctions
         //Load Asteroids 
         Task a = new Task(SceneFunctions.GenerateAsteroidField(seed, false));
         while (a.Running == true) { yield return null; }
+
         LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);
 
         //Load Planet
         LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
+
         Task b = new Task(SceneFunctions.GeneratePlanetHeightmap(type, seed));
         while (b.Running == true) { yield return null; }
+        SceneFunctions.SetPlanetDistance(seed);
+
         LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
     }
 
@@ -220,6 +224,8 @@ public static class ExploreFunctions
         SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
         ExploreManager exploreManager = GetExploreManager();
 
+        exploreManager.hyperspace = true;
+
         smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
         smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
 
@@ -286,9 +292,13 @@ public static class ExploreFunctions
 
         //This unlocks the player controls and turns off invincibility on the player ship
         smallShip.controlLock = false;
-        smallShip.invincible = false;
+
+        yield return new WaitForSeconds(3);
 
         HudFunctions.DisplayLargeMessage(location.ToUpper());
+
+        smallShip.invincible = false;
+        exploreManager.hyperspace = false;
     }
 
     //This sets the galaxy camera position
@@ -354,18 +364,21 @@ public static class ExploreFunctions
     //This activates the hyperdrive
     public static void ActivateHyperspace(ExploreManager exploreManager)
     {
-        Keyboard keyboard = Keyboard.current;
-
-        if (keyboard.spaceKey.isPressed == true & exploreManager.pressedTime + 0.5f < Time.time)
+        if (exploreManager.hyperspace == false)
         {
-            string location = exploreManager.selectedLocation;
+            Keyboard keyboard = Keyboard.current;
 
-            if (location != "none")
+            if (keyboard.spaceKey.isPressed == true & exploreManager.pressedTime + 0.5f < Time.time)
             {
-                Task a = new Task(ChangeLocation(location));
-            }
+                string location = exploreManager.selectedLocation;
 
-            exploreManager.pressedTime = Time.time;
+                if (location != "none")
+                {
+                    Task a = new Task(ChangeLocation(location));
+                }
+
+                exploreManager.pressedTime = Time.time;
+            }
         }
     }
 

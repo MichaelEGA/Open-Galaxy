@@ -44,6 +44,7 @@ public class Scene : MonoBehaviour
 
     [Header("Planet")]
     [HideInInspector] public GameObject planet;
+    [HideInInspector] public GameObject planetPivot;
 
     [Header("Cameras")]
     [HideInInspector] public GameObject mainCamera;

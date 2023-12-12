@@ -387,6 +387,10 @@ public static class SceneFunctions
             GameObject planetPrefab = Resources.Load("Planet/Planet") as GameObject;
             scene.planet = GameObject.Instantiate(planetPrefab);
             scene.planet.name = "Planet";
+
+            scene.planetPivot = new GameObject();
+            scene.planetPivot.name = "PlanetPivot";
+            scene.planet.transform.SetParent(scene.planetPivot.transform);
         }
 
         GameObject atmosphere = GameObject.Find("Atmosphere");
@@ -641,6 +645,7 @@ public static class SceneFunctions
     public static void SetPlanetDistance(int seed)
     {
         GameObject planet = GameObject.Find("Planet");
+        GameObject planetPivot = GameObject.Find("PlanetPivot");
 
         Random.InitState(seed);
         float variable = Random.Range(1, 100);
@@ -650,13 +655,19 @@ public static class SceneFunctions
         float y = 0;
         float z = 0.4f + distance;
 
-        planet.transform.position = new Vector3(x, y, z);
+        planet.transform.localPosition = new Vector3(x, y, z);
 
         float xRot = Random.Range(0, 360);
         float yRot = Random.Range(0, 360);
         float zRot = Random.Range(0, 360);
 
         planet.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
+
+        xRot = Random.Range(0, 360);
+        yRot = Random.Range(0, 360);
+        zRot = Random.Range(0, 360);
+
+        planetPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
     }
 
     #endregion
@@ -2095,6 +2106,11 @@ public static class SceneFunctions
         {
             GameObject.Destroy(scene.planet);
         }
+
+        if (scene.planetPivot != null)
+        {
+            GameObject.Destroy(scene.planetPivot);
+        }
     }
 
     //This only clears the scene but leaves the scene loaded and the player intact
@@ -2148,6 +2164,11 @@ public static class SceneFunctions
         if (scene.planet != null)
         {
             GameObject.Destroy(scene.planet);
+        }
+
+        if (scene.planetPivot != null)
+        {
+            GameObject.Destroy(scene.planetPivot);
         }
     }
 

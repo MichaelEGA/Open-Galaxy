@@ -553,7 +553,7 @@ public static class SceneFunctions
     }
 
     //This return the name of a random location
-    public static (string planet, string type, Vector3 location, int seed) GetRandomLocation()
+    public static (string planet, string type, Vector3 location, int seed, string allegiance, string region, string sector) GetRandomLocation()
     {
         LoadScreenFunctions.AddLogToLoadingScreen("Searching for a random planet.", 0, false);
 
@@ -561,6 +561,9 @@ public static class SceneFunctions
         string type = null;
         Vector3 location = new Vector3(0, 0, 0);
         int seed = 0;
+        string allegiance = "none";
+        string region = "none";
+        string sector = "none";
 
         //This loads the Json file
         TextAsset starSystemFile = Resources.Load("Data/Files/StarSystems") as TextAsset;
@@ -579,14 +582,17 @@ public static class SceneFunctions
         type = starSystem.planetType;
         location = new Vector3(xCoord, yCoord, zCoord);
         seed = starSystem.seed;
+        allegiance = starSystem.faction;
+        region = starSystem.Region;
+        sector = starSystem.Sector;
 
         LoadScreenFunctions.AddLogToLoadingScreen("Random Planet found.", 0, false);
 
-        return (planet, type, location, seed);
+        return (planet, type, location, seed, allegiance, region, sector);
     }
 
     //This returns the data of a specific location
-    public static (string planet, string type, Vector3 location, int seed) FindLocation(string name)
+    public static (string planet, string type, Vector3 location, int seed, string allegiance, string region, string sector) FindLocation(string name)
     {
         LoadScreenFunctions.AddLogToLoadingScreen("Searching for planet data.", 0, false);
 
@@ -594,6 +600,9 @@ public static class SceneFunctions
         string type = null;
         Vector3 location = new Vector3(0, 0, 0);
         int seed = 0;
+        string allegiance = "none";
+        string region = "none";
+        string sector = "none";
 
         //This loads the Json file
         TextAsset starSystemFile = Resources.Load("Data/Files/StarSystems") as TextAsset;
@@ -613,6 +622,9 @@ public static class SceneFunctions
                 type = starSystem.planetType;
                 location = new Vector3(xCoord, yCoord, zCoord);
                 seed = starSystem.seed;
+                allegiance = starSystem.faction;
+                region = starSystem.Region;
+                sector = starSystem.Sector;
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet Data Found.", 0, false);
                 break;
             }
@@ -636,9 +648,12 @@ public static class SceneFunctions
             type = starSystem.planetType;
             location = new Vector3(xCoord, yCoord, zCoord);
             seed = starSystem.seed;
+            allegiance = starSystem.faction;
+            region = starSystem.Region;
+            sector = starSystem.Sector;
         }
 
-        return (planet, type, location, seed);
+        return (planet, type, location, seed, allegiance, region, sector);
     }
 
     //This sets the distance from the planet

@@ -40,7 +40,7 @@ public static class ExploreFunctions
         exploreManager.currentLocation = "Tatooine";
 
         //This runs all the preload events like loading the planet and asteroids and objects already in scene
-        Task a = new Task(LoadLocationScenery(exploreManager.currentLocation));
+        Task a = new Task(LoadScenery(exploreManager.currentLocation));
         while (a.Running == true) { yield return null; }
 
         //UNFINISHED: This loads the ships in the scene
@@ -121,8 +121,8 @@ public static class ExploreFunctions
         LoadScreenFunctions.AddLogToLoadingScreen("Music Manager created", Time.unscaledTime - time);
     }
 
-    //This looks for and runs preload events
-    public static IEnumerator LoadLocationScenery(string location)
+    //This loads the planet and asteroids in the scene according to location data
+    public static IEnumerator LoadScenery(string location)
     {
         var locationData = SceneFunctions.FindLocation(location);
 
@@ -146,6 +146,54 @@ public static class ExploreFunctions
         SceneFunctions.SetPlanetDistance(seed);
 
         LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
+    }
+
+    //This loads ships in the scene according to the location data
+    public static IEnumerator LoadShips(string location)
+    {
+        var locationData = SceneFunctions.FindLocation(location);
+
+        string type = locationData.type;
+        int seed = locationData.seed;
+        string planetType = locationData.planet;
+        string allegiance = locationData.allegiance;
+        string region = locationData.region;
+
+        float time = Time.unscaledTime;
+
+        //This reads the location profile data
+        TextAsset locationProfilesDataFile = new TextAsset();
+
+        locationProfilesDataFile = Resources.Load("Data/Files/LocationProfiles") as TextAsset;
+
+        LocationProfiles locationProfiles = JsonUtility.FromJson<LocationProfiles>(locationProfilesDataFile.text);
+
+        LocationProfile selectedLocationProfile = null;
+
+        //This checks for location specific data first
+        foreach (LocationProfile locationProfile in locationProfiles.locationProfileData)
+        {
+            if (locationProfile.location == location)
+            {
+                selectedLocationProfile = locationProfile;
+            }
+        }
+
+        //Then is there is no specific location data looks for the region data
+        if (selectedLocationProfile == null)
+        {
+            foreach (LocationProfile locationProfile in locationProfiles.locationProfileData)
+            {
+                if (locationProfile.region == location)
+                {
+                    selectedLocationProfile = locationProfile;
+                }
+            }
+        }
+
+        //The game then uses the region and planet data to generate a unique set of ships
+
+        yield return null;
     }
 
     //This loads the player ship according to the details in the explore manager
@@ -256,7 +304,7 @@ public static class ExploreFunctions
         SetGalaxyLocation(location);
 
         //This finds and loads all 'preload' nodes for the new location
-        Task b = new Task(LoadLocationScenery(location));
+        Task b = new Task(LoadScenery(location));
         while (b.Running == true) { yield return null; }
 
         //This sets the position of the ship in the new location designated in the node
@@ -396,6 +444,16 @@ public static class ExploreFunctions
             ExitMenuFunctions.DisplayExitMenu(true);
             missionManager.pressedTime = Time.time + 0.5f;
         }
+
+    }
+
+    #endregion
+
+    #region AreaProfiles
+
+    //This gets an area profile for the region
+    public static void GetAreaProfile(int seed, string allegiance, string region)
+    {
 
     }
 

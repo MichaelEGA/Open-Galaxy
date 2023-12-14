@@ -43,7 +43,7 @@ public static class ExploreFunctions
         Task a = new Task(LoadScenery(exploreManager.currentLocation));
         while (a.Running == true) { yield return null; }
 
-        //UNFINISHED: This loads the ships in the scene
+        Task b = new Task(LoadShips("Tatooine"));
 
         //This loads the player in the scene
         LoadPlayerShip();
@@ -184,7 +184,7 @@ public static class ExploreFunctions
         {
             foreach (LocationProfile locationProfile in locationProfiles.locationProfileData)
             {
-                if (locationProfile.region == location)
+                if (locationProfile.region == region)
                 {
                     selectedLocationProfile = locationProfile;
                 }
@@ -192,6 +192,53 @@ public static class ExploreFunctions
         }
 
         //The game then uses the region and planet data to generate a unique set of ships
+        if (selectedLocationProfile != null)
+        {
+            Task a = new Task(LoadShipGroup("large", allegiance, selectedLocationProfile.largeCapitalShips, seed));
+            while (a.Running) { yield return null; }
+
+            Task b = new Task(LoadShipGroup("medium", allegiance, selectedLocationProfile.mediumCapitalShips, seed));
+            while (b.Running) { yield return null; }
+
+            Task c = new Task(LoadShipGroup("fighter", allegiance, selectedLocationProfile.fighters, seed));
+            while (c.Running) { yield return null; }
+        }
+
+        yield return null;
+    }
+
+    public static IEnumerator LoadShipGroup(string shipClass, string allegiance, int number, int seed)
+    {
+        Random.InitState(seed);
+
+        int randomCapitalShipNumber = Random.Range(0, number + 1);
+
+        if (randomCapitalShipNumber > 0)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                //Procedural positioning 
+                //Proceudral group for appropriate craft
+                //Rewrite ship classes to match location profile categories
+
+                Vector3 position = new Vector3();
+                Quaternion rotation = new Quaternion();
+                string name = "none";
+                string cargo = "none";
+                string pattern = "arrowhorizontal";
+                float width = 1000;
+                float height = 1000;
+                float length = 1000;
+                float shipNumber = 1;
+                int shipsPerLine = 4;
+                float positionVariance = 10;
+                bool exitingHyperspace = false;
+                bool includePlayer = false;
+                int playerNo = 0;
+
+                Task c = new Task(SceneFunctions.LoadMultipleShipByClassAndAllegiance(position, rotation, shipClass, name, allegiance, cargo, shipNumber, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
+            }
+        }
 
         yield return null;
     }
@@ -307,6 +354,10 @@ public static class ExploreFunctions
         Task b = new Task(LoadScenery(location));
         while (b.Running == true) { yield return null; }
 
+        //This loads the ships in the area
+        Task c = new Task(LoadShips(location));
+        while (c.Running == true) { yield return null; }
+
         //This sets the position of the ship in the new location designated in the node
         smallShip.transform.localPosition = entryPosition;
         smallShip.transform.rotation = entryRotation;
@@ -330,8 +381,8 @@ public static class ExploreFunctions
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceExit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
         //This shrinks the starfield
-        Task c = new Task(SceneFunctions.ShrinkStarfield());
-        while (c.Running == true) { yield return null; }
+        Task d = new Task(SceneFunctions.ShrinkStarfield());
+        while (d.Running == true) { yield return null; }
 
         HudFunctions.AddToShipLog("Exiting Hyperspace at: " + location.ToUpper());
 
@@ -444,16 +495,6 @@ public static class ExploreFunctions
             ExitMenuFunctions.DisplayExitMenu(true);
             missionManager.pressedTime = Time.time + 0.5f;
         }
-
-    }
-
-    #endregion
-
-    #region AreaProfiles
-
-    //This gets an area profile for the region
-    public static void GetAreaProfile(int seed, string allegiance, string region)
-    {
 
     }
 

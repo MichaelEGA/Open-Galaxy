@@ -530,19 +530,28 @@ public static class TargetingFunctions
         Scene scene = smallShip.scene;
         int targetNumber = 0;
 
-        for(int i = 0; i < scene.objectPool.Count; i++)
+        if (scene != null)
         {
-            if (scene.objectPool[i].name == smallShip.target.name)
+            if (scene.objectPool != null)
             {
-                targetNumber = i + 1;
+                if (smallShip.target != null)
+                {
+                    for (int i = 0; i < scene.objectPool.Count; i++)
+                    {
+                        if (scene.objectPool[i].name == smallShip.target.name)
+                        {
+                            targetNumber = i + 1;
+                        }
+                    }
+
+                    if (targetNumber >= scene.objectPool.Count)
+                    {
+                        targetNumber = 0;
+                    }
+                }
             }
         }
-
-        if (targetNumber >= scene.objectPool.Count)
-        {
-            targetNumber = 0;
-        }
-
+       
         return targetNumber;
     }
 

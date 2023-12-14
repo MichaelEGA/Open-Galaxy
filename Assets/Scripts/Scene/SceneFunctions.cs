@@ -1460,25 +1460,28 @@ public static class SceneFunctions
         int i = 0;
         int shipType = 0;
 
-        foreach (Vector3 tempPosition in positions)
+        if (positions.Length > 0 & shipTypesList.Count > 0)
         {
-            bool isAI = true;
-
-            if (includePlayer == true & i == playerNo)
+            foreach (Vector3 tempPosition in positions)
             {
-                isAI = false;
+                bool isAI = true;
+
+                if (includePlayer == true & i == playerNo)
+                {
+                    isAI = false;
+                }
+
+                int shipCallNumber = i + 1; //This ensures the ship call number starts at 01 not 00
+
+                shipType += Random.Range(0, shipTypesList.Count);
+
+                LoadSingleShip(tempPosition, rotation, shipTypesList[shipType].type, name + shipCallNumber.ToString("00"), allegiance, cargo, exitingHyperspace, isAI, false);
+
+                i++;
+
+                yield return null;
             }
-
-            int shipCallNumber = i + 1; //This ensures the ship call number starts at 01 not 00
-
-            shipType += Random.Range(0, shipTypesList.Count);
-
-            LoadSingleShip(tempPosition, rotation, shipTypesList[shipType].type, name + shipCallNumber.ToString("00"), allegiance, cargo, exitingHyperspace, isAI, false);
-
-            i++;
-
-            yield return null;
-        }    
+        }
     }
 
     public static IEnumerator LoadMultipleShipsOnGround(

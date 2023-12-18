@@ -17,6 +17,9 @@ public class ExploreManager : MonoBehaviour
     public string selectedLocation = "none";
     public bool hyperspace = false;
 
+    public List<Vector3> shipPositions;
+    public List<float> shipClearance;
+
     public float pressedTime;
 
     public bool running;

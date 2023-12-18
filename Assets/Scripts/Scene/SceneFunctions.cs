@@ -1473,7 +1473,12 @@ public static class SceneFunctions
 
                 int shipCallNumber = i + 1; //This ensures the ship call number starts at 01 not 00
 
-                shipType += Random.Range(0, shipTypesList.Count);
+                shipType += 1;
+
+                if (shipType >= shipTypesList.Count)
+                {
+                    shipType = 0;
+                }
 
                 LoadSingleShip(tempPosition, rotation, shipTypesList[shipType].type, name + shipCallNumber.ToString("00"), allegiance, cargo, exitingHyperspace, isAI, false);
 
@@ -1482,6 +1487,8 @@ public static class SceneFunctions
                 yield return null;
             }
         }
+
+        yield return null;
     }
 
     public static IEnumerator LoadMultipleShipsOnGround(

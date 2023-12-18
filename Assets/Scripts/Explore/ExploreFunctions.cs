@@ -194,21 +194,54 @@ public static class ExploreFunctions
         //The game then uses the region and planet data to generate a unique set of ships
         if (selectedLocationProfile != null)
         {
-            Task a = new Task(LoadShipGroup("large", allegiance, selectedLocationProfile.largeCapitalShips, seed));
+            Task h = new Task(LoadShipGroup("station", allegiance, selectedLocationProfile.stations, 800, seed));
+            while (h.Running) { yield return null; }
+            seed++;
+
+            Task a = new Task(LoadShipGroup("large", allegiance, selectedLocationProfile.largeCapitalShips, 1600, seed));
             while (a.Running) { yield return null; }
+            seed++;
 
-            Task b = new Task(LoadShipGroup("medium", allegiance, selectedLocationProfile.mediumCapitalShips, seed));
+            Task b = new Task(LoadShipGroup("medium", allegiance, selectedLocationProfile.mediumCapitalShips, 400, seed));
             while (b.Running) { yield return null; }
+            seed++;
 
-            Task c = new Task(LoadShipGroup("fighter", allegiance, selectedLocationProfile.fighters, seed));
+            Task c = new Task(LoadShipGroup("small", allegiance, selectedLocationProfile.smallCapitalShips, 200, seed));
             while (c.Running) { yield return null; }
+            seed++;
+
+            Task d = new Task(LoadShipGroup("freighter", allegiance, selectedLocationProfile.freighters, 150, seed));
+            while (d.Running) { yield return null; }
+            seed++;
+
+            Task i = new Task(LoadShipGroup("cargo", allegiance, selectedLocationProfile.cargofields, 150, seed));
+            while (i.Running) { yield return null; }
+            seed++;
+
+            Task j = new Task(LoadShipGroup("navbuoy", allegiance, selectedLocationProfile.navbuoys, 100, seed));
+            while (j.Running) { yield return null; }
+            seed++;
+
+            Task e = new Task(LoadShipGroup("lightfreighter", allegiance, selectedLocationProfile.lightfreighters, 40, seed));
+            while (e.Running) { yield return null; }
+            seed++;
+
+            Task f = new Task(LoadShipGroup("shuttle", allegiance, selectedLocationProfile.shuttles, 40,  seed));
+            while (f.Running) { yield return null; }
+            seed++;
+
+            Task g = new Task(LoadShipGroup("fighter", allegiance, selectedLocationProfile.fighters, 15, seed));
+            while (g.Running) { yield return null; }
+            seed++;
         }
 
         yield return null;
     }
 
-    public static IEnumerator LoadShipGroup(string shipClass, string allegiance, int number, int seed)
+    public static IEnumerator LoadShipGroup(string shipClass, string allegiance, int number, float clearance, int seed)
     {
+        ExploreManager exploreManager = GetExploreManager();
+
         Random.InitState(seed);
 
         int randomCapitalShipNumber = Random.Range(0, number + 1);
@@ -217,26 +250,47 @@ public static class ExploreFunctions
         {
             for (int i = 0; i < number; i++)
             {
-                //Procedural positioning 
-                //Proceudral group for appropriate craft
-                //Rewrite ship classes to match location profile categories
+                var positionData = GetNewPosition(clearance);
 
-                Vector3 position = new Vector3();
-                Quaternion rotation = new Quaternion();
-                string name = "none";
-                string cargo = "none";
-                string pattern = "arrowhorizontal";
-                float width = 1000;
-                float height = 1000;
-                float length = 1000;
-                float shipNumber = 1;
-                int shipsPerLine = 4;
-                float positionVariance = 10;
-                bool exitingHyperspace = false;
-                bool includePlayer = false;
-                int playerNo = 0;
+                if (positionData.cleared == false)
+                {
+                    Debug.Log("instance of " + shipClass + " was not cleared");
+                }
 
-                Task c = new Task(SceneFunctions.LoadMultipleShipByClassAndAllegiance(position, rotation, shipClass, name, allegiance, cargo, shipNumber, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
+                if (positionData.cleared == true)
+                {
+
+                    if (exploreManager.shipPositions != null)
+                    {
+                        exploreManager.shipPositions.Add(positionData.position);
+                        exploreManager.shipClearance.Add(clearance);
+                    }
+
+                    Vector3 position = positionData.position;
+                    Quaternion rotation = new Quaternion();
+                    string name = "none";
+                    string cargo = "none";
+                    string pattern = "arrowhorizontal";
+                    float width = 1000;
+                    float height = 1000;
+                    float length = 1000;
+                    int shipNumber = 1;
+                    int shipsPerLine = 4;
+                    float positionVariance = 10;
+                    bool exitingHyperspace = false;
+                    bool includePlayer = false;
+                    int playerNo = 0;
+
+                    //This procedurally selects a name for the ship
+                    string[] names = new string[] { "alpha", "beta", "gamma", "delta", "epislon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron" };
+                    int nameNo = names.Length;
+                    int selectName = Random.Range(0, names.Length - 1);
+                    name = names[selectName];
+
+                    Task c = new Task(SceneFunctions.LoadMultipleShipByClassAndAllegiance(position, rotation, shipClass, name, allegiance, cargo, shipNumber, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
+
+
+                }
             }
         }
 
@@ -256,6 +310,66 @@ public static class ExploreFunctions
         string cargo = "none";
 
         SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, false, false, false);
+    }
+
+    //This looks for a new positions that doesn't conflict with any other position
+    public static (Vector3 position, bool cleared) GetNewPosition(float clearance)
+    {
+        Vector3 position = new Vector3();
+        bool cleared = true;
+        ExploreManager exploreManager = GetExploreManager();
+
+        for (int i = 0; i < 50; i++)
+        {
+            cleared = true;
+
+            float xPos = Random.Range(-10000, 10000);
+            float yPos = Random.Range(-10000, 10000);
+            float zPos = Random.Range(-10000, 10000);
+
+            position = new Vector3(xPos, yPos, zPos);
+
+            if (exploreManager.shipPositions == null)
+            {
+                exploreManager.shipPositions = new List<Vector3>();
+                exploreManager.shipClearance = new List<float>();
+            }
+
+            if (exploreManager.shipPositions != null)
+            {
+                int i2 = 0;
+
+                foreach (Vector3 shipPosition in exploreManager.shipPositions)
+                {
+                    if (shipPosition != null)
+                    {
+                        float distance = Vector3.Distance(shipPosition, position);
+
+                        float tempClearance = clearance;
+                        float objectClearance = exploreManager.shipClearance[i2];
+
+                        if (clearance < objectClearance)
+                        {
+                            tempClearance = objectClearance;
+                        }
+
+                        if (distance < tempClearance)
+                        {
+                            cleared = false;
+                        }
+                    }
+
+                    i2++;
+                }
+
+                if (cleared == true)
+                {
+                    break;
+                }
+            }
+        }
+
+        return (position, cleared);
     }
 
     #endregion
@@ -334,6 +448,8 @@ public static class ExploreFunctions
 
         //This clears the current location
         SceneFunctions.ClearLocation();
+        exploreManager.shipPositions.Clear();
+        exploreManager.shipClearance.Clear();
 
         HudFunctions.AddToShipLog("Hyperdrive Activated");
 

@@ -295,8 +295,12 @@ public static class TurretFunctions
 
         List<string> layerNames = new List<string>();
 
+        Debug.Log("Check " + allegiances.allegianceData.Length);
+
         foreach (Allegiance tempAllegiance in allegiances.allegianceData)
         {
+            Debug.Log(tempAllegiance.allegiance + " is compared to " + turret.allegiance);
+
             if (tempAllegiance.allegiance == turret.allegiance)
             {
                 allegiance = tempAllegiance;
@@ -308,7 +312,20 @@ public static class TurretFunctions
 
         collisionLayers = LayerMask.GetMask("collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
 
-        collisionLayers &= ~(1 << GetLayerInt(allegiance.allegiance, layerNames));
+        if (allegiance == null)
+        {
+            Debug.Log("Allegiance is null");
+        }
+
+        if (layerNames == null)
+        {
+            Debug.Log("Layer names is null");
+        }
+
+        if (allegiance != null)
+        {
+            collisionLayers &= ~(1 << GetLayerInt(allegiance.allegiance, layerNames));
+        }
 
         return collisionLayers;
 

@@ -9,6 +9,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public Scene scene;
     [HideInInspector] public SmallShip smallShip;
     [HideInInspector] public Camera mainCamera;
+    [HideInInspector] public Camera starfieldCamera;
     [HideInInspector] public float loadTime;
 
     [Header("Hud Elements Check")]
@@ -76,6 +77,10 @@ public class Hud : MonoBehaviour
     [HideInInspector] public float arrowTargetRotation;
     [HideInInspector] public float arrowLerpTime;
 
+    [Header("NavComp Information")]
+    [HideInInspector] public GameObject navDirectionArrow;
+    [HideInInspector] public GameObject navSelectionBrace;
+
     [Header("Hud Object Pools")]
     [HideInInspector] public Object[] radarPrefabPool;
     [HideInInspector] public List<GameObject> radarPool;
@@ -116,6 +121,8 @@ public class Hud : MonoBehaviour
 
         HudFunctions.DisplaySelectionBraces(this);
         HudFunctions.DisplayTargetLockReticule(this);
+
+        HudFunctions.DisplayNavPointMarker(this);
 
         HudFunctions.DisplayShipPreview(this);             
     }

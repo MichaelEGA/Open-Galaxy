@@ -669,6 +669,10 @@ public static class MissionFunctions
         SceneFunctions.ClearLocation();
 
         //This makes the stars stretch out
+        scene.planetCamera.GetComponent<Camera>().enabled = false;
+        scene.mainCamera.GetComponent<Camera>().enabled = false;
+
+        //This makes the stars stretch out
         Task a = new Task(SceneFunctions.StretchStarfield());
         while(a.Running == true) { yield return null; }
 
@@ -710,6 +714,10 @@ public static class MissionFunctions
         //This shrinks the starfield
         Task c = new Task(SceneFunctions.ShrinkStarfield());
         while (c.Running == true) { yield return null; }
+
+        //This makes the stars stretch out
+        scene.planetCamera.GetComponent<Camera>().enabled = true;
+        scene.mainCamera.GetComponent<Camera>().enabled = true;
 
         //This unlocks the player controls and turns off invincibility on the player ship
         smallShip.controlLock = false;

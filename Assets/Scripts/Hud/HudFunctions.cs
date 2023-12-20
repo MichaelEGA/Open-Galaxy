@@ -1100,6 +1100,224 @@ public static class HudFunctions
         }
     }
 
+    public static void DisplayNavPointMarker(Hud hud)
+    {
+        if (Time.timeScale != 0)
+        {
+            if (hud.navSelectionBrace == null)
+            {
+                hud.navSelectionBrace = GameObject.Find("NavSelectionBrace");        
+            }
+
+            if (hud.navDirectionArrow == null)
+            {
+                hud.navDirectionArrow = GameObject.Find("NavDirectionArrow");
+            }
+
+            if (hud.scene.navPointMarker == null)
+            {
+                hud.scene.navPointMarker = new GameObject();
+                hud.scene.navPointMarker.name = "NavPointMarker";
+            }
+
+            GameObject navSelectionBrace = hud.navSelectionBrace;
+            GameObject navDirectionArrow = hud.navDirectionArrow;
+            GameObject navPointMarker = hud.scene.navPointMarker;
+
+            if (navSelectionBrace != null & navDirectionArrow != null)
+            {
+                navSelectionBrace.SetActive(false);
+                navDirectionArrow.SetActive(false);
+            }
+
+            if (hud.starfieldCamera == null)
+            {
+                if (hud.smallShip != null)
+                {
+                    if (hud.smallShip.mainCamera != null)
+                    {
+                        hud.starfieldCamera = hud.scene.starfieldCamera.GetComponent<Camera>();
+                    }
+                }
+            }
+
+            if (hud.starfieldCamera != null & navPointMarker != null & navSelectionBrace != null & navDirectionArrow != null)
+            {
+                GameObject starfieldTargetPosition = navPointMarker;
+                GameObject starfieldCurrentPosition = hud.starfieldCamera.gameObject;
+
+                //This gets the targets position on the camera
+                Vector3 screenPosition = hud.starfieldCamera.WorldToScreenPoint(starfieldTargetPosition.transform.position);
+
+                //This sets key values
+                Vector3 targetPosition = starfieldTargetPosition.transform.position - starfieldCurrentPosition.transform.position;
+                float forward = Vector3.Dot(starfieldCurrentPosition.transform.forward, targetPosition.normalized);
+                float up = Vector3.Dot(starfieldCurrentPosition.transform.up, targetPosition.normalized);
+                float right = Vector3.Dot(starfieldCurrentPosition.transform.right, targetPosition.normalized);
+
+                Vector3 viewPos = hud.starfieldCamera.WorldToViewportPoint(starfieldTargetPosition.transform.position);
+
+                bool onscreen = false;
+
+                if (viewPos.x >= 0 && viewPos.x <= 1 && viewPos.y >= 0 && viewPos.y <= 1 && viewPos.z > 0)
+                {
+                    onscreen = true;
+                }
+                else
+                {
+                    onscreen = false;
+                }
+
+                //This checks that the target is on screen
+                if (forward > 0 & onscreen == true)
+                {
+                    //This sets the braces to active when the target is on screen
+                    navSelectionBrace.SetActive(true);
+                    navDirectionArrow.SetActive(false);
+
+                    //This translates that position to the selection brace
+                    navSelectionBrace.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+                }
+                else
+                {
+                    //This sets the braces to inactive when the target is behind the camera
+                    navSelectionBrace.SetActive(false);
+                    navDirectionArrow.SetActive(true);
+
+                    //This gets values from atlasCommon
+                    RectTransform rectTransform = hud.gameObject.GetComponent<RectTransform>();
+                    float previousArrowRotation = hud.previousArrowRotation;
+                    float arrowTargetRotation = hud.arrowTargetRotation;
+                    float arrowLerpTime = hud.arrowLerpTime;
+
+                    //This gets screen width and height values
+                    float screenWidth = rectTransform.rect.width;
+                    float screenHeight = rectTransform.rect.height;
+
+                    //This controls the arrow rotation
+                    arrowLerpTime += 5f * Time.deltaTime;
+                    float arrowRotation = Mathf.Lerp(previousArrowRotation, arrowTargetRotation, arrowLerpTime);
+                    navDirectionArrow.transform.localRotation = Quaternion.Euler(0, 0, arrowRotation);
+
+                    if (right > 0)
+                    {
+                        if (up > 0.5f)
+                        {
+                            navDirectionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f - (up - 0.5f)) * 2f), screenHeight / 2f);
+
+                            if (arrowTargetRotation != -90)
+                            {
+                                previousArrowRotation = arrowRotation;
+                                arrowTargetRotation = -90;
+                                arrowLerpTime = 0;
+                            }
+
+                        }
+
+                        else if (up < 0.5f & up > 0f)
+                        {
+                            navDirectionArrow.transform.localPosition = new Vector2(screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+
+                            if (arrowTargetRotation != -90)
+                            {
+                                previousArrowRotation = arrowRotation;
+                                arrowTargetRotation = -90;
+                                arrowLerpTime = 0;
+                            }
+
+                        }
+
+                        else if (up < 0f & up > -0.5f)
+                        {
+                            navDirectionArrow.transform.localPosition = new Vector2(screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+
+                            if (arrowTargetRotation != -180)
+                            {
+                                previousArrowRotation = arrowRotation;
+                                arrowTargetRotation = -180;
+                                arrowLerpTime = 0;
+                            }
+
+                        }
+
+                        else if (up < -0.5)
+                        {
+                            navDirectionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f + (up + 0.5f)) * 2f), -screenHeight / 2f);
+
+                            if (arrowTargetRotation != -180)
+                            {
+                                previousArrowRotation = arrowRotation;
+                                arrowTargetRotation = -180;
+                                arrowLerpTime = 0;
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        if (up > 0.5f)
+                        {
+                            navDirectionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f - (up - 0.5f)) * -2f), screenHeight / 2f);
+
+                            if (arrowTargetRotation != 0)
+                            {
+                                previousArrowRotation = arrowRotation;
+                                arrowTargetRotation = 0;
+                                arrowLerpTime = 0;
+                            }
+
+                        }
+
+                        else if (up < 0.5f & up > 0f)
+                        {
+                            navDirectionArrow.transform.localPosition = new Vector2(-screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+
+                            if (arrowTargetRotation != 0)
+                            {
+                                previousArrowRotation = arrowRotation;
+                                arrowTargetRotation = 0;
+                                arrowLerpTime = 0;
+                            }
+
+                        }
+
+                        else if (up < 0f & up > -0.5f)
+                        {
+                            navDirectionArrow.transform.localPosition = new Vector2(-screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+
+                            if (arrowTargetRotation != -270)
+                            {
+                                previousArrowRotation = arrowRotation;
+                                arrowTargetRotation = -270;
+                                arrowLerpTime = 0;
+                            }
+
+                        }
+
+                        else if (up < -0.5)
+                        {
+                            navDirectionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f + (up + 0.5f)) * -2f), -screenHeight / 2f);
+
+                            if (arrowTargetRotation != -270)
+                            {
+                                previousArrowRotation = arrowRotation;
+                                arrowTargetRotation = -270;
+                                arrowLerpTime = 0;
+                            }
+
+                        }
+
+                    }
+
+                    hud.previousArrowRotation = previousArrowRotation;
+                    hud.arrowTargetRotation = arrowTargetRotation;
+                    hud.arrowLerpTime = arrowLerpTime;
+                }
+            }
+        }
+    }
+
     //This displays the target lock reticule
     public static void DisplayTargetLockReticule(Hud hud)
     {

@@ -52,6 +52,9 @@ public class Scene : MonoBehaviour
     [HideInInspector] public GameObject starfieldCamera;
     [HideInInspector] public GameObject cockpitCamera;
 
+    [Header("Starfield")]
+    [HideInInspector] public GameObject navPointMarker;
+
     [Header("Avoid Collison")]
     [HideInInspector] public float loadTime;
     [HideInInspector] public bool runAvoidCollision = true;

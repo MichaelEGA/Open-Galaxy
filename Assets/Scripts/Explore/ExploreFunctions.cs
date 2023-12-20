@@ -39,6 +39,8 @@ public static class ExploreFunctions
 
         exploreManager.currentLocation = "Tatooine";
 
+        SetGalaxyLocation("Tatooine");
+
         //This runs all the preload events like loading the planet and asteroids and objects already in scene
         Task a = new Task(LoadScenery(exploreManager.currentLocation));
         while (a.Running == true) { yield return null; }
@@ -424,7 +426,7 @@ public static class ExploreFunctions
     }
 
     //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
-    public static IEnumerator ChangeLocation(string location, Vector3 entryPosition = new Vector3(), Quaternion entryRotation = new Quaternion())
+    public static IEnumerator ChangeLocation(string location, Vector3 entryPosition = new Vector3())
     {
         HudFunctions.AddToShipLog("Course set: " + location.ToUpper());
 
@@ -454,6 +456,9 @@ public static class ExploreFunctions
         HudFunctions.AddToShipLog("Hyperdrive Activated");
 
         //This makes the stars stretch out
+        scene.planetCamera.GetComponent<Camera>().enabled = false;
+        scene.mainCamera.GetComponent<Camera>().enabled = false;
+
         Task a = new Task(SceneFunctions.StretchStarfield());
         while (a.Running == true) { yield return null; }
 
@@ -476,7 +481,6 @@ public static class ExploreFunctions
 
         //This sets the position of the ship in the new location designated in the node
         smallShip.transform.localPosition = entryPosition;
-        smallShip.transform.rotation = entryRotation;
 
         //This yield allows the new position and rotation to be registered in the rigidbody component which is needed for the shrinkstarfield function
         yield return null;
@@ -499,6 +503,10 @@ public static class ExploreFunctions
         //This shrinks the starfield
         Task d = new Task(SceneFunctions.ShrinkStarfield());
         while (d.Running == true) { yield return null; }
+
+        //This makes the stars stretch out
+        scene.planetCamera.GetComponent<Camera>().enabled = true;
+        scene.mainCamera.GetComponent<Camera>().enabled = true;
 
         HudFunctions.AddToShipLog("Exiting Hyperspace at: " + location.ToUpper());
 
@@ -525,6 +533,24 @@ public static class ExploreFunctions
         scene.planetType = planetData.type;
         scene.planetSeed = planetData.seed;
         SceneFunctions.MoveStarfieldCamera(planetData.location);
+    }
+
+    //This sets the position of the nav point marker
+    public static void SetNavPointMarker(string location)
+    {
+        Scene scene = SceneFunctions.GetScene();
+        var planetData = SceneFunctions.FindLocation(location);
+        scene.currentLocation = planetData.planet;
+        scene.planetType = planetData.type;
+        scene.planetSeed = planetData.seed;
+
+        if (scene.navPointMarker == null)
+        {
+            scene.navPointMarker = new GameObject();
+            scene.navPointMarker.name = "NavPointMarker";
+        }
+
+        scene.navPointMarker.transform.position = planetData.location;
     }
 
     //This selects the next avaiblible jump location
@@ -569,6 +595,8 @@ public static class ExploreFunctions
             }
 
             exploreManager.selectedLocation = newLocation;
+
+            SetNavPointMarker(newLocation);
 
             HudFunctions.AddToShipLog("New hyperspace location set: " + newLocation.ToUpper());
 

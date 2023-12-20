@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ExploreManager : MonoBehaviour
 {
+    public Scene scene;
+    public Hud hud;
+
     //Player Data
     public Vector3 playerPosition = new Vector3();
     public Quaternion playerRotation = new Quaternion();
@@ -16,6 +19,7 @@ public class ExploreManager : MonoBehaviour
     public string[] availibleLocations;
     public string selectedLocation = "none";
     public bool hyperspace = false;
+    public bool hyperdriveActive = false;
 
     public List<Vector3> shipPositions;
     public List<float> shipClearance;
@@ -30,5 +34,6 @@ public class ExploreManager : MonoBehaviour
         ExploreFunctions.ActivateExitMenu(this);
         ExploreFunctions.SelectNextJumpLocation(this);
         ExploreFunctions.ActivateHyperspace(this);
+        ExploreFunctions.HyperdriveAvailible(this);
     }
 }

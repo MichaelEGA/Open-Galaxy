@@ -17,8 +17,6 @@ public static class ExploreFunctions
         //This marks the start time of the script
         float startTime = Time.time;
 
-        Scene scene = SceneFunctions.GetScene();
-
         //This pauses the game to prevent action starting before everything is loaded 
         Time.timeScale = 0;
 
@@ -31,8 +29,14 @@ public static class ExploreFunctions
         //This tells the player that the mission is being loaded
         LoadScreenFunctions.AddLogToLoadingScreen("Start loading Explore", Time.unscaledTime - time);
 
+        //This gets the reference to the scene
+        exploreManager.scene = SceneFunctions.GetScene();
+
         //This loads the base game scene
         LoadScene();
+
+        //This gets the reference to the hud
+        exploreManager.hud = HudFunctions.GetHud();
 
         //This sets the skybox to the default space
         SceneFunctions.SetSkybox("space");
@@ -102,8 +106,6 @@ public static class ExploreFunctions
     //This creates the scene 
     public static void LoadScene()
     {
-        Scene scene = SceneFunctions.GetScene();
-
         //This marks the load time using unscaled time
         float time = Time.unscaledTime;
 
@@ -607,7 +609,7 @@ public static class ExploreFunctions
     //This activates the hyperdrive
     public static void ActivateHyperspace(ExploreManager exploreManager)
     {
-        if (exploreManager.hyperspace == false)
+        if (exploreManager.hyperspace == false & exploreManager.hyperdriveActive == true)
         {
             Keyboard keyboard = Keyboard.current;
 
@@ -621,6 +623,48 @@ public static class ExploreFunctions
                 }
 
                 exploreManager.pressedTime = Time.time;
+            }
+        }
+    }
+
+    //This checks if the hyperdrive is active or not
+    public static void HyperdriveAvailible(ExploreManager exploreManager)
+    { 
+        if (exploreManager.scene.navPointMarker != null & exploreManager.scene.starfieldCamera.gameObject != null)
+        {
+            GameObject starfieldTargetPosition = exploreManager.scene.navPointMarker;
+            GameObject starfieldCurrentPosition = exploreManager.scene.starfieldCamera.gameObject;
+
+            Vector3 targetPosition = starfieldTargetPosition.transform.position - starfieldCurrentPosition.transform.position;
+            float forward = Vector3.Dot(starfieldCurrentPosition.transform.forward, targetPosition.normalized);
+
+            if (forward > 0.99f)
+            {
+                exploreManager.hyperdriveActive = true;
+                exploreManager.hud.hyperdriveActive = true;
+            }
+            else
+            {
+                exploreManager.hyperdriveActive = false;
+                exploreManager.hud.hyperdriveActive = false;
+            }
+        }
+        else if (exploreManager.hyperspace == false)
+        {
+            exploreManager.hyperdriveActive = false;
+
+            if (exploreManager.hud != null)
+            {
+                exploreManager.hud.hyperdriveActive = false;
+            }
+        }
+        else
+        {
+            exploreManager.hyperdriveActive = false; //The hyperdrive is not availible to be activated b/c it is already active
+
+            if (exploreManager.hud != null)
+            {
+                exploreManager.hud.hyperdriveActive = true;
             }
         }
     }

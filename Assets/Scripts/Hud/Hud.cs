@@ -25,6 +25,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public Text weaponModeText;
     [HideInInspector] public Text weaponNumberText;
     [HideInInspector] public Text hyperdriveText;
+    [HideInInspector] public bool hyperdriveActive;
     [HideInInspector] public Slider shieldMeter;
     [HideInInspector] public Slider engineMeter;
     [HideInInspector] public Slider laserMeter;
@@ -105,6 +106,7 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplayWeaponMode(this);
         HudFunctions.DisplayWeaponNumber(this);
         HudFunctions.DisplayShieldAndHull(this);
+        HudFunctions.DisplayHyperdrive(this);
 
         HudFunctions.DisplayTargetDistance(this);
         HudFunctions.DisplayTargetType(this);

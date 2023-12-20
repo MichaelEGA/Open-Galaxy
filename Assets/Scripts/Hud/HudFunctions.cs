@@ -455,6 +455,22 @@ public static class HudFunctions
         }
     }
 
+    //This displays whether the WEP boost is on or not
+    public static void DisplayHyperdrive(Hud hud)
+    {
+        if (hud.hyperdriveText != null & hud.smallShip != null & Time.timeScale != 0)
+        {
+            if (hud.hyperdriveActive == true)
+            {
+                hud.hyperdriveText.text = "ON";
+            }
+            else
+            {
+                hud.hyperdriveText.text = "OFF";
+            }
+        }
+    }
+
     #endregion
 
     #region target ship display
@@ -1381,7 +1397,7 @@ public static class HudFunctions
     {
         if (Time.timeScale != 0)
         {
-            Hud hud = GetHudScript();
+            Hud hud = GetHud();
 
             if (hud != null)
             {
@@ -1396,7 +1412,7 @@ public static class HudFunctions
     //This updates the ships objectives
     public static void UpdateObjectives(string[] objectives)
     {
-        Hud hud = GetHudScript();
+        Hud hud = GetHud();
 
         if (hud != null)
         {
@@ -1430,7 +1446,7 @@ public static class HudFunctions
     {
         if (Time.timeScale != 0)
         {
-            Hud hud = GetHudScript();
+            Hud hud = GetHud();
 
             if (hud != null)
             {
@@ -1495,7 +1511,7 @@ public static class HudFunctions
     //This calls the unloading function before unloading the hud object itself
     public static void UnloadHud()
     {
-        Hud hud = GetHudScript();
+        Hud hud = GetHud();
 
         if (hud != null)
         {
@@ -1556,7 +1572,7 @@ public static class HudFunctions
     }
 
     //This gets the HUD script
-    public static Hud GetHudScript()
+    public static Hud GetHud()
     {
         Hud hud = GameObject.FindObjectOfType<Hud>();
         return hud;

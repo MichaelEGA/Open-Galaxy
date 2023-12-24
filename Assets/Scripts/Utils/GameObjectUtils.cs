@@ -63,6 +63,21 @@ public static class GameObjectUtils
         }
     }
 
+    //This ignores collisions between two sets of colliders
+    public static void IgnoreCollision(GameObject gameObject1, GameObject gameObject2)
+    {
+        MeshCollider[] meshColliders1 = gameObject1.GetComponentsInChildren<MeshCollider>();
+        MeshCollider[] meshColliders2 = gameObject2.GetComponentsInChildren<MeshCollider>();
+
+        foreach (MeshCollider meshCollider1 in meshColliders1)
+        {
+            foreach (MeshCollider meshCollider2 in meshColliders2)
+            {
+                Physics.IgnoreCollision(meshCollider1, meshCollider2);
+            }
+        }
+    }
+
     //This sets the particle to inactive
     public static IEnumerator DeactivateObjectAfterDelay(float time, GameObject gameObject)
     {

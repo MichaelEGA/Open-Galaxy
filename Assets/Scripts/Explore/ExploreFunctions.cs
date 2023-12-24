@@ -55,7 +55,7 @@ public static class ExploreFunctions
         LoadPlayerShip();
 
         //This grabs all jump locations within range
-        exploreManager.availibleLocations = GetLocations("Tatooine", 500);
+        exploreManager.availibleLocations = GetLocations("Tatooine", 1000);
 
         //This tells the player to get ready, starts the game, locks the cursor and gets rid of the loading screen
         LoadScreenFunctions.AddLogToLoadingScreen("Explore mode loaded.", Time.unscaledTime - time);
@@ -437,93 +437,124 @@ public static class ExploreFunctions
         SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
         ExploreManager exploreManager = GetExploreManager();
 
-        exploreManager.hyperspace = true;
+        //This checks whether the jump should be cancelled or not
+        bool cancelJump = false;
 
-        smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
-        smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
+        Vector3 forwardRaycast = smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * 10);
 
-        //This plays the hyperspace entry sound
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceEntry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+        RaycastHit hit;
 
-        yield return new WaitForSeconds(4); //This gives the audio clip time to play
-
-        //This marks the jump time
-        float time = Time.unscaledTime;
-
-        //This clears the current location
-        SceneFunctions.ClearLocation();
-        exploreManager.shipPositions.Clear();
-        exploreManager.shipClearance.Clear();
-
-        HudFunctions.AddToShipLog("Hyperdrive Activated");
-
-        //This makes the stars stretch out
-        scene.planetCamera.GetComponent<Camera>().enabled = false;
-        scene.mainCamera.GetComponent<Camera>().enabled = false;
-
-        Task a = new Task(SceneFunctions.StretchStarfield());
-        while (a.Running == true) { yield return null; }
-
-        //This activates the hyperspace tunnel
-        if (scene.hyperspaceTunnel != null)
+        if (Physics.SphereCast(forwardRaycast, 50, smallShip.gameObject.transform.TransformDirection(Vector3.forward), out hit, 10000))
         {
-            scene.hyperspaceTunnel.SetActive(true);
+            cancelJump = true;
+            HudFunctions.AddToShipLog("Exit vector not clear. Cancelling jump.");
+            yield return new WaitForSeconds(2);
+            HudFunctions.AddToShipLog("Ensure exit vector is clear of objects before jumping.");
         }
 
-        //This changes the ships position in the galaxy
-        SetGalaxyLocation(location);
+        Debug.DrawRay(scene.planetCamera.gameObject.transform.position, scene.planetCamera.gameObject.transform.TransformDirection(Vector3.forward) * 5000, Color.red, 500);
 
-        //This finds and loads all 'preload' nodes for the new location
-        Task b = new Task(LoadScenery(location));
-        while (b.Running == true) { yield return null; }
+        int layerMask = 1 << 27;
 
-        //This loads the ships in the area
-        Task c = new Task(LoadShips(location));
-        while (c.Running == true) { yield return null; }
-
-        //This sets the position of the ship in the new location designated in the node
-        smallShip.transform.localPosition = entryPosition;
-
-        //This yield allows the new position and rotation to be registered in the rigidbody component which is needed for the shrinkstarfield function
-        yield return null;
-
-        //This ensures that hyperspace continues for atleast ten seconds
-        while (time + 10 > Time.unscaledTime)
+        if (Physics.Raycast(scene.planetCamera.gameObject.transform.position, scene.planetCamera.gameObject.transform.TransformDirection(Vector3.forward), out hit, 100, layerMask))
         {
+            cancelJump = true;
+            HudFunctions.AddToShipLog("Planetary gravity well disrupting calcualtions. Cancelling jump.");
+            yield return new WaitForSeconds(2);
+            HudFunctions.AddToShipLog("Try jumping from another system.");
+        }
+
+        if (cancelJump == false)
+        {
+            exploreManager.hyperspace = true;
+
+            smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
+            smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
+
+            //This plays the hyperspace entry sound
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceEntry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+
+            yield return new WaitForSeconds(4); //This gives the audio clip time to play
+
+            //This marks the jump time
+            float time = Time.unscaledTime;
+
+            //This clears the current location
+            SceneFunctions.ClearLocation();
+            exploreManager.shipPositions.Clear();
+            exploreManager.shipClearance.Clear();
+
+            HudFunctions.AddToShipLog("Hyperdrive Activated");
+
+            //This makes the stars stretch out
+            scene.planetCamera.GetComponent<Camera>().enabled = false;
+            scene.mainCamera.GetComponent<Camera>().enabled = false;
+
+            Task a = new Task(SceneFunctions.StretchStarfield());
+            while (a.Running == true) { yield return null; }
+
+            //This activates the hyperspace tunnel
+            if (scene.hyperspaceTunnel != null)
+            {
+                scene.hyperspaceTunnel.SetActive(true);
+            }
+
+            //This changes the ships position in the galaxy
+            SetGalaxyLocation(location);
+
+            //This finds and loads all 'preload' nodes for the new location
+            Task b = new Task(LoadScenery(location));
+            while (b.Running == true) { yield return null; }
+
+            //This loads the ships in the area
+            Task c = new Task(LoadShips(location));
+            while (c.Running == true) { yield return null; }
+
+            //This sets the position of the ship in the new location designated in the node
+            smallShip.transform.localPosition = entryPosition;
+
+            //This yield allows the new position and rotation to be registered in the rigidbody component which is needed for the shrinkstarfield function
             yield return null;
-        }
 
-        //This deactivates the hyperspace tunnel
-        if (scene.hyperspaceTunnel != null)
-        {
-            scene.hyperspaceTunnel.SetActive(false);
-        }
+            //This ensures that hyperspace continues for atleast ten seconds
+            while (time + 10 > Time.unscaledTime)
+            {
+                yield return null;
+            }
 
-        //This plays the hyperspace exit
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceExit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+            //This deactivates the hyperspace tunnel
+            if (scene.hyperspaceTunnel != null)
+            {
+                scene.hyperspaceTunnel.SetActive(false);
+            }
 
-        //This shrinks the starfield
-        Task d = new Task(SceneFunctions.ShrinkStarfield());
-        while (d.Running == true) { yield return null; }
+            //This plays the hyperspace exit
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceExit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
-        //This makes the stars stretch out
-        scene.planetCamera.GetComponent<Camera>().enabled = true;
-        scene.mainCamera.GetComponent<Camera>().enabled = true;
+            //This shrinks the starfield
+            Task d = new Task(SceneFunctions.ShrinkStarfield());
+            while (d.Running == true) { yield return null; }
 
-        HudFunctions.AddToShipLog("Exiting Hyperspace at: " + location.ToUpper());
+            //This makes the stars stretch out
+            scene.planetCamera.GetComponent<Camera>().enabled = true;
+            scene.mainCamera.GetComponent<Camera>().enabled = true;
 
-        //This gets a new list of jump points
-        exploreManager.availibleLocations = GetLocations(location, 500);
+            HudFunctions.UpdateLocation(scene.currentLocation, "");
+            HudFunctions.AddToShipLog("Exiting Hyperspace at: " + location.ToUpper());
 
-        //This unlocks the player controls and turns off invincibility on the player ship
-        smallShip.controlLock = false;
+            //This gets a new list of jump points
+            exploreManager.availibleLocations = GetLocations(location, 1000);
 
-        yield return new WaitForSeconds(3);
+            //This unlocks the player controls and turns off invincibility on the player ship
+            smallShip.controlLock = false;
 
-        HudFunctions.DisplayLargeMessage(location.ToUpper());
+            yield return new WaitForSeconds(3);
 
-        smallShip.invincible = false;
-        exploreManager.hyperspace = false;
+            HudFunctions.DisplayLargeMessage(location.ToUpper());
+
+            smallShip.invincible = false;
+            exploreManager.hyperspace = false;
+        }    
     }
 
     //This sets the galaxy camera position
@@ -542,7 +573,6 @@ public static class ExploreFunctions
     {
         Scene scene = SceneFunctions.GetScene();
         var planetData = SceneFunctions.FindLocation(location);
-        scene.currentLocation = planetData.planet;
         scene.planetType = planetData.type;
         scene.planetSeed = planetData.seed;
 
@@ -600,6 +630,7 @@ public static class ExploreFunctions
 
             SetNavPointMarker(newLocation);
 
+            HudFunctions.UpdateLocation(exploreManager.scene.currentLocation, newLocation);
             HudFunctions.AddToShipLog("New hyperspace location set: " + newLocation.ToUpper());
 
             exploreManager.pressedTime = Time.time;

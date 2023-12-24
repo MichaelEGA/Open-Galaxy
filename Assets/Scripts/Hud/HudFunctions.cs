@@ -1437,6 +1437,26 @@ public static class HudFunctions
         }      
     }
 
+    //This updates the location of the ship and the selected location
+    public static void UpdateLocation(string currentLocation, string selectedLocation)
+    {
+        Hud hud = GetHud();
+
+        if (hud != null)
+        {
+            if (hud.destination == null)
+            {
+                GameObject destinationGO = GameObject.Find("Destination");
+                hud.destination = destinationGO.GetComponent<Text>();
+            }
+
+            if (hud.destination != null)
+            {
+                hud.destination.text = "CL: " + currentLocation.ToUpper() + "\n" + "SL:" + selectedLocation.ToUpper();
+            }
+        }      
+    }
+
     #endregion
 
     #region location display

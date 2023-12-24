@@ -34,6 +34,7 @@ public static class SmallShipFunctions
             LoadThrusters(smallShip);
             TargetingFunctions.CreateWaypoint(smallShip);
             smallShip.loaded = true;
+            GameObjectUtils.IgnoreCollision(smallShip.gameObject, smallShip.scene.planet);
         }
 
     }

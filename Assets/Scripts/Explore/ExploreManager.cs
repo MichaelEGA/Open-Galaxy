@@ -5,6 +5,7 @@ using UnityEngine;
 public class ExploreManager : MonoBehaviour
 {
     public Scene scene;
+    public SmallShip smallShip;
     public Hud hud;
 
     //Player Data
@@ -15,11 +16,14 @@ public class ExploreManager : MonoBehaviour
     public string playerAllegiance = "neutral";
 
     //Location and Hyperspace
+    public float hyperspaceAddition = 0.5f;
     public string currentLocation;
     public string[] availibleLocations;
     public string selectedLocation = "none";
     public bool hyperspace = false;
     public bool hyperdriveActive = false;
+    public bool beepedOnAvailibility = false;
+    public bool activateHyperspace;
 
     public List<Vector3> shipPositions;
     public List<float> shipClearance;

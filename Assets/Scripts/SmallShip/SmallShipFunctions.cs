@@ -36,7 +36,6 @@ public static class SmallShipFunctions
             smallShip.loaded = true;
             GameObjectUtils.IgnoreCollision(smallShip.gameObject, smallShip.scene.planet);
         }
-
     }
 
     //This attaches a particle system to the ship engines to simulate thrust

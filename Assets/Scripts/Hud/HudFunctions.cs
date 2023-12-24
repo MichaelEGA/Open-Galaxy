@@ -309,6 +309,22 @@ public static class HudFunctions
         }
     }
 
+    //This updates the hyperspace meter
+    public static void DisplayHyperspaceMeter(Hud hud)
+    {
+        if (hud.HyperspaceMeter == null)
+        {
+            GameObject HyperspaceMeter = GameObject.Find("HyperspaceMeter");
+
+            if (HyperspaceMeter != null) { hud.HyperspaceMeter = HyperspaceMeter.GetComponent<Slider>(); }
+        }
+
+        if (hud.HyperspaceMeter != null)
+        {
+            hud.HyperspaceMeter.value = hud.hyperspaceValue;
+        }
+    }
+
     //This displays the speed of the ship
     public static void DisplayShipSpeed(Hud hud)
     {
@@ -1116,6 +1132,7 @@ public static class HudFunctions
         }
     }
 
+    //This displays the nav point marker when the destination is in view and an arrow pointing to the destination when offscreen
     public static void DisplayNavPointMarker(Hud hud)
     {
         if (Time.timeScale != 0)
@@ -1202,9 +1219,9 @@ public static class HudFunctions
 
                     //This gets values from atlasCommon
                     RectTransform rectTransform = hud.gameObject.GetComponent<RectTransform>();
-                    float previousArrowRotation = hud.previousArrowRotation;
-                    float arrowTargetRotation = hud.arrowTargetRotation;
-                    float arrowLerpTime = hud.arrowLerpTime;
+                    float previousArrowRotation = hud.navPreviousArrowRotation;
+                    float arrowTargetRotation = hud.navArrowTargetRotation;
+                    float arrowLerpTime = hud.navArrowLerpTime;
 
                     //This gets screen width and height values
                     float screenWidth = rectTransform.rect.width;
@@ -1326,9 +1343,9 @@ public static class HudFunctions
 
                     }
 
-                    hud.previousArrowRotation = previousArrowRotation;
-                    hud.arrowTargetRotation = arrowTargetRotation;
-                    hud.arrowLerpTime = arrowLerpTime;
+                    hud.navPreviousArrowRotation = previousArrowRotation;
+                    hud.navArrowTargetRotation = arrowTargetRotation;
+                    hud.navArrowLerpTime = arrowLerpTime;
                 }
             }
         }
@@ -1452,7 +1469,7 @@ public static class HudFunctions
 
             if (hud.destination != null)
             {
-                hud.destination.text = "CL: " + currentLocation.ToUpper() + "\n" + "SL:" + selectedLocation.ToUpper();
+                hud.destination.text = "LOC: " + currentLocation.ToUpper() + "\n" + "DES: " + selectedLocation.ToUpper();
             }
         }      
     }

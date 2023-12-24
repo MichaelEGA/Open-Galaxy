@@ -30,6 +30,8 @@ public class Hud : MonoBehaviour
     [HideInInspector] public Slider engineMeter;
     [HideInInspector] public Slider laserMeter;
     [HideInInspector] public Slider WEPMeter;
+    [HideInInspector] public Slider HyperspaceMeter;
+    [HideInInspector] public float hyperspaceValue;
     [HideInInspector] public RawImage shieldForwardOutside;
     [HideInInspector] public RawImage shieldForwardInside;
     [HideInInspector] public RawImage hull;
@@ -82,6 +84,9 @@ public class Hud : MonoBehaviour
     [Header("NavComp Information")]
     [HideInInspector] public GameObject navDirectionArrow;
     [HideInInspector] public GameObject navSelectionBrace;
+    [HideInInspector] public float navPreviousArrowRotation;
+    [HideInInspector] public float navArrowTargetRotation;
+    [HideInInspector] public float navArrowLerpTime;
 
     [Header("Hud Object Pools")]
     [HideInInspector] public Object[] radarPrefabPool;
@@ -99,6 +104,7 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplayEngineMeter(this);
         HudFunctions.DisplayLaserMeter(this);
         HudFunctions.DisplayWEPMeter(this);
+        HudFunctions.DisplayHyperspaceMeter(this);
 
         HudFunctions.DisplayShipSpeed(this);
         HudFunctions.DisplayMatchSpeed(this);

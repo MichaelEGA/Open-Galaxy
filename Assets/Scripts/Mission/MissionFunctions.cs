@@ -1175,7 +1175,7 @@ public static class MissionFunctions
     public static IEnumerator LoadPlanet()
     {
         Scene scene = SceneFunctions.GetScene();
-        Task a = new Task(SceneFunctions.GeneratePlanetHeightmap(scene.planetType, scene.planetSeed));
+        Task a = new Task(SceneFunctions.GeneratePlanet(scene.planetType, scene.planetSeed));
         while (a.Running == true) { yield return null; }
         SceneFunctions.SetPlanetDistance(scene.planetSeed);
     }

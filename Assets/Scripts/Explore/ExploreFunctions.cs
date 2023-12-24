@@ -70,6 +70,9 @@ public static class ExploreFunctions
         //This removes the loading screen 
         DisplayLoadingScreen(false);
 
+        //This selects the next avaible destination
+        SelectNextJumpLocation(exploreManager);
+
         //This sets the mission manager to running
         exploreManager.running = true;
     }
@@ -145,7 +148,7 @@ public static class ExploreFunctions
         //Load Planet
         LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
 
-        Task b = new Task(SceneFunctions.GeneratePlanetHeightmap(type, seed));
+        Task b = new Task(SceneFunctions.GeneratePlanet(type, seed));
         while (b.Running == true) { yield return null; }
         SceneFunctions.SetPlanetDistance(seed);
 
@@ -434,7 +437,7 @@ public static class ExploreFunctions
 
         //This gets several important references
         Scene scene = SceneFunctions.GetScene();
-        SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+        SmallShip smallShip = GetSmallShip();
         ExploreManager exploreManager = GetExploreManager();
 
         //This checks whether the jump should be cancelled or not
@@ -448,6 +451,7 @@ public static class ExploreFunctions
         {
             cancelJump = true;
             HudFunctions.AddToShipLog("Exit vector not clear. Cancelling jump.");
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             yield return new WaitForSeconds(2);
             HudFunctions.AddToShipLog("Ensure exit vector is clear of objects before jumping.");
         }
@@ -460,6 +464,7 @@ public static class ExploreFunctions
         {
             cancelJump = true;
             HudFunctions.AddToShipLog("Planetary gravity well disrupting calcualtions. Cancelling jump.");
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             yield return new WaitForSeconds(2);
             HudFunctions.AddToShipLog("Try jumping from another system.");
         }
@@ -548,6 +553,9 @@ public static class ExploreFunctions
             //This unlocks the player controls and turns off invincibility on the player ship
             smallShip.controlLock = false;
 
+            //This selects the next avaible destination
+            SelectNextJumpLocation(exploreManager);
+
             yield return new WaitForSeconds(3);
 
             HudFunctions.DisplayLargeMessage(location.ToUpper());
@@ -633,6 +641,15 @@ public static class ExploreFunctions
             HudFunctions.UpdateLocation(exploreManager.scene.currentLocation, newLocation);
             HudFunctions.AddToShipLog("New hyperspace location set: " + newLocation.ToUpper());
 
+            SmallShip smallShip = exploreManager.smallShip;
+
+            if (smallShip == null)
+            {
+                smallShip = GetSmallShip();
+            }
+
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+
             exploreManager.pressedTime = Time.time;
         }
     }
@@ -644,7 +661,30 @@ public static class ExploreFunctions
         {
             Keyboard keyboard = Keyboard.current;
 
-            if (keyboard.spaceKey.isPressed == true & exploreManager.pressedTime + 0.5f < Time.time)
+            if (keyboard.spaceKey.isPressed == true)
+            {
+                if (exploreManager.hud != null)
+                {
+                    if (exploreManager.hud.hyperspaceValue < 100)
+                    {
+                        exploreManager.hud.hyperspaceValue += exploreManager.hyperspaceAddition;
+
+                        if (exploreManager.hud.hyperspaceValue >= 100)
+                        {
+                            exploreManager.activateHyperspace = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (exploreManager.hud.hyperspaceValue > 0)
+                {
+                    exploreManager.hud.hyperspaceValue -= 1f;
+                }
+            }
+
+            if (exploreManager.activateHyperspace == true)
             {
                 string location = exploreManager.selectedLocation;
 
@@ -653,7 +693,14 @@ public static class ExploreFunctions
                     Task a = new Task(ChangeLocation(location));
                 }
 
-                exploreManager.pressedTime = Time.time;
+                exploreManager.activateHyperspace = false;
+            }
+        }
+        else
+        {
+            if (exploreManager.hud.hyperspaceValue > 0)
+            {
+                exploreManager.hud.hyperspaceValue -= 1f;
             }
         }
     }
@@ -669,15 +716,35 @@ public static class ExploreFunctions
             Vector3 targetPosition = starfieldTargetPosition.transform.position - starfieldCurrentPosition.transform.position;
             float forward = Vector3.Dot(starfieldCurrentPosition.transform.forward, targetPosition.normalized);
 
+            SmallShip smallShip = exploreManager.smallShip;
+
+            if (smallShip == false)
+            {
+                smallShip = GetSmallShip();
+            }
+
             if (forward > 0.99f)
             {
                 exploreManager.hyperdriveActive = true;
                 exploreManager.hud.hyperdriveActive = true;
+
+                if (exploreManager.beepedOnAvailibility == false)
+                {
+                    if (exploreManager.smallShip == null)
+                    {
+
+                    }
+
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    exploreManager.beepedOnAvailibility = true;
+                }
+
             }
             else
             {
                 exploreManager.hyperdriveActive = false;
                 exploreManager.hud.hyperdriveActive = false;
+                exploreManager.beepedOnAvailibility = false;
             }
         }
         else if (exploreManager.hyperspace == false)
@@ -687,6 +754,7 @@ public static class ExploreFunctions
             if (exploreManager.hud != null)
             {
                 exploreManager.hud.hyperdriveActive = false;
+                exploreManager.beepedOnAvailibility = false;
             }
         }
         else
@@ -734,6 +802,19 @@ public static class ExploreFunctions
         }
 
         return exploreManager;
+    }
+
+    //This gets the player ship smallship scripy
+    public static SmallShip GetSmallShip()
+    {
+        SmallShip smallShip = null;
+
+        ExploreManager exploreManager = GetExploreManager();
+
+        smallShip = exploreManager.scene.mainShip.GetComponent<SmallShip>();
+        exploreManager.smallShip = smallShip;
+
+        return smallShip;
     }
 
     #endregion

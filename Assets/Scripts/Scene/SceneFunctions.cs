@@ -375,23 +375,28 @@ public static class SceneFunctions
     #region planet creation
 
     //This generates the planet texture
-    public static IEnumerator GeneratePlanetHeightmap(string type, int seed)
+    public static IEnumerator GeneratePlanet(string type, int seed)
     {
         //This gets key references
         Scene scene = GetScene();
 
         scene.planet = GameObject.Find("Planet");
+        scene.planetPivot = GameObject.Find("PlanetPivot");
 
         if (scene.planet == null)
         {
             GameObject planetPrefab = Resources.Load("Planet/Planet") as GameObject;
             scene.planet = GameObject.Instantiate(planetPrefab);
             scene.planet.name = "Planet";
+        }
 
+        if (scene.planetPivot == null)
+        {
             scene.planetPivot = new GameObject();
             scene.planetPivot.name = "PlanetPivot";
-            scene.planet.transform.SetParent(scene.planetPivot.transform);
         }
+
+        scene.planet.transform.SetParent(scene.planetPivot.transform);
 
         GameObject atmosphere = GameObject.Find("Atmosphere");
         Renderer planetRenderer = scene.planet.GetComponent<Renderer>();
@@ -2186,15 +2191,15 @@ public static class SceneFunctions
             scene.tilesSetPool.Clear();
         }
 
-        if (scene.planet != null)
-        {
-            GameObject.Destroy(scene.planet);
-        }
+        //if (scene.planet != null)
+        //{
+        //    GameObject.Destroy(scene.planet);
+        //}
 
-        if (scene.planetPivot != null)
-        {
-            GameObject.Destroy(scene.planetPivot);
-        }
+        //if (scene.planetPivot != null)
+        //{
+        //    GameObject.Destroy(scene.planetPivot);
+        //}
     }
 
     //This unloads the starfield

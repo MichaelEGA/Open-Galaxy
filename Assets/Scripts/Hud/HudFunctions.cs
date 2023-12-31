@@ -641,6 +641,11 @@ public static class HudFunctions
                         hud.targetCargo.text = hud.smallShip.targetSmallShip.cargo.ToUpper();
                         hud.smallShip.targetSmallShip.scanned = true;
                         AddToShipLog(hud.smallShip.targetName.ToUpper() + " has been scanned: " + hud.smallShip.targetSmallShip.cargo.ToUpper());
+
+                        if (hud.smallShip.audioManager != null)
+                        {
+                            AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep_double", "Cockpit", hud.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                        }                  
                     }
                     else if (hud.smallShip.targetSmallShip.scanned == true)
                     {
@@ -658,6 +663,11 @@ public static class HudFunctions
                         hud.targetCargo.text = hud.smallShip.targetLargeShip.cargo.ToUpper();
                         hud.smallShip.targetLargeShip.scanned = true;
                         AddToShipLog(hud.smallShip.targetName.ToUpper() + " has been scanned: " + hud.smallShip.targetLargeShip.cargo.ToUpper());
+
+                        if (hud.smallShip.audioManager != null)
+                        {
+                            AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep_double", "Cockpit", hud.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                        }
                     }
                     else if (hud.smallShip.targetLargeShip.scanned == true)
                     {

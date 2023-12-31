@@ -295,12 +295,8 @@ public static class TurretFunctions
 
         List<string> layerNames = new List<string>();
 
-        Debug.Log("Check " + allegiances.allegianceData.Length);
-
         foreach (Allegiance tempAllegiance in allegiances.allegianceData)
         {
-            Debug.Log(tempAllegiance.allegiance + " is compared to " + turret.allegiance);
-
             if (tempAllegiance.allegiance == turret.allegiance)
             {
                 allegiance = tempAllegiance;

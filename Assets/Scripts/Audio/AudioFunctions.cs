@@ -204,9 +204,7 @@ public static class AudioFunctions
 
         if (smallShip.engineAudioSource == null)
         {
-
             AudioClip audioClip = GetAudioClip(smallShip.audioManager, smallShip.engineAudio);
-
             AudioSource audioSource = GetAudioSource(smallShip.audioManager);
 
             if (audioClip != null & audioSource != null)
@@ -277,6 +275,50 @@ public static class AudioFunctions
             }
 
             smallShip.cockpitAudioSource.gameObject.transform.position = smallShip.transform.position;
+        }
+    }
+
+    //This function plays the nav comp noise
+    public static void PlayNavCompNoise(ExploreManager exploreManager)
+    {
+        float pitch = 1;
+        float spatialBlend = 1;
+        int priority = 128;
+
+        if (exploreManager.smallShip != null)
+        {
+            if (exploreManager.navCompAudioSource == null)
+            {
+                AudioClip audioClip = GetAudioClip(exploreManager.smallShip.audioManager, "homing_beacon_idle3");
+                AudioSource audioSource = GetIndependentAudioSource(exploreManager.smallShip.audioManager);
+
+                if (audioClip != null & audioSource != null)
+                {
+                    exploreManager.navCompAudioSource = audioSource;
+                    exploreManager.navCompAudioSource.clip = audioClip;
+                }
+            }
+
+            if (exploreManager.navCompAudioSource != null)
+            {
+                exploreManager.navCompAudioSource.priority = priority;
+                exploreManager.navCompAudioSource.spatialBlend = spatialBlend;
+                exploreManager.navCompAudioSource.pitch = pitch;
+
+                if (exploreManager.navCompAudioSource.isPlaying == false & exploreManager.navCompAudioSource.enabled == true)
+                {
+                    exploreManager.navCompAudioSource.reverbZoneMix = 1;
+                    exploreManager.navCompAudioSource.dopplerLevel = 0f;
+                    exploreManager.navCompAudioSource.spread = 45;
+                    exploreManager.navCompAudioSource.maxDistance = 500;
+                    exploreManager.navCompAudioSource.volume = 0.4f;
+                    exploreManager.navCompAudioSource.rolloffMode = AudioRolloffMode.Linear;
+                    exploreManager.navCompAudioSource.loop = true;
+                    exploreManager.navCompAudioSource.Play();
+                }
+
+                exploreManager.navCompAudioSource.gameObject.transform.position = exploreManager.smallShip.transform.position;
+            }
         }
     }
 
@@ -367,6 +409,29 @@ public static class AudioFunctions
         return audioSource;
     }
 
+    //This gets an inactive audio source or makes a new one
+    public static AudioSource GetIndependentAudioSource(Audio audioManager)
+    {
+        AudioSource audioSource = null;
+
+        if (audioManager.independentAudioSources == null)
+        {
+            audioManager.independentAudioSources = new List<AudioSource>();
+        }
+
+
+        if (audioManager.independentAudioSources != null)
+        {
+            GameObject audioSourceGO = new GameObject();
+            audioSourceGO.name = "Audio Source " + Random.Range(1000, 9999);
+            audioSource = audioSourceGO.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioManager.independentAudioSources.Add(audioSource);
+        }
+       
+        return audioSource;
+    }
+
     //This returns an audio source connected to the designated mixer group
     public static void ConnectAudioMixerGroup(Audio audioManager, AudioSource audioSource, string mixer)
     {
@@ -414,7 +479,6 @@ public static class AudioFunctions
         }
     }
 
-
     #endregion
 
     #region audio utilities
@@ -422,11 +486,11 @@ public static class AudioFunctions
     //This stops all audio sources from playing
     public static void StopAudioSources(Audio audioManager)
     {
-        foreach (AudioSource tempAudioSource in audioManager.audioSources)
+        foreach (AudioSource audioSource in audioManager.audioSources)
         {
-            if (tempAudioSource.isPlaying == true)
+            if (audioSource.isPlaying == true)
             {
-                tempAudioSource.Stop();
+                audioSource.Stop();
             }
         }
     }

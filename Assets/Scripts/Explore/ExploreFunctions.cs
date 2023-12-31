@@ -70,6 +70,8 @@ public static class ExploreFunctions
         //This removes the loading screen 
         DisplayLoadingScreen(false);
 
+        HudFunctions.DisplayLargeMessage("TATOOINE");
+
         //This selects the next avaible destination
         SelectNextJumpLocation(exploreManager);
 
@@ -451,7 +453,7 @@ public static class ExploreFunctions
         {
             cancelJump = true;
             HudFunctions.AddToShipLog("Exit vector not clear. Cancelling jump.");
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "error", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             yield return new WaitForSeconds(2);
             HudFunctions.AddToShipLog("Ensure exit vector is clear of objects before jumping.");
         }
@@ -464,7 +466,7 @@ public static class ExploreFunctions
         {
             cancelJump = true;
             HudFunctions.AddToShipLog("Planetary gravity well disrupting calcualtions. Cancelling jump.");
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "error", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             yield return new WaitForSeconds(2);
             HudFunctions.AddToShipLog("Try jumping from another system.");
         }
@@ -479,7 +481,7 @@ public static class ExploreFunctions
             //This plays the hyperspace entry sound
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceEntry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
-            yield return new WaitForSeconds(4); //This gives the audio clip time to play
+            yield return new WaitForSeconds(2);
 
             //This marks the jump time
             float time = Time.unscaledTime;
@@ -669,6 +671,8 @@ public static class ExploreFunctions
                     {
                         exploreManager.hud.hyperspaceValue += exploreManager.hyperspaceAddition;
 
+                        AudioFunctions.PlayNavCompNoise(exploreManager);
+
                         if (exploreManager.hud.hyperspaceValue >= 100)
                         {
                             exploreManager.activateHyperspace = true;
@@ -682,6 +686,14 @@ public static class ExploreFunctions
                 {
                     exploreManager.hud.hyperspaceValue -= 1f;
                 }
+
+                if (exploreManager.navCompAudioSource != null)
+                {
+                    if (exploreManager.navCompAudioSource.isPlaying == true)
+                    {
+                        exploreManager.navCompAudioSource.Stop();
+                    }
+                }
             }
 
             if (exploreManager.activateHyperspace == true)
@@ -694,6 +706,14 @@ public static class ExploreFunctions
                 }
 
                 exploreManager.activateHyperspace = false;
+
+                if (exploreManager.navCompAudioSource != null)
+                {
+                    if (exploreManager.navCompAudioSource.isPlaying == true)
+                    {
+                        exploreManager.navCompAudioSource.Stop();
+                    }
+                }
             }
         }
         else
@@ -701,6 +721,14 @@ public static class ExploreFunctions
             if (exploreManager.hud.hyperspaceValue > 0)
             {
                 exploreManager.hud.hyperspaceValue -= 1f;
+            }
+
+            if (exploreManager.navCompAudioSource != null)
+            {
+                if (exploreManager.navCompAudioSource.isPlaying == true)
+                {
+                    exploreManager.navCompAudioSource.Stop();
+                }
             }
         }
     }
@@ -735,7 +763,7 @@ public static class ExploreFunctions
 
                     }
 
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep_positive2", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                     exploreManager.beepedOnAvailibility = true;
                 }
 

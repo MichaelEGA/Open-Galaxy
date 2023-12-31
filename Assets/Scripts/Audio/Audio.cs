@@ -9,5 +9,6 @@ public class Audio : MonoBehaviour
     public AudioClip[] audioClips;
     public AudioClip[] missionAudioClips;
     public List<AudioSource> audioSources;
+    public List<AudioSource> independentAudioSources;
     public AudioMixer audioMixer;
 }

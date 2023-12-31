@@ -24,6 +24,7 @@ public class ExploreManager : MonoBehaviour
     public bool hyperdriveActive = false;
     public bool beepedOnAvailibility = false;
     public bool activateHyperspace;
+    public AudioSource navCompAudioSource;
 
     public List<Vector3> shipPositions;
     public List<float> shipClearance;

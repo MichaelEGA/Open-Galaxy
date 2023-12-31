@@ -448,7 +448,12 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.interceptForward > 0.90f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
             {
-                smallShip.fireWeapon = true;
+                bool dontFire = CheckFire(smallShip);
+
+                if (dontFire == false)
+                {
+                    smallShip.fireWeapon = true;
+                }
             }
             else
             {
@@ -459,6 +464,35 @@ public static class SmallShipAIFunctions
         {
             smallShip.fireWeapon = false;
         } 
+    }
+
+    //This checks whether a non hostile ship is in the firing line or not
+    public static bool CheckFire(SmallShip smallShip)
+    {
+        bool dontFire = false;
+
+        RaycastHit hit;
+
+        int layerMask = (1 << 6) | (1 << 7) | (1 << 8) | (1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13) | (1 << 14) | (1 << 15) | (1 << 16) | (1 << 17) | (1 << 18) | (1 << 19) | (1 << 20) | (1 << 21) | (1 << 22) | (1 << 23);
+
+        Vector3 forwardRaycast = smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * 10);
+
+        if (Physics.SphereCast(forwardRaycast, 10, smallShip.gameObject.gameObject.transform.TransformDirection(Vector3.forward), out hit, 1000, layerMask))
+        {
+            SmallShip otherSmallship = hit.collider.GetComponentInParent<SmallShip>();
+
+            if (otherSmallship != null)
+            {
+                bool isHostile = TargetingFunctions.GetHostility(smallShip, otherSmallship.allegiance);
+
+                if (isHostile != true)
+                {
+                    dontFire = true;
+                }
+            }
+        }
+
+        return dontFire;
     }
 
     //This controls torpedos

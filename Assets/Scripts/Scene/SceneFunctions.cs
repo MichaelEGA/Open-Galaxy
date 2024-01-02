@@ -383,6 +383,8 @@ public static class SceneFunctions
         scene.planet = GameObject.Find("Planet");
         scene.planetPivot = GameObject.Find("PlanetPivot");
 
+        IgnoreCollisionWithPlanet();
+
         if (scene.planet == null)
         {
             GameObject planetPrefab = Resources.Load("Planet/Planet") as GameObject;
@@ -688,6 +690,29 @@ public static class SceneFunctions
         zRot = Random.Range(0, 360);
 
         planetPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
+    }
+
+    //This ensures the planet does not hit any actual in scene objects
+    public static void IgnoreCollisionWithPlanet()
+    {
+        Physics.IgnoreLayerCollision(27, 6, true);
+        Physics.IgnoreLayerCollision(27, 7, true);
+        Physics.IgnoreLayerCollision(27, 8, true);
+        Physics.IgnoreLayerCollision(27, 9, true);
+        Physics.IgnoreLayerCollision(27, 10, true);
+        Physics.IgnoreLayerCollision(27, 11, true);
+        Physics.IgnoreLayerCollision(27, 12, true);
+        Physics.IgnoreLayerCollision(27, 13, true);
+        Physics.IgnoreLayerCollision(27, 14, true);
+        Physics.IgnoreLayerCollision(27, 15, true);
+        Physics.IgnoreLayerCollision(27, 16, true);
+        Physics.IgnoreLayerCollision(27, 17, true);
+        Physics.IgnoreLayerCollision(27, 18, true);
+        Physics.IgnoreLayerCollision(27, 19, true);
+        Physics.IgnoreLayerCollision(27, 20, true);
+        Physics.IgnoreLayerCollision(27, 21, true);
+        Physics.IgnoreLayerCollision(27, 22, true);
+        Physics.IgnoreLayerCollision(27, 23, true);
     }
 
     #endregion

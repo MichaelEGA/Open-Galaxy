@@ -78,8 +78,10 @@ public static class AudioFunctions
     #region play audio functions
 
     //This plays the requested sound
-    public static void PlayAudioClip(Audio audioManager, string audioName, string mixer = "external", Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
+    public static AudioSource PlayAudioClip(Audio audioManager, string audioName, string mixer = "external", Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
     {
+        AudioSource audioSource = null;
+
         if (audioManager == null)
         {
             audioManager = GetAudioManager();
@@ -111,7 +113,7 @@ public static class AudioFunctions
             if (dontPlay == false)
             {
                 AudioClip audioClip = GetAudioClip(audioManager, audioName);
-                AudioSource audioSource = GetAudioSource(audioManager);
+                audioSource = GetAudioSource(audioManager);
 
                 if (audioClip != null & audioSource != null)
                 {
@@ -131,11 +133,15 @@ public static class AudioFunctions
                 }
             }
         }
+
+        return audioSource;
     }
 
     //This plays the requested voice audio file
-    public static void PlayMissionAudioClip(Audio audioManager, string audioName, string mixer = "voice", Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
+    public static AudioSource PlayMissionAudioClip(Audio audioManager, string audioName, string mixer = "voice", Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
     {
+        AudioSource audioSource = null;
+
         if (audioManager == null)
         {
             audioManager = GetAudioManager();
@@ -166,7 +172,7 @@ public static class AudioFunctions
             if (dontPlay == false)
             {
                 AudioClip audioClip = GetMissionAudioClip(audioManager, audioName);
-                AudioSource audioSource = GetAudioSource(audioManager);
+                audioSource = GetAudioSource(audioManager);
 
                 if (audioClip != null & audioSource != null)
                 {
@@ -186,6 +192,8 @@ public static class AudioFunctions
                 }
             }
         }
+
+        return audioSource;
     }
 
     //This function specifcally plays engine noise

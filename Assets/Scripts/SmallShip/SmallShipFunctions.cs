@@ -33,8 +33,8 @@ public static class SmallShipFunctions
             smallShip.colliders = smallShip.GetComponentsInChildren<Collider>();
             LoadThrusters(smallShip);
             TargetingFunctions.CreateWaypoint(smallShip);
+            
             smallShip.loaded = true;
-            GameObjectUtils.IgnoreCollision(smallShip.gameObject, smallShip.scene.planet);
         }
     }
 

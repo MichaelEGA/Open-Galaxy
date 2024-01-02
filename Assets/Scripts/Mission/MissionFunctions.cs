@@ -856,7 +856,21 @@ public static class MissionFunctions
     //This displays the mission briefing screen
     public static void DisplayMissionBriefing(MissionEvent missionEvent)
     {
-        MissionBriefingFunctions.ActivateMissionBriefing(missionEvent.data1);
+        string audio = missionEvent.data2;
+        string message = missionEvent.data1;
+        string internalAudioFile = missionEvent.data3;
+        AudioSource missionBriefingAudio = null;
+
+        if (audio != "none" & internalAudioFile != "true")
+        {
+            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
+        }
+        else if (audio != "none" & internalAudioFile == "true")
+        {
+            missionBriefingAudio = AudioFunctions.PlayAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
+        }
+
+        MissionBriefingFunctions.ActivateMissionBriefing(message, missionBriefingAudio);
     }
 
     //This checks the ship distance to its waypoint

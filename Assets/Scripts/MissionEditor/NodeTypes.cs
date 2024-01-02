@@ -1274,6 +1274,18 @@ public static class NodeTypes
 
         drop -= 15 * multiplySize;
 
+        node.data2 = NodeFunctions.DrawInputField(node, "audio file", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options = new List<string>();
+        options.Add("true");
+        options.Add("false");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options, "internal file", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;

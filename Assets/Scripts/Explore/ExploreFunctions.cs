@@ -200,62 +200,96 @@ public static class ExploreFunctions
             }
         }
 
+        string[] navBuoys = new string[] { "navbuoy" };
+        string[] civilianStations = new string[] { "xq1station" };
+        string[] civilianCapitalShipLarge = new string[0];
+        string[] civilianCapitalShipMedium = new string[0];
+        string[] civilianCapitalShipSmall = new string[] { "corelliancorvette" };
+        string[] civilianFreightersLarge = new string[] { "gr75transport", "bulkfreighter" };
+        string[] civilianFreightersSmall = new string[0];
+        string[] civilianFighters = new string[] { "ywing", "z95headhunter", "xwing" };
+        string[] civilianShuttles = new string[] { "dx9Shuttle", "lambdashuttle" };
+        string[] civilianCargoFields = new string[] { "container" };
+        string[] imperialStations = new string[] { "xq1station" };
+        string[] imperialCapitalShipLarge = new string[] { "stardestroyer" };
+        string[] imperialCapitalShipMedium = new string[] { "nebulonbfrigate"};
+        string[] imperialCapitalShipSmall = new string[] { "corelliancorvette" };
+        string[] imperialFreightersLarge = new string[] { "gr75transport", "bulkfreighter" };
+        string[] imperialFreightersSmall = new string[0];
+        string[] imperialFighters = new string[] { "ywing", "z95headhunter", "assaultgunboat", "tiebomber", "tieadvanced", "tieinterceptor", "tiefighter" };
+        string[] imperialShuttles = new string[] { "dx9Shuttle", "lambdashuttle" };
+        string[] imperialCargoFields = new string[] { "container" };
+        string[] rebelStations = new string[] { "xq1station" };
+        string[] rebelCapitalShipLarge = new string[] { "homeone"};
+        string[] rebelCapitalShipMedium = new string[] { "nebulonbfrigate" };
+        string[] rebelCapitalShipSmall = new string[] { "corelliancorvette" };
+        string[] rebelFreightersLarge = new string[] { "gr75transport", "bulkfreighter" };
+        string[] rebelFreightersSmall = new string[0];
+        string[] rebelFighters = new string[] { "ywing", "z95headhunter", "awing", "xwing" };
+        string[] rebelShuttles = new string[] { "dx9Shuttle", "lambdashuttle" };
+        string[] rebelCargoFields = new string[] { "container" };
+        string[] pirateStations = new string[] { "xq1station" };
+        string[] pirateCapitalShipLarge = new string[0];
+        string[] pirateCapitalShipMedium = new string[0];
+        string[] pirateCapitalShipSmall = new string[] { "corelliancorvette" };
+        string[] pirateFreightersLarge = new string[] { "gr75transport", "bulkfreighter" };
+        string[] pirateFreightersSmall = new string[0];
+        string[] pirateFighters = new string[] { "ywing", "z95headhunter" };
+        string[] pirateShuttles = new string[] { "dx9Shuttle", "lambdashuttle" };
+        string[] pirateCargoFields = new string[] { "container" };
+
         //The game then uses the region and planet data to generate a unique set of ships
         if (selectedLocationProfile != null)
         {
-            Task h = new Task(LoadShipGroup("station", allegiance, selectedLocationProfile.stations, 800, seed));
+            Task h = new Task(LoadShipGroup(civilianStations, "neutral", selectedLocationProfile.civilianStations, 800, seed));
             while (h.Running) { yield return null; }
             seed++;
 
-            Task a = new Task(LoadShipGroup("large", allegiance, selectedLocationProfile.largeCapitalShips, 1600, seed));
+            Task a = new Task(LoadShipGroup(civilianCapitalShipLarge, "neutral", selectedLocationProfile.civilianCapitalLarge, 1600, seed));
             while (a.Running) { yield return null; }
             seed++;
 
-            Task b = new Task(LoadShipGroup("medium", allegiance, selectedLocationProfile.mediumCapitalShips, 400, seed));
+            Task b = new Task(LoadShipGroup(civilianCapitalShipMedium, "neutral", selectedLocationProfile.civilianCapitalMedium, 400, seed));
             while (b.Running) { yield return null; }
             seed++;
 
-            Task c = new Task(LoadShipGroup("small", allegiance, selectedLocationProfile.smallCapitalShips, 200, seed));
+            Task c = new Task(LoadShipGroup(civilianCapitalShipSmall, "neutral", selectedLocationProfile.civilianCapitalSmall, 200, seed));
             while (c.Running) { yield return null; }
             seed++;
 
-            Task d = new Task(LoadShipGroup("freighter", allegiance, selectedLocationProfile.freighters, 150, seed));
+            Task d = new Task(LoadShipGroup(civilianFreightersLarge, "neutral", selectedLocationProfile.civilianFreightersLarge, 150, seed));
             while (d.Running) { yield return null; }
             seed++;
 
-            Task i = new Task(LoadShipGroup("cargo", allegiance, selectedLocationProfile.cargofields, 150, seed));
-            while (i.Running) { yield return null; }
-            seed++;
-
-            Task j = new Task(LoadShipGroup("navbuoy", allegiance, selectedLocationProfile.navbuoys, 100, seed));
-            while (j.Running) { yield return null; }
-            seed++;
-
-            Task e = new Task(LoadShipGroup("lightfreighter", allegiance, selectedLocationProfile.lightfreighters, 40, seed));
+            Task e = new Task(LoadShipGroup(civilianFreightersSmall, "neutral", selectedLocationProfile.civilianFreightersSmall, 40, seed));
             while (e.Running) { yield return null; }
             seed++;
 
-            Task f = new Task(LoadShipGroup("shuttle", allegiance, selectedLocationProfile.shuttles, 40,  seed));
-            while (f.Running) { yield return null; }
+            Task i = new Task(LoadShipGroup(civilianFighters, "neutral", selectedLocationProfile.civilianFighters, 150, seed));
+            while (i.Running) { yield return null; }
             seed++;
 
-            Task g = new Task(LoadShipGroup("fighter", allegiance, selectedLocationProfile.fighters, 15, seed));
-            while (g.Running) { yield return null; }
+            Task j = new Task(LoadShipGroup(civilianShuttles, "neutral", selectedLocationProfile.civilianShuttles, 100, seed));
+            while (j.Running) { yield return null; }
+            seed++;
+
+            Task f = new Task(LoadShipGroup(civilianCargoFields, "neutral", selectedLocationProfile.civilianCargoFields, 40,  seed));
+            while (f.Running) { yield return null; }
             seed++;
         }
 
         yield return null;
     }
 
-    public static IEnumerator LoadShipGroup(string shipClass, string allegiance, int number, float clearance, int seed)
+    public static IEnumerator LoadShipGroup(string[] shipClass, string allegiance, int number, float clearance, int seed)
     {
         ExploreManager exploreManager = GetExploreManager();
 
         Random.InitState(seed);
 
-        int randomCapitalShipNumber = Random.Range(0, number + 1);
+        int randomShipNumber = Random.Range(0, number + 1);
 
-        if (randomCapitalShipNumber > 0)
+        if (randomShipNumber > 0 & shipClass.Length > 0)
         {
             for (int i = 0; i < number; i++)
             {
@@ -295,8 +329,10 @@ public static class ExploreFunctions
                     int nameNo = names.Length;
                     int selectName = Random.Range(0, names.Length - 1);
                     name = names[selectName];
+                    int intShipClass = Random.Range(0, shipClass.Length - 1);
+                    string type = shipClass[intShipClass];
 
-                    Task c = new Task(SceneFunctions.LoadMultipleShipByClassAndAllegiance(position, rotation, shipClass, name, allegiance, cargo, shipNumber, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
+                    Task c = new Task(SceneFunctions.LoadMultipleShips(position, rotation, type, name, allegiance, cargo, shipNumber, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
 
 
                 }

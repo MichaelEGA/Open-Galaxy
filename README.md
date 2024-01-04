@@ -19,9 +19,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - External mission loading (Implemented)
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
 
-**Latest Release:** 0.9.1
+**Latest Release:** 0.9.41
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.9.1/Open.Galaxy.0.9.1.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.9.41/Open.Galaxy.0.9.41.zip
 
 **Other Info**
 
@@ -31,6 +31,35 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
 
 **Changelog**
+
+04/01/23 - v.9.41 (Unity 2022.3.12f1)
+  - NOTE: This is the only and final release of the game with the 'explore' mode. The feature is no longer in development and will be removed from future releases. But I made this release to preserve the code and to give an example of what it would have been like.
+  - Updated: Final update for explore mode
+  - Updated: More powerful region data categories
+  - Updated: Mission Briefing now plays audio
+  - Added: AI now checks if line of fire is clear of friendlies
+  - Updated: Hyperspace activation sequence
+  - Added: Ignore collision function when creating smallships
+  - Added: display hyperdrive state on hud
+  - Added: hyperspace location selection brace
+  - Updated: GC lambda textures and reposition cockpit
+  - Added: Procedural Position loading without clashes
+  - Updated: Ship loading in explore has started
+  - Added: Load location profile data
+  - Updated: Improved planet rotation ability
+  - Updated: Hyperspace tunnel with reflection probe
+  - Fixed: Ship being destroyed during hyperspace
+  - Added: Change location for explore
+  - Added: Get Locations Function
+  - Updated: Now possible to run explore mode
+  - Updated: Base explore mode code
+  - Added: Initial code for explore mode
+  - Added: Lock ship controls function
+  - Added: Starfield stretch function for hyperspace
+  - Updated: Change location function
+  - Added: Change Location Function/Node
+  - Added: Hyperspace Shader
+  - Updated: Hud Selection Brace
 
 04/12/23 - v.0.9.1 (Unity 2022.3.12f1)
   - Updated: Hud Updated

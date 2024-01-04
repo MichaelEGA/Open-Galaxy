@@ -131,7 +131,7 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplaySelectionBraces(this);
         HudFunctions.DisplayTargetLockReticule(this);
 
-        HudFunctions.DisplayNavPointMarker(this);
+        //HudFunctions.DisplayNavPointMarker(this);
 
         HudFunctions.DisplayShipPreview(this);             
     }

@@ -75,9 +75,6 @@ public static class ExitMenuFunctions
         MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
         if (missionManager != null) { GameObject.Destroy(missionManager.gameObject); }
 
-        ExploreManager exploreManager = GameObject.FindObjectOfType<ExploreManager>();
-        if (exploreManager != null) { GameObject.Destroy(exploreManager.gameObject); }
-
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }

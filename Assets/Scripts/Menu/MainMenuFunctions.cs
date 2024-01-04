@@ -143,7 +143,6 @@ public static class MainMenuFunctions
         //Add your functions here
         mainMenu.functions.Add("LoadMainMission", new System.Action<string>(LoadMission));
         mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
-        mainMenu.functions.Add("LoadExploreMode", new System.Action(LoadExploreMode));
         mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadMissionEditor));
         mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
         mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
@@ -574,20 +573,6 @@ public static class MainMenuFunctions
     public static void LoadCustomMission(string name)
     {
         Task a = new Task(MissionFunctions.RunMission(name, Application.persistentDataPath + "/Custom Missions/", true));
-
-        GameObject menu = GameObject.Find("Menu");
-
-        if (menu != null)
-        {
-            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-            Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
-        }
-    }
-
-    //This loads a custom mission
-    public static void LoadExploreMode()
-    {
-        Task a = new Task(ExploreFunctions.RunExplore());
 
         GameObject menu = GameObject.Find("Menu");
 

@@ -286,50 +286,6 @@ public static class AudioFunctions
         }
     }
 
-    //This function plays the nav comp noise
-    public static void PlayNavCompNoise(ExploreManager exploreManager)
-    {
-        float pitch = 1;
-        float spatialBlend = 1;
-        int priority = 128;
-
-        if (exploreManager.smallShip != null)
-        {
-            if (exploreManager.navCompAudioSource == null)
-            {
-                AudioClip audioClip = GetAudioClip(exploreManager.smallShip.audioManager, "homing_beacon_idle3");
-                AudioSource audioSource = GetIndependentAudioSource(exploreManager.smallShip.audioManager);
-
-                if (audioClip != null & audioSource != null)
-                {
-                    exploreManager.navCompAudioSource = audioSource;
-                    exploreManager.navCompAudioSource.clip = audioClip;
-                }
-            }
-
-            if (exploreManager.navCompAudioSource != null)
-            {
-                exploreManager.navCompAudioSource.priority = priority;
-                exploreManager.navCompAudioSource.spatialBlend = spatialBlend;
-                exploreManager.navCompAudioSource.pitch = pitch;
-
-                if (exploreManager.navCompAudioSource.isPlaying == false & exploreManager.navCompAudioSource.enabled == true)
-                {
-                    exploreManager.navCompAudioSource.reverbZoneMix = 1;
-                    exploreManager.navCompAudioSource.dopplerLevel = 0f;
-                    exploreManager.navCompAudioSource.spread = 45;
-                    exploreManager.navCompAudioSource.maxDistance = 500;
-                    exploreManager.navCompAudioSource.volume = 0.4f;
-                    exploreManager.navCompAudioSource.rolloffMode = AudioRolloffMode.Linear;
-                    exploreManager.navCompAudioSource.loop = true;
-                    exploreManager.navCompAudioSource.Play();
-                }
-
-                exploreManager.navCompAudioSource.gameObject.transform.position = exploreManager.smallShip.transform.position;
-            }
-        }
-    }
-
     #endregion
 
     #region get audio clip and get audio source functions

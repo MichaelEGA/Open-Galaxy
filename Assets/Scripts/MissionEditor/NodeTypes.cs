@@ -371,7 +371,7 @@ public static class NodeTypes
         options2.Add("hostile");
         options2.Add("corporatesector");
         options2.Add("independent");
-        options2.Add("neutral");
+        options2.Add("civilian");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -491,7 +491,7 @@ public static class NodeTypes
         options2.Add("hostile");
         options2.Add("corporatesector");
         options2.Add("independent");
-        options2.Add("neutral");
+        options2.Add("civilian");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -581,7 +581,7 @@ public static class NodeTypes
         options2.Add("hostile");
         options2.Add("corporatesector");
         options2.Add("independent");
-        options2.Add("neutral");
+        options2.Add("civilian");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -722,7 +722,7 @@ public static class NodeTypes
         options2.Add("hostile");
         options2.Add("corporatesector");
         options2.Add("independent");
-        options2.Add("neutral");
+        options2.Add("civilian");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -1673,7 +1673,7 @@ public static class NodeTypes
         options1.Add("hostile");
         options1.Add("corporatesector");
         options1.Add("independent");
-        options1.Add("neutral");
+        options1.Add("civilian");
 
         node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -1761,7 +1761,7 @@ public static class NodeTypes
         options2.Add("hostile");
         options2.Add("corporatesector");
         options2.Add("independent");
-        options2.Add("neutral");
+        options2.Add("civilian");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -1865,7 +1865,7 @@ public static class NodeTypes
         options2.Add("hostile");
         options2.Add("corporatesector");
         options2.Add("independent");
-        options2.Add("neutral");
+        options2.Add("civilian");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -1961,7 +1961,7 @@ public static class NodeTypes
         options2.Add("hostile");
         options2.Add("corporatesector");
         options2.Add("independent");
-        options2.Add("neutral");
+        options2.Add("civilian");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2095,7 +2095,7 @@ public static class NodeTypes
         options2.Add("hostile");
         options2.Add("corporatesector");
         options2.Add("independent");
-        options2.Add("neutral");
+        options2.Add("civilian");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2250,7 +2250,7 @@ public static class NodeTypes
         options2.Add("hostile");
         options2.Add("corporatesector");
         options2.Add("independent");
-        options2.Add("neutral");
+        options2.Add("civilian");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2626,7 +2626,7 @@ public static class NodeTypes
         options.Add("hostile");
         options.Add("corporatesector");
         options.Add("independent");
-        options.Add("neutral");
+        options.Add("civilian");
 
         node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 

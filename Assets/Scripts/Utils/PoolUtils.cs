@@ -29,10 +29,13 @@ public static class PoolUtils
 
         foreach (GameObject tempObject in pool)
         {
-            if (tempObject.name.Contains(name) & tempObject.activeSelf == false)
+            if (tempObject != null)
             {
-                gameObject = tempObject;
-                break;
+                if (tempObject.name.Contains(name) & tempObject.activeSelf == false)
+                {
+                    gameObject = tempObject;
+                    break;
+                }
             }
         }
 

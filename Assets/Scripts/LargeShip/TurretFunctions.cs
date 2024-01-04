@@ -303,7 +303,6 @@ public static class TurretFunctions
             }
 
             layerNames.Add(tempAllegiance.allegiance); //This makes a list of collision layers and their corresponding integer
-
         }
 
         collisionLayers = LayerMask.GetMask("collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");

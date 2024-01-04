@@ -13,7 +13,7 @@ public class ExploreManager : MonoBehaviour
     public Quaternion playerRotation = new Quaternion();
     public string playerShipType = "lambdashuttle";
     public string playerShipName = "Star of the Outer Rim";
-    public string playerAllegiance = "neutral";
+    public string playerAllegiance = "civilian";
 
     //Location and Hyperspace
     public float hyperspaceAddition = 0.5f;

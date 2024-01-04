@@ -216,7 +216,7 @@ public static class ExploreFunctions
         string[] imperialCapitalShipSmall = new string[] { "corelliancorvette" };
         string[] imperialFreightersLarge = new string[] { "gr75transport", "bulkfreighter" };
         string[] imperialFreightersSmall = new string[0];
-        string[] imperialFighters = new string[] { "ywing", "z95headhunter", "assaultgunboat", "tiebomber", "tieadvanced", "tieinterceptor", "tiefighter" };
+        string[] imperialFighters = new string[] { "tieinterceptor", "tiefighter" };
         string[] imperialShuttles = new string[] { "dx9Shuttle", "lambdashuttle" };
         string[] imperialCargoFields = new string[] { "container" };
         string[] rebelStations = new string[] { "xq1station" };
@@ -241,47 +241,83 @@ public static class ExploreFunctions
         //The game then uses the region and planet data to generate a unique set of ships
         if (selectedLocationProfile != null)
         {
-            Task h = new Task(LoadShipGroup(civilianStations, "neutral", selectedLocationProfile.civilianStations, 800, seed));
-            while (h.Running) { yield return null; }
-            seed++;
+            //Load civilian ships
+            LoadShipGroup(civilianStations, "civilian", selectedLocationProfile.civilianStations, 800, seed); seed++;
+            LoadShipGroup(civilianCapitalShipLarge, "civilian", selectedLocationProfile.civilianCapitalLarge, 1600, seed); seed++;
+            LoadShipGroup(civilianCapitalShipMedium, "civilian", selectedLocationProfile.civilianCapitalMedium, 400, seed); seed++;
+            LoadShipGroup(civilianCapitalShipSmall, "civilian", selectedLocationProfile.civilianCapitalSmall, 200, seed); seed++;
+            LoadShipGroup(civilianFreightersLarge, "civilian", selectedLocationProfile.civilianFreightersLarge, 150, seed); seed++;
+            LoadShipGroup(civilianFreightersSmall, "civilian", selectedLocationProfile.civilianFreightersSmall, 40, seed); seed++;
+            LoadShipGroup(civilianFighters, "civilian", selectedLocationProfile.civilianFighters, 150, seed); seed++;
+            LoadShipGroup(civilianShuttles, "civilian", selectedLocationProfile.civilianShuttles, 100, seed); seed++;
+            LoadShipGroup(civilianCargoFields, "civilian", selectedLocationProfile.civilianCargoFields, 40,  seed); seed++;
+            yield return null;
 
-            Task a = new Task(LoadShipGroup(civilianCapitalShipLarge, "neutral", selectedLocationProfile.civilianCapitalLarge, 1600, seed));
-            while (a.Running) { yield return null; }
-            seed++;
+            LoadShipGroup(imperialStations, "imperial", selectedLocationProfile.imperialStations, 800, seed); seed++;
+            LoadShipGroup(imperialCargoFields, "imperial", selectedLocationProfile.imperialCargoFields, 40, seed); seed++;
 
-            Task b = new Task(LoadShipGroup(civilianCapitalShipMedium, "neutral", selectedLocationProfile.civilianCapitalMedium, 400, seed));
-            while (b.Running) { yield return null; }
-            seed++;
+            //This randomises whether imperial patrols appear or not
+            Random.InitState((int)Time.time);
+            int randomNumber = Random.Range(0, 2);
 
-            Task c = new Task(LoadShipGroup(civilianCapitalShipSmall, "neutral", selectedLocationProfile.civilianCapitalSmall, 200, seed));
-            while (c.Running) { yield return null; }
-            seed++;
+            if (randomNumber == 1)
+            {
+                //Load Imperial Ships
+                LoadShipGroup(imperialCapitalShipLarge, "imperial", selectedLocationProfile.imperialCapitalLarge, 1600, seed); seed++;
+                LoadShipGroup(imperialCapitalShipMedium, "imperial", selectedLocationProfile.imperialCapitalMedium, 400, seed); seed++;
+                LoadShipGroup(imperialCapitalShipSmall, "imperial", selectedLocationProfile.imperialCapitalSmall, 200, seed); seed++;
+                LoadShipGroup(imperialFreightersLarge, "imperial", selectedLocationProfile.imperialFreightersLarge, 150, seed); seed++;
+                LoadShipGroup(imperialFreightersSmall, "imperial", selectedLocationProfile.imperialFreightersSmall, 40, seed); seed++;
+                LoadShipGroup(imperialFighters, "imperial", selectedLocationProfile.imperialFighters, 150, seed); seed++;
+                LoadShipGroup(imperialShuttles, "imperial", selectedLocationProfile.imperialShuttles, 100, seed); seed++;
+                yield return null;
+            }
 
-            Task d = new Task(LoadShipGroup(civilianFreightersLarge, "neutral", selectedLocationProfile.civilianFreightersLarge, 150, seed));
-            while (d.Running) { yield return null; }
-            seed++;
+            LoadShipGroup(rebelStations, "rebel", selectedLocationProfile.rebelStations, 800, seed); seed++;
+            LoadShipGroup(rebelCargoFields, "rebel", selectedLocationProfile.rebelCargoFields, 40, seed); seed++;
 
-            Task e = new Task(LoadShipGroup(civilianFreightersSmall, "neutral", selectedLocationProfile.civilianFreightersSmall, 40, seed));
-            while (e.Running) { yield return null; }
-            seed++;
+            //This randomises whether rebel patrols appear or not
+            Random.InitState((int)Time.time);
+            randomNumber = Random.Range(0, 2);
 
-            Task i = new Task(LoadShipGroup(civilianFighters, "neutral", selectedLocationProfile.civilianFighters, 150, seed));
-            while (i.Running) { yield return null; }
-            seed++;
+            if (randomNumber == 1)
+            {
+                //Load Rebel Ships
+                LoadShipGroup(rebelCapitalShipLarge, "rebel", selectedLocationProfile.rebelCapitalLarge, 1600, seed); seed++;
+                LoadShipGroup(rebelCapitalShipMedium, "rebel", selectedLocationProfile.rebelCapitalMedium, 400, seed); seed++;
+                LoadShipGroup(rebelCapitalShipSmall, "rebel", selectedLocationProfile.rebelCapitalSmall, 200, seed); seed++;
+                LoadShipGroup(rebelFreightersLarge, "rebel", selectedLocationProfile.rebelFreightersLarge, 150, seed); seed++;
+                LoadShipGroup(rebelFreightersSmall, "rebel", selectedLocationProfile.rebelFreightersSmall, 40, seed); seed++;
+                LoadShipGroup(rebelFighters, "rebel", selectedLocationProfile.rebelFighters, 150, seed); seed++;
+                LoadShipGroup(rebelShuttles, "rebel", selectedLocationProfile.rebelShuttles, 100, seed); seed++;
+                yield return null;
+            }
 
-            Task j = new Task(LoadShipGroup(civilianShuttles, "neutral", selectedLocationProfile.civilianShuttles, 100, seed));
-            while (j.Running) { yield return null; }
-            seed++;
+            LoadShipGroup(pirateStations, "pirate", selectedLocationProfile.pirateStations, 800, seed); seed++;
+            LoadShipGroup(pirateCargoFields, "pirate", selectedLocationProfile.pirateCargoFields, 40, seed);
 
-            Task f = new Task(LoadShipGroup(civilianCargoFields, "neutral", selectedLocationProfile.civilianCargoFields, 40,  seed));
-            while (f.Running) { yield return null; }
-            seed++;
+            //This randomises whether pirates appear or not
+            Random.InitState((int)Time.time);
+            randomNumber = Random.Range(0, 2);
+
+            //Load Pirate Ships
+            if (randomNumber == 1)
+            {
+                LoadShipGroup(pirateCapitalShipLarge, "pirate", selectedLocationProfile.pirateCapitalLarge, 1600, seed); seed++;
+                LoadShipGroup(pirateCapitalShipMedium, "pirate", selectedLocationProfile.pirateCapitalMedium, 400, seed); seed++;
+                LoadShipGroup(pirateCapitalShipSmall, "pirate", selectedLocationProfile.pirateCapitalSmall, 200, seed); seed++;
+                LoadShipGroup(pirateFreightersLarge, "pirate", selectedLocationProfile.pirateFreightersLarge, 150, seed); seed++;
+                LoadShipGroup(pirateFreightersSmall, "pirate", selectedLocationProfile.pirateFreightersSmall, 40, seed); seed++;
+                LoadShipGroup(pirateFighters, "pirate", selectedLocationProfile.pirateFighters, 150, seed); seed++;
+                LoadShipGroup(pirateShuttles, "pirate", selectedLocationProfile.pirateShuttles, 100, seed); seed++;
+                yield return null;
+            }
         }
 
         yield return null;
     }
 
-    public static IEnumerator LoadShipGroup(string[] shipClass, string allegiance, int number, float clearance, int seed)
+    public static void LoadShipGroup(string[] shipClass, string allegiance, int number, float clearance, int seed)
     {
         ExploreManager exploreManager = GetExploreManager();
 
@@ -333,13 +369,9 @@ public static class ExploreFunctions
                     string type = shipClass[intShipClass];
 
                     Task c = new Task(SceneFunctions.LoadMultipleShips(position, rotation, type, name, allegiance, cargo, shipNumber, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
-
-
                 }
             }
         }
-
-        yield return null;
     }
 
     //This loads the player ship according to the details in the explore manager

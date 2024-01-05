@@ -1489,17 +1489,23 @@ public static class HudFunctions
     #region location display
 
     //This briefly displays a message in large text in the middle of the screen
-    public static void DisplayLargeMessage(string location)
+    public static void DisplayTitle(string location, int fontsize)
     {
         if (Time.timeScale != 0)
         {
             Hud hud = GetHud();
+
+            if (fontsize <= 0)
+            {
+                fontsize = 12;
+            }
 
             if (hud != null)
             {
                 if (hud.locationInfo != null & hud.reticule != null)
                 {
                     hud.locationInfo.text = location;
+                    hud.locationInfo.fontSize = fontsize;
                     Task a = new Task(FadeTextInAndOut(hud.locationInfo, 0.5f, 3, 0.5f));
                     Task b = new Task(FadeImageOutAndIn(hud.reticule, 0.25f, 4, 0.5f));
                 }

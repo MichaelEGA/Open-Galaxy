@@ -29,10 +29,6 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadPlanet(node);
         }
-        else if (node.nodeType == "preload_loadtiles")
-        {
-            NodeTypes.Draw_PreLoad_LoadTiles(node);
-        }
         else if (node.nodeType == "preload_loadmultipleshipsonground")
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShipsOnGround(node);
@@ -44,10 +40,6 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "preload_loadmultipleships")
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShips(node);
-        }
-        else if (node.nodeType == "preload_loadmultipleshipsbyclassandallegiance")
-        {
-            NodeTypes.Draw_PreLoad_LoadMultipleShipsByClassAndAllegiance(node);
         }
         else if (node.nodeType == "preload_setsceneradius")
         {
@@ -81,13 +73,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DisplayDialogueBox(node);
         }
-        else if (node.nodeType == "displaylargemessage")
+        else if (node.nodeType == "displaytitle")
         {
-            NodeTypes.Draw_DisplayLargeMessage(node);
-        }
-        else if (node.nodeType == "displaylocation")
-        {
-            NodeTypes.Draw_DisplayLocation(node);
+            NodeTypes.Draw_DisplayTitle(node);
         }
         else if (node.nodeType == "displaymessage")
         {
@@ -145,9 +133,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_LoadMultipleShips(node);
         }
-        else if (node.nodeType == "loadmultipleshipsbyclassandallegiance")
+        else if (node.nodeType == "pausesequence")
         {
-            NodeTypes.Draw_LoadMultipleShipsByClassAndAllegiance(node);
+            NodeTypes.Draw_PauseSequence(node);
         }
         else if (node.nodeType == "playmusictrack")
         {

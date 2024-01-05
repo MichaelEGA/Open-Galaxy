@@ -57,11 +57,9 @@ public static class WindowFunctions
         buttonList.Add("createlocation");
         buttonList.Add("preload_loadasteroids");
         buttonList.Add("preload_loadplanet");
-        buttonList.Add("preload_loadtiles");
         buttonList.Add("preload_loadmultipleshipsonground");
         buttonList.Add("preload_loadsingleship");
         buttonList.Add("preload_loadmultipleships");
-        buttonList.Add("preload_loadmultipleshipsbyclassandallegiance");
         buttonList.Add("preload_setsceneradius");
         buttonList.Add("preload_setskybox");
         buttonList.Add("starteventseries");
@@ -70,8 +68,7 @@ public static class WindowFunctions
         buttonList.Add("clearaioverride");
         buttonList.Add("deactivateship");
         buttonList.Add("displaydialoguebox");
-        buttonList.Add("displaylargemessage");
-        buttonList.Add("displaylocation");
+        buttonList.Add("displaytitle");
         buttonList.Add("displaymessage");
         buttonList.Add("displaymissionbriefing");
         buttonList.Add("exitmission");
@@ -85,8 +82,8 @@ public static class WindowFunctions
         buttonList.Add("loadsingleship");
         buttonList.Add("loadsingleshipatdistanceandanglefromplayer");
         buttonList.Add("loadmultipleshipsonground");
-        buttonList.Add("loadmultipleshipsbyclassandallegiance");
         buttonList.Add("loadmultipleships");
+        buttonList.Add("pausesequence");
         buttonList.Add("playmusictrack");
         buttonList.Add("setaioverride");
         buttonList.Add("setcargo");

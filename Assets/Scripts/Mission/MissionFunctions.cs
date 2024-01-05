@@ -193,13 +193,6 @@ public static class MissionFunctions
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadtiles" & missionEvent.conditionLocation == location)
-            {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading unique tile configuration. This may take a while...", Time.unscaledTime - time);
-                Task a = new Task(LoadTiles(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Tiles loaded", Time.unscaledTime - time);
-            }
             else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
@@ -216,12 +209,6 @@ public static class MissionFunctions
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);
-            }
-            else if (missionEvent.eventType == "preload_loadmultipleshipsbyclassandallegiance" & missionEvent.conditionLocation == location)
-            {
-                Task a = new Task(LoadMultipleShipsByClassAndAllegiance(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by type and allegiance", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_setsceneradius" & missionEvent.conditionLocation == location)
             {
@@ -351,14 +338,9 @@ public static class MissionFunctions
             DisplayDialogueBox(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
-        else if (missionEvent.eventType == "displaylargemessage")
+        else if (missionEvent.eventType == "displaytitle")
         {
-            DisplayLargeMessage(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "displaylocation")
-        {
-            DisplayLocation(missionEvent);
+            DisplayTitle(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "displaymessage")
@@ -482,9 +464,8 @@ public static class MissionFunctions
             Task a = new Task(LoadMultipleShips(missionEvent));
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
-        else if (missionEvent.eventType == "loadmultipleshipsbyclassandallegiance")
+        else if (missionEvent.eventType == "pausesequence")
         {
-            Task a = new Task(LoadMultipleShipsByClassAndAllegiance(missionEvent));
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "playmusictrack")
@@ -802,33 +783,17 @@ public static class MissionFunctions
     }
 
     //This temporary displays a large message in the center of the screen
-    public static void DisplayLargeMessage(MissionEvent missionEvent)
+    public static void DisplayTitle(MissionEvent missionEvent)
     {
-        HudFunctions.DisplayLargeMessage(missionEvent.data1);
-    }
+        string title = missionEvent.data1;
+        int fontsize = 12;
 
-    //This displays the location + text before and after if desired
-    public static void DisplayLocation(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        string textBefore = missionEvent.data1;
-        string textAfter = missionEvent.data2;
-
-        if (textAfter == "none")
+        if (int.TryParse(missionEvent.data2, out _))
         {
-            textAfter = "";
+            fontsize = int.Parse(missionEvent.data2);
         }
 
-        if (textBefore == "none")
-        {
-            textBefore = "";
-        }
-
-        if (scene != null)
-        {
-            HudFunctions.DisplayLargeMessage(textBefore.ToUpper() + scene.currentLocation.ToUpper() + textAfter.ToUpper());
-        }       
+        HudFunctions.DisplayTitle(title, fontsize);
     }
 
     //This adds a message to the log and can also play an audio file
@@ -1477,126 +1442,6 @@ public static class MissionFunctions
 
         Task c = new Task(SceneFunctions.LoadMultipleShips(position, rotation, type, name, allegiance, cargo, number, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
         while (c.Running == true) { yield return null; }
-    }
-
-    //This loads multiple ships by type and allegiance
-    public static IEnumerator LoadMultipleShipsByClassAndAllegiance(MissionEvent missionEvent)
-    {
-        float x = missionEvent.x;
-        float y = missionEvent.y;
-        float z = missionEvent.z;
-
-        Vector3 position = new Vector3(x, y, z);
-
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        string shipClass = "fighter";
-        if (missionEvent.data1 != "none") { shipClass = missionEvent.data1; }
-
-        string name = "alpha";
-        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
-
-        string allegiance = "imperial";
-        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
-
-        string cargo = "no cargo";
-        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
-
-        int number = 1;
-
-        if (int.TryParse(missionEvent.data5, out _))
-        {
-            number = int.Parse(missionEvent.data5);
-        }
-
-        string pattern = "rectanglehorizontal";
-        if (missionEvent.data6 != "none") { pattern = missionEvent.data6; }
-
-        float width = 1000;
-
-        if (float.TryParse(missionEvent.data7, out _))
-        {
-            width = float.Parse(missionEvent.data7);
-        }
-
-        float length = 1000;
-
-        if (float.TryParse(missionEvent.data8, out _))
-        {
-            length = float.Parse(missionEvent.data8);
-        }
-
-        float height = 1000;
-
-        if (float.TryParse(missionEvent.data9, out _))
-        {
-            height = float.Parse(missionEvent.data9);
-        }
-
-        int shipsPerLine = 1;
-
-        if (int.TryParse(missionEvent.data10, out _))
-        {
-            shipsPerLine = int.Parse(missionEvent.data10);
-        }
-
-        float positionVariance = 10;
-
-        if (float.TryParse(missionEvent.data11, out _))
-        {
-            positionVariance = float.Parse(missionEvent.data11);
-        }
-
-        bool exitingHyperspace = false;
-
-        if (bool.TryParse(missionEvent.data12, out _))
-        {
-            exitingHyperspace = bool.Parse(missionEvent.data12);
-        }
-
-        bool includePlayer = false;
-
-        if (bool.TryParse(missionEvent.data13, out _))
-        {
-            includePlayer = bool.Parse(missionEvent.data13);
-        }
-
-        int playerNo = 0;
-
-        if (int.TryParse(missionEvent.data14, out _))
-        {
-            playerNo = int.Parse(missionEvent.data14);
-        }
-
-        if (playerNo > number - 1)
-        {
-            playerNo = number - 1;
-        }
-
-        Task c = new Task(SceneFunctions.LoadMultipleShipByClassAndAllegiance(position, rotation, shipClass, name, allegiance, cargo, number, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
-        while (c.Running == true) { yield return null; }
-    }
-
-    //This loads a tile set for ground / other scenery
-    public static IEnumerator LoadTiles(MissionEvent missionEvent)
-    {
-        string type = missionEvent.data1;
-        int distanceX = (int)missionEvent.x;
-        int distanceY = (int)missionEvent.y;
-        int tileSize = (int)missionEvent.z;
-        int seed = Random.Range(0, 5000);
-
-        if (int.TryParse(missionEvent.data2, out _))
-        {
-            seed = int.Parse(missionEvent.data2);
-        }
-
-        Task a = new Task(SceneFunctions.GenerateTiles(type, distanceX, distanceY, tileSize, seed));
-        while (a.Running == true) { yield return null; }
     }
 
     //This changes the type of music that is playing

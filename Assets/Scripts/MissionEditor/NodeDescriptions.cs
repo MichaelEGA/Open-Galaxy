@@ -51,19 +51,6 @@ public static class NodeDescriptions
            "- No data is need for this event. OG simply looks to see if it is there or not. \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
-        else if (name == "preload_loadtiles")
-        {
-            description =
-           "Pre-Load Tiles \n " +
-           "\n " +
-           "This event tells the scene to load tiles to make a planet or death star surface in the scene \n" +
-           "\n " +
-           "Extra Information \n" +
-           "- The number of tiles is determined by the length, width, and tile size. i.e. Tiles that are 500 long, with a width and length of 1000 will generate 4 tiles, the same tiles with a width and length of 2000 will generate 12 and so on... \n" +
-           "- Too many tiles in the scene will cause long load times and slow gameplay. \n" +
-           "- If the tile seed is set to 'none' the tiles will load in a completely randomised order each time the mission is loaded. \n" +
-           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
-        }
         else if (name == "preload_loadmultipleshipsonground")
         {
             description =
@@ -106,26 +93,6 @@ public static class NodeDescriptions
             "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
             "- Pattern: linevertical uses height. Width and length are ignored. \n" +
             "- Pattern: randominsidecube uses width, length, height. \n";
-        }
-        else if (name == "preload_loadmultipleshipsbyclassandallegiance")
-        {
-            description =
-            "Pre-Load Multiple Ships By Type \n " +
-            "\n " +
-            "This node loads multiple ships of the same class and allegiance. For example you can load 10 'imperial' (allegiance) 'fighters' (class). This will load a random selection of tie fighter, interceptors, and other ships in the fighter class. \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
-            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
-            "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
-            "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
-            "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
-            "- Pattern: arrowhorizontalinverted uses with and length. Height is ignored. \n" +
-            "- Pattern: linehorizontallongways uses length. Width and height are ignored. \n" +
-            "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
-            "- Pattern: linevertical uses height. Width and length are ignored. \n" +
-            "- Pattern: randominsidecube uses width, length, height. \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
         else if (name == "preload_setsceneradius")
         {
@@ -230,7 +197,7 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
-        else if (name == "displaylargemessage")
+        else if (name == "displaytitle")
         {
             description =
             "Display Large Messgage \n " +
@@ -239,18 +206,6 @@ public static class NodeDescriptions
             "\n " +
            "Extra Information \n" +
             "- If the location is left as 'none' the node will runn regardless of location. \n";
-        }
-        else if (name == "displaylocation")
-        {
-            description =
-            "Display Location \n " +
-            "\n " +
-            "This node displays the current location to the player as a Large Message for a short period of time. \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- You can add text before or after the location like 'BATTLE OF' or similar. \n" +
-            "- This node is particulary helpful when you use a radomised location, but want to display it to the player. \n" +
-           "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "displaymessage")
         {
@@ -422,26 +377,15 @@ public static class NodeDescriptions
             "- Pattern: randominsidecube uses width, length, height. \n" +
             "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
-        else if (name == "loadmultipleshipsbyclassandallegiance")
+        else if (name == "pausesequence")
         {
             description =
-            "Pre-Load Multiple Ships By Type \n " +
+            "Pause Sequence \n " +
             "\n " +
-            "This node loads multiple ships of the same class and allegiance. For example you can load 10 'imperial' (allegiance) 'fighters' (class). This will load a random selection of tie fighter, interceptors, and other ships in the fighter class. \n" +
+            "This function pauses the event sequence for the designated amount of time. \n" +
             "\n " +
             "Extra Information \n" +
-            "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
-            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
-            "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
-            "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
-            "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
-            "- Pattern: arrowhorizontalinverted uses with and length. Height is ignored. \n" +
-            "- Pattern: linehorizontallongways uses length. Width and height are ignored. \n" +
-            "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
-            "- Pattern: linevertical uses height. Width and length are ignored. \n" +
-            "- Pattern: randominsidecube uses width, length, height. \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n" +
-           "- If the location is left as 'none' the node will runn regardless of location. \n";
+            "- This node is useful for when you want another function to only run after a set amount of time. i.e. waiting for a ship to be loaded before running a check. \n";
         }
         else if (name == "playmusictrack")
         {

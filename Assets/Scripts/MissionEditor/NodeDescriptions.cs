@@ -308,10 +308,10 @@ public static class NodeDescriptions
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
             "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
-        else if (name == "iftypeofshipisactive")
+        else if (name == "ifshipofallegianceisactive")
         {
             description =
-            "If Type of Ship is Active \n " +
+            "If Ship of Allegiance is Active \n " +
             "\n " +
             "This node checks to see whether there are any ships active of a particular allegiance i.e. whether there are any imperial ships left in the scene. \n" +
             "\n " +

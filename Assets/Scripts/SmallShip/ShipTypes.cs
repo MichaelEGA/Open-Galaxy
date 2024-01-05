@@ -7,8 +7,6 @@ public class ShipType
     public string type;
     public string prefab;
     public string cockpitPrefab;
-    public string laserColor;
-    public string allegiance;
     public string callsign;
     public string scriptType;
     public float accelerationRating;

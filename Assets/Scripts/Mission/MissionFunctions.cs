@@ -431,9 +431,9 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
-        else if (missionEvent.eventType == "iftypeofshipisactive")
+        else if (missionEvent.eventType == "ifshipofallegianceisactive")
         {
-            bool shipTypeIsActive = IfTypeOfShipIsActive(missionEvent);
+            bool shipTypeIsActive = IfShipOfAllegianceIsActive(missionEvent);
 
             if (shipTypeIsActive == true)
             {
@@ -639,7 +639,7 @@ public static class MissionFunctions
         smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
 
         //This plays the hyperspace entry sound
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceEntry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace01_entry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
         yield return new WaitForSeconds(4); //This gives the audio clip time to play
 
@@ -690,7 +690,7 @@ public static class MissionFunctions
         }
 
         //This plays the hyperspace exit
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "HyperspaceExit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
         //This shrinks the starfield
         Task c = new Task(SceneFunctions.ShrinkStarfield());
@@ -1104,11 +1104,13 @@ public static class MissionFunctions
     }
 
     //This checks whether there are any active ships of a certain allegiance, i.e. are there any imperial ships left
-    public static bool IfTypeOfShipIsActive(MissionEvent missionEvent)
+    public static bool IfShipOfAllegianceIsActive(MissionEvent missionEvent)
     {
         Scene scene = SceneFunctions.GetScene();
 
         bool shipTypeIsActive = false;
+
+        string mode = missionEvent.data2;
 
         if (scene != null)
         {
@@ -1116,14 +1118,31 @@ public static class MissionFunctions
             {
                 foreach (GameObject ship in scene.objectPool)
                 {
-                    SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                    if (smallShip != null)
+                    if (mode == "none" || mode == "smallships" ||  mode == "allships")
                     {
-                        if (ship.activeSelf == true & smallShip.allegiance == missionEvent.data1)
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
                         {
-                            shipTypeIsActive = true;
-                            break;
+                            if (ship.activeSelf == true & smallShip.allegiance == missionEvent.data1)
+                            {
+                                shipTypeIsActive = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (mode == "none" || mode == "largeships" || mode == "allships")
+                    {
+                        LargeShip largeship = ship.GetComponent<LargeShip>();
+
+                        if (largeship != null)
+                        {
+                            if (ship.activeSelf == true & largeship.allegiance == missionEvent.data1)
+                            {
+                                shipTypeIsActive = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -1200,7 +1219,10 @@ public static class MissionFunctions
             isAI = bool.Parse(missionEvent.data6);
         }
 
-        SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, exitingHyperspace, isAI, false);
+        string laserColor = "red";
+        if (missionEvent.data7 != "none") { laserColor = missionEvent.data7; }
+
+        SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, exitingHyperspace, isAI, false, laserColor);
     }
 
     //This loads a single ship at a certain distance and angle from the player
@@ -1244,6 +1266,9 @@ public static class MissionFunctions
             exitingHyperspace = bool.Parse(missionEvent.data6);
         }
 
+        string laserColor = "red";
+        if (missionEvent.data7 != "none") { laserColor = missionEvent.data7; }
+
         Scene scene = SceneFunctions.GetScene();
 
         Vector3 newPosition = new Vector3(0, 0, 0);
@@ -1256,7 +1281,7 @@ public static class MissionFunctions
             }
         }
 
-        SceneFunctions.LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, exitingHyperspace, true, false);
+        SceneFunctions.LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, exitingHyperspace, true, false, laserColor);
     }
 
     //This loads multiple ships by name
@@ -1338,7 +1363,10 @@ public static class MissionFunctions
             ifRaycastFailsStillLoad = bool.Parse(missionEvent.data13);
         }
 
-        Task c = new Task(SceneFunctions.LoadMultipleShipsOnGround(position, rotation, type, name, allegiance, cargo, number, length, width, distanceAboveGround, shipsPerLine, positionVariance, ifRaycastFailsStillLoad));
+        string laserColor = "red";
+        if (missionEvent.data14 != "none") { laserColor = missionEvent.data14; }
+
+        Task c = new Task(SceneFunctions.LoadMultipleShipsOnGround(position, rotation, type, name, allegiance, cargo, number, length, width, distanceAboveGround, shipsPerLine, positionVariance, ifRaycastFailsStillLoad, laserColor));
         while (c.Running == true) { yield return null; }
     }
 
@@ -1440,7 +1468,10 @@ public static class MissionFunctions
             playerNo = number - 1;
         }
 
-        Task c = new Task(SceneFunctions.LoadMultipleShips(position, rotation, type, name, allegiance, cargo, number, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo));
+        string laserColor = "red";
+        if (missionEvent.data15 != "none") { laserColor = missionEvent.data15; }
+
+        Task c = new Task(SceneFunctions.LoadMultipleShips(position, rotation, type, name, allegiance, cargo, number, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo, laserColor));
         while (c.Running == true) { yield return null; }
     }
 

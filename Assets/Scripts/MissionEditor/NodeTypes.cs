@@ -382,6 +382,14 @@ public static class NodeTypes
 
         node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
 
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("red");
+        options5.Add("green");
+
+        node.data13= NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
+
         drop -= 30;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
@@ -471,6 +479,14 @@ public static class NodeTypes
         options4.Add("false");
 
         node.data6 = NodeFunctions.DrawDropDownMenu(node, options4, "is AI", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("red");
+        options5.Add("green");
+
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -603,6 +619,14 @@ public static class NodeTypes
         drop -= 15;
 
         node.data14 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options6 = new List<string>();
+        options6.Add("red");
+        options6.Add("green");
+
+        node.data15 = NodeFunctions.DrawDropDownMenu(node, options6, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -1405,13 +1429,13 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_IfTypeOfShipIsActive(Node node)
+    public static void Draw_IfShipOfAllegianceIsActive(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
         NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
 
-        NodeFunctions.DrawText(node, "iftypeofshipisactive", 8, 17.5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "ifshipofallegianceisactive", 8, 17.5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -1423,7 +1447,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.eventType = NodeFunctions.DrawText(node, "iftypeofshipisactive", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "ifshipofallegianceisactive", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -1447,6 +1471,15 @@ public static class NodeTypes
         options1.Add("civilian");
 
         node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options2 = new List<string>();
+        options2.Add("allships");
+        options2.Add("smallships");
+        options2.Add("largeships");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options2, "mode", "allships", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1558,6 +1591,14 @@ public static class NodeTypes
 
         drop -= 15;
 
+        List<string> options5 = new List<string>();
+        options5.Add("red");
+        options5.Add("green");
+
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
@@ -1655,6 +1696,14 @@ public static class NodeTypes
         options3.Add("false");
 
         node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("red");
+        options4.Add("green");
+
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, options4, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1785,6 +1834,14 @@ public static class NodeTypes
         options4.Add("false");
 
         node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("red");
+        options5.Add("green");
+
+        node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1931,6 +1988,14 @@ public static class NodeTypes
         drop -= 15;
 
         node.data14 = NodeFunctions.DrawInputField(node, "player no.", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options6 = new List<string>();
+        options6.Add("red");
+        options6.Add("green");
+
+        node.data15 = NodeFunctions.DrawDropDownMenu(node, options6, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

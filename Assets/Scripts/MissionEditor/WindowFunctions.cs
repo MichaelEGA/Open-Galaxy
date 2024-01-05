@@ -78,7 +78,7 @@ public static class WindowFunctions
         buttonList.Add("ifshipshullislessthan");
         buttonList.Add("ifshipislessthandistancetoothership");
         buttonList.Add("ifshipislessthandistancetowaypoint");
-        buttonList.Add("iftypeofshipisactive");
+        buttonList.Add("ifshipofallegianceisactive");
         buttonList.Add("loadsingleship");
         buttonList.Add("loadsingleshipatdistanceandanglefromplayer");
         buttonList.Add("loadmultipleshipsonground");

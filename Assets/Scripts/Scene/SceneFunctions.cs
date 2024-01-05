@@ -831,7 +831,8 @@ public static class SceneFunctions
         string cargo,
         bool exitingHyperspace,
         bool isAI, 
-        bool dontModifyPosition)
+        bool dontModifyPosition,
+        string laserColor)
     {
         //Get scene script reference
         Scene scene = GetScene();
@@ -887,16 +888,6 @@ public static class SceneFunctions
                 //Load ship data into script
                 smallShip.accelerationRating = shipType.accelerationRating;
 
-                if (allegiance == "none")
-                {
-                    smallShip.allegiance = shipType.allegiance;
-                    allegiance = shipType.allegiance;
-                }
-                else
-                {
-                    smallShip.allegiance = allegiance;
-                }
-
                 if (name == "none")
                 {
                     smallShip.name = shipType.callsign + "- Alpha " + Random.Range(1, 99).ToString("00");
@@ -906,6 +897,7 @@ public static class SceneFunctions
                     smallShip.name = shipType.callsign + "-" + name;
                 }
 
+                smallShip.allegiance = allegiance;
                 smallShip.wepRating = shipType.wepRating;
                 smallShip.hullRating = shipType.hullRating;
                 smallShip.hullLevel = shipType.hullRating;
@@ -917,7 +909,7 @@ public static class SceneFunctions
                 smallShip.frontShieldLevel = shipType.shieldRating / 2f;
                 smallShip.rearShieldLevel = shipType.shieldRating / 2f;
                 smallShip.speedRating = shipType.speedRating;
-                smallShip.laserColor = shipType.laserColor;
+                smallShip.laserColor = laserColor;
                 smallShip.healthSave = shipType.shieldRating + shipType.hullRating;  
                 smallShip.aiSkillLevel = "easy";
                 smallShip.type = type;
@@ -962,16 +954,6 @@ public static class SceneFunctions
                 //Load ship data into script
                 largeShip.accelerationRating = shipType.accelerationRating;
 
-                if (allegiance == "none")
-                {
-                    largeShip.allegiance = shipType.allegiance;
-                    allegiance = shipType.allegiance;
-                }
-                else
-                {
-                    largeShip.allegiance = allegiance;
-                }
-
                 if (name == "none")
                 {
                     largeShip.name = shipType.callsign + "- Alpha " + Random.Range(1, 99).ToString("00");
@@ -981,6 +963,7 @@ public static class SceneFunctions
                     largeShip.name = shipType.callsign + "-" + name;
                 }
 
+                largeShip.allegiance = allegiance;
                 largeShip.wepRating = shipType.wepRating;
                 largeShip.hullRating = shipType.hullRating;
                 largeShip.hullLevel = shipType.hullRating;
@@ -992,7 +975,7 @@ public static class SceneFunctions
                 largeShip.frontShieldLevel = shipType.shieldRating / 2f;
                 largeShip.rearShieldLevel = shipType.shieldRating / 2f;
                 largeShip.speedRating = shipType.speedRating;
-                largeShip.laserColor = shipType.laserColor;
+                largeShip.laserColor = laserColor;
                 largeShip.aiSkillLevel = "easy";
                 largeShip.type = type;
                 largeShip.prefabName = shipType.prefab;
@@ -1093,7 +1076,8 @@ public static class SceneFunctions
         float positionVariance,
         bool exitingHyperspace,
         bool includePlayer, 
-        int playerNo)
+        int playerNo,
+        string laserColor)
     {
 
         //This gets the scene reference
@@ -1138,7 +1122,7 @@ public static class SceneFunctions
                 isAI = false;
             }
 
-            LoadSingleShip(tempPosition, rotation, type, name + shipCallNumber.ToString("00"), allegiance, cargo, exitingHyperspace, isAI, false);
+            LoadSingleShip(tempPosition, rotation, type, name + shipCallNumber.ToString("00"), allegiance, cargo, exitingHyperspace, isAI, false, laserColor);
 
             yield return null;
         }
@@ -1157,7 +1141,8 @@ public static class SceneFunctions
         float distanceAboveGround,
         int shipsPerLine,
         float positionVariance,
-        bool ifRaycastFailsStillLoad)
+        bool ifRaycastFailsStillLoad,
+        string laserColor)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1195,12 +1180,12 @@ public static class SceneFunctions
             if (Physics.Raycast(raycastPos, Vector3.down, out hit, 5000, mask))
             {
                 Vector3 newPosition = hit.point + new Vector3(0,distanceAboveGround,0);
-                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, true, true);
+                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, true, true, laserColor);
             }
             else if (ifRaycastFailsStillLoad == true)
             {
                 Vector3 newPosition = new Vector3(tempPosition.x, 0, tempPosition.z);
-                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, true, true);
+                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, true, true, laserColor);
             }
 
             yield return null;

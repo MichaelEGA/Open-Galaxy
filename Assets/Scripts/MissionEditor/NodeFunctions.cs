@@ -113,9 +113,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfShipHasntBeenScanned(node);
         }
-        else if (node.nodeType == "iftypeofshipisactive")
+        else if (node.nodeType == "ifshipofallegianceisactive")
         {
-            NodeTypes.Draw_IfTypeOfShipIsActive(node);
+            NodeTypes.Draw_IfShipOfAllegianceIsActive(node);
         }
         else if (node.nodeType == "loadsingleship")
         {

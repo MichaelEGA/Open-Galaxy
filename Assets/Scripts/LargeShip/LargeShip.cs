@@ -128,7 +128,7 @@ public class LargeShip : MonoBehaviour
         LargeShipFunctions.PrepareShip(this);
         TurretFunctions.LoadTurrets(this);
 
-        if (shipClass != "station")
+        if (shipClass != "station" & shipClass != "turret" & shipClass != "buoy")
         {
             //Input functions
             LargeShipFunctions.GetAIInput(this);
@@ -147,7 +147,7 @@ public class LargeShip : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (shipClass != "station")
+        if (shipClass != "station" & shipClass != "turret" & shipClass != "buoy")
         {
             LargeShipFunctions.MoveShip(this);
         }           

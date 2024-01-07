@@ -790,7 +790,11 @@ public static class SmallShipFunctions
 
         for (float t = 0; t < time; t += Time.deltaTime / time)
         {
-            smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+            if (smallShip != null)
+            {
+                smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+            }
+                
             yield return null;
         }
 

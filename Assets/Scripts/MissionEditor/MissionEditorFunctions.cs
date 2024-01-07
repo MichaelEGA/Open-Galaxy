@@ -938,7 +938,8 @@ public static class MissionEditorFunctions
         //This changes the scale
         if (scaling == true)
         {
-            missionEditor.scale += Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 20;
+            missionEditor.scale += Input.GetAxis("Mouse ScrollWheel") * Time.unscaledDeltaTime * 20;
+            //Debug.Log("Scaling innut = " + Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 20);
         }
 
         //This locks the scale within certain bounds
@@ -1001,7 +1002,7 @@ public static class MissionEditorFunctions
 
         if (missionEditor != null)
         {
-            missionEditor.gameObject.SetActive(false);
+            GameObject.Destroy(missionEditor.gameObject);
         }
     }
 

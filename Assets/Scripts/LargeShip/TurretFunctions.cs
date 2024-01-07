@@ -367,7 +367,7 @@ public static class TurretFunctions
 
         TargetingFunctions.GetClosestEnemy_Turret(turret);
 
-        yield return new WaitForSeconds(Random.Range(2f, 3f));
+        yield return new WaitForSeconds(Random.Range(10f, 20f));
 
         turret.lookingForTarget = false;
     }

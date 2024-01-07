@@ -42,7 +42,7 @@ public static class TargetingFunctions
                 }
                 else if (scene.objectPool[i] != null & smallShip.targetNumber != i) //This gets any type of ship in the scene
                 {
-                    if (scene.objectPool[i].activeSelf == true) //This ignores objects that are inactive
+                    if (scene.objectPool[i].activeSelf == true & scene.objectPool[i] != smallShip.gameObject) //This ignores objects that are inactive
                     {
                         smallShip.target = scene.objectPool[i];
                         smallShip.targetName = scene.objectPool[i].name;

@@ -68,11 +68,7 @@ public static class HudFunctions
             if (laserMeter != null) { hud.laserMeter = laserMeter.GetComponent<Slider>(); }
             if (WEPMeter != null) { hud.WEPMeter = WEPMeter.GetComponent<Slider>(); }
 
-            GameObject shipInfo = GameObject.Find("ShipInfo");
-            GameObject shipName = GameObject.Find("ShipName");
-
-            if (shipInfo != null) { hud.shipInfo = shipInfo.GetComponent<Text>(); }
-            if (shipName != null) { hud.shipName = shipName.GetComponent<Text>(); }
+           
 
             GameObject speedText = GameObject.Find("SpeedText");
             GameObject matchSpeedText = GameObject.Find("MatchSpeedText");
@@ -203,6 +199,20 @@ public static class HudFunctions
     //Display ship info
     public static void DisplayShipInfo(Hud hud)
     {
+        //This looks for the ship info object to see if they have been loaded into the hud or not
+        if (hud.shipInfo == null)
+        {
+            GameObject shipInfo = GameObject.Find("ShipInfo");
+            if (shipInfo != null) { hud.shipInfo = shipInfo.GetComponent<Text>(); }
+        }
+
+        if (hud.shipName == null)
+        {
+            GameObject shipName = GameObject.Find("ShipName");
+            if (shipName != null) { hud.shipName = shipName.GetComponent<Text>(); }
+        }
+
+        //This displays the ships info
         if (hud.shipInfo != null & hud.shipName != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.shipInfo.text = "FLYING " + hud.smallShip.allegiance.ToUpper() + " " + hud.smallShip.type.ToUpper();

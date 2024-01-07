@@ -39,6 +39,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public RawImage shieldRearOutside;
 
     [Header("Target Information")]
+
     [HideInInspector] public GameObject targetObject;
     [HideInInspector] public Text targetDistance;
     [HideInInspector] public Text targetType;

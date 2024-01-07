@@ -20,7 +20,6 @@ public static class HudFunctions
 
         LoadRadarPrefabs(hudScript);
         InstantiateRadarShips(hudScript);
-        SetHudElements(hudScript);
         LoadRadarCamera();     
     }
 
@@ -49,105 +48,6 @@ public static class HudFunctions
             }
         }
 
-    }
-
-    //This sets all the hud elements
-    public static void SetHudElements(Hud hud)
-    {
-        if (hud.hudElementsSet == false)
-        {
-            GameObject hudGameObject = GetHudGameObject();
-
-            GameObject shieldMeter = GameObject.Find("ShieldMeter");
-            GameObject engineMeter = GameObject.Find("EngineMeter");
-            GameObject laserMeter = GameObject.Find("LaserMeter");
-            GameObject WEPMeter = GameObject.Find("WEPMeter");
-
-            if (shieldMeter != null) { hud.shieldMeter = shieldMeter.GetComponent<Slider>(); }
-            if (engineMeter != null) { hud.engineMeter = engineMeter.GetComponent<Slider>(); }
-            if (laserMeter != null) { hud.laserMeter = laserMeter.GetComponent<Slider>(); }
-            if (WEPMeter != null) { hud.WEPMeter = WEPMeter.GetComponent<Slider>(); }
-
-           
-
-            GameObject speedText = GameObject.Find("SpeedText");
-            GameObject matchSpeedText = GameObject.Find("MatchSpeedText");
-            GameObject WEPText = GameObject.Find("WEPText");
-            GameObject activeWeaponText = GameObject.Find("ActiveWeaponText");
-            GameObject weaponModeText = GameObject.Find("WeaponModeText");
-            GameObject weaponNumberText = GameObject.Find("WeaponNumberText");
-            GameObject hyperdriveText = GameObject.Find("HyperdriveText");
-
-            if (matchSpeedText != null) { hud.matchSpeedText = matchSpeedText.GetComponent<Text>(); }
-            if (speedText != null) { hud.speedText = speedText.GetComponent<Text>(); }
-            if (WEPText != null) { hud.WEPText = WEPText.GetComponent<Text>(); }
-            if (activeWeaponText != null) { hud.activeWeaponText = activeWeaponText.GetComponent<Text>(); }
-            if (weaponModeText != null) { hud.weaponModeText = weaponModeText.GetComponent<Text>(); }
-            if (weaponNumberText != null) { hud.weaponNumberText = weaponNumberText.GetComponent<Text>(); }
-            if (hyperdriveText != null) { hud.hyperdriveText = hyperdriveText.GetComponent<Text>(); }
-
-            GameObject shieldForwardOutside = GameObject.Find("ShieldForwardOutside");
-            GameObject shieldForwardInside = GameObject.Find("ShieldForwardInside");
-            GameObject hull = GameObject.Find("Hull");
-            GameObject shieldRearInside = GameObject.Find("ShieldRearInside");
-            GameObject shieldRearOutside = GameObject.Find("ShieldRearOutside");
-
-            if (shieldForwardOutside != null) { hud.shieldForwardOutside = shieldForwardOutside.GetComponent<RawImage>(); }
-            if (shieldForwardInside != null) { hud.shieldForwardInside = shieldForwardInside.GetComponent<RawImage>(); }
-            if (hull != null) { hud.hull = hull.GetComponent<RawImage>(); }
-            if (shieldRearInside != null) { hud.shieldRearInside = shieldRearInside.GetComponent<RawImage>(); }
-            if (shieldRearOutside != null) { hud.shieldRearOutside = shieldRearOutside.GetComponent<RawImage>(); }
-
-            GameObject targetDistanceText = GameObject.Find("TargetDistanceText");
-            GameObject targetType = GameObject.Find("TargetType");
-            GameObject targetName = GameObject.Find("TargetName");
-            GameObject targetCargo = GameObject.Find("TargetCargo");
-            GameObject targetSpeedText = GameObject.Find("TargetSpeedText");
-            GameObject targetShieldsText = GameObject.Find("TargetShieldsText");
-            GameObject targetHullText = GameObject.Find("TargetHullText");
-
-            if (targetDistanceText != null) { hud.targetDistance = targetDistanceText.GetComponent<Text>(); }
-            if (targetType != null) { hud.targetType = targetType.GetComponent<Text>(); }
-            if (targetName != null) { hud.targetName = targetName.GetComponent<Text>(); }
-            if (targetCargo != null) { hud.targetCargo = targetCargo.GetComponent<Text>(); }
-            if (targetSpeedText != null) { hud.targetSpeedText = targetSpeedText.GetComponent<Text>(); }
-            if (targetShieldsText != null) { hud.targetShieldsText = targetShieldsText.GetComponent<Text>(); }
-            if (targetHullText != null) { hud.targetHullText = targetHullText.GetComponent<Text>(); }
-
-            GameObject shipLog = GameObject.Find("ShipLog");
-
-            if (shipLog != null) { hud.shipLog = shipLog.GetComponent<Text>(); }
-
-            GameObject locationInfo = GameObject.Find("LocationInfo");
-
-            if (locationInfo != null) { hud.locationInfo = locationInfo.GetComponent<Text>(); }
-
-            GameObject reticule = GameObject.Find("Reticule");
-            GameObject targetLockingReticule = GameObject.Find("TargetLockingReticule");
-            GameObject targetLockedReticule = GameObject.Find("TargetLockedReticule");
-
-            if (reticule != null) { hud.reticule = reticule.GetComponent<RawImage>(); }
-            if (targetLockingReticule != null) { hud.targetLockingReticule = targetLockingReticule.GetComponent<RawImage>(); }
-            if (targetLockedReticule != null) { hud.targetLockedReticule = targetLockedReticule.GetComponent<RawImage>(); }
-
-            hud.frontRadarBrace = GameObject.Find("FrontRadarBrace");
-            hud.frontRadarCircle = GameObject.Find("FrontRadarCircle");
-            hud.frontRadarDot = GameObject.Find("FrontRadarDot");
-            hud.frontRadarDot.SetActive(false);
-
-            hud.rearRadarBrace = GameObject.Find("RearRadarBrace");
-            hud.rearRadarCircle = GameObject.Find("RearRadarCircle");
-            hud.rearRadarDot = GameObject.Find("RearRadarDot");
-            hud.rearRadarDot.SetActive(false);
-
-            hud.selectionBrace = GameObject.Find("SelectionBrace");
-            hud.directionArrow = GameObject.Find("DirectionArrow");
-
-            hud.movingReticule = GameObject.Find("MovingReticule");
-            hud.centerReticule = GameObject.Find("Reticule");
-
-            hud.hudElementsSet = true;
-        }
     }
 
     //This loads all the models prefabs ready to instantiate
@@ -286,6 +186,12 @@ public static class HudFunctions
     //This displays shield meter of the ship
     public static void DisplayShieldMeter(Hud hud)
     {
+        if (hud.shieldMeter == null)
+        {
+            GameObject shieldMeter = GameObject.Find("ShieldMeter");
+            if (shieldMeter != null) { hud.shieldMeter = shieldMeter.GetComponent<Slider>(); }
+        }
+
         if (hud.shieldMeter != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.shieldMeter.value = hud.smallShip.shieldPower;
@@ -295,6 +201,12 @@ public static class HudFunctions
     //This displays engine meter
     public static void DisplayEngineMeter(Hud hud)
     {
+        if (hud.engineMeter == null)
+        {
+            GameObject engineMeter = GameObject.Find("EngineMeter");
+            if (engineMeter != null) { hud.engineMeter = engineMeter.GetComponent<Slider>(); }
+        }
+
         if (hud.engineMeter != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.engineMeter.value = hud.smallShip.enginePower;
@@ -304,6 +216,12 @@ public static class HudFunctions
     //This displays laser meter
     public static void DisplayLaserMeter(Hud hud)
     {
+        if (hud.laserMeter == null)
+        {
+            GameObject laserMeter = GameObject.Find("LaserMeter");
+            if (laserMeter != null) { hud.laserMeter = laserMeter.GetComponent<Slider>(); }
+        }
+
         if (hud.laserMeter != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.laserMeter.value = hud.smallShip.laserPower;
@@ -313,6 +231,12 @@ public static class HudFunctions
     //This displays WEP meter
     public static void DisplayWEPMeter(Hud hud)
     {
+        if (hud.WEPMeter == null)
+        {
+            GameObject WEPMeter = GameObject.Find("WEPMeter");
+            if (WEPMeter != null) { hud.WEPMeter = WEPMeter.GetComponent<Slider>(); }
+        }
+
         if (hud.WEPMeter != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.WEPMeter.value = hud.smallShip.wepLevel;
@@ -325,7 +249,6 @@ public static class HudFunctions
         if (hud.HyperspaceMeter == null)
         {
             GameObject HyperspaceMeter = GameObject.Find("HyperspaceMeter");
-
             if (HyperspaceMeter != null) { hud.HyperspaceMeter = HyperspaceMeter.GetComponent<Slider>(); }
         }
 
@@ -338,6 +261,12 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayShipSpeed(Hud hud)
     {
+        if (hud.speedText == null)
+        {
+            GameObject speedText = GameObject.Find("SpeedText");
+            if (speedText != null) { hud.speedText = speedText.GetComponent<Text>(); }
+        }
+
         if (hud.speedText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.shipRigidbody != null)
@@ -350,6 +279,12 @@ public static class HudFunctions
     //This displays the match speed icon
     public static void DisplayMatchSpeed(Hud hud)
     {
+        if (hud.matchSpeedText == null)
+        {
+            GameObject matchSpeedText = GameObject.Find("MatchSpeedText");
+            if (matchSpeedText != null) { hud.matchSpeedText = matchSpeedText.GetComponent<Text>(); }
+        }
+
         if (hud.matchSpeedText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.matchSpeed == true)
@@ -366,6 +301,36 @@ public static class HudFunctions
     //This displays the shield and hull meter
     public static void DisplayShieldAndHull(Hud hud)
     {
+        if (hud.shieldForwardOutside == null)
+        {
+            GameObject shieldForwardOutside = GameObject.Find("ShieldForwardOutside");
+            if (shieldForwardOutside != null) { hud.shieldForwardOutside = shieldForwardOutside.GetComponent<RawImage>(); }
+        }
+
+        if (hud.shieldForwardInside == null)
+        {
+            GameObject shieldForwardInside = GameObject.Find("ShieldForwardInside");
+            if (shieldForwardInside != null) { hud.shieldForwardInside = shieldForwardInside.GetComponent<RawImage>(); }
+        }
+
+        if (hud.hull == null)
+        {
+            GameObject hull = GameObject.Find("Hull");
+            if (hull != null) { hud.hull = hull.GetComponent<RawImage>(); }
+        }
+
+        if (hud.shieldRearInside == null)
+        {
+            GameObject shieldRearInside = GameObject.Find("ShieldRearInside");
+            if (shieldRearInside != null) { hud.shieldRearInside = shieldRearInside.GetComponent<RawImage>(); }
+        }
+
+        if (hud.shieldRearOutside == null)
+        {
+            GameObject shieldRearOutside = GameObject.Find("ShieldRearOutside");
+            if (shieldRearOutside != null) { hud.shieldRearOutside = shieldRearOutside.GetComponent<RawImage>(); }
+        }
+
         if (hud.shieldForwardOutside != null & hud.shieldForwardInside != null & hud.hull != null & hud.shieldRearInside != null & hud.shieldRearOutside != null & hud.smallShip != null & Time.timeScale != 0)
         {
             float shieldRating = hud.smallShip.shieldRating / 4f;
@@ -408,6 +373,12 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayActiveWeapon(Hud hud)
     {
+        if (hud.activeWeaponText == null)
+        {
+            GameObject activeWeaponText = GameObject.Find("ActiveWeaponText");
+            if (activeWeaponText != null) { hud.activeWeaponText = activeWeaponText.GetComponent<Text>(); }
+        }
+
         if (hud.activeWeaponText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.activeWeapon == "lasers")
@@ -428,6 +399,12 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayWeaponMode(Hud hud)
     {
+        if (hud.weaponModeText == null)
+        {
+            GameObject weaponModeText = GameObject.Find("WeaponModeText");
+            if (weaponModeText != null) { hud.weaponModeText = weaponModeText.GetComponent<Text>(); }
+        }
+
         if (hud.weaponModeText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.weaponMode == "single")
@@ -452,6 +429,12 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayWeaponNumber(Hud hud)
     {
+        if (hud.weaponNumberText == null)
+        {
+            GameObject weaponNumberText = GameObject.Find("WeaponNumberText");
+            if (weaponNumberText != null) { hud.weaponNumberText = weaponNumberText.GetComponent<Text>(); }
+        }
+
         if (hud.weaponNumberText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.activeWeapon == "lasers")
@@ -468,6 +451,12 @@ public static class HudFunctions
     //This displays whether the WEP boost is on or not
     public static void DisplayWEP(Hud hud)
     {
+        if (hud.WEPText == null)
+        {
+            GameObject WEPText = GameObject.Find("WEPText");
+            if (WEPText != null) { hud.WEPText = WEPText.GetComponent<Text>(); }
+        }
+
         if (hud.WEPText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.wep == true)
@@ -484,6 +473,12 @@ public static class HudFunctions
     //This displays whether the WEP boost is on or not
     public static void DisplayHyperdrive(Hud hud)
     {
+        if (hud.hyperdriveText == null)
+        {
+            GameObject hyperdriveText = GameObject.Find("HyperdriveText");
+            if (hyperdriveText != null) { hud.hyperdriveText = hyperdriveText.GetComponent<Text>(); }
+        }
+
         if (hud.hyperdriveText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.hyperdriveActive == true)
@@ -504,6 +499,12 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetDistance(Hud hud)
     {
+        if (hud.targetDistance == null)
+        {
+            GameObject targetDistanceText = GameObject.Find("TargetDistanceText");
+            if (targetDistanceText != null) { hud.targetDistance = targetDistanceText.GetComponent<Text>(); }
+        }
+
         if (hud.targetDistance != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
@@ -520,6 +521,12 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetType(Hud hud)
     {
+        if (hud.targetType == null)
+        {
+            GameObject targetType = GameObject.Find("TargetType");
+            if (targetType != null) { hud.targetType = targetType.GetComponent<Text>(); }
+        }
+
         if (hud.targetType != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null & hud.smallShip.targetAllegiance != null & hud.smallShip.targetType != null) 
@@ -536,6 +543,12 @@ public static class HudFunctions
     //Display target name
     public static void DisplayTargetName(Hud hud)
     {
+        if (hud.targetName == null)
+        {
+            GameObject targetName = GameObject.Find("TargetName");
+            if (targetName != null) { hud.targetName = targetName.GetComponent<Text>(); }
+        }
+
         if (hud.targetName != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
@@ -552,6 +565,12 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetSpeed(Hud hud)
     {
+        if (hud.targetSpeedText == null)
+        {
+            GameObject targetSpeedText = GameObject.Find("TargetSpeedText");
+            if (targetSpeedText != null) { hud.targetSpeedText = targetSpeedText.GetComponent<Text>(); }
+        }
+
         if (hud.targetSpeedText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
@@ -604,6 +623,12 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetShield(Hud hud)
     {
+        if (hud.targetShieldsText == null)
+        {
+            GameObject targetShieldsText = GameObject.Find("TargetShieldsText");
+            if (targetShieldsText != null) { hud.targetShieldsText = targetShieldsText.GetComponent<Text>(); }
+        }
+
         if (hud.targetShieldsText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
@@ -620,6 +645,12 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetHull(Hud hud)
     {
+        if (hud.targetHullText == null)
+        {
+            GameObject targetHullText = GameObject.Find("TargetHullText");
+            if (targetHullText != null) { hud.targetHullText = targetHullText.GetComponent<Text>(); }
+        }
+
         if (hud.targetHullText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
@@ -636,6 +667,12 @@ public static class HudFunctions
     //Display the target cargo
     public static void DisplayTargetCargo(Hud hud)
     {
+        if (hud.targetCargo == null)
+        {
+            GameObject targetCargo = GameObject.Find("TargetCargo");
+            if (targetCargo != null) { hud.targetCargo = targetCargo.GetComponent<Text>(); }
+        }
+
         if (hud.targetCargo != null & hud.smallShip != null)
         {
             if (hud.smallShip.target != null)
@@ -714,12 +751,30 @@ public static class HudFunctions
             float forwardRadar;
             int radarNumber = 0;
 
+            if (hud.frontRadarCircle == null)
+            {
+                hud.frontRadarCircle = GameObject.Find("FrontRadarCircle");
+            }
+
             float radarRadius = ((hud.frontRadarCircle.GetComponent<RectTransform>().rect.width / 2f) / 100f) * 90f;
+
+            if (hud.frontRadarDot == null)
+            {
+                hud.frontRadarDot = GameObject.Find("FrontRadarDot");
+                hud.frontRadarDot.SetActive(false);
+            }
 
             if (hud.frontRadarDotsPool == null)
             {
                 hud.frontRadarDotsPool = new List<GameObject>();
             }
+
+            if (hud.frontRadarBrace == null)
+            {
+                hud.frontRadarBrace = GameObject.Find("FrontRadarBrace");
+            }
+
+
 
             if (hud.frontRadarDot != null & hud.scene.objectPool != null & hud.frontRadarDotsPool != null)
             {
@@ -830,6 +885,13 @@ public static class HudFunctions
             {
                 playerTarget = hud.smallShip.target;
             }
+
+            if (hud.rearRadarCircle == null)
+            {
+                hud.rearRadarCircle = GameObject.Find("RearRadarCircle");
+            }
+
+
             Vector2 radarPosition = new Vector2();
             Vector2 radarDirection = new Vector2();
             float yPositionRadar;
@@ -839,9 +901,20 @@ public static class HudFunctions
 
             float radarRadius = ((hud.rearRadarCircle.GetComponent<RectTransform>().rect.width / 2f) / 100f) * 90f;
 
+            if (hud.rearRadarDot == null)
+            {
+                hud.rearRadarDot = GameObject.Find("RearRadarDot");
+                hud.rearRadarDot.SetActive(false);
+            }
+
             if (hud.rearRadarDotsPool == null)
             {
                 hud.rearRadarDotsPool = new List<GameObject>();
+            }
+
+            if (hud.rearRadarBrace == null)
+            {
+                hud.rearRadarBrace = GameObject.Find("RearRadarBrace");
             }
 
             if (hud.rearRadarDot != null & hud.scene.objectPool != null & hud.rearRadarDotsPool != null)
@@ -945,6 +1018,16 @@ public static class HudFunctions
     //This displays a brace around the target when onscreen and an arrow pointing to the target when offscreen
     public static void DisplaySelectionBraces(Hud hud)
     {
+        if (hud.selectionBrace == null)
+        {
+            hud.selectionBrace = GameObject.Find("SelectionBrace");
+        }
+
+        if (hud.directionArrow == null)
+        {
+            hud.directionArrow = GameObject.Find("DirectionArrow");
+        }
+
         if (Time.timeScale != 0)
         {
             GameObject selectionBrace = hud.selectionBrace;
@@ -1374,6 +1457,23 @@ public static class HudFunctions
     //This displays the target lock reticule
     public static void DisplayTargetLockReticule(Hud hud)
     {
+        if (hud.targetLockingReticule == null)
+        {
+            GameObject targetLockingReticule = GameObject.Find("TargetLockingReticule");
+            if (targetLockingReticule != null) { hud.targetLockingReticule = targetLockingReticule.GetComponent<RawImage>(); }
+            targetLockingReticule.SetActive(false);
+        }
+
+        if (hud.targetLockedReticule == null)
+        {
+            GameObject targetLockedReticule = GameObject.Find("TargetLockedReticule");
+            if (targetLockedReticule != null) { hud.targetLockedReticule = targetLockedReticule.GetComponent<RawImage>(); }
+            targetLockedReticule.SetActive(false);
+            Debug.Log("target locked reticule deactiavted");
+        }
+
+        //Debug.Log("this function is running");
+
         if (hud.targetLockingReticule != null & hud.targetLockedReticule != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.activeWeapon == "torpedos")
@@ -1432,12 +1532,19 @@ public static class HudFunctions
     //This adds a message to the ship log
     public static void AddToShipLog(string message)
     {
+
         if (Time.timeScale != 0)
         {
             Hud hud = GetHud();
 
             if (hud != null)
             {
+                if (hud.shipLog == null)
+                {
+                    GameObject shipLog = GameObject.Find("ShipLog");
+                    if (shipLog != null) { hud.shipLog = shipLog.GetComponent<Text>(); }
+                }
+
                 if (hud.shipLog != null)
                 {
                     hud.shipLog.text = (Time.time - hud.loadTime).ToString("00:00") + " " + message + "\n" + hud.shipLog.text;
@@ -1457,7 +1564,6 @@ public static class HudFunctions
             if (hud.objectiveLog == null)
             {
                 GameObject objectiveLog = GameObject.Find("ObjectiveLog");
-
                 if (objectiveLog != null) { hud.objectiveLog = objectiveLog.GetComponent<Text>(); }
             }
             
@@ -1512,6 +1618,12 @@ public static class HudFunctions
 
             if (hud != null)
             {
+                if (hud.locationInfo == null)
+                {
+                    GameObject locationInfo = GameObject.Find("LocationInfo");
+                    if (locationInfo != null) { hud.locationInfo = locationInfo.GetComponent<Text>(); }
+                }
+
                 if (hud.locationInfo != null & hud.reticule != null)
                 {
                     hud.locationInfo.text = location;
@@ -1529,6 +1641,16 @@ public static class HudFunctions
 
     public static void MoveReticule(Hud hud)
     {
+        if (hud.movingReticule == null)
+        {
+            hud.movingReticule = GameObject.Find("MovingReticule");
+        }
+
+        if (hud.centerReticule == null)
+        {
+            hud.centerReticule = GameObject.Find("Reticule");
+        }
+
         if (hud.movingReticule != null & hud.centerReticule != null & hud.smallShip != null & Time.timeScale != 0)
         {
             var mouse = Mouse.current;

@@ -1607,6 +1607,7 @@ public static class HudFunctions
     //This briefly displays a message in large text in the middle of the screen
     public static void DisplayTitle(string location, int fontsize)
     {
+
         if (Time.timeScale != 0)
         {
             Hud hud = GetHud();
@@ -1622,6 +1623,12 @@ public static class HudFunctions
                 {
                     GameObject locationInfo = GameObject.Find("LocationInfo");
                     if (locationInfo != null) { hud.locationInfo = locationInfo.GetComponent<Text>(); }
+                }
+
+                if (hud.reticule == null)
+                {
+                    GameObject reticule = GameObject.Find("Reticule");
+                    if (reticule != null) { hud.reticule = reticule.GetComponent<RawImage>(); }
                 }
 
                 if (hud.locationInfo != null & hud.reticule != null)

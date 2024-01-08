@@ -26,8 +26,7 @@ public static class MissionBriefingFunctions
         MissionBriefing missionBriefing = GameObject.FindObjectOfType<MissionBriefing>();
 
         if (missionBriefing == null)
-        {
-            
+        {        
             GameObject missionBriefingPrefab = Resources.Load("Menu/MissionBriefing") as GameObject;
             GameObject missionBriefingGO = GameObject.Instantiate(missionBriefingPrefab);
             missionBriefingGO.name = "MissionBriefing";
@@ -38,6 +37,9 @@ public static class MissionBriefingFunctions
 
         GameObject missionBriefingTextGO = GameObject.Find("MissionInfo");
         Text missionBriefingText = missionBriefingTextGO.GetComponent<Text>();
+
+        //This selects the button for when players are using the controller
+        missionBriefing.gameObject.GetComponentInChildren<Button>().Select();
 
         if (missionBriefingText != null)
         {

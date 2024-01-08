@@ -527,7 +527,7 @@ public static class MainMenuFunctions
         MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
 
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load("Menufiles/MainMenu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load("Data/Files/Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         foreach (MenuItem menuItem in menuItems.menuData)

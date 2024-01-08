@@ -1925,11 +1925,41 @@ public static class MissionFunctions
     public static void ActivateExitMenu(MissionManager missionManager)
     {
         Keyboard keyboard = Keyboard.current;
+        Gamepad gamepad = Gamepad.current;
+        bool allowDisplay = true;
 
-        if (keyboard.escapeKey.isPressed == true & missionManager.pressedTime < Time.time)
+        if (missionManager.missionBriefing == null)
         {
-            ExitMenuFunctions.DisplayExitMenu(true);
-            missionManager.pressedTime = Time.time + 0.5f;
+            missionManager.missionBriefing = GameObject.FindObjectOfType<MissionBriefing>();
+        }
+
+        if (missionManager.missionBriefing != null)
+        {
+            if(missionManager.missionBriefing.gameObject.activeSelf == true)
+            {
+                allowDisplay = false;
+            }
+        }
+
+        if (allowDisplay == true)
+        {
+            if (keyboard != null)
+            {
+                if (keyboard.escapeKey.isPressed == true & missionManager.pressedTime < Time.time)
+                {
+                    ExitMenuFunctions.DisplayExitMenu(true);
+                    missionManager.pressedTime = Time.time + 0.5f;
+                }
+            }
+
+            if (gamepad != null)
+            {
+                if (gamepad.startButton.isPressed == true & missionManager.pressedTime < Time.time)
+                {
+                    ExitMenuFunctions.DisplayExitMenu(true);
+                    missionManager.pressedTime = Time.time + 0.5f;
+                }
+            }
         }
     }
 

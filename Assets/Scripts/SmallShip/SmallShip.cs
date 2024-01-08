@@ -216,6 +216,8 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float speedShakeMagnitude;
     [HideInInspector] public Vector3 basePosition = new Vector3(0,0,0);
     [HideInInspector] public AudioSource cockpitAudioSource;
+    [HideInInspector] public Vector3 currentPosition;
+    [HideInInspector] public Quaternion currentRotation;
 
     // Update is called once per frame
     void Update()

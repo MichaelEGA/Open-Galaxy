@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public static class ExitMenuFunctions
@@ -28,6 +29,9 @@ public static class ExitMenuFunctions
 
                 Cursor.visible = true;
                 Cursor.lockState = CursorLockMode.None;
+
+                //This selects the button for when players are using the controller
+                exitMenu.GetComponentInChildren<Button>().Select();
             }
         }
         else
@@ -69,6 +73,7 @@ public static class ExitMenuFunctions
                 mainMenu.menu.SetActive(true);
                 CanvasGroup canvasGroup = mainMenu.menu.GetComponent<CanvasGroup>();
                 Task b = new Task(MainMenuFunctions.FadeInCanvas(canvasGroup, 0.5f));
+                MainMenuFunctions.ActivateSubMenu("Missions");
             }
         }
 

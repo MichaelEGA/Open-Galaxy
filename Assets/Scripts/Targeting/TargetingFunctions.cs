@@ -99,28 +99,11 @@ public static class TargetingFunctions
             int countStart = 0;
 
             //This sets the count start according to the current target the ship has selected
-            if (smallShip.targetNumber > scene.objectPool.Count - 1)
-            {
-                countStart = 0;
-            }
-            else
-            {
-                countStart = smallShip.targetNumber;
-            }
+            countStart = GetNextTargetNo(smallShip);
 
-            for (int i = countStart; i <= scene.objectPool.Count; i++)
+            for (int i = countStart; i < scene.objectPool.Count; i++)
             {
-                if (i > scene.objectPool.Count - 1) //This clears the target at the end of the list
-                {
-                    smallShip.target = null;
-                    smallShip.targetName = " ";
-                    smallShip.targetNumber = i;
-                    smallShip.targetSmallShip = null;
-                    smallShip.targetRigidbody = null;
-                    smallShip.targetPrefabName = " ";
-                    break;
-                }
-                else if (scene.objectPool[i] != null & smallShip.targetNumber != i) //This gets enemy ships in the scene
+                if (scene.objectPool[i] != null & smallShip.targetNumber != i) //This gets enemy ships in the scene
                 {
                     if (scene.objectPool[i].activeSelf == true) //This ignores objects that are inactive
                     {

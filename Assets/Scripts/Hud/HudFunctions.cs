@@ -1469,7 +1469,6 @@ public static class HudFunctions
             GameObject targetLockedReticule = GameObject.Find("TargetLockedReticule");
             if (targetLockedReticule != null) { hud.targetLockedReticule = targetLockedReticule.GetComponent<RawImage>(); }
             targetLockedReticule.SetActive(false);
-            Debug.Log("target locked reticule deactiavted");
         }
 
         //Debug.Log("this function is running");
@@ -1646,6 +1645,7 @@ public static class HudFunctions
 
     #region moving reticule
 
+    //This shows the position of the mouse on the screen when using mouse control
     public static void MoveReticule(Hud hud)
     {
         if (hud.movingReticule == null)
@@ -1660,39 +1660,48 @@ public static class HudFunctions
 
         if (hud.movingReticule != null & hud.centerReticule != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            var mouse = Mouse.current;
-            float x = mouse.position.x.ReadValue();
-            float y = mouse.position.y.ReadValue();
-            float radiusWidth = Screen.width / 2;
-            float radiusHeight = Screen.height / 2;
-            float x2 = 0;
-            float y2 = 0;
-
-            hud.movingReticule.transform.position = new Vector2(x, y);
-
-            if (hud.smallShip.invertUpDown == true)
+            if (hud.smallShip.keyboadAndMouse == true)
             {
-                y2 = Screen.height - y;
+                hud.movingReticule.SetActive(true);
+
+                var mouse = Mouse.current;
+                float x = mouse.position.x.ReadValue();
+                float y = mouse.position.y.ReadValue();
+                float radiusWidth = Screen.width / 2;
+                float radiusHeight = Screen.height / 2;
+                float x2 = 0;
+                float y2 = 0;
+
+                hud.movingReticule.transform.position = new Vector2(x, y);
+
+                if (hud.smallShip.invertUpDown == true)
+                {
+                    y2 = Screen.height - y;
+                }
+                else
+                {
+                    y2 = y;
+                }
+
+                if (hud.smallShip.invertLeftRight == true)
+                {
+                    x2 = Screen.width - x;
+                }
+                else
+                {
+                    x2 = x;
+                }
+
+                Vector2 rotationTarget = new Vector2(x2, y2);
+
+                float angle = Mathf.Atan2(hud.centerReticule.transform.position.y - rotationTarget.y, hud.centerReticule.transform.position.x - rotationTarget.x) * Mathf.Rad2Deg;
+                Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+                hud.movingReticule.transform.rotation = Quaternion.RotateTowards(hud.movingReticule.transform.rotation, targetRotation, 1000 * Time.deltaTime);
             }
             else
             {
-                y2 = y;
+                hud.movingReticule.SetActive(false);
             }
-
-            if (hud.smallShip.invertLeftRight == true)
-            {
-                x2 = Screen.width - x;
-            }
-            else
-            {
-                x2 = x;
-            }
-
-            Vector2 rotationTarget = new Vector2(x2, y2);
-
-            float angle = Mathf.Atan2(hud.centerReticule.transform.position.y - rotationTarget.y, hud.centerReticule.transform.position.x - rotationTarget.x) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-            hud.movingReticule.transform.rotation = Quaternion.RotateTowards(hud.movingReticule.transform.rotation, targetRotation, 1000 * Time.deltaTime);
         }
     }
 

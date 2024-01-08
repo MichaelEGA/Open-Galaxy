@@ -101,61 +101,25 @@ public static class SmallShipFunctions
             {
                 var gamepad = Gamepad.current;
 
-                //Pitch input and smoothing (makes the using the sticks feel less jerky)
-                if (gamepad.rightStick.y.ReadValue() > 0.1f & smallShip.controllerPitch < 1)
-                {
-                    smallShip.controllerPitch += smallShip.controllerSenstivity;
-                }
-                else if (gamepad.rightStick.y.ReadValue() < -0.1f & smallShip.controllerPitch > -1)
-                {
-                    smallShip.controllerPitch -= smallShip.controllerSenstivity;
-                }
-                else if (gamepad.rightStick.y.ReadValue() > -0.1f & gamepad.rightStick.y.ReadValue() < 0.1f)
-                {
-                    smallShip.controllerPitch = 0; //Controller dead zone
-                }
-
-                //Roll input and smoothing
-                if (-gamepad.leftStick.x.ReadValue() > 0.1f & smallShip.controllerRoll < 1)
-                {
-                    smallShip.controllerRoll += smallShip.controllerSenstivity;
-                }
-                else if (-gamepad.leftStick.x.ReadValue() < -0.1f & smallShip.controllerRoll > -1)
-                {
-                    smallShip.controllerRoll -= smallShip.controllerSenstivity;
-                }
-                else if (-gamepad.leftStick.x.ReadValue() > -0.1f & -gamepad.leftStick.x.ReadValue() < 0.1f)
-                {
-                    smallShip.controllerRoll = 0;
-                }
-
-                //Turn input and smoothing
-                if (gamepad.rightStick.x.ReadValue() > 0.1f & smallShip.controllerTurn < 1)
-                {
-                    smallShip.controllerTurn += smallShip.controllerSenstivity;
-                }
-                else if (gamepad.rightStick.x.ReadValue() < -0.1f & smallShip.controllerTurn > -1)
-                {
-                    smallShip.controllerTurn -= smallShip.controllerSenstivity;
-                }
-                else if (gamepad.rightStick.x.ReadValue() > -0.1f & gamepad.rightStick.x.ReadValue() < 0.1f)
-                {
-                    smallShip.controllerTurn = 0;
-                }
+                smallShip.controllerPitch = Mathf.MoveTowards(gamepad.rightStick.y.ReadValue(), smallShip.controllerPitch, smallShip.controllerSenstivity * Time.deltaTime);
+                smallShip.controllerRoll = Mathf.MoveTowards(-gamepad.leftStick.x.ReadValue(), smallShip.controllerRoll, smallShip.controllerSenstivity * Time.deltaTime);
+                smallShip.controllerTurn = Mathf.MoveTowards(gamepad.rightStick.x.ReadValue(), smallShip.controllerTurn, smallShip.controllerSenstivity * Time.deltaTime);
 
                 //Thrust input and smoothing
                 if (gamepad.leftStick.y.ReadValue() > 0.1f & smallShip.controllerThrust < 1)
                 {
-                    smallShip.controllerThrust += smallShip.controllerSenstivity;
+                    smallShip.controllerThrust = Mathf.MoveTowards(gamepad.leftStick.y.ReadValue(), smallShip.controllerThrust, smallShip.controllerSenstivity * Time.deltaTime);
                 }
                 else if (gamepad.leftStick.y.ReadValue() < -0.1f & smallShip.controllerThrust > -1)
                 {
-                    smallShip.controllerThrust -= smallShip.controllerSenstivity;
+                    smallShip.controllerThrust = Mathf.MoveTowards(gamepad.leftStick.y.ReadValue(), smallShip.controllerThrust, smallShip.controllerSenstivity * Time.deltaTime);
                 }
                 else if (gamepad.leftStick.y.ReadValue() > -0.1f & gamepad.leftStick.y.ReadValue() < 0.1f)
                 {
-                    smallShip.controllerThrust = 0;
+                    smallShip.controllerThrust = Mathf.MoveTowards(gamepad.leftStick.y.ReadValue(), 0, smallShip.controllerSenstivity * Time.deltaTime);
                 }
+
+
 
                 //Actual ship inputs
                 if (smallShip.invertUpDown == true)
@@ -176,7 +140,7 @@ public static class SmallShipFunctions
                     smallShip.turnInput = smallShip.controllerTurn;
                 }
 
-                smallShip.thrustInput = smallShip.controllerThrust;
+                smallShip.thrustInput = smallShip.controllerThrust;     
                 smallShip.rollInput = smallShip.controllerRoll;
 
                 //Button inputs
@@ -185,8 +149,8 @@ public static class SmallShipFunctions
                 smallShip.powerToLasers = gamepad.dpad.right.isPressed;
                 smallShip.resetPowerLevels = gamepad.dpad.down.isPressed;
                 smallShip.getNextTarget = gamepad.leftShoulder.isPressed;
-                smallShip.getNextEnemy = gamepad.rightShoulder.isPressed;
-                smallShip.getClosestEnemy = gamepad.yButton.isPressed;
+                smallShip.getNextEnemy = gamepad.yButton.isPressed; 
+                smallShip.getClosestEnemy = gamepad.rightShoulder.isPressed;
                 smallShip.fireWeapon = gamepad.rightTrigger.isPressed;
                 smallShip.toggleWeapons = gamepad.bButton.isPressed;
                 smallShip.toggleWeaponNumber = gamepad.aButton.isPressed;

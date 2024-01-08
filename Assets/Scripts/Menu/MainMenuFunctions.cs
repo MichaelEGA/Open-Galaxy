@@ -556,12 +556,12 @@ public static class MainMenuFunctions
         string[] messages = new string[10];
         messages[0] = "Welcome to Open Galaxy. Version 0.9.62 completes all techincal goals for version 1.0.";
         messages[1] = "Open Galaxy's aim is to be a platform for X-Wing and Tie Fighter style custom missions.";
-        messages[2] = "Run out of missions. Why not try you hand at making one using the inbuilt editor?";
+        messages[2] = "Open Galaxy has an inbuilt and fully feature mission editor. Why not try it out?";
         messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";
         messages[4] = "Open Galaxy generates a real Star Wars galaxy with accurately positioned stars and planets.";
         messages[5] = "You can lower the quality of the planet heightmap for faster loadtimes.";
-        messages[6] = "You can use either a keyboard and mouse or a controller";
-        messages[7] = "Open Galaxy uses a mouse joystick system that allows for precision control of your ship.";
+        messages[6] = "Open Galaxy is designed for both a controller and keyboard and mouse.";
+        messages[7] = "Open Galaxy is possible through the generous contribution of others. Check out the credits.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
         messages[9] = "Post 1.0 plans for Open Galaxy include terrain, ion cannons and a lot more missions";
         Random.InitState(System.DateTime.Now.Millisecond);

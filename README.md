@@ -1,7 +1,7 @@
 # Open-Galaxy
 
 Gameplay
-![Screenshot (133)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/7d7deffe-c533-4490-acd1-129528188bdf)
+![Screenshot (137)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/dc6ae23b-a28f-41a7-8c93-a02f4c13e772)
 
 Mission Editor
 ![Screenshot (130)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/0a2f79a7-66c7-4489-b7fb-925d1e6d50ee)

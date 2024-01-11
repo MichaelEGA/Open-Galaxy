@@ -640,7 +640,7 @@ public static class SceneFunctions
         //This provides a random location if the specific planet couldn't be find
         if (planet == null)
         {
-            LoadScreenFunctions.AddLogToLoadingScreen("Planet data not found. Providing a random substitute.", 0, false);
+            LoadScreenFunctions.AddLogToLoadingScreen("Warning planet data not found. Planet location and data will be randomised.", 0, false);
 
             int numberOfStarSystems = starSystems.starSystemsData.Length;
             int randomLocation = Random.Range(0, numberOfStarSystems - 1);
@@ -651,7 +651,7 @@ public static class SceneFunctions
             float yCoord = (starSystem.Z / 15000f) * 25f; //The y coord is actaully the z coord and vice versa b/c original data was vector 2 
             float zCoord = (starSystem.Y / 15000f) * 50f;
 
-            planet = starSystem.Planet;
+            planet = name;
             type = starSystem.planetType;
             location = new Vector3(xCoord, yCoord, zCoord);
             seed = starSystem.seed;
@@ -1042,7 +1042,6 @@ public static class SceneFunctions
             //This causes the ship to come out of hyperspace on loading
             if (exitingHyperspace == true)
             {
-
                 ship.transform.localPosition = ship.transform.localPosition + (- ship.transform.forward * 30000);
 
                 if (shipType.scriptType == "largeship")
@@ -1113,8 +1112,6 @@ public static class SceneFunctions
 
         foreach (Vector3 tempPosition in positions)
         {
-            shipCallNumber += 1;
-
             bool isAI = true;
 
             if (includePlayer == true & shipCallNumber == playerNo)
@@ -1123,6 +1120,8 @@ public static class SceneFunctions
             }
 
             LoadSingleShip(tempPosition, rotation, type, name + shipCallNumber.ToString("00"), allegiance, cargo, exitingHyperspace, isAI, false, laserColor);
+
+            shipCallNumber += 1;
 
             yield return null;
         }

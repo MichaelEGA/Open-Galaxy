@@ -353,23 +353,23 @@ public static class LargeShipFunctions
     {
         largeShip.spinShip = true;
 
-        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.forward * Random.Range(50,100), "explosion02", 125);
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.forward * Random.Range(50,100), "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500);
 
         yield return new WaitForSeconds(2);
 
-        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.forward * -Random.Range(50, 100), "explosion02", 125);
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.forward * -Random.Range(50, 100), "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500);
 
         yield return new WaitForSeconds(2);
 
-        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.right * Random.Range(25, 50), "explosion02", 125);
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.right * Random.Range(25, 50), "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500);
 
         yield return new WaitForSeconds(2);
 
-        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.right * -Random.Range(25, 50), "explosion02", 125);
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.right * -Random.Range(25, 50), "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500);
 
         yield return new WaitForSeconds(2);
 
-        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion02", 1000);
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion02", 1000, largeShip.audioManager, "proton_explosion1", 3000);
 
         HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
 

@@ -9,7 +9,6 @@ public static class TorpedoFunctions
     //This finds all torpedo launchers on the ship
     public static void GetTorpedoTubes(SmallShip smallShip)
     {
-
         Transform tube1 = smallShip.gameObject.transform.Find("missilebank01/missilebank01-01");
         Transform tube2 = smallShip.gameObject.transform.Find("missilebank01/missilebank01-02");
         Transform tube3 = smallShip.gameObject.transform.Find("missilebank01/missilebank01-03");
@@ -317,6 +316,7 @@ public static class TorpedoFunctions
                         torpedoScript.damagePower = torpedoType.damageRating;
                         torpedoScript.explosionAudio = torpedoType.explosionAudio;
                         torpedoScript.launchAudio = torpedoType.launchAudio;
+                        torpedoScript.audioManager = smallShip.audioManager;
                         AttachParticleTrail(smallShip, torpedoScript, torpedoType.trailColor);
 
                         if (smallShip.torpedoLockedOn == true)
@@ -532,7 +532,7 @@ public static class TorpedoFunctions
             }
             else if (largeShip != null)
             {
-                LargeShipFunctions.TakeDamage(largeShip, torpedo.damagePower, hitPosition);
+                LargeShipFunctions.TakeDamage(largeShip, torpedo.damagePower * 4, hitPosition);
             }
         }
     }
@@ -547,7 +547,8 @@ public static class TorpedoFunctions
             if (distance < 25)
             {
                 CauseTorpedoDamage(torpedo.firingShip, torpedo.target, torpedo, torpedo.transform.position);
-                ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion02", 50f, torpedo.audioManager);
+
+                ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion02", 125f, torpedo.audioManager, "mid_explosion_02");
                 DeactivateTorpedo(torpedo);
             }
         }

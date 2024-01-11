@@ -1162,7 +1162,7 @@ public static class SmallShipFunctions
             ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion02", 12);
 
             //This makes an explosion sound
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "explosion01_xwing", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
 
             //This tells the game that the ship has been destroyed
             HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
@@ -1309,7 +1309,7 @@ public static class SmallShipFunctions
                 if (smallShip.cockpitDamageShake == false & smallShip.cockpitSpeedShake == false)
                 {
                     Task a = new Task(CockpitSpeedShake(smallShip));
-                    AudioFunctions.PlayCockpitShakeNoise(smallShip);
+                    //AudioFunctions.PlayCockpitShakeNoise(smallShip);
                 }
             }
 

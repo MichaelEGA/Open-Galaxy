@@ -56,7 +56,7 @@ public class Torpedo : MonoBehaviour
 
         foreach (ContactPoint contact in collision.contacts)
         {
-            ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion02", 100f, audioManager);
+            ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion02", 125f, audioManager, "mid_explosion_02", 1500);
             break;
         }
 

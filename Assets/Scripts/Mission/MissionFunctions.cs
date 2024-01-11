@@ -1513,6 +1513,13 @@ public static class MissionFunctions
                         {
                             smallShip.aiOverideMode = missionEvent.data2;
                         }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            largeShip.aiOverideMode = missionEvent.data2;
+                        }
                     }
                 }
             }

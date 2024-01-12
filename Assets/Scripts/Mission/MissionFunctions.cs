@@ -1519,6 +1519,7 @@ public static class MissionFunctions
                         if (largeShip != null)
                         {
                             largeShip.aiOverideMode = missionEvent.data2;
+                            largeShip.savedOverideMode = missionEvent.data2;
                         }
                     }
                 }

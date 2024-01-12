@@ -1513,7 +1513,7 @@ public static class HudFunctions
 
         reticule.gameObject.SetActive(true);
 
-        AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep02_targetlock", "Cockpit", hud.smallShip.transform.position, 0, 1, 500, 0.6f);
+        AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "shortbeep", "Cockpit", hud.smallShip.transform.position, 0, 1, 500, 0.6f);
 
         yield return new WaitForSeconds(0.25f);
 

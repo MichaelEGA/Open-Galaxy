@@ -162,13 +162,17 @@ public static class LargeShipAIFunctions
     {
         if (largeShip != null)
         {
+            if (largeShip.aiOverideMode != "avoidCollision")
+            {
+                largeShip.savedOverideMode = largeShip.aiOverideMode; //This saves the current ai override mode and reapplies it at the end of the evasion sequence
+            }
+
             largeShip.aiOverideMode = mode;
 
             time = time + Time.time;
 
             while (time > Time.time)
             {
-
                 NoSpeed(largeShip);
 
                 if (direction == 0)
@@ -204,7 +208,7 @@ public static class LargeShipAIFunctions
 
             }
 
-            largeShip.aiOverideMode = "none";
+            largeShip.aiOverideMode = largeShip.savedOverideMode;
 
             ResetSteeringInputs(largeShip);
         }

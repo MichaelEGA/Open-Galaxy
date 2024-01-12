@@ -112,6 +112,7 @@ public class LargeShip : MonoBehaviour
     [Header("Ship AI")]
     public string aiMode;
     public string aiOverideMode = "none";
+    public string savedOverideMode = "none";
     public string aiSkillLevel; 
     [HideInInspector] public float aiPitchInput;
     [HideInInspector] public float aiTurnInput;

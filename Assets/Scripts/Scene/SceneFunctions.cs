@@ -1108,13 +1108,14 @@ public static class SceneFunctions
 
         Vector3[] positions = GetPositions(pattern, position, width, length, height, number, shipsPerLine, positionVariance);
 
-        int shipCallNumber = 0;
+        int shipNumber = 0;
+        int shipCallNumber = 1;
 
         foreach (Vector3 tempPosition in positions)
         {
             bool isAI = true;
 
-            if (includePlayer == true & shipCallNumber == playerNo)
+            if (includePlayer == true & shipNumber == playerNo)
             {
                 isAI = false;
             }
@@ -1122,6 +1123,7 @@ public static class SceneFunctions
             LoadSingleShip(tempPosition, rotation, type, name + shipCallNumber.ToString("00"), allegiance, cargo, exitingHyperspace, isAI, false, laserColor);
 
             shipCallNumber += 1;
+            shipNumber++;
 
             yield return null;
         }
@@ -1349,11 +1351,14 @@ public static class SceneFunctions
                 relativeShipPosition = new Vector3(positionX, 0, positionZ);
                 actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
                 shipPositions.Add(actualShipPosition);
-
-                relativeShipPosition = new Vector3(-positionX, 0, positionZ);
-                actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
-                shipPositions.Add(actualShipPosition);
-                i++;
+                
+                if (i + 1 < shipNumber)
+                {
+                    relativeShipPosition = new Vector3(-positionX, 0, positionZ);
+                    actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+                    shipPositions.Add(actualShipPosition);
+                    i++;
+                }
             }
 
             positionX += increment_width;
@@ -1399,10 +1404,13 @@ public static class SceneFunctions
                 actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
                 shipPositions.Add(actualShipPosition);
 
-                relativeShipPosition = new Vector3(-positionX, 0, positionZ);
-                actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
-                shipPositions.Add(actualShipPosition);
-                i++;
+                if (i + 1 < shipNumber)
+                {
+                    relativeShipPosition = new Vector3(-positionX, 0, positionZ);
+                    actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+                    shipPositions.Add(actualShipPosition);
+                    i++;
+                }
             }
 
             positionX -= increment_width;

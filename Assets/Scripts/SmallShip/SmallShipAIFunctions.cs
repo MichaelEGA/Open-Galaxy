@@ -231,6 +231,11 @@ public static class SmallShipAIFunctions
 
         if (smallShip != null)
         {
+            if (smallShip.aiOverideMode != "avoidCollision" & smallShip.aiOverideMode != "evadeAttack")
+            {
+                smallShip.savedOverideMode = smallShip.aiOverideMode; //This saves the current ai override mode and reapplies it at the end of the evasion sequence
+            }
+
             smallShip.aiOverideMode = mode;
 
             time = time + Time.time;
@@ -273,7 +278,7 @@ public static class SmallShipAIFunctions
 
             }
 
-            smallShip.aiOverideMode = "none";
+            smallShip.aiOverideMode = smallShip.savedOverideMode;
 
             ResetSteeringInputs(smallShip);
         }

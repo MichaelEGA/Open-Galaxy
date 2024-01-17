@@ -203,8 +203,8 @@ public static class OGSettingsFunctions
     {
         OGSettings settings = GetSettings();
 
-        int widthRes = settings.screenResX;
-        int heightRes = settings.screenResY;
+        int widthRes = Display.main.systemWidth;
+        int heightRes = Display.main.systemHeight;
 
         if (windowMode == "window")
         {

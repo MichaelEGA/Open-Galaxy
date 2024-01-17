@@ -78,6 +78,16 @@ public static class ExitMenuFunctions
         }
 
         MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+
+        //This stops any active event series coroutines so they don't continue running when a new mission is loaded
+        foreach (Task eventSeries in missionManager.missionTasks)
+        {
+            if (eventSeries != null)
+            {
+                eventSeries.Stop();
+            }
+        }
+
         if (missionManager != null) { GameObject.Destroy(missionManager.gameObject); }
 
         Cursor.visible = true;

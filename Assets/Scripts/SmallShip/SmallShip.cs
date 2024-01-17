@@ -184,6 +184,7 @@ public class SmallShip : MonoBehaviour
     public bool isAI; //Value set in inspector or by loading script
     public string aiMode;
     public string aiOverideMode = "none";
+    public string savedOverideMode = "none";
     public string aiSkillLevel; //Three levels available: easy, medium, hard
     [HideInInspector] public float aiAttackTime = 30;
     [HideInInspector] public float aiRetreatTime;

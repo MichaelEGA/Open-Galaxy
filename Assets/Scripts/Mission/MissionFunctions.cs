@@ -104,12 +104,18 @@ public static class MissionFunctions
         //This starts running the event series
         int eventSeriesNo = 0;
 
+        if (missionManager.missionTasks == null)
+        {
+            missionManager.missionTasks = new List<Task>();
+        }
+
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
             if (missionEvent.eventType == "starteventseries")
             {
                 FindNextEvent(missionEvent.nextEvent1, eventSeriesNo);
                 Task b = new Task(RunEventSeries(mission, eventSeriesNo));
+                missionManager.missionTasks.Add(b);
                 eventSeriesNo++;
             }
         }
@@ -1911,6 +1917,10 @@ public static class MissionFunctions
                     {
                         Task a = new Task(UnloadAfter(5));
                         Task b = new Task(HudFunctions.FadeOutHud(0.25f));
+
+                        missionManager.missionTasks.Add(a);
+                        missionManager.missionTasks.Add(b);
+
                         Cursor.visible = true;
                         Cursor.lockState = CursorLockMode.None;
                         missionManager.unloading = true;
@@ -1926,7 +1936,6 @@ public static class MissionFunctions
         yield return new WaitForSeconds(time);
 
         ExitMenuFunctions.ExitAndUnload();
-
     }
 
     //This activates the exit menu

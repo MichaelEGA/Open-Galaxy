@@ -577,10 +577,8 @@ public static class TargetingFunctions
                     {
                         float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
 
-                        if (tempDistance < distance)
+                        if (tempDistance < distance & tempSmallShip.numberTargeting < 3)
                         {
-                            float numberTargetting = tempSmallShip.numberTargeting;
-
                             target = ship;
                             targetSmallShip = tempSmallShip;
                             distance = tempDistance;

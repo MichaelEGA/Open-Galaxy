@@ -1008,7 +1008,7 @@ public static class SceneFunctions
             ship.transform.SetParent(scene.transform);
 
             //This sets the layer of the ship
-            if (isAI == true)
+            if (isAI == true || shipType.scriptType != "largeship")
             {
                 //This gets the Json ship data
                 TextAsset allegiancesFile = Resources.Load("Data/Files/Allegiances") as TextAsset;

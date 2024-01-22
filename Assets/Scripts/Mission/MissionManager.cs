@@ -15,6 +15,7 @@ public class MissionManager : MonoBehaviour
     public string[] objectiveList;
     public MissionBriefing missionBriefing;
     public List<Task> missionTasks;
+    public bool audioLoaded = false;
 
     // Update is called once per frame
     void Update()

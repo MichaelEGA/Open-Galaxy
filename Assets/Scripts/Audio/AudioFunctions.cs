@@ -36,6 +36,8 @@ public static class AudioFunctions
     //This loads all availble mission audio files
     public static IEnumerator LoadMissionAudioClips(Audio audio, string address, bool filesAreExternal = false)
     {
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+
         if (filesAreExternal == false) //This loads the audio files from the internal mission folder
         {
             AudioClip[] missionAudioClips = Resources.LoadAll<AudioClip>(address);
@@ -70,7 +72,12 @@ public static class AudioFunctions
 
                 audio.missionAudioClips = missionAudioClipsList.ToArray();
             }
-        }      
+        }   
+        
+        if(missionManager != null)
+        {
+            missionManager.audioLoaded = true;
+        }
     }
 
     #endregion
@@ -173,6 +180,11 @@ public static class AudioFunctions
             {
                 AudioClip audioClip = GetMissionAudioClip(audioManager, audioName);
                 audioSource = GetAudioSource(audioManager);
+
+                if (audioClip == null)
+                {
+                    Debug.Log("Audio clip was null" + "audio manager clips number" + audioManager.missionAudioClips.Length);
+                }
 
                 if (audioClip != null & audioSource != null)
                 {
@@ -324,6 +336,8 @@ public static class AudioFunctions
             {
                 foreach (AudioClip tempAudioClip in audioManager.missionAudioClips)
                 {
+                    Debug.Log(tempAudioClip.name + " = " + audioName);
+
                     if (tempAudioClip.name == audioName)
                     {
                         audioClip = tempAudioClip;

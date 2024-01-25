@@ -194,7 +194,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float aiRollInput;
     [HideInInspector] public float healthSave;
     [HideInInspector] public bool withdraw;
-    [HideInInspector] public bool lookingForTarget;
+    public bool requestingTarget;
 
     [Header("Particle Effcets")]
     [HideInInspector] public GameObject smokeTrail;

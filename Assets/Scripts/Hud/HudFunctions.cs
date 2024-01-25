@@ -774,8 +774,6 @@ public static class HudFunctions
                 hud.frontRadarBrace = GameObject.Find("FrontRadarBrace");
             }
 
-
-
             if (hud.frontRadarDot != null & hud.scene.objectPool != null & hud.frontRadarDotsPool != null)
             {
                 //This generates the radar icons

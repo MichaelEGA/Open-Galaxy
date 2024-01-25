@@ -11,6 +11,7 @@ public class Scene : MonoBehaviour
     public int planetSeed;
     public float sceneRadius = 15000;
     public List<string> availibleLocations;
+    public string allegiance = "none";
 
     [Header("The Main Ship")]
     [HideInInspector] public GameObject mainShip;
@@ -33,6 +34,12 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> tilesPool;
     [HideInInspector] public List<GameObject> tilesSetPool;
     [HideInInspector] public GameObject hyperspaceTunnel;
+
+    [Header("Script Pools")]
+    public bool allocatingTargets;
+    [HideInInspector] public List<SmallShip> smallShips;
+    [HideInInspector] public List<LargeShip> largeShips;
+    [HideInInspector] public List<Turret> turrets;
 
     [Header("Collision Avoidance")]
     [HideInInspector] public bool avoidSmallObjectsRunning;
@@ -69,6 +76,11 @@ public class Scene : MonoBehaviour
         SceneFunctions.RotateStarfieldAndPlanetCamera(this);
         AvoidCollisionsFunctions.AvoidCollision(this);
         SceneFunctions.TakeScreeenShot(this);
+
+        if (allocatingTargets == false)
+        {
+            Task a = new Task(TargetingFunctions.AllocateTargets(this));
+        }
     }
 
 }

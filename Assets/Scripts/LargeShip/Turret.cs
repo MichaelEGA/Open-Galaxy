@@ -34,7 +34,7 @@ public class Turret : MonoBehaviour
     public bool turretFiring;
     public bool isUpsideDown;
     public bool yRotationIsRestricted = false;
-    public bool lookingForTarget = false;
+    public bool requestingTarget;
 
     void Update()
     {

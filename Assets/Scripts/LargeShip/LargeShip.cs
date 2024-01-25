@@ -117,7 +117,7 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float aiPitchInput;
     [HideInInspector] public float aiTurnInput;
     [HideInInspector] public float aiRollInput;
-    [HideInInspector] public bool lookingForTarget = false;
+    public bool requestingTarget;
 
     [Header("Ship Loading")]
     [HideInInspector] public bool loaded;

@@ -22,10 +22,18 @@ public static class SmallShipAIFunctions
     public static void SetFlightMode(SmallShip smallShip)
     {
         //This selects the next enemy target
-        if (smallShip.lookingForTarget == false)
+        if (smallShip.target == null)
         {
-            Task a = new Task(SelectTarget(smallShip));
-        }           
+            smallShip.requestingTarget = true;
+        }
+        else if (smallShip.target.activeSelf == false)
+        {
+            smallShip.requestingTarget = true;
+        }
+        else
+        {
+            smallShip.requestingTarget = false;
+        }
 
         //This chooses between attack and patrol
         if (smallShip.target != null)
@@ -387,42 +395,6 @@ public static class SmallShipAIFunctions
     #endregion
 
     #region Targetting and Waypoints
-
-    //This selects the next target
-    public static IEnumerator SelectTarget(SmallShip smallShip)
-    {
-        smallShip.lookingForTarget = true;
-
-        if (smallShip.target == null)
-        {
-            if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
-            {
-                TargetingFunctions.GetClosestEnemyLargeShip(smallShip);
-            }
-            else
-            {
-                TargetingFunctions.GetClosestEnemySmallShip(smallShip);
-            }  
-        }
-        else if (smallShip.target != null)
-        {
-            if (smallShip.target.activeSelf == false)
-            {
-                if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
-                {
-                    TargetingFunctions.GetClosestEnemyLargeShip(smallShip);
-                }
-                else
-                {
-                    TargetingFunctions.GetClosestEnemySmallShip(smallShip);
-                }                              
-            }
-        }
-
-        yield return new WaitForSeconds(Random.Range(2f, 3f));
-
-        smallShip.lookingForTarget = false;
-    }
 
     //This selects a random waypoint
     public static void SelectRandomWaypoint(SmallShip smallship)

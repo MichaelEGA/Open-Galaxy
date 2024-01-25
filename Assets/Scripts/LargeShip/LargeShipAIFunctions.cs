@@ -20,9 +20,17 @@ public static class LargeShipAIFunctions
     public static void SetFlightMode(LargeShip largeShip)
     {
         //This selects the next enemy target
-        if (largeShip.target == null & largeShip.lookingForTarget == false)
+        if (largeShip.target == null)
         {
-            Task a = new Task(SelectTarget(largeShip));
+            largeShip.requestingTarget = true;
+        }
+        else if (largeShip.target.activeSelf == false)
+        {
+            largeShip.requestingTarget = true;
+        }
+        else
+        {
+            largeShip.requestingTarget = false;
         }
 
         //This chooses between attack and patrol
@@ -218,28 +226,6 @@ public static class LargeShipAIFunctions
     #endregion
 
     #region Targetting and Waypoints
-
-    //This selects the next target
-    public static IEnumerator SelectTarget(LargeShip largeShip)
-    {
-        largeShip.lookingForTarget = true;
-
-        if (largeShip.target == null)
-        {
-            TargetingFunctions.GetClosestEnemyLargeShip_LargeShip(largeShip);
-        }
-        else if (largeShip.target != null)
-        {
-            if (largeShip.target.activeSelf == false)
-            {
-                TargetingFunctions.GetClosestEnemyLargeShip_LargeShip(largeShip);
-            }
-        }
-
-        yield return new WaitForSeconds(Random.Range(2f, 3f));
-
-        largeShip.lookingForTarget = false;
-    }
 
     //This selects a random waypoint
     public static void SelectRandomWaypoint(LargeShip largeShip)

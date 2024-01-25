@@ -68,6 +68,16 @@ public static class TurretFunctions
 
                         GameObjectUtils.SetLayerAllChildren(turretTransform, turretTransform.gameObject.layer);
 
+                        if (largeShip.scene != null)
+                        {
+                            if (largeShip.scene.turrets == null)
+                            {
+                                largeShip.scene.turrets = new List<Turret>();
+                            }
+
+                            largeShip.scene.turrets.Add(tempTurret);
+                        }
+
                         turrets.Add(tempTurret);
                     }
                 }
@@ -354,22 +364,18 @@ public static class TurretFunctions
     //This gets the turrets target
     public static void GetTarget(Turret turret)
     {
-        if (turret.lookingForTarget == false)
+        if (turret.target == null)
         {
-            Task a = new Task(LookForTarget(turret));
+            turret.requestingTarget = true;
         }
-    }
-    
-    //This looks for the target every 2.5 secs to prevent it running too often
-    public static IEnumerator LookForTarget(Turret turret)
-    {
-        turret.lookingForTarget = true;
-
-        TargetingFunctions.GetClosestEnemy_Turret(turret);
-
-        yield return new WaitForSeconds(Random.Range(10f, 20f));
-
-        turret.lookingForTarget = false;
+        else if (turret.target.gameObject.activeSelf == false)
+        {
+            turret.requestingTarget = true;
+        }
+        else
+        {
+            turret.requestingTarget = false;
+        }
     }
 
     //This gets the input for the turret from ship

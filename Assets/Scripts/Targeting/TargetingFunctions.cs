@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class TargetingFunctions 
+public static class TargetingFunctions
 {
     #region player small ship targetting
 
@@ -358,7 +358,7 @@ public static class TargetingFunctions
             smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
         }
 
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);       
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
         //This prevents the torpedo from immediately locking on to the new target
         smallShip.torpedoLockedOn = false;
@@ -458,59 +458,66 @@ public static class TargetingFunctions
     {
         bool isHostile = false;
 
-        //This gets the Json ship data
-        TextAsset allegiancesFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
-        Allegiances allegiances = JsonUtility.FromJson<Allegiances>(allegiancesFile.text);
-
-        Allegiance allegiance = null;
-
-        foreach (Allegiance tempAllegiance in allegiances.allegianceData)
+        if (smallShip.scene != null)
         {
-            if (tempAllegiance.allegiance == smallShip.allegiance)
+            if (smallShip.scene.allegiance == "none")
             {
-                allegiance = tempAllegiance;
+                TextAsset allegiancesFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
+                smallShip.scene.allegiance = allegiancesFile.text;
             }
-        }
 
-        if (allegiance.enemy01 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy02 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy03 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy04 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy05 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy06 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy07 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy08 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy09 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy10 == targetAllegiance)
-        {
-            isHostile = true;
+            Allegiances allegiances = JsonUtility.FromJson<Allegiances>(smallShip.scene.allegiance);
+
+            Allegiance allegiance = null;
+
+            foreach (Allegiance tempAllegiance in allegiances.allegianceData)
+            {
+                if (tempAllegiance.allegiance == smallShip.allegiance)
+                {
+                    allegiance = tempAllegiance;
+                }
+            }
+
+            if (allegiance.enemy01 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy02 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy03 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy04 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy05 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy06 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy07 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy08 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy09 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy10 == targetAllegiance)
+            {
+                isHostile = true;
+            }
         }
 
         return isHostile;
@@ -543,7 +550,7 @@ public static class TargetingFunctions
                 }
             }
         }
-       
+
         return targetNumber;
     }
 
@@ -552,7 +559,7 @@ public static class TargetingFunctions
     #region AI smallship targetting
 
     //This gets the closesd enemy target
-    public static void GetClosestEnemySmallShip(SmallShip smallShip)
+    public static IEnumerator GetClosestEnemySmallShip(SmallShip smallShip)
     {
         Scene scene = smallShip.scene;
 
@@ -611,11 +618,13 @@ public static class TargetingFunctions
 
         //This prevents the torpedo from immediately locking on to the new target
         smallShip.torpedoLockedOn = false;
-        smallShip.torpedoLockingOn = false;      
+        smallShip.torpedoLockingOn = false;
+
+        yield return null;
     }
 
     //This gets the closesd enemy target
-    public static void GetClosestEnemyLargeShip(SmallShip smallShip)
+    public static IEnumerator GetClosestEnemyLargeShip(SmallShip smallShip)
     {
         Scene scene = smallShip.scene;
 
@@ -631,7 +640,7 @@ public static class TargetingFunctions
             foreach (GameObject ship in scene.objectPool)
             {
                 if (ship != null)
-                {                   
+                {
                     tempLargeShip = ship.GetComponent<LargeShip>();
 
                     if (ship.activeSelf == true & tempLargeShip != null)
@@ -671,7 +680,9 @@ public static class TargetingFunctions
 
         //This prevents the torpedo from immediately locking on to the new target
         smallShip.torpedoLockedOn = false;
-        smallShip.torpedoLockingOn = false;        
+        smallShip.torpedoLockingOn = false;
+
+        yield return null;
     }
 
     #endregion
@@ -679,7 +690,7 @@ public static class TargetingFunctions
     #region AI large ship targetting
 
     //This gets the closesd enemy target
-    public static void GetClosestEnemyLargeShip_LargeShip(LargeShip largeShip)
+    public static IEnumerator GetClosestEnemyLargeShip_LargeShip(LargeShip largeShip)
     {
         Scene scene = largeShip.scene;
 
@@ -732,6 +743,8 @@ public static class TargetingFunctions
 
             largeShip.targetRigidbody = target.GetComponent<Rigidbody>();
         }
+
+        yield return null;
     }
 
     //This gets the designated target and sets it as the ships target if it can be found
@@ -792,7 +805,7 @@ public static class TargetingFunctions
 
             largeShip.targetRigidbody = target.GetComponent<Rigidbody>();
 
-            targetSmallShip.numberTargeting += 1;          
+            targetSmallShip.numberTargeting += 1;
         }
     }
 
@@ -874,71 +887,178 @@ public static class TargetingFunctions
     {
         bool isHostile = false;
 
-        //This gets the Json ship data
-        TextAsset allegiancesFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
-        Allegiances allegiances = JsonUtility.FromJson<Allegiances>(allegiancesFile.text);
-
-        Allegiance allegiance = null;
-
-        foreach (Allegiance tempAllegiance in allegiances.allegianceData)
+        if (largeShip.scene != null)
         {
-            if (tempAllegiance.allegiance == largeShip.allegiance)
+            //This gets the Json ship data
+            if (largeShip.scene.allegiance == "none")
             {
-                allegiance = tempAllegiance;
+                TextAsset allegiancesFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
+                largeShip.scene.allegiance = allegiancesFile.text;
+            }
+
+            Allegiances allegiances = JsonUtility.FromJson<Allegiances>(largeShip.scene.allegiance);
+
+            Allegiance allegiance = null;
+
+            foreach (Allegiance tempAllegiance in allegiances.allegianceData)
+            {
+                if (tempAllegiance.allegiance == largeShip.allegiance)
+                {
+                    allegiance = tempAllegiance;
+                }
+            }
+
+            if (allegiance.enemy01 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy02 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy03 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy04 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy05 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy06 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy07 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy08 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy09 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy10 == targetAllegiance)
+            {
+                isHostile = true;
             }
         }
 
-        if (allegiance.enemy01 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy02 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy03 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy04 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy05 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy06 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy07 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy08 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy09 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-        else if (allegiance.enemy10 == targetAllegiance)
-        {
-            isHostile = true;
-        }
-
         return isHostile;
-
     }
 
     #endregion
 
     #region turret targetting
 
+    //Allocate targets to all the turrets one at a time to save processing power
+    public static IEnumerator AllocateTargets(Scene scene)
+    {
+        scene.allocatingTargets = true;
+
+        if (scene.turrets == null)
+        {
+            scene.turrets = new List<Turret>();
+        }
+
+        //This selects targets for turrets
+        foreach (Turret turret in scene.turrets.ToArray())
+        {
+            if (turret != null)
+            {
+                if (turret.requestingTarget == true)
+                {
+                    Task a = new Task(GetClosestEnemy_Turret(turret));
+                    while (a.Running == true) { yield return null; }
+                }
+            }
+        }
+
+        if (scene.smallShips == null)
+        {
+            scene.smallShips = new List<SmallShip>();
+        }
+
+        //This selects targets for smallship ai
+        foreach (SmallShip smallShip in scene.smallShips.ToArray())
+        {
+            if (smallShip != null)
+            {
+                if (smallShip.gameObject.activeSelf == true & smallShip.requestingTarget == true)
+                {
+                    if (smallShip.target == null)
+                    {
+                        if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
+                        {
+                            Task a = new Task(GetClosestEnemyLargeShip(smallShip));
+                            while (a.Running == true) { yield return null; }
+                        }
+                        else
+                        {
+                            Task a = new Task(GetClosestEnemySmallShip(smallShip));
+                            while (a.Running == true) { yield return null; }
+                        }
+                    }
+                    else if (smallShip.target != null)
+                    {
+                        if (smallShip.target.activeSelf == false)
+                        {
+                            if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
+                            {
+                                Task a = new Task(GetClosestEnemyLargeShip(smallShip));
+                                while (a.Running == true) { yield return null; }
+                            }
+                            else
+                            {
+                                Task a = new Task(GetClosestEnemySmallShip(smallShip));
+                                while (a.Running == true) { yield return null; }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (scene.largeShips == null)
+        {
+            scene.largeShips = new List<LargeShip>();
+        }
+
+        foreach (LargeShip largeShip in scene.largeShips.ToArray())
+        {
+            if (largeShip != null)
+            {
+                if (largeShip.gameObject.activeSelf == true & largeShip.requestingTarget == true)
+                {
+                    if (largeShip.target == null)
+                    {
+                        Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShip(largeShip));
+                        while (a.Running == true) { yield return null; }
+
+                    }
+                    else if (largeShip.target != null)
+                    {
+                        if (largeShip.target.activeSelf == false)
+                        {
+                            Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShip(largeShip));
+                            while (a.Running == true) { yield return null; }
+                        }
+                    }
+                }
+            }
+        }
+
+        scene.allocatingTargets = false;
+    }
+
     //This gets the closes enemy for turret
-    public static void GetClosestEnemy_Turret(Turret turret)
+    public static IEnumerator GetClosestEnemy_Turret(Turret turret)
     {
         bool automaticSearch = false;
 
@@ -1065,6 +1185,9 @@ public static class TargetingFunctions
                 turret.target = target;
             }
         }
+
+        yield return null;
+
     }
 
     #endregion

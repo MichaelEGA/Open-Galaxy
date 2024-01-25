@@ -885,6 +885,13 @@ public static class SceneFunctions
                 //Add appropriate ship script
                 SmallShip smallShip = ship.AddComponent<SmallShip>();
 
+                if (scene.smallShips == null)
+                {
+                    scene.smallShips = new List<SmallShip>();
+                }
+
+                scene.smallShips.Add(smallShip);
+
                 //Load ship data into script
                 smallShip.accelerationRating = shipType.accelerationRating;
 
@@ -950,6 +957,13 @@ public static class SceneFunctions
             {
                 //Add appropriate ship script
                 LargeShip largeShip = ship.AddComponent<LargeShip>();
+
+                if (scene.largeShips == null)
+                {
+                    scene.largeShips = new List<LargeShip>();
+                }
+
+                scene.largeShips.Add(largeShip);
 
                 //Load ship data into script
                 largeShip.accelerationRating = shipType.accelerationRating;

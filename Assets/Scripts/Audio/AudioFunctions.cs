@@ -336,8 +336,6 @@ public static class AudioFunctions
             {
                 foreach (AudioClip tempAudioClip in audioManager.missionAudioClips)
                 {
-                    Debug.Log(tempAudioClip.name + " = " + audioName);
-
                     if (tempAudioClip.name == audioName)
                     {
                         audioClip = tempAudioClip;

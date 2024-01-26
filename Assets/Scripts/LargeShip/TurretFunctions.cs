@@ -372,6 +372,10 @@ public static class TurretFunctions
         {
             turret.requestingTarget = true;
         }
+        else if (turret.targetForward < 0)
+        {
+            turret.requestingTarget = true;
+        }
         else
         {
             turret.requestingTarget = false;

@@ -45,6 +45,8 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Updated: Hud functions are now more independant
   - Fixed: A heap of random bugs and error
   - Updated: Laser color is now a variable in load ship nodes
+  - Removed: Explore mode
+  - Removed: Tiling code and death star tiles
 
 04/01/23 - v.9.41 (Unity 2022.3.12f1)
   - NOTE: This is the only and final release of the game with the 'explore' mode. The feature is no longer in development and will be removed from future releases. But I made this release to preserve the code and to give an example of what it would have been like.

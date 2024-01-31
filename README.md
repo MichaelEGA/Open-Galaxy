@@ -17,9 +17,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - External mission loading (Implemented)
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
 
-**Latest Release:** 0.9.41
+**Latest Release:** 1.0.0
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v0.9.41/Open.Galaxy.0.9.41.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.0.0/Open.Galaxy.1.0.0.zip
 
 **Other Info**
 
@@ -28,6 +28,23 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
 
 **Changelog**
+
+31/04/23 - v1.0.0 (Unity 2022.3.12f1)
+  - Added: Four new missions
+  - Updated: Reduced cost of looking for target
+  - Added: Target request system to reduce cost of ai looking for targets
+  - Fixed: Minor layer error
+  - Fixed: largeships being loaded on player layer
+  - Added: Two more missions
+  - Fixed: Numerous small errors
+  - Fixed: Error where ships targeted friendly
+  - Updated: Mission Briefing Screen
+  - Fixed: Dynamic cockpit not moving correctly
+  - Fixed: Controller now works correctly in the game
+  - Fixed: Minor hud errors
+  - Updated: Hud functions are now more independant
+  - Fixed: A heap of random bugs and error
+  - Updated: Laser color is now a variable in load ship nodes
 
 04/01/23 - v.9.41 (Unity 2022.3.12f1)
   - NOTE: This is the only and final release of the game with the 'explore' mode. The feature is no longer in development and will be removed from future releases. But I made this release to preserve the code and to give an example of what it would have been like.

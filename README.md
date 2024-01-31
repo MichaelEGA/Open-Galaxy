@@ -243,3 +243,5 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
 27/07/23 - v0.49.0
   - First Commit
+
+The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.

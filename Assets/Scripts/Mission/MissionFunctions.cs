@@ -642,9 +642,9 @@ public static class MissionFunctions
         float y = missionEvent.y;
         float z = missionEvent.z;
 
-        float xRotation = missionEvent.x;
-        float yRotation = missionEvent.y;
-        float zRotation = missionEvent.z;
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
 
         string jumpLocation = missionEvent.data1;
 
@@ -695,8 +695,9 @@ public static class MissionFunctions
         Task b = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time));
         while(b.Running == true) { yield return null; }
 
+        yield return new WaitForSecondsRealtime(1);
+
         //This sets the position of the ship in the new location designated in the node
-        smallShip.transform.localPosition = new Vector3(x, y, z);
         smallShip.transform.rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
         //This yield allows the new position and rotation to be registered in the rigidbody component which is needed for the shrinkstarfield function
@@ -712,6 +713,8 @@ public static class MissionFunctions
         Time.timeScale = 1;
 
         yield return new WaitForSecondsRealtime(1); //This gives the rigidbody time to calculate the new velocity
+
+        smallShip.transform.localPosition = new Vector3(x, y, z);
 
         //This deactivates the hyperspace tunnel
         if (scene.hyperspaceTunnel != null)

@@ -245,6 +245,9 @@ public static class MissionFunctions
 
             float markTime = Time.time;
 
+            //This pauses the event series if needed 
+            yield return new WaitUntil(() => missionManager.pauseEventSeries == false);
+
             if (!missionEvent.eventType.Contains("preload") & missionEvent.eventType != "loadscene")
             {
                 //This makes the event run at the correct time
@@ -651,7 +654,9 @@ public static class MissionFunctions
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
 
-        bool controlLock = smallShip.controlLock;
+        missionManager.pauseEventSeries = true;
+
+        bool controlLock = smallShip.controlLock; //This preserves the current lock position
 
         smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
         smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
@@ -726,8 +731,11 @@ public static class MissionFunctions
         scene.mainCamera.GetComponent<Camera>().enabled = true;
 
         //This unlocks the player controls and turns off invincibility on the player ship
-        smallShip.controlLock = controlLock;
+        smallShip.controlLock = controlLock; //This restores the set lock position
         smallShip.invincible = false;
+        
+        //This unpauses the event series
+        missionManager.pauseEventSeries = false;
     }
 
     //This clears any AI overides on a ship/ships i.e. "waypoint", "dontattack" etc
@@ -1616,7 +1624,7 @@ public static class MissionFunctions
 
         bool isLocked = false;
 
-        if (missionEvent.data2 != "none")
+        if (bool.TryParse(missionEvent.data2, out _))
         {
             isLocked = bool.Parse(missionEvent.data2);
         }
@@ -1922,7 +1930,7 @@ public static class MissionFunctions
 
         bool isLocked = false;
 
-        if (missionEvent.data2 != "none")
+        if (bool.TryParse(missionEvent.data2, out _))
         {
             isLocked = bool.Parse(missionEvent.data2);
         }

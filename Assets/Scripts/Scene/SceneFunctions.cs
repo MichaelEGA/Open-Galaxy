@@ -1813,6 +1813,8 @@ public static class SceneFunctions
             }
 
             scene.objectPool.Clear();
+
+            scene.objectPool.Add(scene.mainShip);
         }
 
         if (scene.asteroidPool != null)

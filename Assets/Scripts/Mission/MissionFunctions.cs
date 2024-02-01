@@ -634,8 +634,6 @@ public static class MissionFunctions
     //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
     public static IEnumerator ChangeLocation(MissionEvent missionEvent)
     {
-        Time.timeScale = 0;
-
         //This gets all the required data from the event node
         float x = missionEvent.x;
         float y = missionEvent.y;
@@ -673,6 +671,8 @@ public static class MissionFunctions
         scene.planetCamera.GetComponent<Camera>().enabled = false;
         scene.mainCamera.GetComponent<Camera>().enabled = false;
 
+        Time.timeScale = 0;
+
         //This makes the stars stretch out
         Task a = new Task(SceneFunctions.StretchStarfield());
         while(a.Running == true) { yield return null; }
@@ -703,6 +703,11 @@ public static class MissionFunctions
             yield return null;
         }
 
+        //This time scale needs to be turned on before shrinking the starfield to ensure that the function can get the correct velocity angle from the ship
+        Time.timeScale = 1;
+
+        yield return new WaitForSecondsRealtime(1); //This gives the rigidbody time to calculate the new velocity
+
         //This deactivates the hyperspace tunnel
         if (scene.hyperspaceTunnel != null)
         {
@@ -715,8 +720,6 @@ public static class MissionFunctions
         //This shrinks the starfield
         Task c = new Task(SceneFunctions.ShrinkStarfield());
         while (c.Running == true) { yield return null; }
-
-        Time.timeScale = 1;
 
         //This makes the stars stretch out
         scene.planetCamera.GetComponent<Camera>().enabled = true;

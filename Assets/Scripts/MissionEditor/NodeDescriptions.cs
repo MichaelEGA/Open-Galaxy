@@ -440,6 +440,17 @@ public static class NodeDescriptions
            "- If you write 'random' or 'randomise' the game will automatically randomise the ships cargo using preset list \n" +
            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
+        else if (name == "setcontrollock")
+        {
+            description =
+             "Set Control Lock \n " +
+             "\n " +
+             "This function locks the controls on the designated ship which prevents the ship from steering, changing current ship settings (i.e. speed), or firing weapons.  \n" +
+             "\n " +
+             "Extra Information \n" +
+             "- This function will affect any ship whose name contains the designated string. \n" +
+             "- If the location is left as 'none' the node will runn regardless of location. \n";
+        }
         else if (name == "setobjective")
         {
             description =

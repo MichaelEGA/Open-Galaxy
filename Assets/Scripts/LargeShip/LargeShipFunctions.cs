@@ -100,9 +100,15 @@ public static class LargeShipFunctions
     //This gets the AI input
     public static void GetAIInput(LargeShip largeShip)
     {
-        if (largeShip.spinShip == false)
+        if (largeShip.spinShip == false & largeShip.controlLock == false)
         {
             LargeShipAIFunctions.GetAIInput(largeShip);
+        }
+        else if (largeShip.spinShip == false & largeShip.controlLock == true)
+        {
+            SmoothPitchInput(largeShip, 0);
+            SmoothTurnInput(largeShip, 0);
+            SmoothRollInput(largeShip, 0);
         }
         else
         {

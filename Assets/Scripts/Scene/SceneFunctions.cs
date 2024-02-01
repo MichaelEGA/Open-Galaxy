@@ -300,7 +300,7 @@ public static class SceneFunctions
                     while (particleSystemRenderer.lengthScale < 1000)
                     {
                         particleSystemRenderer.lengthScale += 20;
-                        yield return new WaitForSeconds(waitTime);
+                        yield return new WaitForSecondsRealtime(waitTime);
                     }
                 }
             }
@@ -340,7 +340,7 @@ public static class SceneFunctions
                     while (particleSystemRenderer.lengthScale > 1)
                     {
                         particleSystemRenderer.lengthScale -= 20;
-                        yield return new WaitForSeconds(waitTime);
+                        yield return new WaitForSecondsRealtime(waitTime);
                     }
 
                     particleSystemRenderer.renderMode = ParticleSystemRenderMode.Billboard;
@@ -1845,15 +1845,10 @@ public static class SceneFunctions
             scene.tilesSetPool.Clear();
         }
 
-        //if (scene.planet != null)
-        //{
-        //    GameObject.Destroy(scene.planet);
-        //}
-
-        //if (scene.planetPivot != null)
-        //{
-        //    GameObject.Destroy(scene.planetPivot);
-        //}
+        if (scene.planetPivot != null)
+        {
+            GameObject.Destroy(scene.planetPivot);
+        }
     }
 
     //This unloads the starfield

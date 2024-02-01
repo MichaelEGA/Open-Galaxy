@@ -69,7 +69,7 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DeactivateShip(node);
         }
-        else if (node.nodeType == "dialoguebox")
+        else if (node.nodeType == "displaydialoguebox")
         {
             NodeTypes.Draw_DisplayDialogueBox(node);
         }
@@ -148,6 +148,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "setcargo")
         {
             NodeTypes.Draw_SetCargo(node);
+        }
+        else if (node.nodeType == "setcontrollock")
+        {
+            NodeTypes.Draw_SetControlLock(node);
         }
         else if (node.nodeType == "setobjective")
         {

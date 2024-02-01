@@ -72,6 +72,7 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public string laserColor = "red";
 
     [Header("Ship Controls")]
+    public bool controlLock;
     [HideInInspector] public bool getNextTarget;
     [HideInInspector] public bool getNextEnemy;
     [HideInInspector] public bool getClosestEnemy;

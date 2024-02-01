@@ -32,7 +32,6 @@ public static class AvoidCollisionsFunctions
 
                 if (scene.avoidLargeObjectsRunning == false)
                 {
-
                     Task a = new Task(AvoidLargeObjects(scene));
                 }
 

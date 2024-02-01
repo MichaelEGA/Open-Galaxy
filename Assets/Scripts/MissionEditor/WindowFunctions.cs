@@ -87,6 +87,7 @@ public static class WindowFunctions
         buttonList.Add("playmusictrack");
         buttonList.Add("setaioverride");
         buttonList.Add("setcargo");
+        buttonList.Add("setcontrollock");
         buttonList.Add("setobjective");
         buttonList.Add("setdontattacklargeships");
         buttonList.Add("setshipallegiance");

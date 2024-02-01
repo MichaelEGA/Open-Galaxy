@@ -494,6 +494,11 @@ public static class MissionFunctions
             SetCargo(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "setcontrollock")
+        {
+            SetControlLock(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "setobjective")
         {
             SetObjective(missionEvent);
@@ -629,6 +634,8 @@ public static class MissionFunctions
     //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
     public static IEnumerator ChangeLocation(MissionEvent missionEvent)
     {
+        Time.timeScale = 0;
+
         //This gets all the required data from the event node
         float x = missionEvent.x;
         float y = missionEvent.y;
@@ -646,13 +653,15 @@ public static class MissionFunctions
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
 
+        bool controlLock = smallShip.controlLock;
+
         smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
         smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
 
         //This plays the hyperspace entry sound
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace01_entry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
-        yield return new WaitForSeconds(4); //This gives the audio clip time to play
+        yield return new WaitForSecondsRealtime(2); //This gives the audio clip time to play
 
         //This marks the jump time
         float time = Time.unscaledTime;
@@ -707,12 +716,14 @@ public static class MissionFunctions
         Task c = new Task(SceneFunctions.ShrinkStarfield());
         while (c.Running == true) { yield return null; }
 
+        Time.timeScale = 1;
+
         //This makes the stars stretch out
         scene.planetCamera.GetComponent<Camera>().enabled = true;
         scene.mainCamera.GetComponent<Camera>().enabled = true;
 
         //This unlocks the player controls and turns off invincibility on the player ship
-        smallShip.controlLock = false;
+        smallShip.controlLock = controlLock;
         smallShip.invincible = false;
     }
 
@@ -1589,6 +1600,45 @@ public static class MissionFunctions
                             largeShip.cargo = cargo;
                         }
 
+                    }
+                }
+            }
+        }
+    }
+
+    //This turns the control lock on and off
+    public static void SetControlLock(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool isLocked = false;
+
+        if (missionEvent.data2 != "none")
+        {
+            isLocked = bool.Parse(missionEvent.data2);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            smallShip.controlLock = isLocked;
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            largeShip.controlLock = isLocked;
+                        }
                     }
                 }
             }

@@ -81,6 +81,8 @@ public class Scene : MonoBehaviour
         {
             Task a = new Task(TargetingFunctions.AllocateTargets(this));
         }
+
+        Shader.SetGlobalFloat("_unscaledTime", Time.unscaledTime);
     }
 
 }

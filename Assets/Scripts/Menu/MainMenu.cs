@@ -14,7 +14,6 @@ public class MainMenu: MonoBehaviour
     public GameObject[] buttons;
     public GameObject MenuBar;
     public GameObject MenuContent;
-    public GameObject CustomMissionMenu;
     public Text MenuTitle;
     public Text MenuTime;
     public Text menuMessage;
@@ -25,6 +24,14 @@ public class MainMenu: MonoBehaviour
     public AudioSource musicAudioSoure;
     public AudioSource buttonAudioSource;
     public AudioClip buttonHighlight;
+
+    public List<string> campaigns;
+    public List<string> campaignDescriptions;
+    public List<string> mainMissionCampaigns;
+    public List<string> mainMissionNames;
+    public List<string> customMissionCampaigns;
+    public List<string> customMissionNames;
+    public List<Texture2D> campaignImages;
 
     void Start()
     {
@@ -43,7 +50,7 @@ public class MainMenu: MonoBehaviour
         }
 
         //This loads the menu data. You may wish to call this function from another place
-        MainMenuFunctions.LoadMenuData();
+        MainMenuFunctions.LoadMenu();
     }
 
     void Update()

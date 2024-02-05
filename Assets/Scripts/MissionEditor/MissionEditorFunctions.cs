@@ -996,9 +996,14 @@ public static class MissionEditorFunctions
 
         OGSettingsFunctions.SetOGCursor();
 
-        MainMenuFunctions.ReloadCustomMissions();
+        MainMenu mainMenu = MainMenuFunctions.GetMainMenu();
 
-        MainMenuFunctions.PlayBackgroundMusic(true);
+        if (mainMenu != null)
+        {
+            GameObject.Destroy(mainMenu.gameObject);
+        }
+
+        MainMenuFunctions.RunMenuWithoutIntroduction();
 
         if (missionEditor != null)
         {

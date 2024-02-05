@@ -73,7 +73,7 @@ public static class ExitMenuFunctions
                 mainMenu.menu.SetActive(true);
                 CanvasGroup canvasGroup = mainMenu.menu.GetComponent<CanvasGroup>();
                 Task b = new Task(MainMenuFunctions.FadeInCanvas(canvasGroup, 0.5f));
-                MainMenuFunctions.ActivateSubMenu("Missions");
+                MainMenuFunctions.ActivateStartGameMenu();
             }
         }
 

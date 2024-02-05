@@ -17,6 +17,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_CustomNode(node);
         }
+        else if (node.nodeType == "campaigninformation")
+        {
+            NodeTypes.Draw_CampaignInformation(node);
+        }
         else if (node.nodeType == "createlocation")
         {
             NodeTypes.Draw_CreateLocation(node);

@@ -8,7 +8,8 @@ public class ButtonInfo : MonoBehaviour, ISelectHandler, IPointerEnterHandler
 { 
     public Text buttonName; //The button name
     public Text description; //The description of what the button does (if button has one)
-    public float buttonShift; //How far to move before placing the next button so that it doesn't overlap with this one
+    public float buttonShiftDown; //How far to move the button down
+    public float buttonShiftRight; //How far to move the button right
     public bool noSound = false;
 
     private MainMenu mainMenu;

@@ -864,7 +864,6 @@ public static class MissionFunctions
 
         if (audio != "none" & internalAudioFile != "true")
         {
-            Debug.Log("Was run" + " audio was " + audio);
             missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
         }
         else if (audio != "none" & internalAudioFile == "true")

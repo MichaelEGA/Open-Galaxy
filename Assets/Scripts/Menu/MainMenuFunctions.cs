@@ -14,10 +14,10 @@ public static class MainMenuFunctions
         //This changes the cursor from unity's default to the open galaxy cursor
         OGSettingsFunctions.SetOGCursor();
 
-        GameObject background = LoadBackground();
-        GameObject disclaimer = LoadDisclaimer();
-        GameObject title = LoadTitle();
-        GameObject menu = LoadMenu();
+        GameObject background = LoadBackgroundPrefab();
+        GameObject disclaimer = LoadDisclaimerPrefab();
+        GameObject title = LoadTitlePrefab();
+        GameObject menu = LoadMenuPrefab();
 
         //This starts the menu background music
         PlayBackgroundMusic(true);
@@ -87,8 +87,31 @@ public static class MainMenuFunctions
         }
     }
 
+    //This loads the menu sans the disclaimer and title
+    public static void RunMenuWithoutIntroduction()
+    {
+        //This changes the cursor from unity's default to the open galaxy cursor
+        OGSettingsFunctions.SetOGCursor();
+
+        //This instantiates the menu
+        GameObject menu = LoadMenuPrefab();
+
+        //This starts the menu background music
+        PlayBackgroundMusic(true);
+
+        if (menu != null)
+        {
+            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
+
+            if (canvasGroup != null)
+            {
+                Task a = new Task(FadeInCanvas(canvasGroup, 0.5f));
+            }
+        }        
+    }
+
     //This loads the disclaimer
-    public static GameObject LoadDisclaimer()
+    public static GameObject LoadDisclaimerPrefab()
     {      
         GameObject menuPrefab = Resources.Load("Menu/Disclaimer") as GameObject;
         GameObject disclaimer = GameObject.Instantiate(menuPrefab);
@@ -97,7 +120,7 @@ public static class MainMenuFunctions
     }
 
     //This loads the Title Menu
-    public static GameObject LoadTitle()
+    public static GameObject LoadTitlePrefab()
     {
         GameObject menuPrefab = Resources.Load("Menu/Title") as GameObject;
         GameObject title = GameObject.Instantiate(menuPrefab);
@@ -114,7 +137,7 @@ public static class MainMenuFunctions
     }
 
     //This loads the background
-    public static GameObject LoadBackground()
+    public static GameObject LoadBackgroundPrefab()
     {
         GameObject menuPrefab = Resources.Load("Menu/Background") as GameObject;
         GameObject background = GameObject.Instantiate(menuPrefab);
@@ -123,7 +146,7 @@ public static class MainMenuFunctions
     }
 
     //This Loads the main menu
-    public static GameObject LoadMenu()
+    public static GameObject LoadMenuPrefab()
     {
         GameObject menuPrefab = Resources.Load("Menu/Menu") as GameObject;
         GameObject menu = GameObject.Instantiate(menuPrefab);
@@ -133,44 +156,10 @@ public static class MainMenuFunctions
 
     #endregion
 
-    #region menu function dictionary
-
-    //This creates a dictionary of the all the functions the menu can call
-    public static void CreateFunctionDictionary(MainMenu mainMenu)
-    {
-        mainMenu.functions = new Dictionary<string, System.Delegate>();
-
-        //Add your functions here
-        mainMenu.functions.Add("LoadMainMission", new System.Action<string>(LoadMission));
-        mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
-        mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadMissionEditor));
-        mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
-        mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
-        mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
-        mainMenu.functions.Add("SetEditorWindowMode", new System.Action<string>(SetEditorWindowMode));
-        mainMenu.functions.Add("ToggleDebugging", new System.Action<string>(ToggleDebugging));
-        mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
-        mainMenu.functions.Add("ChangePlanetTextureResolution", new System.Action<string>(ChangePlanetTextureResolution));
-        mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
-        mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
-        mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
-        mainMenu.functions.Add("OpenWebAddress", new System.Action<string>(OpenWebAddress));
-    }
-
-    #endregion
-
     #region menu loading functions
 
-    //This grabs all the button prefabs ready to instantiate
-    public static void LoadButtons()
-    {
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
-
-        mainMenu.buttons = Resources.LoadAll<GameObject>("MenuButtons");
-    }
-
-    //This loads json file and instaniates the buttons so the menu is ready to use
-    public static void LoadMenuData()
+    //This runs all the other menu loading functions
+    public static void LoadMenu()
     {
         //This function grabs all the button prefabs ready to instantiate
         LoadButtons();
@@ -181,105 +170,136 @@ public static class MainMenuFunctions
         //This creates the function dictionary
         CreateFunctionDictionary(mainMenu);
 
-        //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load("Data/Files/Menu") as TextAsset;
-        MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
+        //This initiates all lists used by the main menu
+        InitiateLists(mainMenu);
 
-        //This creates the menu lists ready to use
-        List<string> subMenus = new List<string>();
-        mainMenu.SubMenus = new List<GameObject>();
+        //This loads and sorts the campaign data from internal and then external sources
+        LoadInternalCampaignData(mainMenu);
+        LoadExternalCampaignData(mainMenu);
 
-        //This creates a list of all the sub menus
-        foreach (MenuItem menuItem in menuItems.menuData)
+        //This creates sub menus from both the menu data and the campaign data
+        CreateSubMenus(mainMenu);
+
+        //This creates the buttons from the menu data
+        CreateSideMenuButtons(mainMenu);
+        CreateSubMenuButtons(mainMenu);
+
+        //This creates buttons from the campaign data
+        CreateCampaignMenuButtons(mainMenu);
+        CreateCampaignSubMenuButtons(mainMenu);
+
+        //This deactivates all menus and activates only the start menu
+        ActivateStartGameMenu();
+    }
+
+    //This grabs all the button prefabs ready to instantiate
+    public static void LoadButtons()
+    {
+        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+
+        mainMenu.buttons = Resources.LoadAll<GameObject>("MenuButtons");
+    }
+
+    //This initiates all the lists used theb main menu
+    public static void InitiateLists(MainMenu mainMenu)
+    {
+        if (mainMenu.campaigns == null)
         {
-            bool addMenu = true;
-
-            foreach (string menuItem2 in subMenus)
-            {
-                if (menuItem.ParentMenu == menuItem2)
-                {
-                    addMenu = false;
-                }
-            }
-
-            if (addMenu == true & menuItem.ParentMenu != "none")
-            {
-                subMenus.Add(menuItem.ParentMenu);
-            }  
+            mainMenu.campaigns = new List<string>();
         }
 
-        //This adds three extra sub menus just for open galaxy
-        subMenus.Add("Missions");
-        subMenus.Add("Custom Missions");
-
-        //This allows the script to log the first menu created. It will be the first loaded
-        bool firstSubMenuLogged = false;
-
-        //This creates all the sub menus
-        foreach (string tempMenu in subMenus)
+        if (mainMenu.campaignDescriptions == null)
         {
-            if (firstSubMenuLogged == false)
-            {
-                mainMenu.firstMenu = tempMenu;
-                firstSubMenuLogged = true;
-            }
-
-            GameObject subMenu = new GameObject();
-            subMenu.transform.SetParent(mainMenu.MenuContent.transform);
-            mainMenu.SubMenus.Add(subMenu);
-            subMenu.AddComponent<RectTransform>();
-            RectTransform tempRect = subMenu.GetComponent<RectTransform>();
-            tempRect.anchorMin = new Vector2(0, 1);
-            tempRect.anchorMax = new Vector2(0, 1);
-            tempRect.pivot = new Vector2(0, 1);
-            tempRect.pivot = new Vector2(0, 1);
-            subMenu.transform.localPosition = new Vector3(0, 0, 0);
-            subMenu.transform.localScale = new Vector3(1, 1, 1);
-            subMenu.name = tempMenu + "_Settings";
-
-            //This stores the custom mission menu for later access
-            if (subMenu.name == "Custom Missions_Settings")
-            {
-                mainMenu.CustomMissionMenu = subMenu;
-            }
+            mainMenu.campaignDescriptions = new List<string>();
         }
 
-        //This adds the menu buttons to the left bar
-        float buttonDrop = 20;
-
-        foreach (MenuItem menuItem in menuItems.menuData)
-        {            
-            if (menuItem.ParentMenu == "none")
-            {
-                buttonDrop = CreateParentMenuButton(mainMenu, buttonDrop, menuItem.Name, menuItem.Type, menuItem.Function, menuItem.Variable);
-            }
-        }
-
-        //This adds the actual menu content
-        foreach (GameObject subMenu in mainMenu.SubMenus)
+        if (mainMenu.campaignImages == null)
         {
-            buttonDrop = 20;
-
-            foreach (MenuItem menuItem in menuItems.menuData)
-            {
-                if (menuItem.ParentMenu + "_Settings" == subMenu.name)
-                {
-                    buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, menuItem.Name, menuItem.Type, menuItem.Function, menuItem.Description, menuItem.Variable);
-                }
-            }
-
-            //This sets the size of the sub menu according to the how many buttons have been generated
-            RectTransform rt = subMenu.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(0, buttonDrop);
+            mainMenu.campaignImages = new List<Texture2D>();
         }
 
-        //This adds all the missions buttons for internal missions
+        if (mainMenu.mainMissionCampaigns == null)
+        {
+            mainMenu.mainMissionCampaigns = new List<string>();
+        }
+
+        if (mainMenu.mainMissionNames == null)
+        {
+            mainMenu.mainMissionNames = new List<string>();
+        }
+
+        if (mainMenu.customMissionCampaigns == null)
+        {
+            mainMenu.customMissionCampaigns = new List<string>();
+        }
+
+        if (mainMenu.customMissionNames == null)
+        {
+            mainMenu.customMissionNames = new List<string>();
+        }
+
+    }
+
+    //This loads all the interal campaign data
+    public static void LoadInternalCampaignData(MainMenu mainMenu)
+    {
+        //This loads the mission data
         Object[] mainMissions = Resources.LoadAll("Data/Files/Missions_Main", typeof(TextAsset));
-        CreateMissionButtons(mainMenu, mainMissions, "Missions_Settings", "LoadMainMission");
 
-        //This adds all the missions buttons for external missions
+        //This loads the image data
+
+        Object[] mainMissionImages = Resources.LoadAll("Data/Files/Missions_Main", typeof(Texture2D));
+
+        foreach (Object campaignImage in mainMissionImages)
+        {
+            mainMenu.campaignImages.Add((Texture2D)campaignImage);
+        }
+
+        //This gets all the main campaigns
+        foreach (Object mission in mainMissions)
+        {
+            TextAsset missionString = (TextAsset)mission;
+
+            Mission tempMission = JsonUtility.FromJson<Mission>(missionString.text);
+
+            string campaignName = "none";
+
+            foreach (MissionEvent missionEvent in tempMission.missionEventData)
+            {
+                if (missionEvent.eventType == "campaigninformation")
+                {
+                    bool isPresent = false;
+
+                    campaignName = missionEvent.data1;
+
+                    foreach (string campaign in mainMenu.campaigns)
+                    {
+                        if (campaign == missionEvent.data1)
+                        {
+                            isPresent = true;
+                        }
+                    }
+
+                    if (isPresent == false)
+                    {
+                        mainMenu.campaigns.Add(missionEvent.data1);
+                        mainMenu.campaignDescriptions.Add(missionEvent.data2);
+                    }
+                }
+            }
+
+            mainMenu.mainMissionNames.Add(mission.name);
+            mainMenu.mainMissionCampaigns.Add(campaignName);
+        }
+    }
+
+    //This loads all the external campaign data
+    public static void LoadExternalCampaignData(MainMenu mainMenu)
+    {
+        //This gets the external folder
         var info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
 
+        //This loads the mission data
         if (info.Exists == false)
         {
             Directory.CreateDirectory(Application.persistentDataPath + "/Custom Missions/");
@@ -303,17 +323,260 @@ public static class MainMenuFunctions
         }
 
         Object[] customMissions = customMissionsList.ToArray();
-        CreateMissionButtons(mainMenu, customMissions, "Custom Missions_Settings", "LoadCustomMission");
 
-        //This turns off all the sub menus
-        foreach (GameObject subMenu in mainMenu.SubMenus)
+        //This loads the image data
+        if (mainMenu.campaignImages == null)
         {
-            subMenu.SetActive(false);
+            mainMenu.campaignImages = new List<Texture2D>();
         }
 
-        //This loads the first menu created
-        ActivateSubMenu(mainMenu.firstMenu);
+        if (info.Exists == true)
+        {
+            var fileInfo = info.GetFiles("*.jpg");
 
+            foreach (FileInfo file in fileInfo)
+            {
+                string path = Application.persistentDataPath + "/Custom Missions/" + file.Name;
+                byte[] bytes = File.ReadAllBytes(path);
+                Texture2D loadTexture = new Texture2D(1, 1); //mock size 1x1
+                loadTexture.LoadImage(bytes);
+                loadTexture.name = System.IO.Path.GetFileNameWithoutExtension(path);
+                mainMenu.campaignImages.Add(loadTexture);
+            }
+        }
+
+        foreach (Object mission in customMissions)
+        {
+            TextAsset missionString = (TextAsset)mission;
+
+            Mission tempMission = JsonUtility.FromJson<Mission>(missionString.text);
+
+            string campaignName = "none";
+
+            foreach (MissionEvent missionEvent in tempMission.missionEventData)
+            {
+                if (missionEvent.eventType == "campaigninformation")
+                {
+                    bool isPresent = false;
+
+                    campaignName = missionEvent.data1;
+
+                    foreach (string campaign in mainMenu.campaigns)
+                    {
+                        if (campaign == missionEvent.data1)
+                        {
+                            isPresent = true;
+                        }
+                    }
+
+                    if (isPresent == false)
+                    {
+                        mainMenu.campaigns.Add(missionEvent.data1);
+                        mainMenu.campaignDescriptions.Add(missionEvent.data2);
+                    }
+                }
+            }
+
+            mainMenu.customMissionNames.Add(mission.name);
+            mainMenu.customMissionCampaigns.Add(campaignName);
+        }
+    }
+
+    //This creates a dictionary of the all the functions the menu can call
+    public static void CreateFunctionDictionary(MainMenu mainMenu)
+    {
+        mainMenu.functions = new Dictionary<string, System.Delegate>();
+
+        //Add your functions here
+        mainMenu.functions.Add("LoadMainMission", new System.Action<string>(LoadMission));
+        mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
+        mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadMissionEditor));
+        mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
+        mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
+        mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
+        mainMenu.functions.Add("SetEditorWindowMode", new System.Action<string>(SetEditorWindowMode));
+        mainMenu.functions.Add("ToggleDebugging", new System.Action<string>(ToggleDebugging));
+        mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
+        mainMenu.functions.Add("ChangePlanetTextureResolution", new System.Action<string>(ChangePlanetTextureResolution));
+        mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
+        mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
+        mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
+        mainMenu.functions.Add("OpenWebAddress", new System.Action<string>(OpenWebAddress));
+    }
+
+    //This creates all the sub menus of the menu
+    public static void CreateSubMenus(MainMenu mainMenu)
+    {
+        //This loads all the information for the menu from the Json file
+        TextAsset menuItemsFile = Resources.Load("Data/Files/Menu") as TextAsset;
+        MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
+
+        //This creates the menu lists ready to use
+        List<string> subMenus = new List<string>();
+        mainMenu.SubMenus = new List<GameObject>();
+
+        //This creates a list of all the sub menus from the menu data
+        foreach (MenuItem menuItem in menuItems.menuData)
+        {
+            bool addMenu = true;
+
+            foreach (string menuItem2 in subMenus)
+            {
+                if (menuItem.ParentMenu == menuItem2)
+                {
+                    addMenu = false;
+                }
+            }
+
+            if (addMenu == true & menuItem.ParentMenu != "none")
+            {
+                subMenus.Add(menuItem.ParentMenu);
+            }
+        }
+
+        //This manually creates the blank start game menu
+        subMenus.Add("Start Game");
+
+        //This creates a list of submenus from the campaign data
+        foreach (string campaign in mainMenu.campaigns)
+        {
+            subMenus.Add(campaign);
+        }
+
+        //This creates all the sub menus
+        foreach (string tempMenu in subMenus)
+        {
+            GameObject subMenu = new GameObject();
+            subMenu.transform.SetParent(mainMenu.MenuContent.transform);
+            mainMenu.SubMenus.Add(subMenu);
+            subMenu.AddComponent<RectTransform>();
+            RectTransform tempRect = subMenu.GetComponent<RectTransform>();
+            tempRect.anchorMin = new Vector2(0, 1);
+            tempRect.anchorMax = new Vector2(0, 1);
+            tempRect.pivot = new Vector2(0, 1);
+            tempRect.pivot = new Vector2(0, 1);
+            subMenu.transform.localPosition = new Vector3(0, 0, 0);
+            subMenu.transform.localScale = new Vector3(1, 1, 1);
+            subMenu.name = tempMenu + "_Settings";
+        }
+    }
+
+    //This creates all theb side menus from menu data
+    public static void CreateSideMenuButtons(MainMenu mainMenu)
+    {
+        //This loads all the information for the menu from the Json file
+        TextAsset menuItemsFile = Resources.Load("Data/Files/Menu") as TextAsset;
+        MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
+
+        //This adds the menu buttons to the left bar
+        float buttonDrop = 20;
+
+        foreach (MenuItem menuItem in menuItems.menuData)
+        {
+            if (menuItem.ParentMenu == "none")
+            {
+                buttonDrop = CreateParentMenuButton(mainMenu, buttonDrop, menuItem.Name, menuItem.Type, menuItem.Function, menuItem.Variable);
+            }
+        }
+    }
+
+    //This creates all the sub menus from menu data
+    public static void CreateSubMenuButtons(MainMenu mainMenu)
+    {
+        //This loads all the information for the menu from the Json file
+        TextAsset menuItemsFile = Resources.Load("Data/Files/Menu") as TextAsset;
+        MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
+
+        //This adds the actual menu content
+        foreach (GameObject subMenu in mainMenu.SubMenus)
+        {
+            float buttonDrop = 20;
+
+            foreach (MenuItem menuItem in menuItems.menuData)
+            {
+                if (menuItem.ParentMenu + "_Settings" == subMenu.name)
+                {
+                    buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, menuItem.Name, menuItem.Type, menuItem.Function, menuItem.Description, menuItem.Variable);
+                }
+            }
+
+            //This sets the size of the sub menu according to the how many buttons have been generated
+            RectTransform rt = subMenu.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(0, buttonDrop);
+        }
+    }
+
+    //This creates all the campaign menu buttons from campaign data
+    public static void CreateCampaignMenuButtons(MainMenu mainMenu)
+    {
+        foreach (GameObject subMenu in mainMenu.SubMenus)
+        {
+            float buttonDrop = 20;
+            float buttonRight = 25;
+
+            if ("Start Game_Settings" == subMenu.name)
+            {
+                foreach (string campaign in mainMenu.campaigns)
+                {
+                    Texture2D campaignImage = null;
+
+                    foreach (Texture2D texture in mainMenu.campaignImages)
+                    {
+                        if (texture.name == campaign)
+                        {
+                            campaignImage = texture;
+                        }
+                    }
+
+                    CreationCampaignButton(mainMenu, subMenu, buttonDrop, buttonRight, campaign, "GameButton01", "ActivateSubMenu", "none", campaign, campaignImage);
+
+                    buttonRight += 160;
+
+                    if (buttonRight > 505)
+                    {
+                        buttonRight = 25;
+                        buttonDrop += 100;
+                    }
+                }
+
+                //This sets the size of the sub menu according to the how many buttons have been generated
+                RectTransform rt = subMenu.GetComponent<RectTransform>();
+                rt.sizeDelta = new Vector2(0, buttonDrop);
+            }
+        }
+    }
+
+    //This creates all the mission menu buttons from campaign data
+    public static void CreateCampaignSubMenuButtons(MainMenu mainMenu)
+    {
+        int i2 = 0;
+
+        foreach (string campaign in mainMenu.campaigns)
+        {
+            List<string> missions = new List<string>();
+            List<string> functions = new List<string>();
+
+            for (int i = 0; i < mainMenu.mainMissionCampaigns.Count; i++)
+            {
+                if (mainMenu.mainMissionCampaigns[i] == campaign)
+                {
+                    missions.Add(mainMenu.mainMissionNames[i]);
+                    functions.Add("LoadMainMission");
+                }
+            }
+
+            for (int i = 0; i < mainMenu.customMissionCampaigns.Count; i++)
+            {
+                if (mainMenu.customMissionCampaigns[i] == campaign)
+                {
+                    missions.Add(mainMenu.customMissionNames[i]);
+                    functions.Add("LoadCustomMission");
+                }
+            }
+
+            CreateMissionButtons(mainMenu, missions.ToArray(), campaign + "_Settings", functions.ToArray(), campaign, mainMenu.campaignDescriptions[i2]);
+            i2++;
+        }
     }
 
     //This creates parent menu buttons on the left hand side
@@ -355,7 +618,7 @@ public static class MainMenuFunctions
 
             button.name = name;
 
-            buttonDrop = buttonDrop + button.GetComponent<ButtonInfo>().buttonShift;
+            buttonDrop = buttonDrop + button.GetComponent<ButtonInfo>().buttonShiftDown;
 
         }
 
@@ -401,7 +664,7 @@ public static class MainMenuFunctions
 
         if (button.GetComponent<ButtonInfo>() != null)
         {
-            buttonDrop = buttonDrop + button.GetComponent<ButtonInfo>().buttonShift;
+            buttonDrop = buttonDrop + button.GetComponent<ButtonInfo>().buttonShiftDown;
         }
         else
         {
@@ -411,8 +674,51 @@ public static class MainMenuFunctions
         return buttonDrop;
     }
 
+    //This creates a sub menu button
+    public static void CreationCampaignButton(MainMenu mainMenu, GameObject subMenu, float buttonDrop, float buttonRight, string buttonName, string buttonType, string functionName, string buttonDescription = "", string variable = "none", Texture2D campaignImage = null)
+    {
+        GameObject button = null;
+
+        foreach (GameObject tempButton in mainMenu.buttons)
+        {
+            if (tempButton.name == buttonType)
+            {
+                button = GameObject.Instantiate<GameObject>(tempButton);
+            }
+        }
+
+        button.transform.SetParent(subMenu.transform);
+        button.GetComponent<ButtonInfo>().buttonName.text = buttonName;
+
+        if (button.GetComponent<ButtonInfo>().description != null)
+        {
+            button.GetComponent<ButtonInfo>().description.text = buttonDescription;
+        }
+
+        button.transform.localPosition = new Vector3(buttonRight, 0, 0);
+        button.GetComponent<RectTransform>().SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, buttonDrop, 102);
+        button.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+
+        if (campaignImage != null)
+        {
+            button.GetComponentInChildren<RawImage>().texture = campaignImage;
+        }
+
+        if (button.GetComponent<Button>() != null)
+        {
+            if (variable == "none")
+            {
+                button.GetComponent<Button>().onClick.AddListener(() => mainMenu.functions[functionName].DynamicInvoke());
+            }
+            else
+            {
+                button.GetComponent<Button>().onClick.AddListener(() => mainMenu.functions[functionName].DynamicInvoke(variable));
+            }
+        }
+    }
+
     //This adds a button for each mission avaible in the folder
-    public static void CreateMissionButtons(MainMenu mainMenu, Object[] missions, string subMenuName, string function)
+    public static void CreateMissionButtons(MainMenu mainMenu, string[] missions, string subMenuName, string[] functions, string campaignName, string campaignDescription)
     {
         foreach (GameObject subMenu in mainMenu.SubMenus)
         {
@@ -420,12 +726,17 @@ public static class MainMenuFunctions
             {
                 float buttonDrop = 20;
 
-                buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, "Back to Start Game", "ContentButton02", "ActivateSubMenu", "", "Start Game");
+                buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, campaignName, "GameButton02", "ActivateSubMenu", campaignDescription, "Start Game");
 
-                foreach (Object mission in missions)
+                int i = 0;
+
+                foreach (string mission in missions)
                 {
-                    buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, mission.name, "ContentButton02", function, "", mission.name);
+                    buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, mission, "ContentButton02", functions[i], "", mission);
+                    i++;
                 }
+
+                buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, "Back to Start Game", "ContentButton02", "ActivateSubMenu", "", "Start Game");
 
                 //This sets the size of the sub menu according to the how many buttons have been generated
                 RectTransform rt = subMenu.GetComponent<RectTransform>();
@@ -434,56 +745,29 @@ public static class MainMenuFunctions
         }
     }
 
-    //This reloads the custom missions
-    public static void ReloadCustomMissions()
-    {
-        //This gets rid of the old custom menu buttons
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
-
-        Transform[] buttons = GameObjectUtils.GetAllChildTransforms(mainMenu.CustomMissionMenu.transform);
-
-        foreach (Transform button in buttons)
-        {
-            GameObject.Destroy(button.gameObject);
-        }
-
-        //This generates new custom mission buttons
-        var info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
-
-        if (info.Exists == false)
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + "/Custom Missions/");
-            info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
-        }
-
-        List<TextAsset> customMissionsList = new List<TextAsset>();
-
-        if (info.Exists == true)
-        {
-            var fileInfo = info.GetFiles("*.json");
-
-            foreach (FileInfo file in fileInfo)
-            {
-                string path = Application.persistentDataPath + "/Custom Missions/" + file.Name;
-                string missionDataString = File.ReadAllText(path);
-                TextAsset missionDataTextAsset = new TextAsset(missionDataString);
-                missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
-                customMissionsList.Add(missionDataTextAsset);
-            }
-        }
-
-        Object[] customMissions = customMissionsList.ToArray();
-        CreateMissionButtons(mainMenu, customMissions, "Custom Missions_Settings", "LoadCustomMission");
-    }
-
     #endregion
 
     #region navigation functions
 
+    //This activates the start game menu which displays all the games campaigns
+    public static void ActivateStartGameMenu()
+    {
+        MainMenu mainMenu = GetMainMenu();
+
+        //This turns off all the sub menus
+        foreach (GameObject subMenu in mainMenu.SubMenus)
+        {
+            subMenu.SetActive(false);
+        }
+
+        //This loads the first menu created
+        ActivateSubMenu("Start Game");
+    }
+
     //This activate a sub menu
     public static void ActivateSubMenu(string menuName)
     {
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+        MainMenu mainMenu = GetMainMenu();
 
         int i = 1;
 
@@ -554,16 +838,16 @@ public static class MainMenuFunctions
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
     {
         string[] messages = new string[10];
-        messages[0] = "Welcome to Open Galaxy. Version 1.0 brings 6 new missions and a bunch of key updates.";
+        messages[0] = "Welcome to Open Galaxy. Version 1.0.5 brings new missions and an updated menu.";
         messages[1] = "Open Galaxy's aim is to be a platform for X-Wing and Tie Fighter style custom missions.";
         messages[2] = "Open Galaxy has an inbuilt and easy to use mission editor. Why not try it out?";
         messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";
         messages[4] = "Open Galaxy generates a real Star Wars galaxy with accurately positioned stars and planets.";
         messages[5] = "You can lower the quality of the planet heightmap for faster loadtimes.";
-        messages[6] = "Open Galaxy is designed for both a controller and keyboard and mouse.";
-        messages[7] = "Open Galaxy is possible through the generous contribution of others. Check out the credits.";
+        messages[6] = "You can play Open Galaxy with a controller or with Keyboard and Mouse.";
+        messages[7] = "Check out the credits to see who made Open Galaxy possible.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
-        messages[9] = "Post 1.0 plans for Open Galaxy include terrain, ion cannons and a lot more missions";
+        messages[9] = "Post 2.0 plans for Open Galaxy formation flying, ion cannons and a lot more missions";
         Random.InitState(System.DateTime.Now.Millisecond);
         int randomMessageNo = Random.Range(0, 9);
         titleScreenMessageBox.text = messages[randomMessageNo];
@@ -1017,6 +1301,13 @@ public static class MainMenuFunctions
         }
 
         canvasGroup.gameObject.SetActive(false);
+    }
+
+    //This returns the main menu
+    public static MainMenu GetMainMenu()
+    {
+        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+        return mainMenu;
     }
 
     #endregion

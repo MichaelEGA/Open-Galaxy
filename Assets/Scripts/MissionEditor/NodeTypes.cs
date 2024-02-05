@@ -6,30 +6,6 @@ public static class NodeTypes
 {
     #region generic nodes
 
-    public static void Draw_TestNode(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "Test Node", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        NodeFunctions.DrawInputField(node, "Event Type", "none", 7, 5, -25, 12.5f, 90, 5f);
-
-        List<string> options = new List<string>();
-        options.Add("x-wing");
-        options.Add("y-wing");
-        options.Add("a-wing");
-
-        NodeFunctions.DrawDropDownMenu(node, options, "Ship Type", "none", 7, 5, -40, 12.5f, 90, 5f);
-
-        NodeFunctions.DrawNodeLink(node, 87.5f, -62.5f, 10, 10, "male");
-    }
-
     public static void Draw_NodeNotAvaible(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -178,6 +154,39 @@ public static class NodeTypes
         node.nextEvent4 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 4", 7, 5);
 
         drop -= 15 + 5;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_CampaignInformation(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "campaigninformation", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "campaigninformation", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "Campaign", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        float multiplySize = 5;
+
+        node.data2 = NodeFunctions.DrawInputFieldLarge(node, "Information", "none", 7, 5, drop, 12.5f * multiplySize, 90);
+
+        drop -= 15 * multiplySize;
+
+        node.data3 = NodeFunctions.DrawInputField(node, "Image File", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 30;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }

@@ -54,6 +54,7 @@ public static class WindowFunctions
         List<string> buttonList = new List<string>();
 
         buttonList.Add("custom_node");
+        buttonList.Add("campaigninformation");
         buttonList.Add("createlocation");
         buttonList.Add("preload_loadasteroids");
         buttonList.Add("preload_loadplanet");

@@ -15,6 +15,20 @@ public static class NodeDescriptions
             "\n " +
             "Use this node to access a custom mission function that has no node. \n";
         }
+        else if (name == "campaigninformation")
+        {
+            description =
+            "Campaign Information \n " +
+            "\n " +
+            "This is used to define the campaign information that will appear in the menu before the mission is loaded. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- The mission will be included in a list of missions which share the same campaign name. \n" +
+            "- This missions will be organised by their file names alphabetically and numerically \n" +
+            "- This node does not need to be linked to any others. OG will automatically search for and run this node when making the game's menu. \n" +
+            "- The campaign information should be the same for each mission, or there should be one mission with the information and the rest should says 'none' or blank. \n" +
+            "- The image file is the image associated with the campaign. Make sure that this is either the same for all missions, or there is one mission with the file name and the rest say 'none' or a left blank. The image should be in the same folder as the custom mission files. \n";
+        }
         else if (name == "createlocation")
         {
             description =

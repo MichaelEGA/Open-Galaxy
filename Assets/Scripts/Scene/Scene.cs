@@ -53,6 +53,11 @@ public class Scene : MonoBehaviour
     [HideInInspector] public GameObject planet;
     [HideInInspector] public GameObject planetPivot;
 
+    [Header("Skybox")]
+    public GameObject terrain;
+    public GameObject viewDistancePlane;
+    public float fogDistanceFromCenter = 15000;
+
     [Header("Cameras")]
     [HideInInspector] public GameObject mainCamera;
     [HideInInspector] public GameObject planetCamera;
@@ -74,6 +79,7 @@ public class Scene : MonoBehaviour
     {
         SceneFunctions.RecenterScene(mainShip);
         SceneFunctions.RotateStarfieldAndPlanetCamera(this);
+        SceneFunctions.DynamicFogWall(this);
         AvoidCollisionsFunctions.AvoidCollision(this);
         SceneFunctions.TakeScreeenShot(this);
 

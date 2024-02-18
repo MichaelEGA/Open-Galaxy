@@ -6,6 +6,8 @@ using UnityEngine.Rendering.Universal;
 using LibNoise;
 using LibNoise.Generator;
 using LibNoise.Operator;
+using UnityEngine.TerrainTools;
+using UnityEngine.TerrainUtils;
 using UnityEngine.InputSystem;
 
 
@@ -38,7 +40,7 @@ public static class SceneFunctions
         Scene scene = GetScene();
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
-        Object[] objectPrefabs = Resources.LoadAll("ObjectPrefabs", typeof(GameObject));
+        Object[] objectPrefabs = Resources.LoadAll("ObjectPrefabs/ot_ships/", typeof(GameObject));
 
         if (objectPrefabs != null)
         {
@@ -140,7 +142,7 @@ public static class SceneFunctions
             mainCamera = mainCameraGO.AddComponent<Camera>();
             mainCamera.cullingMask = LayerMask.GetMask("Default", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
             mainCamera.nearClipPlane = 0.01f;
-            mainCamera.farClipPlane = 30000;
+            mainCamera.farClipPlane = 90000;
             var mainCameraData = mainCamera.GetUniversalAdditionalCameraData();
             mainCameraData.renderType = CameraRenderType.Overlay;
             mainCameraData.renderPostProcessing = true;
@@ -815,6 +817,90 @@ public static class SceneFunctions
 
         yield return null;
 
+    }
+
+    #endregion
+
+    #region terrain loading
+
+    public static void LoadTerrain(string terrainName, string terrainMaterialName, float terrainPosition)
+    {
+        Scene scene = GetScene();
+
+        //This loads the terrain gameobject
+        GameObject terrain = null;
+
+        Object[] terrainPrefabs = Resources.LoadAll("TerrainPrefabs", typeof(GameObject));
+
+        foreach (Object tempTerrain in terrainPrefabs)
+        {
+            if (terrainName == tempTerrain.name)
+            {
+                terrain = GameObject.Instantiate((GameObject)tempTerrain);
+            }
+        }
+
+        if (terrain != null & scene != null)
+        {
+            Rigidbody terrainRigidbody = terrain.AddComponent<Rigidbody>();
+            terrainRigidbody.isKinematic = true;
+            terrain.AddComponent<MeshCollider>();
+            terrain.layer = 7;
+            terrain.transform.SetParent(scene.transform);
+            terrain.transform.localPosition = new Vector3(0, terrainPosition, 0);
+            scene.terrain = terrain;
+        }
+
+        //This loads the view distance plane
+        GameObject plane = null;
+
+        foreach (Object tempTerrain in terrainPrefabs)
+        {
+            if (tempTerrain.name == "Plane")
+            {
+                plane = GameObject.Instantiate((GameObject)tempTerrain);
+            }
+        }
+
+        if (plane != null)
+        {
+            plane.transform.SetParent(scene.transform);
+            plane.transform.localPosition = new Vector3(0, -15000, 0);
+            scene.viewDistancePlane = plane;
+        }
+
+        //This applies the material
+        Object[] terrainMaterials = Resources.LoadAll("TerrainMaterials", typeof(Material));
+
+        Material terrainMaterial = null;
+
+        foreach (Object tempMaterial in terrainMaterials)
+        {
+            if (terrainMaterialName == tempMaterial.name)
+            {
+                terrainMaterial = (Material)tempMaterial;
+            }
+        }
+
+        if (terrain != null & terrainMaterial != null)
+        {
+            terrain.GetComponent<Renderer>().material = terrainMaterial;
+        }
+    }
+
+    public static void UnloadTerrain()
+    {
+        Scene scene = GetScene();
+
+        if(scene.terrain != null)
+        {
+            GameObject.Destroy(scene.terrain);
+        }
+
+        if (scene.viewDistancePlane != null)
+        {
+            GameObject.Destroy(scene.viewDistancePlane);
+        }
     }
 
     #endregion
@@ -1637,6 +1723,35 @@ public static class SceneFunctions
             starfield.layer = LayerMask.NameToLayer("starfield");
         }
     }
+    
+    //Creates a circular wall of fog at the set radius from the center point
+    public static void DynamicFogWall(Scene scene)
+    {
+        if (scene.mainCamera != null)
+        {
+            Vector3 relativePosition = scene.transform.position - scene.mainCamera.transform.position;
+
+            float forward = Vector3.Dot(scene.mainCamera.transform.forward, relativePosition.normalized);
+
+            float fogDistance = scene.fogDistanceFromCenter;
+            float endPoint = 0;
+
+            float distance = Vector3.Distance(scene.transform.position, scene.mainCamera.transform.position);
+
+            if (forward < 0)
+            {            
+                
+                endPoint = fogDistance - distance;
+            }
+            else
+            {
+                endPoint = fogDistance + (fogDistance - (fogDistance - distance));
+            }
+
+            RenderSettings.fogEndDistance = endPoint;
+            RenderSettings.fogStartDistance = endPoint - 500;
+        }
+    }
 
     #endregion
 
@@ -1690,6 +1805,7 @@ public static class SceneFunctions
         if (scene != null)
         {
             AvoidCollisionsFunctions.StopAvoidCollision();
+            UnloadTerrain();
             yield return null;
             ClearScene(scene);
             GameObject.Destroy(scene.gameObject);
@@ -1801,6 +1917,8 @@ public static class SceneFunctions
     public static void ClearLocation()
     {
         Scene scene = GetScene();
+
+        UnloadTerrain();
 
         if (scene.objectPool != null)
         {

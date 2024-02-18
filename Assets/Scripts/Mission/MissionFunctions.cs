@@ -63,8 +63,10 @@ public static class MissionFunctions
             yield return null;
         }
 
-        //This sets the skybox to the default space
+        //This sets the skybox to the default space and view distance
         SceneFunctions.SetSkybox("space");
+        RenderSettings.fogEndDistance = 40000;
+        RenderSettings.fogStartDistance = 30000;
 
         //This finds and sets the first location
         MissionEvent firstLocationNode = FindFirstLocationNode(mission);
@@ -203,6 +205,13 @@ public static class MissionFunctions
                 Task a = new Task(LoadPlanet());
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
+            }
+            else if (missionEvent.eventType == "preload_loadterrain" & missionEvent.conditionLocation == location)
+            {
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain...", Time.unscaledTime - time);
+                Task a = new Task(LoadTerrain(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
@@ -1511,6 +1520,18 @@ public static class MissionFunctions
         while (c.Running == true) { yield return null; }
     }
 
+    //This loads the terrain
+    public static IEnumerator LoadTerrain(MissionEvent missionEvent)
+    {
+        string terrainName = missionEvent.data1;
+        string terrainMaterialName = missionEvent.data2;
+        float terrainPosition = missionEvent.y;
+
+        SceneFunctions.LoadTerrain(terrainName, terrainMaterialName, terrainPosition);
+
+        yield return null;
+    }
+
     //This changes the type of music that is playing
     public static void PlayMusicTrack(MissionEvent missionEvent)
     {
@@ -1890,6 +1911,17 @@ public static class MissionFunctions
     public static void SetSkyBox(MissionEvent missionEvent)
     {
         SceneFunctions.SetSkybox(missionEvent.data1);
+
+        if (missionEvent.data1 == "sky")
+        {
+            RenderSettings.fogEndDistance = 10000;
+            RenderSettings.fogStartDistance = 5000;
+        }
+        else
+        {
+            RenderSettings.fogEndDistance = 40000;
+            RenderSettings.fogStartDistance = 30000;
+        }
     }
 
     //This tells a ship or ships to move toward a waypoint by position its waypoint and setting its ai override mode

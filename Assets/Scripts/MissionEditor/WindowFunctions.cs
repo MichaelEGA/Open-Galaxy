@@ -58,6 +58,7 @@ public static class WindowFunctions
         buttonList.Add("createlocation");
         buttonList.Add("preload_loadasteroids");
         buttonList.Add("preload_loadplanet");
+        buttonList.Add("preload_loadterrain");
         buttonList.Add("preload_loadmultipleshipsonground");
         buttonList.Add("preload_loadsingleship");
         buttonList.Add("preload_loadmultipleships");

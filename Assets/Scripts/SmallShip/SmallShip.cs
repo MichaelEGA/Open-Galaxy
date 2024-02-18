@@ -223,7 +223,6 @@ public class SmallShip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //Input functions
         SmallShipFunctions.GetAIInput(this);
         SmallShipFunctions.GetKeyboardAndMouseInput(this);

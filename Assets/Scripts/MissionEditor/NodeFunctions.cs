@@ -33,6 +33,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadPlanet(node);
         }
+        else if (node.nodeType == "preload_loadterrain")
+        {
+            NodeTypes.Draw_PreLoad_LoadTerrain(node);
+        }
         else if (node.nodeType == "preload_loadmultipleshipsonground")
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShipsOnGround(node);

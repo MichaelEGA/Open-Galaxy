@@ -128,6 +128,10 @@ public static class OGSettingsFunctions
         {
             settings.cockpitAssetsAddress = "CockpitPrefabs/gc_cockpits/";
         }
+        else if (type == "additionalassets")
+        {
+            settings.cockpitAssetsAddress = "CockpitPrefabs/ad_cockpits/";
+        }
 
         CheckSettingsData();
 
@@ -141,7 +145,7 @@ public static class OGSettingsFunctions
 
         if (settings != null)
         {
-            if (settings.cockpitAssetsAddress != "CockpitPrefabs/fs_cockpits/" & settings.cockpitAssetsAddress != "CockpitPrefabs/gc_cockpits/")
+            if (settings.cockpitAssetsAddress != "CockpitPrefabs/fs_cockpits/" & settings.cockpitAssetsAddress != "CockpitPrefabs/gc_cockpits/" & settings.cockpitAssetsAddress != "CockpitPrefabs/ad_cockpits/")
             {
                 settings.cockpitAssetsAddress = "CockpitPrefabs/fs_cockpits/";
             }

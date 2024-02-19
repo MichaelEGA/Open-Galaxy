@@ -2726,9 +2726,11 @@ public static class NodeTypes
         shipList.Add("ywing");
         shipList.Add("awing");
         shipList.Add("n1starfighter");
+        shipList.Add("snowspeeder");
         shipList.Add("dx9shuttle");
         shipList.Add("lambdashuttle");
         shipList.Add("z95headhunter");
+        shipList.Add("probedroid");
         shipList.Add("escapepod");
         shipList.Add("bulkfreighter");
         shipList.Add("container");

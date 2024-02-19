@@ -296,50 +296,41 @@ public static class TorpedoFunctions
 
             if (torpedoType != null)
             {
+                torpedo = SceneFunctions.InstantiateShipPrefab(torpedoType.prefab);
+                torpedo.name = torpedoType.name;
+                torpedo.layer = smallShip.gameObject.layer;
+                GameObjectUtils.SetLayerAllChildren(torpedo.transform, 25);
 
-                foreach (GameObject objectPrefab in smallShip.scene.objectPrefabPool)
+                torpedoScript = torpedo.AddComponent<Torpedo>();
+                torpedoScript.type = torpedoType.name;
+
+                torpedoScript.pitchSpeed = (120 / 100f) * torpedoType.maneuverabilityRating;
+                torpedoScript.turnSpeed = (100 / 100f) * torpedoType.maneuverabilityRating;
+                torpedoScript.rollSpeed = (160 / 100f) * torpedoType.maneuverabilityRating;
+                torpedoScript.thrustSpeed = torpedoType.speedRating;
+                torpedoScript.damagePower = torpedoType.damageRating;
+                torpedoScript.explosionAudio = torpedoType.explosionAudio;
+                torpedoScript.launchAudio = torpedoType.launchAudio;
+                torpedoScript.audioManager = smallShip.audioManager;
+                AttachParticleTrail(smallShip, torpedoScript, torpedoType.trailColor);
+
+                if (smallShip.torpedoLockedOn == true)
                 {
-                    if (objectPrefab.name == torpedoType.prefab)
-                    {
-                        torpedo = GameObject.Instantiate(objectPrefab) as GameObject;
-                        torpedo.name = torpedoType.name;
-                        torpedo.layer = smallShip.gameObject.layer;
-                        GameObjectUtils.SetLayerAllChildren(torpedo.transform, 25);
-
-                        torpedoScript = torpedo.AddComponent<Torpedo>();
-                        torpedoScript.type = torpedoType.name;
-
-                        torpedoScript.pitchSpeed = (120 / 100f) * torpedoType.maneuverabilityRating;
-                        torpedoScript.turnSpeed = (100 / 100f) * torpedoType.maneuverabilityRating;
-                        torpedoScript.rollSpeed = (160 / 100f) * torpedoType.maneuverabilityRating;
-                        torpedoScript.thrustSpeed = torpedoType.speedRating;
-                        torpedoScript.damagePower = torpedoType.damageRating;
-                        torpedoScript.explosionAudio = torpedoType.explosionAudio;
-                        torpedoScript.launchAudio = torpedoType.launchAudio;
-                        torpedoScript.audioManager = smallShip.audioManager;
-                        AttachParticleTrail(smallShip, torpedoScript, torpedoType.trailColor);
-
-                        if (smallShip.torpedoLockedOn == true)
-                        {
-                            torpedoScript.target = target;
-                        }
-
-                        torpedoScript.firingShip = smallShip;
-                        torpedoScript.destroyAfter = Time.time + 30;
-
-                        GameObjectUtils.AddColliders(torpedo, true);
-                        torpedoScript.torpedoRigidbody = GameObjectUtils.AddRigidbody(torpedo, 100f, 9f, 7.5f);
-                        torpedoScript.torpedoRigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-
-                        torpedo.transform.position = position;
-                        torpedo.transform.rotation = smallShip.transform.rotation;
-                        torpedo.transform.SetParent(smallShip.scene.transform);
-
-                        scene.torpedosPool.Add(torpedo);
-
-                        break;
-                    }
+                    torpedoScript.target = target;
                 }
+
+                torpedoScript.firingShip = smallShip;
+                torpedoScript.destroyAfter = Time.time + 30;
+
+                GameObjectUtils.AddColliders(torpedo, true);
+                torpedoScript.torpedoRigidbody = GameObjectUtils.AddRigidbody(torpedo, 100f, 9f, 7.5f);
+                torpedoScript.torpedoRigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
+                torpedo.transform.position = position;
+                torpedo.transform.rotation = smallShip.transform.rotation;
+                torpedo.transform.SetParent(smallShip.scene.transform);
+
+                scene.torpedosPool.Add(torpedo);
             }
         }
 

@@ -1204,14 +1204,16 @@ public static class MissionFunctions
 
         if (missionEvent.data1 != "none" & missionEvent.data1 != "0")
         {
-            Task b = new Task(SceneFunctions.GenerateAsteroidField(scene.planetSeed, true, int.Parse(missionEvent.data1)));
-            while (b.Running == true) { yield return null; }
+            //Task b = new Task(SceneFunctions.GenerateAsteroidField(scene.planetSeed, true, int.Parse(missionEvent.data1)));
+            //while (b.Running == true) { yield return null; }
         }
         else
         {
-            Task b = new Task(SceneFunctions.GenerateAsteroidField(scene.planetSeed));
-            while (b.Running == true) { yield return null; }
+            //Task b = new Task(SceneFunctions.GenerateAsteroidField(scene.planetSeed));
+            //while (b.Running == true) { yield return null; }
         }
+
+        yield return null;
     }
 
     //This loads a planet in the scene

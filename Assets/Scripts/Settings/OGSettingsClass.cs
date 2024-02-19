@@ -9,7 +9,8 @@ public class OGSettingData
     public int screenResY;
     public bool invertY;
     public bool invertX;
-    public string cockpitAssetsAddress;
+    public string cockpitAssets;
+    public string shipAssets;
     public string gameWindowMode;
     public string editorWindowMode;
 }

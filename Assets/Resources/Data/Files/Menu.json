@@ -736,7 +736,55 @@
 		"Type": "ContentButton02",
 		"Variable": "4096"
         },
-{
+        {
+		"ParentMenu": "Settings",
+            "Name": "Select Ship Assets",
+            "Description": "Change the ship set used in the game",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton01",
+		"Variable": "Select Ship Assets"
+        },
+	  {
+		"ParentMenu": "Select Ship Assets",
+            "Name": "Back to Settings",
+            "Description": "Returns to settings sub menu",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton02",
+		"Variable": "Settings"
+        },
+	{
+		"ParentMenu": "Select Ship Assets",
+            "Name": "Original Trilogy Ship Set",
+            "Description": "Ships from the Original Trilogy Mod",
+            "Function": "SelectShipAssets",
+		"Type": "ContentButton02",
+		"Variable": "originaltrilogy"
+        },
+	{
+		"ParentMenu": "Select Ship Assets",
+            "Name": "First Strike Ship Set",
+            "Description": "Ships from First Strike Mod",
+            "Function": "SelectShipAssets",
+		"Type": "ContentButton02",
+		"Variable": "firststrike"
+        },
+	{
+		"ParentMenu": "Select Ship Assets",
+            "Name": "Galactic Conquest Set",
+            "Description": "Ships from Galactic Conquest Strike Mod",
+            "Function": "SelectShipAssets",
+		"Type": "ContentButton02",
+		"Variable": "galacticconquest"
+        },
+	{
+		"ParentMenu": "Select Ship Assets",
+            "Name": "Additional Assets Ships Set",
+            "Description": "Ships from various authors",
+            "Function": "SelectShipAssets",
+		"Type": "ContentButton02",
+		"Variable": "additionalassets"
+        },
+       {
 		"ParentMenu": "Settings",
             "Name": "Select Cockpit Assets",
             "Description": "Change the cockpit set used in the game",

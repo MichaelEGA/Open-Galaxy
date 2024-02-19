@@ -40,7 +40,7 @@ public static class OGSettingsFunctions
             settings.invertY = ogSettingsClass.ogSettingsData[0].invertY;
             settings.screenResX = ogSettingsClass.ogSettingsData[0].screenResX;
             settings.screenResY = ogSettingsClass.ogSettingsData[0].screenResY;
-            settings.cockpitAssetsAddress = ogSettingsClass.ogSettingsData[0].cockpitAssetsAddress;
+            settings.cockpitAssets = ogSettingsClass.ogSettingsData[0].cockpitAssets;
             settings.gameWindowMode = ogSettingsClass.ogSettingsData[0].gameWindowMode;
             settings.editorWindowMode = ogSettingsClass.ogSettingsData[0].editorWindowMode;
             CheckSettingsData();
@@ -78,7 +78,8 @@ public static class OGSettingsFunctions
         ogSettingsClass.ogSettingsData[0].invertY = settings.invertY;
         ogSettingsClass.ogSettingsData[0].screenResX = settings.screenResX;
         ogSettingsClass.ogSettingsData[0].screenResY = settings.screenResY;
-        ogSettingsClass.ogSettingsData[0].cockpitAssetsAddress = settings.cockpitAssetsAddress;
+        ogSettingsClass.ogSettingsData[0].cockpitAssets = settings.cockpitAssets;
+        ogSettingsClass.ogSettingsData[0].shipAssets = settings.shipAssets;
         ogSettingsClass.ogSettingsData[0].gameWindowMode = settings.gameWindowMode;
         ogSettingsClass.ogSettingsData[0].editorWindowMode = settings.editorWindowMode;
 
@@ -120,18 +121,19 @@ public static class OGSettingsFunctions
     {
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
-        if (type == "firststrike")
-        {
-            settings.cockpitAssetsAddress = "CockpitPrefabs/fs_cockpits/";
-        }
-        else if (type == "galacticconquest")
-        {
-            settings.cockpitAssetsAddress = "CockpitPrefabs/gc_cockpits/";
-        }
-        else if (type == "additionalassets")
-        {
-            settings.cockpitAssetsAddress = "CockpitPrefabs/ad_cockpits/";
-        }
+        settings.cockpitAssets = type;
+
+        CheckSettingsData();
+
+        SaveSettingsData();
+    }
+
+    //This function selects the cockpits to be used 
+    public static void SelectShipAssets(string type)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.shipAssets = type;
 
         CheckSettingsData();
 
@@ -145,11 +147,6 @@ public static class OGSettingsFunctions
 
         if (settings != null)
         {
-            if (settings.cockpitAssetsAddress != "CockpitPrefabs/fs_cockpits/" & settings.cockpitAssetsAddress != "CockpitPrefabs/gc_cockpits/" & settings.cockpitAssetsAddress != "CockpitPrefabs/ad_cockpits/")
-            {
-                settings.cockpitAssetsAddress = "CockpitPrefabs/fs_cockpits/";
-            }
-
             if (settings.heightMapResolution <= 0)
             {
                 settings.heightMapResolution = 2048;
@@ -165,7 +162,6 @@ public static class OGSettingsFunctions
                 settings.screenResY = 768;
             }
         }
-
     }
 
     #endregion

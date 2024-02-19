@@ -393,6 +393,7 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadMissionEditor));
         mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
         mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
+        mainMenu.functions.Add("SelectShipAssets", new System.Action<string>(SelectShipAssets));
         mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
         mainMenu.functions.Add("SetEditorWindowMode", new System.Action<string>(SetEditorWindowMode));
         mainMenu.functions.Add("ToggleDebugging", new System.Action<string>(ToggleDebugging));
@@ -532,10 +533,10 @@ public static class MainMenuFunctions
 
                     buttonRight += 160;
 
-                    if (buttonRight > 505)
+                    if (buttonRight > 480)
                     {
                         buttonRight = 25;
-                        buttonDrop += 100;
+                        buttonDrop += 110;
                     }
                 }
 
@@ -1105,6 +1106,16 @@ public static class MainMenuFunctions
         ActivateSubMenu("Settings");
 
         OutputMenuMessage("The cockpit assets were set to " + type);
+    }
+
+    //This selects the cockpit types to be used in the game
+    public static void SelectShipAssets(string type)
+    {
+        OGSettingsFunctions.SelectShipAssets(type);
+
+        ActivateSubMenu("Settings");
+
+        OutputMenuMessage("The ship assets were set to " + type);
     }
 
     //This sets the window mode

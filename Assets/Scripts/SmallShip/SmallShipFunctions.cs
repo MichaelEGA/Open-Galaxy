@@ -1184,8 +1184,12 @@ public static class SmallShipFunctions
         //This turns of the engine sound and release the ship audio source from the ship
         if (smallShip.audioManager != null)
         {
-            smallShip.engineAudioSource.Stop();
-            smallShip.engineAudioSource = null;
+            if (smallShip.engineAudioSource != null)
+            {
+                smallShip.engineAudioSource.Stop();
+                smallShip.engineAudioSource = null;
+            }
+
             smallShip.audioManager = null;
         }
 
@@ -1238,31 +1242,24 @@ public static class SmallShipFunctions
             }
 
             //This loads the cockpit and sets it to the anchor
-            if (smallShip.scene.cockpitPool != null)
+            if (smallShip.cockpit == null)
             {
-                foreach (GameObject cockpit in smallShip.scene.cockpitPool)
+                smallShip.cockpit = SceneFunctions.InstantiateCockpitPrefab(smallShip.cockpitName);
+                smallShip.scene.cockpit = smallShip.cockpit;
+
+                if (smallShip.cockpit != null)
                 {
-                    if (cockpit.name.Contains(smallShip.cockpitName))
+                    if (smallShip.cockpitAnchor != null)
                     {
-                        cockpit.SetActive(true);
-                        smallShip.cockpit = cockpit;
+                        smallShip.cockpit.transform.SetParent(smallShip.cockpitAnchor.transform);
 
-                        if (smallShip.cockpitAnchor != null)
+                        if (smallShip.scene.hyperspaceTunnel == null)
                         {
-                            smallShip.cockpit.transform.SetParent(smallShip.cockpitAnchor.transform);
-
-                            if (smallShip.scene.hyperspaceTunnel == null)
-                            {
-                                smallShip.scene.hyperspaceTunnel = GameObject.Instantiate(smallShip.scene.hyperspaceTunnelPrefab);
-                            }
-
-                            smallShip.scene.hyperspaceTunnel.transform.SetParent(smallShip.cockpitAnchor.transform);
-                            smallShip.scene.hyperspaceTunnel.SetActive(false);
+                            smallShip.scene.hyperspaceTunnel = GameObject.Instantiate(smallShip.scene.hyperspaceTunnelPrefab);
                         }
-                    }
-                    else
-                    {
-                        cockpit.SetActive(false);
+
+                        smallShip.scene.hyperspaceTunnel.transform.SetParent(smallShip.cockpitAnchor.transform);
+                        smallShip.scene.hyperspaceTunnel.SetActive(false);
                     }
                 }
             }

@@ -16,12 +16,25 @@ public class Scene : MonoBehaviour
     [Header("The Main Ship")]
     [HideInInspector] public GameObject mainShip;
 
-    [Header("Prefab and Material Pools")]
+    [Header("Old Prefab and Material Pools")]
     [HideInInspector] public Object[] objectPrefabPool;
     [HideInInspector] public Object[] cockpitPrefabPool;
+
+    [Header("Prefab Pools")]
+    [HideInInspector] public Object[] otShipsPrefabPool;
+    [HideInInspector] public Object[] fsShipsPrefabPool;
+    [HideInInspector] public Object[] gcShipsPrefabPool;
+    [HideInInspector] public Object[] adShipsPrefabPool;
+
+    [HideInInspector] public Object[] adCockpitPrefabPool;
+    [HideInInspector] public Object[] fsCockpitPrefabPool;
+    [HideInInspector] public Object[] gcCockpitPrefabPool;
+
+    [HideInInspector] public Object[] asteroidPrefabPool;
+    [HideInInspector] public Object[] debrisPrefabPool;
+
     [HideInInspector] public Object[] particlePrefabPool;
-    [HideInInspector] public Object[] tilesPrefabPool;
-    [HideInInspector] public Object[] asteroidMaterialsPool;
+
     [HideInInspector] public GameObject hyperspaceTunnelPrefab;
 
     [Header("GameObject Pools")]
@@ -34,6 +47,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> tilesPool;
     [HideInInspector] public List<GameObject> tilesSetPool;
     [HideInInspector] public GameObject hyperspaceTunnel;
+    [HideInInspector] public GameObject cockpit;
 
     [Header("Script Pools")]
     public bool allocatingTargets;

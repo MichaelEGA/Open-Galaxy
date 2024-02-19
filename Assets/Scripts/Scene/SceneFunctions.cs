@@ -30,7 +30,7 @@ public static class SceneFunctions
 
             LoadScenePrefabs();
             GetCameras();
-            InstantiateCockpits();
+            //InstantiateCockpits();
         }
     }
 
@@ -40,51 +40,65 @@ public static class SceneFunctions
         Scene scene = GetScene();
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
-        Object[] objectPrefabs = Resources.LoadAll("ObjectPrefabs/ot_ships/", typeof(GameObject));
+        //This loads the ship prefabs
+        Object[] otShipPrefabs = Resources.LoadAll("ObjectPrefabs/ot_ships/", typeof(GameObject));
 
-        if (objectPrefabs != null)
+        if (otShipPrefabs != null)
         {
-            scene.objectPrefabPool = new GameObject[objectPrefabs.Length];
-            scene.objectPrefabPool = objectPrefabs;
+            scene.otShipsPrefabPool = new GameObject[otShipPrefabs.Length];
+            scene.otShipsPrefabPool = otShipPrefabs;
         }
 
-        Object[] cockpitPrefabs = null;
+        Object[] fsShipPrefabs = Resources.LoadAll("ObjectPrefabs/fs_ships/", typeof(GameObject));
 
-        if (settings != null)
+        if (fsShipPrefabs != null)
         {
-            if (settings.cockpitAssetsAddress != null)
-            {
-                cockpitPrefabs = Resources.LoadAll(settings.cockpitAssetsAddress, typeof(GameObject));
-            }     
-        }
-        
-        if (cockpitPrefabs == null)
-        {
-            cockpitPrefabs = Resources.LoadAll("CockpitPrefabs/fs_cockpits/", typeof(GameObject));
+            scene.fsShipsPrefabPool = new GameObject[fsShipPrefabs.Length];
+            scene.fsShipsPrefabPool = fsShipPrefabs;
         }
 
-        if (cockpitPrefabs != null)
+        Object[] gcShipPrefabs = Resources.LoadAll("ObjectPrefabs/gc_ships/", typeof(GameObject));
+
+        if (gcShipPrefabs != null)
         {
-            scene.cockpitPrefabPool = new GameObject[cockpitPrefabs.Length];
-            scene.cockpitPrefabPool = cockpitPrefabs;
+            scene.gcShipsPrefabPool = new GameObject[gcShipPrefabs.Length];
+            scene.gcShipsPrefabPool = gcShipPrefabs;
         }
 
-        Object[] tilePrefabs = Resources.LoadAll("TilePrefabs", typeof(GameObject));
+        Object[] adShipPrefabs = Resources.LoadAll("ObjectPrefabs/ad_ships/", typeof(GameObject));
 
-        if (tilePrefabs != null)
+        if (adShipPrefabs != null)
         {
-            scene.tilesPrefabPool = new GameObject[tilePrefabs.Length];
-            scene.tilesPrefabPool = tilePrefabs;
+            scene.adShipsPrefabPool = new GameObject[adShipPrefabs.Length];
+            scene.adShipsPrefabPool = adShipPrefabs;
         }
 
-        Object[] asteroidMaterials = Resources.LoadAll("AsteroidMaterials", typeof(Material));
+        //This loads the cockpit prefabs
+        Object[] fsCockpitPrefabs = Resources.LoadAll("CockpitPrefabs/fs_cockpits/", typeof(GameObject));
 
-        if (asteroidMaterials != null)
+        if (fsCockpitPrefabs != null)
         {
-            scene.asteroidMaterialsPool = new Material[asteroidMaterials.Length];
-            scene.asteroidMaterialsPool = asteroidMaterials;
+            scene.fsCockpitPrefabPool = new GameObject[fsCockpitPrefabs.Length];
+            scene.fsCockpitPrefabPool = fsCockpitPrefabs;
         }
 
+        Object[] gcCockpitPrefabs = Resources.LoadAll("CockpitPrefabs/gc_cockpits/", typeof(GameObject));
+
+        if (gcCockpitPrefabs != null)
+        {
+            scene.gcCockpitPrefabPool = new GameObject[gcCockpitPrefabs.Length];
+            scene.gcCockpitPrefabPool = gcCockpitPrefabs;
+        }
+
+        Object[] adCockpitPrefabs = Resources.LoadAll("CockpitPrefabs/ad_cockpits/", typeof(GameObject));
+
+        if (adCockpitPrefabs != null)
+        {
+            scene.adCockpitPrefabPool = new GameObject[adCockpitPrefabs.Length];
+            scene.adCockpitPrefabPool = adCockpitPrefabs;
+        }
+
+        //This loads the particle prefabs
         Object[] particlePrefabs = Resources.LoadAll("ParticlePrefabs", typeof(GameObject));
 
         if (particlePrefabs != null)
@@ -721,103 +735,7 @@ public static class SceneFunctions
 
     #region asteroid field creation
 
-    //This generates a random asteroid field
-    public static IEnumerator GenerateAsteroidField(int seed, bool ignoreSeed = false, int asteroidNo = 100)
-    {
-        LoadScreenFunctions.AddLogToLoadingScreen("Generating asteroid field...", 0, false);
-
-        //This gets the scene reference
-        Scene scene = GameObject.FindObjectOfType<Scene>();
-
-        //Search for all asteroid objects and add them to the list
-        List<int> asteroidRef = new List<int>();
-        int i = 0;
-
-        foreach (GameObject objectPrefab in scene.objectPrefabPool)
-        {
-            if (objectPrefab.name.Contains("asteroid"))
-            {
-                asteroidRef.Add(i);
-            }
-
-            i++;
-        }
-
-        //This sets the seed so that asteroids don't change position or number when you visit the same area twice
-        Random.InitState(seed);
-
-        //Pick an asteroid to use for the scene
-        int materialChoice = Random.Range(0, scene.asteroidMaterialsPool.Length - 1);
-
-        //Pick number of asteroids to load in the scene
-        int asteroidNumber = Random.Range(100, 1000);
-
-        if (ignoreSeed == true)
-        {
-            asteroidNumber = asteroidNo;
-        }
-
-        float changeScale = Random.Range(5, 15);
-
-        //Get asteroid collision layer
-        int layerNumber = LayerMask.NameToLayer("collision_asteroid");
-
-        //Instantiate asteroids
-        for (int i2 = 0; i2 < asteroidNumber; i2++)
-        {
-            int asteroidChoice = Random.Range(0, asteroidRef.Count);
-
-            GameObject asteroid = GameObject.Instantiate(scene.objectPrefabPool[asteroidRef[asteroidChoice]]) as GameObject;
-            asteroid.transform.SetParent(scene.gameObject.transform);
-
-            Material material = scene.asteroidMaterialsPool[materialChoice] as Material;
-
-            asteroid.GetComponent<Renderer>().material = material;
-
-            float scale = Random.Range(0.001f, 0.1f);
-
-            if (i2 == changeScale)
-            {
-                scale = Random.Range(1f, 2f);
-                changeScale = changeScale + changeScale;
-            }
-
-            asteroid.transform.localScale = new Vector3(scale, scale, scale);
-
-            asteroid.layer = layerNumber;
-
-            float distance = 15000;
-
-            float xPos = Random.Range(-distance, distance);
-            float yPos = Random.Range(-distance, distance);
-            float zPos = Random.Range(-distance, distance);
-            asteroid.transform.position = new Vector3(xPos, yPos, zPos);
-
-            float xRotation = Random.Range(0, 360);
-            float yRotation = Random.Range(0, 360);
-            float zRotation = Random.Range(0, 360);
-            asteroid.transform.rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-            if (asteroid.GetComponent<Rigidbody>() == null)
-            {
-                Rigidbody rigidbody = asteroid.AddComponent<Rigidbody>();
-                rigidbody.isKinematic = true;
-                rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-            }
-
-            if (asteroid.GetComponent<MeshCollider>() == null)
-            {
-                asteroid.AddComponent<MeshCollider>();
-            }
-
-            scene.asteroidPool = PoolUtils.AddToPool(scene.asteroidPool, asteroid);
-
-            //yield return null;
-        }
-
-        yield return null;
-
-    }
+    //REMAKE CODE
 
     #endregion
 
@@ -941,19 +859,7 @@ public static class SceneFunctions
         }
 
         //Look for ship model in prefabs and load;
-        GameObject ship = null;
-
-        if (shipType != null)
-        {
-            foreach (GameObject objectPrefab in scene.objectPrefabPool)
-            {
-                if (objectPrefab.name == shipType.prefab)
-                {
-                    ship = GameObject.Instantiate(objectPrefab) as GameObject;
-                    break;
-                }
-            }
-        }
+        GameObject ship = InstantiateShipPrefab(shipType.prefab);
 
         if (cargo.ToLower().Contains("random") || cargo.ToLower().Contains("randomise"))
         {
@@ -1158,7 +1064,104 @@ public static class SceneFunctions
 
         }
     }
+    
+    //This instanties the designated prefabe from the pool listed in the settings or finds a substitute from another pool if the prefab is not present
+    public static GameObject InstantiateShipPrefab(string name)
+    {
+        GameObject shipPrefab = null;
+        GameObject tempPrefab = null;
 
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        //This gets the prefab from the designated pool
+        tempPrefab = ReturnShipPrefab(name, settings.shipAssets);
+
+        //This gets a backup prefab from another pool if the selected pool doesn't have the requested prefab
+        if (tempPrefab == null)
+        {
+            tempPrefab = ReturnShipPrefab(name, "originaltrilogy");
+        }
+
+        if (tempPrefab == null)
+        {
+            tempPrefab = ReturnShipPrefab(name, "firststrike");
+        }
+
+        if (tempPrefab == null)
+        {
+            tempPrefab = ReturnShipPrefab(name, "galacticconquest");
+        }
+
+        if (tempPrefab == null)
+        {
+            tempPrefab = ReturnShipPrefab(name, "additionalassets");
+        }
+
+        //This instantiates the prefab
+        if (tempPrefab != null)
+        {
+            shipPrefab = GameObject.Instantiate(tempPrefab) as GameObject;
+        }
+
+        return shipPrefab;
+    }
+
+    //This returns the designated prefab from the designated pool
+    public static GameObject ReturnShipPrefab(string name, string pool)
+    {
+        GameObject prefab = null;
+
+        Scene scene = SceneFunctions.GetScene();
+
+        if (pool == "originaltrilogy")
+        {
+            foreach (GameObject objectPrefab in scene.otShipsPrefabPool)
+            {
+                if (objectPrefab.name == name)
+                {
+                    prefab = objectPrefab;
+                    break;
+                }
+            }
+        }
+        else if (pool == "firststrike")
+        {
+            foreach (GameObject objectPrefab in scene.fsShipsPrefabPool)
+            {
+                if (objectPrefab.name == name)
+                {
+                    prefab = objectPrefab;
+                    break;
+                }
+            }
+        }
+        else if (pool == "galacticconquest")
+        {
+            foreach (GameObject objectPrefab in scene.gcShipsPrefabPool)
+            {
+                if (objectPrefab.name == name)
+                {
+                    prefab = objectPrefab;
+                    break;
+                }
+            }
+        }
+        else if (pool == "additionalassets")
+        {
+            foreach (GameObject objectPrefab in scene.adShipsPrefabPool)
+            {
+                if (objectPrefab.name == name)
+                {
+                    prefab = objectPrefab;
+                    break;
+                }
+            }
+        }
+       
+        return prefab;
+    }
+
+    //A wrapper function for load single ships that loads multiple ships
     public static IEnumerator LoadMultipleShips( 
         Vector3 position,
         Quaternion rotation,
@@ -1229,6 +1232,7 @@ public static class SceneFunctions
         }
     }
 
+    //A wrapper functions for load single ships that loads multiple ships on the ground
     public static IEnumerator LoadMultipleShipsOnGround(
         Vector3 position,
         Quaternion rotation,
@@ -1681,24 +1685,87 @@ public static class SceneFunctions
 
     #region cockpit creation
 
-    public static void InstantiateCockpits()
+    //This instanties the designated prefabe from the pool listed in the settings or finds a substitute from another pool if the prefab is not present
+    public static GameObject InstantiateCockpitPrefab(string name)
     {
-        Scene scene = GetScene();
+        GameObject cockpitPrefab = null;
+        GameObject tempPrefab = null;
 
-        if (scene.cockpitPool == null)
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        //This gets the prefab from the designated pool
+        tempPrefab = ReturnCockpitPrefab(name, settings.cockpitAssets);
+
+        //This gets a backup prefab from another pool if the selected pool doesn't have the requested prefab
+        if (tempPrefab == null)
         {
-            scene.cockpitPool = new List<GameObject>();
+            tempPrefab = ReturnCockpitPrefab(name, "firststrike");
         }
 
-        foreach (GameObject cockpitPrefab in scene.cockpitPrefabPool)
+        if (tempPrefab == null)
         {
-            GameObject cockpitObject = GameObject.Instantiate(cockpitPrefab) as GameObject;
-            scene.cockpitPool.Add(cockpitObject);
-            cockpitObject.transform.position = new Vector3(0, 0, 0);
-            cockpitObject.layer = LayerMask.NameToLayer("cockpit");
-            GameObjectUtils.SetLayerAllChildren(cockpitObject.transform, 28);
-            cockpitObject.SetActive(false);
+            tempPrefab = ReturnCockpitPrefab(name, "galacticconquest");
         }
+
+        if (tempPrefab == null)
+        {
+            tempPrefab = ReturnCockpitPrefab(name, "additionalassets");
+        }
+
+        //This instantiates the prefab
+        if (tempPrefab != null)
+        {
+            cockpitPrefab = GameObject.Instantiate(tempPrefab) as GameObject;
+            cockpitPrefab.transform.position = new Vector3(0, 0, 0);
+            cockpitPrefab.layer = LayerMask.NameToLayer("cockpit");
+            GameObjectUtils.SetLayerAllChildren(cockpitPrefab.transform, 28);
+        }
+
+        return cockpitPrefab;
+    }
+
+    //This returns the designated prefab from the designated pool
+    public static GameObject ReturnCockpitPrefab(string name, string pool)
+    {
+        GameObject prefab = null;
+
+        Scene scene = SceneFunctions.GetScene();
+
+        if (pool == "firststrike")
+        {
+            foreach (GameObject objectPrefab in scene.fsCockpitPrefabPool)
+            {
+                if (objectPrefab.name == name)
+                {
+                    prefab = objectPrefab;
+                    break;
+                }
+            }
+        }
+        else if (pool == "galacticconquest")
+        {
+            foreach (GameObject objectPrefab in scene.gcCockpitPrefabPool)
+            {
+                if (objectPrefab.name == name)
+                {
+                    prefab = objectPrefab;
+                    break;
+                }
+            }
+        }
+        else if (pool == "additionalassets")
+        {
+            foreach (GameObject objectPrefab in scene.adCockpitPrefabPool)
+            {
+                if (objectPrefab.name == name)
+                {
+                    prefab = objectPrefab;
+                    break;
+                }
+            }
+        }
+
+        return prefab;
     }
 
     #endregion
@@ -1872,34 +1939,9 @@ public static class SceneFunctions
             scene.torpedosPool.Clear();
         }
 
-        if (scene.tilesPool != null)
+        if (scene.cockpit != null)
         {
-            foreach (GameObject gameobject in scene.tilesPool)
-            {
-                GameObject.Destroy(gameobject);
-            }
-
-            scene.tilesPool.Clear();
-        }
-
-        if (scene.tilesSetPool != null)
-        {
-            foreach (GameObject gameobject in scene.tilesSetPool)
-            {
-                GameObject.Destroy(gameobject);
-            }
-
-            scene.tilesSetPool.Clear();
-        }
-
-        if (scene.cockpitPool != null)
-        {
-            foreach (GameObject gameobject in scene.cockpitPool)
-            {
-                GameObject.Destroy(gameobject);
-            }
-
-            scene.cockpitPool.Clear();
+            GameObject.Destroy(scene.cockpit);
         }
 
         if (scene.planet != null)

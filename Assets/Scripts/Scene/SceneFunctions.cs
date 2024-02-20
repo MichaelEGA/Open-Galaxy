@@ -1987,26 +1987,6 @@ public static class SceneFunctions
             scene.asteroidPool.Clear();
         }
 
-        if (scene.tilesPool != null)
-        {
-            foreach (GameObject gameobject in scene.tilesPool)
-            {
-                GameObject.Destroy(gameobject);
-            }
-
-            scene.tilesPool.Clear();
-        }
-
-        if (scene.tilesSetPool != null)
-        {
-            foreach (GameObject gameobject in scene.tilesSetPool)
-            {
-                GameObject.Destroy(gameobject);
-            }
-
-            scene.tilesSetPool.Clear();
-        }
-
         if (scene.planetPivot != null)
         {
             GameObject.Destroy(scene.planetPivot);

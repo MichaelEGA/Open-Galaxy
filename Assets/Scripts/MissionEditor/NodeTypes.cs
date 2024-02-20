@@ -554,6 +554,14 @@ public static class NodeTypes
 
         node.data7 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
+        drop -= 15;
+
+        List<string> optionsAR = new List<string>();
+        optionsAR.Add("false");
+        optionsAR.Add("true");
+
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, optionsAR, "run once", "false", 7, 5, drop, 12.5f, 90, 5f);
+
         drop -= 30;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));

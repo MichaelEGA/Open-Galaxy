@@ -1260,6 +1260,7 @@ public static class SmallShipFunctions
 
                         smallShip.scene.hyperspaceTunnel.transform.SetParent(smallShip.cockpitAnchor.transform);
                         smallShip.scene.hyperspaceTunnel.SetActive(false);
+                        Debug.Log("hyperspace tunnel was set to false 2");
                     }
                 }
             }

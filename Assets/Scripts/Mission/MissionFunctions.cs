@@ -76,7 +76,7 @@ public static class MissionFunctions
         FindAllLocations(mission);
 
         //This runs all the preload events like loading the planet and asteroids and objects already in scene
-        Task a = new Task(FindAndRunPreLoadEvents(mission, firstLocationNode.conditionLocation, time));
+        Task a = new Task(FindAndRunPreLoadEvents(mission, firstLocationNode.conditionLocation, time, true));
         while (a.Running == true) { yield return null; }
 
         //This tells the player to get ready, starts the game, locks the cursor and gets rid of the loading screen
@@ -189,56 +189,59 @@ public static class MissionFunctions
     }
 
     //This looks for and runs preload events
-    public static IEnumerator FindAndRunPreLoadEvents(Mission mission, string location, float time)
+    public static IEnumerator FindAndRunPreLoadEvents(Mission mission, string location, float time, bool firstRun = false)
     {
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
             if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
             {
-                Task a = new Task(LoadAsteroids(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);
+                    Task a = new Task(LoadAsteroids(missionEvent));
+                    while (a.Running == true) { yield return null; }
+                    LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);             
             }
             else if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
             {
-                LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
-                Task a = new Task(LoadPlanet());
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
+                    Task a = new Task(LoadPlanet());
+                    while (a.Running == true) { yield return null; }
+                    LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);            
             }
             else if (missionEvent.eventType == "preload_loadterrain" & missionEvent.conditionLocation == location)
             {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain...", Time.unscaledTime - time);
-                Task a = new Task(LoadTerrain(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", Time.unscaledTime - time);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain...", Time.unscaledTime - time);
+                    Task a = new Task(LoadTerrain(missionEvent));
+                    while (a.Running == true) { yield return null; }
+                    LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", Time.unscaledTime - time);             
             }
             else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
-                Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", Time.unscaledTime - time);
+                    Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
+                    while (a.Running == true) { yield return null; }
+                    LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", Time.unscaledTime - time);  
             }
             else if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
             {
-                LoadSingleShip(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", Time.unscaledTime - time);
+                if (firstRun == false & missionEvent.data8 == "false" || firstRun == false & missionEvent.data8 == "none" || firstRun == true)
+                {
+                    LoadSingleShip(missionEvent);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", Time.unscaledTime - time);
+                } 
             }
             else if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
-            {
-                Task a = new Task(LoadMultipleShips(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);
+            {           
+                    Task a = new Task(LoadMultipleShips(missionEvent));
+                    while (a.Running == true) { yield return null; }
+                    LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);                 
             }
             else if (missionEvent.eventType == "preload_setsceneradius" & missionEvent.conditionLocation == location)
-            {
-                SetSceneRadius(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", Time.unscaledTime - time);
+            {        
+                    SetSceneRadius(missionEvent);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", Time.unscaledTime - time);               
             }
             else if (missionEvent.eventType == "preload_setskybox" & missionEvent.conditionLocation == location)
-            {
-                SetSkyBox(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);
+            {      
+                    SetSkyBox(missionEvent);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);          
             }
         }
     }
@@ -701,7 +704,7 @@ public static class MissionFunctions
         SetGalaxyLocation2(missionEvent.data1);
 
         //This finds and loads all 'preload' nodes for the new location
-        Task b = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time));
+        Task b = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time, false));
         while(b.Running == true) { yield return null; }
 
         yield return new WaitForSecondsRealtime(1);

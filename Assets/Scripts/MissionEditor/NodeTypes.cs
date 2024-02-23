@@ -2723,42 +2723,16 @@ public static class NodeTypes
 
     public static List<string> GetShipList()
     {
+        //This gets the Json ship data
+        TextAsset shipTypesFile = Resources.Load("Data/Files/ShipTypes") as TextAsset;
+        ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
+
         List<string> shipList = new List<string>();
 
-        shipList.Add("tiefighter");
-        shipList.Add("tieinterceptor");
-        shipList.Add("tieadvanced");
-        shipList.Add("tiebomber");
-        shipList.Add("tiephantom");
-        shipList.Add("tiedefender");
-        shipList.Add("assaultgunboat");
-        shipList.Add("xwing");
-        shipList.Add("ywing");
-        shipList.Add("awing");
-        shipList.Add("yt1300");
-        shipList.Add("n1starfighter");
-        shipList.Add("vulturedroid");
-        shipList.Add("snowspeeder");
-        shipList.Add("t16skyhopper");
-        shipList.Add("dx9shuttle");
-        shipList.Add("lambdashuttle");
-        shipList.Add("z95headhunter");
-        shipList.Add("probedroid");
-        shipList.Add("escapepod");
-        shipList.Add("bulkfreighter");
-        shipList.Add("container");
-        shipList.Add("corelliancorvette");
-        shipList.Add("gr75transport");
-        shipList.Add("stardestroyer");
-        shipList.Add("superstardestroyer");
-        shipList.Add("homeone");
-        shipList.Add("nebulonbfrigate");
-        shipList.Add("landingcraft");
-        shipList.Add("lucrehulk");
-        shipList.Add("xq1station");
-        shipList.Add("dsturrettall");
-        shipList.Add("dsturretshort");
-        shipList.Add("navbuoy");
+        foreach (ShipType shipType in shipTypes.shipTypeData)
+        {
+            shipList.Add(shipType.type);
+        }
 
         return shipList;
     }

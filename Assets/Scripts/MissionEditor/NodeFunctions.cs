@@ -702,42 +702,42 @@ public class NodeFunctions : MonoBehaviour
             scrollRect.movementType = ScrollRect.MovementType.Clamped;
             scrollRect.horizontal = false;
 
-            DrawVerticalScrollBar(templateGO.transform, scrollRect, 5);
+            DrawVerticalScrollBar(templateGO.transform, scrollRect, 3);
         }
 
         templateRectTransform.anchorMax = new Vector2(0, 1);
         templateRectTransform.anchorMin = new Vector2(0, 1);
         templateRectTransform.pivot = new Vector2(0, 1);
         templateRectTransform.anchoredPosition = new Vector2(0, -height);
-        templateRectTransform.sizeDelta = new Vector2(halfwidth, totalHeight);
+        templateRectTransform.sizeDelta = new Vector2(width, totalHeight);
         templateRectTransform.localScale = new Vector3(1, 1, 1);
 
         viewportRectTransform.anchorMax = new Vector2(0, 1);
         viewportRectTransform.anchorMin = new Vector2(0, 1);
         viewportRectTransform.pivot = new Vector2(0, 1);
         viewportRectTransform.anchoredPosition = new Vector2(0, 0);
-        viewportRectTransform.sizeDelta = new Vector2(halfwidth - 2, totalHeight);
+        viewportRectTransform.sizeDelta = new Vector2(width - 2, totalHeight);
         viewportRectTransform.localScale = new Vector3(1, 1, 1);
 
         contentRectTransform.anchorMax = new Vector2(0, 1);
         contentRectTransform.anchorMin = new Vector2(0, 1);
         contentRectTransform.pivot = new Vector2(0, 1);
         contentRectTransform.anchoredPosition = new Vector2(0, 0);
-        contentRectTransform.sizeDelta = new Vector2(halfwidth - 2, height);
+        contentRectTransform.sizeDelta = new Vector2(width - 2, height);
         contentRectTransform.localScale = new Vector3(1, 1, 1);
 
         itemRectTransform.anchorMax = new Vector2(0, 1);
         itemRectTransform.anchorMin = new Vector2(0, 1);
         itemRectTransform.pivot = new Vector2(0, 1);
         itemRectTransform.anchoredPosition = new Vector2(0, 0);
-        itemRectTransform.sizeDelta = new Vector2(halfwidth - 2, height);
+        itemRectTransform.sizeDelta = new Vector2(width - 2, height);
         itemRectTransform.localScale = new Vector3(1, 1, 1);
 
         itemLabelRectTransform.anchorMax = new Vector2(0, 1);
         itemLabelRectTransform.anchorMin = new Vector2(0, 1);
         itemLabelRectTransform.pivot = new Vector2(0, 1);
         itemLabelRectTransform.anchoredPosition = new Vector2(1, 0);
-        itemLabelRectTransform.sizeDelta = new Vector2(halfwidth - 2, height);
+        itemLabelRectTransform.sizeDelta = new Vector2(width - 2, height);
         itemLabelRectTransform.localScale = new Vector3(1, 1, 1);
 
         Text templateText = itemLabelGO.AddComponent<Text>();

@@ -103,7 +103,4 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     {
 
     }
-
-
-
 }

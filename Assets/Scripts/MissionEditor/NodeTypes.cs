@@ -2729,12 +2729,17 @@ public static class NodeTypes
         shipList.Add("tieinterceptor");
         shipList.Add("tieadvanced");
         shipList.Add("tiebomber");
+        shipList.Add("tiephantom");
+        shipList.Add("tiedefender");
         shipList.Add("assaultgunboat");
         shipList.Add("xwing");
         shipList.Add("ywing");
         shipList.Add("awing");
+        shipList.Add("yt1300");
         shipList.Add("n1starfighter");
+        shipList.Add("vulturedroid");
         shipList.Add("snowspeeder");
+        shipList.Add("t16skyhopper");
         shipList.Add("dx9shuttle");
         shipList.Add("lambdashuttle");
         shipList.Add("z95headhunter");
@@ -2748,6 +2753,8 @@ public static class NodeTypes
         shipList.Add("superstardestroyer");
         shipList.Add("homeone");
         shipList.Add("nebulonbfrigate");
+        shipList.Add("landingcraft");
+        shipList.Add("lucrehulk");
         shipList.Add("xq1station");
         shipList.Add("dsturrettall");
         shipList.Add("dsturretshort");

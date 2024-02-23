@@ -43,7 +43,7 @@ public static class LaserFunctions
         main.startSize3D = true;
         main.startSizeX = 1;
         main.startSizeY = 1;
-        main.startSizeZ = 1;
+        main.startSizeZ = 5;
         main.startSpeed = 1500;
         main.loop = false;
         main.playOnAwake = false;

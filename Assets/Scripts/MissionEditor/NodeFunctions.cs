@@ -685,29 +685,45 @@ public class NodeFunctions : MonoBehaviour
         RectTransform itemRectTransform = itemGO.AddComponent<RectTransform>();
         RectTransform itemLabelRectTransform = itemLabelGO.AddComponent<RectTransform>();
 
-        templateGO.AddComponent<ScrollRect>();
+        viewportGO.AddComponent<RectMask2D>();
 
         itemGO.AddComponent<Toggle>();
+
+        float totalHeight = height * options.Count;
+
+        //If the total height is larger than 100 the size is restricted to 100 and a scrollrect is added
+        if (totalHeight > 100)
+        {
+            totalHeight = 100;
+
+            ScrollRect scrollRect = templateGO.AddComponent<ScrollRect>();
+            scrollRect.viewport = viewportRectTransform;
+            scrollRect.content = contentRectTransform;
+            scrollRect.movementType = ScrollRect.MovementType.Clamped;
+            scrollRect.horizontal = false;
+
+            DrawVerticalScrollBar(templateGO.transform, scrollRect, 5);
+        }
 
         templateRectTransform.anchorMax = new Vector2(0, 1);
         templateRectTransform.anchorMin = new Vector2(0, 1);
         templateRectTransform.pivot = new Vector2(0, 1);
         templateRectTransform.anchoredPosition = new Vector2(0, -height);
-        templateRectTransform.sizeDelta = new Vector2(halfwidth, height * options.Count);
+        templateRectTransform.sizeDelta = new Vector2(halfwidth, totalHeight);
         templateRectTransform.localScale = new Vector3(1, 1, 1);
 
         viewportRectTransform.anchorMax = new Vector2(0, 1);
         viewportRectTransform.anchorMin = new Vector2(0, 1);
         viewportRectTransform.pivot = new Vector2(0, 1);
         viewportRectTransform.anchoredPosition = new Vector2(0, 0);
-        viewportRectTransform.sizeDelta = new Vector2(halfwidth - 2, height * options.Count);
+        viewportRectTransform.sizeDelta = new Vector2(halfwidth - 2, totalHeight);
         viewportRectTransform.localScale = new Vector3(1, 1, 1);
 
         contentRectTransform.anchorMax = new Vector2(0, 1);
         contentRectTransform.anchorMin = new Vector2(0, 1);
         contentRectTransform.pivot = new Vector2(0, 1);
         contentRectTransform.anchoredPosition = new Vector2(0, 0);
-        contentRectTransform.sizeDelta = new Vector2(halfwidth - 2, height * options.Count);
+        contentRectTransform.sizeDelta = new Vector2(halfwidth - 2, height);
         contentRectTransform.localScale = new Vector3(1, 1, 1);
 
         itemRectTransform.anchorMax = new Vector2(0, 1);
@@ -744,10 +760,66 @@ public class NodeFunctions : MonoBehaviour
         dropdown.captionText = captionText;
         dropdown.itemText = templateText;
         dropdown.template = templateRectTransform;
-
         dropdown.AddOptions(options);
 
         return captionText;
+    }
+
+    //This draws a vertical scrollbar on a scrollable field
+    public static void DrawVerticalScrollBar(Transform parent, ScrollRect scrollRect, float width)
+    {
+        GameObject scrollbarVertical = new GameObject();
+        GameObject slidingArea = new GameObject();
+        GameObject handle = new GameObject();
+
+        scrollbarVertical.transform.SetParent(parent.transform);
+        slidingArea.transform.SetParent(scrollbarVertical.transform);
+        handle.transform.SetParent(slidingArea.transform);
+
+        scrollbarVertical.name = "ScrollbarVertical";
+        slidingArea.name = "SlidingArea";
+        handle.name = "Handle";
+
+        RectTransform scrollBarRect = scrollbarVertical.AddComponent<RectTransform>();
+        RectTransform slidingAreaRect = slidingArea.AddComponent<RectTransform>();
+        RectTransform handleRect = handle.AddComponent<RectTransform>();
+
+        scrollBarRect.anchorMin = new Vector2(1, 0);
+        scrollBarRect.anchorMax = new Vector2(1, 1);
+        scrollBarRect.pivot = new Vector2(1, 1);
+        scrollBarRect.anchoredPosition = new Vector2(0, 0);
+        scrollBarRect.sizeDelta = new Vector2(width, 0);
+        scrollBarRect.localScale = new Vector3(1, 1, 1);
+
+        slidingAreaRect.anchorMin = new Vector2(0, 0);
+        slidingAreaRect.anchorMax = new Vector2(1, 1);
+        slidingAreaRect.pivot = new Vector2(0.5f, 0.5f);
+        slidingAreaRect.anchoredPosition = new Vector2(0, 0);
+        slidingAreaRect.sizeDelta = new Vector2(10, 10);
+        slidingAreaRect.localScale = new Vector3(1, 1, 1);
+
+        handleRect.anchorMin = new Vector2(0, 0);
+        handleRect.anchorMax = new Vector2(0, 0);
+        handleRect.pivot = new Vector2(0.5f, 0.5f);
+        handleRect.anchoredPosition = new Vector2(0, 0);
+        handleRect.sizeDelta = new Vector2(-10, -10);
+        handleRect.localScale = new Vector3(1, 1, 1);
+
+        Image scrollbarImage = scrollbarVertical.AddComponent<Image>();
+        Image handleImage = handle.AddComponent<Image>();
+
+        scrollbarImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Dark");
+        scrollbarImage.type = Image.Type.Sliced;
+        scrollbarImage.pixelsPerUnitMultiplier = 40;
+
+        handleImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Grey");
+        handleImage.type = Image.Type.Sliced;
+        handleImage.pixelsPerUnitMultiplier = 40;
+
+        scrollRect.verticalScrollbar = scrollbarVertical.AddComponent<Scrollbar>();
+        scrollRect.verticalScrollbar.direction = Scrollbar.Direction.BottomToTop;
+        scrollRect.verticalScrollbar.targetGraphic = handleImage;
+        scrollRect.verticalScrollbar.handleRect = handleRect;
     }
 
     //This draws a button and allocates a function

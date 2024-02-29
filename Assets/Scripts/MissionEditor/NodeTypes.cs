@@ -2173,16 +2173,23 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options1 = new List<string>();
-        options1.Add("bon_voyage_traitor");
-        options1.Add("death_star");
-        options1.Add("endor_ewok");
+        options1.Add("traitor");
+        options1.Add("deathstar");
+        options1.Add("endor");
         options1.Add("exodus");
-        options1.Add("first_strike");
+        options1.Add("beginning");
         options1.Add("hoth");
         options1.Add("lose");
-        options1.Add("mos_espa");
+        options1.Add("mosespa");
         options1.Add("taloraan");
         options1.Add("win");
+        options1.Add("march01");
+        options1.Add("march02");
+        options1.Add("hope");
+        options1.Add("last");
+        options1.Add("adventure");
+        options1.Add("battle");
+        options1.Add("chase");
         options1.Add("none");
 
         node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "track", "first_strike", 7, 5, drop, 12.5f, 90, 5f);

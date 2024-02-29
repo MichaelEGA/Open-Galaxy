@@ -117,6 +117,12 @@ public static class WindowFunctions
         DrawTextButton(window, 127.5f, -182.5f, 10, 117.5f, "none", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
 
+    //This draws a window that displays the location of all relevant nodes on the map
+    public static void Draw_DisplayLocation(Window window)
+    {
+
+    }
+
     //This draws the load mission window
     public static void Draw_LoadMission(Window window)
     {

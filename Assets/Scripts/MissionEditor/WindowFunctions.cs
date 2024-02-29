@@ -65,6 +65,7 @@ public static class WindowFunctions
         buttonList.Add("preload_setsceneradius");
         buttonList.Add("preload_setskybox");
         buttonList.Add("starteventseries");
+        buttonList.Add("spliteventseries");
         buttonList.Add("activatehyperspace");
         buttonList.Add("changelocation");
         buttonList.Add("clearaioverride");

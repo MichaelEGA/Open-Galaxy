@@ -59,9 +59,8 @@ public class Scene : MonoBehaviour
     [HideInInspector] public bool avoidSmallObjectsRunning;
     [HideInInspector] public bool avoidLargeObjectsRunning;
 
-    [Header("Skybox")]
-    public Material space;
-    public Material sky;
+    [Header("Skyboxes")]
+    public Material[] skyboxes;
 
     [Header("Planet")]
     [HideInInspector] public GameObject planet;

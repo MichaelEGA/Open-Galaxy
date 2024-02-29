@@ -108,9 +108,8 @@ public static class SceneFunctions
         }
 
         scene.hyperspaceTunnelPrefab = Resources.Load("Hyperspace/HyperspaceTunnel") as GameObject;
-        
-        scene.space = Resources.Load("Data/SkyboxAssets/Space") as Material;
-        scene.sky = Resources.Load("Data/SkyboxAssets/Sky") as Material;      
+
+        scene.skyboxes = Resources.LoadAll<Material>("Skyboxes/");    
     }
 
     //This creates the starfield Camera
@@ -1772,22 +1771,29 @@ public static class SceneFunctions
 
     #region skybox
 
-    public static void SetSkybox(string mode)
+    //This sets the skybox
+    public static void SetSkybox(string name, bool stars)
     {
         Scene scene = GetScene();
 
         GameObject starfield = GameObject.Find("starfield");
 
-        if (mode == "sky")
+        if (stars == false)
         {
-            RenderSettings.skybox = scene.sky;
             starfield.layer = LayerMask.NameToLayer("invisible");
-
         }
         else
         {
-            RenderSettings.skybox = scene.space;
             starfield.layer = LayerMask.NameToLayer("starfield");
+        }
+
+        foreach (Material skybox in scene.skyboxes)
+        {
+            if (skybox.name == name)
+            {
+                RenderSettings.skybox = skybox;
+                break;
+            }
         }
     }
     

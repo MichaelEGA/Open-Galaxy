@@ -754,11 +754,24 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options2 = new List<string>();
-        options2.Add("space");
-        options2.Add("sky");
+        List<string> options1 = new List<string>();
+        options1.Add("space_black");
+        options1.Add("space_nebula01");
+        options1.Add("space_nebula02");
+        options1.Add("space_nebula03");
+        options1.Add("sky_blue01");
+        options1.Add("sky_blue02");
+        options1.Add("sky_blue03");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options2, "mode", "space", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "mode", "space", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options2 = new List<string>();
+        options2.Add("true");
+        options2.Add("false");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options2, "stars", "true", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -790,6 +803,55 @@ public static class NodeTypes
         drop -= 15;
 
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_SplitEventSeries(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "spliteventseries", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "spliteventseries", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+
+        drop -= 15;
+
+        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 2", 7, 5);
+
+        drop -= 15;
+
+        node.nextEvent3 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 3", 7, 5);
+
+        drop -= 15;
+
+        node.nextEvent4 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 4", 7, 5);
 
         drop -= 30;
 

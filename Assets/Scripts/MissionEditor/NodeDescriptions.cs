@@ -152,6 +152,17 @@ public static class NodeDescriptions
            "- This node is particulary helpful for creating different series of events for primary and secondary objectives. \n" +
            "- This node is not required for pre-event nodes. \n";
         }
+        else if (name == "spliteventseries")
+        {
+            description =
+           "Split Event Series \n " +
+           "\n " +
+           "This is splits an event series into two, three, or four new event series \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- This node is particulary helpful when you want several events to occur concurrently in response to a specific event. \n" +
+           "- You can have as many event series as you want. \n";
+        }
         else if (name == "activatehyperspace")
         {
             description =

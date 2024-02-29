@@ -61,6 +61,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_StartEventSeries(node);
         }
+        else if (node.nodeType == "spliteventseries")
+        {
+            NodeTypes.Draw_SplitEventSeries(node);
+        }
         else if (node.nodeType == "activatehyperspace")
         {
             NodeTypes.Draw_ActivateHyperspace(node);

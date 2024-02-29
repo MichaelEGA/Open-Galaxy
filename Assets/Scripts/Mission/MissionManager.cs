@@ -5,7 +5,7 @@ using UnityEngine;
 public class MissionManager : MonoBehaviour
 {
     public Scene scene;
-    public int[] eventNo;
+    public List<int> eventNo;
     public float pressedTime;
     public bool unloading;
     public bool running;

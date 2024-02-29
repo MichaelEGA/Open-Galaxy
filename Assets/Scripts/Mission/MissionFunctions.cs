@@ -64,7 +64,7 @@ public static class MissionFunctions
         }
 
         //This sets the skybox to the default space and view distance
-        SceneFunctions.SetSkybox("space");
+        SceneFunctions.SetSkybox("space_black", true);
         RenderSettings.fogEndDistance = 40000;
         RenderSettings.fogStartDistance = 30000;
 
@@ -106,7 +106,7 @@ public static class MissionFunctions
             }
         }
 
-        missionManager.eventNo = new int[eventSeriesTotal];
+        missionManager.eventNo = new List<int>();
 
         //This starts running the event series
         int eventSeriesNo = 0;
@@ -120,6 +120,7 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "starteventseries")
             {
+                missionManager.eventNo.Add(0); //The zero means nothing
                 FindNextEvent(missionEvent.nextEvent1, eventSeriesNo);
                 Task b = new Task(RunEventSeries(mission, eventSeriesNo));
                 missionManager.missionTasks.Add(b);
@@ -327,7 +328,7 @@ public static class MissionFunctions
         }
         else if (missionManager != null)
         {
-            missionManager.eventNo[eventSeries] = 11111;
+            missionManager.eventNo[eventSeries] = 11111; //This code is used to cancel events
         }
     }
 
@@ -335,7 +336,11 @@ public static class MissionFunctions
     public static void RunEvent(MissionEvent missionEvent, int eventSeries)
     {
         //This runs the requested function
-        if (missionEvent.eventType == "activatehyperspace")
+        if (missionEvent.eventType == "spliteventseries")
+        {
+            SplitEventSeries(missionEvent, eventSeries);
+        }
+        else if (missionEvent.eventType == "activatehyperspace")
         {
             ActivateHyperspace(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
@@ -612,6 +617,54 @@ public static class MissionFunctions
     #endregion
 
     #region event functions
+
+    //This splits an event series in two
+    public static void SplitEventSeries(MissionEvent missionEvent, int eventSeries)
+    {
+        MissionManager missionManager = GetMissionManager();
+
+        missionManager.eventNo[eventSeries] = 11111; //This sets the code to cancel the current event series
+
+        int eventSeriesNo = missionManager.eventNo.Count; //This gets new number for the event series so as to not interfere with other event series
+
+        Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
+
+        if (missionEvent.nextEvent1 != "none")
+        {
+            missionManager.eventNo.Add(0); //The zero means nothing
+            FindNextEvent(missionEvent.nextEvent1, eventSeriesNo);
+            Task a = new Task(RunEventSeries(mission, eventSeriesNo));
+            missionManager.missionTasks.Add(a);
+            eventSeriesNo++;
+        }
+
+        if (missionEvent.nextEvent2 != "none")
+        {
+            missionManager.eventNo.Add(0); //The zero means nothing
+            FindNextEvent(missionEvent.nextEvent2, eventSeriesNo);
+            Task a = new Task(RunEventSeries(mission, eventSeriesNo));
+            missionManager.missionTasks.Add(a);
+            eventSeriesNo++;
+        }
+
+        if (missionEvent.nextEvent3 != "none")
+        {
+            missionManager.eventNo.Add(0); //The zero means nothing
+            FindNextEvent(missionEvent.nextEvent3, eventSeriesNo);
+            Task a = new Task(RunEventSeries(mission, eventSeriesNo));
+            missionManager.missionTasks.Add(a);
+            eventSeriesNo++;
+        }
+
+        if (missionEvent.nextEvent4 != "none")
+        {
+            missionManager.eventNo.Add(0); //The zero means nothing
+            FindNextEvent(missionEvent.nextEvent4, eventSeriesNo);
+            Task a = new Task(RunEventSeries(mission, eventSeriesNo));
+            missionManager.missionTasks.Add(a);
+            eventSeriesNo++;
+        }
+    }
 
     //This causes the designated ships to jump to hyperspace
     public static void ActivateHyperspace(MissionEvent missionEvent)
@@ -1915,18 +1968,15 @@ public static class MissionFunctions
     //This sets the skybox
     public static void SetSkyBox(MissionEvent missionEvent)
     {
-        SceneFunctions.SetSkybox(missionEvent.data1);
+        string skybox = missionEvent.data1;
+        bool stars = true;
 
-        if (missionEvent.data1 == "sky")
+        if (bool.TryParse(missionEvent.data2, out _))
         {
-            RenderSettings.fogEndDistance = 10000;
-            RenderSettings.fogStartDistance = 5000;
+            stars = bool.Parse(missionEvent.data2);
         }
-        else
-        {
-            RenderSettings.fogEndDistance = 40000;
-            RenderSettings.fogStartDistance = 30000;
-        }
+
+        SceneFunctions.SetSkybox(skybox, stars);
     }
 
     //This tells a ship or ships to move toward a waypoint by position its waypoint and setting its ai override mode

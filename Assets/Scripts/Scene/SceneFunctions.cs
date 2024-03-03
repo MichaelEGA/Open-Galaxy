@@ -670,6 +670,7 @@ public static class SceneFunctions
 
     #region terrain loading
 
+    //This loads the terrain mesh and applies the correct material
     public static void LoadTerrain(string terrainName, string terrainMaterialName, float terrainPosition)
     {
         Scene scene = GetScene();
@@ -735,6 +736,7 @@ public static class SceneFunctions
         }
     }
 
+    //This unloads the terrain mesh
     public static void UnloadTerrain()
     {
         Scene scene = GetScene();

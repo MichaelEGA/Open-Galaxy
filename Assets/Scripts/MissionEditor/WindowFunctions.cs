@@ -137,15 +137,15 @@ public static class WindowFunctions
 
         float drop = -25;
 
-        DrawTextButton(window, 180f, -25f, 10, 65f, "none", "Reload", 7, "none", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 180f, -25f, 10, 65f, "none", "Reload", 7, "DisplayLocations", TextAnchor.MiddleCenter);
 
         drop -= 12.5f;
         
-        DrawTextButton(window, 180f, -37.5f, 10, 65f, "none", "Top Down", 7, "none", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 180f, -37.5f, 10, 65f, "none", "Top Down", 7, "DisplayLocations", TextAnchor.MiddleCenter);
 
         drop -= 12.5f;
 
-        DrawTextButton(window, 180f, -50f, 10, 65f, "none", "Side", 7, "none", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 180f, -50f, 10, 65f, "none", "Side", 7, "DisplayLocations", TextAnchor.MiddleCenter);
 
         drop -= 12.5f;
 
@@ -491,6 +491,10 @@ public static class WindowFunctions
         else if (functionType == "AddNode")
         {
             button.onClick.AddListener(() => { MissionEditorFunctions.AddSelectedNodeType(); });
+        }
+        else if (functionType == "DisplayLocations")
+        {
+            button.onClick.AddListener(() => { DisplayLocations(); });
         }
         else if (functionType == "SelectMissionToLoad")
         {
@@ -1185,6 +1189,74 @@ public static class WindowFunctions
         foreach (Transform caret in carets)
         {
             caret.SetAsLastSibling();
+        }
+    }
+
+    #endregion
+
+    #region Display Location Functions
+
+    //This displays the location of all nodes that utilise a realworld position on the display location window
+    public static void DisplayLocations()
+    {
+        //This gets the mission editor
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        //This gets a list of all the locations and the names of the nodes
+        List<Node> locationNodes = new List<Node>();
+
+        foreach(Node node in missionEditor.nodes)
+        {
+            if (node.nodeType == "preload_loadmultipleshipsonground" ||
+                node.nodeType == "preload_loadsingleship" ||
+                node.nodeType == "preload_loadmultipleships" ||
+                node.nodeType == "loadsingleship" ||
+                node.nodeType == "loadsingleshipatdistanceandanglefromplayer" ||
+                node.nodeType == "loadmultipleships" ||
+                node.nodeType == "setwaypoint" ||
+                node.nodeType == "changelocation")
+            {
+                locationNodes.Add(node);
+            }
+        }
+
+        //This gets the display location window
+        Window displayLocation = null;
+
+        foreach(Window window in missionEditor.windows)
+        {
+            if (window.windowType == "displaylocation")
+            {
+                displayLocation = window;
+            }
+        }
+
+        //This gets the display grid, also its size and length
+        GameObject grid = null;
+        float height = 0;
+        float width = 0;
+
+        if (displayLocation != null)
+        {
+            RawImage rawImage = displayLocation.gameObject.GetComponentInChildren<RawImage>();
+            RectTransform gridRectTransform = rawImage.gameObject.GetComponent<RectTransform>();
+            grid = rawImage.gameObject;
+            height = gridRectTransform.sizeDelta.y;
+            width = gridRectTransform.sizeDelta.x;
+        }
+
+        //THIS CODE IS NOT FINALISED
+        if (grid != null )
+        {
+            foreach (Node node in locationNodes)
+            {
+                float yPos = ((height / 15000f) * float.Parse(node.y.text)) - (height/2f);
+                float xPos = ((width / 15000f) * float.Parse(node.x.text)) + (width/2f);
+
+                GameObject locationMarker = new GameObject();
+                locationMarker.transform.SetParent(grid.transform);
+                locationMarker.transform.localPosition = new Vector2(xPos, yPos);
+            }
         }
     }
 

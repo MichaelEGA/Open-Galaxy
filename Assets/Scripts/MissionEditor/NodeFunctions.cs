@@ -49,6 +49,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShips(node);
         }
+        else if (node.nodeType == "preload_setgalaxylocation")
+        {
+            NodeTypes.Draw_PreLoad_SetGalaxyLocation(node);
+        }
         else if (node.nodeType == "preload_setsceneradius")
         {
             NodeTypes.Draw_PreLoad_SetSceneRadius(node);

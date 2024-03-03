@@ -384,13 +384,31 @@ public static class SceneFunctions
     }
 
     //Move starfield camera to planet location
-    public static void MoveStarfieldCamera(Vector3 location)
+    public static void MoveStarfieldCamera(Vector3 coordinates)
     {
+        //This finds the starfield camera
         GameObject starfieldCamera = GameObject.Find("Starfield Camera");
 
+        //This prevents the coordinates being outside the bound of the galaxy
+        if (coordinates.x > 50)
+        {
+            coordinates.x = 50;
+        }
+
+        if (coordinates.y > 25)
+        {
+            coordinates.y = 25;
+        }
+
+        if (coordinates.z > 50)
+        {
+            coordinates.z = 50;
+        }
+
+        //This moves the starfield camera to the designated coordinates
         if (starfieldCamera != null)
         {
-            starfieldCamera.transform.position = location;
+            starfieldCamera.transform.position = coordinates;
         }
     }
 
@@ -552,7 +570,7 @@ public static class SceneFunctions
     }
 
     //This returns the data of a specific location
-    public static (string planet, string type, Vector3 location, int seed, string allegiance, string region, string sector) FindLocation(string name)
+    public static (string planet, string type, Vector3 location, int seed, string allegiance, string region, string sector, bool wasFound) FindLocation(string name)
     {
         LoadScreenFunctions.AddLogToLoadingScreen("Searching for planet data.", 0, false);
 
@@ -563,6 +581,7 @@ public static class SceneFunctions
         string allegiance = "none";
         string region = "none";
         string sector = "none";
+        bool wasFound = false;
 
         //This loads the Json file
         TextAsset starSystemFile = Resources.Load("Data/Files/StarSystems") as TextAsset;
@@ -585,6 +604,7 @@ public static class SceneFunctions
                 allegiance = starSystem.faction;
                 region = starSystem.Region;
                 sector = starSystem.Sector;
+                wasFound = true;
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet Data Found.", 0, false);
                 break;
             }
@@ -611,9 +631,10 @@ public static class SceneFunctions
             allegiance = starSystem.faction;
             region = starSystem.Region;
             sector = starSystem.Sector;
+            wasFound = false;
         }
 
-        return (planet, type, location, seed, allegiance, region, sector);
+        return (planet, type, location, seed, allegiance, region, sector, wasFound);
     }
 
     //This ensures the planet does not hit any actual in scene objects

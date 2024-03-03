@@ -66,6 +66,7 @@ public static class WindowFunctions
         buttonList.Add("preload_loadmultipleshipsonground");
         buttonList.Add("preload_loadsingleship");
         buttonList.Add("preload_loadmultipleships");
+        buttonList.Add("preload_setgalaxylocation");
         buttonList.Add("preload_setsceneradius");
         buttonList.Add("preload_setskybox");
         buttonList.Add("starteventseries");

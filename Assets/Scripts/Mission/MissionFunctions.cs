@@ -68,12 +68,17 @@ public static class MissionFunctions
         RenderSettings.fogEndDistance = 40000;
         RenderSettings.fogStartDistance = 30000;
 
+        //This sets the default camera location in the starfield
+        SetGalaxyLocationToCenter();
+
         //This finds and sets the first location
         MissionEvent firstLocationNode = FindFirstLocationNode(mission);
-        SetGalaxyLocation(firstLocationNode);
 
         //This finds all the location you can jump to in the mission
         FindAllLocations(mission);
+
+        //This sets the current location
+        scene.currentLocation = firstLocationNode.conditionLocation;
 
         //This runs all the preload events like loading the planet and asteroids and objects already in scene
         Task a = new Task(FindAndRunPreLoadEvents(mission, firstLocationNode.conditionLocation, time, true));
@@ -196,31 +201,32 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
             {
-                    Task a = new Task(LoadAsteroids(missionEvent));
-                    while (a.Running == true) { yield return null; }
-                    LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);             
+                Task a = new Task(LoadAsteroids(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);             
             }
             else if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
             {
-                    LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
-                    LoadPlanet(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);            
+                LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
+                LoadPlanet(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);            
             }
             else if (missionEvent.eventType == "preload_loadterrain" & missionEvent.conditionLocation == location)
             {
-                    LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain...", Time.unscaledTime - time);
-                    Task a = new Task(LoadTerrain(missionEvent));
-                    while (a.Running == true) { yield return null; }
-                    LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", Time.unscaledTime - time);             
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain...", Time.unscaledTime - time);
+                Task a = new Task(LoadTerrain(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", Time.unscaledTime - time);             
             }
             else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
-                    Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
-                    while (a.Running == true) { yield return null; }
-                    LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", Time.unscaledTime - time);  
+                Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", Time.unscaledTime - time);  
             }
             else if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
             {
+                //This extra check is run to prevent the game loading the player ship twice
                 if (firstRun == false & missionEvent.data8 == "false" || firstRun == false & missionEvent.data8 == "none" || firstRun == true)
                 {
                     LoadSingleShip(missionEvent);
@@ -229,19 +235,24 @@ public static class MissionFunctions
             }
             else if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
             {           
-                    Task a = new Task(LoadMultipleShips(missionEvent));
-                    while (a.Running == true) { yield return null; }
-                    LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);                 
+                Task a = new Task(LoadMultipleShips(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);                 
+            }
+            else if (missionEvent.eventType == "preload_setgalaxylocation" & missionEvent.conditionLocation == location)
+            {
+                SetGalaxyLocation(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Galaxy location set", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_setsceneradius" & missionEvent.conditionLocation == location)
             {        
-                    SetSceneRadius(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", Time.unscaledTime - time);               
+                SetSceneRadius(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", Time.unscaledTime - time);               
             }
             else if (missionEvent.eventType == "preload_setskybox" & missionEvent.conditionLocation == location)
             {      
-                    SetSkyBox(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);          
+                SetSkyBox(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);          
             }
         }
     }
@@ -752,8 +763,8 @@ public static class MissionFunctions
             scene.hyperspaceTunnel.SetActive(true);
         }
 
-        //This changes the ships position in the galaxy
-        SetGalaxyLocation2(missionEvent.data1);
+        //This sets the scene location
+        scene.currentLocation = jumpLocation;
 
         //This finds and loads all 'preload' nodes for the new location
         Task b = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time, false));
@@ -1783,18 +1794,37 @@ public static class MissionFunctions
         }   
     }
 
-    //This sets the galaxy camera position
+    //This sets the galaxy location to the designated coordinates
     public static void SetGalaxyLocation(MissionEvent missionEvent)
     {
         Scene scene = SceneFunctions.GetScene();
 
-        string location = missionEvent.conditionLocation;
+        //This scales the coordinate information
+        float xPos = (missionEvent.x / 15000f) * 50f;
+        float yPos = (missionEvent.y / 15000f) * 25f;
+        float zPos = (missionEvent.z / 15000f) * 50f;
 
-        var planetData = SceneFunctions.FindLocation(location);
-        scene.currentLocation = planetData.planet;
-        scene.planetType = planetData.type;
-        scene.planetSeed = planetData.seed;
-        SceneFunctions.MoveStarfieldCamera(planetData.location);
+        Vector3 coordinates = new Vector3(xPos, yPos, zPos);
+
+        if (missionEvent.data1 != "setcoordinates")
+        {
+            string location = missionEvent.conditionLocation;
+            var planetData = SceneFunctions.FindLocation(location);
+
+            if (planetData.wasFound == true)
+            {
+                coordinates = planetData.location;
+            }
+        }
+
+        SceneFunctions.MoveStarfieldCamera(coordinates);
+    }
+
+    //This sets the galaxy location to the center
+    public static void SetGalaxyLocationToCenter()
+    {
+        Vector3 coordinates = new Vector3(0, 0, 0);
+        SceneFunctions.MoveStarfieldCamera(coordinates);
     }
 
     //This sets an objective for the player to complete, removes an objective, or clears all objectives.
@@ -2203,17 +2233,6 @@ public static class MissionFunctions
         }
 
         return option;
-    }
-
-    //This sets the galaxy camera position
-    public static void SetGalaxyLocation2(string location)
-    {
-        Scene scene = SceneFunctions.GetScene();
-        var planetData = SceneFunctions.FindLocation(location);
-        scene.currentLocation = planetData.planet;
-        scene.planetType = planetData.type;
-        scene.planetSeed = planetData.seed;
-        SceneFunctions.MoveStarfieldCamera(planetData.location);
     }
 
     #endregion

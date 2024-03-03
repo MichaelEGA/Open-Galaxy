@@ -119,6 +119,17 @@ public static class NodeDescriptions
             "- Pattern: linevertical uses height. Width and length are ignored. \n" +
             "- Pattern: randominsidecube uses width, length, height. \n";
         }
+        else if (name == "preload_setgalaxylocation")
+        {
+            description =
+           "Pre-Load Set Galaxy Location \n " +
+           "\n " +
+           "This sets the moves the starfield camera to the designated location in the starfield \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- You can simply type in the name of the planet where you want scene to be i.e. 'Alderaan' and the game will automatically supply the correct location or you can manually enter the coordinates.  \n" +
+           "- The galaxy is 15000 units by width, 15000 units by length, and 15000 units by height. So the coordinates you enter will need to be smaller than this. \n";
+        }
         else if (name == "preload_setsceneradius")
         {
             description =

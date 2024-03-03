@@ -128,6 +128,7 @@ public static class NodeDescriptions
            "\n " +
            "Extra Information \n" +
            "- You can simply type in the name of the planet where you want scene to be i.e. 'Alderaan' and the game will automatically supply the correct location or you can manually enter the coordinates.  \n" +
+           "- If you use the 'search' mode you don't need to enter any coordinates. Open Galaxy will autmotically supply the correct coordinates if the planet exists. \n" +
            "- The galaxy is 15000 units by width, 15000 units by length, and 15000 units by height. So the coordinates you enter will need to be smaller than this. \n";
         }
         else if (name == "preload_setsceneradius")

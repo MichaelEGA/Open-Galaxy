@@ -398,7 +398,6 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("SetEditorWindowMode", new System.Action<string>(SetEditorWindowMode));
         mainMenu.functions.Add("ToggleDebugging", new System.Action<string>(ToggleDebugging));
         mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
-        mainMenu.functions.Add("ChangePlanetTextureResolution", new System.Action<string>(ChangePlanetTextureResolution));
         mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
         mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
         mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
@@ -839,13 +838,13 @@ public static class MainMenuFunctions
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
     {
         string[] messages = new string[10];
-        messages[0] = "Welcome to Open Galaxy. Version 1.0.5 brings new missions, terrain loading, and an updated menu.";
+        messages[0] = "Welcome to Open Galaxy. Version 1.0.5 brings new missions, terrain loading, an updated menu and lots more.";
         messages[1] = "Open Galaxy's aim is to be a platform for X-Wing and Tie Fighter style custom missions.";
-        messages[2] = "Open Galaxy has an inbuilt and easy to use mission editor. Why not try it out?";
+        messages[2] = "All Open Galaxy's missions were created using the inbuilt mission editor.";
         messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";
         messages[4] = "Open Galaxy generates a real Star Wars galaxy with accurately positioned stars and planets.";
-        messages[5] = "You can lower the quality of the planet heightmap for faster loadtimes.";
-        messages[6] = "You can play Open Galaxy with a controller or with Keyboard and Mouse.";
+        messages[5] = "Every ship in Open Galaxy handles a little differently. Adapt your tactics accordingly.";
+        messages[6] = "Open Galaxy is designed for keyboard and mouse but you can use a controller";
         messages[7] = "Check out the credits to see who made Open Galaxy possible.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
         messages[9] = "Post 2.0 plans for Open Galaxy formation flying, ion cannons and a lot more missions";
@@ -897,20 +896,6 @@ public static class MainMenuFunctions
         missionEditor.SetActive(true);
 
         PlayBackgroundMusic(false);
-    }
-    
-    //This changes the heightmap resolution
-    public static void ChangePlanetTextureResolution(string resolution)
-    {
-        OGSettings settings = OGSettingsFunctions.GetSettings();
-
-        settings.heightMapResolution = int.Parse(resolution);
-
-        OGSettingsFunctions.SaveSettingsData();
-
-        ActivateSubMenu("Settings");
-
-        OutputMenuMessage("The planet resolution was set to " + resolution);
     }
 
     //This sets the screen resolution

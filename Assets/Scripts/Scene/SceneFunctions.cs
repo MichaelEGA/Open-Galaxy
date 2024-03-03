@@ -1,13 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using LibNoise;
-using LibNoise.Generator;
-using LibNoise.Operator;
-using UnityEngine.TerrainTools;
-using UnityEngine.TerrainUtils;
 using UnityEngine.InputSystem;
 
 

@@ -401,7 +401,7 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
         mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
         mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
-        mainMenu.functions.Add("OpenWebAddress", new System.Action<string>(OpenWebAddress));
+        mainMenu.functions.Add("OpenWebAddressAndQuit", new System.Action<string>(OpenWebAddressAndQuit));
     }
 
     //This creates all the sub menus of the menu
@@ -1196,9 +1196,12 @@ public static class MainMenuFunctions
     }
 
     //THis opens a website
-    public static void OpenWebAddress(string url)
+    public static void OpenWebAddressAndQuit(string url)
     {
         Application.OpenURL(url);
+
+
+        Application.Quit();
     }
 
     //This outputs a message to the menu

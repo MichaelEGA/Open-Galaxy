@@ -15,6 +15,10 @@ public static class WindowFunctions
         {
             WindowFunctions.Draw_AddNode(window);
         }
+        else if (window.windowType == "displaylocation")
+        {
+            WindowFunctions.Draw_DisplayLocation(window);
+        }
         else if (window.windowType == "loadmission")
         {
             WindowFunctions.Draw_LoadMission(window);
@@ -120,7 +124,42 @@ public static class WindowFunctions
     //This draws a window that displays the location of all relevant nodes on the map
     public static void Draw_DisplayLocation(Window window)
     {
+        DrawWindowBase(window, 250, 200);
 
+        DrawText(window, "Display Location", 8, 5, -5, 12.5f, 90);
+
+        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
+
+        DrawRawImage(window, 5, -25, 170f, 170, "grid");
+
+        float drop = -25;
+
+        DrawTextButton(window, 180f, -25f, 10, 65f, "none", "Reload", 7, "none", TextAnchor.MiddleCenter);
+
+        drop -= 12.5f;
+        
+        DrawTextButton(window, 180f, -37.5f, 10, 65f, "none", "Top Down", 7, "none", TextAnchor.MiddleCenter);
+
+        drop -= 12.5f;
+
+        DrawTextButton(window, 180f, -50f, 10, 65f, "none", "Side", 7, "none", TextAnchor.MiddleCenter);
+
+        drop -= 12.5f;
+
+        List<string> options1 = new List<string>();
+        options1.Add("grid");
+        options1.Add("canyon01");
+        options1.Add("canyon02");
+        options1.Add("cliff01");
+        options1.Add("cliff02");
+        options1.Add("flat01");
+        options1.Add("flat02");
+        options1.Add("mountain01");
+        options1.Add("mountain02");
+
+        DrawDropDownMenuSansLabel(window, options1, "display", "grid", 7, 180f, drop, 10, 65);
     }
 
     //This draws the load mission window
@@ -282,6 +321,60 @@ public static class WindowFunctions
         }
 
         lineBreakGO.name = "linebreak";
+    }
+
+    //This draws a button and allocates a function
+    public static void DrawImage(Window window, float xPos, float yPos, float height, float width, string imageName, bool parentToNode = true, Transform differentTransform = null)
+    {
+        GameObject imageGO = new GameObject();
+        imageGO.name = "Button_" + imageName;
+
+        if (parentToNode == true)
+        {
+            imageGO.transform.SetParent(window.rectTransform.transform);
+        }
+        else
+        {
+            imageGO.transform.SetParent(differentTransform);
+        }
+
+        RectTransform rectTransform = imageGO.AddComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform.sizeDelta = new Vector2(width, height);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Image image = imageGO.AddComponent<Image>();
+        image.sprite = Resources.Load<Sprite>("Data/EditorAssets/" + imageName);
+    }
+
+    //This draws a button and allocates a function
+    public static void DrawRawImage(Window window, float xPos, float yPos, float height, float width, string imageName, bool parentToNode = true, Transform differentTransform = null)
+    {
+        GameObject imageGO = new GameObject();
+        imageGO.name = "Button_" + imageName;
+
+        if (parentToNode == true)
+        {
+            imageGO.transform.SetParent(window.rectTransform.transform);
+        }
+        else
+        {
+            imageGO.transform.SetParent(differentTransform);
+        }
+
+        RectTransform rectTransform = imageGO.AddComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform.sizeDelta = new Vector2(width, height);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        RawImage rawimage = imageGO.AddComponent<RawImage>();
+        rawimage.texture = Resources.Load<Texture2D>("Data/EditorAssets/" + imageName);
     }
 
     //This draws a button and allocates a function
@@ -930,6 +1023,155 @@ public static class WindowFunctions
         ModifyCaretPosition(window);
 
         return transitionText;
+    }
+
+    //This draws a drop down box
+    public static Text DrawDropDownMenuSansLabel(Window window, List<string> options, string label, string startvalue, int fontSize, float xPos, float yPos, float height, float width)
+    {
+        //This draws the background of the input field
+        GameObject dropdownGO = new GameObject();
+        dropdownGO.name = "DropDown_" + label;
+
+        dropdownGO.transform.SetParent(window.rectTransform.transform);
+        RectTransform rectTransform3 = dropdownGO.AddComponent<RectTransform>();
+        rectTransform3.anchorMax = new Vector2(0, 1);
+        rectTransform3.anchorMin = new Vector2(0, 1);
+        rectTransform3.pivot = new Vector2(0, 1);
+        rectTransform3.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform3.sizeDelta = new Vector2(width, height);
+        rectTransform3.localScale = new Vector3(1, 1, 1);
+
+        Image inputFieldImage = dropdownGO.AddComponent<Image>();
+        inputFieldImage.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Grey");
+        inputFieldImage.type = Image.Type.Sliced;
+        inputFieldImage.pixelsPerUnitMultiplier = 30;
+
+        //This draws the input field
+        GameObject labelGO = new GameObject();
+        labelGO.name = "LabelGO_" + label;
+
+        labelGO.transform.SetParent(window.rectTransform.transform);
+        RectTransform rectTransform = labelGO.AddComponent<RectTransform>();
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform.sizeDelta = new Vector2(width - 2, height);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        Text captionText = labelGO.AddComponent<Text>();
+        captionText.supportRichText = false;
+        captionText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        captionText.text = startvalue;
+        captionText.fontSize = fontSize;
+        captionText.color = Color.white;
+        captionText.alignment = TextAnchor.MiddleCenter;
+
+        //This draws the template item
+        GameObject templateGO = new GameObject();
+        GameObject viewportGO = new GameObject();
+        GameObject contentGO = new GameObject();
+        GameObject itemGO = new GameObject();
+        GameObject itemLabelGO = new GameObject();
+
+        labelGO.name = "Label";
+        templateGO.name = "Template";
+        viewportGO.name = "Viewport";
+        contentGO.name = "Content";
+        itemGO.name = "Item";
+        itemLabelGO.name = "Item Label";
+
+        templateGO.transform.SetParent(dropdownGO.transform);
+        labelGO.transform.SetParent(dropdownGO.transform);
+        viewportGO.transform.SetParent(templateGO.transform);
+        contentGO.transform.SetParent(viewportGO.transform);
+        itemGO.transform.SetParent(contentGO.transform);
+        itemLabelGO.transform.SetParent(itemGO.transform);
+
+        RectTransform templateRectTransform = templateGO.AddComponent<RectTransform>();
+        RectTransform viewportRectTransform = viewportGO.AddComponent<RectTransform>();
+        RectTransform contentRectTransform = contentGO.AddComponent<RectTransform>();
+        RectTransform itemRectTransform = itemGO.AddComponent<RectTransform>();
+        RectTransform itemLabelRectTransform = itemLabelGO.AddComponent<RectTransform>();
+
+        viewportGO.AddComponent<RectMask2D>();
+
+        itemGO.AddComponent<Toggle>();
+
+        float totalHeight = height * options.Count;
+
+        //If the total height is larger than 100 the size is restricted to 100 and a scrollrect is added
+        if (totalHeight > 100)
+        {
+            totalHeight = 100;
+
+            ScrollRect scrollRect = templateGO.AddComponent<ScrollRect>();
+            scrollRect.viewport = viewportRectTransform;
+            scrollRect.content = contentRectTransform;
+            scrollRect.movementType = ScrollRect.MovementType.Clamped;
+            scrollRect.horizontal = false;
+
+            DrawVerticalScrollBar(templateGO.transform, scrollRect, 3);
+        }
+
+        templateRectTransform.anchorMax = new Vector2(0, 1);
+        templateRectTransform.anchorMin = new Vector2(0, 1);
+        templateRectTransform.pivot = new Vector2(0, 1);
+        templateRectTransform.anchoredPosition = new Vector2(0, -height);
+        templateRectTransform.sizeDelta = new Vector2(width, totalHeight);
+        templateRectTransform.localScale = new Vector3(1, 1, 1);
+
+        viewportRectTransform.anchorMax = new Vector2(0, 1);
+        viewportRectTransform.anchorMin = new Vector2(0, 1);
+        viewportRectTransform.pivot = new Vector2(0, 1);
+        viewportRectTransform.anchoredPosition = new Vector2(0, 0);
+        viewportRectTransform.sizeDelta = new Vector2(width - 2, totalHeight);
+        viewportRectTransform.localScale = new Vector3(1, 1, 1);
+
+        contentRectTransform.anchorMax = new Vector2(0, 1);
+        contentRectTransform.anchorMin = new Vector2(0, 1);
+        contentRectTransform.pivot = new Vector2(0, 1);
+        contentRectTransform.anchoredPosition = new Vector2(0, 0);
+        contentRectTransform.sizeDelta = new Vector2(width - 2, height);
+        contentRectTransform.localScale = new Vector3(1, 1, 1);
+
+        itemRectTransform.anchorMax = new Vector2(0, 1);
+        itemRectTransform.anchorMin = new Vector2(0, 1);
+        itemRectTransform.pivot = new Vector2(0, 1);
+        itemRectTransform.anchoredPosition = new Vector2(0, 0);
+        itemRectTransform.sizeDelta = new Vector2(width - 2, height);
+        itemRectTransform.localScale = new Vector3(1, 1, 1);
+
+        itemLabelRectTransform.anchorMax = new Vector2(0, 1);
+        itemLabelRectTransform.anchorMin = new Vector2(0, 1);
+        itemLabelRectTransform.pivot = new Vector2(0, 1);
+        itemLabelRectTransform.anchoredPosition = new Vector2(1, 0);
+        itemLabelRectTransform.sizeDelta = new Vector2(width - 2, height);
+        itemLabelRectTransform.localScale = new Vector3(1, 1, 1);
+
+        Text templateText = itemLabelGO.AddComponent<Text>();
+        templateText.supportRichText = false;
+        templateText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        templateText.text = startvalue;
+        templateText.fontSize = fontSize;
+        templateText.color = Color.white;
+        templateText.alignment = TextAnchor.MiddleCenter;
+
+        Image templateBackground = templateGO.AddComponent<Image>();
+        templateBackground.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Grey");
+        templateBackground.type = Image.Type.Sliced;
+        templateBackground.pixelsPerUnitMultiplier = 30;
+
+        templateGO.SetActive(false);
+
+        //This adds the drop down component
+        Dropdown dropdown = dropdownGO.AddComponent<Dropdown>();
+        dropdown.captionText = captionText;
+        dropdown.itemText = templateText;
+        dropdown.template = templateRectTransform;
+        dropdown.AddOptions(options);
+
+        return captionText;
     }
 
     //This modifies the caret position to ensure its on top

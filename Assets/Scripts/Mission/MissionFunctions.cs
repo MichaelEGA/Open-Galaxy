@@ -203,8 +203,7 @@ public static class MissionFunctions
             else if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
             {
                     LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
-                    Task a = new Task(LoadPlanet());
-                    while (a.Running == true) { yield return null; }
+                    LoadPlanet(missionEvent);
                     LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);            
             }
             else if (missionEvent.eventType == "preload_loadterrain" & missionEvent.conditionLocation == location)
@@ -1273,12 +1272,31 @@ public static class MissionFunctions
     }
 
     //This loads a planet in the scene
-    public static IEnumerator LoadPlanet()
+    public static void LoadPlanet(MissionEvent missionEvent)
     {
+        float planetRotationX = missionEvent.x;
+        float planetRotationY = missionEvent.y;
+        float planetRotationZ = missionEvent.z;
+
+        float pivotRotationX = missionEvent.xRotation;
+        float pivotRotationY = missionEvent.yRotation;
+        float pivotRotationZ = missionEvent.zRotation;
+
+        string planetType = missionEvent.data2;
+        string cloudsType = missionEvent.data3;
+        string atmosphereType = missionEvent.data4;
+        string ringsType = missionEvent.data5;
+
+        float distance = 50;
+
+        if (float.TryParse(missionEvent.data1, out _))
+        {
+            distance = float.Parse(missionEvent.data1);
+        }
+
         Scene scene = SceneFunctions.GetScene();
-        Task a = new Task(SceneFunctions.GeneratePlanet(scene.planetType, scene.planetSeed));
-        while (a.Running == true) { yield return null; }
-        SceneFunctions.SetPlanetDistance(scene.planetSeed);
+
+        SceneFunctions.GeneratePlanet(planetType, cloudsType, atmosphereType, ringsType, distance, planetRotationX, planetRotationY, planetRotationZ, pivotRotationX, pivotRotationY, pivotRotationZ);
     }
 
     //This loads a single ship by name

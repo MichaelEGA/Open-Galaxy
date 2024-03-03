@@ -107,6 +107,31 @@ public static class SceneFunctions
             scene.particlePrefabPool = particlePrefabs;
         }
 
+        //This loads the planet materials
+        Object[] planetMaterials = Resources.LoadAll("planet/planetmaterials/", typeof(Material));
+
+        if (planetMaterials != null)
+        {
+            scene.planetMaterialPool = new Material[planetMaterials.Length];
+            scene.planetMaterialPool = planetMaterials;
+        }
+
+        Object[] cloudMaterials = Resources.LoadAll("planet/cloudmaterials/", typeof(Material));
+
+        if (cloudMaterials != null)
+        {
+            scene.cloudMaterialPool = new Material[cloudMaterials.Length];
+            scene.cloudMaterialPool = cloudMaterials;
+        }
+
+        Object[] atmosphereMaterials = Resources.LoadAll("planet/atmospherematerials/", typeof(Material));
+
+        if (atmosphereMaterials != null)
+        {
+            scene.atmosphereMaterialPool = new Material[atmosphereMaterials.Length];
+            scene.atmosphereMaterialPool = atmosphereMaterials;
+        }
+
         scene.hyperspaceTunnelPrefab = Resources.Load("Hyperspace/HyperspaceTunnel") as GameObject;
 
         scene.skyboxes = Resources.LoadAll<Material>("Skyboxes/");    
@@ -390,188 +415,107 @@ public static class SceneFunctions
     #region planet creation
 
     //This generates the planet texture
-    public static IEnumerator GeneratePlanet(string type, int seed)
+    public static void GeneratePlanet(string planetType, string cloudType, string atmosphereType, string ringsType, float distance, float planetXRot, float planetYRot, float planetZRot, float pivotXRot, float pivotYRot, float pivotZRot )
     {
         //This gets key references
         Scene scene = GetScene();
 
-        scene.planet = GameObject.Find("Planet");
-        scene.planetPivot = GameObject.Find("PlanetPivot");
+        scene.centerPivot = GameObject.Find("centerpivot");
 
         IgnoreCollisionWithPlanet();
 
-        if (scene.planet == null)
+        if (scene.centerPivot == null)
         {
-            GameObject planetPrefab = Resources.Load("Planet/Planet") as GameObject;
-            scene.planet = GameObject.Instantiate(planetPrefab);
-            scene.planet.name = "Planet";
+            GameObject planetPrefab = Resources.Load("planet/centerpivot") as GameObject;
+            scene.centerPivot = GameObject.Instantiate(planetPrefab);
+            scene.planetPivot = GameObject.Find("planetpivot");
+            scene.planet = GameObject.Find("planet");
+            scene.clouds = GameObject.Find("clouds");
+            scene.atmosphere = GameObject.Find("atmosphere");
+            scene.rings = GameObject.Find("rings");
         }
 
-        if (scene.planetPivot == null)
-        {
-            scene.planetPivot = new GameObject();
-            scene.planetPivot.name = "PlanetPivot";
-        }
-
-        scene.planet.transform.SetParent(scene.planetPivot.transform);
-
-        GameObject atmosphere = GameObject.Find("Atmosphere");
         Renderer planetRenderer = scene.planet.GetComponent<Renderer>();
-        Material planetMaterial = planetRenderer.sharedMaterial;
+        Renderer cloudRenderer = scene.clouds.GetComponent<Renderer>();
+        Renderer atmosphereRenderer = scene.atmosphere.GetComponent<Renderer>();
+        Renderer ringsRenderer = scene.rings.GetComponent<Renderer>();
 
-        Random.InitState(seed);
-
-        //This sets the input for libnoise
-        float baseflatFrequency = 2.0f;
-        float flatScale = 0.125f;
-        float flatBias = -0.25f;
-        float terraintypeFrequency = Random.Range(0.25f, 1f); //0.5f;
-        float terraintypePersistence = 0.25f;
-        float terrainSelectorEdgeFalloff = 0.125f;
-        float finalterrainFrequency = 4.0f * Random.Range(1.0f, 2.0f);
-        float finalterrainPower = 0.125f * Random.Range(0.5f, 1.5f);
-
-        //This combines all the different libnoise modules/effects needed to create the hightmap
-        RidgedMultifractal mountainTerrain = new RidgedMultifractal();
-
-        Billow baseFlatTerrain = new Billow();
-        baseFlatTerrain.Frequency = baseflatFrequency;
-        baseFlatTerrain.Seed = seed;
-
-        ScaleBias flatTerrain = new ScaleBias(flatScale, flatBias, baseFlatTerrain);
-
-        Perlin terrainType = new Perlin();
-        terrainType.Frequency = terraintypeFrequency;
-        terrainType.Persistence = terraintypePersistence;
-        terrainType.Seed = seed;
-
-        Select terrainSelector = new Select(flatTerrain, mountainTerrain, terrainType);
-        terrainSelector.SetBounds(0.0, 1000.0);
-        terrainSelector.FallOff = terrainSelectorEdgeFalloff;
-
-        float controlPointNumber = Random.Range(0, 15);
-        Terrace terraceTerrain = new Terrace(terrainSelector);
-        terraceTerrain.Add(-1f);
-        terraceTerrain.Add(1f);
-
-        while (controlPointNumber > 0)
+        //This disables/enables gameobjects
+        if (cloudType == "none")
         {
-            terraceTerrain.Add(Random.Range(-0.99f, 0.99f));
-            controlPointNumber = controlPointNumber - 1;
+            scene.clouds.SetActive(false);
+        }
+        else
+        {
+            scene.clouds.SetActive(true);
         }
 
-        Turbulence finalTerrain = new Turbulence(terraceTerrain);
-        finalTerrain.Frequency = finalterrainFrequency;
-        finalTerrain.Power = finalterrainPower;
-        finalTerrain.Seed = seed;
-
-        ModuleBase myModule;
-        myModule = finalTerrain;
-
-        //This sets the heightmap resolution according to the player settings
-        OGSettings settings = OGSettingsFunctions.GetSettings();
-
-        int mapSize = settings.heightMapResolution;
-
-        Noise2D heightMap = new Noise2D(mapSize, mapSize, myModule);
-
-        //This actually generates the map
-        Task a = new Task(heightMap.GenerateSpherical(90, -90, -180, 180, 1, false));
-        while (a.Running == true) { yield return new WaitForEndOfFrame(); }
-
-        //This outputs the libnoise result to the planet material use a greyscale preset
-        Gradient grayscale = GradientPresets.Grayscale;
-        Task b = new Task(heightMap.GetTexture(grayscale, planetRenderer));
-        while (b.Running == true) { yield return new WaitForEndOfFrame(); }
-
-        //This loads the planet type data
-        TextAsset planetTypesFile = Resources.Load("Data/Files/PlanetTypes") as TextAsset;
-        PlanetTypes planetTypes = JsonUtility.FromJson<PlanetTypes>(planetTypesFile.text);
-
-        //This applies the planet type date to the material
-        foreach (PlanetType planetTypeTemp in planetTypes.planetTypesData)
+        if (ringsType == "none")
         {
-            if (planetTypeTemp.planetType == type)
+            scene.rings.SetActive(false);
+        }
+        else
+        {
+            scene.rings.SetActive(true);
+        }
+
+        //Set materials
+        if (planetRenderer != null)
+        {
+            foreach (Object planetMaterial in scene.planetMaterialPool)
             {
-                Texture2D terrainTexture = Resources.Load<Texture2D>("Data/PlanetAssets/Textures/" + planetTypeTemp.terrainTexture);
-                Texture2D waterTexture = Resources.Load<Texture2D>("Data/PlanetAssets/Textures/" + planetTypeTemp.waterTexture);
-                Texture2D lightsTexture = Resources.Load<Texture2D>("Data/PlanetAssets/Textures/" + planetTypeTemp.lightsTexture);
-
-                Color lightsColor = new Color(255f, 255f, 255f);
-                ColorUtility.TryParseHtmlString(planetTypeTemp.lightsColor, out lightsColor);
-
-                Color depthsColor = new Color(255f, 255f, 255f);
-                ColorUtility.TryParseHtmlString(planetTypeTemp.depthsColor, out depthsColor);
-
-                Color shallowsColor = new Color(255f, 255f, 255f);
-                ColorUtility.TryParseHtmlString(planetTypeTemp.shallowsColor, out shallowsColor);
-
-                Color shoreColor = new Color(255f, 255f, 255f);
-                ColorUtility.TryParseHtmlString(planetTypeTemp.shoreColor, out shoreColor);
-
-                Color sandColor = new Color(255f, 255f, 255f);
-                ColorUtility.TryParseHtmlString(planetTypeTemp.sandColor, out sandColor);
-
-                Color grassColor = new Color(255f, 255f, 255f);
-                ColorUtility.TryParseHtmlString(planetTypeTemp.grassColor, out grassColor);
-
-                Color dirtColor = new Color(255f, 255f, 255f);
-                ColorUtility.TryParseHtmlString(planetTypeTemp.dirtColor, out dirtColor);
-
-                Color rockColor = new Color(255f, 255f, 255f);
-                ColorUtility.TryParseHtmlString(planetTypeTemp.rockColor, out rockColor);
-
-                Color snowColor = new Color(255f, 255f, 255f);
-                ColorUtility.TryParseHtmlString(planetTypeTemp.snowColor, out snowColor);
-
-                Color atmosphereColor = new Color(255f, 255f, 255f);
-                ColorUtility.TryParseHtmlString(planetTypeTemp.atmosphereColor, out atmosphereColor);
-
-                //This applies all the material settings on the planet
-                planetMaterial.SetTexture("_Terrain_Texture", terrainTexture);
-                planetMaterial.SetTexture("_Water_Texture", waterTexture);
-
-                planetMaterial.SetFloat("_Terrain_Scale", planetTypeTemp.terrainScale);
-                planetMaterial.SetFloat("_Water_Scale", planetTypeTemp.waterScale);
-                planetMaterial.SetFloat("_Terrain_Smoothness", planetTypeTemp.terrainSmoothness);
-                planetMaterial.SetFloat("_Water_Smoothness", planetTypeTemp.waterSmoothness);
-                planetMaterial.SetFloat("_Terrain_Metallic", planetTypeTemp.terrainMetallic);
-                planetMaterial.SetFloat("_Water_Metallic", planetTypeTemp.waterMetallic);
-                planetMaterial.SetFloat("_Water_Speed", planetTypeTemp.waterSpeed);
-
-                planetMaterial.SetTexture("_Lights_Texture", lightsTexture);
-
-                planetMaterial.SetFloat("_Lights", planetTypeTemp.lights);
-                planetMaterial.SetFloat("_Lights_Height", planetTypeTemp.lightsHeight);
-                planetMaterial.SetColor("_Lights_Color", lightsColor);
-                planetMaterial.SetFloat("_Lights_Scale", planetTypeTemp.lightsScale);
-                planetMaterial.SetFloat("_Lights_Visibility", planetTypeTemp.lightsVisibility);
-
-                planetMaterial.SetFloat("_Depths_Height", planetTypeTemp.depthsHeight);
-                planetMaterial.SetFloat("_Shallows_Height", planetTypeTemp.shallowsHeight);
-                planetMaterial.SetFloat("_Shore_Height", planetTypeTemp.shoreHeight);
-                planetMaterial.SetFloat("_Sand_Height", planetTypeTemp.sandHeight);
-                planetMaterial.SetFloat("_Grass_Height", planetTypeTemp.grassHeight);
-                planetMaterial.SetFloat("_Dirt_Height", planetTypeTemp.dirtHeight);
-                planetMaterial.SetFloat("_Rock_Height", planetTypeTemp.rockHeight);
-                planetMaterial.SetFloat("_Snow_Height", planetTypeTemp.snowHeight);
-
-                planetRenderer.material.SetColor("_Depths_Color", depthsColor);
-                planetRenderer.material.SetColor("_Shallows_Color", shallowsColor);
-                planetRenderer.material.SetColor("_Shore_Color", shoreColor);
-                planetRenderer.material.SetColor("_Sand_Color", sandColor);
-                planetRenderer.material.SetColor("_Grass_Color", grassColor);
-                planetRenderer.material.SetColor("_Dirt_Color", dirtColor);
-                planetRenderer.material.SetColor("_Rock_Color", rockColor);
-                planetRenderer.material.SetColor("_Snow_Color", snowColor);
-
-                //This changes the material settings on the atompshere
-                Renderer atmosphereRenderer = atmosphere.GetComponent<Renderer>();
-                atmosphereRenderer.material.EnableKeyword("_EMISSION");
-                atmosphereRenderer.material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
-                atmosphereRenderer.material.SetColor("_EmissionColor", atmosphereColor * 8);
+                if (planetMaterial.name == planetType)
+                {
+                    planetRenderer.material = (Material)planetMaterial;
+                    break;
+                }
             }
         }
+
+        if (cloudRenderer != null)
+        {
+            foreach (Object cloudMaterial in scene.cloudMaterialPool)
+            {
+                if (cloudMaterial.name == cloudType)
+                {
+                    cloudRenderer.material = (Material)cloudMaterial;
+                    break;
+                }
+            }
+        }
+        
+        if (atmosphereRenderer != null)
+        {
+            foreach (Object atmosphereMaterial in scene.atmosphereMaterialPool)
+            {
+                if (atmosphereMaterial.name == atmosphereType)
+                {
+                    atmosphereRenderer.material = (Material)atmosphereMaterial;
+                    break;
+                }
+            }
+        }
+        
+        //Set rotation and distance
+        float actualDistance = (0.6f / 100f) * distance;
+
+        float x = 0.4f + actualDistance;
+        float y = 0;
+        float z = 0.4f + actualDistance;
+
+        scene.planetPivot.transform.localPosition = new Vector3(x, y, z);
+
+        float xRot = planetXRot;
+        float yRot = planetYRot;
+        float zRot = planetZRot;
+
+        scene.planetPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
+
+        xRot = pivotXRot;
+        yRot = pivotYRot;
+        zRot = pivotZRot;
+
+        scene.centerPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
     }
 
     //This return the name of a random location
@@ -676,35 +620,6 @@ public static class SceneFunctions
         }
 
         return (planet, type, location, seed, allegiance, region, sector);
-    }
-
-    //This sets the distance from the planet
-    public static void SetPlanetDistance(int seed)
-    {
-        GameObject planet = GameObject.Find("Planet");
-        GameObject planetPivot = GameObject.Find("PlanetPivot");
-
-        Random.InitState(seed);
-        float variable = Random.Range(1, 100);
-        float distance = (0.6f / 100f) * variable;
-
-        float x = 0.4f + distance;
-        float y = 0;
-        float z = 0.4f + distance;
-
-        planet.transform.localPosition = new Vector3(x, y, z);
-
-        float xRot = Random.Range(0, 360);
-        float yRot = Random.Range(0, 360);
-        float zRot = Random.Range(0, 360);
-
-        planet.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
-
-        xRot = Random.Range(0, 360);
-        yRot = Random.Range(0, 360);
-        zRot = Random.Range(0, 360);
-
-        planetPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
     }
 
     //This ensures the planet does not hit any actual in scene objects
@@ -1950,14 +1865,9 @@ public static class SceneFunctions
             GameObject.Destroy(scene.cockpit);
         }
 
-        if (scene.planet != null)
+        if (scene.centerPivot != null)
         {
-            GameObject.Destroy(scene.planet);
-        }
-
-        if (scene.planetPivot != null)
-        {
-            GameObject.Destroy(scene.planetPivot);
+            GameObject.Destroy(scene.centerPivot);
         }
     }
 
@@ -1993,9 +1903,9 @@ public static class SceneFunctions
             scene.asteroidPool.Clear();
         }
 
-        if (scene.planetPivot != null)
+        if (scene.centerPivot != null)
         {
-            GameObject.Destroy(scene.planetPivot);
+            GameObject.Destroy(scene.centerPivot);
         }
     }
 

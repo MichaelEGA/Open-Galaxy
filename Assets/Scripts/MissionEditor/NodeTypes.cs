@@ -275,6 +275,82 @@ public static class NodeTypes
 
         node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
 
+        drop -= 15;
+
+        node.x = NodeFunctions.DrawInputField(node, "planetRotX", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.y = NodeFunctions.DrawInputField(node, "planetRotY", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.z = NodeFunctions.DrawInputField(node, "planetRotZ", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.xRotation = NodeFunctions.DrawInputField(node, "pivotXRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.yRotation = NodeFunctions.DrawInputField(node, "pivotYRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.zRotation = NodeFunctions.DrawInputField(node, "pivotZRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "distance", "50", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options1 = new List<string>();
+        options1.Add("city01");
+        options1.Add("desert01");
+        options1.Add("gas01");
+        options1.Add("gas02");
+        options1.Add("gas03");
+        options1.Add("gas04");
+        options1.Add("gas05");
+        options1.Add("habitable01");
+        options1.Add("habitable02");
+        options1.Add("habitable03");
+        options1.Add("rock01");
+        options1.Add("rock02");
+        options1.Add("rock03");
+        options1.Add("rock04");
+        options1.Add("rock05");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "planet", "habitable01", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options2 = new List<string>();
+        options2.Add("none");
+        options2.Add("clouds01");
+        options2.Add("clouds02");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "clouds", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options3 = new List<string>();
+        options3.Add("blue01");
+        options3.Add("orange01");
+        options3.Add("red01");
+        options3.Add("white01");
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "atmosphere", "blue", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("none");
+        options4.Add("ring01");
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options4, "rings", "none", 7, 5, drop, 12.5f, 90, 5f);
+
         drop -= 30;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));

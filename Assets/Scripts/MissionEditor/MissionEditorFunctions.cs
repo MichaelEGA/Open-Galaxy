@@ -188,9 +188,11 @@ public static class MissionEditorFunctions
 
         List<string> addEvent_Buttons = new List<string>();
         addEvent_Buttons.Add(spaces + "Add New Event");
+        addEvent_Buttons.Add(spaces + "Display Location");
 
         List<string> addEvent_Functions = new List<string>();
         addEvent_Functions.Add("OpenAddNewEvent");
+        addEvent_Functions.Add("OpenDisplayLocation");
 
         shift += 25;
 
@@ -321,6 +323,10 @@ public static class MissionEditorFunctions
         else if (functionType == "OpenAddNewEvent")
         {
             button.onClick.AddListener(() => { OpenWindow("addnodes"); });
+        }
+        else if (functionType == "OpenDisplayLocation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaylocation"); });
         }
         else if (functionType == "MakeFullscreen")
         {

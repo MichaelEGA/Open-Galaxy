@@ -71,6 +71,4 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
 
     }
 
-
-
 }

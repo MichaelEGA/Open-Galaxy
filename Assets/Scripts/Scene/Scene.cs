@@ -63,8 +63,16 @@ public class Scene : MonoBehaviour
     public Material[] skyboxes;
 
     [Header("Planet")]
-    [HideInInspector] public GameObject planet;
+    [HideInInspector] public GameObject centerPivot;
     [HideInInspector] public GameObject planetPivot;
+    [HideInInspector] public GameObject planet;
+    [HideInInspector] public GameObject clouds;
+    [HideInInspector] public GameObject atmosphere;
+    [HideInInspector] public GameObject rings;
+    [HideInInspector] public Object[] planetMaterialPool;
+    [HideInInspector] public Object[] cloudMaterialPool;
+    [HideInInspector] public Object[] atmosphereMaterialPool;
+    [HideInInspector] public Object[] ringMaterialPool;
 
     [Header("Skybox")]
     public GameObject terrain;

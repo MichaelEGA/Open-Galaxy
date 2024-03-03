@@ -134,7 +134,7 @@ public static class NodeDescriptions
             description =
            "Pre-Load Set Skybox \n " +
            "\n " +
-           "This sets the skybox to space or sky. \n" +
+           "This sets the sky to the designated skybox and can toggle the star field on and off. \n" +
            "\n " +
            "Extra Information \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";

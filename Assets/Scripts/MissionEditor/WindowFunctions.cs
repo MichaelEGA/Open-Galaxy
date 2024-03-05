@@ -138,16 +138,16 @@ public static class WindowFunctions
         DrawRawImage(window, 5, -25, 170f, 170, "grid");
 
         float drop = -25;
-        
-        DrawTextButton(window, 180f, drop, 10, 65f, "none", "Top", 7, "DisplayLocationsTop", TextAnchor.MiddleCenter);
+
+        DrawText(window, "View", 7, 180, drop, 10, 65f, true, null, "topleft", TextAnchor.MiddleCenter);
 
         drop -= 12.5f;
 
-        DrawTextButton(window, 180f, drop, 10, 65f, "none", "Side", 7, "DisplayLocationsSide", TextAnchor.MiddleCenter);
+        List<string> options1 = new List<string>();
+        options1.Add("top");
+        options1.Add("side");
 
-        drop -= 12.5f;
-
-        DrawTextButton(window, 180f, drop, 10, 65f, "none", "Reset", 7, "ResetDisplayLocations", TextAnchor.MiddleCenter);
+        DrawDropDownMenuSansLabel(window, options1, "view", "top", 7, 180f, drop, 10, 65);
 
         drop -= 12.5f;
 
@@ -155,18 +155,29 @@ public static class WindowFunctions
 
         drop -= 12.5f;
 
-        List<string> options1 = new List<string>();
-        options1.Add("none");
-        options1.Add("canyon01");
-        options1.Add("canyon02");
-        options1.Add("cliff01");
-        options1.Add("cliff02");
-        options1.Add("flat01");
-        options1.Add("flat02");
-        options1.Add("mountain01");
-        options1.Add("mountain02");
+        List<string> options2 = new List<string>();
+        options2.Add("none");
+        options2.Add("canyon01");
+        options2.Add("canyon02");
+        options2.Add("cliff01");
+        options2.Add("cliff02");
+        options2.Add("flat01");
+        options2.Add("flat02");
+        options2.Add("mountain01");
+        options2.Add("mountain02");
 
-        DrawDropDownMenuSansLabel(window, options1, "display", "none", 7, 180f, drop, 10, 65);
+        DrawDropDownMenuSansLabel(window, options2, "display", "none", 7, 180f, drop, 10, 65);
+
+        drop -= 12.5f;
+
+        DrawTextButton(window, 180f, drop, 10, 65f, "none", "Update", 7, "UpdateDisplay", TextAnchor.MiddleCenter);
+
+        drop -= 12.5f;
+
+        DrawTextButton(window, 180f, drop, 10, 65f, "none", "Clear", 7, "ClearDisplay", TextAnchor.MiddleCenter);
+
+        //This updates the display for the first time
+        UpdateDisplay();
     }
 
     //This draws the load mission window
@@ -511,17 +522,13 @@ public static class WindowFunctions
         {
             button.onClick.AddListener(() => { MissionEditorFunctions.AddSelectedNodeType(); });
         }
-        else if (functionType == "DisplayLocationsTop")
+        else if (functionType == "ClearDisplay")
         {
-            button.onClick.AddListener(() => { DisplayLocationsTop(); });
+            button.onClick.AddListener(() => { ClearDisplay(); });
         }
-        else if (functionType == "DisplayLocationsSide")
+        else if (functionType == "UpdateDisplay")
         {
-            button.onClick.AddListener(() => { DisplayLocationsSide(); });
-        }
-        else if (functionType == "ResetDisplayLocations")
-        {
-            button.onClick.AddListener(() => { ResetDisplayLocations(); });
+            button.onClick.AddListener(() => { UpdateDisplay(); });
         }
         else if (functionType == "SelectMissionToLoad")
         {
@@ -1215,6 +1222,10 @@ public static class WindowFunctions
         {
             LoadBackgroundImage(dropdown.captionText.text);
         }
+        else if (dropdown.name == "view")
+        {
+            ChangeView(dropdown.captionText.text);
+        }
     }
 
     //This sets the rect transform
@@ -1257,20 +1268,21 @@ public static class WindowFunctions
 
     #region Display Location Functions
 
-    //This displays the location of all nodes top down
-    public static void DisplayLocationsTop()
+    //This toggles the view between top and side based on the selection
+    public static void ChangeView(string mode)
     {
-        DisplayLocations("top");
-    }
-
-    //This displays the location of all nodes side ways
-    public static void DisplayLocationsSide()
-    {
-        DisplayLocations("side");
+        if (mode == "top")
+        {
+            DisplayLocations("top");
+        }
+        else if (mode == "side")
+        {
+            DisplayLocations("side");
+        }
     }
 
     //This resets the display of locations after a change has been made
-    public static void ResetDisplayLocations()
+    public static void UpdateDisplay()
     {
         //This gets the mission editor
         MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
@@ -1402,6 +1414,14 @@ public static class WindowFunctions
                 missionEditor.locationMarkers.Add(locationMarker);
             }
         }
+    }
+
+    //This clears the display
+    public static void ClearDisplay()
+    {
+        DestroyLocationMarkers();
+
+        LoadBackgroundImage("none");
     }
 
     //This destroys all location markers

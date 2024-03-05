@@ -1200,27 +1200,29 @@ public static class SceneFunctions
         }
 
         Vector3[] positions = GetPositions("special_rectanglehorizontal", position, width, length, 0, number, shipsPerLine, positionVariance);
-            
+
         foreach (Vector3 tempPosition in positions)
         {
-            Vector3 raycastPos = new Vector3(tempPosition.x, 2000, tempPosition.z);
+            Vector3 relativePosition = scene.transform.TransformPoint(tempPosition); 
+
+            Vector3 raycastPos = new Vector3(relativePosition.x, 15000, relativePosition.z);
 
             RaycastHit hit;
 
             LayerMask mask = ~0;
 
-            Debug.DrawRay(raycastPos, Vector3.down * 5000, Color.red, 500);
+            Debug.DrawRay(raycastPos, Vector3.down * 30000, Color.red, 500);
 
             //NOTE: Raycasts only work when the time scale is set to zero IF "Auto Sync Transform" is set to true in the project settings
 
-            if (Physics.Raycast(raycastPos, Vector3.down, out hit, 5000, mask))
+            if (Physics.Raycast(raycastPos, Vector3.down, out hit, 30000, mask))
             {
                 Vector3 newPosition = hit.point + new Vector3(0,distanceAboveGround,0);
                 LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, true, true, laserColor);
             }
             else if (ifRaycastFailsStillLoad == true)
             {
-                Vector3 newPosition = new Vector3(tempPosition.x, 0, tempPosition.z);
+                Vector3 newPosition = new Vector3(relativePosition.x, 0, relativePosition.z);
                 LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, true, true, laserColor);
             }
 
@@ -1231,6 +1233,16 @@ public static class SceneFunctions
     //This grabs the locations using the chosen pattern
     public static Vector3[] GetPositions(string pattern, Vector3 position, float width, float length, float height, int shipNumber, int shipsPerLine, float positionVariance)
     {
+        if (shipNumber < 1)
+        {
+            shipNumber = 1;
+        }
+
+        if (shipsPerLine < 1)
+        {
+            shipsPerLine = 1;
+        }
+
         Vector3[] shipPositions = null;
         
         if (pattern == "rectanglehorizontal")
@@ -1265,7 +1277,7 @@ public static class SceneFunctions
         {
             shipPositions = Pattern_RandomInsideCube(position, width, length, height, shipNumber);
         }
-        else if (pattern == "special_randomhorizontal")
+        else if (pattern == "special_rectanglehorizontal")
         {
             shipPositions = SpecialPattern_RectangleHorizontal(position, width, length, shipNumber, shipsPerLine, positionVariance);
         }

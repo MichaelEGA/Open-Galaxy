@@ -133,24 +133,30 @@ public static class WindowFunctions
 
         DrawLineBreak(window, "#808080", 0, -20, 1, 250);
 
+        DrawRawImage(window, 5, -25, 170f, 170, "background"); //Creating the background image first ensures that it is behind the grid
+
         DrawRawImage(window, 5, -25, 170f, 170, "grid");
 
         float drop = -25;
-
-        DrawTextButton(window, 180f, -25f, 10, 65f, "none", "Reload", 7, "DisplayLocations", TextAnchor.MiddleCenter);
-
-        drop -= 12.5f;
         
-        DrawTextButton(window, 180f, -37.5f, 10, 65f, "none", "Top Down", 7, "DisplayLocations", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 180f, drop, 10, 65f, "none", "Top", 7, "DisplayLocationsTop", TextAnchor.MiddleCenter);
 
         drop -= 12.5f;
 
-        DrawTextButton(window, 180f, -50f, 10, 65f, "none", "Side", 7, "DisplayLocations", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 180f, drop, 10, 65f, "none", "Side", 7, "DisplayLocationsSide", TextAnchor.MiddleCenter);
+
+        drop -= 12.5f;
+
+        DrawTextButton(window, 180f, drop, 10, 65f, "none", "Reset", 7, "ResetDisplayLocations", TextAnchor.MiddleCenter);
+
+        drop -= 12.5f;
+
+        DrawText(window, "Background", 7, 180, drop, 10, 65f, true, null, "topleft", TextAnchor.MiddleCenter);
 
         drop -= 12.5f;
 
         List<string> options1 = new List<string>();
-        options1.Add("grid");
+        options1.Add("none");
         options1.Add("canyon01");
         options1.Add("canyon02");
         options1.Add("cliff01");
@@ -160,7 +166,7 @@ public static class WindowFunctions
         options1.Add("mountain01");
         options1.Add("mountain02");
 
-        DrawDropDownMenuSansLabel(window, options1, "display", "grid", 7, 180f, drop, 10, 65);
+        DrawDropDownMenuSansLabel(window, options1, "display", "none", 7, 180f, drop, 10, 65);
     }
 
     //This draws the load mission window
@@ -271,17 +277,23 @@ public static class WindowFunctions
     }
 
     //This draws a title
-    public static void DrawText(Window window, string title, int fontSize, float xPos, float yPos, float height, float width)
+    public static void DrawText(Window window, string title, int fontSize, float xPos, float yPos, float height, float width, bool windowIsParent = true, Transform alternativeParent = null, string alignment = "topleft", TextAnchor textAnchor = TextAnchor.MiddleLeft)
     {
         //This draws the input label
         GameObject titleGO = new GameObject();
         titleGO.name = "Title_" + title;
 
-        titleGO.transform.SetParent(window.rectTransform.transform);
+        if (windowIsParent == true || alternativeParent == null)
+        {
+            titleGO.transform.SetParent(window.rectTransform.transform);
+        }
+        else
+        {
+            titleGO.transform.SetParent(alternativeParent);
+        }
+
         RectTransform rectTransform = titleGO.AddComponent<RectTransform>();
-        rectTransform.anchorMax = new Vector2(0, 1);
-        rectTransform.anchorMin = new Vector2(0, 1);
-        rectTransform.pivot = new Vector2(0, 1);
+        SetRectTransformAlignment(rectTransform, alignment);
         rectTransform.anchoredPosition = new Vector2(xPos, yPos);
         rectTransform.sizeDelta = new Vector2(width, height);
         rectTransform.localScale = new Vector3(1, 1, 1);
@@ -292,7 +304,7 @@ public static class WindowFunctions
         labelText.text = title;
         labelText.fontSize = fontSize;
         labelText.color = Color.white;
-        labelText.alignment = TextAnchor.MiddleLeft;
+        labelText.alignment = textAnchor;
     }
 
     //This draws a line break
@@ -325,7 +337,7 @@ public static class WindowFunctions
     }
 
     //This draws a button and allocates a function
-    public static void DrawImage(Window window, float xPos, float yPos, float height, float width, string imageName, bool parentToNode = true, Transform differentTransform = null)
+    public static void DrawImage(Window window, float xPos, float yPos, float height, float width, string imageName, bool parentToNode = true, Transform differentTransform = null, bool center = false)
     {
         GameObject imageGO = new GameObject();
         imageGO.name = "Button_" + imageName;
@@ -346,6 +358,13 @@ public static class WindowFunctions
         rectTransform.anchoredPosition = new Vector2(xPos, yPos);
         rectTransform.sizeDelta = new Vector2(width, height);
         rectTransform.localScale = new Vector3(1, 1, 1);
+
+        if (center == true)
+        {
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        }
 
         Image image = imageGO.AddComponent<Image>();
         image.sprite = Resources.Load<Sprite>("Data/EditorAssets/" + imageName);
@@ -492,9 +511,17 @@ public static class WindowFunctions
         {
             button.onClick.AddListener(() => { MissionEditorFunctions.AddSelectedNodeType(); });
         }
-        else if (functionType == "DisplayLocations")
+        else if (functionType == "DisplayLocationsTop")
         {
-            button.onClick.AddListener(() => { DisplayLocations(); });
+            button.onClick.AddListener(() => { DisplayLocationsTop(); });
+        }
+        else if (functionType == "DisplayLocationsSide")
+        {
+            button.onClick.AddListener(() => { DisplayLocationsSide(); });
+        }
+        else if (functionType == "ResetDisplayLocations")
+        {
+            button.onClick.AddListener(() => { ResetDisplayLocations(); });
         }
         else if (functionType == "SelectMissionToLoad")
         {
@@ -1171,12 +1198,46 @@ public static class WindowFunctions
 
         //This adds the drop down component
         Dropdown dropdown = dropdownGO.AddComponent<Dropdown>();
+        dropdown.name = label;
         dropdown.captionText = captionText;
         dropdown.itemText = templateText;
         dropdown.template = templateRectTransform;
         dropdown.AddOptions(options);
+        dropdown.onValueChanged.AddListener(delegate { DropDownValueChanged(dropdown); });
 
         return captionText;
+    }
+
+    //This registers a change in the drop box
+    public static void DropDownValueChanged(Dropdown dropdown)
+    {
+        if (dropdown.name == "display")
+        {
+            LoadBackgroundImage(dropdown.captionText.text);
+        }
+    }
+
+    //This sets the rect transform
+    public static void SetRectTransformAlignment(RectTransform rectTransform, string mode)
+    {
+        if (mode == "center")
+        {
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        }
+        else if (mode == "centerleft")
+        {
+            rectTransform.anchorMax = new Vector2(0, 0.5f);
+            rectTransform.anchorMin = new Vector2(0, 0.5f);
+            rectTransform.pivot = new Vector2(0, 0.5f);
+        }
+        else if (mode == "topleft")
+        {
+            rectTransform.anchorMax = new Vector2(0, 1);
+            rectTransform.anchorMin = new Vector2(0, 1);
+            rectTransform.pivot = new Vector2(0, 1);
+        }
     }
 
     //This modifies the caret position to ensure its on top
@@ -1196,11 +1257,38 @@ public static class WindowFunctions
 
     #region Display Location Functions
 
-    //This displays the location of all nodes that utilise a realworld position on the display location window
-    public static void DisplayLocations()
+    //This displays the location of all nodes top down
+    public static void DisplayLocationsTop()
+    {
+        DisplayLocations("top");
+    }
+
+    //This displays the location of all nodes side ways
+    public static void DisplayLocationsSide()
+    {
+        DisplayLocations("side");
+    }
+
+    //This resets the display of locations after a change has been made
+    public static void ResetDisplayLocations()
     {
         //This gets the mission editor
         MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        DisplayLocations(missionEditor.locationdisplaymode);
+    }
+
+    //This displays the location of all nodes that utilise a realworld position on the display location window
+    public static void DisplayLocations(string mode)
+    {
+        //This removes any current location markers
+        DestroyLocationMarkers();
+
+        //This gets the mission editor
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        //This sets the display mode in the mission editor
+        missionEditor.locationdisplaymode = mode;
 
         //This gets a list of all the locations and the names of the nodes
         List<Node> locationNodes = new List<Node>();
@@ -1238,25 +1326,140 @@ public static class WindowFunctions
 
         if (displayLocation != null)
         {
-            RawImage rawImage = displayLocation.gameObject.GetComponentInChildren<RawImage>();
-            RectTransform gridRectTransform = rawImage.gameObject.GetComponent<RectTransform>();
-            grid = rawImage.gameObject;
-            height = gridRectTransform.sizeDelta.y;
-            width = gridRectTransform.sizeDelta.x;
+            RawImage[] rawimages = displayLocation.gameObject.GetComponentsInChildren<RawImage>();
+
+            foreach(RawImage rawImage in rawimages)
+            {
+                if (rawImage.gameObject.name.Contains("grid"))
+                {
+                    RawImage gridRawImage = rawImage;
+                    RectTransform gridRectTransform = gridRawImage.gameObject.GetComponent<RectTransform>();
+                    grid = gridRawImage.gameObject;
+                    height = gridRectTransform.sizeDelta.y;
+                    width = gridRectTransform.sizeDelta.x;
+                    break;
+                }
+            }
         }
 
-        //THIS CODE IS NOT FINALISED
+        //This creates the location nodes
         if (grid != null )
         {
             foreach (Node node in locationNodes)
             {
-                float yPos = ((height / 15000f) * float.Parse(node.y.text)) - (height/2f);
-                float xPos = ((width / 15000f) * float.Parse(node.x.text)) + (width/2f);
+                //This creates the text to go next to the location marker
+                string markerText = "";
 
+                if (node.eventID != null)
+                {
+                    markerText = node.eventID.text;
+                }
+
+                if (node.data2 != null)
+                {
+                    markerText = markerText + " " + node.data2.text;
+                }
+                else if (node.eventType != null)
+                {
+                    markerText = markerText + " " + node.eventType.text;
+                }
+
+                //This calculates the location markers position
+                float xPos = 0;
+                float yPos = 0; 
+
+                if (mode == "top")
+                {
+                    xPos = (((width/2f) / 15000f) * float.Parse(node.x.text));
+                    yPos = (((height/2f) / 15000f) * float.Parse(node.z.text));
+                }
+                else if (mode == "side")
+                {
+                    xPos = (((width/2f) / 15000f) * float.Parse(node.x.text));
+                    yPos = (((height/2f) / 15000f) * float.Parse(node.y.text));
+                }
+
+                //This creates a new location marker and sets its parent
                 GameObject locationMarker = new GameObject();
                 locationMarker.transform.SetParent(grid.transform);
-                locationMarker.transform.localPosition = new Vector2(xPos, yPos);
+
+                //This sets the values of the rect transfrom
+                RectTransform rectTransform = locationMarker.AddComponent<RectTransform>();
+                rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+                rectTransform.sizeDelta = new Vector2(0, 0);
+                rectTransform.localScale = new Vector2(1, 1);
+
+                //This loads the location marker image and the text beside it
+                DrawImage(displayLocation, 0, 0, 10, 10, "target", false, locationMarker.transform, true);
+                DrawText(displayLocation, markerText, 5, 5, 0, 10, 100, false, locationMarker.transform, "centerleft");
+
+                //This adds the location marker to the list
+                if (missionEditor.locationMarkers == null)
+                {
+                    missionEditor.locationMarkers = new List<GameObject>();
+                }
+
+                missionEditor.locationMarkers.Add(locationMarker);
             }
+        }
+    }
+
+    //This destroys all location markers
+    public static void DestroyLocationMarkers()
+    {
+        //This gets the mission editor
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor != null)
+        {
+            if (missionEditor.locationMarkers != null)
+            {
+                foreach (GameObject locationMarker in missionEditor.locationMarkers)
+                {
+                    GameObject.Destroy(locationMarker);
+                }
+
+                missionEditor.locationMarkers.Clear();
+            }
+        }
+    }
+
+    //Load background image
+    public static void LoadBackgroundImage(string image)
+    {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        //This gets the display location window
+        Window displayLocation = null;
+
+        foreach (Window window in missionEditor.windows)
+        {
+            if (window.windowType == "displaylocation")
+            {
+                displayLocation = window;
+            }
+        }
+
+        //This gets the background raw image
+        RawImage background = null;
+
+        if (displayLocation != null)
+        {
+            RawImage[] rawimages = displayLocation.gameObject.GetComponentsInChildren<RawImage>();
+
+            foreach (RawImage rawImage in rawimages)
+            {
+                if (rawImage.gameObject.name.Contains("background"))
+                {
+                    background = rawImage;
+                    break;
+                }
+            }
+        }
+
+        if (background != null)
+        {
+            background.texture = Resources.Load<Texture2D>("Data/EditorAssets/" + image);
         }
     }
 
@@ -1264,11 +1467,13 @@ public static class WindowFunctions
 
     #region Misc Windows Functions
 
+    //This deletes the selected window
     public static void DeleteWindow(Window window)
     {
         GameObject.Destroy(window.gameObject);
     }
 
+    //This gets the current mission list
     public static string[] GetMissionList()
     {
         List<string> buttonList = new List<string>();

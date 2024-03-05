@@ -10,6 +10,7 @@ public class MissionEditor : MonoBehaviour
     public List<Window> windows;
     public List<GameObject> menus;
     public List<NodeLink> nodeLinks;
+    public List<GameObject> locationMarkers;
     public Canvas canvas;
     public RectTransform editorContentRect;
     public RectTransform menuBarRectTransform;
@@ -19,6 +20,7 @@ public class MissionEditor : MonoBehaviour
     public Text messageTextbox;
     public float scale = 1;
     public string gameWindowMode;
+    public string locationdisplaymode = "top";
     public bool scrolling = true;
     public bool menusClosed = true;
     public string selectedNodeTypeToLoad;

@@ -484,20 +484,6 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options3 = new List<string>();
-        options3.Add("rectanglehorizontal");
-        options3.Add("rectanglevertical");
-        options3.Add("arrowhorizontal");
-        options3.Add("arrowhorizontalinverted");
-        options3.Add("linehorizontallongways");
-        options3.Add("linehorizontalsideways");
-        options3.Add("linevertical");
-        options3.Add("randominsidecube");
-
-        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "pattern", "rectanglehorizontal", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
         node.data7 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
@@ -2047,20 +2033,6 @@ public static class NodeTypes
         drop -= 15;
 
         node.data5 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options3 = new List<string>();
-        options3.Add("rectanglehorizontal");
-        options3.Add("rectanglevertical");
-        options3.Add("arrowhorizontal");
-        options3.Add("arrowhorizontalinverted");
-        options3.Add("linehorizontallongways");
-        options3.Add("linehorizontalsideways");
-        options3.Add("linevertical");
-        options3.Add("randominsidecube");
-
-        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "pattern", "rectanglehorizontal", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

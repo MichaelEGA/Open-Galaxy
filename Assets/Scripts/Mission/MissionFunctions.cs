@@ -197,26 +197,47 @@ public static class MissionFunctions
     //This looks for and runs preload events
     public static IEnumerator FindAndRunPreLoadEvents(Mission mission, string location, float time, bool firstRun = false)
     {
+        //This preloads all scene objects first
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-            if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
-            {
-                Task a = new Task(LoadAsteroids(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);             
-            }
-            else if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
+            if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
             {
                 LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
                 LoadPlanet(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);            
+                LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_loadterrain" & missionEvent.conditionLocation == location)
             {
                 LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain...", Time.unscaledTime - time);
                 Task a = new Task(LoadTerrain(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", Time.unscaledTime - time);             
+                LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", Time.unscaledTime - time);
+            }
+            else if (missionEvent.eventType == "preload_setgalaxylocation" & missionEvent.conditionLocation == location)
+            {
+                SetGalaxyLocation(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Galaxy location set", Time.unscaledTime - time);
+            }
+            else if (missionEvent.eventType == "preload_setsceneradius" & missionEvent.conditionLocation == location)
+            {
+                SetSceneRadius(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", Time.unscaledTime - time);
+            }
+            else if (missionEvent.eventType == "preload_setskybox" & missionEvent.conditionLocation == location)
+            {
+                SetSkyBox(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);
+            }
+        }
+
+        //Then this preloads all the objects in the scene
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+            if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
+            {
+                Task a = new Task(LoadAsteroids(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
@@ -238,22 +259,7 @@ public static class MissionFunctions
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);                 
-            }
-            else if (missionEvent.eventType == "preload_setgalaxylocation" & missionEvent.conditionLocation == location)
-            {
-                SetGalaxyLocation(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Galaxy location set", Time.unscaledTime - time);
-            }
-            else if (missionEvent.eventType == "preload_setsceneradius" & missionEvent.conditionLocation == location)
-            {        
-                SetSceneRadius(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", Time.unscaledTime - time);               
-            }
-            else if (missionEvent.eventType == "preload_setskybox" & missionEvent.conditionLocation == location)
-            {      
-                SetSkyBox(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);          
-            }
+            }        
         }
     }
 
@@ -1450,9 +1456,6 @@ public static class MissionFunctions
             number = int.Parse(missionEvent.data5);
         }
 
-        string pattern = "rectanglehorizontal";
-        if (missionEvent.data6 != "none") { pattern = missionEvent.data6; }
-
         float width = 1000;
 
         if (float.TryParse(missionEvent.data7, out _))
@@ -1490,13 +1493,13 @@ public static class MissionFunctions
 
         bool ifRaycastFailsStillLoad = false;
 
-        if (bool.TryParse(missionEvent.data13, out _))
+        if (bool.TryParse(missionEvent.data12, out _))
         {
-            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data13);
+            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data12);
         }
 
         string laserColor = "red";
-        if (missionEvent.data14 != "none") { laserColor = missionEvent.data14; }
+        if (missionEvent.data13 != "none") { laserColor = missionEvent.data13; }
 
         Task c = new Task(SceneFunctions.LoadMultipleShipsOnGround(position, rotation, type, name, allegiance, cargo, number, length, width, distanceAboveGround, shipsPerLine, positionVariance, ifRaycastFailsStillLoad, laserColor));
         while (c.Running == true) { yield return null; }

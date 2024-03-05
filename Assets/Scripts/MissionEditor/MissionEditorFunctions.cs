@@ -441,11 +441,28 @@ public static class MissionEditorFunctions
             missionEditor.windows = new List<Window>();
         }
 
-        GameObject windowGO = new GameObject();
-        windowGO.transform.SetParent(missionEditor.gameObject.transform);
-        Window window = windowGO.AddComponent<Window>();
-        window.windowType = windowName;
-        missionEditor.windows.Add(window);
+        bool open = true;
+
+        foreach(Window tempWindow in missionEditor.windows)
+        {
+            if (tempWindow != null)
+            {
+                if (tempWindow.windowType == windowName)
+                {
+                    open = false;
+                    break;
+                }
+            }
+        }
+
+        if (open == true)
+        {
+            GameObject windowGO = new GameObject();
+            windowGO.transform.SetParent(missionEditor.gameObject.transform);
+            Window window = windowGO.AddComponent<Window>();
+            window.windowType = windowName;
+            missionEditor.windows.Add(window);
+        }
     }
 
     #endregion

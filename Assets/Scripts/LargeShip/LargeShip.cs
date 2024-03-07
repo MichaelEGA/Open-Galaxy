@@ -15,6 +15,7 @@ public class LargeShip : MonoBehaviour
     public bool exitingHyperspace;
     public string cargo = "no cargo";
     public string thrustType = "thruster_blue_large";
+    public string explosionType;
     [HideInInspector] public bool explode;
 
     [Header("Ship Components")]

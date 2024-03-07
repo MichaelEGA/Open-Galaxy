@@ -17,6 +17,7 @@ public class SmallShip : MonoBehaviour
     public bool jumpingToHyperspace;
     public bool exitingHyperspace;
     public string cargo = "no cargo";
+    public string explosionType;
 
     [Header("Ship Components")]
     public Rigidbody shipRigidbody;

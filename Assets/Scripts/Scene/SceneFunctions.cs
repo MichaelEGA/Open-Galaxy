@@ -855,6 +855,7 @@ public static class SceneFunctions
                 smallShip.audioManager = audioManager;
                 smallShip.loadTime = Time.time;
                 smallShip.cargo = cargo;
+                smallShip.explosionType = shipType.explosionType;
                 ship.name = smallShip.name;
 
                 if (smallShip.torpedoNumber == 0)
@@ -922,6 +923,7 @@ public static class SceneFunctions
                 largeShip.shipClass = shipType.shipClass;
                 largeShip.loadTime = Time.time;
                 largeShip.cargo = cargo;
+                largeShip.explosionType = shipType.explosionType;
                 ship.name = largeShip.name;
             }
 

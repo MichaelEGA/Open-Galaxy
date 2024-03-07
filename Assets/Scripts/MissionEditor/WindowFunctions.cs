@@ -1268,28 +1268,6 @@ public static class WindowFunctions
 
     #region Display Location Functions
 
-    //This toggles the view between top and side based on the selection
-    public static void ChangeView(string mode)
-    {
-        if (mode == "top")
-        {
-            DisplayLocations("top");
-        }
-        else if (mode == "side")
-        {
-            DisplayLocations("side");
-        }
-    }
-
-    //This resets the display of locations after a change has been made
-    public static void UpdateDisplay()
-    {
-        //This gets the mission editor
-        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
-
-        DisplayLocations(missionEditor.locationdisplaymode);
-    }
-
     //This displays the location of all nodes that utilise a realworld position on the display location window
     public static void DisplayLocations(string mode)
     {
@@ -1313,6 +1291,7 @@ public static class WindowFunctions
                 node.nodeType == "loadsingleship" ||
                 node.nodeType == "loadsingleshipatdistanceandanglefromplayer" ||
                 node.nodeType == "loadmultipleships" ||
+                node.nodeType == "loadmultipleshipsonground" ||
                 node.nodeType == "setwaypoint" ||
                 node.nodeType == "changelocation")
             {
@@ -1414,6 +1393,28 @@ public static class WindowFunctions
                 missionEditor.locationMarkers.Add(locationMarker);
             }
         }
+    }
+
+    //This toggles the view between top and side based on the selection
+    public static void ChangeView(string mode)
+    {
+        if (mode == "top")
+        {
+            DisplayLocations("top");
+        }
+        else if (mode == "side")
+        {
+            DisplayLocations("side");
+        }
+    }
+
+    //This resets the display of locations after a change has been made
+    public static void UpdateDisplay()
+    {
+        //This gets the mission editor
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        DisplayLocations(missionEditor.locationdisplaymode);
     }
 
     //This clears the display

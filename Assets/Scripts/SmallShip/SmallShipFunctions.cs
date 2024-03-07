@@ -1116,12 +1116,26 @@ public static class SmallShipFunctions
     {
         if (smallShip.hullLevel <= 0 & smallShip.exploded == false || smallShip.hullLevel <= 0 & smallShip.exploded == false & smallShip.isCurrentlyColliding == true)
         {
-            Task a = new Task(ExplosionSequence(smallShip));
-            smallShip.exploded = true;
+            if (smallShip.explosionType == "type1")
+            {
+                Task a = new Task(ExplosionType1(smallShip));
+                smallShip.exploded = true;
+            }
+            else if (smallShip.explosionType == "type2")
+            {
+                ExplosionType2(smallShip);
+                smallShip.exploded = true;
+            }
+            else
+            {
+                Task a = new Task(ExplosionType1(smallShip));
+                smallShip.exploded = true;
+            }
         }
     }
 
-    public static IEnumerator ExplosionSequence(SmallShip smallShip)
+    //Explode after spinning
+    public static IEnumerator ExplosionType1(SmallShip smallShip)
     {
         //Stops listing the ship as targetting another ship
         if (smallShip.target != null)
@@ -1162,6 +1176,38 @@ public static class SmallShipFunctions
             //This deactivates the ship
             DeactivateShip(smallShip);
         } 
+    }
+
+    //Explode straight away
+    public static void ExplosionType2(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
+        {
+            if (smallShip.target.gameObject.activeSelf == true)
+            {
+                if (smallShip.targetSmallShip != null)
+                {
+                    smallShip.targetSmallShip.numberTargeting -= 1;
+                }
+            }
+        }
+
+        if (smallShip.scene == null)
+        {
+            smallShip.scene = SceneFunctions.GetScene();
+        }
+
+        //This creates an explosion where the ship is
+        ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion02", 12);
+
+        //This makes an explosion sound
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
+
+        //This tells the game that the ship has been destroyed
+        HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
+
+        //This deactivates the ship
+        DeactivateShip(smallShip);      
     }
 
     public static IEnumerator ShipSpinSequence(SmallShip smallShip, float time)

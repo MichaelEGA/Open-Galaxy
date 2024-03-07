@@ -346,16 +346,31 @@ public static class LargeShipFunctions
         }
     }
 
+    //This selects and runs the appropriate explosion type
     public static void Explode(LargeShip largeShip)
     {
         if (largeShip.hullLevel <= 0 & largeShip.explode == false)
         {
-            Task a = new Task(ExplosionSequence(largeShip));
-            largeShip.explode = true;
+            if (largeShip.explosionType == "type1")
+            {
+                Task a = new Task(ExplosionType1(largeShip));
+                largeShip.explode = true;
+            }
+            else if (largeShip.explosionType == "type2")
+            {
+                ExplosionType2(largeShip);
+                largeShip.explode = true;
+            }
+            else
+            {
+                Task a = new Task(ExplosionType1(largeShip));
+                largeShip.explode = true;
+            }
         }
     }
 
-    public static IEnumerator ExplosionSequence(LargeShip largeShip)
+    //Multiple small explosions before ship blows up
+    public static IEnumerator ExplosionType1(LargeShip largeShip)
     {
         largeShip.spinShip = true;
 
@@ -402,6 +417,16 @@ public static class LargeShipFunctions
                 DeactivateShip(largeShip);
             }
         }
+    }
+
+    //Ship blows up stright away
+    public static void ExplosionType2(LargeShip largeShip)
+    {
+        ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion02", 1000, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
+
+        HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
+
+        DeactivateShip(largeShip);
     }
 
     public static void DeactivateShip(LargeShip largeShip)

@@ -23,6 +23,7 @@ public class ShipType
     public string engineAudio;
     public string thrustType;
     public string shipClass;
+    public string explosionType;
 }
 
 [System.Serializable]

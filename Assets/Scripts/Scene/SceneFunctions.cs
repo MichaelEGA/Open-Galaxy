@@ -92,6 +92,15 @@ public static class SceneFunctions
             scene.adCockpitPrefabPool = adCockpitPrefabs;
         }
 
+        //This loads the asteroids
+        Object[] asteroidPrefabs = Resources.LoadAll("ObjectPrefabs/asteroids/", typeof(GameObject));
+
+        if (adShipPrefabs != null)
+        {
+            scene.asteroidPrefabPool = new GameObject[asteroidPrefabs.Length];
+            scene.asteroidPrefabPool = asteroidPrefabs;
+        }
+
         //This loads the particle prefabs
         Object[] particlePrefabs = Resources.LoadAll("ParticlePrefabs", typeof(GameObject));
 
@@ -662,9 +671,180 @@ public static class SceneFunctions
 
     #endregion
 
-    #region asteroid field creation
+    #region asteroid loading
 
-    //REMAKE CODE
+    //This loads asteroids 
+    public static IEnumerator LoadAsteroids(float number, Vector3 location, float width, float height, float length, float maxSize, float minSize, string preference = "none", float percentage = 50, int seed = 1138)
+    {
+        Vector3[] positions = GetAsteroidPostions(number, height, width, length, seed);
+        Vector3[] rotations = GetAsteroidRotations(number, seed);
+        float[] sizes = GetAsteroidSizes(number, minSize, maxSize, preference, percentage, seed);
+        int[] asteroidTypes = GetAsteroidTypes(number, seed);
+
+        Scene scene = GetScene();
+
+        GameObject asteroidAnchor = new GameObject();
+        asteroidAnchor.name = "asteroidanchor";
+        asteroidAnchor.transform.SetParent(scene.transform);
+        asteroidAnchor.transform.localPosition = location;
+
+        Vector3 centerPosition = new Vector3(width/2f, height/2f, length/2f);
+
+        for(int i =0; i < positions.Length; i++)
+        {
+            GameObject asteroid = GameObject.Instantiate((GameObject)scene.asteroidPrefabPool[asteroidTypes[i]]);
+            asteroid.transform.SetParent(asteroidAnchor.transform);
+            asteroid.transform.localPosition = positions[i] - centerPosition;
+            asteroid.transform.localScale = new Vector3(sizes[i], sizes[i], sizes[i]);
+            asteroid.transform.rotation = Quaternion.Euler(rotations[i]);
+            asteroid.name = "asteroid";
+
+            if (scene.asteroidPool == null)
+            {
+                scene.asteroidPool = new List<GameObject>();
+            }
+
+            scene.asteroidPool.Add(asteroid);
+            yield return null;
+        }
+    }
+
+    //This gets all the asteroids that can be loaded
+    public static int[] GetAsteroidTypes(float number, int seed)
+    {
+        List<int> asteroidTypes = new List<int>();
+
+        Random.InitState(seed);
+
+        Scene scene = GetScene();
+
+        int asteroidCount = scene.asteroidPrefabPool.Length - 1;
+
+        for (int i = 0; i < number; i++)
+        {
+            int asteroid = Random.Range(0, asteroidCount);
+            asteroidTypes.Add(asteroid);
+        }
+
+        return asteroidTypes.ToArray();
+    }
+
+    //This gets all the rotations of the asteroids
+    public static Vector3[] GetAsteroidRotations(float number, int seed)
+    {
+        List<Vector3> rotations = new List<Vector3>();
+
+        Random.InitState(seed);
+
+        for (int i = 0; i < number; i++)
+        {
+            float x = Random.Range(0, 360);
+            float y = Random.Range(0, 360);
+            float z = Random.Range(0, 360);
+
+            rotations.Add(new Vector3(x, y, z));
+        }
+
+        return rotations.ToArray();
+    }
+
+    //This gets all the sizes of the asteroids
+    public static float[] GetAsteroidSizes(float number, float minSize, float maxSize, string preference, float percentage, int seed)
+    {
+        List<float> asteroidSizes = new List<float>();
+
+        Random.InitState(seed);
+
+        if (preference == "none") //This results in a asteroid field that is fairly uniform
+        {
+            for (int i = 0; i < number; i++)
+            {
+                float size = Random.Range(minSize, maxSize);
+                asteroidSizes.Add(size);
+            }
+        }
+        else if (preference == "large") //This results in a asteroid field that is more variegated with some large features
+        {
+            float limit = (maxSize / 10f);
+
+            if (limit < minSize)
+            {
+                limit = minSize;
+            }
+
+            for (int i = 0; i < number; i++)
+            {
+                float randomNumber = Random.Range(0, 100);
+
+                bool loadLarge = false;
+
+                if (randomNumber < percentage)
+                {
+                    loadLarge = true;
+                }
+
+                if (loadLarge == true)
+                {
+                    float size = Random.Range(limit, maxSize);
+                    asteroidSizes.Add(size);
+                }
+                else
+                {
+                    float size = Random.Range(minSize, limit);
+                    asteroidSizes.Add(size);
+                }
+            }
+        }
+        else if (preference == "small") //This results in a asteroid field that is more variegated but less large features
+        {
+            float average = (maxSize + minSize) / 2f;
+
+            for (int i = 0; i < number; i++)
+            {
+                float randomNumber = Random.Range(0, 100);
+
+                bool loadSmall = false;
+
+                if (randomNumber < percentage)
+                {
+                    loadSmall = true;
+                }
+
+                if (loadSmall == true)
+                {
+                    float size = Random.Range(minSize, average);
+                    asteroidSizes.Add(size);
+                }
+                else
+                {
+                    float size = Random.Range(minSize, average);
+                    asteroidSizes.Add(size);
+                }  
+            }
+        }
+
+       return asteroidSizes.ToArray();
+    }
+
+    //This gets all the positions at once so as not to break the seed
+    public static Vector3[] GetAsteroidPostions(float number, float height, float width, float length, int seed)
+    {
+        List<Vector3> asteroidPositions = new List<Vector3>();
+
+        Random.InitState(seed);
+
+        for (int i = 0; i < number; i++)
+        {
+            float x = Random.Range(0, width);
+            float y = Random.Range(0, height);
+            float z = Random.Range(0, length);
+
+            Vector3 position = new Vector3(x, y, z);
+            asteroidPositions.Add(position);
+        }
+
+        return asteroidPositions.ToArray();
+    }
 
     #endregion
 

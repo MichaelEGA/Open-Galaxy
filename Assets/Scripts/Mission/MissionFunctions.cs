@@ -132,6 +132,8 @@ public static class MissionFunctions
                 eventSeriesNo++;
             }
         }
+
+        //Task abp = new Task(SceneFunctions.LoadAsteroids(1000, new Vector3(0, 0, -15000), 30000, 1000, 30000, 0.5f, 0.01f, "large", 10, 1138));
     }
 
     //This finds the first location in the game and loads it

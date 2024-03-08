@@ -132,8 +132,6 @@ public static class MissionFunctions
                 eventSeriesNo++;
             }
         }
-
-        //Task abp = new Task(SceneFunctions.LoadAsteroids(1000, new Vector3(0, 0, -15000), 30000, 1000, 30000, 0.5f, 0.01f, "large", 10, 1138));
     }
 
     //This finds the first location in the game and loads it
@@ -230,18 +228,18 @@ public static class MissionFunctions
                 SetSkyBox(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);
             }
-        }
-
-        //Then this preloads all the objects in the scene
-        foreach (MissionEvent missionEvent in mission.missionEventData)
-        {
-            if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
+            else if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadAsteroids(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
+        }
+
+        //Then this preloads all the objects in the scene
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {        
+            if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
                 while (a.Running == true) { yield return null; }
@@ -1276,16 +1274,63 @@ public static class MissionFunctions
     {
         Scene scene = SceneFunctions.GetScene();
 
-        if (missionEvent.data1 != "none" & missionEvent.data1 != "0")
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+        Vector3 position = new Vector3(x, y, z);
+        float number = 1;
+        string type = missionEvent.data2;
+        float width = 30000;
+        float height = 1000;
+        float length = 30000;
+        float maxSize = 0.5f;
+        float minSize = 0.01f;
+        string preference = missionEvent.data8;
+        float percentage = 10;
+        int seed = 1138;
+
+        if (float.TryParse(missionEvent.data1, out _))
         {
-            //Task b = new Task(SceneFunctions.GenerateAsteroidField(scene.planetSeed, true, int.Parse(missionEvent.data1)));
-            //while (b.Running == true) { yield return null; }
+            number = float.Parse(missionEvent.data1);
         }
-        else
+
+        if (float.TryParse(missionEvent.data3, out _))
         {
-            //Task b = new Task(SceneFunctions.GenerateAsteroidField(scene.planetSeed));
-            //while (b.Running == true) { yield return null; }
+            width = float.Parse(missionEvent.data3);
         }
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            height = float.Parse(missionEvent.data4);
+        }
+
+        if (float.TryParse(missionEvent.data5, out _))
+        {
+            length = float.Parse(missionEvent.data5);
+        }
+
+        if (float.TryParse(missionEvent.data6, out _))
+        {
+            maxSize = float.Parse(missionEvent.data6);
+        }
+
+        if (float.TryParse(missionEvent.data7, out _))
+        {
+            minSize = float.Parse(missionEvent.data7);
+        }
+
+        if (float.TryParse(missionEvent.data9, out _))
+        {
+            percentage = float.Parse(missionEvent.data9);
+        }
+
+        if (int.TryParse(missionEvent.data10, out _))
+        {
+            seed = int.Parse(missionEvent.data10);
+        }
+
+        Task a = new Task(SceneFunctions.LoadAsteroids(number, type, position, width, height, length, maxSize, minSize, preference, percentage, seed));
+        while (a.Running == true) { yield return null; }
 
         yield return null;
     }
@@ -1503,8 +1548,8 @@ public static class MissionFunctions
         string laserColor = "red";
         if (missionEvent.data13 != "none") { laserColor = missionEvent.data13; }
 
-        Task c = new Task(SceneFunctions.LoadMultipleShipsOnGround(position, rotation, type, name, allegiance, cargo, number, length, width, distanceAboveGround, shipsPerLine, positionVariance, ifRaycastFailsStillLoad, laserColor));
-        while (c.Running == true) { yield return null; }
+        Task a = new Task(SceneFunctions.LoadMultipleShipsOnGround(position, rotation, type, name, allegiance, cargo, number, length, width, distanceAboveGround, shipsPerLine, positionVariance, ifRaycastFailsStillLoad, laserColor));
+        while (a.Running == true) { yield return null; }
     }
 
     //This loads multiple ships by name

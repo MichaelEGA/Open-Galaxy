@@ -1285,7 +1285,8 @@ public static class WindowFunctions
 
         foreach(Node node in missionEditor.nodes)
         {
-            if (node.nodeType == "preload_loadmultipleshipsonground" ||
+            if (node.nodeType == "preload_loadasteroids" || 
+                node.nodeType == "preload_loadmultipleshipsonground" ||
                 node.nodeType == "preload_loadsingleship" ||
                 node.nodeType == "preload_loadmultipleships" ||
                 node.nodeType == "loadsingleship" ||
@@ -1346,13 +1347,22 @@ public static class WindowFunctions
                     markerText = node.eventID.text;
                 }
 
-                if (node.data2 != null)
+                if (node.eventType != null)
                 {
-                    markerText = markerText + " " + node.data2.text;
-                }
-                else if (node.eventType != null)
-                {
-                    markerText = markerText + " " + node.eventType.text;
+                    if (node.nodeType == "preload_loadmultipleshipsonground" ||
+                        node.nodeType == "preload_loadsingleship" ||
+                        node.nodeType == "preload_loadmultipleships" ||
+                        node.nodeType == "loadsingleship" ||
+                        node.nodeType == "loadsingleshipatdistanceandanglefromplayer" ||
+                        node.nodeType == "loadmultipleships" ||
+                        node.nodeType == "loadmultipleshipsonground")
+                    {
+                        markerText = markerText + " " + node.data2.text;
+                    }
+                    else
+                    {
+                        markerText = markerText + " " + node.eventType.text;
+                    }
                 }
 
                 //This calculates the location markers position

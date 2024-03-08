@@ -674,12 +674,12 @@ public static class SceneFunctions
     #region asteroid loading
 
     //This loads asteroids 
-    public static IEnumerator LoadAsteroids(float number, Vector3 location, float width, float height, float length, float maxSize, float minSize, string preference = "none", float percentage = 50, int seed = 1138)
+    public static IEnumerator LoadAsteroids(float number, string type, Vector3 location, float width, float height, float length, float maxSize, float minSize, string preference = "none", float percentage = 50, int seed = 1138)
     {
         Vector3[] positions = GetAsteroidPostions(number, height, width, length, seed);
         Vector3[] rotations = GetAsteroidRotations(number, seed);
         float[] sizes = GetAsteroidSizes(number, minSize, maxSize, preference, percentage, seed);
-        int[] asteroidTypes = GetAsteroidTypes(number, seed);
+        int[] asteroidTypes = GetAsteroidTypes(number, type, seed);
 
         Scene scene = GetScene();
 
@@ -689,6 +689,8 @@ public static class SceneFunctions
         asteroidAnchor.transform.localPosition = location;
 
         Vector3 centerPosition = new Vector3(width/2f, height/2f, length/2f);
+
+        int yieldCount = 0;
 
         for(int i =0; i < positions.Length; i++)
         {
@@ -705,28 +707,51 @@ public static class SceneFunctions
             }
 
             scene.asteroidPool.Add(asteroid);
-            yield return null;
+
+            yieldCount++;
+
+            if (yieldCount > 100)
+            {
+                yield return null;
+                yieldCount = 0;
+            } 
         }
     }
 
     //This gets all the asteroids that can be loaded
-    public static int[] GetAsteroidTypes(float number, int seed)
+    public static int[] GetAsteroidTypes(float number, string type, int seed)
     {
-        List<int> asteroidTypes = new List<int>();
+        List<int> asteroidSelection = new List<int>();
 
         Random.InitState(seed);
 
         Scene scene = GetScene();
 
-        int asteroidCount = scene.asteroidPrefabPool.Length - 1;
+        int asteroidNo = 0;
+
+        //This selects all the asteroid of a certain type
+        List<int> asteroidTypes = new List<int>();
+
+        foreach (Object asteroid in scene.asteroidPrefabPool)
+        {
+            if (asteroid.name.Contains(type))
+            {
+                asteroidTypes.Add(asteroidNo);
+            }
+
+            asteroidNo++;
+        }
+
+        //This selects asteroids at randome from the given type
+        int asteroidCount = asteroidTypes.Count - 1;
 
         for (int i = 0; i < number; i++)
         {
             int asteroid = Random.Range(0, asteroidCount);
-            asteroidTypes.Add(asteroid);
+            asteroidSelection.Add(asteroidTypes[asteroid]);
         }
 
-        return asteroidTypes.ToArray();
+        return asteroidSelection.ToArray();
     }
 
     //This gets all the rotations of the asteroids

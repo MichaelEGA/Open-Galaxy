@@ -64,7 +64,7 @@ public static class MissionFunctions
         }
 
         //This sets the skybox to the default space and view distance
-        SceneFunctions.SetSkybox("space_black", true);
+        SceneFunctions.SetSkybox("space_black", true, "#000000");
         RenderSettings.fogEndDistance = 40000;
         RenderSettings.fogStartDistance = 30000;
 
@@ -217,6 +217,11 @@ public static class MissionFunctions
             {
                 SetGalaxyLocation(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Galaxy location set", Time.unscaledTime - time);
+            }
+            else if (missionEvent.eventType == "preload_sethudcolour" & missionEvent.conditionLocation == location)
+            {
+                SetHudColour(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Hud Colour Set", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_setsceneradius" & missionEvent.conditionLocation == location)
             {
@@ -548,6 +553,11 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "setshipallegiance")
         {
             SetShipAllegiance(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "setshipstats")
+        {
+            SetShipStats(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setshiptarget")
@@ -1721,19 +1731,6 @@ public static class MissionFunctions
         }
     }
 
-    //This sets the size of the play area
-    public static void SetSceneRadius(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        float sceneRadius = ParseStringToFloat(missionEvent.data1);
-
-        if (scene != null)
-        {
-            scene.sceneRadius = sceneRadius;
-        }
-    }
-
     //This changes the selected ship/s cargo
     public static void SetCargo(MissionEvent missionEvent)
     {
@@ -1877,6 +1874,14 @@ public static class MissionFunctions
         SceneFunctions.MoveStarfieldCamera(coordinates);
     }
 
+    //This sets the coloured aspects of the hud
+    public static void SetHudColour(MissionEvent missionEvent)
+    {
+        string colour = missionEvent.data1;
+
+        HudFunctions.SetHudColour(colour);
+    }
+
     //This sets an objective for the player to complete, removes an objective, or clears all objectives.
     public static void SetObjective(MissionEvent missionEvent)
     {
@@ -1948,6 +1953,19 @@ public static class MissionFunctions
         }
     }
 
+    //This sets the size of the play area
+    public static void SetSceneRadius(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        float sceneRadius = ParseStringToFloat(missionEvent.data1);
+
+        if (scene != null)
+        {
+            scene.sceneRadius = sceneRadius;
+        }
+    }
+
     //This sets the designated ships target to the closest enemy, provided both the ship can be found
     public static void SetShipAllegiance(MissionEvent missionEvent)
     {
@@ -2013,6 +2031,127 @@ public static class MissionFunctions
         }
     }
 
+    //This allows you to change a ships current stats
+    public static void SetShipStats(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        float accelerationRating = 0;
+        float speedRating = 0;
+        float maneuverabilityRating = 0;
+        float hullRating = 0;
+        float shieldRating = 0;
+        float laserFireRating = 0;
+        float laserRating = 0;
+        float WEPRating = 0;
+
+        if (float.TryParse(missionEvent.data1, out _))
+        {
+            accelerationRating = float.Parse(missionEvent.data1);
+
+            if (accelerationRating > 100)
+            {
+                accelerationRating = 100;
+            }
+        }
+
+        if (float.TryParse(missionEvent.data2, out _))
+        {
+            speedRating = float.Parse(missionEvent.data2);
+
+            if (speedRating > 100)
+            {
+                speedRating = 100;
+            }
+        }
+
+        if (float.TryParse(missionEvent.data3, out _))
+        {
+            maneuverabilityRating = float.Parse(missionEvent.data3);
+
+            if (maneuverabilityRating > 100)
+            {
+                maneuverabilityRating = 100;
+            }
+        }
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            hullRating = float.Parse(missionEvent.data4);
+
+            if (hullRating > 100)
+            {
+                hullRating = 100;
+            }
+        }
+
+        if (float.TryParse(missionEvent.data5, out _))
+        {
+            shieldRating = float.Parse(missionEvent.data5);
+
+            if (shieldRating > 100)
+            {
+                shieldRating = 100;
+            }
+        }
+
+        if (float.TryParse(missionEvent.data6, out _))
+        {
+            laserFireRating = float.Parse(missionEvent.data6);
+
+            if (laserFireRating > 100)
+            {
+                laserFireRating = 100;
+            }
+        }
+
+        if (float.TryParse(missionEvent.data7, out _))
+        {
+            laserRating = float.Parse(missionEvent.data7);
+
+            if (laserRating > 100)
+            {
+                laserRating = 100;
+            }
+        }
+
+        if (float.TryParse(missionEvent.data8, out _))
+        {
+            WEPRating = float.Parse(missionEvent.data8);
+
+            if (WEPRating > 100)
+            {
+                WEPRating = 100;
+            }
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            smallShip.accelerationRating = accelerationRating;
+                            smallShip.speedRating = speedRating;
+                            smallShip.maneuverabilityRating = maneuverabilityRating;
+                            smallShip.hullRating = hullRating;
+                            smallShip.shieldRating = shieldRating;
+                            smallShip.laserFireRating = laserFireRating;
+                            smallShip.laserRating = laserRating;
+                            smallShip.wepRating = WEPRating;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //This sets the designated ships target, provided both the ship and its target can be found
     public static void SetShipTarget(MissionEvent missionEvent)
     {
@@ -2068,13 +2207,48 @@ public static class MissionFunctions
     {
         string skybox = missionEvent.data1;
         bool stars = true;
+        string skyboxColour = "#000000";
 
         if (bool.TryParse(missionEvent.data2, out _))
         {
             stars = bool.Parse(missionEvent.data2);
         }
 
-        SceneFunctions.SetSkybox(skybox, stars);
+        //This sets the correct value for the fog colour so that it matches the skybox
+        if (skybox == "space_black")
+        {
+            skyboxColour = "#000000";
+        }
+        else if (skybox == "space_nebula01")
+        {
+            skyboxColour = "#000000";
+        }
+        else if (skybox == "space_nebula01")
+        {
+            skyboxColour = "#000000";
+        }
+        else if (skybox == "space_nebula02")
+        {
+            skyboxColour = "#000000";
+        }
+        else if (skybox == "space_nebula03")
+        {
+            skyboxColour = "#000000";
+        }
+        else if (skybox == "sky_blue01")
+        {
+            skyboxColour = "#9CB8D2";
+        }
+        else if (skybox == "sky_blue02")
+        {
+            skyboxColour = "#8693B3";
+        }
+        else if (skybox == "sky_blue03")
+        {
+            skyboxColour = "#8A8A8A";
+        }
+
+        SceneFunctions.SetSkybox(skybox, stars, skyboxColour);
     }
 
     //This tells a ship or ships to move toward a waypoint by position its waypoint and setting its ai override mode

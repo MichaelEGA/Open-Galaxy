@@ -499,21 +499,21 @@ public static class HudFunctions
     //Display target speed
     public static void DisplayTargetDistance(Hud hud)
     {
-        if (hud.targetDistance == null)
+        if (hud.targetDistanceText == null)
         {
             GameObject targetDistanceText = GameObject.Find("TargetDistanceText");
-            if (targetDistanceText != null) { hud.targetDistance = targetDistanceText.GetComponent<Text>(); }
+            if (targetDistanceText != null) { hud.targetDistanceText = targetDistanceText.GetComponent<Text>(); }
         }
 
-        if (hud.targetDistance != null & hud.smallShip != null & Time.timeScale != 0)
+        if (hud.targetDistanceText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
             {
-                hud.targetDistance.text = (hud.smallShip.targetDistance / 1000f).ToString("0.000");
+                hud.targetDistanceText.text = (hud.smallShip.targetDistance / 1000f).ToString("0.000");
             }
             else
             {
-                hud.targetDistance.text = " ";
+                hud.targetDistanceText.text = " ";
             }
         }
     }
@@ -827,7 +827,6 @@ public static class HudFunctions
                             //Activates the dots
                             if (radarNumber <= hud.frontRadarDotsPool.Count - 1)
                             {
-
                                 if (ship.activeSelf == false)
                                 {
                                     hud.frontRadarDotsPool[radarNumber].SetActive(false);
@@ -1932,6 +1931,267 @@ public static class HudFunctions
             }
 
             yield return new WaitForSecondsRealtime(0.016f);
+        }
+    }
+
+    //This sets the colour of the hud
+    public static void SetHudColour(string colour)
+    {
+        //This gets the hud reference
+        Hud hud = GetHud();
+
+        //This sets the fog color to match the skybox
+        Color newColour;
+
+        if (ColorUtility.TryParseHtmlString(colour, out newColour))
+        {
+            //Do nothing
+        }
+
+        //This applies the new colour to different aspects of the hud
+        if (hud != null)
+        {
+            //The shield meter
+            if (hud.shieldMeter == null)
+            {
+                GameObject shieldMeter = GameObject.Find("ShieldMeter");
+                if (shieldMeter != null) { hud.shieldMeter = shieldMeter.GetComponent<Slider>(); }
+            }
+
+            if (hud.shieldMeter != null)
+            {
+                RectTransform fillRectTransform = hud.shieldMeter.fillRect;
+
+                if (fillRectTransform != null)
+                {
+                    Image image = fillRectTransform.GetComponent<Image>();
+
+                    if (image != null)
+                    {
+                        image.color = newColour;
+                    }
+                }
+            }
+
+            //The engine meter
+            if (hud.engineMeter == null)
+            {
+                GameObject engineMeter = GameObject.Find("EngineMeter");
+                if (engineMeter != null) { hud.engineMeter = engineMeter.GetComponent<Slider>(); }
+            }
+
+            if (hud.engineMeter != null)
+            {
+                RectTransform fillRectTransform = hud.engineMeter.fillRect;
+
+                if (fillRectTransform != null)
+                {
+                    Image image = fillRectTransform.GetComponent<Image>();
+
+                    if (image != null)
+                    {
+                        image.color = newColour;
+                    }
+                }
+            }
+
+            //The laser meter
+            if (hud.laserMeter == null)
+            {
+                GameObject laserMeter = GameObject.Find("LaserMeter");
+                if (laserMeter != null) { hud.laserMeter = laserMeter.GetComponent<Slider>(); }
+            }
+
+            if (hud.laserMeter != null)
+            {
+                RectTransform fillRectTransform = hud.laserMeter.fillRect;
+
+                if (fillRectTransform != null)
+                {
+                    Image image = fillRectTransform.GetComponent<Image>();
+
+                    if (image != null)
+                    {
+                        image.color = newColour;
+                    }
+                }
+            }
+
+            //The wep meter
+            if (hud.WEPMeter == null)
+            {
+                GameObject WEPMeter = GameObject.Find("WEPMeter");
+                if (WEPMeter != null) { hud.WEPMeter = WEPMeter.GetComponent<Slider>(); }
+            }
+
+            if (hud.WEPMeter != null)
+            {
+                RectTransform fillRectTransform = hud.WEPMeter.fillRect;
+
+                if (fillRectTransform != null)
+                {
+                    Image image = fillRectTransform.GetComponent<Image>();
+
+                    if (image != null)
+                    {
+                        image.color = newColour;
+                    }
+                }
+            }
+
+            //Target speed text
+            if (hud.targetSpeedText == null)
+            {
+                GameObject targetSpeedText = GameObject.Find("TargetSpeedText");
+                if (targetSpeedText != null) { hud.targetSpeedText = targetSpeedText.GetComponent<Text>(); }
+            }
+
+            if (hud.targetSpeedText != null)
+            {
+                Text text = hud.targetSpeedText.GetComponent<Text>();
+
+                if (text != null)
+                {
+                    text.color = newColour;
+                }
+            }
+
+            //Target shield text
+            if (hud.targetShieldsText == null)
+            {
+                GameObject targetShieldsText = GameObject.Find("TargetShieldsText");
+                if (targetShieldsText != null) { hud.targetShieldsText = targetShieldsText.GetComponent<Text>(); }
+            }
+
+            if (hud.targetShieldsText != null)
+            {
+                Text text = hud.targetShieldsText.GetComponent<Text>();
+
+                if (text != null)
+                {
+                    text.color = newColour;
+                }
+            }
+
+            //Target hull text
+            if (hud.targetHullText == null)
+            {
+                GameObject targetHullText = GameObject.Find("TargetHullText");
+                if (targetHullText != null) { hud.targetHullText = targetHullText.GetComponent<Text>(); }
+            }
+
+            if (hud.targetHullText != null)
+            {
+                Text text = hud.targetHullText.GetComponent<Text>();
+
+                if (text != null)
+                {
+                    text.color = newColour;
+                }
+            }
+
+            //Target dist text
+            if (hud.targetDistanceText == null)
+            {
+                GameObject targetDistanceText = GameObject.Find("TargetDistanceText");
+                if (targetDistanceText != null) { hud.targetDistanceText = targetDistanceText.GetComponent<Text>(); }
+            }
+
+            if (hud.targetDistanceText != null)
+            {
+                Text text = hud.targetDistanceText.GetComponent<Text>();
+
+                if (text != null)
+                {
+                    text.color = newColour;
+                }
+            }
+
+            //Ship speed text
+            if (hud.speedText == null)
+            {
+                GameObject SpeedText = GameObject.Find("SpeedText");
+                if (SpeedText != null) { hud.speedText = SpeedText.GetComponent<Text>(); }
+            }
+
+            if (hud.speedText != null)
+            {
+                Text text = hud.speedText.GetComponent<Text>();
+
+                if (text != null)
+                {
+                    text.color = newColour;
+                }
+            }
+
+            //Ship match speed text
+            if (hud.matchSpeedText == null)
+            {
+                GameObject matchSpeedText = GameObject.Find("MatchSpeedText");
+                if (matchSpeedText != null) { hud.matchSpeedText = matchSpeedText.GetComponent<Text>(); }
+            }
+
+            if (hud.matchSpeedText != null)
+            {
+                Text text = hud.matchSpeedText.GetComponent<Text>();
+
+                if (text != null)
+                {
+                    text.color = newColour;
+                }
+            }
+
+            //Ship match speed text
+            if (hud.weaponNumberText == null)
+            {
+                GameObject weaponNumberText = GameObject.Find("WeaponNumberText");
+                if (weaponNumberText != null) { hud.weaponNumberText = weaponNumberText.GetComponent<Text>(); }
+            }
+
+            if (hud.weaponNumberText != null)
+            {
+                Text text = hud.weaponNumberText.GetComponent<Text>();
+
+                if (text != null)
+                {
+                    text.color = newColour;
+                }
+            }
+
+            //The front radar dot
+            if (hud.frontRadarDot == null)
+            {
+                GameObject frontRadarDot = GameObject.Find("FrontRadarDot");
+                if (frontRadarDot != null) { hud.frontRadarDot = frontRadarDot; }
+            }
+
+            if (hud.frontRadarDot != null)
+            {
+                RawImage rawImage = hud.frontRadarDot.GetComponent<RawImage>();
+
+                if (rawImage != null)
+                {
+                    rawImage.color = newColour;
+                }
+            }
+           
+            //The rear radar dot
+            if (hud.rearRadarDot == null)
+            {
+                GameObject rearRadarDot = GameObject.Find("RearRadarDot");
+                if (rearRadarDot != null) { hud.rearRadarDot = rearRadarDot; }
+            }
+
+
+            if (hud.rearRadarDot != null)
+            {
+                RawImage rawImage = hud.rearRadarDot.GetComponent<RawImage>();
+
+                if (rawImage != null)
+                {
+                    rawImage.color = newColour;
+                }
+            }
         }
     }
 

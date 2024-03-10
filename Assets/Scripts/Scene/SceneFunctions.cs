@@ -1923,10 +1923,12 @@ public static class SceneFunctions
     #region skybox
 
     //This sets the skybox
-    public static void SetSkybox(string name, bool stars)
+    public static void SetSkybox(string name, bool stars, string skyboxColour)
     {
+        //This gets the scene reference
         Scene scene = GetScene();
 
+        //This toggles the starfield on and off
         GameObject starfield = GameObject.Find("starfield");
 
         if (stars == false)
@@ -1938,6 +1940,7 @@ public static class SceneFunctions
             starfield.layer = LayerMask.NameToLayer("starfield");
         }
 
+        //This sets the skybox
         foreach (Material skybox in scene.skyboxes)
         {
             if (skybox.name == name)
@@ -1946,6 +1949,14 @@ public static class SceneFunctions
                 break;
             }
         }
+
+        //This sets the fog color to match the skybox
+        Color newColour;
+
+        if (ColorUtility.TryParseHtmlString(skyboxColour, out newColour))
+        {
+            RenderSettings.fogColor = newColour;
+        }   
     }
     
     //Creates a circular wall of fog at the set radius from the center point

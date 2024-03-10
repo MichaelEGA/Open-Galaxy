@@ -67,6 +67,7 @@ public static class WindowFunctions
         buttonList.Add("preload_loadsingleship");
         buttonList.Add("preload_loadmultipleships");
         buttonList.Add("preload_setgalaxylocation");
+        buttonList.Add("preload_sethudcolour");
         buttonList.Add("preload_setsceneradius");
         buttonList.Add("preload_setskybox");
         buttonList.Add("starteventseries");
@@ -99,6 +100,7 @@ public static class WindowFunctions
         buttonList.Add("setobjective");
         buttonList.Add("setdontattacklargeships");
         buttonList.Add("setshipallegiance");
+        buttonList.Add("setshipstats");
         buttonList.Add("setshiptarget");
         buttonList.Add("setshiptargettoclosestenemy");
         buttonList.Add("setshiptoinvincible");

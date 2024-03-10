@@ -53,6 +53,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_SetGalaxyLocation(node);
         }
+        else if (node.nodeType == "preload_sethudcolour")
+        {
+            NodeTypes.Draw_PreLoad_SetHudColour(node);
+        }
         else if (node.nodeType == "preload_setsceneradius")
         {
             NodeTypes.Draw_PreLoad_SetSceneRadius(node);
@@ -180,6 +184,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "setshipallegiance")
         {
             NodeTypes.Draw_SetShipAllegiance(node);
+        }
+        else if (node.nodeType == "setshipstats")
+        {
+            NodeTypes.Draw_SetShipStats(node);
         }
         else if (node.nodeType == "setshiptarget")
         {

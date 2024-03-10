@@ -49,8 +49,14 @@ public static class NodeDescriptions
             "This node loads asteroids in the scene. \n" +
             "\n " +
             "Extra Information \n" +
-            "- If you want the asteroid number to be set by the location seed leave number as 'none' or '0'. \n" +
-            "- Remove the node if you dont want any asteroids in the scene \n" +
+            "- The X,Y,Z values set the centre of the asteroid field. \n" +
+            "- Number: the number of asteroids. \n" +
+            "- Type: selects the type of asteroids/debris to load. \n" +
+            "- Width, Height, Length set the bounds in which the asteroids will be loaded \n" +
+            "- MinSize and Maxsize are the minimum and maximum possible scale of the generated asteroids. \n" +
+            "- MinSize and Maxsize are the minimum and maximum possible scale of the generated asteroids. \n" +
+            "- Preferene and Percentage: sets the percent to which the generator should prioritise a certain size of asteroid. This is use to create a variegated asteroid field with features rather than a uniform field. \n" +
+            "- Seed: allows you to generate the same field each time, by typing in the same seed number and setting the same values. \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
         else if (name == "preload_loadplanet")
@@ -129,7 +135,18 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- You can simply type in the name of the planet where you want scene to be i.e. 'Alderaan' and the game will automatically supply the correct location or you can manually enter the coordinates.  \n" +
            "- If you use the 'search' mode you don't need to enter any coordinates. Open Galaxy will autmotically supply the correct coordinates if the planet exists. \n" +
-           "- The galaxy is 15000 units by width, 15000 units by length, and 15000 units by height. So the coordinates you enter will need to be smaller than this. \n";
+           "- The galaxy is 15000 units by width, 15000 units by length, and 15000 units by height. So the coordinates you enter will need to be smaller than this. \n" +
+           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
+        else if (name == "preload_sethudcolour")
+        {
+            description =
+           "Pre-Load Set Hud Colour \n " +
+           "\n " +
+           "Sets the colour parts of the Hud using a html colour code beginning with # i.e. The default colour is #ff0000 (red). \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n" ;
         }
         else if (name == "preload_setsceneradius")
         {
@@ -528,6 +545,25 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will runn regardless of location. \n";
+        }
+        else if (name == "setshipstats")
+        {
+            description =
+            "Set Ship Stats\n " +
+            "\n " +
+            "This function allows you to modify the ships stats to make the ship faster, slower, more maneurability, etc \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- All values are percentages. \n" +
+            "- Acceleration: How quickly the ship speeds up and slows down. \n" +
+            "- Speed: How fast the ship can go. \n" +
+            "- Maneuverability: How quickly the ship can turn. \n" +
+            "- Hull: How much damage the ship can take. \n" +
+            "- Shield: How strong the ships shields can be. \n" +
+            "- Laser Fire Rating: How quickly the ship fires it lasers. \n" +
+            "- Laser Power: How strong the individual lasers are. \n" +
+            "- WEP: Power of the ships boost. \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setshiptarget")
         {

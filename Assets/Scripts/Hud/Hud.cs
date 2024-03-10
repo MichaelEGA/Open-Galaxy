@@ -11,6 +11,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public Camera mainCamera;
     [HideInInspector] public Camera starfieldCamera;
     [HideInInspector] public float loadTime;
+    [HideInInspector] public Color colour;
 
     [Header("Hud Elements Check")]
     [HideInInspector] public bool hudElementsSet;
@@ -40,7 +41,7 @@ public class Hud : MonoBehaviour
 
     [Header("Target Information")]
     [HideInInspector] public GameObject targetObject;
-    [HideInInspector] public Text targetDistance;
+    [HideInInspector] public Text targetDistanceText;
     [HideInInspector] public Text targetType;
     [HideInInspector] public Text targetName;
     [HideInInspector] public Text targetCargo;

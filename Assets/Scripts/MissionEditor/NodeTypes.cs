@@ -375,6 +375,7 @@ public static class NodeTypes
         options1.Add("rock03");
         options1.Add("rock04");
         options1.Add("rock05");
+        options1.Add("deathstar");
 
         node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "planet", "habitable01", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -394,6 +395,7 @@ public static class NodeTypes
         options3.Add("orange01");
         options3.Add("red01");
         options3.Add("white01");
+        options3.Add("none");
 
         node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "atmosphere", "blue", 7, 5, drop, 12.5f, 90, 5f);
 

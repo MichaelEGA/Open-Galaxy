@@ -23,6 +23,10 @@ public class MissionEditor : MonoBehaviour
     public string locationdisplaymode = "top";
     public bool scrolling = true;
     public bool menusClosed = true;
+    public bool middleMouseDown = false;
+    public Vector3 mouseStartPos;
+    public Rect selectionRect;
+    public RectTransform selectionRectTransform;
     public string selectedNodeTypeToLoad;
     public string selectedMissionToLoad;
     public Text missionName;
@@ -40,13 +44,15 @@ public class MissionEditor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
+            
     }
 
     void OnGUI()
     {
         MissionEditorFunctions.ScaleGrid(this);
         MissionEditorFunctions.ToggleScrolling(this);
+        MissionEditorFunctions.SelectionBox(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)

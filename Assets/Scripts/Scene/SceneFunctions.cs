@@ -179,6 +179,7 @@ public static class SceneFunctions
         {
             mainCameraGO = new GameObject();
             mainCameraGO.name = "Main Camera";
+            mainCameraGO.tag = "MainCamera";
             mainCameraGO.AddComponent<AudioListener>();
             mainCamera = mainCameraGO.AddComponent<Camera>();
             mainCamera.cullingMask = LayerMask.GetMask("Default", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
@@ -451,6 +452,7 @@ public static class SceneFunctions
             scene.centerPivot = GameObject.Instantiate(planetPrefab);
             scene.planetPivot = GameObject.Find("planetpivot");
             scene.planet = GameObject.Find("planet");
+            scene.deathstar = GameObject.Find("deathstar");
             scene.clouds = GameObject.Find("clouds");
             scene.atmosphere = GameObject.Find("atmosphere");
             scene.rings = GameObject.Find("rings");
@@ -471,6 +473,15 @@ public static class SceneFunctions
             scene.clouds.SetActive(true);
         }
 
+        if (atmosphereType == "none")
+        {
+            scene.atmosphere.SetActive(false);
+        }
+        else
+        {
+            scene.atmosphere.SetActive(true);
+        }
+
         if (ringsType == "none")
         {
             scene.rings.SetActive(false);
@@ -480,15 +491,29 @@ public static class SceneFunctions
             scene.rings.SetActive(true);
         }
 
-        //Set materials
-        if (planetRenderer != null)
+        if (planetType == "deathstar")
         {
-            foreach (Object planetMaterial in scene.planetMaterialPool)
+            scene.deathstar.SetActive(true);
+            scene.planet.SetActive(false);
+        }
+        else
+        {
+            scene.deathstar.SetActive(false);
+            scene.planet.SetActive(true);
+        }
+
+        //Set materials
+        if (planetType != "deathstar")
+        {
+            if (planetRenderer != null)
             {
-                if (planetMaterial.name == planetType)
+                foreach (Object planetMaterial in scene.planetMaterialPool)
                 {
-                    planetRenderer.material = (Material)planetMaterial;
-                    break;
+                    if (planetMaterial.name == planetType)
+                    {
+                        planetRenderer.material = (Material)planetMaterial;
+                        break;
+                    }
                 }
             }
         }
@@ -959,7 +984,77 @@ public static class SceneFunctions
 
     #endregion
 
-    #region ship creation
+    #region skybox loading
+
+    //This sets the skybox
+    public static void SetSkybox(string name, bool stars, string skyboxColour)
+    {
+        //This gets the scene reference
+        Scene scene = GetScene();
+
+        //This toggles the starfield on and off
+        GameObject starfield = GameObject.Find("starfield");
+
+        if (stars == false)
+        {
+            starfield.layer = LayerMask.NameToLayer("invisible");
+        }
+        else
+        {
+            starfield.layer = LayerMask.NameToLayer("starfield");
+        }
+
+        //This sets the skybox
+        foreach (Material skybox in scene.skyboxes)
+        {
+            if (skybox.name == name)
+            {
+                RenderSettings.skybox = skybox;
+                break;
+            }
+        }
+
+        //This sets the fog color to match the skybox
+        Color newColour;
+
+        if (ColorUtility.TryParseHtmlString(skyboxColour, out newColour))
+        {
+            RenderSettings.fogColor = newColour;
+        }
+    }
+
+    //Creates a circular wall of fog at the set radius from the center point
+    public static void DynamicFogWall(Scene scene)
+    {
+        if (scene.mainCamera != null)
+        {
+            Vector3 relativePosition = scene.transform.position - scene.mainCamera.transform.position;
+
+            float forward = Vector3.Dot(scene.mainCamera.transform.forward, relativePosition.normalized);
+
+            float fogDistance = scene.fogDistanceFromCenter;
+            float endPoint = 0;
+
+            float distance = Vector3.Distance(scene.transform.position, scene.mainCamera.transform.position);
+
+            if (forward < 0)
+            {
+
+                endPoint = fogDistance - distance;
+            }
+            else
+            {
+                endPoint = fogDistance + (fogDistance - (fogDistance - distance));
+            }
+
+            RenderSettings.fogEndDistance = endPoint;
+            RenderSettings.fogStartDistance = endPoint - 500;
+        }
+    }
+
+    #endregion
+
+    #region ship loading
 
     //This loads an individual ship in the scene
     public static void LoadSingleShip(       
@@ -1833,7 +1928,7 @@ public static class SceneFunctions
 
     #endregion
 
-    #region cockpit creation
+    #region cockpit loading
 
     //This instanties the designated prefabe from the pool listed in the settings or finds a substitute from another pool if the prefab is not present
     public static GameObject InstantiateCockpitPrefab(string name)
@@ -1916,76 +2011,6 @@ public static class SceneFunctions
         }
 
         return prefab;
-    }
-
-    #endregion
-
-    #region skybox
-
-    //This sets the skybox
-    public static void SetSkybox(string name, bool stars, string skyboxColour)
-    {
-        //This gets the scene reference
-        Scene scene = GetScene();
-
-        //This toggles the starfield on and off
-        GameObject starfield = GameObject.Find("starfield");
-
-        if (stars == false)
-        {
-            starfield.layer = LayerMask.NameToLayer("invisible");
-        }
-        else
-        {
-            starfield.layer = LayerMask.NameToLayer("starfield");
-        }
-
-        //This sets the skybox
-        foreach (Material skybox in scene.skyboxes)
-        {
-            if (skybox.name == name)
-            {
-                RenderSettings.skybox = skybox;
-                break;
-            }
-        }
-
-        //This sets the fog color to match the skybox
-        Color newColour;
-
-        if (ColorUtility.TryParseHtmlString(skyboxColour, out newColour))
-        {
-            RenderSettings.fogColor = newColour;
-        }   
-    }
-    
-    //Creates a circular wall of fog at the set radius from the center point
-    public static void DynamicFogWall(Scene scene)
-    {
-        if (scene.mainCamera != null)
-        {
-            Vector3 relativePosition = scene.transform.position - scene.mainCamera.transform.position;
-
-            float forward = Vector3.Dot(scene.mainCamera.transform.forward, relativePosition.normalized);
-
-            float fogDistance = scene.fogDistanceFromCenter;
-            float endPoint = 0;
-
-            float distance = Vector3.Distance(scene.transform.position, scene.mainCamera.transform.position);
-
-            if (forward < 0)
-            {            
-                
-                endPoint = fogDistance - distance;
-            }
-            else
-            {
-                endPoint = fogDistance + (fogDistance - (fogDistance - distance));
-            }
-
-            RenderSettings.fogEndDistance = endPoint;
-            RenderSettings.fogStartDistance = endPoint - 500;
-        }
     }
 
     #endregion

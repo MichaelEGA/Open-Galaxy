@@ -66,6 +66,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public GameObject centerPivot;
     [HideInInspector] public GameObject planetPivot;
     [HideInInspector] public GameObject planet;
+    [HideInInspector] public GameObject deathstar;
     [HideInInspector] public GameObject clouds;
     [HideInInspector] public GameObject atmosphere;
     [HideInInspector] public GameObject rings;

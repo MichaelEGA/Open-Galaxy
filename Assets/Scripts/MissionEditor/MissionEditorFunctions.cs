@@ -939,6 +939,7 @@ public static class MissionEditorFunctions
 
     #region mission editor functions
 
+    //This scales the grid where the nodes are displayed
     public static void ScaleGrid(MissionEditor missionEditor)
     {
         bool scaling = true;
@@ -995,6 +996,7 @@ public static class MissionEditorFunctions
         }
     }
 
+    //This sets the window mode on the editor
     public static void SetWindowMode(string mode = "none")
     {
         if (mode != "window" & mode != "fullscreen" || mode == "none")
@@ -1009,6 +1011,7 @@ public static class MissionEditorFunctions
         CloseAllMenus();
     }
 
+    //This exits the mission editor back to open galaxy
     public static void ExitMissionEditor()
     {
         MissionEditor missionEditor = GetMissionEditor();
@@ -1034,6 +1037,7 @@ public static class MissionEditorFunctions
         }
     }
 
+    //This exits both the editor and the game to windows
     public static void ExitToWindows()
     {
         Debug.Log("Quitting to windows - NOTE: Only works in build");
@@ -1041,6 +1045,7 @@ public static class MissionEditorFunctions
         Application.Quit();
     }
 
+    //This toggles scrolling on and off
     public static void ToggleScrolling(MissionEditor missionEditor)
     {
         if (missionEditor.scrolling == true)
@@ -1055,16 +1060,108 @@ public static class MissionEditorFunctions
         }
     }
 
+    //This opens a web page
     public static void OpenWebAddress(string url)
     {
         Application.OpenURL(url);
         CloseAllMenus();
     }
 
+    //This creates a selection box
+    public static void SelectionBox(MissionEditor missionEditor)
+    {
+        if (Input.GetMouseButton(2))
+        {
+            if (missionEditor.middleMouseDown == false)
+            {
+                missionEditor.mouseStartPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+                missionEditor.middleMouseDown = true;
+            }
+
+            Vector2 clickPosition = missionEditor.mouseStartPos;
+            Vector2 currentPosition = Input.mousePosition;
+
+            int width = (int)(currentPosition.x - clickPosition.x);
+            int height = -(int)(currentPosition.y - clickPosition.y);
+            missionEditor.selectionRect = new Rect(clickPosition.x, Screen.height - clickPosition.y, width, height);
+
+            //This reverses the rect transform if the rect goes negative so that the image still displays
+            if (missionEditor.selectionRect.width < 0)
+            {
+                missionEditor.selectionRect.x += missionEditor.selectionRect.width;
+                missionEditor.selectionRect.width = Mathf.Abs(missionEditor.selectionRect.width);
+                clickPosition.x = currentPosition.x;
+            }
+
+            if (missionEditor.selectionRect.height < 0)
+            {
+                missionEditor.selectionRect.y += missionEditor.selectionRect.height;
+                missionEditor.selectionRect.height = Mathf.Abs(missionEditor.selectionRect.height);
+                clickPosition.y = currentPosition.y;
+            }
+
+            if (missionEditor.selectionRectTransform == null)
+            {
+                missionEditor.selectionRectTransform = CreateRectTransformWithImage("SelectionBox", "NodeSprite_Selection", missionEditor.transform);
+            }
+
+            missionEditor.selectionRectTransform.gameObject.SetActive(true);
+
+            //This displays the selection box
+            missionEditor.selectionRectTransform.offsetMin = missionEditor.selectionRect.min;
+            missionEditor.selectionRectTransform.offsetMax = missionEditor.selectionRect.max;
+
+            missionEditor.selectionRectTransform.anchorMax = new Vector2(0, 1);
+            missionEditor.selectionRectTransform.anchorMin = new Vector2(0, 1);
+            missionEditor.selectionRectTransform.pivot = new Vector2(0, 1);
+
+            missionEditor.selectionRectTransform.position = clickPosition;
+        }
+        else if (Input.GetMouseButtonUp(2))
+        {
+            GetNodesWithinBounds(missionEditor, missionEditor.selectionRect);
+
+            if (missionEditor.selectionRectTransform != null)
+            {
+                missionEditor.selectionRectTransform.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            missionEditor.middleMouseDown = false;
+        } 
+    }
+   
+    //This grabs all the nodes within the given bounds of a rect (i.e. the selection box)
+    public static void GetNodesWithinBounds(MissionEditor missionEditor, Rect selectionRect)
+    {
+        List<Node> nodeSelection = new List<Node>();
+
+        if (missionEditor.nodes != null)
+        {
+            foreach (Node node in missionEditor.nodes)
+            {
+                if (node != null)
+                {
+                    Vector2 position = RectTransformUtility.WorldToScreenPoint(Camera.main, node.gameObject.transform.position);
+
+                    bool withinBounds = selectionRect.Contains(position);
+
+                    if (withinBounds == true)
+                    {
+                        nodeSelection.Add(node);
+                        Debug.Log("Node Selected");
+                    }
+                }
+            }
+        }
+    }
+
     #endregion
 
     #region mission editor utils
 
+    //This function returns the active mission editor script when called
     public static MissionEditor GetMissionEditor()
     {
         MissionEditor missionEditor = GameObject.FindObjectOfType<MissionEditor>();
@@ -1072,6 +1169,53 @@ public static class MissionEditorFunctions
         return missionEditor;
     }
 
-    #endregion
+    //This creates a new rect transform
+    public static RectTransform CreateRectTransformWithImage(string name, string imageName, Transform parent)
+    {
+        //This creates the game object
+        GameObject gameObject = new GameObject();
+        gameObject.name = name;
+
+        //This adds the rect transform and sets the parent
+        RectTransform rectTransform = gameObject.AddComponent<RectTransform>();
+        rectTransform.SetParent(parent);
+
+        //This adds the image to the recttransform
+        Image image = gameObject.AddComponent<Image>();
+        image.sprite = Resources.Load<Sprite>("Data/EditorAssets/" + imageName);
+        image.type = Image.Type.Sliced;
+
+        //This returns the rect transform
+        return rectTransform;
+    }
+
+    //This sets the rect transform
+    public static void SetRectTransform(RectTransform rectTransform, string mode, Vector2 position, float width, float height, float scale)
+    {
+        if (mode == "center")
+        {
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        }
+        else if (mode == "centerleft")
+        {
+            rectTransform.anchorMax = new Vector2(0, 0.5f);
+            rectTransform.anchorMin = new Vector2(0, 0.5f);
+            rectTransform.pivot = new Vector2(0, 0.5f);
+        }
+        else if (mode == "topleft")
+        {
+            rectTransform.anchorMax = new Vector2(0, 1);
+            rectTransform.anchorMin = new Vector2(0, 1);
+            rectTransform.pivot = new Vector2(0, 1);
+        }
+
+        rectTransform.anchoredPosition = new Vector2(position.x, position.y);
+        rectTransform.sizeDelta = new Vector2(width, height);
+        rectTransform.localScale = new Vector3(scale, scale, scale);
+    }
+
+        #endregion
 
 }

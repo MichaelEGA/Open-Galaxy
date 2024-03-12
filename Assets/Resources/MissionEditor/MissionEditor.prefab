@@ -204,6 +204,7 @@ MonoBehaviour:
   windows: []
   menus: []
   nodeLinks: []
+  locationMarkers: []
   canvas: {fileID: 0}
   editorContentRect: {fileID: 0}
   menuBarRectTransform: {fileID: 0}
@@ -213,8 +214,18 @@ MonoBehaviour:
   messageTextbox: {fileID: 0}
   scale: 1
   gameWindowMode: 
+  locationdisplaymode: top
   scrolling: 1
   menusClosed: 1
+  middleMouseDown: 0
+  mouseStartPos: {x: 0, y: 0, z: 0}
+  selectionRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  selectionRectTransform: {fileID: 0}
   selectedNodeTypeToLoad: 
   selectedMissionToLoad: 
   missionName: {fileID: 0}

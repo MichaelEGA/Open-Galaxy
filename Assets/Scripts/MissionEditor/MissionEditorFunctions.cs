@@ -1072,54 +1072,56 @@ public static class MissionEditorFunctions
     {
         if (Input.GetMouseButton(2))
         {
+            //This gets the mouse down
             if (missionEditor.middleMouseDown == false)
             {
                 missionEditor.mouseStartPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
                 missionEditor.middleMouseDown = true;
             }
 
+            //This gets the original click position and the current mouse position
             Vector2 clickPosition = missionEditor.mouseStartPos;
             Vector2 currentPosition = Input.mousePosition;
 
+            //This calculates the width and height of the selection box
             int width = (int)(currentPosition.x - clickPosition.x);
             int height = -(int)(currentPosition.y - clickPosition.y);
-            missionEditor.selectionRect = new Rect(clickPosition.x, Screen.height - clickPosition.y, width, height);
+            Vector2 selectionBoxSize = new Vector2(width, height);
 
-            //This reverses the rect transform if the rect goes negative so that the image still displays
-            if (missionEditor.selectionRect.width < 0)
+            //This allows the selection box reversed (i.e. able to be pulled in all directions)
+            if (selectionBoxSize.x < 0)
             {
-                missionEditor.selectionRect.x += missionEditor.selectionRect.width;
-                missionEditor.selectionRect.width = Mathf.Abs(missionEditor.selectionRect.width);
+                selectionBoxSize.x = Mathf.Abs(selectionBoxSize.x);
                 clickPosition.x = currentPosition.x;
             }
 
-            if (missionEditor.selectionRect.height < 0)
+            if (selectionBoxSize.y < 0)
             {
-                missionEditor.selectionRect.y += missionEditor.selectionRect.height;
-                missionEditor.selectionRect.height = Mathf.Abs(missionEditor.selectionRect.height);
+                selectionBoxSize.y = Mathf.Abs(selectionBoxSize.y);
                 clickPosition.y = currentPosition.y;
             }
 
+            //This creates the selection box if it doesn't already exist
             if (missionEditor.selectionRectTransform == null)
             {
                 missionEditor.selectionRectTransform = CreateRectTransformWithImage("SelectionBox", "NodeSprite_Selection", missionEditor.transform);
             }
 
+            //This sets the selection box gameobject to active
             missionEditor.selectionRectTransform.gameObject.SetActive(true);
 
-            //This displays the selection box
-            missionEditor.selectionRectTransform.offsetMin = missionEditor.selectionRect.min;
-            missionEditor.selectionRectTransform.offsetMax = missionEditor.selectionRect.max;
-
+            //This applies the correct anchor position for the box
             missionEditor.selectionRectTransform.anchorMax = new Vector2(0, 1);
             missionEditor.selectionRectTransform.anchorMin = new Vector2(0, 1);
             missionEditor.selectionRectTransform.pivot = new Vector2(0, 1);
 
+            //This applies the position and size of the selection box
+            missionEditor.selectionRectTransform.sizeDelta = selectionBoxSize;
             missionEditor.selectionRectTransform.position = clickPosition;
         }
         else if (Input.GetMouseButtonUp(2))
         {
-            GetNodesWithinBounds(missionEditor, missionEditor.selectionRect);
+            GetNodesWithinBounds(missionEditor, missionEditor.selectionRectTransform);
 
             if (missionEditor.selectionRectTransform != null)
             {
@@ -1131,27 +1133,35 @@ public static class MissionEditorFunctions
             missionEditor.middleMouseDown = false;
         } 
     }
-   
-    //This grabs all the nodes within the given bounds of a rect (i.e. the selection box)
-    public static void GetNodesWithinBounds(MissionEditor missionEditor, Rect selectionRect)
-    {
-        List<Node> nodeSelection = new List<Node>();
 
+    //This grabs all the nodes within the given bounds of a rect (i.e. the selection box)
+    public static void GetNodesWithinBounds(MissionEditor missionEditor, RectTransform selectionRect)
+    {
         if (missionEditor.nodes != null)
         {
+            //This deselects all current nodes
+            foreach(Node node in missionEditor.nodes)
+            {
+                if (node != null)
+                {
+                    node.selected = false;
+                }
+            }
+
+            //This selects a new set of nodes
             foreach (Node node in missionEditor.nodes)
             {
                 if (node != null)
                 {
                     Vector2 position = RectTransformUtility.WorldToScreenPoint(Camera.main, node.gameObject.transform.position);
 
-                    bool withinBounds = selectionRect.Contains(position);
+                    //bool withinBounds = FUNCTION HERE
 
-                    if (withinBounds == true)
-                    {
-                        nodeSelection.Add(node);
-                        Debug.Log("Node Selected");
-                    }
+                    //if (withinBounds == true)
+                    //{
+                    //    node.selected = true;
+                    //    Debug.Log("Node Selected");
+                    //}
                 }
             }
         }

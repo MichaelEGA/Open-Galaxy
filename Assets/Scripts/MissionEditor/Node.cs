@@ -52,6 +52,11 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     private bool dragging = false; //Indicates whether the node is being dragged
     private bool scrollReset = false; //Tells the mission editor not to drag the canvas when the node is being dragged
 
+    public bool selected = false;
+
+    public RectTransform nodeHighlight;
+    public RectTransform nodeBackground;
+
     public MissionEditor missionEditor;
 
     Vector3 startPos;
@@ -66,7 +71,7 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     void OnGUI()
@@ -85,6 +90,8 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
         nodePosX = transform.localPosition.x;
         nodePosY = transform.localPosition.y;
+
+        NodeFunctions.HighlightNode(this);
     }
 
     public void OnPointerDown(PointerEventData eventData)

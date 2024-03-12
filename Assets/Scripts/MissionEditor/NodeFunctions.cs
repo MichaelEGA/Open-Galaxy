@@ -298,6 +298,19 @@ public class NodeFunctions : MonoBehaviour
         }
     }
 
+    //This turns the node highlight on and off when the node is selected and when its not
+    public static void HighlightNode(Node node)
+    {
+        if (node.selected == true)
+        {
+            node.nodeHighlight.gameObject.SetActive(true);
+        }
+        else
+        {
+            node.nodeHighlight.gameObject.SetActive(false);
+        }
+    }
+
     #endregion
 
     #region node drawing functions
@@ -311,6 +324,8 @@ public class NodeFunctions : MonoBehaviour
         if (node.rectTransform != null)
         {
             node.rectTransform.sizeDelta = new Vector2(sizeX, sizeY);
+            node.nodeBackground.sizeDelta = new Vector2(sizeX, sizeY);
+            node.nodeHighlight.sizeDelta = new Vector2(sizeX + 2, sizeY + 2);
         }       
     }
 
@@ -329,18 +344,45 @@ public class NodeFunctions : MonoBehaviour
     //This draws the base node gameobject
     public static void DrawNodeBase(Node node)
     {
-        //This sets up the node background
+        //This sets up the base recttransform
         node.rectTransform = node.gameObject.AddComponent<RectTransform>();
+        node.name = "Node";
 
-        Image background = node.gameObject.AddComponent<Image>();
-        background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Dark");
-        background.type = Image.Type.Sliced;
-        background.pixelsPerUnitMultiplier = 5;
         node.rectTransform.sizeDelta = new Vector2(node.sizeX, node.sizeZ);
         node.rectTransform.localPosition = new Vector2(node.nodePosX, node.nodePosY);
         node.rectTransform.localScale = new Vector3(1, 1, 1);
 
-        node.name = "Node";
+        //This sets up the node highlight
+        GameObject nodeHighlight = new GameObject();
+        nodeHighlight.name = "nodeHighlight";
+        nodeHighlight.transform.SetParent(node.gameObject.transform);
+
+        Image highlight = nodeHighlight.AddComponent<Image>();
+        highlight.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
+        highlight.type = Image.Type.Sliced;
+        highlight.pixelsPerUnitMultiplier = 5;
+
+        node.nodeHighlight = nodeHighlight.GetComponent<RectTransform>();
+        node.nodeHighlight.sizeDelta = new Vector2(node.sizeX + 2, node.sizeZ + 2);
+        node.nodeHighlight.localPosition = new Vector2(0, 0);
+        node.nodeHighlight.localScale = new Vector3(1, 1, 1);
+
+        node.nodeHighlight.gameObject.SetActive(false);
+
+        //This sets up the node background
+        GameObject nodeBackground = new GameObject();
+        nodeBackground.name = "nodeBackground";
+        nodeBackground.transform.SetParent(node.gameObject.transform);
+
+        Image background = nodeBackground.AddComponent<Image>();
+        background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Dark");
+        background.type = Image.Type.Sliced;
+        background.pixelsPerUnitMultiplier = 5;
+
+        node.nodeBackground = nodeBackground.GetComponent<RectTransform>();
+        node.nodeBackground.sizeDelta = new Vector2(node.sizeX, node.sizeZ);
+        node.nodeBackground.localPosition = new Vector2(0, 0);
+        node.nodeBackground.localScale = new Vector3(1, 1, 1);   
     }
 
     //This draws a title

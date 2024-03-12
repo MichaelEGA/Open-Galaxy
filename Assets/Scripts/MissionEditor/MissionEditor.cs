@@ -25,7 +25,6 @@ public class MissionEditor : MonoBehaviour
     public bool menusClosed = true;
     public bool middleMouseDown = false;
     public Vector3 mouseStartPos;
-    public Rect selectionRect;
     public RectTransform selectionRectTransform;
     public string selectedNodeTypeToLoad;
     public string selectedMissionToLoad;

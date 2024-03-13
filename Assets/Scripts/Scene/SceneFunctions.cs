@@ -211,6 +211,29 @@ public static class SceneFunctions
             starfieldCameraData.cameraStack.Add(mainCamera);
             starfieldCameraData.cameraStack.Add(cockpitCamera);
         }
+
+        GameObject menuCameraGO = GameObject.Find("Menu Camera");
+        Camera menuCamera = null;
+
+        if (menuCameraGO == null)
+        {
+            menuCameraGO = new GameObject();
+            menuCameraGO.name = "Cockpit Camera";
+            menuCamera = menuCameraGO.AddComponent<Camera>();
+            menuCamera.cullingMask = LayerMask.GetMask("UI");
+            menuCamera.nearClipPlane = 0.01f;
+            var menuCameraData = menuCamera.GetUniversalAdditionalCameraData();
+            menuCameraData.renderType = CameraRenderType.Overlay;
+        }
+
+        if (loading == true)
+        {
+            var starfieldCameraData = starfieldCamera.GetUniversalAdditionalCameraData();
+            starfieldCameraData.cameraStack.Add(planetCamera);
+            starfieldCameraData.cameraStack.Add(mainCamera);
+            starfieldCameraData.cameraStack.Add(cockpitCamera);
+            starfieldCameraData.cameraStack.Add(menuCamera);
+        }
     }
 
     //This gets the cameras and adds them to the scene script

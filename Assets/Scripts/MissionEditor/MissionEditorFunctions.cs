@@ -1070,7 +1070,7 @@ public static class MissionEditorFunctions
     //This creates a selection box
     public static void SelectionBox(MissionEditor missionEditor)
     {
-        if (Input.GetMouseButton(2))
+        if (Input.GetMouseButton(1))
         {
             //This gets the mouse down
             if (missionEditor.middleMouseDown == false)
@@ -1119,7 +1119,7 @@ public static class MissionEditorFunctions
             missionEditor.selectionRectTransform.sizeDelta = selectionBoxSize;
             missionEditor.selectionRectTransform.position = clickPosition;
         }
-        else if (Input.GetMouseButtonUp(2))
+        else if (Input.GetMouseButtonUp(1))
         {
             GetNodesWithinBounds(missionEditor, missionEditor.selectionRectTransform);
 
@@ -1153,17 +1153,47 @@ public static class MissionEditorFunctions
             {
                 if (node != null)
                 {
-                    Vector2 position = RectTransformUtility.WorldToScreenPoint(Camera.main, node.gameObject.transform.position);
+                    Vector2 position = node.transform.position;
 
-                    //bool withinBounds = FUNCTION HERE
+                    bool withinBounds = RectTransformUtility.RectangleContainsScreenPoint(missionEditor.selectionRectTransform, position); //missionEditor.selectionRectTransform.rect.Contains(position); //IsPointInRT(position, missionEditor.selectionRectTransform, node);
 
-                    //if (withinBounds == true)
-                    //{
-                    //    node.selected = true;
-                    //    Debug.Log("Node Selected");
-                    //}
+                    if (withinBounds == true)
+                    {
+                        node.selected = true;
+                        Debug.Log("Node Selected");
+                    }
                 }
             }
+        }
+    }
+
+    public static bool IsPointInRT(Vector2 point, RectTransform rt, Node node)
+    {
+        // Get the rectangular bounding box of your UI element
+        Rect rect = rt.rect;
+
+        // Get the left, right, top, and bottom boundaries of the rect
+        float leftSide = rt.transform.position.x - rect.width / 2;
+        float rightSide = rt.transform.position.x + rect.width / 2;
+        float topSide = rt.transform.position.y + rect.height / 2;
+        float bottomSide = rt.transform.position.y - rect.height / 2;
+
+        if (node.eventType != null)
+        {
+            Debug.Log(leftSide + ", " + rightSide + ", " + topSide + ", " + bottomSide + " " + node.eventType.text + "" + point);
+        }
+
+        // Check to see if the point is in the calculated bounds
+        if (point.x >= leftSide &&
+            point.x <= rightSide &&
+            point.y >= bottomSide &&
+            point.y <= topSide)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

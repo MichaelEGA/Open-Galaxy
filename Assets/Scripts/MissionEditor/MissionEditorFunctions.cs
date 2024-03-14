@@ -1070,13 +1070,13 @@ public static class MissionEditorFunctions
     //This creates a selection box
     public static void SelectionBox(MissionEditor missionEditor)
     {
-        if (Input.GetMouseButton(1))
+        if (missionEditor.leftButtonGrid == true)
         {
             //This gets the mouse down
-            if (missionEditor.middleMouseDown == false)
+            if (missionEditor.draggingGridStarted == false)
             {
                 missionEditor.mouseStartPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-                missionEditor.middleMouseDown = true;
+                missionEditor.draggingGridStarted = true;
             }
 
             //This gets the original click position and the current mouse position
@@ -1118,8 +1118,10 @@ public static class MissionEditorFunctions
             //This applies the position and size of the selection box
             missionEditor.selectionRectTransform.sizeDelta = selectionBoxSize;
             missionEditor.selectionRectTransform.position = clickPosition;
+
+            missionEditor.selectionHasRun = false;
         }
-        else if (Input.GetMouseButtonUp(1))
+        else if (missionEditor.leftButtonGrid == false & missionEditor.selectionHasRun == false)
         {
             GetNodesWithinBounds(missionEditor, missionEditor.selectionRectTransform);
 
@@ -1127,10 +1129,17 @@ public static class MissionEditorFunctions
             {
                 missionEditor.selectionRectTransform.gameObject.SetActive(false);
             }
+
+            missionEditor.selectionHasRun = true;
         }
         else
         {
-            missionEditor.middleMouseDown = false;
+            if (missionEditor.selectionRectTransform != null)
+            {
+                missionEditor.selectionRectTransform.sizeDelta = new Vector2(0, 0);
+            }
+
+            missionEditor.draggingGridStarted = false;
         } 
     }
 
@@ -1145,6 +1154,7 @@ public static class MissionEditorFunctions
                 if (node != null)
                 {
                     node.selected = false;
+                   
                 }
             }
 
@@ -1160,40 +1170,35 @@ public static class MissionEditorFunctions
                     if (withinBounds == true)
                     {
                         node.selected = true;
-                        Debug.Log("Node Selected");
                     }
                 }
             }
         }
     }
 
-    public static bool IsPointInRT(Vector2 point, RectTransform rt, Node node)
+    //This selects the provided node and deselects all others
+    public static void SelectOnlyThisNode(MissionEditor missionEditor, Node node)
     {
-        // Get the rectangular bounding box of your UI element
-        Rect rect = rt.rect;
-
-        // Get the left, right, top, and bottom boundaries of the rect
-        float leftSide = rt.transform.position.x - rect.width / 2;
-        float rightSide = rt.transform.position.x + rect.width / 2;
-        float topSide = rt.transform.position.y + rect.height / 2;
-        float bottomSide = rt.transform.position.y - rect.height / 2;
-
-        if (node.eventType != null)
+        foreach(Node tempNode in missionEditor.nodes)
         {
-            Debug.Log(leftSide + ", " + rightSide + ", " + topSide + ", " + bottomSide + " " + node.eventType.text + "" + point);
+            tempNode.selected = false;
         }
 
-        // Check to see if the point is in the calculated bounds
-        if (point.x >= leftSide &&
-            point.x <= rightSide &&
-            point.y >= bottomSide &&
-            point.y <= topSide)
+        node.selected = true;
+    }
+
+    //This adds the node to the current selection
+    public static void AddNodeToCurrentSelection(Node node)
+    {
+        node.selected = true;
+    }
+
+    //This deselects all nodes
+    public static void SelectNone(MissionEditor missionEditor, Node node)
+    {
+        foreach (Node tempNode in missionEditor.nodes)
         {
-            return true;
-        }
-        else
-        {
-            return false;
+            tempNode.selected = false;
         }
     }
 

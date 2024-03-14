@@ -23,12 +23,14 @@ public class MissionEditor : MonoBehaviour
     public string locationdisplaymode = "top";
     public bool scrolling = true;
     public bool menusClosed = true;
-    public bool middleMouseDown = false;
+    public bool draggingGridStarted = false;
     public Vector3 mouseStartPos;
     public RectTransform selectionRectTransform;
     public string selectedNodeTypeToLoad;
     public string selectedMissionToLoad;
     public Text missionName;
+    public bool leftButtonGrid;
+    public bool selectionHasRun;
 
     void Start()
     {

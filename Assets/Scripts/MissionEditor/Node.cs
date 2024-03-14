@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
@@ -99,6 +100,20 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         startPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y) - transform.position;
         dragging = true;
         MissionEditorFunctions.CloseAllMenus();
+
+        var keyboard = Keyboard.current;
+
+        if (eventData.button.ToString() == "Left")
+        {
+            if (keyboard.ctrlKey.isPressed == true)
+            {
+                MissionEditorFunctions.AddNodeToCurrentSelection(this);
+            }
+            else
+            {
+                MissionEditorFunctions.SelectOnlyThisNode(missionEditor, this);
+            }
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -108,6 +123,6 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     public void OnDrag(PointerEventData eventData)
     {
-
+        //This needs to be here otherwise OnPointerUp will run straight after OnPointerDown when the mouse is held down and dragged
     }
 }

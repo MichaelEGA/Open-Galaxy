@@ -171,7 +171,8 @@ public static class MissionEditorFunctions
         file_Buttons.Add(spaces + "Open");
         file_Buttons.Add(spaces + "Merge");
         file_Buttons.Add(spaces + "Save");
-        file_Buttons.Add(spaces + "SaveAs");
+        file_Buttons.Add(spaces + "Save As");
+        file_Buttons.Add(spaces + "Export Selection As");
         file_Buttons.Add(spaces + "Exit to Open Galaxy");
         file_Buttons.Add(spaces + "Exit to Windows");
 
@@ -181,6 +182,7 @@ public static class MissionEditorFunctions
         file_Functions.Add("OpenMergeWindow");
         file_Functions.Add("Save");
         file_Functions.Add("OpenSaveAsWindow");
+        file_Functions.Add("OpenExportSelectionAsWindow");
         file_Functions.Add("ExitMissionEditor");
         file_Functions.Add("ExitToWindows");
 
@@ -307,6 +309,10 @@ public static class MissionEditorFunctions
         else if (functionType == "OpenSaveAsWindow")
         {
             button.onClick.AddListener(() => { OpenWindow("savemissionas"); });
+        }
+        else if (functionType == "OpenExportSelectionAsWindow")
+        {
+            button.onClick.AddListener(() => { OpenWindow("exportselectionas"); });
         }
         else if (functionType == "OpenOpenWindow")
         {
@@ -628,6 +634,79 @@ public static class MissionEditorFunctions
         CloseAllMenus();
     }
 
+    public static void ExportSelectionAs(Window window = null)
+    {
+        List<MissionEvent> exportList = new List<MissionEvent>();
+
+        MissionEditor missionEditor = GetMissionEditor();
+
+        string exportFileName = GetMissionNameFromExportDialog();
+
+        foreach (Node node in missionEditor.nodes)
+        {
+            if (node != null)
+            {
+                if (node.selected == true)
+                {
+                    MissionEvent missionEvent = new MissionEvent();
+
+                    missionEvent.eventID = ParseTextToString(node.eventID);
+                    missionEvent.eventType = ParseTextToString(node.eventType);
+                    missionEvent.conditionLocation = ParseTextToString(node.conditionLocation);
+                    missionEvent.conditionTime = ParseTextToFloat(node.conditionTime);
+                    missionEvent.x = ParseTextToFloat(node.x);
+                    missionEvent.y = ParseTextToFloat(node.y);
+                    missionEvent.z = ParseTextToFloat(node.z);
+                    missionEvent.xRotation = ParseTextToFloat(node.xRotation);
+                    missionEvent.yRotation = ParseTextToFloat(node.yRotation);
+                    missionEvent.zRotation = ParseTextToFloat(node.zRotation);
+                    missionEvent.data1 = ParseTextToString(node.data1);
+                    missionEvent.data2 = ParseTextToString(node.data2);
+                    missionEvent.data3 = ParseTextToString(node.data3);
+                    missionEvent.data4 = ParseTextToString(node.data4);
+                    missionEvent.data5 = ParseTextToString(node.data5);
+                    missionEvent.data6 = ParseTextToString(node.data6);
+                    missionEvent.data7 = ParseTextToString(node.data7);
+                    missionEvent.data8 = ParseTextToString(node.data8);
+                    missionEvent.data9 = ParseTextToString(node.data9);
+                    missionEvent.data10 = ParseTextToString(node.data10);
+                    missionEvent.data11 = ParseTextToString(node.data11);
+                    missionEvent.data12 = ParseTextToString(node.data12);
+                    missionEvent.data13 = ParseTextToString(node.data13);
+                    missionEvent.data14 = ParseTextToString(node.data14);
+                    missionEvent.data15 = ParseTextToString(node.data15);
+                    missionEvent.nextEvent1 = ParseTextToString(node.nextEvent1);
+                    missionEvent.nextEvent2 = ParseTextToString(node.nextEvent2);
+                    missionEvent.nextEvent3 = ParseTextToString(node.nextEvent3);
+                    missionEvent.nextEvent4 = ParseTextToString(node.nextEvent4);
+                    missionEvent.nodePosX = node.nodePosX;
+                    missionEvent.nodePosY = node.nodePosY;
+
+                    exportList.Add(missionEvent);
+                }
+            }
+        }
+
+        MissionEvent[] exportListEventData = exportList.ToArray();
+
+        string jsonString = JsonHelper.ToJson(exportListEventData, true);
+
+        string saveFile = "none";
+
+        saveFile = Application.persistentDataPath + "/Custom Missions/" + exportFileName + ".json";       
+
+        File.WriteAllText(saveFile, jsonString);
+
+        DisplayMessage(exportFileName + " saved to " + Application.persistentDataPath + "/Custom Missions/");
+
+        if (window != null)
+        {
+            WindowFunctions.DeleteWindow(window);
+        }
+
+        CloseAllMenus();
+    }
+
     public static void UpdateMissionName(string name)
     {
         MissionEditor missionEditor = GetMissionEditor();
@@ -650,6 +729,32 @@ public static class MissionEditorFunctions
         }
 
         GameObject MissionNameField = GameObject.Find("MissionNameField");
+
+        if (MissionNameField != null)
+        {
+            Text missionName = MissionNameField.GetComponent<Text>();
+
+            if (missionName != null)
+            {
+                name = missionName.text;
+            }
+        }
+
+        return name;
+    }
+
+    public static string GetMissionNameFromExportDialog()
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        string name = "Untitled Export";
+
+        if (missionEditor != null)
+        {
+            name = missionEditor.missionName.text;
+        }
+
+        GameObject MissionNameField = GameObject.Find("FileNameField");
 
         if (MissionNameField != null)
         {
@@ -1261,6 +1366,6 @@ public static class MissionEditorFunctions
         rectTransform.localScale = new Vector3(scale, scale, scale);
     }
 
-        #endregion
+    #endregion
 
 }

@@ -35,6 +35,10 @@ public static class WindowFunctions
         {
             WindowFunctions.Draw_SaveMissionAs(window);
         }
+        else if (window.windowType == "exportselectionas")
+        {
+            WindowFunctions.Draw_ExportSelectionAs(window);
+        }
         else if (window.windowType == "abouteditor")
         {
             WindowFunctions.Draw_AboutWindow(window);
@@ -254,6 +258,26 @@ public static class WindowFunctions
         drop -= 15;
 
         DrawTextButton(window, 80, -80, 10, 90, "none", "Save Mission As", 7, "SaveMissionAs", TextAnchor.MiddleCenter);
+    }
+
+    //This draws the save mission window
+    public static void Draw_ExportSelectionAs(Window window)
+    {
+        DrawWindowBase(window, 250, 100);
+
+        DrawText(window, "Export Selection As", 8, 5, -5, 12.5f, 90);
+
+        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
+
+        float drop = -35f;
+
+        DrawInputFieldLarge(window, "File Name", "none", 7, 5, drop, 25, 240f, "FileNameField");
+
+        drop -= 15;
+
+        DrawTextButton(window, 80, -80, 10, 90, "none", "Export Selection As", 7, "ExportSelectionAs", TextAnchor.MiddleCenter);
     }
 
     //This draws the mission editor about window
@@ -551,6 +575,10 @@ public static class WindowFunctions
         else if (functionType == "SaveMissionAs")
         {
             button.onClick.AddListener(() => { MissionEditorFunctions.SaveMission(window); });
+        }
+        else if (functionType == "ExportSelectionAs")
+        {
+            button.onClick.AddListener(() => { MissionEditorFunctions.ExportSelectionAs(window); });
         }
         else if (functionType == "DeleteWindow")
         {

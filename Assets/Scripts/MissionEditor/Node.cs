@@ -61,6 +61,7 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     public MissionEditor missionEditor;
 
     Vector3 startPos;
+    public bool startPositionRecorded;
 
     // Start is called before the first frame update
     void Start()
@@ -83,10 +84,32 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
             missionEditor.scrolling = false;
             scrollReset = false;
         }
-        else if (scrollReset == false)
+        else if (selected == true & dragging == false)
         {
+            if (missionEditor != null)
+            {
+                foreach(Node node in missionEditor.nodes)
+                {
+                    if(node.dragging == true)
+                    {
+                        if (startPositionRecorded == false)
+                        {
+                            startPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y) - transform.position;
+                            startPositionRecorded = true;
+                        }
+
+                        transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y) - startPos;
+                        missionEditor.scrolling = false;
+                        scrollReset = false;                       
+                    }
+                }
+            }
+        }
+        else if (scrollReset == false)
+        {          
             missionEditor.scrolling = true;
             scrollReset = true;
+            startPositionRecorded = false;
         }
 
         nodePosX = transform.localPosition.x;
@@ -111,8 +134,16 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
             }
             else
             {
-                MissionEditorFunctions.SelectOnlyThisNode(missionEditor, this);
+                if (selected == false)
+                {
+                    MissionEditorFunctions.SelectOnlyThisNode(missionEditor, this);
+                }                
             }
+        }
+
+        foreach (Node node in missionEditor.nodes)
+        {
+            node.startPositionRecorded = false;
         }
     }
 

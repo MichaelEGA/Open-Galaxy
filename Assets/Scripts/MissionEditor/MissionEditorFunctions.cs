@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using System.IO;
 
 public static class MissionEditorFunctions
@@ -473,7 +474,7 @@ public static class MissionEditorFunctions
 
     #endregion
 
-    #region node functions
+    #region node functions and node tools
 
     public static void SelectNodeType(string nodeType)
     {
@@ -541,6 +542,157 @@ public static class MissionEditorFunctions
         }
 
         return node;
+    }
+
+    //This deletes all currently selected nodes
+    public static void DeleteNodes()
+    {
+        var keyboard = Keyboard.current;
+
+        if (keyboard.deleteKey.isPressed == true)
+        {
+            NodeFunctions.DeleteSelectedNodes();
+        }
+    }
+
+    //This creates a selection box
+    public static void SelectionBox(MissionEditor missionEditor)
+    {
+        if (missionEditor.leftButtonGrid == true)
+        {
+            //This gets the mouse down
+            if (missionEditor.draggingGridStarted == false)
+            {
+                missionEditor.mouseStartPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+                missionEditor.draggingGridStarted = true;
+            }
+
+            //This gets the original click position and the current mouse position
+            Vector2 clickPosition = missionEditor.mouseStartPos;
+            Vector2 currentPosition = Input.mousePosition;
+
+            //This calculates the width and height of the selection box
+            int width = (int)(currentPosition.x - clickPosition.x);
+            int height = -(int)(currentPosition.y - clickPosition.y);
+            Vector2 selectionBoxSize = new Vector2(width, height);
+
+            //This allows the selection box reversed (i.e. able to be pulled in all directions)
+            if (selectionBoxSize.x < 0)
+            {
+                selectionBoxSize.x = Mathf.Abs(selectionBoxSize.x);
+                clickPosition.x = currentPosition.x;
+            }
+
+            if (selectionBoxSize.y < 0)
+            {
+                selectionBoxSize.y = Mathf.Abs(selectionBoxSize.y);
+                clickPosition.y = currentPosition.y;
+            }
+
+            //This creates the selection box if it doesn't already exist
+            if (missionEditor.selectionRectTransform == null)
+            {
+                missionEditor.selectionRectTransform = CreateRectTransformWithImage("SelectionBox", "NodeSprite_Selection", missionEditor.transform);
+            }
+
+            //This sets the selection box gameobject to active
+            missionEditor.selectionRectTransform.gameObject.SetActive(true);
+
+            //This applies the correct anchor position for the box
+            missionEditor.selectionRectTransform.anchorMax = new Vector2(0, 1);
+            missionEditor.selectionRectTransform.anchorMin = new Vector2(0, 1);
+            missionEditor.selectionRectTransform.pivot = new Vector2(0, 1);
+
+            //This applies the position and size of the selection box
+            missionEditor.selectionRectTransform.sizeDelta = selectionBoxSize;
+            missionEditor.selectionRectTransform.position = clickPosition;
+
+            missionEditor.selectionHasRun = false;
+        }
+        else if (missionEditor.leftButtonGrid == false & missionEditor.selectionHasRun == false)
+        {
+            GetNodesWithinBounds(missionEditor, missionEditor.selectionRectTransform);
+
+            if (missionEditor.selectionRectTransform != null)
+            {
+                missionEditor.selectionRectTransform.gameObject.SetActive(false);
+            }
+
+            missionEditor.selectionHasRun = true;
+        }
+        else
+        {
+            if (missionEditor.selectionRectTransform != null)
+            {
+                missionEditor.selectionRectTransform.sizeDelta = new Vector2(0, 0);
+            }
+
+            missionEditor.draggingGridStarted = false;
+        }
+    }
+
+    //This grabs all the nodes within the given bounds of a rect (i.e. the selection box)
+    public static void GetNodesWithinBounds(MissionEditor missionEditor, RectTransform selectionRect)
+    {
+        if (missionEditor.nodes != null)
+        {
+            //This deselects all current nodes
+            var keyboard = Keyboard.current;
+
+            if (keyboard.ctrlKey.isPressed == false)
+            {
+                foreach (Node node in missionEditor.nodes)
+                {
+                    if (node != null)
+                    {
+                        node.selected = false;
+
+                    }
+                }
+            }
+
+            //This selects a new set of nodes
+            foreach (Node node in missionEditor.nodes)
+            {
+                if (node != null)
+                {
+                    Vector2 position = node.transform.position;
+
+                    bool withinBounds = RectTransformUtility.RectangleContainsScreenPoint(missionEditor.selectionRectTransform, position); //missionEditor.selectionRectTransform.rect.Contains(position); //IsPointInRT(position, missionEditor.selectionRectTransform, node);
+
+                    if (withinBounds == true)
+                    {
+                        node.selected = true;
+                    }
+                }
+            }
+        }
+    }
+
+    //This selects the provided node and deselects all others
+    public static void SelectOnlyThisNode(MissionEditor missionEditor, Node node)
+    {
+        foreach (Node tempNode in missionEditor.nodes)
+        {
+            tempNode.selected = false;
+        }
+
+        node.selected = true;
+    }
+
+    //This adds the node to the current selection
+    public static void AddNodeToCurrentSelection(Node node)
+    {
+        node.selected = true;
+    }
+
+    //This deselects all nodes
+    public static void SelectNone(MissionEditor missionEditor, Node node)
+    {
+        foreach (Node tempNode in missionEditor.nodes)
+        {
+            tempNode.selected = false;
+        }
     }
 
     #endregion
@@ -1170,141 +1322,6 @@ public static class MissionEditorFunctions
     {
         Application.OpenURL(url);
         CloseAllMenus();
-    }
-
-    //This creates a selection box
-    public static void SelectionBox(MissionEditor missionEditor)
-    {
-        if (missionEditor.leftButtonGrid == true)
-        {
-            //This gets the mouse down
-            if (missionEditor.draggingGridStarted == false)
-            {
-                missionEditor.mouseStartPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-                missionEditor.draggingGridStarted = true;
-            }
-
-            //This gets the original click position and the current mouse position
-            Vector2 clickPosition = missionEditor.mouseStartPos;
-            Vector2 currentPosition = Input.mousePosition;
-
-            //This calculates the width and height of the selection box
-            int width = (int)(currentPosition.x - clickPosition.x);
-            int height = -(int)(currentPosition.y - clickPosition.y);
-            Vector2 selectionBoxSize = new Vector2(width, height);
-
-            //This allows the selection box reversed (i.e. able to be pulled in all directions)
-            if (selectionBoxSize.x < 0)
-            {
-                selectionBoxSize.x = Mathf.Abs(selectionBoxSize.x);
-                clickPosition.x = currentPosition.x;
-            }
-
-            if (selectionBoxSize.y < 0)
-            {
-                selectionBoxSize.y = Mathf.Abs(selectionBoxSize.y);
-                clickPosition.y = currentPosition.y;
-            }
-
-            //This creates the selection box if it doesn't already exist
-            if (missionEditor.selectionRectTransform == null)
-            {
-                missionEditor.selectionRectTransform = CreateRectTransformWithImage("SelectionBox", "NodeSprite_Selection", missionEditor.transform);
-            }
-
-            //This sets the selection box gameobject to active
-            missionEditor.selectionRectTransform.gameObject.SetActive(true);
-
-            //This applies the correct anchor position for the box
-            missionEditor.selectionRectTransform.anchorMax = new Vector2(0, 1);
-            missionEditor.selectionRectTransform.anchorMin = new Vector2(0, 1);
-            missionEditor.selectionRectTransform.pivot = new Vector2(0, 1);
-
-            //This applies the position and size of the selection box
-            missionEditor.selectionRectTransform.sizeDelta = selectionBoxSize;
-            missionEditor.selectionRectTransform.position = clickPosition;
-
-            missionEditor.selectionHasRun = false;
-        }
-        else if (missionEditor.leftButtonGrid == false & missionEditor.selectionHasRun == false)
-        {
-            GetNodesWithinBounds(missionEditor, missionEditor.selectionRectTransform);
-
-            if (missionEditor.selectionRectTransform != null)
-            {
-                missionEditor.selectionRectTransform.gameObject.SetActive(false);
-            }
-
-            missionEditor.selectionHasRun = true;
-        }
-        else
-        {
-            if (missionEditor.selectionRectTransform != null)
-            {
-                missionEditor.selectionRectTransform.sizeDelta = new Vector2(0, 0);
-            }
-
-            missionEditor.draggingGridStarted = false;
-        } 
-    }
-
-    //This grabs all the nodes within the given bounds of a rect (i.e. the selection box)
-    public static void GetNodesWithinBounds(MissionEditor missionEditor, RectTransform selectionRect)
-    {
-        if (missionEditor.nodes != null)
-        {
-            //This deselects all current nodes
-            foreach(Node node in missionEditor.nodes)
-            {
-                if (node != null)
-                {
-                    node.selected = false;
-                   
-                }
-            }
-
-            //This selects a new set of nodes
-            foreach (Node node in missionEditor.nodes)
-            {
-                if (node != null)
-                {
-                    Vector2 position = node.transform.position;
-
-                    bool withinBounds = RectTransformUtility.RectangleContainsScreenPoint(missionEditor.selectionRectTransform, position); //missionEditor.selectionRectTransform.rect.Contains(position); //IsPointInRT(position, missionEditor.selectionRectTransform, node);
-
-                    if (withinBounds == true)
-                    {
-                        node.selected = true;
-                    }
-                }
-            }
-        }
-    }
-
-    //This selects the provided node and deselects all others
-    public static void SelectOnlyThisNode(MissionEditor missionEditor, Node node)
-    {
-        foreach(Node tempNode in missionEditor.nodes)
-        {
-            tempNode.selected = false;
-        }
-
-        node.selected = true;
-    }
-
-    //This adds the node to the current selection
-    public static void AddNodeToCurrentSelection(Node node)
-    {
-        node.selected = true;
-    }
-
-    //This deselects all nodes
-    public static void SelectNone(MissionEditor missionEditor, Node node)
-    {
-        foreach (Node tempNode in missionEditor.nodes)
-        {
-            tempNode.selected = false;
-        }
     }
 
     #endregion

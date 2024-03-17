@@ -239,6 +239,50 @@ public class NodeFunctions : MonoBehaviour
         GameObject.Destroy(node.gameObject);
     }
 
+    //This deletes all selected nodes
+    public static void DeleteSelectedNodes()
+    {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor.nodes != null)
+        {
+            foreach (Node node in missionEditor.nodes)
+            {
+                //This destroys all the associated node links
+                foreach (NodeLink nodeLink in missionEditor.nodeLinks)
+                {
+                    if (nodeLink != null & node != null)
+                    {
+                        if (nodeLink.connectedNode != null)
+                        {
+                            if (nodeLink.connectedNode.node.selected == true)
+                            {
+                                GameObject.Destroy(nodeLink.line);
+                                GameObject.Destroy(nodeLink.gameObject);
+                            }
+
+                            if (nodeLink.node.selected == true)
+                            {
+                                GameObject.Destroy(nodeLink.line);
+                                GameObject.Destroy(nodeLink.gameObject);
+                            }
+                        }
+                    }
+                }
+
+                //This detroys the nodes
+                if (node != null)
+                {
+                    if (node.selected == true)
+                    {
+                        GameObject.Destroy(node.gameObject);
+                    }
+                }
+            }
+        }
+    }
+
+    //This deletes all nodes and clears the editor
     public static void DeleteAllNodes()
     {
         MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
@@ -263,6 +307,7 @@ public class NodeFunctions : MonoBehaviour
         MissionEditorFunctions.UpdateMissionName("Untitled Mission");
     }
 
+    //This gets a unique ID for the node
     public static void GetUniqueNodeID(Node node)
     {
         MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();

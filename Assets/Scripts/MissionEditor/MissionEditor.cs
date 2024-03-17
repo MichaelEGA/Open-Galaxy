@@ -54,6 +54,7 @@ public class MissionEditor : MonoBehaviour
         MissionEditorFunctions.ScaleGrid(this);
         MissionEditorFunctions.ToggleScrolling(this);
         MissionEditorFunctions.SelectionBox(this);
+        MissionEditorFunctions.DeleteNodes();
     }
 
     public void OnPointerClick(PointerEventData eventData)

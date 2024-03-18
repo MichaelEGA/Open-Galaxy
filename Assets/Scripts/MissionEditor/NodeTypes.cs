@@ -517,18 +517,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options2 = new List<string>();
-        options2.Add("imperial");
-        options2.Add("rebel");
-        options2.Add("pirate");
-        options2.Add("smuggler");
-        options2.Add("hutt");
-        options2.Add("hostile");
-        options2.Add("corporatesector");
-        options2.Add("independent");
-        options2.Add("civilian");
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -631,18 +620,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options2 = new List<string>();
-        options2.Add("imperial");
-        options2.Add("rebel");
-        options2.Add("pirate");
-        options2.Add("smuggler");
-        options2.Add("hutt");
-        options2.Add("hostile");
-        options2.Add("corporatesector");
-        options2.Add("independent");
-        options2.Add("civilian");
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -737,18 +715,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options2 = new List<string>();
-        options2.Add("imperial");
-        options2.Add("rebel");
-        options2.Add("pirate");
-        options2.Add("smuggler");
-        options2.Add("hutt");
-        options2.Add("hostile");
-        options2.Add("corporatesector");
-        options2.Add("independent");
-        options2.Add("civilian");
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1783,18 +1750,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("imperial");
-        options1.Add("rebel");
-        options1.Add("pirate");
-        options1.Add("smuggler");
-        options1.Add("hutt");
-        options1.Add("hostile");
-        options1.Add("corporatesector");
-        options1.Add("independent");
-        options1.Add("civilian");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1880,18 +1836,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options2 = new List<string>();
-        options2.Add("imperial");
-        options2.Add("rebel");
-        options2.Add("pirate");
-        options2.Add("smuggler");
-        options2.Add("hutt");
-        options2.Add("hostile");
-        options2.Add("corporatesector");
-        options2.Add("independent");
-        options2.Add("civilian");
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1992,18 +1937,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options2 = new List<string>();
-        options2.Add("imperial");
-        options2.Add("rebel");
-        options2.Add("pirate");
-        options2.Add("smuggler");
-        options2.Add("hutt");
-        options2.Add("hostile");
-        options2.Add("corporatesector");
-        options2.Add("independent");
-        options2.Add("civilian");
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2096,18 +2030,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options2 = new List<string>();
-        options2.Add("imperial");
-        options2.Add("rebel");
-        options2.Add("pirate");
-        options2.Add("smuggler");
-        options2.Add("hutt");
-        options2.Add("hostile");
-        options2.Add("corporatesector");
-        options2.Add("independent");
-        options2.Add("civilian");
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2224,18 +2147,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options2 = new List<string>();
-        options2.Add("imperial");
-        options2.Add("rebel");
-        options2.Add("pirate");
-        options2.Add("smuggler");
-        options2.Add("hutt");
-        options2.Add("hostile");
-        options2.Add("corporatesector");
-        options2.Add("independent");
-        options2.Add("civilian");
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2701,18 +2613,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("imperial");
-        options.Add("rebel");
-        options.Add("pirate");
-        options.Add("smuggler");
-        options.Add("hutt");
-        options.Add("hostile");
-        options.Add("corporatesector");
-        options.Add("independent");
-        options.Add("civilian");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -3047,6 +2948,22 @@ public static class NodeTypes
         }
 
         return shipList;
+    }
+
+    public static List<string> GetAllegianceList()
+    {
+        //This gets the Json ship data
+        TextAsset allegianceFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
+        Allegiances allegiances = JsonUtility.FromJson<Allegiances>(allegianceFile.text);
+
+        List<string> allegianceList = new List<string>();
+
+        foreach (Allegiance allegiance in allegiances.allegianceData)
+        {
+            allegianceList.Add(allegiance.allegiance);
+        }
+
+        return allegianceList;
     }
 
     #endregion

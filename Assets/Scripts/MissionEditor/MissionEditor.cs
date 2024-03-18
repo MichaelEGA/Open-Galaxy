@@ -6,31 +6,35 @@ using UnityEngine.UI;
 
 public class MissionEditor : MonoBehaviour
 {
+    public Canvas canvas;
     public List<Node> nodes;
     public List<Window> windows;
     public List<GameObject> menus;
     public List<NodeLink> nodeLinks;
     public List<GameObject> locationMarkers;
-    public Canvas canvas;
+    public List<InputField> inputfields;
+    public Vector3 mouseStartPos;
     public RectTransform editorContentRect;
     public RectTransform menuBarRectTransform;
+    public RectTransform selectionRectTransform;
     public ScrollRect scrollRect;
     public Text AddNodeTextBox;
     public Text scaleIndicator;
     public Text messageTextbox;
-    public float scale = 1;
+    public Text missionName;
     public string gameWindowMode;
     public string locationdisplaymode = "top";
+    public string clipboard;
+    public string selectedNodeTypeToLoad;
+    public string selectedMissionToLoad;
+    public float scale = 1;
+    public float timePressed;
     public bool scrolling = true;
     public bool menusClosed = true;
     public bool draggingGridStarted = false;
-    public Vector3 mouseStartPos;
-    public RectTransform selectionRectTransform;
-    public string selectedNodeTypeToLoad;
-    public string selectedMissionToLoad;
-    public Text missionName;
     public bool leftButtonGrid;
     public bool selectionHasRun;
+    public bool pasting;
 
     void Start()
     {
@@ -54,7 +58,7 @@ public class MissionEditor : MonoBehaviour
         MissionEditorFunctions.ScaleGrid(this);
         MissionEditorFunctions.ToggleScrolling(this);
         MissionEditorFunctions.SelectionBox(this);
-        MissionEditorFunctions.DeleteNodes();
+        MissionEditorFunctions.Shortcuts(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)

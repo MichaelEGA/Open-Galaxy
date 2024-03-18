@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using System.IO;
 
 public static class MissionEditorFunctions
@@ -158,13 +159,19 @@ public static class MissionEditorFunctions
     {
         if (missionEditor.menuBarRectTransform != null)
         {
-            DrawTextButton(missionEditor.menuBarRectTransform.transform, 0, 0, 12, 25, "File", 7, "ActivateMenu", TextAnchor.MiddleCenter);
-            DrawTextButton(missionEditor.menuBarRectTransform.transform, 25, 0, 12, 45, "Add Event", 7, "ActivateMenu", TextAnchor.MiddleCenter);
-            DrawTextButton(missionEditor.menuBarRectTransform.transform, 70, 0, 12, 30, "Window", 7, "ActivateMenu", TextAnchor.MiddleCenter);
-            DrawTextButton(missionEditor.menuBarRectTransform.transform, 100, 0, 12, 25, "Help", 7, "ActivateMenu", TextAnchor.MiddleCenter);
+            float shiftRight = 0;
+            DrawTextButton(missionEditor.menuBarRectTransform.transform, shiftRight, 0, 12, 25, "File", 7, "ActivateMenu", TextAnchor.MiddleCenter);
+            shiftRight += 25;
+            DrawTextButton(missionEditor.menuBarRectTransform.transform, shiftRight, 0, 12, 25, "Edit", 7, "ActivateMenu", TextAnchor.MiddleCenter);
+            shiftRight += 25;
+            DrawTextButton(missionEditor.menuBarRectTransform.transform, shiftRight, 0, 12, 30, "Events", 7, "ActivateMenu", TextAnchor.MiddleCenter);
+            shiftRight += 30;
+            DrawTextButton(missionEditor.menuBarRectTransform.transform, shiftRight, 0, 12, 30, "Window", 7, "ActivateMenu", TextAnchor.MiddleCenter);
+            shiftRight += 30;
+            DrawTextButton(missionEditor.menuBarRectTransform.transform, shiftRight, 0, 12, 25, "Help", 7, "ActivateMenu", TextAnchor.MiddleCenter);
         }
 
-        float shift = 0;
+        float shiftRight02 = 0;
         string spaces = "        ";
 
         List<string> file_Buttons = new List<string>();
@@ -187,19 +194,39 @@ public static class MissionEditorFunctions
         file_Functions.Add("ExitMissionEditor");
         file_Functions.Add("ExitToWindows");
 
-        GameObject fileMenu = DrawDropDownMenu(missionEditor.transform, "File", shift, file_Buttons.ToArray(), file_Functions.ToArray());
+        GameObject fileMenu = DrawDropDownMenu(missionEditor.transform, "File", shiftRight02, file_Buttons.ToArray(), file_Functions.ToArray());
 
-        List<string> addEvent_Buttons = new List<string>();
-        addEvent_Buttons.Add(spaces + "Add New Event");
-        addEvent_Buttons.Add(spaces + "Display Location");
+        List<string> edit_Buttons = new List<string>();
+        edit_Buttons.Add(spaces + "Cut");
+        edit_Buttons.Add(spaces + "Copy");
+        edit_Buttons.Add(spaces + "Paste");
+        edit_Buttons.Add(spaces + "Select All");
+        edit_Buttons.Add(spaces + "Select None");
+        edit_Buttons.Add(spaces + "Delete");
 
-        List<string> addEvent_Functions = new List<string>();
-        addEvent_Functions.Add("OpenAddNewEvent");
-        addEvent_Functions.Add("OpenDisplayLocation");
+        List<string> edit_Functions = new List<string>();
+        edit_Functions.Add("Cut");
+        edit_Functions.Add("Copy");
+        edit_Functions.Add("Paste");
+        edit_Functions.Add("SelectAll");
+        edit_Functions.Add("SelectNone");
+        edit_Functions.Add("Delete");
 
-        shift += 25;
+        shiftRight02 += 25;
 
-        GameObject addEventMenu = DrawDropDownMenu(missionEditor.transform, "Add Event", shift, addEvent_Buttons.ToArray(), addEvent_Functions.ToArray());
+        GameObject EditMenu = DrawDropDownMenu(missionEditor.transform, "Edit", shiftRight02, edit_Buttons.ToArray(), edit_Functions.ToArray());
+
+        List<string> event_Buttons = new List<string>();
+        event_Buttons.Add(spaces + "Add New Event");
+        event_Buttons.Add(spaces + "Display Location");
+
+        List<string> event_Functions = new List<string>();
+        event_Functions.Add("OpenAddNewEvent");
+        event_Functions.Add("OpenDisplayLocation");
+
+        shiftRight02 += 25;
+
+        GameObject EventsMenu = DrawDropDownMenu(missionEditor.transform, "Events", shiftRight02, event_Buttons.ToArray(), event_Functions.ToArray());
 
         List<string> window_Buttons = new List<string>();
         window_Buttons.Add(spaces + "Make Fullscreen");
@@ -209,9 +236,9 @@ public static class MissionEditorFunctions
         window_Functions.Add("MakeFullscreen");
         window_Functions.Add("MakeWindowed");
 
-        shift += 45;
+        shiftRight02 += 30;
 
-        GameObject windowMenu = DrawDropDownMenu(missionEditor.transform, "Window", shift, window_Buttons.ToArray(), window_Functions.ToArray());
+        GameObject windowMenu = DrawDropDownMenu(missionEditor.transform, "Window", shiftRight02, window_Buttons.ToArray(), window_Functions.ToArray());
 
         List<string> help_Buttons = new List<string>();
         help_Buttons.Add(spaces + "Open Open-Galaxy Github");
@@ -221,9 +248,9 @@ public static class MissionEditorFunctions
         help_Functions.Add("OpenGitHub");
         help_Functions.Add("OpenAbout");
 
-        shift += 30;
+        shiftRight02 += 30;
 
-        GameObject helpMenu = DrawDropDownMenu(missionEditor.transform, "Help", shift, help_Buttons.ToArray(), help_Functions.ToArray());
+        GameObject helpMenu = DrawDropDownMenu(missionEditor.transform, "Help", shiftRight02, help_Buttons.ToArray(), help_Functions.ToArray());
 
         if (missionEditor.menus == null)
         {
@@ -232,7 +259,8 @@ public static class MissionEditorFunctions
         else
         {
             missionEditor.menus.Add(fileMenu);
-            missionEditor.menus.Add(addEventMenu);
+            missionEditor.menus.Add(EditMenu);
+            missionEditor.menus.Add(EventsMenu);
             missionEditor.menus.Add(windowMenu);
             missionEditor.menus.Add(helpMenu);
 
@@ -285,6 +313,8 @@ public static class MissionEditorFunctions
 
         Color color = Color.white;
 
+        MissionEditor missionEditor = GetMissionEditor();
+
         if (ColorUtility.TryParseHtmlString("#C3C3C3", out color))
         {
             ColorBlock colorVar = button.colors;
@@ -295,6 +325,18 @@ public static class MissionEditorFunctions
         {
             button.onClick.AddListener(() => { ActivateMenu(buttonText); });
         }
+        else if (functionType == "Copy")
+        {
+            button.onClick.AddListener(() => { Copy(); });
+        }
+        else if (functionType == "Cut")
+        {
+            button.onClick.AddListener(() => { Cut(); });
+        }
+        else if (functionType == "Delete")
+        {
+            button.onClick.AddListener(() => { DeleteNodes(); });
+        }
         else if (functionType == "ExitMissionEditor")
         {
             button.onClick.AddListener(() => { ExitMissionEditor(); });
@@ -302,10 +344,6 @@ public static class MissionEditorFunctions
         else if (functionType == "ExitToWindows")
         {
             button.onClick.AddListener(() => { ExitToWindows(); });
-        }
-        else if (functionType == "Save")
-        {
-            button.onClick.AddListener(() => { SaveMission(); });
         }
         else if (functionType == "OpenSaveAsWindow")
         {
@@ -350,6 +388,22 @@ public static class MissionEditorFunctions
         else if (functionType == "OpenAbout")
         {
             button.onClick.AddListener(() => { OpenWindow("abouteditor"); });
+        }
+        else if (functionType == "Paste")
+        {
+            button.onClick.AddListener(() => { Paste(missionEditor); });
+        }
+        else if (functionType == "Save")
+        {
+            button.onClick.AddListener(() => { SaveMission(); });
+        }
+        else if (functionType == "SelectAll")
+        {
+            button.onClick.AddListener(() => { SelectAll(missionEditor); });
+        }
+        else if (functionType == "SelectNone")
+        {
+            button.onClick.AddListener(() => { SelectNone(missionEditor); });
         }
     }
 
@@ -474,85 +528,49 @@ public static class MissionEditorFunctions
 
     #endregion
 
-    #region node functions and node tools
+    #region edit tools
 
-    public static void SelectNodeType(string nodeType)
+    //This deletes all currently selected nodes
+    public static void Shortcuts(MissionEditor missionEditor)
     {
-        MissionEditor missionEditor = GetMissionEditor();
+        var keyboard = Keyboard.current;
+        float delay = 0.5f + missionEditor.timePressed;
 
-        missionEditor.selectedNodeTypeToLoad = nodeType;
-
-        if (missionEditor.AddNodeTextBox == null)
+        if (keyboard.deleteKey.isPressed == true & Time.time > delay)
         {
-            GameObject AddNodeTextBoxGO = GameObject.Find("AddNodeTextBox");
+            DeleteNodes();
+            missionEditor.timePressed = Time.time;
+        }
 
-            if (AddNodeTextBoxGO != null)
+        if (keyboard.xKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.time > delay)
+        {
+            Cut();
+            missionEditor.timePressed = Time.time;
+        }
+
+        if (keyboard.cKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.time > delay)
+        {
+            Copy();
+            missionEditor.timePressed = Time.time;
+        }
+
+        if (keyboard.vKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.time > delay)
+        {
+            bool inputFieldIsActive = CheckInputFields();
+
+            if (inputFieldIsActive == false)
             {
-                missionEditor.AddNodeTextBox = AddNodeTextBoxGO.GetComponentInChildren<Text>();
+                Paste(missionEditor);
+                missionEditor.timePressed = Time.time;
             }
         }
-
-        if (missionEditor.AddNodeTextBox != null)
-        {
-            missionEditor.AddNodeTextBox.text = NodeDescriptions.GetNodeDescription(nodeType);
-        }
-    }
-
-    public static void AddSelectedNodeType()
-    {
-        MissionEditor missionEditor = GetMissionEditor();
-
-        int x = (Screen.width / 2);
-        int y = (Screen.height / 2);
-        Vector2 centerPoint = new Vector2(x, y);
-        Vector2 pointOnGrid = new Vector2();
-
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(missionEditor.editorContentRect, centerPoint, Camera.main, out pointOnGrid))
-        {
-            AddNode(missionEditor.selectedNodeTypeToLoad, true, pointOnGrid.x, pointOnGrid.y);
-        }
-        else
-        {
-            AddNode(missionEditor.selectedNodeTypeToLoad);
-        }
-
-        DisplayMessage("Added " + missionEditor.selectedNodeTypeToLoad);
-    }
-
-    public static Node AddNode(string nodeType, bool setPosition = false, float nodePosX = 0, float nodePosY = 0)
-    {
-        MissionEditor missionEditor = GetMissionEditor();
-
-        if (missionEditor.nodes == null)
-        {
-            missionEditor.nodes = new List<Node>();
-        }
-
-        GameObject editorContent = GameObject.Find("EditorContent");
-
-        GameObject nodeGO = new GameObject();
-        nodeGO.transform.SetParent(editorContent.transform);
-        Node node = nodeGO.AddComponent<Node>();
-        node.nodeType = nodeType;
-        missionEditor.nodes.Add(node);
-
-        if (setPosition == true)
-        {
-            NodeFunctions.SetNodePosition(node, nodePosX, nodePosY);
-        }
-
-        return node;
     }
 
     //This deletes all currently selected nodes
     public static void DeleteNodes()
     {
-        var keyboard = Keyboard.current;
-
-        if (keyboard.deleteKey.isPressed == true)
-        {
-            NodeFunctions.DeleteSelectedNodes();
-        }
+        NodeFunctions.DeleteSelectedNodes();
+        CloseAllMenus();
     }
 
     //This creates a selection box
@@ -686,13 +704,71 @@ public static class MissionEditorFunctions
         node.selected = true;
     }
 
-    //This deselects all nodes
-    public static void SelectNone(MissionEditor missionEditor, Node node)
+    //This selects all nodes
+    public static void SelectAll(MissionEditor missionEditor)
     {
-        foreach (Node tempNode in missionEditor.nodes)
+        foreach (Node node in missionEditor.nodes)
         {
-            tempNode.selected = false;
+            node.selected = true;
         }
+
+        CloseAllMenus();
+    }
+
+    //This deselects all nodes
+    public static void SelectNone(MissionEditor missionEditor)
+    {
+        foreach (Node node in missionEditor.nodes)
+        {
+            node.selected = false;
+        }
+
+        CloseAllMenus();
+    }
+
+    //This copies the selected nodes
+    public static void Copy()
+    {
+        CopySelection();
+        CloseAllMenus();
+    }
+
+    //This cuts the selected nodes
+    public static void Cut()
+    {
+        CopySelection();
+        DeleteNodes();
+        CloseAllMenus();
+    }
+
+    //This pastes anything in the clipboard
+    public static void Paste(MissionEditor missionEditor)
+    {
+        if (missionEditor.pasting == false)
+        {
+            Task a = new Task(PasteMissionData());
+        }
+
+        CloseAllMenus();
+    }
+
+    //This checks if there is an active input field
+    public static bool CheckInputFields()
+    {
+        bool isFocused = false;
+
+        InputField[] inputFields = GameObject.FindObjectsOfType<InputField>();
+
+        foreach (InputField inputField in inputFields)
+        {
+            if (inputField.isFocused == true)
+            {
+                isFocused = true;
+                break;
+            }
+        }
+
+        return isFocused;
     }
 
     #endregion
@@ -859,6 +935,68 @@ public static class MissionEditorFunctions
         CloseAllMenus();
     }
 
+    public static void CopySelection()
+    {
+        List<MissionEvent> exportList = new List<MissionEvent>();
+
+        MissionEditor missionEditor = GetMissionEditor();
+
+        string exportFileName = GetMissionNameFromExportDialog();
+
+        foreach (Node node in missionEditor.nodes)
+        {
+            if (node != null)
+            {
+                if (node.selected == true)
+                {
+                    MissionEvent missionEvent = new MissionEvent();
+
+                    missionEvent.eventID = ParseTextToString(node.eventID);
+                    missionEvent.eventType = ParseTextToString(node.eventType);
+                    missionEvent.conditionLocation = ParseTextToString(node.conditionLocation);
+                    missionEvent.conditionTime = ParseTextToFloat(node.conditionTime);
+                    missionEvent.x = ParseTextToFloat(node.x);
+                    missionEvent.y = ParseTextToFloat(node.y);
+                    missionEvent.z = ParseTextToFloat(node.z);
+                    missionEvent.xRotation = ParseTextToFloat(node.xRotation);
+                    missionEvent.yRotation = ParseTextToFloat(node.yRotation);
+                    missionEvent.zRotation = ParseTextToFloat(node.zRotation);
+                    missionEvent.data1 = ParseTextToString(node.data1);
+                    missionEvent.data2 = ParseTextToString(node.data2);
+                    missionEvent.data3 = ParseTextToString(node.data3);
+                    missionEvent.data4 = ParseTextToString(node.data4);
+                    missionEvent.data5 = ParseTextToString(node.data5);
+                    missionEvent.data6 = ParseTextToString(node.data6);
+                    missionEvent.data7 = ParseTextToString(node.data7);
+                    missionEvent.data8 = ParseTextToString(node.data8);
+                    missionEvent.data9 = ParseTextToString(node.data9);
+                    missionEvent.data10 = ParseTextToString(node.data10);
+                    missionEvent.data11 = ParseTextToString(node.data11);
+                    missionEvent.data12 = ParseTextToString(node.data12);
+                    missionEvent.data13 = ParseTextToString(node.data13);
+                    missionEvent.data14 = ParseTextToString(node.data14);
+                    missionEvent.data15 = ParseTextToString(node.data15);
+                    missionEvent.nextEvent1 = ParseTextToString(node.nextEvent1);
+                    missionEvent.nextEvent2 = ParseTextToString(node.nextEvent2);
+                    missionEvent.nextEvent3 = ParseTextToString(node.nextEvent3);
+                    missionEvent.nextEvent4 = ParseTextToString(node.nextEvent4);
+                    missionEvent.nodePosX = node.nodePosX;
+                    missionEvent.nodePosY = node.nodePosY;
+
+                    exportList.Add(missionEvent);
+                }
+            }
+        }
+
+        MissionEvent[] exportListEventData = exportList.ToArray();
+
+        string clipboard = JsonHelper.ToJson(exportListEventData, true);
+
+        missionEditor.clipboard = clipboard;
+
+        CloseAllMenus();
+    }
+
     public static void UpdateMissionName(string name)
     {
         MissionEditor missionEditor = GetMissionEditor();
@@ -978,7 +1116,68 @@ public static class MissionEditorFunctions
 
     #endregion
 
-    #region loading
+    #region loading functions
+
+    public static void SelectNodeType(string nodeType)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        missionEditor.selectedNodeTypeToLoad = nodeType;
+
+        if (missionEditor.AddNodeTextBox == null)
+        {
+            GameObject AddNodeTextBoxGO = GameObject.Find("AddNodeTextBox");
+
+            if (AddNodeTextBoxGO != null)
+            {
+                missionEditor.AddNodeTextBox = AddNodeTextBoxGO.GetComponentInChildren<Text>();
+            }
+        }
+
+        if (missionEditor.AddNodeTextBox != null)
+        {
+            missionEditor.AddNodeTextBox.text = NodeDescriptions.GetNodeDescription(nodeType);
+        }
+    }
+
+    public static void AddSelectedNodeType()
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        int x = Screen.width / 2;
+        int y = Screen.height / 2;
+
+        Vector2 pointOnGrid = missionEditor.editorContentRect.InverseTransformPoint(new Vector3(x, y));
+
+        AddNode(missionEditor.selectedNodeTypeToLoad, true, pointOnGrid.x, pointOnGrid.y);
+
+        DisplayMessage("Added " + missionEditor.selectedNodeTypeToLoad);
+    }
+
+    public static Node AddNode(string nodeType, bool setPosition = false, float nodePosX = 0, float nodePosY = 0)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (missionEditor.nodes == null)
+        {
+            missionEditor.nodes = new List<Node>();
+        }
+
+        GameObject editorContent = GameObject.Find("EditorContent");
+
+        GameObject nodeGO = new GameObject();
+        nodeGO.transform.SetParent(editorContent.transform);
+        Node node = nodeGO.AddComponent<Node>();
+        node.nodeType = nodeType;
+        missionEditor.nodes.Add(node);
+
+        if (setPosition == true)
+        {
+            NodeFunctions.SetNodePosition(node, nodePosX, nodePosY);
+        }
+
+        return node;
+    }
 
     public static void LoadMission(Window window)
     {
@@ -1070,7 +1269,7 @@ public static class MissionEditorFunctions
         {
             MissionEditor missionEditor = GetMissionEditor();
 
-            Node firstNode = SearchNodes(missionEvent.eventID);
+            Node firstNode = SearchNodes(missionEvent.eventID, missionEditor.nodes.ToArray());
 
             if (firstNode != null)
             {
@@ -1078,7 +1277,7 @@ public static class MissionEditorFunctions
                 {
                     if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 0)
                     {
-                        Node nextEvent1 = SearchNodes(missionEvent.nextEvent1);
+                        Node nextEvent1 = SearchNodes(missionEvent.nextEvent1, missionEditor.nodes.ToArray());
 
                         if (nextEvent1 != null & firstNode.maleNodeLinks[0] != null)
                         {
@@ -1091,7 +1290,7 @@ public static class MissionEditorFunctions
 
                     if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 1)
                     {
-                        Node nextEvent2 = SearchNodes(missionEvent.nextEvent2);
+                        Node nextEvent2 = SearchNodes(missionEvent.nextEvent2, missionEditor.nodes.ToArray());
 
                         if (nextEvent2 != null & firstNode.maleNodeLinks[1] != null)
                         {
@@ -1104,7 +1303,7 @@ public static class MissionEditorFunctions
 
                     if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 2)
                     {
-                        Node nextEvent3 = SearchNodes(missionEvent.nextEvent3);
+                        Node nextEvent3 = SearchNodes(missionEvent.nextEvent3, missionEditor.nodes.ToArray());
 
                         if (nextEvent3 != null & firstNode.maleNodeLinks[2] != null)
                         {
@@ -1117,7 +1316,7 @@ public static class MissionEditorFunctions
 
                     if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 3)
                     {
-                        Node nextEvent4 = SearchNodes(missionEvent.nextEvent4);
+                        Node nextEvent4 = SearchNodes(missionEvent.nextEvent4, missionEditor.nodes.ToArray());
 
                         if (nextEvent4 != null & firstNode.maleNodeLinks[3] != null)
                         {
@@ -1137,38 +1336,212 @@ public static class MissionEditorFunctions
             yield return null;
         }
 
-
         DisplayMessage("Loading Mission Complete");
     }
 
-    public static Node SearchNodes(string eventID)
+    public static IEnumerator PasteMissionData(bool useMousePosition = false)
     {
         MissionEditor missionEditor = GetMissionEditor();
 
-        Node node = null;
+        missionEditor.pasting = true;
 
-        if (missionEditor != null)
+        Mission clipBoardMissionData = JsonUtility.FromJson<Mission>(missionEditor.clipboard);
+
+        float number = clipBoardMissionData.missionEventData.Length * 2;
+        float count = 0;
+
+        List<Node> pasteNodeList = new List<Node>();
+
+        //This gets the mouse position
+        Vector2 placementPosition = new Vector3();
+
+        if (useMousePosition == false) //Position at center of screen
         {
-            if (missionEditor.nodes != null)
+            int x = Screen.width / 2;
+            int y = Screen.height / 2;
+
+            placementPosition = missionEditor.editorContentRect.InverseTransformPoint(new Vector3(x, y));
+        }
+        else //Mouse position
+        {
+            placementPosition = missionEditor.editorContentRect.InverseTransformPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y));
+        }
+
+        //This gets the node in the selection closest to 0,0
+        float distance = Mathf.Infinity;
+        Vector2 basePosition = new Vector2();
+
+        foreach (MissionEvent missionEvent in clipBoardMissionData.missionEventData)
+        {
+            float x = missionEvent.nodePosX;
+            float y = missionEvent.nodePosY;
+
+            Vector2 tempPosition = new Vector2(x, y);
+
+            float tempDistance = Vector2.Distance(new Vector2(0, 0), tempPosition);
+
+            if (tempDistance < distance)
             {
-                foreach (Node tempNode in missionEditor.nodes)
+                distance = tempDistance;
+                basePosition = tempPosition;
+            }
+        }
+
+        //This creates the new node and inputs the data
+        foreach (MissionEvent missionEvent in clipBoardMissionData.missionEventData)
+        {
+            //This calculates a new node position based on the mouse position when paste was called
+            Vector2 originalNodePosition = new Vector2(missionEvent.nodePosX, missionEvent.nodePosY);
+            Vector2 position = originalNodePosition - basePosition + placementPosition;
+
+            Node node = AddNode(missionEvent.eventType, true, position.x, position.y);
+
+            yield return null;
+
+            InputData(node.eventID, missionEvent.eventID);
+            InputData(node.eventType, missionEvent.eventType);
+            InputData(node.conditionTime, missionEvent.conditionTime.ToString());
+            InputData(node.conditionLocation, missionEvent.conditionLocation);
+            InputData(node.x, missionEvent.x.ToString());
+            InputData(node.y, missionEvent.y.ToString());
+            InputData(node.z, missionEvent.z.ToString());
+            InputData(node.xRotation, missionEvent.xRotation.ToString());
+            InputData(node.yRotation, missionEvent.yRotation.ToString());
+            InputData(node.zRotation, missionEvent.zRotation.ToString());
+            InputData(node.data1, missionEvent.data1);
+            InputData(node.data2, missionEvent.data2);
+            InputData(node.data3, missionEvent.data3);
+            InputData(node.data4, missionEvent.data4);
+            InputData(node.data5, missionEvent.data5);
+            InputData(node.data6, missionEvent.data6);
+            InputData(node.data7, missionEvent.data7);
+            InputData(node.data8, missionEvent.data8);
+            InputData(node.data9, missionEvent.data9);
+            InputData(node.data10, missionEvent.data10);
+            InputData(node.data11, missionEvent.data11);
+            InputData(node.data12, missionEvent.data12);
+            InputData(node.data13, missionEvent.data13);
+            InputData(node.data14, missionEvent.data14);
+            InputData(node.data15, missionEvent.data15);
+            InputData(node.nextEvent1, missionEvent.nextEvent1);
+            InputData(node.nextEvent2, missionEvent.nextEvent2);
+            InputData(node.nextEvent3, missionEvent.nextEvent3);
+            InputData(node.nextEvent4, missionEvent.nextEvent4);
+            node.nodePosX = position.x;
+            node.nodePosY = position.y;
+
+            pasteNodeList.Add(node);
+
+            float percentage = (count / number) * 100;
+            DisplayMessage("Pasting " + percentage.ToString("00") + "% Complete");
+            count++;
+        }
+
+        //This creates the node links
+        foreach (MissionEvent missionEvent in clipBoardMissionData.missionEventData)
+        {
+            Node firstNode = SearchNodes(missionEvent.eventID, pasteNodeList.ToArray());
+
+            if (firstNode != null)
+            {
+                if (firstNode.maleNodeLinks != null)
                 {
-                    if (tempNode != null)
+                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 0)
                     {
-                        if (tempNode.eventID != null)
+                        Node nextEvent1 = SearchNodes(missionEvent.nextEvent1, pasteNodeList.ToArray());
+
+                        if (nextEvent1 != null & firstNode.maleNodeLinks[0] != null)
                         {
-                            if (tempNode.eventID.text == eventID)
+                            if (nextEvent1.femaleNodeLink != null)
                             {
-                                node = tempNode;
+                                firstNode.maleNodeLinks[0].connectedNode = nextEvent1.femaleNodeLink;
+                            }
+                        }
+                    }
+
+                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 1)
+                    {
+                        Node nextEvent2 = SearchNodes(missionEvent.nextEvent2, pasteNodeList.ToArray());
+
+                        if (nextEvent2 != null & firstNode.maleNodeLinks[1] != null)
+                        {
+                            if (nextEvent2.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[1].connectedNode = nextEvent2.femaleNodeLink;
+                            }
+                        }
+                    }
+
+                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 2)
+                    {
+                        Node nextEvent3 = SearchNodes(missionEvent.nextEvent3, pasteNodeList.ToArray());
+
+                        if (nextEvent3 != null & firstNode.maleNodeLinks[2] != null)
+                        {
+                            if (nextEvent3.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[2].connectedNode = nextEvent3.femaleNodeLink;
+                            }
+                        }
+                    }
+
+                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 3)
+                    {
+                        Node nextEvent4 = SearchNodes(missionEvent.nextEvent4, pasteNodeList.ToArray());
+
+                        if (nextEvent4 != null & firstNode.maleNodeLinks[3] != null)
+                        {
+                            if (nextEvent4.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[3].connectedNode = nextEvent4.femaleNodeLink;
                             }
                         }
                     }
                 }
             }
+
+            float percentage = (count / number) * 100;
+            DisplayMessage("Pasting " + percentage.ToString("00") + "% Complete");
+            count++;
+
+            yield return null;
         }
 
-        return node;
+        //This gives the pasted nodes a new ID
+        foreach (Node node in pasteNodeList)
+        {
+            NodeFunctions.GetUniqueNodeID(node);
+        }
+
+        missionEditor.pasting = false;
+
+        DisplayMessage("Nodes Pasted from Clipboard");
     }
+
+    //This searches the given list for a node with a matching id
+    public static Node SearchNodes(string eventID, Node[] nodes)
+    {
+        Node node = null;
+
+        if (nodes != null)
+        {
+            foreach (Node tempNode in nodes)
+            {
+                if (tempNode != null)
+                {
+                    if (tempNode.eventID != null)
+                    {
+                        if (tempNode.eventID.text == eventID)
+                        {
+                            node = tempNode;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return node;
+    } 
 
     public static void InputData(Text text, string input)
     {

@@ -2188,6 +2188,16 @@ public static class SceneFunctions
             scene.objectPool.Add(scene.mainShip);
         }
 
+        if (scene.lasersPool != null)
+        {
+            foreach (GameObject gameobject in scene.lasersPool)
+            {
+                GameObject.Destroy(gameobject);              
+            }
+
+            scene.lasersPool.Clear();
+        }
+
         if (scene.asteroidPool != null)
         {
             foreach (GameObject gameobject in scene.asteroidPool)

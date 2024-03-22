@@ -752,6 +752,9 @@ public static class MissionFunctions
         smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
         smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
 
+        //This fades out the hud
+        Task fadeOut = new Task(HudFunctions.FadeOutHud(1));
+
         //This plays the hyperspace entry sound
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace01_entry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
@@ -772,6 +775,8 @@ public static class MissionFunctions
         //This makes the stars stretch out
         Task a = new Task(SceneFunctions.StretchStarfield());
         while(a.Running == true) { yield return null; }
+
+        smallShip.inHyperspace = true;
 
         //This activates the hyperspace tunnel
         if(scene.hyperspaceTunnel != null)
@@ -807,6 +812,8 @@ public static class MissionFunctions
 
         smallShip.transform.localPosition = new Vector3(x, y, z);
 
+        smallShip.inHyperspace = false;
+
         //This deactivates the hyperspace tunnel
         if (scene.hyperspaceTunnel != null)
         {
@@ -823,6 +830,9 @@ public static class MissionFunctions
         //This makes the stars stretch out
         scene.planetCamera.GetComponent<Camera>().enabled = true;
         scene.mainCamera.GetComponent<Camera>().enabled = true;
+
+        //This fades the hud back in
+        Task fadeIN = new Task(HudFunctions.FadeInHud(1));
 
         //This unlocks the player controls and turns off invincibility on the player ship
         smallShip.controlLock = controlLock; //This restores the set lock position

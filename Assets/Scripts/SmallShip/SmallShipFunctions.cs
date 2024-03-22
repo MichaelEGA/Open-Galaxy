@@ -11,7 +11,6 @@ public static class SmallShipFunctions
     //This prepares the ship by loading lod and colliders (if not already loaded)
     public static void PrepareShip(SmallShip smallShip)
     {
-
         if (smallShip.loaded == false)
         {
             if (smallShip.isAI == false)
@@ -26,8 +25,6 @@ public static class SmallShipFunctions
             GameObjectUtils.AddColliders(smallShip.gameObject, true);
             GameObjectUtils.AddRigidbody(smallShip.gameObject, 100f, 9f, 7.5f);
             smallShip.LODs = GameObjectUtils.GetLODs(smallShip.gameObject);
-            LaserFunctions.GetCannons(smallShip);
-            LaserFunctions.LoadLaserParticleSystem(smallShip);
             TorpedoFunctions.GetTorpedoTubes(smallShip);
             SmallShipAIFunctions.SetAISkillLevel(smallShip);
             smallShip.colliders = smallShip.GetComponentsInChildren<Collider>();
@@ -35,6 +32,16 @@ public static class SmallShipFunctions
             TargetingFunctions.CreateWaypoint(smallShip);
             
             smallShip.loaded = true;
+        }
+    }
+
+    //This loads the laser particle system if its missing
+    public static void LoadLaserParticleSystem(SmallShip smallShip)
+    {
+        if (smallShip.laserParticleSystem == null)
+        {
+            LaserFunctions.GetCannons(smallShip);
+            LaserFunctions.LoadLaserParticleSystem(smallShip);
         }
     }
 
@@ -752,6 +759,8 @@ public static class SmallShipFunctions
             yield return null;
         }
 
+        smallShip.gameObject.transform.localPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 30000;
+
         HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " just exited hyperspace");
 
         smallShip.exitingHyperspace = false;
@@ -1024,11 +1033,8 @@ public static class SmallShipFunctions
                 if (smallShip.rearShieldLevel < 0) { smallShip.rearShieldLevel = 0; }
                 if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
 
-                //This shakes the camera
-                if (smallShip.isAI == false)
-                {
-                    Task a = new Task(SmallShipFunctions.ActivateCockpitShake(smallShip, 0.5f));
-                }
+                //This shakes the cockpit camera
+                Task a = new Task(CockpitDamageShake(smallShip, 1, 0.011f));              
             }
         }
     }
@@ -1425,34 +1431,52 @@ public static class SmallShipFunctions
     //This shakes the hud glass
     public static IEnumerator CockpitDamageShake(SmallShip smallShip, float time, float magnitude)
     {
-        smallShip.cockpitDamageShake = true;
-
-        time = Time.time + time;
-
-        while (time > Time.time)
+        if (smallShip.isAI == false)
         {
-            float x = Random.Range(-1f, 1f) * magnitude;
-            float y = Random.Range(-1f, 1f) * magnitude;
+            smallShip.cockpitDamageShake = true;
+
+            time = Time.time + time;
+
+            while (time > Time.time)
+            {
+                float x = Random.Range(-1f, 1f) * magnitude;
+                float y = Random.Range(-1f, 1f) * magnitude;
+
+                if (smallShip.cockpit != null)
+                {
+                    smallShip.cockpit.transform.localPosition = new Vector3(x, y, smallShip.basePosition.z);
+                }
+
+                if (Time.timeScale == 0)
+                {
+                    break;
+                }
+
+                yield return null;
+            }
+
+            if (smallShip.cockpit != null)
+            {
+                smallShip.cockpit.transform.localPosition = smallShip.basePosition;
+            }
+
+            smallShip.cockpitDamageShake = false;
+        }
+    }
+
+    //This shakes the cockpit during hyperspace
+    public static void ShakeCockpitDuringHyperspace(SmallShip smallShip)
+    {
+        if (smallShip.inHyperspace == true)
+        {
+            float x = Random.Range(-1f, 1f) * 0.0025f;
+            float y = Random.Range(-1f, 1f) * 0.0025f;
 
             if (smallShip.cockpit != null)
             {
                 smallShip.cockpit.transform.localPosition = new Vector3(x, y, smallShip.basePosition.z);
             }
-
-            if (Time.timeScale == 0)
-            {
-                break;
-            }
-
-            yield return null;
         }
-
-        if (smallShip.cockpit != null)
-        {
-            smallShip.cockpit.transform.localPosition = smallShip.basePosition;
-        }
-
-        smallShip.cockpitDamageShake = false;
     }
 
     //This dynamically adjusts the position of the cockpit camera to simulate the movement of the pilots head and body

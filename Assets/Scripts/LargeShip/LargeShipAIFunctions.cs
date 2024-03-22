@@ -168,7 +168,7 @@ public static class LargeShipAIFunctions
     //This allows the ship to evade attacks and avoid collisions with other objects and ships
     public static IEnumerator Evade(LargeShip largeShip, float time, string mode, int direction)
     {
-        if (largeShip != null)
+        if (largeShip != null & largeShip.aiOverideMode != "Stationary")
         {
             if (largeShip.aiOverideMode != "avoidCollision")
             {

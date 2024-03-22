@@ -29,6 +29,10 @@ public class MiddleScrollRect : ScrollRect
         {
             missionEditor.leftButtonGrid = true;
         }
+        else if (buttonPressed == "Middle")
+        {
+            missionEditor.scrolling = true;
+        }
 
         //This closes all menus
         MissionEditorFunctions.CloseAllMenus();

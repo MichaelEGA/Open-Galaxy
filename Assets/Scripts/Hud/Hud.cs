@@ -60,6 +60,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public Text objectiveLog;
 
     [Header("Moving Reticule")]
+    [HideInInspector] public RawImage movingReticleImage;
     [HideInInspector] public GameObject movingReticule;
     [HideInInspector] public GameObject centerReticule;
     [HideInInspector] public GameObject line;

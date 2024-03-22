@@ -194,7 +194,17 @@ public static class MissionEditorFunctions
         file_Functions.Add("ExitMissionEditor");
         file_Functions.Add("ExitToWindows");
 
-        GameObject fileMenu = DrawDropDownMenu(missionEditor.transform, "File", shiftRight02, file_Buttons.ToArray(), file_Functions.ToArray());
+        List<string> file_Shortcuts = new List<string>();
+        file_Shortcuts.Add("");
+        file_Shortcuts.Add("");
+        file_Shortcuts.Add("");
+        file_Shortcuts.Add("");
+        file_Shortcuts.Add("");
+        file_Shortcuts.Add("");
+        file_Shortcuts.Add("");
+        file_Shortcuts.Add("");
+
+        GameObject fileMenu = DrawDropDownMenu(missionEditor.transform, "File", shiftRight02, file_Buttons.ToArray(), file_Functions.ToArray(), file_Shortcuts.ToArray());
 
         List<string> edit_Buttons = new List<string>();
         edit_Buttons.Add(spaces + "Cut");
@@ -212,9 +222,17 @@ public static class MissionEditorFunctions
         edit_Functions.Add("SelectNone");
         edit_Functions.Add("Delete");
 
+        List<string> edit_Shortcuts = new List<string>();
+        edit_Shortcuts.Add("Ctrl+X");
+        edit_Shortcuts.Add("Ctrl+C");
+        edit_Shortcuts.Add("Ctrl+V");
+        edit_Shortcuts.Add("");
+        edit_Shortcuts.Add("");
+        edit_Shortcuts.Add("Del");
+
         shiftRight02 += 25;
 
-        GameObject EditMenu = DrawDropDownMenu(missionEditor.transform, "Edit", shiftRight02, edit_Buttons.ToArray(), edit_Functions.ToArray());
+        GameObject EditMenu = DrawDropDownMenu(missionEditor.transform, "Edit", shiftRight02, edit_Buttons.ToArray(), edit_Functions.ToArray(), edit_Shortcuts.ToArray());
 
         List<string> event_Buttons = new List<string>();
         event_Buttons.Add(spaces + "Add New Event");
@@ -224,9 +242,13 @@ public static class MissionEditorFunctions
         event_Functions.Add("OpenAddNewEvent");
         event_Functions.Add("OpenDisplayLocation");
 
+        List<string> event_Shortcuts = new List<string>();
+        event_Shortcuts.Add("");
+        event_Shortcuts.Add("");
+
         shiftRight02 += 25;
 
-        GameObject EventsMenu = DrawDropDownMenu(missionEditor.transform, "Events", shiftRight02, event_Buttons.ToArray(), event_Functions.ToArray());
+        GameObject EventsMenu = DrawDropDownMenu(missionEditor.transform, "Events", shiftRight02, event_Buttons.ToArray(), event_Functions.ToArray(), event_Shortcuts.ToArray());
 
         List<string> window_Buttons = new List<string>();
         window_Buttons.Add(spaces + "Make Fullscreen");
@@ -236,9 +258,13 @@ public static class MissionEditorFunctions
         window_Functions.Add("MakeFullscreen");
         window_Functions.Add("MakeWindowed");
 
+        List<string> window_Shortcuts = new List<string>();
+        window_Shortcuts.Add("");
+        window_Shortcuts.Add("");
+
         shiftRight02 += 30;
 
-        GameObject windowMenu = DrawDropDownMenu(missionEditor.transform, "Window", shiftRight02, window_Buttons.ToArray(), window_Functions.ToArray());
+        GameObject windowMenu = DrawDropDownMenu(missionEditor.transform, "Window", shiftRight02, window_Buttons.ToArray(), window_Functions.ToArray(), window_Shortcuts.ToArray());
 
         List<string> help_Buttons = new List<string>();
         help_Buttons.Add(spaces + "Open Open-Galaxy Github");
@@ -248,9 +274,13 @@ public static class MissionEditorFunctions
         help_Functions.Add("OpenGitHub");
         help_Functions.Add("OpenAbout");
 
+        List<string> help_Shortcuts = new List<string>();
+        help_Shortcuts.Add("");
+        help_Shortcuts.Add("");
+
         shiftRight02 += 30;
 
-        GameObject helpMenu = DrawDropDownMenu(missionEditor.transform, "Help", shiftRight02, help_Buttons.ToArray(), help_Functions.ToArray());
+        GameObject helpMenu = DrawDropDownMenu(missionEditor.transform, "Help", shiftRight02, help_Buttons.ToArray(), help_Functions.ToArray(), help_Shortcuts.ToArray());
 
         if (missionEditor.menus == null)
         {
@@ -269,6 +299,42 @@ public static class MissionEditorFunctions
                 menu.SetActive(false);
             }
         }
+    }
+
+    public static GameObject DrawDropDownMenu(Transform parent, string name, float xPosition, string[] buttons, string[] functions, string[] shortcuts)
+    {
+        GameObject menuBaseGO = new GameObject();
+
+        menuBaseGO.name = name;
+
+        menuBaseGO.transform.SetParent(parent);
+
+        //This sets up the node background
+        RectTransform rectTransform = menuBaseGO.AddComponent<RectTransform>();
+
+        float height = buttons.Length * 12;
+        float drop = 0;
+        int buttonNo = 0;
+
+        Image background = menuBaseGO.AddComponent<Image>();
+        background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
+        background.type = Image.Type.Sliced;
+        background.pixelsPerUnitMultiplier = 40;
+        rectTransform.anchorMin = new Vector2(0, 1);
+        rectTransform.anchorMax = new Vector2(0, 1);
+        rectTransform.pivot = new Vector2(0, 1);
+        rectTransform.anchoredPosition = new Vector2(xPosition, -12);
+        rectTransform.sizeDelta = new Vector2(150, height);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+
+        foreach (string button in buttons)
+        {
+            DrawTwoSidedTextButton(rectTransform.transform, 2, drop, 12, 146, button, shortcuts[buttonNo], 7, functions[buttonNo]);
+            drop -= 12;
+            buttonNo += 1;
+        }
+
+        return menuBaseGO;
     }
 
     public static void DrawTextButton(Transform parent, float xPos, float yPos, float height, float width, string buttonText, int fontSize, string functionType, TextAnchor alignement = TextAnchor.MiddleCenter)
@@ -407,41 +473,160 @@ public static class MissionEditorFunctions
         }
     }
 
-    public static GameObject DrawDropDownMenu(Transform parent, string name, float xPosition, string[] buttons, string[] functions)
+    public static void DrawTwoSidedTextButton(Transform parent, float xPos, float yPos, float height, float width, string buttonText, string buttonText2, int fontSize, string functionType)
     {
-        GameObject menuBaseGO = new GameObject();
+        GameObject buttonGO = new GameObject();
+        GameObject buttonTextGO = new GameObject();
+        GameObject buttonTextGO2 = new GameObject();
 
-        menuBaseGO.name = name;
+        buttonGO.name = "button_" + functionType;
+        buttonTextGO.name = "ButtonText_" + functionType;
 
-        menuBaseGO.transform.SetParent(parent);
+        buttonGO.transform.SetParent(parent);
+        buttonTextGO.transform.SetParent(buttonGO.transform);
+        buttonTextGO2.transform.SetParent(buttonGO.transform);
 
-        //This sets up the node background
-        RectTransform rectTransform = menuBaseGO.AddComponent<RectTransform>();
+        RectTransform rectTransform1 = buttonGO.AddComponent<RectTransform>();
+        rectTransform1.anchorMax = new Vector2(0, 1);
+        rectTransform1.anchorMin = new Vector2(0, 1);
+        rectTransform1.pivot = new Vector2(0, 1);
+        rectTransform1.anchoredPosition = new Vector2(xPos, yPos);
+        rectTransform1.sizeDelta = new Vector2(width, height);
+        rectTransform1.localScale = new Vector3(1, 1, 1);
 
-        float height = buttons.Length * 12;
-        float drop = 0;
-        int buttonNo = 0;
+        RectTransform rectTransform2 = buttonTextGO.AddComponent<RectTransform>();
+        rectTransform2.anchorMax = new Vector2(0, 1);
+        rectTransform2.anchorMin = new Vector2(0, 1);
+        rectTransform2.pivot = new Vector2(0, 1);
+        rectTransform2.anchoredPosition = new Vector2(0, 0);
+        rectTransform2.sizeDelta = new Vector2(width, height);
+        rectTransform2.localScale = new Vector3(1, 1, 1);
 
-        Image background = menuBaseGO.AddComponent<Image>();
-        background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
-        background.type = Image.Type.Sliced;
-        background.pixelsPerUnitMultiplier = 40;
-        rectTransform.anchorMin = new Vector2(0, 1);
-        rectTransform.anchorMax = new Vector2(0, 1);
-        rectTransform.pivot = new Vector2(0, 1);
-        rectTransform.anchoredPosition = new Vector2(xPosition, -12);
-        rectTransform.sizeDelta = new Vector2(150, height);
-        rectTransform.localScale = new Vector3(1, 1, 1);
+        RectTransform rectTransform3 = buttonTextGO2.AddComponent<RectTransform>();
+        rectTransform3.anchorMax = new Vector2(1, 1);
+        rectTransform3.anchorMin = new Vector2(1, 1);
+        rectTransform3.pivot = new Vector2(1, 1);
+        rectTransform3.anchoredPosition = new Vector2(0, 0);
+        rectTransform3.sizeDelta = new Vector2(width, height);
+        rectTransform3.localScale = new Vector3(1, 1, 1);
 
-        foreach (string button in buttons)
+        Text text = buttonTextGO.AddComponent<Text>();
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.fontSize = fontSize;
+        text.text = buttonText;
+        text.alignment = TextAnchor.MiddleLeft;
+        text.color = Color.black;
+
+        Text text2 = buttonTextGO2.AddComponent<Text>();
+        text2.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text2.fontSize = fontSize;
+        text2.text = buttonText2 + "     ";
+        text2.alignment = TextAnchor.MiddleRight;
+        text2.color = Color.black;
+
+        Image buttonImage = buttonGO.AddComponent<Image>();
+        buttonImage.color = Color.white;
+
+        Button button = buttonGO.AddComponent<Button>();
+        button.targetGraphic = buttonImage;
+
+        Color color = Color.white;
+
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (ColorUtility.TryParseHtmlString("#C3C3C3", out color))
         {
-            DrawTextButton(rectTransform.transform, 2, drop, 12, 146, button, 7, functions[buttonNo], TextAnchor.MiddleLeft);
-            drop -= 12;
-            buttonNo += 1;
+            ColorBlock colorVar = button.colors;
+            colorVar.highlightedColor = color;
         }
 
-        return menuBaseGO;
+        if (functionType == "ActivateMenu")
+        {
+            button.onClick.AddListener(() => { ActivateMenu(buttonText); });
+        }
+        else if (functionType == "Copy")
+        {
+            button.onClick.AddListener(() => { Copy(); });
+        }
+        else if (functionType == "Cut")
+        {
+            button.onClick.AddListener(() => { Cut(); });
+        }
+        else if (functionType == "Delete")
+        {
+            button.onClick.AddListener(() => { DeleteNodes(); });
+        }
+        else if (functionType == "ExitMissionEditor")
+        {
+            button.onClick.AddListener(() => { ExitMissionEditor(); });
+        }
+        else if (functionType == "ExitToWindows")
+        {
+            button.onClick.AddListener(() => { ExitToWindows(); });
+        }
+        else if (functionType == "OpenSaveAsWindow")
+        {
+            button.onClick.AddListener(() => { OpenWindow("savemissionas"); });
+        }
+        else if (functionType == "OpenExportSelectionAsWindow")
+        {
+            button.onClick.AddListener(() => { OpenWindow("exportselectionas"); });
+        }
+        else if (functionType == "OpenOpenWindow")
+        {
+            button.onClick.AddListener(() => { OpenWindow("loadmission"); });
+        }
+        else if (functionType == "OpenMergeWindow")
+        {
+            button.onClick.AddListener(() => { OpenWindow("mergemissions"); });
+        }
+        else if (functionType == "OpenNewWindow")
+        {
+            button.onClick.AddListener(() => { NewMission(); });
+        }
+        else if (functionType == "OpenAddNewEvent")
+        {
+            button.onClick.AddListener(() => { OpenWindow("addnodes"); });
+        }
+        else if (functionType == "OpenDisplayLocation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaylocation"); });
+        }
+        else if (functionType == "MakeFullscreen")
+        {
+            button.onClick.AddListener(() => { SetWindowMode("fullscreen"); });
+        }
+        else if (functionType == "MakeWindowed")
+        {
+            button.onClick.AddListener(() => { SetWindowMode("window"); });
+        }
+        else if (functionType == "OpenGitHub")
+        {
+            button.onClick.AddListener(() => { OpenWebAddress("https://github.com/MichaelEGA/Open-Galaxy"); });
+        }
+        else if (functionType == "OpenAbout")
+        {
+            button.onClick.AddListener(() => { OpenWindow("abouteditor"); });
+        }
+        else if (functionType == "Paste")
+        {
+            button.onClick.AddListener(() => { Paste(missionEditor); });
+        }
+        else if (functionType == "Save")
+        {
+            button.onClick.AddListener(() => { SaveMission(); });
+        }
+        else if (functionType == "SelectAll")
+        {
+            button.onClick.AddListener(() => { SelectAll(missionEditor); });
+        }
+        else if (functionType == "SelectNone")
+        {
+            button.onClick.AddListener(() => { SelectNone(missionEditor); });
+        }
     }
+
+  
 
     #endregion
 
@@ -1288,7 +1473,7 @@ public static class MissionEditorFunctions
                         }
                     }
 
-                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 1)
+                    if (missionEvent.nextEvent2 != "none" & firstNode.maleNodeLinks.Count > 1)
                     {
                         Node nextEvent2 = SearchNodes(missionEvent.nextEvent2, missionEditor.nodes.ToArray());
 
@@ -1301,7 +1486,7 @@ public static class MissionEditorFunctions
                         }
                     }
 
-                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 2)
+                    if (missionEvent.nextEvent3 != "none" & firstNode.maleNodeLinks.Count > 2)
                     {
                         Node nextEvent3 = SearchNodes(missionEvent.nextEvent3, missionEditor.nodes.ToArray());
 
@@ -1314,7 +1499,7 @@ public static class MissionEditorFunctions
                         }
                     }
 
-                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 3)
+                    if (missionEvent.nextEvent4 != "none" & firstNode.maleNodeLinks.Count > 3)
                     {
                         Node nextEvent4 = SearchNodes(missionEvent.nextEvent4, missionEditor.nodes.ToArray());
 
@@ -1459,7 +1644,7 @@ public static class MissionEditorFunctions
                         }
                     }
 
-                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 1)
+                    if (missionEvent.nextEvent2 != "none" & firstNode.maleNodeLinks.Count > 1)
                     {
                         Node nextEvent2 = SearchNodes(missionEvent.nextEvent2, pasteNodeList.ToArray());
 
@@ -1472,7 +1657,7 @@ public static class MissionEditorFunctions
                         }
                     }
 
-                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 2)
+                    if (missionEvent.nextEvent3 != "none" & firstNode.maleNodeLinks.Count > 2)
                     {
                         Node nextEvent3 = SearchNodes(missionEvent.nextEvent3, pasteNodeList.ToArray());
 
@@ -1485,7 +1670,7 @@ public static class MissionEditorFunctions
                         }
                     }
 
-                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 3)
+                    if (missionEvent.nextEvent4 != "none" & firstNode.maleNodeLinks.Count > 3)
                     {
                         Node nextEvent4 = SearchNodes(missionEvent.nextEvent4, pasteNodeList.ToArray());
 

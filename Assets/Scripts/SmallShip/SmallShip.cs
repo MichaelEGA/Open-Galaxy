@@ -208,6 +208,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool isCurrentlyColliding;
 
     [Header("Ship Cockpit")]
+    public bool inHyperspace;
     [HideInInspector] public bool cockpitShake;
     [HideInInspector] public float shakeMagnitude = 0.1f;
     [HideInInspector] public string cockpitName;
@@ -235,6 +236,7 @@ public class SmallShip : MonoBehaviour
 
         //Start functions
         SmallShipFunctions.PrepareShip(this);
+        SmallShipFunctions.LoadLaserParticleSystem(this);
 
         //Camera Functions
         SmallShipFunctions.SetMainCamera(this);
@@ -282,6 +284,7 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.RunCockpitShake(this);
         SmallShipFunctions.CockpitCameraMovement(this);
         SmallShipFunctions.CockpitAnchorRotation(this);
+        SmallShipFunctions.ShakeCockpitDuringHyperspace(this);
     }
     
     void FixedUpdate()

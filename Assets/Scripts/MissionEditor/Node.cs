@@ -99,8 +99,7 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
                         }
 
                         transform.position = new Vector3(Input.mousePosition.x, Input.mousePosition.y) - startPos;
-                        missionEditor.scrolling = false;
-                        scrollReset = false;                       
+                        scrollReset = false;
                     }
                 }
             }
@@ -120,30 +119,35 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        startPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y) - transform.position;
-        dragging = true;
-        MissionEditorFunctions.CloseAllMenus();
+        string button = eventData.button.ToString();
 
-        var keyboard = Keyboard.current;
-
-        if (eventData.button.ToString() == "Left")
+        if (button == "Left")
         {
-            if (keyboard.ctrlKey.isPressed == true)
+            startPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y) - transform.position;
+            dragging = true;
+            MissionEditorFunctions.CloseAllMenus();
+
+            var keyboard = Keyboard.current;
+
+            if (eventData.button.ToString() == "Left")
             {
-                MissionEditorFunctions.AddNodeToCurrentSelection(this);
-            }
-            else
-            {
-                if (selected == false)
+                if (keyboard.ctrlKey.isPressed == true)
                 {
-                    MissionEditorFunctions.SelectOnlyThisNode(missionEditor, this);
-                }                
+                    MissionEditorFunctions.AddNodeToCurrentSelection(this);
+                }
+                else
+                {
+                    if (selected == false)
+                    {
+                        MissionEditorFunctions.SelectOnlyThisNode(missionEditor, this);
+                    }
+                }
             }
-        }
 
-        foreach (Node node in missionEditor.nodes)
-        {
-            node.startPositionRecorded = false;
+            foreach (Node node in missionEditor.nodes)
+            {
+                node.startPositionRecorded = false;
+            }
         }
     }
 

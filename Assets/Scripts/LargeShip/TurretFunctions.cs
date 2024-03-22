@@ -60,7 +60,7 @@ public static class TurretFunctions
                         turretGameObject.transform.rotation = turretTransform.rotation;
                         turretGameObject.transform.SetParent(turretTransform);
 
-                        CheckTurretType(tempTurret);
+                        CheckTurretType(tempTurret, largeShip.laserColor);
 
                         LoadLaserParticleSystem(tempTurret);
 
@@ -90,7 +90,7 @@ public static class TurretFunctions
     }
 
     //This inputs the rotation values
-    public static void CheckTurretType(Turret turret)
+    public static void CheckTurretType(Turret turret, string colour)
     {
         if (turret.gameObject != null)
         {
@@ -102,7 +102,7 @@ public static class TurretFunctions
                 turret.xRotationMin = -90;
                 turret.turretSpeed = 70;
                 turret.fireDelay = 6f;
-                turret.laserColor = "green";
+                turret.laserColor = colour;
                 turret.laserDamage = 50;
                 turret.turretType = "large";
                 turret.yRotationIsRestricted = true;
@@ -115,7 +115,7 @@ public static class TurretFunctions
                 turret.xRotationMin = -90;
                 turret.turretSpeed = 90;
                 turret.fireDelay = 4f;
-                turret.laserColor = "green";
+                turret.laserColor = colour;
                 turret.laserDamage = 10;
                 turret.turretType = "small";
                 turret.yRotationIsRestricted = true;
@@ -128,7 +128,7 @@ public static class TurretFunctions
                 turret.xRotationMin = 0;
                 turret.turretSpeed = 80;
                 turret.fireDelay = 6f;
-                turret.laserColor = "red";
+                turret.laserColor = colour;
                 turret.laserDamage = 50;
                 turret.turretType = "large";
                 turret.yRotationIsRestricted = true;
@@ -141,7 +141,7 @@ public static class TurretFunctions
                 turret.xRotationMin = 0;
                 turret.turretSpeed = 90;
                 turret.fireDelay = 4f;
-                turret.laserColor = "red";
+                turret.laserColor = colour;
                 turret.laserDamage = 10;
                 turret.turretType = "small";
                 turret.yRotationIsRestricted = true;
@@ -154,7 +154,7 @@ public static class TurretFunctions
                 turret.xRotationMin = -90;
                 turret.turretSpeed = 80;
                 turret.fireDelay = 4f;
-                turret.laserColor = "red";
+                turret.laserColor = colour;
                 turret.laserDamage = 30;
                 turret.turretType = "large";
                 turret.yRotationIsRestricted = false;
@@ -167,7 +167,7 @@ public static class TurretFunctions
                 turret.xRotationMin = -90;
                 turret.turretSpeed = 80;
                 turret.fireDelay = 4f;
-                turret.laserColor = "green";
+                turret.laserColor = colour;
                 turret.laserDamage = 30;
                 turret.turretType = "large";
                 turret.yRotationIsRestricted = false;
@@ -180,7 +180,7 @@ public static class TurretFunctions
                 turret.xRotationMin = -90;
                 turret.turretSpeed = 80;
                 turret.fireDelay = 4f;
-                turret.laserColor = "green";
+                turret.laserColor = colour;
                 turret.laserDamage = 30;
                 turret.turretType = "large";
                 turret.yRotationIsRestricted = false;

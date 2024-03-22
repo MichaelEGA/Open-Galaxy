@@ -281,6 +281,8 @@ public static class LargeShipFunctions
             yield return null;
         }
 
+        largeShip.gameObject.transform.localPosition = endPosition;
+
         HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " just exited hyperspace");
 
         largeShip.exitingHyperspace = false;

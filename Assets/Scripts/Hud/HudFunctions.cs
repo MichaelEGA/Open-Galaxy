@@ -679,11 +679,13 @@ public static class HudFunctions
             {
                 if (hud.smallShip.targetSmallShip != null)
                 {
-                    if (hud.smallShip.targetSmallShip.scanned == false & hud.smallShip.targetDistance > 200)
+                    float distance = Vector3.Distance(hud.smallShip.transform.position, hud.smallShip.targetSmallShip.transform.position);
+
+                    if (hud.smallShip.targetSmallShip.scanned == false & distance > 200)
                     {
                         hud.targetCargo.text = "-";
                     }
-                    else if (hud.smallShip.targetSmallShip.scanned == false & hud.smallShip.targetDistance < 200)
+                    else if (hud.smallShip.targetSmallShip.scanned == false & distance < 200)
                     {
                         hud.targetCargo.text = hud.smallShip.targetSmallShip.cargo.ToUpper();
                         hud.smallShip.targetSmallShip.scanned = true;
@@ -691,7 +693,7 @@ public static class HudFunctions
 
                         if (hud.smallShip.audioManager != null)
                         {
-                            AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep_double", "Cockpit", hud.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                            AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep04_double", "Cockpit", hud.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                         }                  
                     }
                     else if (hud.smallShip.targetSmallShip.scanned == true)
@@ -701,11 +703,13 @@ public static class HudFunctions
                 }
                 else if (hud.smallShip.targetLargeShip != null)
                 {
-                    if (hud.smallShip.targetLargeShip.scanned == false & hud.smallShip.targetDistance > 300)
+                    float distance = Vector3.Distance(hud.smallShip.transform.position, hud.smallShip.targetLargeShip.transform.position);
+
+                    if (hud.smallShip.targetLargeShip.scanned == false & distance > 300)
                     {
                         hud.targetCargo.text = "-";
                     }
-                    else if (hud.smallShip.targetLargeShip.scanned == false & hud.smallShip.targetDistance < 300)
+                    else if (hud.smallShip.targetLargeShip.scanned == false & distance < 300)
                     {
                         hud.targetCargo.text = hud.smallShip.targetLargeShip.cargo.ToUpper();
                         hud.smallShip.targetLargeShip.scanned = true;
@@ -713,7 +717,7 @@ public static class HudFunctions
 
                         if (hud.smallShip.audioManager != null)
                         {
-                            AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep_double", "Cockpit", hud.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                            AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep04_double", "Cockpit", hud.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                         }
                     }
                     else if (hud.smallShip.targetLargeShip.scanned == true)
@@ -1650,6 +1654,11 @@ public static class HudFunctions
             hud.movingReticule = GameObject.Find("MovingReticule");
         }
 
+        if (hud.movingReticleImage == null & hud.movingReticule != null)
+        {
+            hud.movingReticleImage = hud.movingReticule.GetComponentInChildren<RawImage>();
+        }
+
         if (hud.centerReticule == null)
         {
             hud.centerReticule = GameObject.Find("Reticule");
@@ -1698,6 +1707,27 @@ public static class HudFunctions
             else
             {
                 hud.movingReticule.SetActive(false);
+            }
+        }
+
+        //This fades the mouse reticle as it gets closer to the center of the scene
+        if (hud.movingReticule != null & hud.centerReticule != null & hud.movingReticleImage != null)
+        {
+            float distance = Vector2.Distance(hud.movingReticule.transform.position, hud.centerReticule.transform.position);
+
+            if (distance < 40 & distance > 10)
+            {
+                float alpha = (1f / 30f) * distance;
+
+                Color newColor = hud.movingReticleImage.color;
+                newColor.a = alpha;
+                hud.movingReticleImage.color = newColor;
+            }
+            else if (distance < 10)
+            {
+                Color newColor = hud.movingReticleImage.color;
+                newColor.a = 0;
+                hud.movingReticleImage.color = newColor;
             }
         }
     }

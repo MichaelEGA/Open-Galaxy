@@ -252,6 +252,32 @@ public static class SceneFunctions
         scene.cockpitCamera = cockpitCamera;
     }
 
+    //This ensures all the right cameras are on
+    public static void ResetCameras()
+    {
+        Scene scene = GetScene();
+
+        if (scene.starfieldCamera != null)
+        {
+            scene.starfieldCamera.GetComponent<Camera>().enabled = true;
+        }
+
+        if (scene.planetCamera != null)
+        {
+            scene.planetCamera.GetComponent<Camera>().enabled = true;
+        }
+
+        if (scene.mainCamera != null)
+        {
+            scene.mainCamera.GetComponent<Camera>().enabled = true;
+        }
+
+        if (scene.cockpitCamera != null)
+        {
+            scene.cockpitCamera.GetComponent<Camera>().enabled = true;
+        }
+    }
+
     #endregion
 
     #region starfield creation
@@ -416,6 +442,38 @@ public static class SceneFunctions
         }
     }
 
+    //Reset starfield
+    public static void ResetStarfield()
+    {
+        GameObject starfield = GetStarfield();
+        Scene scene = GetScene();
+
+        if (starfield != null & scene != null)
+        {
+            ParticleSystem particleSystem = starfield.GetComponent<ParticleSystem>();
+            ParticleSystemRenderer particleSystemRenderer = starfield.GetComponent<ParticleSystemRenderer>();
+
+            if (particleSystemRenderer != null & scene.mainShip != null)
+            {
+                ParticleSystem.Particle[] points = new ParticleSystem.Particle[particleSystem.particleCount];
+
+                int particleNo = particleSystem.GetParticles(points);
+
+                for (int i = 0; i < particleNo; i++)
+                {
+                    points[i].velocity = new Vector3(0,0,0);
+                }
+
+                particleSystem.SetParticles(points, points.Length);
+
+                particleSystemRenderer.lengthScale = 1;
+
+                particleSystemRenderer.renderMode = ParticleSystemRenderMode.Billboard;
+            }
+            
+        }
+    }
+
     //Move starfield camera to planet location
     public static void MoveStarfieldCamera(Vector3 coordinates)
     {
@@ -453,6 +511,21 @@ public static class SceneFunctions
         starfield = GameObject.Find("starfield");
 
         return starfield;
+    }
+
+    #endregion
+
+    #region transitions
+
+    //Turns the hyperspace tunnel off
+    public static void ResetHyperSpaceTunnel()
+    {
+        Scene scene = GetScene();
+
+        if (scene.hyperspaceTunnel != null)
+        {
+            scene.hyperspaceTunnel.SetActive(false);
+        }
     }
 
     #endregion
@@ -2186,6 +2259,29 @@ public static class SceneFunctions
             scene.objectPool.Clear();
 
             scene.objectPool.Add(scene.mainShip);
+        }
+
+        //Clears the smallship list but preserves the player smallship
+        if (scene.smallShips != null)
+        {
+            scene.smallShips.Clear();
+
+            SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+
+            if (smallShip != null)
+            {
+                scene.smallShips.Add(smallShip);
+            }
+        }
+
+        if (scene.largeShips != null)
+        {
+            scene.largeShips.Clear();
+        }
+
+        if (scene.turrets != null)
+        {
+            scene.turrets.Clear();
         }
 
         if (scene.lasersPool != null)

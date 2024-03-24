@@ -75,8 +75,11 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
                         if (distance < 10)
                         {
-                            connectedNode = nodeLink;
-                            break;
+                            if (nodeLink.mode != "male") //This prevents the node being connected to another male/output node
+                            {
+                                connectedNode = nodeLink;
+                                break;
+                            }
                         }
                         else
                         {

@@ -88,6 +88,12 @@ public static class ExitMenuFunctions
             }
         }
 
+        //This resets the starfield to ensure that it's not stretched
+        SceneFunctions.ResetStarfield();
+        SceneFunctions.ResetCameras();
+        SceneFunctions.ResetHyperSpaceTunnel();
+
+        //This destroys the mission manager
         if (missionManager != null) { GameObject.Destroy(missionManager.gameObject); }
 
         Cursor.visible = true;

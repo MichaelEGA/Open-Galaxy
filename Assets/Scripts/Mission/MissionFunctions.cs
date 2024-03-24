@@ -303,7 +303,7 @@ public static class MissionFunctions
                     }
                 }
 
-                RunEvent(missionEvent, eventSeries);
+                RunEvent(missionManager, missionEvent, eventSeries);
             }
 
             //This makes sure the mission that mission events aren't run when the mission manager has been deleted
@@ -354,7 +354,7 @@ public static class MissionFunctions
     }
 
     //This runs the appropriate event function
-    public static void RunEvent(MissionEvent missionEvent, int eventSeries)
+    public static void RunEvent(MissionManager missionManager, MissionEvent missionEvent, int eventSeries)
     {
         //This runs the requested function
         if (missionEvent.eventType == "spliteventseries")
@@ -369,6 +369,7 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "changelocation")
         {
             Task a = new Task(ChangeLocation(missionEvent));
+            missionManager.missionTasks.Add(a);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "clearaioverride")
@@ -509,11 +510,13 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "loadmultipleshipsonground")
         {
             Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
+            missionManager.missionTasks.Add(a);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "loadmultipleships")
         {
             Task a = new Task(LoadMultipleShips(missionEvent));
+            missionManager.missionTasks.Add(a);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "pausesequence")

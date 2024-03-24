@@ -31,7 +31,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
 **Changelog**
 
-31/04/23 - v1.0.0 (Unity 2022.3.12f1)
+31/04/23 - MILESTONE RELEASE: v1.0.0 (Unity 2022.3.12f1)
   - Added: Four new missions
   - Updated: Reduced cost of looking for target
   - Added: Target request system to reduce cost of ai looking for targets

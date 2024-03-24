@@ -185,6 +185,19 @@ public static class TurretFunctions
                 turret.turretType = "large";
                 turret.yRotationIsRestricted = false;
             }
+            else
+            {
+                turret.yRotationMax = 90;
+                turret.yRotationMin = -90;
+                turret.xRotationMax = 0;
+                turret.xRotationMin = -90;
+                turret.turretSpeed = 90;
+                turret.fireDelay = 4f;
+                turret.laserColor = colour;
+                turret.laserDamage = 10;
+                turret.turretType = "small";
+                turret.yRotationIsRestricted = false;
+            }
         }
     }
 

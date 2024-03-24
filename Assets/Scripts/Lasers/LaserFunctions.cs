@@ -268,6 +268,15 @@ public static class LaserFunctions
 
     #region laser fire functions
 
+    //This allows the player to fire the lasers
+    public static void InitiateFiringPlayer(SmallShip smallShip)
+    {
+        if (smallShip.fireWeapon == true & smallShip.isAI == false)
+        {
+            InitiateFiring(smallShip);
+        }
+    }
+
     //This executes the firing according to the laser mode
     public static void InitiateFiring(SmallShip smallShip)
     {
@@ -282,9 +291,8 @@ public static class LaserFunctions
         {
             laserWaitTime = laserWaitTime * 4;
         }
-        
 
-        if (smallShip.fireWeapon == true & Time.time > smallShip.laserPressedTime & smallShip.laserfiring != true & smallShip.activeWeapon == "lasers" & smallShip.weaponsLock == false)
+        if (Time.time > smallShip.laserPressedTime & smallShip.laserfiring != true & smallShip.activeWeapon == "lasers" & smallShip.weaponsLock == false)
         {
             if (smallShip.weaponMode == "single")
             {
@@ -343,9 +351,7 @@ public static class LaserFunctions
             }
 
             smallShip.laserPressedTime = Time.time + laserWaitTime;
-
         }
-
     }
 
     //This fires a laser from the selected cannon

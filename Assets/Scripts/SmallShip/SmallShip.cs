@@ -267,11 +267,11 @@ public class SmallShip : MonoBehaviour
         //Laser functions
         LaserFunctions.ToggleWeaponMode(this);
         LaserFunctions.SetCannons(this);
-        LaserFunctions.InitiateFiring(this);
+        LaserFunctions.InitiateFiringPlayer(this);
 
         //Torpedo functions
         TorpedoFunctions.EstablishLockOn(this);
-        TorpedoFunctions.FireTorpedo(this);
+        TorpedoFunctions.FireTorpedoPlayer(this);
         TorpedoFunctions.ToggleWeaponMode(this);
 
         //Damage functions

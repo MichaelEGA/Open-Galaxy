@@ -11,7 +11,7 @@ public static class SmallShipAIFunctions
     //This is the base function that calls all the other AI functions except collisions which is called by an external script (evasions are called internally though)
     public static void GetAIInput(SmallShip smallShip)
     {
-        SetFlightMode(smallShip);      
+        SetFlightMode(smallShip);  
     }
 
     #endregion
@@ -421,26 +421,21 @@ public static class SmallShipAIFunctions
             smallShip.toggleWeapons = true;
         }
 
-        if (smallShip.target != null)
+        if (smallShip.activeWeapon == "lasers")
         {
-            if (smallShip.interceptForward > 0.90f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
+            if (smallShip.target != null)
             {
-                bool dontFire = CheckFire(smallShip);
-
-                if (dontFire == false)
+                if (smallShip.interceptForward > 0.90f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
                 {
-                    smallShip.fireWeapon = true;
+                    bool dontFire = CheckFire(smallShip);
+
+                    if (dontFire == false)
+                    {
+                        LaserFunctions.InitiateFiring(smallShip);
+                    }
                 }
             }
-            else
-            {
-                smallShip.fireWeapon = false;
-            }
         }
-        else
-        {
-            smallShip.fireWeapon = false;
-        } 
     }
 
     //This checks whether a non hostile ship is in the firing line or not
@@ -482,18 +477,10 @@ public static class SmallShipAIFunctions
 
         if (smallShip.target != null & smallShip.activeWeapon == "torpedos")
         {
-            if (smallShip.interceptForward > 0.95f & smallShip.torpedoLockedOn == true)
+            if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
             {
-                smallShip.fireWeapon = true;
+                TorpedoFunctions.FireTorpedo(smallShip);     
             }
-            else
-            {
-                smallShip.fireWeapon = false;
-            }
-        }
-        else
-        {
-            smallShip.fireWeapon = false;
         }
     }
 

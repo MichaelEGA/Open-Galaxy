@@ -108,10 +108,19 @@ public static class TorpedoFunctions
         }
     }
 
+    //This causes the player to fire a torpedo
+    public static void FireTorpedoPlayer(SmallShip smallShip)
+    {
+        if (smallShip.fireWeapon == true & smallShip.isAI == false)
+        {
+            FireTorpedo(smallShip);
+        }
+    }
+
     //This fires a torpedo
     public static void FireTorpedo(SmallShip smallShip)
     {
-        if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.fireWeapon == true & smallShip.activeWeapon == "torpedos" & smallShip.torpedoPressedTime < Time.time & smallShip.weaponsLock == false)
+        if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.activeWeapon == "torpedos" & smallShip.torpedoPressedTime < Time.time & smallShip.weaponsLock == false)
         {
             float spatialBlend = 1;
             string mixer = "External";
@@ -167,8 +176,8 @@ public static class TorpedoFunctions
                 if (torpedo01 != null)
                 {
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
-                }  
-                
+                }
+
                 smallShip.torpedoCycleNumber += 1;
 
                 if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }

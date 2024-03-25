@@ -1,10 +1,10 @@
 # Open-Galaxy
 
 Gameplay
-![Screenshot (137)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/dc6ae23b-a28f-41a7-8c93-a02f4c13e772)
+![Screenshot (217)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/4530abf2-a644-4805-abe9-d17c38aaa9ae)
 
 Mission Editor
-![Screenshot (130)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/0a2f79a7-66c7-4489-b7fb-925d1e6d50ee)
+![Screenshot (235)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/70cb5a41-f2ad-4a0e-a048-94c489a22ab2)
 
 Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platform for custom missions made by the community. 
 
@@ -16,12 +16,12 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Easy to use mission editor (Implemented)
   - External mission loading (Implemented)
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
-  - Switch between different asset sets (In Progress)
-  - Terrain loading (In Progress)
+  - Switch between different asset sets (Implemented)
+  - Terrain loading (Implemented)
 
-**Latest Release:** 1.0.0
+**Latest Release:** 1.6.53
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.0.0/Open.Galaxy.1.0.0.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.1.6.53/Open.Galaxy.1.6.53.zip
 
 **Other Info**
 
@@ -31,7 +31,51 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
 **Changelog**
 
-31/04/23 - MILESTONE RELEASE: v1.0.0 (Unity 2022.3.12f1)
+25/03/24 - v1.6.53 (Unity 2022.3.12f1)
+  - Fixed: Starfield is now reset when exiting the game during hyperspace
+  - Fixed: AI firing when target is not forward
+  - Fixed: Colour on some turrets not changing from red
+  - Added: Hyperspace shake & in game cursor fade
+  - Added: Copy and Paste functions to editor
+  - Added: Move multiple selected nodes at once
+  - Added: Delete selected nodes with delete key
+  - Added: Export Node Selection Function to editor
+  - Updated: Editor controls
+  - Updated: Select nodes function now fully works
+  - Updated: Selection box code
+  - Added: Dragbox selection to editor
+  - Added: Ability to select hud colour
+  - Added: Ability to choose different types of asteroids
+  - Added: New asteroid loading system
+  - Added: Ship explosion type to ship class
+  - Updated: Display location tool
+  - Updated: Load ships on ground is now correctly positioned
+  - Added: Initial code for display location tool
+  - Updated: Numerous minor changes
+  - Update NodeDescriptions.cs
+  - Added: set galaxy location node
+  - Removed: Libnoise credit from menu
+  - Removed: Libnoise
+  - Added: reorganised and added new music tracks
+  - Removed: Vwing
+  - Updated: Tie Cockpit texture
+  - Added: Change skybox node
+  - Added: New Terrain loading system
+  - Added: First strike ships
+  - Added: Galactic Conquest Ships
+  - Added: New planet loading system
+  - Added: Additional Assets Ships
+  - Updated: Dropbox size in editor
+  - Added: Single run preload option on load single ship
+  - Added: Toggle between different ship sets
+  - Added: Dynamic campaign loading to main menu
+  - Fixed: Incorrect rotation data applied in node
+  - Fixed: Player ship wrongly being cleared from object list on hyperspace
+  - Fixed: Hyperspace exit velocity bug
+  - Added: Control lock node/function 
+  - Fixed: Numerous hyperspace bugs
+
+31/01/24 - MILESTONE RELEASE: v1.0.0 (Unity 2022.3.12f1)
   - Added: Four new missions
   - Updated: Reduced cost of looking for target
   - Added: Target request system to reduce cost of ai looking for targets
@@ -50,7 +94,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Removed: Explore mode
   - Removed: Tiling code and death star tiles
 
-04/01/23 - v0.9.41 (Unity 2022.3.12f1)
+04/01/24 - v0.9.41 (Unity 2022.3.12f1)
   - NOTE: This is the only and final release of the game with the 'explore' mode. The feature is no longer in development and will be removed from future releases. But I made this release to preserve the code and to give an example of what it would have been like.
   - Updated: Final update for explore mode
   - Updated: More powerful region data categories

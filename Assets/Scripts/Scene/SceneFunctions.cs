@@ -549,6 +549,7 @@ public static class SceneFunctions
             scene.planetPivot = GameObject.Find("planetpivot");
             scene.planet = GameObject.Find("planet");
             scene.deathstar = GameObject.Find("deathstar");
+            scene.deathstar2 = GameObject.Find("deathstar2");
             scene.clouds = GameObject.Find("clouds");
             scene.atmosphere = GameObject.Find("atmosphere");
             scene.rings = GameObject.Find("rings");
@@ -587,14 +588,25 @@ public static class SceneFunctions
             scene.rings.SetActive(true);
         }
 
-        if (planetType == "deathstar")
+        if (planetType == "deathstar" || planetType == "deathstar2")
         {
-            scene.deathstar.SetActive(true);
+            if (planetType == "deathstar")
+            {
+                scene.deathstar.SetActive(true);
+                scene.deathstar2.SetActive(false);
+            }
+            else
+            {
+                scene.deathstar2.SetActive(true);
+                scene.deathstar.SetActive(false);
+            }
+
             scene.planet.SetActive(false);
         }
         else
         {
             scene.deathstar.SetActive(false);
+            scene.deathstar2.SetActive(false);
             scene.planet.SetActive(true);
         }
 

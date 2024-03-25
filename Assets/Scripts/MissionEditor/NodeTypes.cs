@@ -376,6 +376,7 @@ public static class NodeTypes
         options1.Add("rock04");
         options1.Add("rock05");
         options1.Add("deathstar");
+        options1.Add("deathstar2");
 
         node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "planet", "habitable01", 7, 5, drop, 12.5f, 90, 5f);
 

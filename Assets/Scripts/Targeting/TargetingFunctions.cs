@@ -1054,7 +1054,7 @@ public static class TargetingFunctions
 
     #region AI turret targetting
 
-    //This gets the closes enemy for turret
+    //This gets the closest enemy for turret
     public static IEnumerator GetClosestEnemy_Turret(Turret turret)
     {
         Scene scene = turret.largeShip.scene;

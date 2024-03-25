@@ -759,7 +759,7 @@ public static class SmallShipFunctions
             yield return null;
         }
 
-        smallShip.gameObject.transform.localPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 30000;
+        smallShip.gameObject.transform.localPosition = endPosition;
 
         HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " just exited hyperspace");
 

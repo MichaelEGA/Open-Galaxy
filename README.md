@@ -3,6 +3,8 @@
 Gameplay
 ![Screenshot (217)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/4530abf2-a644-4805-abe9-d17c38aaa9ae)
 
+![Screenshot (236)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/69161c7d-b73b-4e9c-a0c8-6ac994ff5749)
+
 Mission Editor
 ![Screenshot (235)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/70cb5a41-f2ad-4a0e-a048-94c489a22ab2)
 
@@ -19,9 +21,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Switch between different asset sets (Implemented)
   - Terrain loading (Implemented)
 
-**Latest Release:** 1.6.53
+**Latest Release:** 1.6.54
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.1.6.53/Open.Galaxy.1.6.53.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.6.54/Open.Galaxy.1.6.54.zip
 
 **Other Info**
 
@@ -30,6 +32,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
 
 **Changelog**
+
+25/03/24 - v1.6.54 (Unity 2022.3.12f1)
+  - Fixed: A minor mission breaking bug that prevented smallships from hypering-in in the correct position
 
 25/03/24 - v1.6.53 (Unity 2022.3.12f1)
   - Fixed: Starfield is now reset when exiting the game during hyperspace

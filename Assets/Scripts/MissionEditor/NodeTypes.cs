@@ -184,9 +184,7 @@ public static class NodeTypes
 
         drop -= 15 * multiplySize;
 
-        node.data3 = NodeFunctions.DrawInputField(node, "Image File", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 30;
+        drop -= 15;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
@@ -463,7 +461,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.y = NodeFunctions.DrawInputField(node, "position", "-15000", 7, 5, drop, 12.5f, 90, 5f);
+        node.y = NodeFunctions.DrawInputField(node, "position", "-2000", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -763,8 +761,8 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options4 = new List<string>();
-        options4.Add("true");
         options4.Add("false");
+        options4.Add("true");
 
         node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -1314,7 +1312,7 @@ public static class NodeTypes
 
         drop -= 15 * multiplySize;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "Fontsize", "12", 7, 5, drop, 12.5f, 90);
+        node.data2 = NodeFunctions.DrawInputField(node, "Fontsize", "25", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -1846,8 +1844,8 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("true");
         options3.Add("false");
+        options3.Add("true");
 
         node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -1951,8 +1949,8 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("true");
         options3.Add("false");
+        options3.Add("true");
 
         node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2195,16 +2193,16 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options4 = new List<string>();
-        options4.Add("true");
         options4.Add("false");
+        options4.Add("true");
 
         node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options5 = new List<string>();
-        options5.Add("true");
         options5.Add("false");
+        options5.Add("true");
 
         node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
 

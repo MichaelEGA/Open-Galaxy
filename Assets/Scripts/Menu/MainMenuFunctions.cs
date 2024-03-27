@@ -905,7 +905,7 @@ public static class MainMenuFunctions
 
         FullScreenMode screenMode = Screen.fullScreenMode;
 
-        OutputMenuMessage("The resolutionwas set to " + resolution);
+        OutputMenuMessage("The resolution was set to " + resolution);
 
         if (resolution == "Detect Screen Resolution")
         {

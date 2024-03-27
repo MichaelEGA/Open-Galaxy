@@ -120,7 +120,7 @@ public static class TurretFunctions
                 turret.turretType = "small";
                 turret.yRotationIsRestricted = true;
             }
-            if (turret.gameObject.name.Contains("mc80a_turretlarge"))
+            else if (turret.gameObject.name.Contains("mc80a_turretlarge"))
             {
                 turret.yRotationMax = 60;
                 turret.yRotationMin = -60;
@@ -380,6 +380,7 @@ public static class TurretFunctions
         if (turret.target == null)
         {
             turret.requestingTarget = true;
+           
         }
         else if (turret.target.gameObject.activeSelf == false)
         {

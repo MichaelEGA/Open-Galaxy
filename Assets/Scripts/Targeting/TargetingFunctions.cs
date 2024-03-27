@@ -358,7 +358,10 @@ public static class TargetingFunctions
             smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
         }
 
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+        if (smallShip.isAI == false)
+        {
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+        }
 
         //This prevents the torpedo from immediately locking on to the new target
         smallShip.torpedoLockedOn = false;
@@ -1113,7 +1116,7 @@ public static class TargetingFunctions
                 }
 
             }
-        }
+    }
         else
         {
             foreach (SmallShip tempSmallShip in scene.smallShips)
@@ -1122,13 +1125,13 @@ public static class TargetingFunctions
                 {
                     bool isHostile = false;
 
-                    isHostile = GetHostility_LargeShip(turret.largeShip, tempSmallShip.allegiance);
+    isHostile = GetHostility_LargeShip(turret.largeShip, tempSmallShip.allegiance);
 
                     if (tempSmallShip.gameObject.activeSelf != false & isHostile == true)
                     {
                         float tempDistance = Vector3.Distance(turret.transform.position, tempSmallShip.transform.position);
 
-                        if (tempDistance < distance)
+                        if (tempDistance<distance)
                         {
                             target = tempSmallShip.gameObject;
                             distance = tempDistance;
@@ -1145,13 +1148,13 @@ public static class TargetingFunctions
                     {
                         bool isHostile = false;
 
-                        isHostile = GetHostility_LargeShip(turret.largeShip, tempLargeShip.allegiance);
+isHostile = GetHostility_LargeShip(turret.largeShip, tempLargeShip.allegiance);
 
                         if (tempLargeShip.gameObject.activeSelf != false & isHostile == true)
                         {
                             float tempDistance = Vector3.Distance(turret.transform.position, tempLargeShip.transform.position);
 
-                            if (tempDistance < distance)
+                            if (tempDistance<distance)
                             {
                                 target = tempLargeShip.gameObject;
                                 distance = tempDistance;

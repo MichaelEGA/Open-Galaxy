@@ -76,6 +76,7 @@ public static class WindowFunctions
         buttonList.Add("preload_setskybox");
         buttonList.Add("starteventseries");
         buttonList.Add("spliteventseries");
+        buttonList.Add("activatedocking");
         buttonList.Add("activatehyperspace");
         buttonList.Add("changelocation");
         buttonList.Add("clearaioverride");

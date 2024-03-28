@@ -31,6 +31,8 @@ public static class SmallShipFunctions
             LoadThrusters(smallShip);
             TargetingFunctions.CreateWaypoint(smallShip);
             
+            smallShip.dockingPoint = smallShip.gameObject.transform.Find("dockingPoint").gameObject;
+
             smallShip.loaded = true;
         }
     }
@@ -827,7 +829,7 @@ public static class SmallShipFunctions
         {
             foreach (SmallShip smallShip in scene.smallShips)
             {
-                if (smallShip.name == name)
+                if (smallShip.name.Contains(name))
                 {
                     dockingPoint = smallShip.dockingPoint;
                     dockingPointFound = true;
@@ -841,14 +843,16 @@ public static class SmallShipFunctions
         {
             foreach (LargeShip largeShip in scene.largeShips)
             {
-                if (largeShip.name == name)
+                if (largeShip.name.Contains(name))
                 {
                     float distance = Mathf.Infinity;
 
                     foreach (GameObject tempDockingPoint in largeShip.dockingPoints)
                     {
                         //This gets the closest docking point on the large ship
-                        float tempDistance = Vector3.Distance(tempDockingPoint.transform.localPosition, smallship.transform.localPosition);
+                        Vector3 tempDockPointLocalPosition = scene.transform.InverseTransformPoint(tempDockingPoint.transform.position);
+
+                        float tempDistance = Vector3.Distance(tempDockPointLocalPosition, smallship.transform.localPosition);
 
                         if (tempDistance < distance)
                         {
@@ -873,46 +877,41 @@ public static class SmallShipFunctions
         {
             smallShip.docking = true;
 
+            HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " commencing docking sequence " + smallShip.targetDockingPoint.transform.parent.name);
+
+            Scene scene = SceneFunctions.GetScene();
+
             //Rotate towards
-            bool rotationComplete = false;
+            Quaternion startRotation = smallShip.transform.rotation;
+            Quaternion endRotation = smallShip.targetDockingPoint.transform.rotation;
 
-            while (rotationComplete == false)
+            float time = 2f;
+
+            for (float t = 0; t < time; t += Time.deltaTime / time)
             {
-                Vector3 targetDirection = smallShip.targetDockingPoint.transform.localPosition - smallShip.transform.localPosition;
-
-                float singleStep = 1 * Time.deltaTime;
-
-                Vector3 newDirection = Vector3.RotateTowards(smallShip.transform.localPosition, targetDirection, singleStep, 0.0f);
-
-                smallShip.transform.rotation = Quaternion.LookRotation(newDirection);
-
-                if (Vector3.Angle(smallShip.transform.forward, newDirection) < 1)
-                {
-                    rotationComplete = true;
-                }
-
+                smallShip.transform.localRotation = Quaternion.Lerp(startRotation, endRotation, t);
                 yield return null;
             }
+
+            smallShip.transform.localRotation = endRotation;
 
             //Move towards
-            bool movementComplete = false;
+            Vector3 startPosition = smallShip.transform.localPosition;
+            Vector3 endPosition = scene.transform.InverseTransformPoint(smallShip.targetDockingPoint.transform.position);
 
-            while (movementComplete == false)
+            time = 5f;
+
+            for (float t = 0; t < time; t += Time.deltaTime / time)
             {
-                float singleStep = 1 * Time.deltaTime;
-
-                Vector3 newPosition = Vector3.MoveTowards(smallShip.transform.localPosition, smallShip.targetDockingPoint.transform.localPosition, singleStep);
-
-                smallShip.transform.localPosition = newPosition;
-
-                if (Vector3.Distance(smallShip.transform.localPosition, newPosition) < 1)
-                {
-                    movementComplete = true;
-                    smallShip.transform.SetParent(smallShip.targetDockingPoint.transform);
-                }
-
+                smallShip.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
                 yield return null;
             }
+
+            smallShip.transform.localPosition = endPosition;
+
+            Debug.Log("docking process complete");
+
+            HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " docked with " + smallShip.targetDockingPoint.transform.parent.name);
         }
     }
 
@@ -921,29 +920,28 @@ public static class SmallShipFunctions
     {
         if (smallShip.targetDockingPoint != null)
         {
+            HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " commencing exit dock sequence " + smallShip.targetDockingPoint.transform.parent.name);
+
             Scene scene = SceneFunctions.GetScene();
             smallShip.transform.SetParent(smallShip.scene.transform);
 
-            bool movementComplete = false;
+            //Move out
+            Vector3 startPosition = smallShip.transform.localPosition;
+            Vector3 endPosition = scene.transform.InverseTransformPoint(smallShip.targetDockingPoint.transform.position) + (smallShip.targetDockingPoint.transform.up * 100);
 
-            Vector3 launchPosition = smallShip.targetDockingPoint.transform.localPosition + (Vector3.up * 100);
+            float time = 3f;
 
-            while (movementComplete == false)
+            for (float t = 0; t < time; t += Time.deltaTime / time)
             {
-                float singleStep = 1 * Time.deltaTime;
-
-                Vector3 newPosition = Vector3.MoveTowards(smallShip.transform.localPosition, launchPosition, singleStep);
-
-                smallShip.transform.localPosition = newPosition;
-
-                if (Vector3.Distance(smallShip.transform.localPosition, launchPosition) < 1)
-                {
-                    movementComplete = true;
-                }
-
+                smallShip.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
                 yield return null;
             }
 
+            Debug.Log("de docking process complete");
+
+            smallShip.transform.localPosition = endPosition;
+
+            HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " released from dock ");
         }
 
         smallShip.docking = false;
@@ -1179,7 +1177,7 @@ public static class SmallShipFunctions
     //This tells the damage system that a collision has begun
     public static void StartCollision(SmallShip smallShip, GameObject collidingWith)
     {
-        Debug.Log("Collision with " + collidingWith.name);
+        Debug.Log(smallShip.name + " colliding with " + collidingWith.name);
 
         smallShip.isCurrentlyColliding = true;
 

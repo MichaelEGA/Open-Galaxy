@@ -77,9 +77,9 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool spinShip;
 
     [Header("Docking")]
-    [HideInInspector] public GameObject targetDockingPoint;
-    [HideInInspector] public GameObject dockingPoint;
-    [HideInInspector] public bool docking;
+    public GameObject targetDockingPoint;
+    public GameObject dockingPoint;
+    public bool docking;
 
     [Header("Ship Power Distribution")]
     public string powerMode = "reset";

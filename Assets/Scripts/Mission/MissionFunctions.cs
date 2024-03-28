@@ -361,11 +361,16 @@ public static class MissionFunctions
         {
             SplitEventSeries(missionEvent, eventSeries);
         }
+        else if (missionEvent.eventType == "activatedocking")
+        {
+            ActivateDocking(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "activatehyperspace")
         {
             ActivateHyperspace(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
+        }   
         else if (missionEvent.eventType == "changelocation")
         {
             Task a = new Task(ChangeLocation(missionEvent));
@@ -695,9 +700,56 @@ public static class MissionFunctions
         }
     }
 
+    //This activates or deactives the docking procedure
+    public static void ActivateDocking(MissionEvent missionEvent)
+    {
+        Debug.Log("this event was run");
+
+        string shipName = missionEvent.data1;
+        string targetShipName = missionEvent.data2;
+        bool activateDocking = false;
+
+        if (bool.TryParse(missionEvent.data3, out _))
+        {
+            activateDocking = bool.Parse(missionEvent.data3);
+        }
+
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(shipName))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            if (activateDocking == true)
+                            {
+                                SmallShipFunctions.SetDockingPoint(smallShip, targetShipName);
+                                Task a = new Task(SmallShipFunctions.StartDocking(smallShip));
+                            }
+                            else
+                            {
+                                Task a = new Task(SmallShipFunctions.EndDocking(smallShip));
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //This causes the designated ships to jump to hyperspace
     public static void ActivateHyperspace(MissionEvent missionEvent)
     {
+
         Scene scene = SceneFunctions.GetScene();
 
         if (scene != null)

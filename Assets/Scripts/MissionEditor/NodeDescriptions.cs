@@ -207,6 +207,16 @@ public static class NodeDescriptions
            "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
+        else if (name == "activatedocking")
+        {
+            description =
+            "Activate Docking \n " +
+            "\n " +
+            "This node causes the designated ship to dock with the target ship" +
+            "\n " +
+           "Extra Information \n" +
+           "- This function will affect the first ship whose name contains the designated string. \n";
+        }
         else if (name == "changelocation")
         {
             description =

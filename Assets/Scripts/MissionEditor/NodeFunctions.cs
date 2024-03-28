@@ -73,6 +73,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_SplitEventSeries(node);
         }
+        else if (node.nodeType == "activatedocking")
+        {
+            NodeTypes.Draw_ActivateDocking(node);
+        }
         else if (node.nodeType == "activatehyperspace")
         {
             NodeTypes.Draw_ActivateHyperspace(node);

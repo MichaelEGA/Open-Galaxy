@@ -21,6 +21,17 @@ public static class LargeShipFunctions
             LoadThrusters(largeShip);
             CreateWaypoint(largeShip);
             largeShip.loaded = true;
+
+            Transform[] dockingPoints = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockingPoint");
+
+            List<GameObject> dockingPointGameObjects = new List<GameObject>();
+
+            foreach (Transform dockingPoint in dockingPoints)
+            {
+                dockingPointGameObjects.Add(dockingPoint.gameObject);
+            }
+
+            largeShip.dockingPoints = dockingPointGameObjects.ToArray();
         }
     }
 

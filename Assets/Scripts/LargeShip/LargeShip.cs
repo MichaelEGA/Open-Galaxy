@@ -61,6 +61,11 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float maneuvarabilityActual;
     [HideInInspector] public bool spinShip;
 
+    [Header("Docking")]
+    [HideInInspector] public GameObject[] dockingPoints;
+    public GameObject targetDockingPoint;
+    public bool docking;
+
     [Header("Ship Levels")]
     public bool invincible = false;
     public float hullLevel = 100;

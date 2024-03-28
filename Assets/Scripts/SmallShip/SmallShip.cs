@@ -76,6 +76,11 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool messageSent;
     [HideInInspector] public bool spinShip;
 
+    [Header("Docking")]
+    [HideInInspector] public GameObject targetDockingPoint;
+    [HideInInspector] public GameObject dockingPoint;
+    [HideInInspector] public bool docking;
+
     [Header("Ship Power Distribution")]
     public string powerMode = "reset";
     public float laserPower = 100;

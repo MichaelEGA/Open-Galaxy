@@ -597,7 +597,6 @@ public static class SmallShipFunctions
         }
     }
 
-
     #endregion
 
     #region ship movement
@@ -695,7 +694,7 @@ public static class SmallShipFunctions
             smallShip.shipRigidbody = smallShip.gameObject.GetComponent<Rigidbody>();
         }
 
-        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false)
+        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false)
         {
             //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
             float step = +Time.deltaTime / 0.1f;
@@ -810,6 +809,144 @@ public static class SmallShipFunctions
                 smallShip.movementEffect.gameObject.SetActive(false);
             }
         }
+    }
+
+    #endregion
+
+    #region docking
+
+    //This sets the ships docking point
+    public static void SetDockingPoint(SmallShip smallship, string name)
+    {
+        GameObject dockingPoint = null;
+        Scene scene = SceneFunctions.GetScene();
+        bool dockingPointFound = false;
+        
+        //This searches for the docking point on a smallship
+        if (dockingPointFound == false)
+        {
+            foreach (SmallShip smallShip in scene.smallShips)
+            {
+                if (smallShip.name == name)
+                {
+                    dockingPoint = smallShip.dockingPoint;
+                    dockingPointFound = true;
+                    break;
+                }
+            }
+        }
+
+        //This searches for a docking point on a large ship
+        if (dockingPointFound == false)
+        {
+            foreach (LargeShip largeShip in scene.largeShips)
+            {
+                if (largeShip.name == name)
+                {
+                    float distance = Mathf.Infinity;
+
+                    foreach (GameObject tempDockingPoint in largeShip.dockingPoints)
+                    {
+                        //This gets the closest docking point on the large ship
+                        float tempDistance = Vector3.Distance(tempDockingPoint.transform.localPosition, smallship.transform.localPosition);
+
+                        if (tempDistance < distance)
+                        {
+                            distance = tempDistance;
+                            dockingPoint = tempDockingPoint;
+                        }
+                    }
+
+                    dockingPointFound = true;
+                    break;
+                }
+            }
+        }
+
+        smallship.targetDockingPoint = dockingPoint;
+    }
+
+    //This makes the ship start docking
+    public static IEnumerator StartDocking(SmallShip smallShip)
+    {
+        if (smallShip.targetDockingPoint != null)
+        {
+            smallShip.docking = true;
+
+            //Rotate towards
+            bool rotationComplete = false;
+
+            while (rotationComplete == false)
+            {
+                Vector3 targetDirection = smallShip.targetDockingPoint.transform.localPosition - smallShip.transform.localPosition;
+
+                float singleStep = 1 * Time.deltaTime;
+
+                Vector3 newDirection = Vector3.RotateTowards(smallShip.transform.localPosition, targetDirection, singleStep, 0.0f);
+
+                smallShip.transform.rotation = Quaternion.LookRotation(newDirection);
+
+                if (Vector3.Angle(smallShip.transform.forward, newDirection) < 1)
+                {
+                    rotationComplete = true;
+                }
+
+                yield return null;
+            }
+
+            //Move towards
+            bool movementComplete = false;
+
+            while (movementComplete == false)
+            {
+                float singleStep = 1 * Time.deltaTime;
+
+                Vector3 newPosition = Vector3.MoveTowards(smallShip.transform.localPosition, smallShip.targetDockingPoint.transform.localPosition, singleStep);
+
+                smallShip.transform.localPosition = newPosition;
+
+                if (Vector3.Distance(smallShip.transform.localPosition, newPosition) < 1)
+                {
+                    movementComplete = true;
+                    smallShip.transform.SetParent(smallShip.targetDockingPoint.transform);
+                }
+
+                yield return null;
+            }
+        }
+    }
+
+    //This makes the ship end docking
+    public static IEnumerator EndDocking(SmallShip smallShip)
+    {
+        if (smallShip.targetDockingPoint != null)
+        {
+            Scene scene = SceneFunctions.GetScene();
+            smallShip.transform.SetParent(smallShip.scene.transform);
+
+            bool movementComplete = false;
+
+            Vector3 launchPosition = smallShip.targetDockingPoint.transform.localPosition + (Vector3.up * 100);
+
+            while (movementComplete == false)
+            {
+                float singleStep = 1 * Time.deltaTime;
+
+                Vector3 newPosition = Vector3.MoveTowards(smallShip.transform.localPosition, launchPosition, singleStep);
+
+                smallShip.transform.localPosition = newPosition;
+
+                if (Vector3.Distance(smallShip.transform.localPosition, launchPosition) < 1)
+                {
+                    movementComplete = true;
+                }
+
+                yield return null;
+            }
+
+        }
+
+        smallShip.docking = false;
     }
 
     #endregion

@@ -703,15 +703,25 @@ public static class MissionFunctions
     //This activates or deactives the docking procedure
     public static void ActivateDocking(MissionEvent missionEvent)
     {
-        Debug.Log("this event was run");
-
         string shipName = missionEvent.data1;
         string targetShipName = missionEvent.data2;
         bool activateDocking = false;
+        float rotationSpeed = 1;
+        float movementSpeed = 1;
 
         if (bool.TryParse(missionEvent.data3, out _))
         {
             activateDocking = bool.Parse(missionEvent.data3);
+        }
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            rotationSpeed = float.Parse(missionEvent.data4);
+        }
+
+        if (float.TryParse(missionEvent.data5, out _))
+        {
+            movementSpeed = float.Parse(missionEvent.data5);
         }
 
         Scene scene = SceneFunctions.GetScene();
@@ -731,11 +741,28 @@ public static class MissionFunctions
                             if (activateDocking == true)
                             {
                                 SmallShipFunctions.SetDockingPoint(smallShip, targetShipName);
-                                Task a = new Task(SmallShipFunctions.StartDocking(smallShip));
+                                Task a = new Task(SmallShipFunctions.StartDocking(smallShip, rotationSpeed, movementSpeed));
                             }
                             else
                             {
-                                Task a = new Task(SmallShipFunctions.EndDocking(smallShip));
+                                Task a = new Task(SmallShipFunctions.EndDocking(smallShip, movementSpeed));
+                            }
+
+                            break;
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            if (activateDocking == true)
+                            {
+                                LargeShipFunctions.SetDockingPoint(largeShip, targetShipName);
+                                Task a = new Task(LargeShipFunctions.StartDocking(largeShip, rotationSpeed, movementSpeed));
+                            }
+                            else
+                            {
+                                Task a = new Task(LargeShipFunctions.EndDocking(largeShip, movementSpeed));
                             }
 
                             break;

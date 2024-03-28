@@ -30,8 +30,13 @@ public static class SmallShipFunctions
             smallShip.colliders = smallShip.GetComponentsInChildren<Collider>();
             LoadThrusters(smallShip);
             TargetingFunctions.CreateWaypoint(smallShip);
-            
-            smallShip.dockingPoint = smallShip.gameObject.transform.Find("dockingPoint").gameObject;
+
+            Transform dockingPoint = smallShip.gameObject.transform.Find("dockingPoint");
+
+            if (dockingPoint != null)
+            {
+                smallShip.dockingPoint = dockingPoint.gameObject;
+            }
 
             smallShip.loaded = true;
         }
@@ -726,11 +731,14 @@ public static class SmallShipFunctions
 
         Vector3 startPosition = smallShip.gameObject.transform.localPosition;
         Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 30000;
-        float time = 1f;
 
-        for (float t = 0; t < time; t += Time.deltaTime / time)
+        float timeElapsed = 0;
+        float lerpDuration = 1;
+
+        while (timeElapsed < lerpDuration)
         {
-            smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+            smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+            timeElapsed += Time.deltaTime;
             yield return null;
         }
 
@@ -748,15 +756,14 @@ public static class SmallShipFunctions
 
         Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 30000; 
         Vector3 startPosition = smallShip.gameObject.transform.localPosition;
-        float time = 1f;
 
-        for (float t = 0; t < time; t += Time.deltaTime / time)
+        float timeElapsed = 0;
+        float lerpDuration = 1;
+
+        while (timeElapsed < lerpDuration)
         {
-            if (smallShip != null)
-            {
-                smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
-            }
-                
+            smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+            timeElapsed += Time.deltaTime;
             yield return null;
         }
 
@@ -827,11 +834,11 @@ public static class SmallShipFunctions
         //This searches for the docking point on a smallship
         if (dockingPointFound == false)
         {
-            foreach (SmallShip smallShip in scene.smallShips)
+            foreach (SmallShip tempSmallShip in scene.smallShips)
             {
-                if (smallShip.name.Contains(name))
+                if (tempSmallShip.name.Contains(name))
                 {
-                    dockingPoint = smallShip.dockingPoint;
+                    dockingPoint = tempSmallShip.dockingPoint;
                     dockingPointFound = true;
                     break;
                 }
@@ -871,7 +878,7 @@ public static class SmallShipFunctions
     }
 
     //This makes the ship start docking
-    public static IEnumerator StartDocking(SmallShip smallShip)
+    public static IEnumerator StartDocking(SmallShip smallShip, float rotationSpeed, float movementSpeed)
     {
         if (smallShip.targetDockingPoint != null)
         {
@@ -885,11 +892,14 @@ public static class SmallShipFunctions
             Quaternion startRotation = smallShip.transform.rotation;
             Quaternion endRotation = smallShip.targetDockingPoint.transform.rotation;
 
-            float time = 2f;
+            float timeElapsed = 0;
+            float lerpDuration = rotationSpeed;
 
-            for (float t = 0; t < time; t += Time.deltaTime / time)
+            while (timeElapsed < lerpDuration)
             {
-                smallShip.transform.localRotation = Quaternion.Lerp(startRotation, endRotation, t);
+                smallShip.transform.localRotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
+                timeElapsed += Time.deltaTime;
+
                 yield return null;
             }
 
@@ -899,11 +909,14 @@ public static class SmallShipFunctions
             Vector3 startPosition = smallShip.transform.localPosition;
             Vector3 endPosition = scene.transform.InverseTransformPoint(smallShip.targetDockingPoint.transform.position);
 
-            time = 5f;
+            timeElapsed = 0;
+            lerpDuration = movementSpeed;
 
-            for (float t = 0; t < time; t += Time.deltaTime / time)
+            while (timeElapsed < lerpDuration)
             {
-                smallShip.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+                smallShip.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed/lerpDuration);
+                timeElapsed += Time.deltaTime;
+
                 yield return null;
             }
 
@@ -916,7 +929,7 @@ public static class SmallShipFunctions
     }
 
     //This makes the ship end docking
-    public static IEnumerator EndDocking(SmallShip smallShip)
+    public static IEnumerator EndDocking(SmallShip smallShip, float movementSpeed)
     {
         if (smallShip.targetDockingPoint != null)
         {
@@ -929,15 +942,16 @@ public static class SmallShipFunctions
             Vector3 startPosition = smallShip.transform.localPosition;
             Vector3 endPosition = scene.transform.InverseTransformPoint(smallShip.targetDockingPoint.transform.position) + (smallShip.targetDockingPoint.transform.up * 100);
 
-            float time = 3f;
+            float timeElapsed = 0;
+            float lerpDuration = movementSpeed;
 
-            for (float t = 0; t < time; t += Time.deltaTime / time)
+            while (timeElapsed < lerpDuration)
             {
-                smallShip.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+                smallShip.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+                timeElapsed += Time.deltaTime;
+
                 yield return null;
             }
-
-            Debug.Log("de docking process complete");
 
             smallShip.transform.localPosition = endPosition;
 

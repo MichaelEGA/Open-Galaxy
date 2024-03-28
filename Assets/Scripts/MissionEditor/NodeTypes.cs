@@ -1046,7 +1046,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, " target ship", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "target ship", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1055,6 +1055,14 @@ public static class NodeTypes
         options1.Add("false");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options1, "activate docking", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "rot speed", "3", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "mov speed", "5", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

@@ -262,11 +262,14 @@ public static class LargeShipFunctions
 
         Vector3 startPosition = largeShip.gameObject.transform.localPosition;
         Vector3 endPosition = largeShip.transform.localPosition + largeShip.gameObject.transform.forward * 30000;
-        float time = 1f;
 
-        for (float t = 0; t < time; t += Time.deltaTime / time)
+        float timeElapsed = 0;
+        float lerpDuration = 1;
+
+        while (timeElapsed < lerpDuration)
         {
-            largeShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+            largeShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+            timeElapsed += Time.deltaTime;
             yield return null;
         }
 
@@ -284,11 +287,14 @@ public static class LargeShipFunctions
 
         Vector3 endPosition = largeShip.transform.localPosition + largeShip.gameObject.transform.forward * 30000;
         Vector3 startPosition = largeShip.gameObject.transform.localPosition;
-        float time = 1f;
 
-        for (float t = 0; t < time; t += Time.deltaTime / time)
+        float timeElapsed = 0;
+        float lerpDuration = 1;
+
+        while (timeElapsed < lerpDuration)
         {
-            largeShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, t);
+            largeShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+            timeElapsed += Time.deltaTime;
             yield return null;
         }
 
@@ -297,6 +303,147 @@ public static class LargeShipFunctions
         HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " just exited hyperspace");
 
         largeShip.exitingHyperspace = false;
+    }
+
+    #endregion
+
+    #region docking
+
+    //This sets the ships docking point
+    public static void SetDockingPoint(LargeShip largeShip, string name)
+    {
+        GameObject dockingPoint = null;
+        Scene scene = SceneFunctions.GetScene();
+        bool dockingPointFound = false;
+
+        //This searches for the docking point on a smallship
+        if (dockingPointFound == false)
+        {
+            foreach (SmallShip smallShip in scene.smallShips)
+            {
+                if (smallShip.name.Contains(name))
+                {
+                    dockingPoint = smallShip.dockingPoint;
+                    dockingPointFound = true;
+                    break;
+                }
+            }
+        }
+
+        //This searches for a docking point on a large ship
+        if (dockingPointFound == false)
+        {
+            foreach (LargeShip tempLargeShip in scene.largeShips)
+            {
+                if (tempLargeShip.name.Contains(name))
+                {
+                    float distance = Mathf.Infinity;
+
+                    foreach (GameObject tempDockingPoint in tempLargeShip.dockingPoints)
+                    {
+                        //This gets the closest docking point on the large ship
+                        Vector3 tempDockPointLocalPosition = scene.transform.InverseTransformPoint(tempDockingPoint.transform.position);
+
+                        float tempDistance = Vector3.Distance(tempDockPointLocalPosition, largeShip.transform.localPosition);
+
+                        if (tempDistance < distance)
+                        {
+                            distance = tempDistance;
+                            dockingPoint = tempDockingPoint;
+                        }
+                    }
+
+                    dockingPointFound = true;
+                    break;
+                }
+            }
+        }
+
+        largeShip.targetDockingPoint = dockingPoint;
+    }
+
+    //This makes the ship start docking
+    public static IEnumerator StartDocking(LargeShip largeShip, float rotationSpeed, float movementSpeed)
+    {
+        if (largeShip.targetDockingPoint != null)
+        {
+            largeShip.docking = true;
+
+            HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " commencing docking sequence " + largeShip.targetDockingPoint.transform.parent.name);
+
+            Scene scene = SceneFunctions.GetScene();
+
+            //Rotate towards
+            Quaternion startRotation = largeShip.transform.rotation;
+            Quaternion endRotation = largeShip.targetDockingPoint.transform.rotation;
+
+            float timeElapsed = 0;
+            float lerpDuration = rotationSpeed;
+
+            while (timeElapsed < lerpDuration)
+            {
+                largeShip.transform.localRotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
+                timeElapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
+            largeShip.transform.localRotation = endRotation;
+
+            //Move towards
+            Vector3 startPosition = largeShip.transform.localPosition;
+            Vector3 endPosition = scene.transform.InverseTransformPoint(largeShip.targetDockingPoint.transform.position);
+
+            timeElapsed = 0;
+            lerpDuration = movementSpeed;
+
+            while (timeElapsed < lerpDuration)
+            {
+                largeShip.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+                timeElapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
+            largeShip.transform.localPosition = endPosition;
+
+            Debug.Log("docking process complete");
+
+            HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " docked with " + largeShip.targetDockingPoint.transform.parent.name);
+        }
+    }
+
+    //This makes the ship end docking
+    public static IEnumerator EndDocking(LargeShip largeShip, float movementSpeed)
+    {
+        if (largeShip.targetDockingPoint != null)
+        {
+            HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " commencing exit dock sequence " + largeShip.targetDockingPoint.transform.parent.name);
+
+            Scene scene = SceneFunctions.GetScene();
+            largeShip.transform.SetParent(largeShip.scene.transform);
+
+            //Move out
+            Vector3 startPosition = largeShip.transform.localPosition;
+            Vector3 endPosition = scene.transform.InverseTransformPoint(largeShip.targetDockingPoint.transform.position) + (largeShip.targetDockingPoint.transform.up * 100);
+
+            float timeElapsed = 0;
+            float lerpDuration = movementSpeed;
+
+            while (timeElapsed < lerpDuration)
+            {
+                largeShip.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+                timeElapsed += Time.deltaTime;
+
+                yield return null;
+            }
+
+            largeShip.transform.localPosition = endPosition;
+
+            HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " released from dock ");
+        }
+
+        largeShip.docking = false;
     }
 
     #endregion

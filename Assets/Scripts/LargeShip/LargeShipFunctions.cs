@@ -407,9 +407,11 @@ public static class LargeShipFunctions
 
             largeShip.transform.localPosition = endPosition;
 
-            Debug.Log("docking process complete");
-
             HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " docked with " + largeShip.targetDockingPoint.transform.parent.name);
+        }
+        else
+        {
+            HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " cannot dock with " + largeShip.targetDockingPoint.transform.parent.name);
         }
     }
 
@@ -579,7 +581,7 @@ public static class LargeShipFunctions
         }
     }
 
-    //Ship blows up stright away
+    //Ship blows up straight away
     public static void ExplosionType2(LargeShip largeShip)
     {
         ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion02", 1000, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");

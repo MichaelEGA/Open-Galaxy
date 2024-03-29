@@ -740,12 +740,13 @@ public static class MissionFunctions
                         {
                             if (activateDocking == true)
                             {
-                                SmallShipFunctions.SetDockingPoint(smallShip, targetShipName);
-                                Task a = new Task(SmallShipFunctions.StartDocking(smallShip, rotationSpeed, movementSpeed));
+                                GameObject targetDockingPoint = SmallShipFunctions.GetTargetDockingPoint(smallShip, targetShipName);
+                                Task a = new Task(SmallShipFunctions.StartDocking(smallShip.transform, smallShip.dockingPoint.transform, targetDockingPoint.transform, Quaternion.identity, rotationSpeed, movementSpeed));
                             }
                             else
                             {
-                                Task a = new Task(SmallShipFunctions.EndDocking(smallShip, movementSpeed));
+                                GameObject targetDockingPoint = SmallShipFunctions.GetTargetDockingPoint(smallShip, targetShipName);
+                                Task a = new Task(SmallShipFunctions.EndDocking(smallShip.transform, targetDockingPoint.transform, 5));
                             }
 
                             break;

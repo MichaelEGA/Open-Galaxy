@@ -2378,6 +2378,21 @@ public static class MissionFunctions
                                 smallShip.waypoint.transform.position = waypoint;
                             }
                         }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            if (largeShip.waypoint != null)
+                            {
+                                float x = missionEvent.x;
+                                float y = missionEvent.y;
+                                float z = missionEvent.z;
+                                Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
+
+                                largeShip.waypoint.transform.position = waypoint;
+                            }
+                        }
                     }
                 }
             }

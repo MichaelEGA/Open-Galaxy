@@ -30,13 +30,7 @@ public static class SmallShipFunctions
             smallShip.colliders = smallShip.GetComponentsInChildren<Collider>();
             LoadThrusters(smallShip);
             TargetingFunctions.CreateWaypoint(smallShip);
-
-            Transform dockingPoint = smallShip.gameObject.transform.Find("dockingPoint");
-
-            if (dockingPoint != null)
-            {
-                smallShip.dockingPoint = dockingPoint.gameObject;
-            }
+            DockingFunctions.AddDockingPointsSmallShip(smallShip);
 
             smallShip.loaded = true;
         }
@@ -822,161 +816,6 @@ public static class SmallShipFunctions
 
     #endregion
 
-    #region docking
-
-    //This gets the target docking point
-    public static GameObject GetTargetDockingPoint(SmallShip smallship, string name)
-    {
-        GameObject dockingPoint = null;
-        Scene scene = SceneFunctions.GetScene();
-        bool dockingPointFound = false;
-
-        //This searches for the docking point on a smallship
-        if (dockingPointFound == false)
-        {
-            foreach (SmallShip tempSmallShip in scene.smallShips)
-            {
-                if (tempSmallShip.name.Contains(name))
-                {
-                    dockingPoint = tempSmallShip.dockingPoint;
-                    dockingPointFound = true;
-                    break;
-                }
-            }
-        }
-
-        //This searches for a docking point on a large ship
-        if (dockingPointFound == false)
-        {
-            foreach (LargeShip largeShip in scene.largeShips)
-            {
-                if (largeShip.name.Contains(name))
-                {
-                    float distance = Mathf.Infinity;
-
-                    foreach (GameObject tempDockingPoint in largeShip.dockingPoints)
-                    {
-                        //This gets the closest docking point on the large ship
-                        Vector3 tempDockPointLocalPosition = scene.transform.InverseTransformPoint(tempDockingPoint.transform.position);
-
-                        float tempDistance = Vector3.Distance(tempDockPointLocalPosition, smallship.transform.localPosition);
-
-                        if (tempDistance < distance)
-                        {
-                            distance = tempDistance;
-                            dockingPoint = tempDockingPoint;
-                        }
-                    }
-
-                    dockingPointFound = true;
-                    break;
-                }
-            }
-        }
-
-        return (dockingPoint);
-    }
-
-    //This intiates the docking sequence
-    public static IEnumerator StartDocking(Transform ship, Transform shipDockingPoint, Transform targetDockingPoint, Quaternion flip, float rotationSpeed, float movementSpeed)
-    {
-        SmallShip smallShip = ship.GetComponent<SmallShip>();
-        LargeShip largeShip = ship.GetComponent<LargeShip>();
-
-        if (smallShip != null)
-        {
-            smallShip.docking = true;
-        }
-
-        if (largeShip != null)
-        {
-            largeShip.docking = true;
-        }
-
-        if (ship != null & shipDockingPoint != null & shipDockingPoint.IsChildOf(ship) & targetDockingPoint != null)
-        {
-            Scene scene = SceneFunctions.GetScene();
-
-            Quaternion startRotation = ship.transform.localRotation;
-            Quaternion endRotation = targetDockingPoint.localRotation * Quaternion.Inverse(Quaternion.Inverse(ship.localRotation) * shipDockingPoint.localRotation) * flip;
-
-            float timeElapsed = 0;
-            float lerpDuration = rotationSpeed;
-
-            while (timeElapsed < lerpDuration)
-            {
-                ship.transform.localRotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
-                timeElapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            ship.transform.localRotation = endRotation;
-
-            Vector3 startPosition = ship.localPosition;
-            Vector3 tdockingPoint = scene.transform.InverseTransformPoint(targetDockingPoint.position);
-            Vector3 sDockingPoint = scene.transform.InverseTransformPoint(shipDockingPoint.position);
-            Vector3 endPosition = tdockingPoint + (ship.localPosition - sDockingPoint);
-
-            timeElapsed = 0;
-            lerpDuration = movementSpeed;
-
-            while (timeElapsed < lerpDuration)
-            {
-                ship.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
-                timeElapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            ship.transform.localPosition = endPosition;
-
-            HudFunctions.AddToShipLog(ship.name.ToUpper() + " docked with " + targetDockingPoint.transform.parent.name);
-        }
-    }
-
-    //This ends the docking sequence
-    public static IEnumerator EndDocking(Transform ship, Transform targetDockingPoint, float speed)
-    {
-        SmallShip smallShip = ship.GetComponent<SmallShip>();
-        LargeShip largeShip = ship.GetComponent<LargeShip>();
-
-        if (smallShip != null)
-        {
-            smallShip.docking = true;
-        }
-
-        if (largeShip != null)
-        {
-            largeShip.docking = true;
-        }
-
-        HudFunctions.AddToShipLog(ship.name.ToUpper() + " commencing exit dock sequence " + targetDockingPoint.transform.parent.name);
-
-        Scene scene = SceneFunctions.GetScene();
-        ship.transform.SetParent(scene.transform);
-
-        //Move out
-        Vector3 startPosition = ship.transform.localPosition;
-        Vector3 endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.position) + (targetDockingPoint.up * 100);
-
-        float timeElapsed = 0;
-        float lerpDuration = speed;
-
-        while (timeElapsed < lerpDuration)
-        {
-            ship.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        ship.localPosition = endPosition;
-
-        HudFunctions.AddToShipLog(ship.name.ToUpper() + " released from dock ");
-
-        smallShip.docking = false;
-    }
-
-    #endregion
-
     #region level of detail control
 
     //This function checks what LOD should be displayed
@@ -1207,12 +1046,15 @@ public static class SmallShipFunctions
     {
         Debug.Log(smallShip.name + " colliding with " + collidingWith.name);
 
-        smallShip.isCurrentlyColliding = true;
-
-        if (smallShip.isAI == false & smallShip.invincible == false)
+        if (smallShip.docking == false)
         {
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
-        }      
+            smallShip.isCurrentlyColliding = true;
+
+            if (smallShip.isAI == false & smallShip.invincible == false)
+            {
+                AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+            }
+        } 
     }
 
     //This tells the damage system that a collision has ended
@@ -1224,7 +1066,7 @@ public static class SmallShipFunctions
     //This called when the ship collides with something causing it to take collision damage
     public static void TakeCollisionDamage(SmallShip smallShip)
     {
-        if (smallShip.isCurrentlyColliding == true & smallShip.invincible == false)
+        if (smallShip.isCurrentlyColliding == true & smallShip.invincible == false & smallShip.docking == false)
         {
             if (Time.time - smallShip.loadTime > 10)
             {

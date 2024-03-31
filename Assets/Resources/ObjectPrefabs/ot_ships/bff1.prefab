@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1005467317507887877}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0.7071068, z: -0, w: 0}
-  m_LocalPosition: {x: 66.4, y: 7.4, z: 0}
+  m_LocalPosition: {x: 36.1, y: 7.4, z: 11.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,12 +56,43 @@ Transform:
   m_GameObject: {fileID: 1223226362422139499}
   serializedVersion: 2
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: -37.1, z: 0}
+  m_LocalPosition: {x: 0, y: -5.1, z: 12.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1588144478736497460}
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
+--- !u!1 &4038309853506606667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1673968148899316380}
+  m_Layer: 0
+  m_Name: dockingPoint04_ls
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1673968148899316380
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4038309853506606667}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 36.1, y: 7.4, z: 11.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1588144478736497460}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5542971347181215526
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,12 +118,43 @@ Transform:
   m_GameObject: {fileID: 5542971347181215526}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0.7071068, z: 0, w: 0}
-  m_LocalPosition: {x: -66.3, y: 7.4, z: 0}
+  m_LocalPosition: {x: -36.2, y: 7.4, z: 12.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1588144478736497460}
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 90}
+--- !u!1 &6047472702979363129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5617575191238505321}
+  m_Layer: 0
+  m_Name: dockingPoint03_ls
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5617575191238505321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6047472702979363129}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -36.2, y: 7.4, z: 12.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1588144478736497460}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7139248817365919121
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +211,7 @@ Transform:
   m_GameObject: {fileID: 8402911049853055209}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 48.8, z: 0}
+  m_LocalPosition: {x: 0, y: 8.6, z: 11.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -257,6 +319,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7806706290953817050}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3de13196b62363a489fe146368fbb8c9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5617575191238505321}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3de13196b62363a489fe146368fbb8c9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1673968148899316380}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3de13196b62363a489fe146368fbb8c9, type: 3}
 --- !u!4 &1588144478736497460 stripped

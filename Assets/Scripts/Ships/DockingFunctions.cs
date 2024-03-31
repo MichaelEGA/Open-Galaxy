@@ -11,31 +11,31 @@ public static class DockingFunctions
 
         if (dockingPoint != null)
         {
-            smallShip.dockingPoint = dockingPoint.gameObject;
-            smallShip.dockingPoint.AddComponent<DockingPoint>();
+            smallShip.dockingPoint = dockingPoint.gameObject.AddComponent<DockingPoint>();
         }
     }
 
     //This finds and adds the docking points to the large ship
     public static void AddDockingPointsLargeShip(LargeShip largeShip)
     {
-        Transform[] dockingPoints = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockingPoint");
+        Transform[] dockingPointTransforms = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockingPoint");
 
-        List<GameObject> dockingPointGameObjects = new List<GameObject>();
+        List<DockingPoint> dockingPointGameObjects = new List<DockingPoint>();
 
-        foreach (Transform dockingPoint in dockingPoints)
+        foreach (Transform dockingPointTransform in dockingPointTransforms)
         {
-            dockingPointGameObjects.Add(dockingPoint.gameObject);
-            dockingPoint.gameObject.AddComponent<DockingPoint>();
+            DockingPoint dockPoint = dockingPointTransform.gameObject.AddComponent<DockingPoint>();
+            dockingPointGameObjects.Add(dockPoint);
+            
         }
 
         largeShip.dockingPoints = dockingPointGameObjects.ToArray();
     }
 
     //This gets the docking point on the designated ship
-    public static GameObject GetDockingPoint(Transform ship, Transform target = null)
+    public static DockingPoint GetDockingPoint(Transform ship, Transform target = null, bool includeActive = false)
     {
-        GameObject dockingPointGO = null;
+        DockingPoint dockingPoint = null;
 
         SmallShip smallShip = ship.GetComponent<SmallShip>();
         LargeShip largeShip = ship.GetComponent<LargeShip>();
@@ -52,31 +52,37 @@ public static class DockingFunctions
 
         if (smallShip != null)
         {
-            dockingPointGO = smallShip.dockingPoint;           
+            if (smallShip.dockingPoint.isActive == false || smallShip.dockingPoint.isActive == true & includeActive == true)
+            {
+                dockingPoint = smallShip.dockingPoint;
+            }
         }
 
         if (largeShip != null & target != null)
         {
             float distance = Mathf.Infinity;
 
-            foreach (GameObject tempDockingPoint in largeShip.dockingPoints)
+            foreach (DockingPoint tempDockingPoint in largeShip.dockingPoints)
             {
-                float tempDistance = Vector3.Distance(target.transform.position, tempDockingPoint.transform.position);
-
-                if (tempDistance < distance)
+                if (tempDockingPoint.isActive == false || tempDockingPoint.isActive == true & includeActive == true)
                 {
-                    dockingPointGO = tempDockingPoint;
+                    float tempDistance = Vector3.Distance(target.transform.position, tempDockingPoint.transform.position);
+
+                    if (tempDistance < distance)
+                    {
+                        dockingPoint = tempDockingPoint;
+                    }
                 }
             }
         }
 
-        return dockingPointGO;
+        return dockingPoint;
     }
     
     //This gets the target docking point on the designated ship
-    public static GameObject GetTargetDockingPoint(Transform ship, string targetShipName)
+    public static DockingPoint GetTargetDockingPoint(Transform ship, string targetShipName, bool includeActive = false)
     {
-        GameObject dockingPoint = null;
+        DockingPoint dockingPoint = null;
         Scene scene = SceneFunctions.GetScene();
         bool dockingPointFound = false;
 
@@ -87,11 +93,14 @@ public static class DockingFunctions
         {
             foreach (SmallShip tempSmallShip in scene.smallShips)
             {
-                if (tempSmallShip.name.Contains(targetShipName))
+                if (tempSmallShip.name.Contains(targetShipName) & tempSmallShip.dockingPoint != null)
                 {
-                    dockingPoint = tempSmallShip.dockingPoint;
-                    dockingPointFound = true;
-                    break;
+                    if (tempSmallShip.dockingPoint.isActive == false || tempSmallShip.dockingPoint.isActive == true & includeActive == true)
+                    {
+                        dockingPoint = tempSmallShip.dockingPoint;
+                        dockingPointFound = true;
+                        break;
+                    }
                 }
             }
         }
@@ -105,25 +114,28 @@ public static class DockingFunctions
                 {
                     float distance = Mathf.Infinity;
 
-                    foreach (GameObject tempDockingPoint in tempLargeShip.dockingPoints)
+                    foreach (DockingPoint tempDockingPoint in tempLargeShip.dockingPoints)
                     {
-                        //This gets the closest docking point on the large ship
-                        Vector3 tempDockPointLocalPosition = scene.transform.InverseTransformPoint(tempDockingPoint.transform.position);
-
-                        float tempDistance = Vector3.Distance(tempDockPointLocalPosition, ship.localPosition);
-
-                        if (tempDistance < distance)
+                        if (tempDockingPoint.isActive == false || tempDockingPoint.isActive == true & includeActive == true)
                         {
-                            if (largeShip == null & !tempDockingPoint.name.Contains("ls"))
+                            //This gets the closest docking point on the large ship
+                            Vector3 tempDockPointLocalPosition = scene.transform.InverseTransformPoint(tempDockingPoint.transform.position);
+
+                            float tempDistance = Vector3.Distance(tempDockPointLocalPosition, ship.localPosition);
+
+                            if (tempDistance < distance)
                             {
-                                distance = tempDistance;
-                                dockingPoint = tempDockingPoint;
+                                if (largeShip == null & !tempDockingPoint.name.Contains("ls"))
+                                {
+                                    distance = tempDistance;
+                                    dockingPoint = tempDockingPoint;
+                                }
+                                else if (tempDockingPoint.name.Contains("ls"))
+                                {
+                                    distance = tempDistance;
+                                    dockingPoint = tempDockingPoint;
+                                }
                             }
-                            else if (tempDockingPoint.name.Contains("ls"))
-                            {
-                                distance = tempDistance;
-                                dockingPoint = tempDockingPoint;
-                            }  
                         }
                     }
 
@@ -137,8 +149,11 @@ public static class DockingFunctions
     }
 
     //This intiates the docking sequence
-    public static IEnumerator StartDocking(Transform ship, Transform shipDockingPoint, Transform targetDockingPoint, Quaternion flip, float rotationSpeed, float movementSpeed)
+    public static IEnumerator StartDocking(Transform ship, DockingPoint shipDockingPoint, DockingPoint targetDockingPoint, Quaternion flip, float rotationSpeed, float movementSpeed)
     {
+        shipDockingPoint.isActive = true;
+        targetDockingPoint.isActive = true;
+
         SmallShip smallShip = ship.GetComponent<SmallShip>();
         LargeShip largeShip = ship.GetComponent<LargeShip>();
 
@@ -152,12 +167,12 @@ public static class DockingFunctions
             largeShip.docking = true;
         }
 
-        if (ship != null & shipDockingPoint != null & shipDockingPoint.IsChildOf(ship) & targetDockingPoint != null)
+        if (ship != null & shipDockingPoint != null & shipDockingPoint.transform.IsChildOf(ship) & targetDockingPoint != null)
         {
             Scene scene = SceneFunctions.GetScene();
 
             Quaternion startRotation = ship.transform.localRotation;
-            Quaternion endRotation = targetDockingPoint.localRotation * Quaternion.Inverse(Quaternion.Inverse(ship.localRotation) * shipDockingPoint.localRotation) * flip;
+            Quaternion endRotation = targetDockingPoint.transform.localRotation * Quaternion.Inverse(Quaternion.Inverse(ship.localRotation) * shipDockingPoint.localRotation) * flip;
 
             float timeElapsed = 0;
             float lerpDuration = rotationSpeed;
@@ -172,8 +187,8 @@ public static class DockingFunctions
             ship.transform.localRotation = endRotation;
 
             Vector3 startPosition = ship.localPosition;
-            Vector3 tdockingPoint = scene.transform.InverseTransformPoint(targetDockingPoint.position);
-            Vector3 sDockingPoint = scene.transform.InverseTransformPoint(shipDockingPoint.position);
+            Vector3 tdockingPoint = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position);
+            Vector3 sDockingPoint = scene.transform.InverseTransformPoint(shipDockingPoint.transform.position);
             Vector3 endPosition = tdockingPoint + (ship.localPosition - sDockingPoint);
 
             timeElapsed = 0;
@@ -193,7 +208,7 @@ public static class DockingFunctions
     }
 
     //This ends the docking sequence
-    public static IEnumerator EndDocking(Transform ship, Transform targetDockingPoint, float speed)
+    public static IEnumerator EndDocking(Transform ship, DockingPoint shipDockingPoint, DockingPoint targetDockingPoint, float speed)
     {
         SmallShip smallShip = ship.GetComponent<SmallShip>();
         LargeShip largeShip = ship.GetComponent<LargeShip>();
@@ -215,7 +230,7 @@ public static class DockingFunctions
 
         //Move out
         Vector3 startPosition = ship.transform.localPosition;
-        Vector3 endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.position) + (targetDockingPoint.up * 100);
+        Vector3 endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (targetDockingPoint.transform.up * 100);
 
         float timeElapsed = 0;
         float lerpDuration = speed;
@@ -228,6 +243,9 @@ public static class DockingFunctions
         }
 
         ship.localPosition = endPosition;
+
+        shipDockingPoint.isActive = false;
+        targetDockingPoint.isActive = false;
 
         HudFunctions.AddToShipLog(ship.name.ToUpper() + " released from dock ");
 

@@ -62,7 +62,7 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public bool spinShip;
 
     [Header("Docking")]
-    [HideInInspector] public GameObject[] dockingPoints;
+    [HideInInspector] public DockingPoint[] dockingPoints;
     public GameObject targetDockingPoint;
     public bool docking;
 

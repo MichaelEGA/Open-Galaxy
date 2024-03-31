@@ -742,14 +742,15 @@ public static class MissionFunctions
                         {
                             if (activateDocking == true)
                             {                   
-                                GameObject targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
-                                GameObject dockingPoint = DockingFunctions.GetDockingPoint(ship.transform);
-                                Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint.transform, targetDockingPoint.transform, rotation, rotationSpeed, movementSpeed));
+                                DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
+                                DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform);
+                                Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));
                             }
                             else
                             {
-                                GameObject targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
-                                Task a = new Task(DockingFunctions.EndDocking(ship.transform, targetDockingPoint.transform, movementSpeed));
+                                DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName, true);
+                                DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform);
+                                Task a = new Task(DockingFunctions.EndDocking(ship.transform, dockingPoint, targetDockingPoint, movementSpeed));
                             }
 
                             break;
@@ -761,14 +762,15 @@ public static class MissionFunctions
                         {
                             if (activateDocking == true)
                             {
-                                GameObject targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
-                                GameObject dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform);
-                                Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint.transform, targetDockingPoint.transform, rotation, rotationSpeed, movementSpeed));
+                                DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
+                                DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform);
+                                Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));
                             }
                             else
                             {
-                                GameObject targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
-                                Task a = new Task(DockingFunctions.EndDocking(ship.transform, targetDockingPoint.transform, movementSpeed));
+                                DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName, true);
+                                DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform);
+                                Task a = new Task(DockingFunctions.EndDocking(ship.transform, dockingPoint, targetDockingPoint, movementSpeed));
                             }
 
                             break;

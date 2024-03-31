@@ -160,6 +160,7 @@ public static class DockingFunctions
         if (smallShip != null)
         {
             smallShip.docking = true;
+            smallShip.thrustSpeed = 0;
         }
 
         if (largeShip != null)
@@ -172,7 +173,7 @@ public static class DockingFunctions
             Scene scene = SceneFunctions.GetScene();
 
             Quaternion startRotation = ship.transform.localRotation;
-            Quaternion endRotation = targetDockingPoint.transform.localRotation * Quaternion.Inverse(Quaternion.Inverse(ship.localRotation) * shipDockingPoint.localRotation) * flip;
+            Quaternion endRotation = targetDockingPoint.transform.localRotation * Quaternion.Inverse(Quaternion.Inverse(ship.localRotation) * shipDockingPoint.transform.localRotation) * flip;
 
             float timeElapsed = 0;
             float lerpDuration = rotationSpeed;
@@ -203,6 +204,14 @@ public static class DockingFunctions
 
             ship.transform.localPosition = endPosition;
 
+            if (smallShip != null)
+            {
+                if (smallShip.isAI == false)
+                {
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "clank01", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                }
+            }
+
             HudFunctions.AddToShipLog(ship.name.ToUpper() + " docked with " + targetDockingPoint.transform.parent.name);
         }
     }
@@ -213,17 +222,15 @@ public static class DockingFunctions
         SmallShip smallShip = ship.GetComponent<SmallShip>();
         LargeShip largeShip = ship.GetComponent<LargeShip>();
 
+        HudFunctions.AddToShipLog(ship.name.ToUpper() + " commencing exit dock sequence " + targetDockingPoint.transform.parent.name);
+
         if (smallShip != null)
         {
-            smallShip.docking = true;
+            if (smallShip.isAI == false)
+            {
+                AudioFunctions.PlayAudioClip(smallShip.audioManager, "clank01", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+            }
         }
-
-        if (largeShip != null)
-        {
-            largeShip.docking = true;
-        }
-
-        HudFunctions.AddToShipLog(ship.name.ToUpper() + " commencing exit dock sequence " + targetDockingPoint.transform.parent.name);
 
         Scene scene = SceneFunctions.GetScene();
         ship.transform.SetParent(scene.transform);
@@ -249,6 +256,16 @@ public static class DockingFunctions
 
         HudFunctions.AddToShipLog(ship.name.ToUpper() + " released from dock ");
 
-        smallShip.docking = false;
+        if (smallShip != null)
+        {
+            smallShip.docking = false;
+            smallShip.thrustSpeed = 0;
+        }
+
+        if (largeShip != null)
+        {
+            largeShip.docking = false;
+            largeShip.thrustSpeed = 0;
+        }
     }
 }

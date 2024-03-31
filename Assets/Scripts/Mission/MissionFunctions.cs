@@ -724,7 +724,7 @@ public static class MissionFunctions
             movementSpeed = float.Parse(missionEvent.data5);
         }
 
-        Quaternion rotation = Quaternion.Inverse(Quaternion.identity);
+        Quaternion rotation = Quaternion.Euler(0,0,180);
 
         Scene scene = SceneFunctions.GetScene();
 
@@ -749,7 +749,7 @@ public static class MissionFunctions
                             else
                             {
                                 DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName, true);
-                                DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform);
+                                DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform, true);
                                 Task a = new Task(DockingFunctions.EndDocking(ship.transform, dockingPoint, targetDockingPoint, movementSpeed));
                             }
 
@@ -769,7 +769,7 @@ public static class MissionFunctions
                             else
                             {
                                 DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName, true);
-                                DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform);
+                                DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform, true);
                                 Task a = new Task(DockingFunctions.EndDocking(ship.transform, dockingPoint, targetDockingPoint, movementSpeed));
                             }
 

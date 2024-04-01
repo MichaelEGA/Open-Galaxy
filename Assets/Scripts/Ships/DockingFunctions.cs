@@ -258,6 +258,11 @@ public static class DockingFunctions
         Vector3 startPosition = ship.transform.localPosition;
         Vector3 endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (targetDockingPoint.transform.up * 100);
 
+        if (largeShip != null)
+        {
+            endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (-targetDockingPoint.transform.right * 100);
+        }
+
         float timeElapsed = 0;
         float lerpDuration = speed;
 

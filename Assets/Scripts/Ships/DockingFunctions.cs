@@ -256,7 +256,7 @@ public static class DockingFunctions
 
         //Move out
         Vector3 startPosition = ship.transform.localPosition;
-        Vector3 endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (targetDockingPoint.transform.up * 100);
+        Vector3 endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (targetDockingPoint.transform.up * 20);
 
         if (largeShip != null)
         {

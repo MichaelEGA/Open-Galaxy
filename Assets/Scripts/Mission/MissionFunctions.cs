@@ -724,7 +724,7 @@ public static class MissionFunctions
             movementSpeed = float.Parse(missionEvent.data5);
         }
 
-        Quaternion rotation = Quaternion.Euler(0,0,180);
+        Quaternion rotation = Quaternion.Euler(0,180,180);
 
         Scene scene = SceneFunctions.GetScene();
 

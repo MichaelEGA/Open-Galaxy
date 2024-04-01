@@ -222,7 +222,7 @@ public static class LargeShipFunctions
             largeShip.shipRigidbody = largeShip.gameObject.GetComponent<Rigidbody>();
         }
 
-        if (largeShip.jumpingToHyperspace == false & largeShip.exitingHyperspace == false) 
+        if (largeShip.jumpingToHyperspace == false & largeShip.exitingHyperspace == false & largeShip.docking == false) 
         {
             //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
             float step = +Time.deltaTime / 0.1f;

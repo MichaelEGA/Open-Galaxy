@@ -130,7 +130,7 @@ public static class DockingFunctions
                                     distance = tempDistance;
                                     dockingPoint = tempDockingPoint;
                                 }
-                                else if (tempDockingPoint.name.Contains("ls"))
+                                else if (largeShip != null & tempDockingPoint.name.Contains("ls"))
                                 {
                                     distance = tempDistance;
                                     dockingPoint = tempDockingPoint;
@@ -157,6 +157,9 @@ public static class DockingFunctions
         SmallShip smallShip = ship.GetComponent<SmallShip>();
         LargeShip largeShip = ship.GetComponent<LargeShip>();
 
+        SmallShip targetSmallShip = targetDockingPoint.GetComponentInParent<SmallShip>();
+        LargeShip targetLargeShip = targetDockingPoint.GetComponentInParent<LargeShip>();
+
         if (smallShip != null)
         {
             smallShip.docking = true;
@@ -166,6 +169,19 @@ public static class DockingFunctions
         if (largeShip != null)
         {
             largeShip.docking = true;
+            largeShip.thrustSpeed = 0;
+        }
+
+        if (targetSmallShip != null)
+        {
+            targetSmallShip.docking = true;
+            targetSmallShip.thrustSpeed = 0;
+        }
+
+        if (targetLargeShip != null)
+        {
+            targetLargeShip.docking = true;
+            targetLargeShip.thrustSpeed = 0;
         }
 
         if (ship != null & shipDockingPoint != null & shipDockingPoint.transform.IsChildOf(ship) & targetDockingPoint != null)
@@ -173,19 +189,19 @@ public static class DockingFunctions
             Scene scene = SceneFunctions.GetScene();
 
             Quaternion startRotation = ship.transform.localRotation;
-            Quaternion endRotation = targetDockingPoint.transform.localRotation * Quaternion.Inverse(Quaternion.Inverse(ship.localRotation) * shipDockingPoint.transform.localRotation) * flip;
+            Quaternion endRotation = targetDockingPoint.transform.rotation * Quaternion.Inverse(Quaternion.Inverse(ship.rotation) * shipDockingPoint.transform.rotation) * flip;
 
             float timeElapsed = 0;
             float lerpDuration = rotationSpeed;
 
             while (timeElapsed < lerpDuration)
             {
-                ship.transform.localRotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
+                ship.transform.rotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
                 timeElapsed += Time.deltaTime;
                 yield return null;
             }
 
-            ship.transform.localRotation = endRotation;
+            ship.transform.rotation = endRotation;
 
             Vector3 startPosition = ship.localPosition;
             Vector3 tdockingPoint = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position);
@@ -221,6 +237,9 @@ public static class DockingFunctions
     {
         SmallShip smallShip = ship.GetComponent<SmallShip>();
         LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+        SmallShip targetSmallShip = targetDockingPoint.GetComponentInParent<SmallShip>();
+        LargeShip targetLargeShip = targetDockingPoint.GetComponentInParent<LargeShip>();
 
         HudFunctions.AddToShipLog(ship.name.ToUpper() + " commencing exit dock sequence " + targetDockingPoint.transform.parent.name);
 
@@ -266,6 +285,18 @@ public static class DockingFunctions
         {
             largeShip.docking = false;
             largeShip.thrustSpeed = 0;
+        }
+
+        if (targetSmallShip != null)
+        {
+            targetSmallShip.docking = false;
+            targetSmallShip.thrustSpeed = 0;
+        }
+
+        if (targetLargeShip != null)
+        {
+            targetLargeShip.docking = false;
+            targetLargeShip.thrustSpeed = 0;
         }
     }
 }

@@ -103,10 +103,10 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float targetSpeed;
     [HideInInspector] public float targetShield;
     [HideInInspector] public float targetHull;
-    [HideInInspector] public float waypointForward;
-    [HideInInspector] public float waypointRight;
-    [HideInInspector] public float waypointUp;
-    [HideInInspector] public float waypointDistance;
+    public float waypointForward;
+    public float waypointRight;
+    public float waypointUp;
+    public float waypointDistance;
     [HideInInspector] public float targetPressedTime;
 
     [Header("Turrets")]

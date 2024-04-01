@@ -1188,11 +1188,25 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            smallShip.aiOverideMode = "MoveToWaypoint";
-
                             if (smallShip.waypoint != null)
                             {
                                 float tempDistance = Vector3.Distance(smallShip.transform.position, smallShip.waypoint.transform.position);
+
+                                if (tempDistance < distance)
+                                {
+                                    isLessThanDistance = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            if (largeShip.waypoint != null)
+                            {
+                                float tempDistance = Vector3.Distance(largeShip.transform.position, largeShip.waypoint.transform.position);
 
                                 if (tempDistance < distance)
                                 {

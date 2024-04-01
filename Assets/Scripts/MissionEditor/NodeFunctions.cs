@@ -312,13 +312,13 @@ public class NodeFunctions : MonoBehaviour
     }
 
     //This gets a unique ID for the node
-    public static void GetUniqueNodeID(Node node)
+    public static void GetUniqueNodeID(Node node, bool forceNew = false)
     {
         MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
 
         if (node.eventID != null)
         {
-            if (node.eventID.text == "")
+            if (node.eventID.text == "" || forceNew == true) //force new forces the editor to give the node a new id even if it already has one (for example when it has been copied)
             {
                 node.eventID.text = "E" + Random.Range(0, 99999).ToString("00000");
             }

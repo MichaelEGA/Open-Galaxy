@@ -1695,7 +1695,7 @@ public static class MissionEditorFunctions
         //This gives the pasted nodes a new ID
         foreach (Node node in pasteNodeList)
         {
-            NodeFunctions.GetUniqueNodeID(node);
+            NodeFunctions.GetUniqueNodeID(node, true);
         }
 
         missionEditor.pasting = false;

@@ -612,7 +612,6 @@ public static class SmallShipAIFunctions
     //This angles the ship towards the target vector
     public static void AngleTowardsTarget(SmallShip smallShip)
     {
-
         if (smallShip.interceptForward < 0.8)
         {
             SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
@@ -623,7 +622,6 @@ public static class SmallShipAIFunctions
             SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight * 5);
             SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
         }
-
     }
 
     //This angles the ship away from the target vector

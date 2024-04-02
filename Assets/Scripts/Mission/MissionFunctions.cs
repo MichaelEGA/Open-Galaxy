@@ -724,7 +724,7 @@ public static class MissionFunctions
             movementSpeed = float.Parse(missionEvent.data5);
         }
 
-        Quaternion rotation = Quaternion.Euler(0,180,180);
+        
 
         Scene scene = SceneFunctions.GetScene();
 
@@ -741,7 +741,8 @@ public static class MissionFunctions
                         if (smallShip != null)
                         {
                             if (activateDocking == true)
-                            {                   
+                            {
+                                Quaternion rotation = Quaternion.Euler(0, 180, 180);
                                 DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
                                 DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform);
                                 Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));
@@ -762,6 +763,7 @@ public static class MissionFunctions
                         {
                             if (activateDocking == true)
                             {
+                                Quaternion rotation = Quaternion.Euler(180, 180, 180);
                                 DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
                                 DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform);
                                 Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));

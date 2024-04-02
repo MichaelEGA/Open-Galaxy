@@ -614,13 +614,33 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.interceptForward < 0.8)
         {
-            SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
-            SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+            }
+            else
+            {
+                //Upside down
+                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+            }   
         }
         else
         {
-            SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight * 5);
-            SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
+            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight * 5);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
+            }
+            else
+            {
+                //Upside down
+                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight * 5);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
+            }  
         }
     }
 
@@ -629,8 +649,18 @@ public static class SmallShipAIFunctions
     {
         if (-smallShip.interceptForward < 1)
         {
-            SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
-            SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.interceptUp);
+            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
+                SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.interceptUp);
+            }
+            else
+            {
+                //Upside down
+                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+            }  
         }
     }
 
@@ -639,23 +669,53 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.waypointForward < 0.8)
         {
-            SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
-            SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+            }
+            else
+            {
+                //Upside down
+                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+            }
         }
         else
         {
-            SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight * 5);
-            SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
+            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight * 5);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
+            }
+            else
+            {
+                //Upside down
+                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight * 5);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
+            } 
         }
     }
 
     //This angles the ship away from the target vector
     public static void AngleAwayFromWaypoint(SmallShip smallShip)
     {
-        if (-smallShip.waypointForward < 1)
+        if (smallShip.waypointForward > -0.95)
         {
-            SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
-            SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.waypointUp);
+            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
+                SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.waypointUp);
+            }
+            else
+            {
+                //Upside down
+                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+            }
         }
     }
 

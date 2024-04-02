@@ -328,8 +328,18 @@ public static class LargeShipAIFunctions
     {
         if (largeShip.targetForward < 0.95)
         {
-            LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight);
-            LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+            if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+            }
+            else
+            {
+                //Upside down
+                LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+            }  
         }
         else
         {
@@ -342,8 +352,18 @@ public static class LargeShipAIFunctions
     {
         if (largeShip.targetForward > -0.95)
         {
-            LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetRight);
-            LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.targetUp);
+            if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.targetUp);
+            }
+            else
+            {
+                //Upside down
+                LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+            }
         }
         else
         {
@@ -380,8 +400,18 @@ public static class LargeShipAIFunctions
     {
         if (largeShip.waypointForward > -0.95)
         {
-            LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.waypointRight);
-            LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.waypointUp);
+            if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.waypointRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.waypointUp);
+            }
+            else
+            {
+                //upside down
+                LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.waypointRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.waypointUp);
+            }
         }
         else
         {
@@ -394,8 +424,18 @@ public static class LargeShipAIFunctions
     {
         if (largeShip.targetRight > -0.95)
         {
-            LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetForward);
-            LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+            if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetForward);
+                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+            }
+            else
+            {
+                //Upside down
+                LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetForward);
+                LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.targetUp);
+            }  
         }
         else
         {

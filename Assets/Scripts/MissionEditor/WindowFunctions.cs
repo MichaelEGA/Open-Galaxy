@@ -122,9 +122,9 @@ public static class WindowFunctions
         string[] buttons = buttonList.ToArray();
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(window, 5, -25, 170f, 115, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -29, 146f, 115, 10, 7, buttons, functions);
 
-        DrawScrollableText(window, 127.5f, -25, 150f, 115, 7, "No Event Selected", 200f, "AddNodeTextBox");
+        DrawScrollableText(window, 127.5f, -29, 146f, 115, 7, "No Event Selected", 200f, "AddNodeTextBox");
 
         DrawTextButton(window, 127.5f, -182.5f, 10, 117.5f, "none", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
@@ -132,7 +132,7 @@ public static class WindowFunctions
     //This draws a window that displays the location of all relevant nodes on the map
     public static void Draw_DisplayLocation(Window window)
     {
-        DrawWindowBase(window, 250, 200);
+        DrawWindowBase(window, 250, 208);
 
         DrawText(window, "Display Location", 8, 5, -5, 12.5f, 90);
 
@@ -140,11 +140,11 @@ public static class WindowFunctions
 
         DrawLineBreak(window, "#808080", 0, -20, 1, 250);
 
-        DrawRawImage(window, 5, -25, 170f, 170, "background"); //Creating the background image first ensures that it is behind the grid
+        float drop = -29;
 
-        DrawRawImage(window, 5, -25, 170f, 170, "grid");
+        DrawRawImage(window, 5, drop, 170f, 170, "background"); //Creating the background image first ensures that it is behind the grid
 
-        float drop = -25;
+        DrawRawImage(window, 5, drop, 170f, 170, "grid");
 
         DrawText(window, "View", 7, 180, drop, 10, 65f, true, null, "topleft", TextAnchor.MiddleCenter);
 
@@ -209,9 +209,9 @@ public static class WindowFunctions
 
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(window, 5, -25, 50, 240, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -29, 50, 240, 10, 7, buttons, functions);
 
-        DrawTextButton(window, 80, -80, 10, 90, "none", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 80, -84, 10, 90, "none", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
     }
 
     //This draws the load mission window
@@ -236,9 +236,9 @@ public static class WindowFunctions
 
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(window, 5, -25, 50, 240, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -29, 50, 240, 10, 7, buttons, functions);
 
-        DrawTextButton(window, 80, -80, 10, 90, "none", "Merge Mission", 7, "MergeMission", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 80, -84, 10, 90, "none", "Merge Mission", 7, "MergeMission", TextAnchor.MiddleCenter);
     }
 
     //This draws the save mission window
@@ -299,19 +299,47 @@ public static class WindowFunctions
 
     #region Draw Window Functions
 
-    //This draws the base node gameobject
     public static void DrawWindowBase(Window window, float width, float height)
     {
-        //This sets up the node background
+        //This sets up the base recttransform
         window.rectTransform = window.gameObject.AddComponent<RectTransform>();
+        window.name = "Node";
 
-        window.background = window.gameObject.AddComponent<Image>();
-        window.background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Dark");
-        window.background.type = Image.Type.Sliced;
-        window.background.pixelsPerUnitMultiplier = 40;
         window.rectTransform.sizeDelta = new Vector2(width, height);
         window.rectTransform.localPosition = new Vector2(window.xPos, window.yPos);
         window.rectTransform.localScale = new Vector3(1, 1, 1);
+
+        //This sets up the node highlight
+        GameObject nodeHighlight = new GameObject();
+        nodeHighlight.name = "nodeHighlight";
+        nodeHighlight.transform.SetParent(window.gameObject.transform);
+
+        Image highlight = nodeHighlight.AddComponent<Image>();
+        highlight.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
+        highlight.type = Image.Type.Sliced;
+        highlight.pixelsPerUnitMultiplier = 5;
+        highlight.color = new Color(90f / 250f, 90f / 250f, 90f / 250f);
+
+        window.highlightRect = nodeHighlight.GetComponent<RectTransform>();
+        window.highlightRect.sizeDelta = new Vector2(width + 1, height + 1);
+        window.highlightRect.localPosition = new Vector2(0, 0);
+        window.highlightRect.localScale = new Vector3(1, 1, 1);
+
+        //This sets up the node background
+        GameObject nodeBackground = new GameObject();
+        nodeBackground.name = "nodeBackground";
+        nodeBackground.transform.SetParent(window.gameObject.transform);
+
+        Image background = nodeBackground.AddComponent<Image>();
+        background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
+        background.type = Image.Type.Sliced;
+        background.pixelsPerUnitMultiplier = 5;
+        background.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
+
+        window.backgrounRect = nodeBackground.GetComponent<RectTransform>();
+        window.backgrounRect.sizeDelta = new Vector2(width, height);
+        window.backgrounRect.localPosition = new Vector2(0, 0);
+        window.backgrounRect.localScale = new Vector3(1, 1, 1);
     }
 
     //This draws a title

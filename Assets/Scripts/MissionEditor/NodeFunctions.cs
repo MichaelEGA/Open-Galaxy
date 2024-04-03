@@ -350,13 +350,16 @@ public class NodeFunctions : MonoBehaviour
     //This turns the node highlight on and off when the node is selected and when its not
     public static void HighlightNode(Node node)
     {
-        if (node.selected == true)
+        if (node.highlightImage != null)
         {
-            node.nodeHighlight.gameObject.SetActive(true);
-        }
-        else
-        {
-            node.nodeHighlight.gameObject.SetActive(false);
+            if (node.selected == true)
+            {
+                node.highlightImage.color = Color.white;
+            }
+            else
+            {
+                node.highlightImage.color = new Color(90f/250f, 90f / 250f, 90f / 250f);
+            }
         }
     }
 
@@ -373,8 +376,8 @@ public class NodeFunctions : MonoBehaviour
         if (node.rectTransform != null)
         {
             node.rectTransform.sizeDelta = new Vector2(sizeX, sizeY);
-            node.nodeBackground.sizeDelta = new Vector2(sizeX, sizeY);
-            node.nodeHighlight.sizeDelta = new Vector2(sizeX + 2, sizeY + 2);
+            node.backgroundRect.sizeDelta = new Vector2(sizeX, sizeY);
+            node.highlightRect.sizeDelta = new Vector2(sizeX + 2, sizeY + 2);
         }       
     }
 
@@ -411,12 +414,13 @@ public class NodeFunctions : MonoBehaviour
         highlight.type = Image.Type.Sliced;
         highlight.pixelsPerUnitMultiplier = 5;
 
-        node.nodeHighlight = nodeHighlight.GetComponent<RectTransform>();
-        node.nodeHighlight.sizeDelta = new Vector2(node.sizeX + 2, node.sizeZ + 2);
-        node.nodeHighlight.localPosition = new Vector2(0, 0);
-        node.nodeHighlight.localScale = new Vector3(1, 1, 1);
+        node.highlightImage = highlight;
+        node.highlightImage.color = new Color(90f / 250f, 90f / 250f, 90f / 250f);
 
-        node.nodeHighlight.gameObject.SetActive(false);
+        node.highlightRect = nodeHighlight.GetComponent<RectTransform>();
+        node.highlightRect.sizeDelta = new Vector2(node.sizeX + 1, node.sizeZ + 1);
+        node.highlightRect.localPosition = new Vector2(0, 0);
+        node.highlightRect.localScale = new Vector3(1, 1, 1);
 
         //This sets up the node background
         GameObject nodeBackground = new GameObject();
@@ -424,14 +428,15 @@ public class NodeFunctions : MonoBehaviour
         nodeBackground.transform.SetParent(node.gameObject.transform);
 
         Image background = nodeBackground.AddComponent<Image>();
-        background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Dark");
+        background.sprite = Resources.Load<Sprite>("Data/EditorAssets/NodeSprite_Light");
         background.type = Image.Type.Sliced;
         background.pixelsPerUnitMultiplier = 5;
+        background.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
 
-        node.nodeBackground = nodeBackground.GetComponent<RectTransform>();
-        node.nodeBackground.sizeDelta = new Vector2(node.sizeX, node.sizeZ);
-        node.nodeBackground.localPosition = new Vector2(0, 0);
-        node.nodeBackground.localScale = new Vector3(1, 1, 1);   
+        node.backgroundRect = nodeBackground.GetComponent<RectTransform>();
+        node.backgroundRect.sizeDelta = new Vector2(node.sizeX, node.sizeZ);
+        node.backgroundRect.localPosition = new Vector2(0, 0);
+        node.backgroundRect.localScale = new Vector3(1, 1, 1);   
     }
 
     //This draws a title

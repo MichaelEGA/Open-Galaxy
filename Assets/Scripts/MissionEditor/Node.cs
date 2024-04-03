@@ -55,13 +55,16 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     public bool selected = false;
 
-    public RectTransform nodeHighlight;
-    public RectTransform nodeBackground;
+    public RectTransform highlightRect;
+    public RectTransform backgroundRect;
+    public Image highlightImage;
 
     public MissionEditor missionEditor;
 
     Vector3 startPos;
     public bool startPositionRecorded;
+
+
 
     // Start is called before the first frame update
     void Start()

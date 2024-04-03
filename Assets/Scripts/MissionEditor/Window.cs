@@ -18,6 +18,9 @@ public class Window : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDr
 
     public ScrollRect scrollRect;
 
+    public RectTransform highlightRect;
+    public RectTransform backgrounRect;
+
     MissionEditor missionEditor;
 
     Vector3 startPos;

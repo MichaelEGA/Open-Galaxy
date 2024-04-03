@@ -153,12 +153,14 @@ public static class DockingFunctions
     {
         shipDockingPoint.isActive = true;
         targetDockingPoint.isActive = true;
-
+        
         SmallShip smallShip = ship.GetComponent<SmallShip>();
         LargeShip largeShip = ship.GetComponent<LargeShip>();
 
         SmallShip targetSmallShip = targetDockingPoint.GetComponentInParent<SmallShip>();
         LargeShip targetLargeShip = targetDockingPoint.GetComponentInParent<LargeShip>();
+
+        HudFunctions.AddToShipLog(ship.name.ToUpper() + " commencing docking sequence with " + targetDockingPoint.transform.parent.name.ToUpper());
 
         if (smallShip != null)
         {
@@ -228,7 +230,7 @@ public static class DockingFunctions
                 }
             }
 
-            HudFunctions.AddToShipLog(ship.name.ToUpper() + " docked with " + targetDockingPoint.transform.parent.name);
+            HudFunctions.AddToShipLog(ship.name.ToUpper() + " docked with " + targetDockingPoint.transform.parent.name.ToUpper());
         }
     }
 
@@ -241,7 +243,7 @@ public static class DockingFunctions
         SmallShip targetSmallShip = targetDockingPoint.GetComponentInParent<SmallShip>();
         LargeShip targetLargeShip = targetDockingPoint.GetComponentInParent<LargeShip>();
 
-        HudFunctions.AddToShipLog(ship.name.ToUpper() + " commencing exit dock sequence " + targetDockingPoint.transform.parent.name);
+        HudFunctions.AddToShipLog(ship.name.ToUpper() + " commencing exit dock sequence with " + targetDockingPoint.transform.parent.name.ToUpper());
 
         if (smallShip != null)
         {

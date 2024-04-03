@@ -969,7 +969,7 @@ public static class MissionFunctions
             missionManager.running = false;
         }
 
-        ExitMenuFunctions.ExitAndUnload();
+        MissionFunctions.ExitAndUnload();
 
     }
 
@@ -2494,7 +2494,7 @@ public static class MissionFunctions
     {
         yield return new WaitForSeconds(time);
 
-        ExitMenuFunctions.ExitAndUnload();
+        MissionFunctions.ExitAndUnload();
     }
 
     //This activates the exit menu
@@ -2537,6 +2537,58 @@ public static class MissionFunctions
                 }
             }
         }
+    }
+
+    //This unloads the game and exits back to the main screen
+    public static void ExitAndUnload()
+    {
+        HudFunctions.UnloadHud();
+        MusicFunctions.UnloadMusicManager();
+        AudioFunctions.UnloadAudioManager();
+        Task a = new Task(SceneFunctions.UnloadScene());
+
+        ExitMenu exitMenu = GameObject.FindObjectOfType<ExitMenu>();
+        GameObject loadingScreen = GameObject.Find("LoadingScreen");
+        GameObject missionBriefing = GameObject.Find("MissionBriefing");
+
+        if (exitMenu != null) { GameObject.Destroy(exitMenu.gameObject); }
+        if (loadingScreen != null) { GameObject.Destroy(loadingScreen); }
+        if (missionBriefing != null) { GameObject.Destroy(missionBriefing); }
+
+        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>(true);
+
+        if (mainMenu != null)
+        {
+            if (mainMenu.menu != null)
+            {
+                mainMenu.menu.SetActive(true);
+                CanvasGroup canvasGroup = mainMenu.menu.GetComponent<CanvasGroup>();
+                Task b = new Task(MainMenuFunctions.FadeInCanvas(canvasGroup, 0.5f));
+                MainMenuFunctions.ActivateStartGameMenu();
+            }
+        }
+
+        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+
+        //This stops any active event series coroutines so they don't continue running when a new mission is loaded
+        foreach (Task eventSeries in missionManager.missionTasks)
+        {
+            if (eventSeries != null)
+            {
+                eventSeries.Stop();
+            }
+        }
+
+        //This resets the starfield to ensure that it's not stretched
+        SceneFunctions.ResetStarfield();
+        SceneFunctions.ResetCameras();
+        SceneFunctions.ResetHyperSpaceTunnel();
+
+        //This destroys the mission manager
+        if (missionManager != null) { GameObject.Destroy(missionManager.gameObject); }
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     #endregion

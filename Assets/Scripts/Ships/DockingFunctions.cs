@@ -262,7 +262,7 @@ public static class DockingFunctions
 
         if (largeShip != null)
         {
-            endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (-targetDockingPoint.transform.right * 100);
+            endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (targetDockingPoint.transform.right * 100);
         }
 
         float timeElapsed = 0;

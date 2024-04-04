@@ -763,7 +763,7 @@ public static class MissionFunctions
                         {
                             if (activateDocking == true)
                             {
-                                Quaternion rotation = Quaternion.Euler(180, 180, 180);
+                                Quaternion rotation = Quaternion.Euler(0, 180, 0);
                                 DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
                                 DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform);
                                 Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));
@@ -1016,13 +1016,14 @@ public static class MissionFunctions
     {
         string title = missionEvent.data1;
         int fontsize = 12;
+        string colour = missionEvent.data3;
 
         if (int.TryParse(missionEvent.data2, out _))
         {
             fontsize = int.Parse(missionEvent.data2);
         }
 
-        HudFunctions.DisplayTitle(title, fontsize);
+        HudFunctions.DisplayTitle(title, fontsize, colour);
     }
 
     //This adds a message to the log and can also play an audio file

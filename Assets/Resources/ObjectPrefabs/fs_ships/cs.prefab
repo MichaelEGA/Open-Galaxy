@@ -316,6 +316,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 237404386940478939}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8919401493686413764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 246776354632206555}
+  m_Layer: 0
+  m_Name: dockingPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &246776354632206555
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8919401493686413764}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalPosition: {x: 0, y: -1.61, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6241308595401046892}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1001 &5843187853785685127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -478,6 +509,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3613389031331815136}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 66f40d4c3578bb94c83879193f78b86b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 246776354632206555}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66f40d4c3578bb94c83879193f78b86b, type: 3}
 --- !u!4 &6241308595401046892 stripped

@@ -1605,7 +1605,7 @@ public static class HudFunctions
     #region location display
 
     //This briefly displays a message in large text in the middle of the screen
-    public static void DisplayTitle(string location, int fontsize)
+    public static void DisplayTitle(string location, int fontsize, string colour = "#FFFFFF")
     {
 
         if (Time.timeScale != 0)
@@ -1633,10 +1633,22 @@ public static class HudFunctions
 
                 if (hud.locationInfo != null & hud.reticule != null)
                 {
+                    if (colour != "none")
+                    {
+                        Color newColour = Color.white;
+
+                        if (ColorUtility.TryParseHtmlString(colour, out newColour))
+                        {
+                            //Do nothing
+                        }
+
+                        hud.locationInfo.color = newColour;
+                    }
+
                     hud.locationInfo.text = location;
                     hud.locationInfo.fontSize = fontsize;
-                    Task a = new Task(FadeTextInAndOut(hud.locationInfo, 0.5f, 3, 0.5f));
-                    Task b = new Task(FadeImageOutAndIn(hud.reticule, 0.25f, 4, 0.5f));
+                    Task a = new Task(FadeTextInAndOut(hud.locationInfo, 0.5f, 3, 0.5f)); //This fades the title in and out
+                    Task b = new Task(FadeImageOutAndIn(hud.reticule, 0.25f, 4, 0.5f)); //This briefly fades the hud reticule to avoid a clash with the title
                 }
             }
         } 

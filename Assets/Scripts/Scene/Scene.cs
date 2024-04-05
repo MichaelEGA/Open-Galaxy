@@ -108,7 +108,7 @@ public class Scene : MonoBehaviour
 
         if (allocatingTargets == false)
         {
-            Task a = new Task(TargetingFunctions.AllocateTargets(this));
+            Task a = new Task(TargetingFunctions.AllocateTargets_TurretAI(this));
         }
 
         Shader.SetGlobalFloat("_unscaledTime", Time.unscaledTime);

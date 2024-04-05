@@ -703,6 +703,8 @@ public static class MissionFunctions
     //This activates or deactives the docking procedure
     public static void ActivateDocking(MissionEvent missionEvent)
     {
+        MissionManager missionManager = GetMissionManager();
+
         string shipName = missionEvent.data1;
         string targetShipName = missionEvent.data2;
         bool activateDocking = false;
@@ -724,8 +726,6 @@ public static class MissionFunctions
             movementSpeed = float.Parse(missionEvent.data5);
         }
 
-        
-
         Scene scene = SceneFunctions.GetScene();
 
         if (scene != null)
@@ -746,12 +746,14 @@ public static class MissionFunctions
                                 DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
                                 DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform);
                                 Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));
+                                missionManager.missionTasks.Add(a);
                             }
                             else
                             {
                                 DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName, true);
                                 DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform, true);
                                 Task a = new Task(DockingFunctions.EndDocking(ship.transform, dockingPoint, targetDockingPoint, movementSpeed));
+                                missionManager.missionTasks.Add(a);
                             }
 
                             break;
@@ -767,12 +769,14 @@ public static class MissionFunctions
                                 DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
                                 DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform);
                                 Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));
+                                missionManager.missionTasks.Add(a);
                             }
                             else
                             {
                                 DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName, true);
                                 DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform, true);
                                 Task a = new Task(DockingFunctions.EndDocking(ship.transform, dockingPoint, targetDockingPoint, movementSpeed));
+                                missionManager.missionTasks.Add(a);
                             }
 
                             break;
@@ -2286,7 +2290,7 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            TargetingFunctions.GetSpecificTarget(smallShip, missionEvent.data2);
+                            TargetingFunctions.GetSpecificTarget_SmallShipPlayer(smallShip, missionEvent.data2);
                         }
                     }
                 }
@@ -2311,7 +2315,7 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            TargetingFunctions.GetClosestEnemy(smallShip, true);
+                            TargetingFunctions.GetClosestEnemy_SmallShipPlayer(smallShip, true);
                         }
                     }
                 }
@@ -2354,7 +2358,7 @@ public static class MissionFunctions
         }
         else if (skybox == "sky_blue01")
         {
-            skyboxColour = "#9CB8D2";
+            skyboxColour = "#85909A";
         }
         else if (skybox == "sky_blue02")
         {

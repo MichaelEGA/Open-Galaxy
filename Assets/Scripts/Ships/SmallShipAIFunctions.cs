@@ -110,7 +110,7 @@ public static class SmallShipAIFunctions
             {
                 MatchSpeed(smallShip);
                 AngleTowardsTarget(smallShip);
-                SetRetreatTime(smallShip);
+                smallShip.aiRetreatTime = Time.time + Random.Range(15, 20);
             }
             else
             {
@@ -123,7 +123,7 @@ public static class SmallShipAIFunctions
                 }
                 else
                 {
-                    SetAttackTime(smallShip);
+                    smallShip.aiAttackTime = Time.time + Random.Range(30, 35);
                     SelectRandomWaypoint(smallShip);
                 }
             }
@@ -295,105 +295,6 @@ public static class SmallShipAIFunctions
 
     #endregion
 
-    #region AI Skill Level Functions
-
-    //This sets ai skill level values
-    public static void SetAISkillLevel(SmallShip smallShip)
-    {
-        SetRetreatTime(smallShip);
-        SetAttackTime(smallShip);
-        SetSpeedWhileTurning(smallShip);
-    }
-
-    //This sets the retreat time of the ship
-    public static void SetRetreatTime(SmallShip smallShip)
-    {
-        if (smallShip.aiSkillLevel == "easy")
-        {
-            smallShip.aiRetreatTime = Time.time + Random.Range(15, 20);
-        }
-        else if (smallShip.aiSkillLevel == "medium")
-        {
-            smallShip.aiRetreatTime = Time.time + Random.Range(10, 15);
-        }
-        else if (smallShip.aiSkillLevel == "hard")
-        {
-            smallShip.aiRetreatTime = Time.time + Random.Range(5, 15);
-        }
-    }
-
-    //This sets the attack time of the ship
-    public static void SetAttackTime(SmallShip smallShip)
-    {
-        if (smallShip.aiSkillLevel == "easy")
-        {
-            smallShip.aiAttackTime = Time.time + Random.Range(30, 35);
-        }
-        else if (smallShip.aiSkillLevel == "medium")
-        {
-            smallShip.aiAttackTime = Time.time + Random.Range(30, 45);
-        }
-        else if (smallShip.aiSkillLevel == "hard")
-        {
-            smallShip.aiAttackTime = Time.time + Random.Range(30, 60);
-        }
-    }
-
-    //This sets the attack time of the ship
-    public static void SetSpeedWhileTurning(SmallShip smallShip)
-    {
-        if (smallShip.aiSkillLevel == "easy")
-        {
-            smallShip.aiSpeedWhileTurning = Random.Range(1.0f, 1.5f);
-        }
-        else if (smallShip.aiSkillLevel == "medium")
-        {
-            smallShip.aiSpeedWhileTurning = Random.Range(1.5f, 1.75f);
-        }
-        else if (smallShip.aiSkillLevel == "hard")
-        {
-            smallShip.aiSpeedWhileTurning = Random.Range(1.75f, 2.0f);
-        }
-    }
-
-    //Targeting error margin
-    public static Vector3 TargetingErrorMargin(SmallShip smallShip)
-    {
-
-        Vector3 errorMargin = new Vector3();
-
-        float easyRange = 100;
-        float mediumRange = 50;
-        float hardRange = 25;
-
-        float x = 0;
-        float y = 0;
-        float z = 0;
-
-        if (smallShip.aiSkillLevel == "easy")
-        {
-            x = Random.Range(-easyRange, easyRange);
-            y = Random.Range(-easyRange, easyRange);
-            z = Random.Range(-easyRange, easyRange);
-        }
-        else if (smallShip.aiSkillLevel == "medium")
-        {
-            x = Random.Range(-mediumRange, mediumRange);
-            y = Random.Range(-mediumRange, mediumRange);
-            z = Random.Range(-mediumRange, mediumRange);
-        }
-        else if (smallShip.aiSkillLevel == "hard")
-        {
-            x = Random.Range(-hardRange, hardRange);
-            y = Random.Range(-hardRange, hardRange);
-            z = Random.Range(-hardRange, hardRange);
-        }
-
-        return errorMargin = new Vector3(x, y, z);
-    }
-
-    #endregion
-
     #region Targetting and Waypoints
 
     //This selects a random waypoint
@@ -412,6 +313,39 @@ public static class SmallShipAIFunctions
     #endregion
 
     #region Fire Control
+
+    //Targeting error margin
+    public static void SetTargetingErrorMargin(SmallShip smallShip, string mode)
+    {
+        float lowRange = 100;
+        float mediumRange = 50;
+        float highRange = 25;
+
+        float x = 0;
+        float y = 0;
+        float z = 0;
+
+        if (mode == "low")
+        {
+            x = Random.Range(-lowRange, lowRange);
+            y = Random.Range(-lowRange, lowRange);
+            z = Random.Range(-lowRange, lowRange);
+        }
+        else if (mode == "medium")
+        {
+            x = Random.Range(-mediumRange, mediumRange);
+            y = Random.Range(-mediumRange, mediumRange);
+            z = Random.Range(-mediumRange, mediumRange);
+        }
+        else if (mode == "high")
+        {
+            x = Random.Range(-highRange, highRange);
+            y = Random.Range(-highRange, highRange);
+            z = Random.Range(-highRange, highRange);
+        }
+
+        smallShip.aiTargetingErrorMargin = new Vector3(x, y, z);
+    }
 
     //This controls the lasers
     public static void LaserControl(SmallShip smallShip)
@@ -455,7 +389,7 @@ public static class SmallShipAIFunctions
 
             if (otherSmallship != null)
             {
-                bool isHostile = TargetingFunctions.GetHostility(smallShip, otherSmallship.allegiance);
+                bool isHostile = TargetingFunctions.GetHostility_SmallShipPlayer(smallShip, otherSmallship.allegiance);
 
                 if (isHostile != true)
                 {

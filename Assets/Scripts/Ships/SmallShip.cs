@@ -191,10 +191,9 @@ public class SmallShip : MonoBehaviour
     public string aiMode;
     public string aiOverideMode = "none";
     public string savedOverideMode = "none";
-    public string aiSkillLevel; //Three levels available: easy, medium, hard
-    [HideInInspector] public float aiAttackTime = 30;
+    public Vector3 aiTargetingErrorMargin = new Vector3(0, 0, 0);
     [HideInInspector] public float aiRetreatTime;
-    [HideInInspector] public float aiSpeedWhileTurning = 1.5f; //i.e. how much the ship slows to do a sharper turn
+    [HideInInspector] public float aiAttackTime;
     [HideInInspector] public float aiPitchInput;
     [HideInInspector] public float aiTurnInput;
     [HideInInspector] public float aiRollInput;
@@ -243,9 +242,6 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.PrepareShip(this);
         SmallShipFunctions.LoadLaserParticleSystem(this);
 
-        //Camera Functions
-        SmallShipFunctions.SetMainCamera(this);
-
         //LOD functions
         SmallShipFunctions.LODCheck(this);
 
@@ -260,11 +256,9 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.MovementEffect(this);
         AudioFunctions.PlayEngineNoise(this);
 
-        //Targetting functions
-        TargetingFunctions.GetClosestEnemy(this);
-        TargetingFunctions.GetNextEnemy(this);
-        TargetingFunctions.GetNextTarget(this);
-        TargetingFunctions.GetTargetInfo(this);
+        //Targeting Functions
+        TargetingFunctions.RunPlayerTargetingFunctions(this);
+        TargetingFunctions.GetTargetInfo_SmallShip(this);
 
         //Weapon functions
         SmallShipFunctions.ToggleWeapons(this);
@@ -285,11 +279,7 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.Explode(this);
 
         //Cockpit Functions
-        SmallShipFunctions.ActivateCockpit(this);
-        SmallShipFunctions.RunCockpitShake(this);
-        SmallShipFunctions.CockpitCameraMovement(this);
-        SmallShipFunctions.CockpitAnchorRotation(this);
-        SmallShipFunctions.ShakeCockpitDuringHyperspace(this);
+        CockpitFunctions.RunCockpitFunctions(this);
     }
     
     void FixedUpdate()

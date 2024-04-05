@@ -1249,7 +1249,6 @@ public static class SceneFunctions
                 smallShip.speedRating = shipType.speedRating;
                 smallShip.laserColor = laserColor;
                 smallShip.healthSave = shipType.shieldRating + shipType.hullRating;  
-                smallShip.aiSkillLevel = "easy";
                 smallShip.type = type;
                 smallShip.thrustType = shipType.thrustType;
                 smallShip.prefabName = shipType.prefab;
@@ -2050,19 +2049,22 @@ public static class SceneFunctions
         tempPrefab = ReturnCockpitPrefab(name, settings.cockpitAssets);
 
         //This gets a backup prefab from another pool if the selected pool doesn't have the requested prefab
-        if (tempPrefab == null)
+        if (settings.cockpitAssets != "nocockpits")
         {
-            tempPrefab = ReturnCockpitPrefab(name, "firststrike");
-        }
+            if (tempPrefab == null)
+            {
+                tempPrefab = ReturnCockpitPrefab(name, "firststrike");
+            }
 
-        if (tempPrefab == null)
-        {
-            tempPrefab = ReturnCockpitPrefab(name, "galacticconquest");
-        }
+            if (tempPrefab == null)
+            {
+                tempPrefab = ReturnCockpitPrefab(name, "galacticconquest");
+            }
 
-        if (tempPrefab == null)
-        {
-            tempPrefab = ReturnCockpitPrefab(name, "additionalassets");
+            if (tempPrefab == null)
+            {
+                tempPrefab = ReturnCockpitPrefab(name, "additionalassets");
+            }
         }
 
         //This instantiates the prefab

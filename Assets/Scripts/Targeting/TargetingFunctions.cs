@@ -4,10 +4,95 @@ using UnityEngine;
 
 public static class TargetingFunctions
 {
+    //This draws key data/info from the target including relative position, distance, and hostility
+    public static void GetTargetInfo_SmallShip(SmallShip smallShip = null)
+    {
+        Transform shipTransform = smallShip.gameObject.transform;
+        Vector3 shipPosition = shipTransform.position;
+
+        if (smallShip.target != null)
+        {
+            if (smallShip.target.activeSelf == true)
+            {
+                if (smallShip.targetSmallShip != null)
+                {
+                    smallShip.targetAllegiance = smallShip.targetSmallShip.allegiance;
+                    smallShip.targetSpeed = smallShip.targetSmallShip.thrustSpeed;
+                    smallShip.targetHull = smallShip.targetSmallShip.hullLevel;
+                    smallShip.targetShield = smallShip.targetSmallShip.shieldLevel;
+                    smallShip.targetType = smallShip.targetSmallShip.type;
+                    smallShip.targetPrefabName = smallShip.targetSmallShip.prefabName;
+                }
+
+                if (smallShip.targetLargeShip != null)
+                {
+                    smallShip.targetAllegiance = smallShip.targetLargeShip.allegiance;
+                    smallShip.targetSpeed = smallShip.targetLargeShip.thrustSpeed;
+                    smallShip.targetHull = smallShip.targetLargeShip.hullLevel;
+                    smallShip.targetShield = smallShip.targetLargeShip.shieldLevel;
+                    smallShip.targetType = smallShip.targetLargeShip.type;
+                    smallShip.targetPrefabName = smallShip.targetLargeShip.prefabName;
+                }
+
+                Transform targetTransform = smallShip.target.transform;
+                Vector3 targetPosition = targetTransform.position;
+                Vector3 targetVelocity = new Vector3(0, 0, 0);
+
+                if (smallShip.targetRigidbody != null)
+                {
+                    targetVelocity = smallShip.targetRigidbody.velocity;
+                }
+
+                Vector3 targetRelativePosition = targetPosition - shipPosition;
+
+                smallShip.targetDistance = Vector3.Distance(shipPosition, targetPosition);
+                smallShip.targetForward = Vector3.Dot(shipTransform.forward, targetRelativePosition.normalized);
+                smallShip.targetRight = Vector3.Dot(shipTransform.right, targetRelativePosition.normalized);
+                smallShip.targetUp = Vector3.Dot(shipTransform.up, targetRelativePosition.normalized);
+
+                Vector3 targettingErrorMargin = smallShip.aiTargetingErrorMargin;
+                float distanceToIntercept = ((targetPosition) - shipPosition).magnitude / 500f;
+                Vector3 interceptPosition = (targetPosition + targettingErrorMargin) + targetVelocity * distanceToIntercept;
+
+                Vector3 interceptRelativePosition = interceptPosition - shipPosition;
+
+                smallShip.interceptDistance = Vector3.Distance(interceptPosition, shipPosition);
+                smallShip.interceptForward = Vector3.Dot(shipTransform.forward, interceptRelativePosition.normalized);
+                smallShip.interceptRight = Vector3.Dot(shipTransform.right, interceptRelativePosition.normalized);
+                smallShip.interceptUp = Vector3.Dot(shipTransform.up, interceptRelativePosition.normalized);
+            }
+        }
+        else
+        {
+            smallShip.interceptDistance = 250;
+        }
+
+        if (smallShip.waypoint != null)
+        {
+            Vector3 waypointPosition = smallShip.waypoint.transform.position;
+            Vector3 waypointRelativePosition = waypointPosition - shipPosition;
+
+            smallShip.waypointDistance = Vector3.Distance(shipPosition, waypointPosition);
+            smallShip.waypointForward = Vector3.Dot(shipTransform.forward, waypointRelativePosition.normalized);
+            smallShip.waypointRight = Vector3.Dot(shipTransform.right, waypointRelativePosition.normalized);
+            smallShip.waypointUp = Vector3.Dot(shipTransform.up, waypointRelativePosition.normalized);
+        }
+
+    }
+
     #region player targetting
 
+    //This runs all the player targetting functions
+    public static void RunPlayerTargetingFunctions(SmallShip smallShip)
+    {
+        //Targetting functions
+        GetClosestEnemy_SmallShipPlayer(smallShip);
+        GetNextEnemy_SmallShipPlayer(smallShip);
+        GetNextTarget_SmallShipPlayer(smallShip);
+    }
+
     //This gets the next target of any kind
-    public static void GetNextTarget(SmallShip smallShip = null)
+    public static void GetNextTarget_SmallShipPlayer(SmallShip smallShip = null)
     {
         if (smallShip.isAI == false)
         {
@@ -27,7 +112,7 @@ public static class TargetingFunctions
                 int countStart = 0;
 
                 //This sets the count start according to the current target the ship has selected
-                countStart = GetNextTargetNo(smallShip);
+                countStart = GetNextTargetNo_SmallShipPlayer(smallShip);
 
                 //This cycles through all the possible targets ignoring objects that are null or inactive
                 for (int i = countStart; i <= scene.objectPool.Count; i++)
@@ -84,7 +169,7 @@ public static class TargetingFunctions
     }
 
     //This gets the next enemy target
-    public static void GetNextEnemy(SmallShip smallShip = null, bool forceSearch = false)
+    public static void GetNextEnemy_SmallShipPlayer(SmallShip smallShip = null, bool forceSearch = false)
     {
         if (smallShip.isAI == false)
         {
@@ -104,7 +189,7 @@ public static class TargetingFunctions
                 int countStart = 0;
 
                 //This sets the count start according to the current target the ship has selected
-                countStart = GetNextTargetNo(smallShip);
+                countStart = GetNextTargetNo_SmallShipPlayer(smallShip);
 
                 for (int i = countStart; i < scene.objectPool.Count; i++)
                 {
@@ -121,12 +206,12 @@ public static class TargetingFunctions
                             if (targetSmallShip != null)
                             {
                                 numberTargetting = targetSmallShip.numberTargeting;
-                                isHostile = GetHostility(smallShip, targetSmallShip.allegiance);
+                                isHostile = GetHostility_SmallShipPlayer(smallShip, targetSmallShip.allegiance);
                             }
                             else if (targetLargeShip != null)
                             {
                                 numberTargetting = 0;
-                                isHostile = GetHostility(smallShip, targetLargeShip.allegiance);
+                                isHostile = GetHostility_SmallShipPlayer(smallShip, targetLargeShip.allegiance);
                             }
 
                             if (isHostile == true)
@@ -167,7 +252,7 @@ public static class TargetingFunctions
     }
 
     //This gets the closesd enemy target
-    public static void GetClosestEnemy(SmallShip smallShip = null, bool externalActivation = false)
+    public static void GetClosestEnemy_SmallShipPlayer(SmallShip smallShip = null, bool externalActivation = false)
     {
         if (smallShip.isAI == false)
         {
@@ -203,7 +288,7 @@ public static class TargetingFunctions
 
                         if (ship.activeSelf == true & tempSmallShip != null)
                         {
-                            bool isHostile = GetHostility(smallShip, tempSmallShip.allegiance);
+                            bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempSmallShip.allegiance);
 
                             if (isHostile == true)
                             {
@@ -244,7 +329,7 @@ public static class TargetingFunctions
 
                             if (ship.activeSelf == true & tempLargeShip != null)
                             {
-                                bool isHostile = GetHostility(smallShip, tempLargeShip.allegiance);
+                                bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempLargeShip.allegiance);
 
                                 if (isHostile == true)
                                 {
@@ -301,7 +386,7 @@ public static class TargetingFunctions
     }
 
     //This gets the designated target and sets it as the ships target if it can be found
-    public static void GetSpecificTarget(SmallShip smallShip = null, string targetName = "none")
+    public static void GetSpecificTarget_SmallShipPlayer(SmallShip smallShip = null, string targetName = "none")
     {
         Scene scene = smallShip.scene;
         GameObject target = null;
@@ -368,84 +453,8 @@ public static class TargetingFunctions
         smallShip.torpedoLockingOn = false;
     }
 
-    //This draws key data/info from the target including relative position, distance, and hostility
-    public static void GetTargetInfo(SmallShip smallShip = null)
-    {
-        Transform shipTransform = smallShip.gameObject.transform;
-        Vector3 shipPosition = shipTransform.position;
-
-        if (smallShip.target != null)
-        {
-            if (smallShip.target.activeSelf == true)
-            {
-                if (smallShip.targetSmallShip != null)
-                {
-                    smallShip.targetAllegiance = smallShip.targetSmallShip.allegiance;
-                    smallShip.targetSpeed = smallShip.targetSmallShip.thrustSpeed;
-                    smallShip.targetHull = smallShip.targetSmallShip.hullLevel;
-                    smallShip.targetShield = smallShip.targetSmallShip.shieldLevel;
-                    smallShip.targetType = smallShip.targetSmallShip.type;
-                    smallShip.targetPrefabName = smallShip.targetSmallShip.prefabName;
-                }
-
-                if (smallShip.targetLargeShip != null)
-                {
-                    smallShip.targetAllegiance = smallShip.targetLargeShip.allegiance;
-                    smallShip.targetSpeed = smallShip.targetLargeShip.thrustSpeed;
-                    smallShip.targetHull = smallShip.targetLargeShip.hullLevel;
-                    smallShip.targetShield = smallShip.targetLargeShip.shieldLevel;
-                    smallShip.targetType = smallShip.targetLargeShip.type;
-                    smallShip.targetPrefabName = smallShip.targetLargeShip.prefabName;
-                }
-
-                Transform targetTransform = smallShip.target.transform;
-                Vector3 targetPosition = targetTransform.position;
-                Vector3 targetVelocity = new Vector3(0, 0, 0);
-
-                if (smallShip.targetRigidbody != null)
-                {
-                    targetVelocity = smallShip.targetRigidbody.velocity;
-                }
-
-                Vector3 targetRelativePosition = targetPosition - shipPosition;
-
-                smallShip.targetDistance = Vector3.Distance(shipPosition, targetPosition);
-                smallShip.targetForward = Vector3.Dot(shipTransform.forward, targetRelativePosition.normalized);
-                smallShip.targetRight = Vector3.Dot(shipTransform.right, targetRelativePosition.normalized);
-                smallShip.targetUp = Vector3.Dot(shipTransform.up, targetRelativePosition.normalized);
-
-                Vector3 targettingErrorMargin = SmallShipAIFunctions.TargetingErrorMargin(smallShip);
-                float distanceToIntercept = ((targetPosition) - shipPosition).magnitude / 500f;
-                Vector3 interceptPosition = (targetPosition + targettingErrorMargin) + targetVelocity * distanceToIntercept;
-
-                Vector3 interceptRelativePosition = interceptPosition - shipPosition;
-
-                smallShip.interceptDistance = Vector3.Distance(interceptPosition, shipPosition);
-                smallShip.interceptForward = Vector3.Dot(shipTransform.forward, interceptRelativePosition.normalized);
-                smallShip.interceptRight = Vector3.Dot(shipTransform.right, interceptRelativePosition.normalized);
-                smallShip.interceptUp = Vector3.Dot(shipTransform.up, interceptRelativePosition.normalized);
-            }
-        }
-        else
-        {
-            smallShip.interceptDistance = 250;
-        }
-
-        if (smallShip.waypoint != null)
-        {
-            Vector3 waypointPosition = smallShip.waypoint.transform.position;
-            Vector3 waypointRelativePosition = waypointPosition - shipPosition;
-
-            smallShip.waypointDistance = Vector3.Distance(shipPosition, waypointPosition);
-            smallShip.waypointForward = Vector3.Dot(shipTransform.forward, waypointRelativePosition.normalized);
-            smallShip.waypointRight = Vector3.Dot(shipTransform.right, waypointRelativePosition.normalized);
-            smallShip.waypointUp = Vector3.Dot(shipTransform.up, waypointRelativePosition.normalized);
-        }
-
-    }
-
     //This creates the ship waypoint
-    public static void CreateWaypoint(SmallShip smallShip = null)
+    public static void CreateWaypoint_SmallShipPlayer(SmallShip smallShip = null)
     {
         if (smallShip.waypoint == null)
         {
@@ -457,7 +466,7 @@ public static class TargetingFunctions
     }
 
     //This checks whether a target is hostile or not
-    public static bool GetHostility(SmallShip smallShip = null, string targetAllegiance = "none")
+    public static bool GetHostility_SmallShipPlayer(SmallShip smallShip = null, string targetAllegiance = "none")
     {
         bool isHostile = false;
 
@@ -527,7 +536,7 @@ public static class TargetingFunctions
     }
 
     //This gets the target number of the currently selected ship
-    public static int GetNextTargetNo(SmallShip smallShip)
+    public static int GetNextTargetNo_SmallShipPlayer(SmallShip smallShip)
     {
         Scene scene = smallShip.scene;
         int targetNumber = 0;
@@ -559,113 +568,10 @@ public static class TargetingFunctions
 
     #endregion
 
-    #region AI Targetting
-
-    //Allocate targets to all the turrets one at a time to save processing power
-    public static IEnumerator AllocateTargets(Scene scene)
-    {
-        scene.allocatingTargets = true;
-
-        if (scene.turrets == null)
-        {
-            scene.turrets = new List<Turret>();
-        }
-
-        //This selects targets for turrets
-        foreach (Turret turret in scene.turrets.ToArray())
-        {
-            if (turret != null)
-            {
-                if (turret.requestingTarget == true)
-                {
-                    Task a = new Task(GetClosestEnemy_Turret(turret));
-                    while (a.Running == true) { yield return null; }
-                }
-            }
-        }
-
-        if (scene.smallShips == null)
-        {
-            scene.smallShips = new List<SmallShip>();
-        }
-
-        //This selects targets for smallship ai
-        foreach (SmallShip smallShip in scene.smallShips.ToArray())
-        {
-            if (smallShip != null)
-            {
-                if (smallShip.gameObject.activeSelf == true & smallShip.requestingTarget == true)
-                {
-                    if (smallShip.target == null)
-                    {
-                        if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
-                        {
-                            Task a = new Task(GetClosestEnemyLargeShip(smallShip));
-                            while (a.Running == true) { yield return null; }
-                        }
-                        else
-                        {
-                            Task a = new Task(GetClosestEnemySmallShip(smallShip));
-                            while (a.Running == true) { yield return null; }
-                        }
-                    }
-                    else if (smallShip.target != null)
-                    {
-                        if (smallShip.target.activeSelf == false)
-                        {
-                            if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
-                            {
-                                Task a = new Task(GetClosestEnemyLargeShip(smallShip));
-                                while (a.Running == true) { yield return null; }
-                            }
-                            else
-                            {
-                                Task a = new Task(GetClosestEnemySmallShip(smallShip));
-                                while (a.Running == true) { yield return null; }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (scene.largeShips == null)
-        {
-            scene.largeShips = new List<LargeShip>();
-        }
-
-        foreach (LargeShip largeShip in scene.largeShips.ToArray())
-        {
-            if (largeShip != null)
-            {
-                if (largeShip.gameObject.activeSelf == true & largeShip.requestingTarget == true)
-                {
-                    if (largeShip.target == null)
-                    {
-                        Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShip(largeShip));
-                        while (a.Running == true) { yield return null; }
-
-                    }
-                    else if (largeShip.target != null)
-                    {
-                        if (largeShip.target.activeSelf == false)
-                        {
-                            Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShip(largeShip));
-                            while (a.Running == true) { yield return null; }
-                        }
-                    }
-                }
-            }
-        }
-
-        scene.allocatingTargets = false;
-    }
-
-    #endregion
     #region AI smallship targetting
 
     //This gets the closesd enemy target
-    public static IEnumerator GetClosestEnemySmallShip(SmallShip smallShip)
+    public static IEnumerator GetClosestEnemySmallShip_SmallShipAI(SmallShip smallShip)
     {
         Scene scene = smallShip.scene;
 
@@ -681,7 +587,7 @@ public static class TargetingFunctions
             {
                 if (tempSmallShip.gameObject.activeSelf == true & tempSmallShip != null)
                 {
-                    bool isHostile = GetHostility(smallShip, tempSmallShip.allegiance);
+                    bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempSmallShip.allegiance);
 
                     if (isHostile == true)
                     {
@@ -727,7 +633,7 @@ public static class TargetingFunctions
     }
 
     //This gets the closesd enemy target
-    public static IEnumerator GetClosestEnemyLargeShip(SmallShip smallShip)
+    public static IEnumerator GetClosestEnemyLargeShip_SmallShipAI(SmallShip smallShip)
     {
         Scene scene = smallShip.scene;
 
@@ -745,7 +651,7 @@ public static class TargetingFunctions
                 {
                     if (tempLargeShip.gameObject.activeSelf == true & tempLargeShip != null)
                     {
-                        bool isHostile = GetHostility(smallShip, tempLargeShip.allegiance);
+                        bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempLargeShip.allegiance);
 
                         if (isHostile == true)
                         {
@@ -790,7 +696,7 @@ public static class TargetingFunctions
     #region AI largeship targetting
 
     //This gets the closesd enemy target
-    public static IEnumerator GetClosestEnemyLargeShip_LargeShip(LargeShip largeShip)
+    public static IEnumerator GetClosestEnemyLargeShip_LargeShipAI(LargeShip largeShip)
     {
         Scene scene = largeShip.scene;
 
@@ -811,7 +717,7 @@ public static class TargetingFunctions
 
                     if (ship.activeSelf == true & tempLargeShip != null)
                     {
-                        bool isHostile = GetHostility_LargeShip(largeShip, tempLargeShip.allegiance);
+                        bool isHostile = GetHostility_LargeShipAI(largeShip, tempLargeShip.allegiance);
 
                         if (isHostile == true)
                         {
@@ -848,7 +754,7 @@ public static class TargetingFunctions
     }
 
     //This gets the designated target and sets it as the ships target if it can be found
-    public static void GetSpecificTarget_LargeShip(LargeShip largeShip = null, string targetName = "none")
+    public static void GetSpecificTarget_LargeShipAI(LargeShip largeShip = null, string targetName = "none")
     {
         Scene scene = largeShip.scene;
         GameObject target = null;
@@ -910,7 +816,7 @@ public static class TargetingFunctions
     }
 
     //This draws key data/info from the target including relative position, distance, and hostility
-    public static void GetTargetInfo_LargeShip(LargeShip largeShip = null)
+    public static void GetTargetInfo_LargeShipAI(LargeShip largeShip = null)
     {
         Transform shipTransform = largeShip.gameObject.transform;
         Vector3 shipPosition = shipTransform.position;
@@ -971,7 +877,7 @@ public static class TargetingFunctions
     }
 
     //This creates the ship waypoint
-    public static void CreateWaypoint_LargeShip(LargeShip largeShip = null)
+    public static void CreateWaypoint_LargeShipAI(LargeShip largeShip = null)
     {
         if (largeShip.waypoint == null)
         {
@@ -983,7 +889,7 @@ public static class TargetingFunctions
     }
 
     //This checks whether a target is hostile or not
-    public static bool GetHostility_LargeShip(LargeShip largeShip = null, string targetAllegiance = "none")
+    public static bool GetHostility_LargeShipAI(LargeShip largeShip = null, string targetAllegiance = "none")
     {
         bool isHostile = false;
 
@@ -1057,8 +963,108 @@ public static class TargetingFunctions
 
     #region AI turret targetting
 
+    //Allocate targets to all the turrets one at a time to save processing power
+    public static IEnumerator AllocateTargets_TurretAI(Scene scene)
+    {
+        scene.allocatingTargets = true;
+
+        if (scene.turrets == null)
+        {
+            scene.turrets = new List<Turret>();
+        }
+
+        //This selects targets for turrets
+        foreach (Turret turret in scene.turrets.ToArray())
+        {
+            if (turret != null)
+            {
+                if (turret.requestingTarget == true)
+                {
+                    Task a = new Task(GetClosestEnemy_TurretAI(turret));
+                    while (a.Running == true) { yield return null; }
+                }
+            }
+        }
+
+        if (scene.smallShips == null)
+        {
+            scene.smallShips = new List<SmallShip>();
+        }
+
+        //This selects targets for smallship ai
+        foreach (SmallShip smallShip in scene.smallShips.ToArray())
+        {
+            if (smallShip != null)
+            {
+                if (smallShip.gameObject.activeSelf == true & smallShip.requestingTarget == true)
+                {
+                    if (smallShip.target == null)
+                    {
+                        if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
+                        {
+                            Task a = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                            while (a.Running == true) { yield return null; }
+                        }
+                        else
+                        {
+                            Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                            while (a.Running == true) { yield return null; }
+                        }
+                    }
+                    else if (smallShip.target != null)
+                    {
+                        if (smallShip.target.activeSelf == false)
+                        {
+                            if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
+                            {
+                                Task a = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                                while (a.Running == true) { yield return null; }
+                            }
+                            else
+                            {
+                                Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                                while (a.Running == true) { yield return null; }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (scene.largeShips == null)
+        {
+            scene.largeShips = new List<LargeShip>();
+        }
+
+        foreach (LargeShip largeShip in scene.largeShips.ToArray())
+        {
+            if (largeShip != null)
+            {
+                if (largeShip.gameObject.activeSelf == true & largeShip.requestingTarget == true)
+                {
+                    if (largeShip.target == null)
+                    {
+                        Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShipAI(largeShip));
+                        while (a.Running == true) { yield return null; }
+
+                    }
+                    else if (largeShip.target != null)
+                    {
+                        if (largeShip.target.activeSelf == false)
+                        {
+                            Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShipAI(largeShip));
+                            while (a.Running == true) { yield return null; }
+                        }
+                    }
+                }
+            }
+        }
+
+        scene.allocatingTargets = false;
+    }
+
     //This gets the closest enemy for turret
-    public static IEnumerator GetClosestEnemy_Turret(Turret turret)
+    public static IEnumerator GetClosestEnemy_TurretAI(Turret turret)
     {
         Scene scene = turret.largeShip.scene;
 
@@ -1075,7 +1081,7 @@ public static class TargetingFunctions
                 {
                     bool isHostile = false;
 
-                    isHostile = GetHostility_LargeShip(turret.largeShip, tempLargeShip.allegiance);
+                    isHostile = GetHostility_LargeShipAI(turret.largeShip, tempLargeShip.allegiance);
                         
                     if (tempLargeShip.gameObject.activeSelf != false & isHostile == true)
                     {
@@ -1100,7 +1106,7 @@ public static class TargetingFunctions
                     {
                         bool isHostile = false;
 
-                        isHostile = GetHostility_LargeShip(turret.largeShip, tempSmallShip.allegiance);
+                        isHostile = GetHostility_LargeShipAI(turret.largeShip, tempSmallShip.allegiance);
     
                         if (tempSmallShip.gameObject.activeSelf != false & isHostile == true)
                         {
@@ -1125,7 +1131,7 @@ public static class TargetingFunctions
                 {
                     bool isHostile = false;
 
-    isHostile = GetHostility_LargeShip(turret.largeShip, tempSmallShip.allegiance);
+    isHostile = GetHostility_LargeShipAI(turret.largeShip, tempSmallShip.allegiance);
 
                     if (tempSmallShip.gameObject.activeSelf != false & isHostile == true)
                     {
@@ -1148,7 +1154,7 @@ public static class TargetingFunctions
                     {
                         bool isHostile = false;
 
-isHostile = GetHostility_LargeShip(turret.largeShip, tempLargeShip.allegiance);
+isHostile = GetHostility_LargeShipAI(turret.largeShip, tempLargeShip.allegiance);
 
                         if (tempLargeShip.gameObject.activeSelf != false & isHostile == true)
                         {

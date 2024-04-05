@@ -21,9 +21,13 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Switch between different asset sets (Implemented)
   - Terrain loading (Implemented)
 
-**Latest Release:** 1.6.54
+**Latest Development Release:** 1.6.54
 
   - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.6.54/Open.Galaxy.1.6.54.zip
+
+**Latest Milestone Release:** 1.0.0
+
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.0.0/Open.Galaxy.1.0.0.zip
 
 **Other Info**
 

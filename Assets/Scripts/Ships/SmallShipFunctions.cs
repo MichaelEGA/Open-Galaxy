@@ -1210,4 +1210,5 @@ public static class SmallShipFunctions
     }
 
     #endregion
+
 }

@@ -1492,17 +1492,33 @@ public static class HudFunctions
                 {
                     hud.targetLockingReticule.gameObject.SetActive(false);
                     hud.targetLockedReticule.gameObject.SetActive(true);
+
+                    if (hud.lockBeep != null)
+                    {
+                        hud.lockBeep.volume = 0.6f;
+                    }
                 }
                 else
                 {
                     hud.targetLockingReticule.gameObject.SetActive(false);
                     hud.targetLockedReticule.gameObject.SetActive(false);
+
+                    if (hud.lockBeep != null)
+                    {
+                        hud.lockBeep.volume = 0f;
+                    }
                 }
+                
             }
             else
             {
                 hud.targetLockingReticule.gameObject.SetActive(false);
                 hud.targetLockedReticule.gameObject.SetActive(false);
+
+                if (hud.lockBeep != null)
+                {
+                    hud.lockBeep.volume = 0f;
+                }
             }
         }
     }
@@ -1514,11 +1530,26 @@ public static class HudFunctions
 
         reticule.gameObject.SetActive(true);
 
-        AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "shortbeep", "Cockpit", hud.smallShip.transform.position, 0, 1, 500, 0.6f);
+        if (hud.lockBeep == null)
+        {
+            hud.lockBeep = AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep_targetlock", "Cockpit", hud.smallShip.transform.position, 0, 1, 500, 0.6f);
+            hud.lockBeep.loop = true;
+        }
 
+        if (hud.lockBeep != null)
+        {
+
+            hud.lockBeep.volume = 0.5f;
+        }
+            
         yield return new WaitForSeconds(0.25f);
 
         reticule.gameObject.SetActive(false);
+
+        if (hud.lockBeep != null)
+        {
+            hud.lockBeep.volume = 0;
+        }
 
         yield return new WaitForSeconds(0.25f);
 

@@ -226,6 +226,9 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public Vector3 currentPosition;
     [HideInInspector] public Quaternion currentRotation;
 
+    [Header("Ship Coroutine Tasks")]
+    public List<Task> tasks;
+
     // Update is called once per frame
     void Update()
     {

@@ -40,6 +40,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public RawImage shieldRearOutside;
 
     [Header("Target Information")]
+    public AudioSource lockBeep;
     [HideInInspector] public GameObject targetObject;
     [HideInInspector] public Text targetDistanceText;
     [HideInInspector] public Text targetType;

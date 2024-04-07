@@ -54,6 +54,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Updated: Docking systems now fully implemented
   - Updated: Basic docking procedures are now functioning and can be call…
   - Added: Base code for docking
+  - Added: Node and Window borders/highlights
 
 25/03/24 - v1.6.54 (Unity 2022.3.12f1)
   - Fixed: A minor mission breaking bug that prevented smallships from hypering-in in the correct position

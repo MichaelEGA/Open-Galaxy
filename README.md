@@ -43,12 +43,12 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Updated: Move exit mission function to mission functions
   - Added: Outline to mission editor windows
   - Fixed: AI Ships now steer correctly when upside down
-  - Update: Distance to waypoint now works with large ships
-  - Update: Smallship and Largeship now exit docking on different vectors
+  - Updated: Distance to waypoint now works with large ships
+  - Updated: Smallship and Largeship now exit docking on different vectors
   - Fixed: Minor docking errors
   - Updated: Set way point now affects LargeShips
   - Updated: Upgraded docking system complete
-  - Update: Docking now checks whether the dock is being used before running
+  - Updated: Docking now checks whether the dock is being used before running
   - Updated: Docking alignment now more accurate
   - Updated: Docking now connects docking point to docking point
   - Updated: Docking systems now fully implemented

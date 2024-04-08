@@ -35,7 +35,7 @@ public static class SceneFunctions
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
         //This loads the ship prefabs
-        Object[] otShipPrefabs = Resources.LoadAll("ObjectPrefabs/ot_ships/", typeof(GameObject));
+        Object[] otShipPrefabs = Resources.LoadAll(OGGetAddress.ships_originaltrilogy, typeof(GameObject));
 
         if (otShipPrefabs != null)
         {
@@ -43,7 +43,7 @@ public static class SceneFunctions
             scene.otShipsPrefabPool = otShipPrefabs;
         }
 
-        Object[] fsShipPrefabs = Resources.LoadAll("ObjectPrefabs/fs_ships/", typeof(GameObject));
+        Object[] fsShipPrefabs = Resources.LoadAll(OGGetAddress.ships_firststrike, typeof(GameObject));
 
         if (fsShipPrefabs != null)
         {
@@ -51,7 +51,7 @@ public static class SceneFunctions
             scene.fsShipsPrefabPool = fsShipPrefabs;
         }
 
-        Object[] gcShipPrefabs = Resources.LoadAll("ObjectPrefabs/gc_ships/", typeof(GameObject));
+        Object[] gcShipPrefabs = Resources.LoadAll(OGGetAddress.ships_galacticconquest, typeof(GameObject));
 
         if (gcShipPrefabs != null)
         {
@@ -59,7 +59,7 @@ public static class SceneFunctions
             scene.gcShipsPrefabPool = gcShipPrefabs;
         }
 
-        Object[] caShipPrefabs = Resources.LoadAll("ObjectPrefabs/ca_ships/", typeof(GameObject));
+        Object[] caShipPrefabs = Resources.LoadAll(OGGetAddress.cockpits_communityassets, typeof(GameObject));
 
         if (caShipPrefabs != null)
         {
@@ -68,7 +68,7 @@ public static class SceneFunctions
         }
 
         //This loads the cockpit prefabs
-        Object[] fsCockpitPrefabs = Resources.LoadAll("CockpitPrefabs/fs_cockpits/", typeof(GameObject));
+        Object[] fsCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits_firststrike, typeof(GameObject));
 
         if (fsCockpitPrefabs != null)
         {
@@ -76,7 +76,7 @@ public static class SceneFunctions
             scene.fsCockpitPrefabPool = fsCockpitPrefabs;
         }
 
-        Object[] gcCockpitPrefabs = Resources.LoadAll("CockpitPrefabs/gc_cockpits/", typeof(GameObject));
+        Object[] gcCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits_galacticconquest, typeof(GameObject));
 
         if (gcCockpitPrefabs != null)
         {
@@ -84,7 +84,7 @@ public static class SceneFunctions
             scene.gcCockpitPrefabPool = gcCockpitPrefabs;
         }
 
-        Object[] caCockpitPrefabs = Resources.LoadAll("CockpitPrefabs/ca_cockpits/", typeof(GameObject));
+        Object[] caCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits_communityassets, typeof(GameObject));
 
         if (caCockpitPrefabs != null)
         {
@@ -93,7 +93,7 @@ public static class SceneFunctions
         }
 
         //This loads the asteroids
-        Object[] asteroidPrefabs = Resources.LoadAll("ObjectPrefabs/asteroids/", typeof(GameObject));
+        Object[] asteroidPrefabs = Resources.LoadAll(OGGetAddress.asteroids, typeof(GameObject));
 
         if (caShipPrefabs != null)
         {
@@ -102,7 +102,7 @@ public static class SceneFunctions
         }
 
         //This loads the particle prefabs
-        Object[] particlePrefabs = Resources.LoadAll("ParticlePrefabs", typeof(GameObject));
+        Object[] particlePrefabs = Resources.LoadAll(OGGetAddress.particles, typeof(GameObject));
 
         if (particlePrefabs != null)
         {
@@ -110,6 +110,7 @@ public static class SceneFunctions
             scene.particlePrefabPool = particlePrefabs;
         }
 
+        //ADD THIS TO THE ADDRESS SCRIPT THEN CONTINUE WORK FROM HERE
         //This loads the planet materials
         Object[] planetMaterials = Resources.LoadAll("planet/planetmaterials/", typeof(Material));
 

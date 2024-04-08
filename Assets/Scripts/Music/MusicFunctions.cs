@@ -14,7 +14,7 @@ public static class MusicFunctions
         GameObject musicManagerGO = new GameObject();
         Music musicManager = musicManagerGO.AddComponent<Music>();
         musicManagerGO.name = "Music Manager";
-        musicManager.audioMixer = Resources.Load<AudioMixer>("AudioMixers/OGMusic");
+        musicManager.audioMixer = Resources.Load<AudioMixer>(OGGetAddress.audiomixers + "OGMusic");
 
         //This creates the audio sources for the different music tracks
         CreateAudioSources(musicManager);
@@ -26,7 +26,7 @@ public static class MusicFunctions
     //This loads the music clips
     public static void LoadMusicClips(Music musicManager)
     {
-        AudioClip[] musicClips = Resources.LoadAll<AudioClip>("MusicClips");
+        AudioClip[] musicClips = Resources.LoadAll<AudioClip>(OGGetAddress.musicclips);
         musicManager.musicClips = new AudioClip[musicClips.Length];
         musicManager.musicClips = musicClips;
     }

@@ -24,9 +24,9 @@ public class Scene : MonoBehaviour
     [HideInInspector] public Object[] otShipsPrefabPool;
     [HideInInspector] public Object[] fsShipsPrefabPool;
     [HideInInspector] public Object[] gcShipsPrefabPool;
-    [HideInInspector] public Object[] adShipsPrefabPool;
+    [HideInInspector] public Object[] caShipsPrefabPool;
 
-    [HideInInspector] public Object[] adCockpitPrefabPool;
+    [HideInInspector] public Object[] caCockpitPrefabPool;
     [HideInInspector] public Object[] fsCockpitPrefabPool;
     [HideInInspector] public Object[] gcCockpitPrefabPool;
 

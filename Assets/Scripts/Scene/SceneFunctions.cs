@@ -59,12 +59,12 @@ public static class SceneFunctions
             scene.gcShipsPrefabPool = gcShipPrefabs;
         }
 
-        Object[] adShipPrefabs = Resources.LoadAll("ObjectPrefabs/ad_ships/", typeof(GameObject));
+        Object[] caShipPrefabs = Resources.LoadAll("ObjectPrefabs/ca_ships/", typeof(GameObject));
 
-        if (adShipPrefabs != null)
+        if (caShipPrefabs != null)
         {
-            scene.adShipsPrefabPool = new GameObject[adShipPrefabs.Length];
-            scene.adShipsPrefabPool = adShipPrefabs;
+            scene.caShipsPrefabPool = new GameObject[caShipPrefabs.Length];
+            scene.caShipsPrefabPool = caShipPrefabs;
         }
 
         //This loads the cockpit prefabs
@@ -84,18 +84,18 @@ public static class SceneFunctions
             scene.gcCockpitPrefabPool = gcCockpitPrefabs;
         }
 
-        Object[] adCockpitPrefabs = Resources.LoadAll("CockpitPrefabs/ad_cockpits/", typeof(GameObject));
+        Object[] caCockpitPrefabs = Resources.LoadAll("CockpitPrefabs/ca_cockpits/", typeof(GameObject));
 
-        if (adCockpitPrefabs != null)
+        if (caCockpitPrefabs != null)
         {
-            scene.adCockpitPrefabPool = new GameObject[adCockpitPrefabs.Length];
-            scene.adCockpitPrefabPool = adCockpitPrefabs;
+            scene.caCockpitPrefabPool = new GameObject[caCockpitPrefabs.Length];
+            scene.caCockpitPrefabPool = caCockpitPrefabs;
         }
 
         //This loads the asteroids
         Object[] asteroidPrefabs = Resources.LoadAll("ObjectPrefabs/asteroids/", typeof(GameObject));
 
-        if (adShipPrefabs != null)
+        if (caShipPrefabs != null)
         {
             scene.asteroidPrefabPool = new GameObject[asteroidPrefabs.Length];
             scene.asteroidPrefabPool = asteroidPrefabs;
@@ -1434,7 +1434,7 @@ public static class SceneFunctions
 
         if (tempPrefab == null)
         {
-            tempPrefab = ReturnShipPrefab(name, "additionalassets");
+            tempPrefab = ReturnShipPrefab(name, "communityassets");
         }
 
         //This instantiates the prefab
@@ -1486,9 +1486,9 @@ public static class SceneFunctions
                 }
             }
         }
-        else if (pool == "additionalassets")
+        else if (pool == "communityassets")
         {
-            foreach (GameObject objectPrefab in scene.adShipsPrefabPool)
+            foreach (GameObject objectPrefab in scene.caShipsPrefabPool)
             {
                 if (objectPrefab.name == name)
                 {
@@ -2110,7 +2110,7 @@ public static class SceneFunctions
         }
         else if (pool == "additionalassets")
         {
-            foreach (GameObject objectPrefab in scene.adCockpitPrefabPool)
+            foreach (GameObject objectPrefab in scene.caCockpitPrefabPool)
             {
                 if (objectPrefab.name == name)
                 {

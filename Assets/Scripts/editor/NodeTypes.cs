@@ -3001,7 +3001,7 @@ public static class NodeTypes
     public static List<string> GetShipList()
     {
         //This gets the Json ship data
-        TextAsset shipTypesFile = Resources.Load("Data/Files/ShipTypes") as TextAsset;
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
         ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
 
         List<string> shipList = new List<string>();
@@ -3017,7 +3017,7 @@ public static class NodeTypes
     public static List<string> GetAllegianceList()
     {
         //This gets the Json ship data
-        TextAsset allegianceFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
+        TextAsset allegianceFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
         Allegiances allegiances = JsonUtility.FromJson<Allegiances>(allegianceFile.text);
 
         List<string> allegianceList = new List<string>();

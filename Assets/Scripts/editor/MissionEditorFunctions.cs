@@ -317,7 +317,7 @@ public static class MissionEditorFunctions
         int buttonNo = 0;
 
         Image background = menuBaseGO.AddComponent<Image>();
-        background.sprite = Resources.Load<Sprite>("EditorAssets/NodeSprite_Light");
+        background.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
         background.type = Image.Type.Sliced;
         background.pixelsPerUnitMultiplier = 40;
         rectTransform.anchorMin = new Vector2(0, 1);
@@ -1023,16 +1023,16 @@ public static class MissionEditorFunctions
 
             if (missionEditor.missionName.text.Contains(".json"))
             {
-                saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName.text;
+                saveFile = OGGetAddress.missions_custom + missionEditor.missionName.text;
             }
             else
             {
-                saveFile = Application.persistentDataPath + "/Custom Missions/" + missionEditor.missionName.text + ".json";
+                saveFile = OGGetAddress.missions_custom + missionEditor.missionName.text + ".json";
             }
 
             File.WriteAllText(saveFile, jsonString);
 
-            DisplayMessage(missionEditor.missionName.text + " saved to " + Application.persistentDataPath + "/Custom Missions/");
+            DisplayMessage(missionEditor.missionName.text + " saved to " + OGGetAddress.missions_custom);
 
             if (window != null)
             {
@@ -1106,11 +1106,11 @@ public static class MissionEditorFunctions
 
         string saveFile = "none";
 
-        saveFile = Application.persistentDataPath + "/Custom Missions/" + exportFileName + ".json";       
+        saveFile = OGGetAddress.missions_custom + exportFileName + ".json";       
 
         File.WriteAllText(saveFile, jsonString);
 
-        DisplayMessage(exportFileName + " saved to " + Application.persistentDataPath + "/Custom Missions/");
+        DisplayMessage(exportFileName + " saved to " + OGGetAddress.missions_custom);
 
         if (window != null)
         {
@@ -1372,7 +1372,7 @@ public static class MissionEditorFunctions
 
         if (missionEditor != null)
         {
-            string missionAddress = Application.persistentDataPath + "/Custom Missions/" + missionEditor.selectedMissionToLoad;
+            string missionAddress = OGGetAddress.missions_custom + missionEditor.selectedMissionToLoad;
             string missionDataString = File.ReadAllText(missionAddress);
             TextAsset missionDataTextAsset = new TextAsset(missionDataString);
             Mission mission = JsonUtility.FromJson<Mission>(missionDataTextAsset.text);
@@ -1390,7 +1390,7 @@ public static class MissionEditorFunctions
 
         if (missionEditor != null)
         {
-            string missionAddress = Application.persistentDataPath + "/Custom Missions/" + missionEditor.selectedMissionToLoad;
+            string missionAddress = OGGetAddress.missions_custom + missionEditor.selectedMissionToLoad;
             string missionDataString = File.ReadAllText(missionAddress);
             TextAsset missionDataTextAsset = new TextAsset(missionDataString);
             Mission mission = JsonUtility.FromJson<Mission>(missionDataTextAsset.text);
@@ -1907,7 +1907,7 @@ public static class MissionEditorFunctions
 
         //This adds the image to the recttransform
         Image image = gameObject.AddComponent<Image>();
-        image.sprite = Resources.Load<Sprite>("EditorAssets/" + imageName);
+        image.sprite = Resources.Load<Sprite>(OGGetAddress.editor + imageName);
         image.type = Image.Type.Sliced;
 
         //This returns the rect transform

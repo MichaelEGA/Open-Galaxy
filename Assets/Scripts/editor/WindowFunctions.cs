@@ -315,7 +315,7 @@ public static class WindowFunctions
         nodeHighlight.transform.SetParent(window.gameObject.transform);
 
         Image highlight = nodeHighlight.AddComponent<Image>();
-        highlight.sprite = Resources.Load<Sprite>("EditorAssets/NodeSprite_Light");
+        highlight.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
         highlight.type = Image.Type.Sliced;
         highlight.pixelsPerUnitMultiplier = 5;
         highlight.color = new Color(90f / 250f, 90f / 250f, 90f / 250f);
@@ -331,7 +331,7 @@ public static class WindowFunctions
         nodeBackground.transform.SetParent(window.gameObject.transform);
 
         Image background = nodeBackground.AddComponent<Image>();
-        background.sprite = Resources.Load<Sprite>("EditorAssets/NodeSprite_Light");
+        background.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
         background.type = Image.Type.Sliced;
         background.pixelsPerUnitMultiplier = 5;
         background.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
@@ -433,7 +433,7 @@ public static class WindowFunctions
         }
 
         Image image = imageGO.AddComponent<Image>();
-        image.sprite = Resources.Load<Sprite>("EditorAssets/" + imageName);
+        image.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "/" + imageName);
     }
 
     //This draws a button and allocates a function
@@ -460,7 +460,7 @@ public static class WindowFunctions
         rectTransform.localScale = new Vector3(1, 1, 1);
 
         RawImage rawimage = imageGO.AddComponent<RawImage>();
-        rawimage.texture = Resources.Load<Texture2D>("EditorAssets/" + imageName);
+        rawimage.texture = Resources.Load<Texture2D>(OGGetAddress.editor + imageName);
     }
 
     //This draws a button and allocates a function
@@ -487,7 +487,7 @@ public static class WindowFunctions
         rectTransform.localScale = new Vector3(1, 1, 1);
 
         Image buttonImage = buttonGO.AddComponent<Image>();
-        buttonImage.sprite = Resources.Load<Sprite>("EditorAssets/" + imageName);
+        buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + imageName);
 
         Button button = buttonGO.AddComponent<Button>();
         button.image = buttonImage;
@@ -544,7 +544,7 @@ public static class WindowFunctions
 
         if (buttonImageName != "none" & buttonImageName != "")
         {
-            buttonImage.sprite = Resources.Load<Sprite>("EditorAssets/" + buttonImageName);
+            buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + buttonImageName);
         }
         else
         {
@@ -818,11 +818,11 @@ public static class WindowFunctions
         Image scrollbarImage = scrollbarVertical.AddComponent<Image>();
         Image handleImage = handle.AddComponent<Image>();
 
-        scrollbarImage.sprite = Resources.Load<Sprite>("EditorAssets/NodeSprite_Dark");
+        scrollbarImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Dark");
         scrollbarImage.type = Image.Type.Sliced;
         scrollbarImage.pixelsPerUnitMultiplier = 40;
 
-        handleImage.sprite = Resources.Load<Sprite>("EditorAssets/NodeSprite_Grey");
+        handleImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Grey");
         handleImage.type = Image.Type.Sliced;
         handleImage.pixelsPerUnitMultiplier = 40;
 
@@ -882,7 +882,7 @@ public static class WindowFunctions
 
         if (backgroundImageName != "none" & backgroundImageName != "")
         {
-            backgroundImage.sprite = Resources.Load<Sprite>("EditorAssets/" + backgroundImageName);
+            backgroundImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + backgroundImageName);
         }
         else
         {
@@ -942,7 +942,7 @@ public static class WindowFunctions
         rectTransform3.localScale = new Vector3(1, 1, 1);
 
         Image inputFieldImage = inputFieldBackgroundGO.AddComponent<Image>();
-        inputFieldImage.sprite = Resources.Load<Sprite>("EditorAssets/NodeSprite_Light");
+        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
         inputFieldImage.type = Image.Type.Sliced;
         inputFieldImage.pixelsPerUnitMultiplier = 30;
 
@@ -1052,7 +1052,7 @@ public static class WindowFunctions
         rectTransform3.localScale = new Vector3(1, 1, 1);
 
         Image inputFieldImage = inputFieldBackgroundGO.AddComponent<Image>();
-        inputFieldImage.sprite = Resources.Load<Sprite>("EditorAssets/NodeSprite_Light");
+        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
         inputFieldImage.type = Image.Type.Sliced;
         inputFieldImage.pixelsPerUnitMultiplier = 30;
 
@@ -1140,7 +1140,7 @@ public static class WindowFunctions
         rectTransform3.localScale = new Vector3(1, 1, 1);
 
         Image inputFieldImage = dropdownGO.AddComponent<Image>();
-        inputFieldImage.sprite = Resources.Load<Sprite>("EditorAssets/NodeSprite_Grey");
+        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Grey");
         inputFieldImage.type = Image.Type.Sliced;
         inputFieldImage.pixelsPerUnitMultiplier = 30;
 
@@ -1256,7 +1256,7 @@ public static class WindowFunctions
         templateText.alignment = TextAnchor.MiddleCenter;
 
         Image templateBackground = templateGO.AddComponent<Image>();
-        templateBackground.sprite = Resources.Load<Sprite>("EditorAssets/NodeSprite_Grey");
+        templateBackground.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Grey");
         templateBackground.type = Image.Type.Sliced;
         templateBackground.pixelsPerUnitMultiplier = 30;
 
@@ -1568,12 +1568,12 @@ public static class WindowFunctions
     {
         List<string> buttonList = new List<string>();
 
-        var info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
+        var info = new DirectoryInfo(OGGetAddress.missions_custom);
 
         if (info.Exists == false)
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/Custom Missions/");
-            info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
+            Directory.CreateDirectory(OGGetAddress.missions_custom);
+            info = new DirectoryInfo(OGGetAddress.missions_custom);
         }
 
         List<TextAsset> customMissionsList = new List<TextAsset>();

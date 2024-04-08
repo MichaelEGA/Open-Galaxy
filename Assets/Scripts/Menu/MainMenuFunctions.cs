@@ -113,7 +113,7 @@ public static class MainMenuFunctions
     //This loads the disclaimer
     public static GameObject LoadDisclaimerPrefab()
     {      
-        GameObject menuPrefab = Resources.Load("Menu/Disclaimer") as GameObject;
+        GameObject menuPrefab = Resources.Load(OGSettingsFunctions.RetrieveFileAddress("menus") + "/Disclaimer") as GameObject;
         GameObject disclaimer = GameObject.Instantiate(menuPrefab);
         disclaimer.name = "Disclaimer";
         return disclaimer;

@@ -20,8 +20,6 @@ public class StartGame : MonoBehaviour
         OGSettingsFunctions.SetGameWindowMode(settings.gameWindowMode);
 
         Debug.developerConsoleVisible = false;
-
-        //SceneFunctions.LoadTerrain("Terrain01", "Forest01");
     }
 
     void Update()

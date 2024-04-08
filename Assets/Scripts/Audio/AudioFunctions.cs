@@ -15,7 +15,7 @@ public static class AudioFunctions
         GameObject audioManagerGO = new GameObject();
         audioManagerGO.name = "Audio Manager";
         Audio audioManager = audioManagerGO.AddComponent<Audio>();
-        audioManager.audioMixer = Resources.Load<AudioMixer>("AudioMixers/OGAudio");
+        audioManager.audioMixer = Resources.Load<AudioMixer>(OGGetAddress.audiomixers + "OGAudio");
 
         LoadAudioClips(audioManager);
 
@@ -28,7 +28,7 @@ public static class AudioFunctions
     //This loads all the availible audio clips
     public static void LoadAudioClips(Audio audio)
     {
-        AudioClip[] audioClips = Resources.LoadAll<AudioClip>("AudioClips");
+        AudioClip[] audioClips = Resources.LoadAll<AudioClip>(OGGetAddress.audioclips);
         audio.audioClips = new AudioClip[audioClips.Length];
         audio.audioClips = audioClips;
     }

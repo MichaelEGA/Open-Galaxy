@@ -86,7 +86,7 @@ public static class HudFunctions
         camera.orthographicSize = 12.5f;
         camera.clearFlags = CameraClearFlags.SolidColor;
         camera.cullingMask = (1 << LayerMask.NameToLayer("radar"));
-        Object[] renderTexture = Resources.LoadAll("Data/HudAssets", typeof(RenderTexture));
+        Object[] renderTexture = Resources.LoadAll("Hud", typeof(RenderTexture));
         camera.targetTexture = renderTexture[0] as RenderTexture;
         camera.transform.position = new Vector3(0, 0, -50);
         camera.name = "Radar Camera";

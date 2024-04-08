@@ -244,11 +244,11 @@ public static class MainMenuFunctions
     public static void LoadInternalCampaignData(MainMenu mainMenu)
     {
         //This loads the mission data
-        Object[] mainMissions = Resources.LoadAll("Data/Files/Missions_Main", typeof(TextAsset));
+        Object[] mainMissions = Resources.LoadAll("Files/Missions_Main", typeof(TextAsset));
 
         //This loads the image data
 
-        Object[] mainMissionImages = Resources.LoadAll("Data/Files/Missions_Main", typeof(Texture2D));
+        Object[] mainMissionImages = Resources.LoadAll("Files/Missions_Main", typeof(Texture2D));
 
         foreach (Object campaignImage in mainMissionImages)
         {
@@ -408,7 +408,7 @@ public static class MainMenuFunctions
     public static void CreateSubMenus(MainMenu mainMenu)
     {
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load("Data/Files/Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load("Files/Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         //This creates the menu lists ready to use
@@ -465,7 +465,7 @@ public static class MainMenuFunctions
     public static void CreateSideMenuButtons(MainMenu mainMenu)
     {
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load("Data/Files/Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load("Files/Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         //This adds the menu buttons to the left bar
@@ -484,7 +484,7 @@ public static class MainMenuFunctions
     public static void CreateSubMenuButtons(MainMenu mainMenu)
     {
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load("Data/Files/Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load("Files/Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         //This adds the actual menu content
@@ -811,7 +811,7 @@ public static class MainMenuFunctions
         MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
 
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load("Data/Files/Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load("Files/Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         foreach (MenuItem menuItem in menuItems.menuData)
@@ -870,7 +870,7 @@ public static class MainMenuFunctions
     //This loads a main mission
     public static void LoadMission(string name)
     {
-        Task a = new Task(MissionFunctions.RunMission(name, "Data/Files/Missions_Main/"));
+        Task a = new Task(MissionFunctions.RunMission(name, "Files/Missions_Main/"));
 
         GameObject menu = GameObject.Find("Menu");
 

@@ -5,6 +5,123 @@ using UnityEngine;
 
 public static class OGSettingsFunctions
 {
+    #region
+
+    //This returns the address of the designated file or folder
+    public static string RetrieveFileAddress(string name)
+    {
+        string address = "";
+
+        if (name == "asteroids")
+        {
+            address = "objects/debris/asteroids";
+        }
+        else if (name == "audioclips")
+        {
+            address = "audio/audioclips/";
+        }
+        else if (name == "audiomixers")
+        {
+            address = "audio/audiomixers/";
+        }
+        else if (name == "cockpits_communityassets")
+        {
+            address = "objects/cockpits/communityassets/";
+        }
+        else if (name == "cockpits_firststrike")
+        {
+            address = "objects/cockpits/galacticconquest/";
+        }
+        else if (name == "cockpits_galacticconquest")
+        {
+            address = "objects/cockpits/galacticconquest/";
+        }
+        else if (name == "editor")
+        {
+            address = "editor";
+        }
+        else if (name == "files")
+        {
+            address = "files";
+        }
+        else if (name == "fonts")
+        {
+            address = "fonts";
+        }
+        else if (name == "hud")
+        {
+            address = "hud";
+        }
+        else if (name == "hyperspace")
+        {
+            address = "objects/hyperspace/";
+        }
+        else if (name == "menus")
+        {
+            address = "menus";
+        }
+        else if (name == "menubuttons")
+        {
+            address = "menus/buttons/";
+        }
+        else if (name == "missions")
+        {
+            address = "missions";
+        }
+        else if (name == "musicclips")
+        {
+            address = "audio/musicclips/";
+        }
+        else if (name == "particles")
+        {
+            address = "particles";
+        }
+        else if (name == "planets")
+        {
+            address = "objects/planets/";
+        }
+        else if (name == "radar")
+        {
+            address = "objects/radar/";
+        }
+        else if (name == "ships_communityassets")
+        {
+            address = "objects/ships/communityassets/";
+        }
+        else if (name == "ships_firststrike")
+        {
+            address = "objects/ships/galacticconquest/";
+        }
+        else if (name == "ships_galacticconquest")
+        {
+            address = "objects/ships/galacticconquest/";
+        }
+        else if (name == "ships_originaltrilogy")
+        {
+            address = "objects/ships/originaltrilogy/";
+        }
+        else if (name == "skyboxes")
+        {
+            address = "skyboxes";
+        }
+        else if (name == "terrainmaterials")
+        {
+            address = "terrains/materials/";
+        }
+        else if (name == "terrainmeshes")
+        {
+            address = "terrains/meshes/";
+        }
+        else if (name == "turrets")
+        {
+            address = "objects/turrets/";
+        }
+
+        return address;
+    }
+
+    #endregion
+
     #region loading and saving settings
 
     //This loads the settings data from an external file or if it doesn't find one makes a new one

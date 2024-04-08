@@ -15,8 +15,8 @@ public static class TurretFunctions
             List<Turret> turrets = new List<Turret>();
             Transform[] turretTransforms = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "turret", "turrettransforms");
 
-            GameObject turretLarge = Resources.Load("TurretPrefabs/" + largeShip.prefabName + "_turretlarge") as GameObject;
-            GameObject turretSmall = Resources.Load("TurretPrefabs/" + largeShip.prefabName + "_turretsmall") as GameObject;
+            GameObject turretLarge = Resources.Load("Objects/turrets/" + largeShip.prefabName + "_turretlarge") as GameObject;
+            GameObject turretSmall = Resources.Load("Objects/turrets/" + largeShip.prefabName + "_turretsmall") as GameObject;
 
             foreach (Transform turretTransform in turretTransforms)
             {
@@ -209,18 +209,18 @@ public static class TurretFunctions
         //This loads the necessary prefabs
         if (turret.name.Contains("small"))
         {
-            laser = Resources.Load("ParticlePrefabs/Laser01/laser01") as GameObject;
+            laser = Resources.Load("Particles/Laser01/laser01") as GameObject;
         }
         else
         {
-            laser = Resources.Load("ParticlePrefabs/Laser_Turbo/laser_turbo") as GameObject;
+            laser = Resources.Load("Particles/Laser_Turbo/laser_turbo") as GameObject;
         }
 
         Mesh laserMesh = laser.GetComponent<MeshFilter>().sharedMesh;
-        Material redLaserMaterial = Resources.Load("ParticlePrefabs/Laser01/laser01_material_red") as Material;
-        Material greenLaserMaterial = Resources.Load("ParticlePrefabs/Laser01/laser01_material_green") as Material;
-        GameObject redLaserLight = Resources.Load("ParticlePrefabs/Laser01/laser01_light_red") as GameObject;
-        GameObject greenLaserLight = Resources.Load("ParticlePrefabs/Laser01/laser01_light_green") as GameObject;
+        Material redLaserMaterial = Resources.Load("Particles/Laser01/laser01_material_red") as Material;
+        Material greenLaserMaterial = Resources.Load("Particles/Laser01/laser01_material_green") as Material;
+        GameObject redLaserLight = Resources.Load("Particles/Laser01/laser01_light_red") as GameObject;
+        GameObject greenLaserLight = Resources.Load("Particles/Laser01/laser01_light_green") as GameObject;
 
         //This loads the particle system and the particle collider
         turret.turretParticleSystem = new GameObject();
@@ -311,7 +311,7 @@ public static class TurretFunctions
         LayerMask collisionLayers = new LayerMask();
 
         //This gets the Json ship data
-        TextAsset allegiancesFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
+        TextAsset allegiancesFile = Resources.Load("Files/Allegiances") as TextAsset;
         Allegiances allegiances = JsonUtility.FromJson<Allegiances>(allegiancesFile.text);
 
         Allegiance allegiance = null;

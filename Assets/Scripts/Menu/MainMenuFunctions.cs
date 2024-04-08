@@ -113,7 +113,7 @@ public static class MainMenuFunctions
     //This loads the disclaimer
     public static GameObject LoadDisclaimerPrefab()
     {      
-        GameObject menuPrefab = Resources.Load(OGSettingsFunctions.RetrieveFileAddress("menus") + "/Disclaimer") as GameObject;
+        GameObject menuPrefab = Resources.Load(OGGetAddress.menus + "Disclaimer") as GameObject;
         GameObject disclaimer = GameObject.Instantiate(menuPrefab);
         disclaimer.name = "Disclaimer";
         return disclaimer;
@@ -122,7 +122,7 @@ public static class MainMenuFunctions
     //This loads the Title Menu
     public static GameObject LoadTitlePrefab()
     {
-        GameObject menuPrefab = Resources.Load("Menu/Title") as GameObject;
+        GameObject menuPrefab = Resources.Load(OGGetAddress.menus + "Title") as GameObject;
         GameObject title = GameObject.Instantiate(menuPrefab);
         GameObject tip = GameObject.Find("Tip");
         title.name = "Title";
@@ -139,7 +139,7 @@ public static class MainMenuFunctions
     //This loads the background
     public static GameObject LoadBackgroundPrefab()
     {
-        GameObject menuPrefab = Resources.Load("Menu/Background") as GameObject;
+        GameObject menuPrefab = Resources.Load(OGGetAddress.menus + "Background") as GameObject;
         GameObject background = GameObject.Instantiate(menuPrefab);
         background.name = "Background";
         return background;
@@ -148,7 +148,7 @@ public static class MainMenuFunctions
     //This Loads the main menu
     public static GameObject LoadMenuPrefab()
     {
-        GameObject menuPrefab = Resources.Load("Menu/Menu") as GameObject;
+        GameObject menuPrefab = Resources.Load(OGGetAddress.menus + "Menu") as GameObject;
         GameObject menu = GameObject.Instantiate(menuPrefab);
         menu.name = "Menu";
         return menu;
@@ -200,7 +200,7 @@ public static class MainMenuFunctions
         mainMenu.buttons = Resources.LoadAll<GameObject>("MenuButtons");
     }
 
-    //This initiates all the lists used theb main menu
+    //This initiates all the lists used by the  main menu
     public static void InitiateLists(MainMenu mainMenu)
     {
         if (mainMenu.campaigns == null)
@@ -244,11 +244,11 @@ public static class MainMenuFunctions
     public static void LoadInternalCampaignData(MainMenu mainMenu)
     {
         //This loads the mission data
-        Object[] mainMissions = Resources.LoadAll("Files/Missions_Main", typeof(TextAsset));
+        Object[] mainMissions = Resources.LoadAll(OGGetAddress.missions_internal, typeof(TextAsset));
 
         //This loads the image data
 
-        Object[] mainMissionImages = Resources.LoadAll("Files/Missions_Main", typeof(Texture2D));
+        Object[] mainMissionImages = Resources.LoadAll(OGGetAddress.missions_internal, typeof(Texture2D));
 
         foreach (Object campaignImage in mainMissionImages)
         {
@@ -297,13 +297,13 @@ public static class MainMenuFunctions
     public static void LoadExternalCampaignData(MainMenu mainMenu)
     {
         //This gets the external folder
-        var info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
+        var info = new DirectoryInfo(OGGetAddress.missions_custom);
 
         //This loads the mission data
         if (info.Exists == false)
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/Custom Missions/");
-            info = new DirectoryInfo(Application.persistentDataPath + "/Custom Missions/");
+            Directory.CreateDirectory(OGGetAddress.missions_custom);
+            info = new DirectoryInfo(OGGetAddress.missions_custom);
         }
 
         List<TextAsset> customMissionsList = new List<TextAsset>();
@@ -314,7 +314,7 @@ public static class MainMenuFunctions
 
             foreach (FileInfo file in fileInfo)
             {
-                string path = Application.persistentDataPath + "/Custom Missions/" + file.Name;
+                string path = OGGetAddress.missions_custom + file.Name;
                 string missionDataString = File.ReadAllText(path);
                 TextAsset missionDataTextAsset = new TextAsset(missionDataString);
                 missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
@@ -336,7 +336,7 @@ public static class MainMenuFunctions
 
             foreach (FileInfo file in fileInfo)
             {
-                string path = Application.persistentDataPath + "/Custom Missions/" + file.Name;
+                string path = OGGetAddress.missions_custom + file.Name;
                 byte[] bytes = File.ReadAllBytes(path);
                 Texture2D loadTexture = new Texture2D(1, 1); //mock size 1x1
                 loadTexture.LoadImage(bytes);
@@ -390,7 +390,7 @@ public static class MainMenuFunctions
         //Add your functions here
         mainMenu.functions.Add("LoadMainMission", new System.Action<string>(LoadMission));
         mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
-        mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadMissionEditor));
+        mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadEditor));
         mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
         mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
         mainMenu.functions.Add("SelectShipAssets", new System.Action<string>(SelectShipAssets));
@@ -408,7 +408,7 @@ public static class MainMenuFunctions
     public static void CreateSubMenus(MainMenu mainMenu)
     {
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load("Files/Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load(OGGetAddress.menus + "Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         //This creates the menu lists ready to use
@@ -465,7 +465,7 @@ public static class MainMenuFunctions
     public static void CreateSideMenuButtons(MainMenu mainMenu)
     {
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load("Files/Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load(OGGetAddress.menus + "Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         //This adds the menu buttons to the left bar
@@ -484,7 +484,7 @@ public static class MainMenuFunctions
     public static void CreateSubMenuButtons(MainMenu mainMenu)
     {
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load("Files/Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load(OGGetAddress.menus + "Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         //This adds the actual menu content
@@ -811,7 +811,7 @@ public static class MainMenuFunctions
         MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
 
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load("Files/Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load(OGGetAddress.files + "Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         foreach (MenuItem menuItem in menuItems.menuData)
@@ -856,7 +856,7 @@ public static class MainMenuFunctions
     //This loads a custom mission
     public static void LoadCustomMission(string name)
     {
-        Task a = new Task(MissionFunctions.RunMission(name, Application.persistentDataPath + "/Custom Missions/", true));
+        Task a = new Task(MissionFunctions.RunMission(name, OGGetAddress.missions_custom, true));
 
         GameObject menu = GameObject.Find("Menu");
 
@@ -870,7 +870,7 @@ public static class MainMenuFunctions
     //This loads a main mission
     public static void LoadMission(string name)
     {
-        Task a = new Task(MissionFunctions.RunMission(name, "Files/Missions_Main/"));
+        Task a = new Task(MissionFunctions.RunMission(name, OGGetAddress.missions_internal));
 
         GameObject menu = GameObject.Find("Menu");
 
@@ -882,18 +882,18 @@ public static class MainMenuFunctions
     }
 
     //This loads the mission editor
-    public static void LoadMissionEditor()
+    public static void LoadEditor()
     {
-        GameObject missionEditor = GameObject.Find("MissionEditor");
+        GameObject editor = GameObject.Find("editor");
         
-        if (missionEditor == null)
+        if (editor == null)
         {
-            GameObject tempMissionEditor = Resources.Load("MissionEditor/MissionEditor") as GameObject;
-            missionEditor = GameObject.Instantiate(tempMissionEditor);
-            missionEditor.name = "MissionEditor";
+            GameObject tempEditor = Resources.Load(OGGetAddress.editor + "editor") as GameObject;
+            editor = GameObject.Instantiate(tempEditor);
+            editor.name = "editor";
         }
 
-        missionEditor.SetActive(true);
+        editor.SetActive(true);
 
         PlayBackgroundMusic(false);
     }

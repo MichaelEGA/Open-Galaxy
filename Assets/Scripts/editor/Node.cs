@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 
 public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
-
     //Mission Event data carried by the node, strings are data that is not displayed
     public Text eventID;
     public Text eventType;
@@ -63,8 +62,6 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
     Vector3 startPos;
     public bool startPositionRecorded;
-
-
 
     // Start is called before the first frame update
     void Start()

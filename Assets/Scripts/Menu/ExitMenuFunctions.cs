@@ -16,7 +16,7 @@ public static class ExitMenuFunctions
 
             if (exitMenu == null)
             {
-                GameObject exitMenuPrefab = Resources.Load("Menu/ExitMenu") as GameObject;
+                GameObject exitMenuPrefab = Resources.Load(OGGetAddress.menus + "ExitMenu") as GameObject;
                 exitMenu = GameObject.Instantiate(exitMenuPrefab);
                 exitMenu.name = "ExitMenu";
             }

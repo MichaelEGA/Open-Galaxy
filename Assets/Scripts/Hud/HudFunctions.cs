@@ -11,7 +11,7 @@ public static class HudFunctions
     //This loads the hud prefab
     public static void CreateHud()
     {
-        GameObject hudPrefab = Resources.Load("Hud/Hud") as GameObject;
+        GameObject hudPrefab = Resources.Load(OGGetAddress.hud + "hud") as GameObject;
         GameObject hud = GameObject.Instantiate(hudPrefab);
 
         hud.name = "Hud";
@@ -53,7 +53,7 @@ public static class HudFunctions
     //This loads all the models prefabs ready to instantiate
     public static void LoadRadarPrefabs(Hud hud)
     {
-        Object[] radarPrefabs = Resources.LoadAll("RadarPrefabs", typeof(GameObject));
+        Object[] radarPrefabs = Resources.LoadAll(OGGetAddress.radar, typeof(GameObject));
         hud.radarPrefabPool = new GameObject[radarPrefabs.Length];
         hud.radarPrefabPool = radarPrefabs;
     }
@@ -86,7 +86,7 @@ public static class HudFunctions
         camera.orthographicSize = 12.5f;
         camera.clearFlags = CameraClearFlags.SolidColor;
         camera.cullingMask = (1 << LayerMask.NameToLayer("radar"));
-        Object[] renderTexture = Resources.LoadAll("Hud", typeof(RenderTexture));
+        Object[] renderTexture = Resources.LoadAll(OGGetAddress.hud, typeof(RenderTexture));
         camera.targetTexture = renderTexture[0] as RenderTexture;
         camera.transform.position = new Vector3(0, 0, -50);
         camera.name = "Radar Camera";

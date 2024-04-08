@@ -27,7 +27,7 @@ public static class MissionBriefingFunctions
 
         if (missionBriefing == null)
         {        
-            GameObject missionBriefingPrefab = Resources.Load("Menu/MissionBriefing") as GameObject;
+            GameObject missionBriefingPrefab = Resources.Load(OGGetAddress.menus + "MissionBriefing") as GameObject;
             GameObject missionBriefingGO = GameObject.Instantiate(missionBriefingPrefab);
             missionBriefingGO.name = "MissionBriefing";
             missionBriefing = missionBriefingGO.GetComponent<MissionBriefing>();

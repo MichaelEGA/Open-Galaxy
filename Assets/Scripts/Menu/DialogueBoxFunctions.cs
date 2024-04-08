@@ -22,7 +22,7 @@ public static class DialogueBoxFunctions
 
             if (dialogueBoxGO == null)
             {
-                GameObject exitMenuPrefab = Resources.Load("Menu/DialogueBox") as GameObject;
+                GameObject exitMenuPrefab = Resources.Load(OGGetAddress.menus + "DialogueBox") as GameObject;
                 dialogueBoxGO = GameObject.Instantiate(exitMenuPrefab);
                 dialogueBox = dialogueBoxGO.AddComponent<DialogueBox>();
                 dialogueBoxGO.name = "DialogueBox";

@@ -14,7 +14,7 @@ public static class LoadScreenFunctions
         {
             if (loadingScreen == null)
             {
-                GameObject loadingScreenPrefab = Resources.Load("Menu/LoadingScreen") as GameObject;
+                GameObject loadingScreenPrefab = Resources.Load(OGGetAddress.menus + "LoadingScreen") as GameObject;
                 loadingScreen = GameObject.Instantiate(loadingScreenPrefab);
                 loadingScreen.name = "LoadingScreen";
             }

@@ -6,7 +6,7 @@ Gameplay
 ![Screenshot (236)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/69161c7d-b73b-4e9c-a0c8-6ac994ff5749)
 
 Mission Editor
-![Screenshot (235)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/70cb5a41-f2ad-4a0e-a048-94c489a22ab2)
+![Screenshot (241)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/ac67c4b6-49b7-4452-9ff4-708156414d80)
 
 Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platform for custom missions made by the community. 
 
@@ -21,9 +21,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Switch between different asset sets (Implemented)
   - Terrain loading (Implemented)
 
-**Latest Development Release:** 1.6.54
+**Latest Development Release:** 1.8.05
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.6.54/Open.Galaxy.1.6.54.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.8.05/Open.Galaxy.1.8.05.zip
 
 **Latest Milestone Release:** 1.0.0
 
@@ -36,6 +36,25 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
 
 **Changelog**
+
+07/04/24 - v.1.8.05 (Unity 2022.3.12f1)
+  - Added: target locking now holds tone on confirmed lock
+  - Updated: Added docking points to all ships
+  - Updated: Move exit mission function to mission functions
+  - Added: Outline to mission editor windows
+  - Fixed: AI Ships now steer correctly when upside down
+  - Updated: Distance to waypoint now works with large ships
+  - Updated: Smallship and Largeship now exit docking on different vectors
+  - Fixed: Minor docking errors
+  - Updated: Set way point now affects LargeShips
+  - Updated: Upgraded docking system complete
+  - Updated: Docking now checks whether the dock is being used before running
+  - Updated: Docking alignment now more accurate
+  - Updated: Docking now connects docking point to docking point
+  - Updated: Docking systems now fully implemented
+  - Updated: Basic docking procedures are now functioning and can be call…
+  - Added: Base code for docking
+  - Added: Node and Window borders/highlights
 
 25/03/24 - v1.6.54 (Unity 2022.3.12f1)
   - Fixed: A minor mission breaking bug that prevented smallships from hypering-in in the correct position

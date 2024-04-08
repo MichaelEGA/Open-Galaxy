@@ -11,12 +11,12 @@ public static class LaserFunctions
     public static void LoadLaserParticleSystem(SmallShip smallShip)
     {
         //This loads the necessary prefabs
-        GameObject laser = Resources.Load("ParticlePrefabs/Laser01/laser01") as GameObject;
+        GameObject laser = Resources.Load(OGGetAddress.particles + "Laser01/laser01") as GameObject;
         Mesh laserMesh = laser.GetComponent<MeshFilter>().sharedMesh;
-        Material redLaserMaterial = Resources.Load("ParticlePrefabs/Laser01/laser01_material_red") as Material;
-        Material greenLaserMaterial = Resources.Load("ParticlePrefabs/Laser01/laser01_material_green") as Material;
-        GameObject redLaserLight = Resources.Load("ParticlePrefabs/Laser01/laser01_light_red") as GameObject;
-        GameObject greenLaserLight = Resources.Load("ParticlePrefabs/Laser01/laser01_light_green") as GameObject;
+        Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_red") as Material;
+        Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_green") as Material;
+        GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_red") as GameObject;
+        GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_green") as GameObject;
 
         //This loads the particle system and the particle collider
         smallShip.laserParticleSystem = new GameObject();
@@ -108,7 +108,7 @@ public static class LaserFunctions
         {
 
             //This gets the Json ship data
-            TextAsset allegiancesFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
+            TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
             Allegiances allegiances = JsonUtility.FromJson<Allegiances>(allegiancesFile.text);
 
             Allegiance allegiance = null;

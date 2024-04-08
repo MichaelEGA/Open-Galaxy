@@ -289,7 +289,7 @@ public static class TorpedoFunctions
         if (torpedo == null)
         {
             //This gets the Json torpedo data
-            TextAsset torpedoTypesFile = Resources.Load("Data/Files/TorpedoTypes") as TextAsset;
+            TextAsset torpedoTypesFile = Resources.Load(OGGetAddress.files + "TorpedoTypes") as TextAsset;
             TorpedoTypes torpedoTypes = JsonUtility.FromJson<TorpedoTypes>(torpedoTypesFile.text);
 
             TorpedoType torpedoType = null;

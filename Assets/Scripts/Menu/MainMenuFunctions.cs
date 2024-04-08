@@ -197,7 +197,7 @@ public static class MainMenuFunctions
     {
         MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
 
-        mainMenu.buttons = Resources.LoadAll<GameObject>("MenuButtons");
+        mainMenu.buttons = Resources.LoadAll<GameObject>(OGGetAddress.menubuttons);
     }
 
     //This initiates all the lists used by the  main menu
@@ -408,7 +408,7 @@ public static class MainMenuFunctions
     public static void CreateSubMenus(MainMenu mainMenu)
     {
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load(OGGetAddress.menus + "Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load(OGGetAddress.files + "Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         //This creates the menu lists ready to use
@@ -465,7 +465,7 @@ public static class MainMenuFunctions
     public static void CreateSideMenuButtons(MainMenu mainMenu)
     {
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load(OGGetAddress.menus + "Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load(OGGetAddress.files + "Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         //This adds the menu buttons to the left bar
@@ -484,7 +484,7 @@ public static class MainMenuFunctions
     public static void CreateSubMenuButtons(MainMenu mainMenu)
     {
         //This loads all the information for the menu from the Json file
-        TextAsset menuItemsFile = Resources.Load(OGGetAddress.menus + "Menu") as TextAsset;
+        TextAsset menuItemsFile = Resources.Load(OGGetAddress.files + "Menu") as TextAsset;
         MenuItems menuItems = JsonUtility.FromJson<MenuItems>(menuItemsFile.text);
 
         //This adds the actual menu content

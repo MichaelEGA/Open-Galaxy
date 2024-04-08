@@ -474,7 +474,7 @@ public static class TargetingFunctions
         {
             if (smallShip.scene.allegiance == "none")
             {
-                TextAsset allegiancesFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
+                TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
                 smallShip.scene.allegiance = allegiancesFile.text;
             }
 
@@ -898,7 +898,7 @@ public static class TargetingFunctions
             //This gets the Json ship data
             if (largeShip.scene.allegiance == "none")
             {
-                TextAsset allegiancesFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
+                TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
                 largeShip.scene.allegiance = allegiancesFile.text;
             }
 

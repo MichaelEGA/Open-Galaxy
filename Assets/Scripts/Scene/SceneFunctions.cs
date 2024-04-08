@@ -24,7 +24,6 @@ public static class SceneFunctions
 
             LoadScenePrefabs();
             GetCameras();
-            //InstantiateCockpits();
         }
     }
 
@@ -112,7 +111,7 @@ public static class SceneFunctions
 
         //ADD THIS TO THE ADDRESS SCRIPT THEN CONTINUE WORK FROM HERE
         //This loads the planet materials
-        Object[] planetMaterials = Resources.LoadAll("planet/planetmaterials/", typeof(Material));
+        Object[] planetMaterials = Resources.LoadAll(OGGetAddress.planets_planetmaterials, typeof(Material));
 
         if (planetMaterials != null)
         {
@@ -120,7 +119,7 @@ public static class SceneFunctions
             scene.planetMaterialPool = planetMaterials;
         }
 
-        Object[] cloudMaterials = Resources.LoadAll("planet/cloudmaterials/", typeof(Material));
+        Object[] cloudMaterials = Resources.LoadAll(OGGetAddress.planets_cloudmaterials, typeof(Material));
 
         if (cloudMaterials != null)
         {
@@ -128,7 +127,7 @@ public static class SceneFunctions
             scene.cloudMaterialPool = cloudMaterials;
         }
 
-        Object[] atmosphereMaterials = Resources.LoadAll("planet/atmospherematerials/", typeof(Material));
+        Object[] atmosphereMaterials = Resources.LoadAll(OGGetAddress.planets_atmospherematerials, typeof(Material));
 
         if (atmosphereMaterials != null)
         {
@@ -136,9 +135,9 @@ public static class SceneFunctions
             scene.atmosphereMaterialPool = atmosphereMaterials;
         }
 
-        scene.hyperspaceTunnelPrefab = Resources.Load("Hyperspace/HyperspaceTunnel") as GameObject;
+        scene.hyperspaceTunnelPrefab = Resources.Load(OGGetAddress.hyperspace + "HyperspaceTunnel") as GameObject;
 
-        scene.skyboxes = Resources.LoadAll<Material>("Skyboxes/");    
+        scene.skyboxes = Resources.LoadAll<Material>(OGGetAddress.skyboxes);    
     }
 
     //This creates the starfield Camera
@@ -308,13 +307,13 @@ public static class SceneFunctions
         var psShape = particleSystem.shape;
         psShape.enabled = false;
 
-        Material starMaterial = Resources.Load("ParticlePrefabs/Star/Star") as Material;
+        Material starMaterial = Resources.Load(OGGetAddress.particles + "Star/Star") as Material;
         starfield.GetComponent<ParticleSystemRenderer>().material = starMaterial as Material;
 
         yield return new WaitForSeconds(10);
 
         //This loads the Json file
-        TextAsset starSystemFile = Resources.Load("Data/Files/StarSystems") as TextAsset;
+        TextAsset starSystemFile = Resources.Load(OGGetAddress.files + "StarSystems") as TextAsset;
         StarSystems starSystems = JsonUtility.FromJson<StarSystems>(starSystemFile.text);
 
         //This creates the key values
@@ -545,7 +544,7 @@ public static class SceneFunctions
 
         if (scene.centerPivot == null)
         {
-            GameObject planetPrefab = Resources.Load("planet/centerpivot") as GameObject;
+            GameObject planetPrefab = Resources.Load(OGGetAddress.planets + "centerpivot") as GameObject;
             scene.centerPivot = GameObject.Instantiate(planetPrefab);
             scene.planetPivot = GameObject.Find("planetpivot");
             scene.planet = GameObject.Find("planet");
@@ -687,7 +686,7 @@ public static class SceneFunctions
         string sector = "none";
 
         //This loads the Json file
-        TextAsset starSystemFile = Resources.Load("Data/Files/StarSystems") as TextAsset;
+        TextAsset starSystemFile = Resources.Load(OGGetAddress.files + "StarSystems") as TextAsset;
         StarSystems starSystems = JsonUtility.FromJson<StarSystems>(starSystemFile.text);
 
         int numberOfStarSystems = starSystems.starSystemsData.Length;
@@ -727,7 +726,7 @@ public static class SceneFunctions
         bool wasFound = false;
 
         //This loads the Json file
-        TextAsset starSystemFile = Resources.Load("Data/Files/StarSystems") as TextAsset;
+        TextAsset starSystemFile = Resources.Load(OGGetAddress.files + "StarSystems") as TextAsset;
         StarSystems starSystems = JsonUtility.FromJson<StarSystems>(starSystemFile.text);
 
         //This finds specific data on the location
@@ -1017,7 +1016,7 @@ public static class SceneFunctions
         //This loads the terrain gameobject
         GameObject terrain = null;
 
-        Object[] terrainPrefabs = Resources.LoadAll("TerrainPrefabs", typeof(GameObject));
+        Object[] terrainPrefabs = Resources.LoadAll(OGGetAddress.terrainmeshes, typeof(GameObject));
 
         foreach (Object tempTerrain in terrainPrefabs)
         {
@@ -1057,7 +1056,7 @@ public static class SceneFunctions
         }
 
         //This applies the material
-        Object[] terrainMaterials = Resources.LoadAll("TerrainMaterials", typeof(Material));
+        Object[] terrainMaterials = Resources.LoadAll(OGGetAddress.terrainmaterials, typeof(Material));
 
         Material terrainMaterial = null;
 
@@ -1183,7 +1182,7 @@ public static class SceneFunctions
         Audio audioManager = AudioFunctions.GetAudioManager();
 
         //This gets the Json ship data
-        TextAsset shipTypesFile = Resources.Load("Data/Files/ShipTypes") as TextAsset;
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
         ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
 
         //Check for ship type in shipTypeData
@@ -1358,7 +1357,7 @@ public static class SceneFunctions
             if (isAI == true || shipType.scriptType == "largeship")
             {
                 //This gets the Json ship data
-                TextAsset allegiancesFile = Resources.Load("Data/Files/Allegiances") as TextAsset;
+                TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
                 Allegiances allegiances = JsonUtility.FromJson<Allegiances>(allegiancesFile.text);
                 Allegiance allegianceScript = null;
                 int i = 0;
@@ -1527,7 +1526,7 @@ public static class SceneFunctions
         Scene scene = GetScene();
 
         //This gets the Json ship data
-        TextAsset shipTypesFile = Resources.Load("Data/Files/ShipTypes") as TextAsset;
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
         ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
 
         //This finds the ship type to load 
@@ -1594,7 +1593,7 @@ public static class SceneFunctions
         Scene scene = GetScene();
 
         //This gets the Json ship data
-        TextAsset shipTypesFile = Resources.Load("Data/Files/ShipTypes") as TextAsset;
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
         ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
 
         //This finds the ship type to load 
@@ -2064,7 +2063,7 @@ public static class SceneFunctions
 
             if (tempPrefab == null)
             {
-                tempPrefab = ReturnCockpitPrefab(name, "additionalassets");
+                tempPrefab = ReturnCockpitPrefab(name, "communityassets");
             }
         }
 
@@ -2109,7 +2108,7 @@ public static class SceneFunctions
                 }
             }
         }
-        else if (pool == "additionalassets")
+        else if (pool == "communityassets")
         {
             foreach (GameObject objectPrefab in scene.caCockpitPrefabPool)
             {

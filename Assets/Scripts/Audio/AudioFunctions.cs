@@ -181,11 +181,6 @@ public static class AudioFunctions
                 AudioClip audioClip = GetMissionAudioClip(audioManager, audioName);
                 audioSource = GetAudioSource(audioManager);
 
-                if (audioClip == null)
-                {
-                    Debug.Log("Audio clip was null" + "audio manager clips number" + audioManager.missionAudioClips.Length);
-                }
-
                 if (audioClip != null & audioSource != null)
                 {
                     audioSource.clip = audioClip;
@@ -313,10 +308,13 @@ public static class AudioFunctions
             {
                 foreach (AudioClip tempAudioClip in audioManager.audioClips)
                 {
-                    if (tempAudioClip.name == audioName)
+                    if (tempAudioClip != null) 
                     {
-                        audioClip = tempAudioClip;
-                        break;
+                        if (tempAudioClip.name == audioName)
+                        {
+                            audioClip = tempAudioClip;
+                            break;
+                        }
                     }
                 }
             }
@@ -336,10 +334,13 @@ public static class AudioFunctions
             {
                 foreach (AudioClip tempAudioClip in audioManager.missionAudioClips)
                 {
-                    if (tempAudioClip.name == audioName)
+                    if (tempAudioClip != null)
                     {
-                        audioClip = tempAudioClip;
-                        break;
+                        if (tempAudioClip.name == audioName)
+                        {
+                            audioClip = tempAudioClip;
+                            break;
+                        }
                     }
                 }
             }

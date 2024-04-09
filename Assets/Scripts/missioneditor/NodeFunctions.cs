@@ -410,7 +410,7 @@ public class NodeFunctions : MonoBehaviour
         nodeHighlight.transform.SetParent(node.gameObject.transform);
 
         Image highlight = nodeHighlight.AddComponent<Image>();
-        highlight.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
+        highlight.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         highlight.type = Image.Type.Sliced;
         highlight.pixelsPerUnitMultiplier = 5;
 
@@ -428,7 +428,7 @@ public class NodeFunctions : MonoBehaviour
         nodeBackground.transform.SetParent(node.gameObject.transform);
 
         Image background = nodeBackground.AddComponent<Image>();
-        background.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
+        background.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         background.type = Image.Type.Sliced;
         background.pixelsPerUnitMultiplier = 5;
         background.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
@@ -537,7 +537,7 @@ public class NodeFunctions : MonoBehaviour
         rectTransform3.localScale = new Vector3(1, 1, 1);
 
         Image inputFieldImage = inputFieldBackgroundGO.AddComponent<Image>();
-        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
+        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         inputFieldImage.type = Image.Type.Sliced;
         inputFieldImage.pixelsPerUnitMultiplier = 30;
 
@@ -641,7 +641,7 @@ public class NodeFunctions : MonoBehaviour
         rectTransform3.localScale = new Vector3(1, 1, 1);
 
         Image inputFieldImage = inputFieldBackgroundGO.AddComponent<Image>();
-        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
+        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         inputFieldImage.type = Image.Type.Sliced;
         inputFieldImage.pixelsPerUnitMultiplier = 30;
 
@@ -745,7 +745,7 @@ public class NodeFunctions : MonoBehaviour
         rectTransform3.localScale = new Vector3(1, 1, 1);
 
         Image inputFieldImage = dropdownGO.AddComponent<Image>();
-        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Grey");
+        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Grey");
         inputFieldImage.type = Image.Type.Sliced;
         inputFieldImage.pixelsPerUnitMultiplier = 30;
 
@@ -861,7 +861,7 @@ public class NodeFunctions : MonoBehaviour
         templateText.alignment = TextAnchor.MiddleLeft;
 
         Image templateBackground = templateGO.AddComponent<Image>();
-        templateBackground.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Grey");
+        templateBackground.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Grey");
         templateBackground.type = Image.Type.Sliced;
         templateBackground.pixelsPerUnitMultiplier = 30;
 
@@ -920,11 +920,11 @@ public class NodeFunctions : MonoBehaviour
         Image scrollbarImage = scrollbarVertical.AddComponent<Image>();
         Image handleImage = handle.AddComponent<Image>();
 
-        scrollbarImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Dark");
+        scrollbarImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Dark");
         scrollbarImage.type = Image.Type.Sliced;
         scrollbarImage.pixelsPerUnitMultiplier = 40;
 
-        handleImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Grey");
+        handleImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Grey");
         handleImage.type = Image.Type.Sliced;
         handleImage.pixelsPerUnitMultiplier = 40;
 
@@ -950,7 +950,7 @@ public class NodeFunctions : MonoBehaviour
         rectTransform.localScale = new Vector3(1, 1, 1);
 
         Image buttonImage = buttonGO.AddComponent<Image>();
-        buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + imageName);
+        buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + imageName);
 
         Button button = buttonGO.AddComponent<Button>();
         button.image = buttonImage;
@@ -999,7 +999,7 @@ public class NodeFunctions : MonoBehaviour
         rectTransform1.localScale = new Vector3(1, 1, 1);
 
         Image nodeLinkImage = nodeLinkImageGO.AddComponent<Image>();
-        nodeLinkImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "target");
+        nodeLinkImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "target");
 
         NodeLink nodeLink = nodeLinkGO.AddComponent<NodeLink>();
         nodeLink.node = node;

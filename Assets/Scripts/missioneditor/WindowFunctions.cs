@@ -13,7 +13,7 @@ public static class WindowFunctions
     {
         if (window.windowType == "addnodes")
         {
-            WindowFunctions.Draw_AddNode(window);
+            WindowFunctions.Draw_AddEvent(window);
         }
         else if (window.windowType == "displaylocation")
         {
@@ -49,8 +49,10 @@ public static class WindowFunctions
     }
 
     //This draws the add now window
-    public static void Draw_AddNode(Window window)
+    public static void Draw_AddEvent(Window window)
     {
+        window.transform.name = "window_addevent";
+
         DrawWindowBase(window, 250, 200);
 
         DrawText(window, "Add Event Node", 8, 5, -5, 12.5f, 90);
@@ -132,6 +134,8 @@ public static class WindowFunctions
     //This draws a window that displays the location of all relevant nodes on the map
     public static void Draw_DisplayLocation(Window window)
     {
+        window.transform.name = "window_displaylocation";
+
         DrawWindowBase(window, 250, 208);
 
         DrawText(window, "Display Location", 8, 5, -5, 12.5f, 90);
@@ -190,6 +194,8 @@ public static class WindowFunctions
     //This draws the load mission window
     public static void Draw_LoadMission(Window window)
     {
+        window.transform.name = "window_loadmission";
+
         DrawWindowBase(window, 250, 100);
 
         DrawText(window, "Load Mission", 8, 5, -5, 12.5f, 90);
@@ -217,6 +223,8 @@ public static class WindowFunctions
     //This draws the load mission window
     public static void Draw_MergeMissions(Window window)
     {
+        window.transform.name = "window_mergemission";
+
         DrawWindowBase(window, 250, 100);
 
         DrawText(window, "Merge Missions", 8, 5, -5, 12.5f, 90);
@@ -244,6 +252,8 @@ public static class WindowFunctions
     //This draws the save mission window
     public static void Draw_SaveMissionAs(Window window)
     {
+        window.transform.name = "window_savemissionas";
+
         DrawWindowBase(window, 250, 100);
 
         DrawText(window, "Save Mission As", 8, 5, -5, 12.5f, 90);
@@ -264,6 +274,8 @@ public static class WindowFunctions
     //This draws the save mission window
     public static void Draw_ExportSelectionAs(Window window)
     {
+        window.transform.name = "window_exportselectionas";
+
         DrawWindowBase(window, 250, 100);
 
         DrawText(window, "Export Selection As", 8, 5, -5, 12.5f, 90);
@@ -284,6 +296,8 @@ public static class WindowFunctions
     //This draws the mission editor about window
     public static void Draw_AboutWindow(Window window)
     {
+        window.transform.name = "window_aboutwindow";
+
         DrawWindowBase(window, 250, 100);
 
         DrawText(window, "About OG Mission Editor", 8, 5, -5, 12.5f, 90);
@@ -299,11 +313,11 @@ public static class WindowFunctions
 
     #region Draw Window Functions
 
+    //This draws the base window rect transforms
     public static void DrawWindowBase(Window window, float width, float height)
     {
         //This sets up the base recttransform
         window.rectTransform = window.gameObject.AddComponent<RectTransform>();
-        window.name = "Node";
 
         window.rectTransform.sizeDelta = new Vector2(width, height);
         window.rectTransform.localPosition = new Vector2(window.xPos, window.yPos);
@@ -311,11 +325,11 @@ public static class WindowFunctions
 
         //This sets up the node highlight
         GameObject nodeHighlight = new GameObject();
-        nodeHighlight.name = "nodeHighlight";
+        nodeHighlight.name = "windowHighlight";
         nodeHighlight.transform.SetParent(window.gameObject.transform);
 
         Image highlight = nodeHighlight.AddComponent<Image>();
-        highlight.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
+        highlight.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         highlight.type = Image.Type.Sliced;
         highlight.pixelsPerUnitMultiplier = 5;
         highlight.color = new Color(90f / 250f, 90f / 250f, 90f / 250f);
@@ -327,11 +341,11 @@ public static class WindowFunctions
 
         //This sets up the node background
         GameObject nodeBackground = new GameObject();
-        nodeBackground.name = "nodeBackground";
+        nodeBackground.name = "windowBackground";
         nodeBackground.transform.SetParent(window.gameObject.transform);
 
         Image background = nodeBackground.AddComponent<Image>();
-        background.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
+        background.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         background.type = Image.Type.Sliced;
         background.pixelsPerUnitMultiplier = 5;
         background.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
@@ -433,7 +447,7 @@ public static class WindowFunctions
         }
 
         Image image = imageGO.AddComponent<Image>();
-        image.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "/" + imageName);
+        image.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "/" + imageName);
     }
 
     //This draws a button and allocates a function
@@ -460,7 +474,7 @@ public static class WindowFunctions
         rectTransform.localScale = new Vector3(1, 1, 1);
 
         RawImage rawimage = imageGO.AddComponent<RawImage>();
-        rawimage.texture = Resources.Load<Texture2D>(OGGetAddress.editor + imageName);
+        rawimage.texture = Resources.Load<Texture2D>(OGGetAddress.missioneditor + imageName);
     }
 
     //This draws a button and allocates a function
@@ -487,7 +501,7 @@ public static class WindowFunctions
         rectTransform.localScale = new Vector3(1, 1, 1);
 
         Image buttonImage = buttonGO.AddComponent<Image>();
-        buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + imageName);
+        buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + imageName);
 
         Button button = buttonGO.AddComponent<Button>();
         button.image = buttonImage;
@@ -544,7 +558,7 @@ public static class WindowFunctions
 
         if (buttonImageName != "none" & buttonImageName != "")
         {
-            buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + buttonImageName);
+            buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + buttonImageName);
         }
         else
         {
@@ -818,11 +832,11 @@ public static class WindowFunctions
         Image scrollbarImage = scrollbarVertical.AddComponent<Image>();
         Image handleImage = handle.AddComponent<Image>();
 
-        scrollbarImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Dark");
+        scrollbarImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Dark");
         scrollbarImage.type = Image.Type.Sliced;
         scrollbarImage.pixelsPerUnitMultiplier = 40;
 
-        handleImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Grey");
+        handleImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Grey");
         handleImage.type = Image.Type.Sliced;
         handleImage.pixelsPerUnitMultiplier = 40;
 
@@ -882,7 +896,7 @@ public static class WindowFunctions
 
         if (backgroundImageName != "none" & backgroundImageName != "")
         {
-            backgroundImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + backgroundImageName);
+            backgroundImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + backgroundImageName);
         }
         else
         {
@@ -942,7 +956,7 @@ public static class WindowFunctions
         rectTransform3.localScale = new Vector3(1, 1, 1);
 
         Image inputFieldImage = inputFieldBackgroundGO.AddComponent<Image>();
-        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
+        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         inputFieldImage.type = Image.Type.Sliced;
         inputFieldImage.pixelsPerUnitMultiplier = 30;
 
@@ -1052,7 +1066,7 @@ public static class WindowFunctions
         rectTransform3.localScale = new Vector3(1, 1, 1);
 
         Image inputFieldImage = inputFieldBackgroundGO.AddComponent<Image>();
-        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
+        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         inputFieldImage.type = Image.Type.Sliced;
         inputFieldImage.pixelsPerUnitMultiplier = 30;
 
@@ -1140,7 +1154,7 @@ public static class WindowFunctions
         rectTransform3.localScale = new Vector3(1, 1, 1);
 
         Image inputFieldImage = dropdownGO.AddComponent<Image>();
-        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Grey");
+        inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Grey");
         inputFieldImage.type = Image.Type.Sliced;
         inputFieldImage.pixelsPerUnitMultiplier = 30;
 
@@ -1256,7 +1270,7 @@ public static class WindowFunctions
         templateText.alignment = TextAnchor.MiddleCenter;
 
         Image templateBackground = templateGO.AddComponent<Image>();
-        templateBackground.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Grey");
+        templateBackground.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Grey");
         templateBackground.type = Image.Type.Sliced;
         templateBackground.pixelsPerUnitMultiplier = 30;
 

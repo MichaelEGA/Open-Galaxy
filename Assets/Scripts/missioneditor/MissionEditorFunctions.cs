@@ -9,7 +9,7 @@ using System.IO;
 public static class MissionEditorFunctions
 {
 
-    #region draw mission editor
+    #region draw editor
 
     public static void Draw_MissionEditor(MissionEditor missionEditor)
     {
@@ -317,7 +317,7 @@ public static class MissionEditorFunctions
         int buttonNo = 0;
 
         Image background = menuBaseGO.AddComponent<Image>();
-        background.sprite = Resources.Load<Sprite>(OGGetAddress.editor + "NodeSprite_Light");
+        background.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         background.type = Image.Type.Sliced;
         background.pixelsPerUnitMultiplier = 40;
         rectTransform.anchorMin = new Vector2(0, 1);
@@ -625,8 +625,6 @@ public static class MissionEditorFunctions
             button.onClick.AddListener(() => { SelectNone(missionEditor); });
         }
     }
-
-  
 
     #endregion
 
@@ -1907,7 +1905,7 @@ public static class MissionEditorFunctions
 
         //This adds the image to the recttransform
         Image image = gameObject.AddComponent<Image>();
-        image.sprite = Resources.Load<Sprite>(OGGetAddress.editor + imageName);
+        image.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + imageName);
         image.type = Image.Type.Sliced;
 
         //This returns the rect transform

@@ -884,16 +884,16 @@ public static class MainMenuFunctions
     //This loads the mission editor
     public static void LoadEditor()
     {
-        GameObject editor = GameObject.Find("editor");
+        GameObject missionEditor = GameObject.Find("editor");
         
-        if (editor == null)
+        if (missionEditor == null)
         {
-            GameObject tempEditor = Resources.Load(OGGetAddress.editor + "editor") as GameObject;
-            editor = GameObject.Instantiate(tempEditor);
-            editor.name = "editor";
+            GameObject tempMissionEditor = Resources.Load(OGGetAddress.missioneditor + "missioneditor") as GameObject;
+            missionEditor = GameObject.Instantiate(tempMissionEditor);
+            missionEditor.name = "missioneditor";
         }
 
-        editor.SetActive(true);
+        missionEditor.SetActive(true);
 
         PlayBackgroundMusic(false);
     }

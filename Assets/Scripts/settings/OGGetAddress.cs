@@ -11,7 +11,7 @@ public static class OGGetAddress
     public static string cockpits_communityassets = "objects/cockpits/communityassets/";
     public static string cockpits_firststrike = "objects/cockpits/firststrike/";
     public static string cockpits_galacticconquest = "objects/cockpits/galacticconquest/";
-    public static string editor = "editor/";
+    public static string missioneditor = "missioneditor/";
     public static string files = "files/";
     public static string fonts = "fonts/";
     public static string hud = "hud/";

@@ -1082,14 +1082,14 @@ public static class HudFunctions
                                 selectionBrace.transform.position = new Vector2(screenPosition.x, screenPosition.y);
 
                                 //This scales the brace according to world distance
-                                if (screenPosition.z > 500)
-                                {
-                                    selectionBrace.transform.localScale = new Vector2(1, 1);
-                                }
-                                else
-                                {
-                                    selectionBrace.transform.localScale = new Vector2(2f - (0.002f * screenPosition.z), 2f - (0.002f * screenPosition.z));
-                                }
+                                //if (screenPosition.z > 500)
+                                //{
+                                //    selectionBrace.transform.localScale = new Vector2(1, 1);
+                                //}
+                                //else
+                                //{
+                                //    selectionBrace.transform.localScale = new Vector2(2f - (0.002f * screenPosition.z), 2f - (0.002f * screenPosition.z));
+                                //}
 
                             }
                             else
@@ -2259,6 +2259,40 @@ public static class HudFunctions
             if (hud.rearRadarDot != null)
             {
                 RawImage rawImage = hud.rearRadarDot.GetComponent<RawImage>();
+
+                if (rawImage != null)
+                {
+                    rawImage.color = newColour;
+                }
+            }
+
+            //The selection brace
+            if (hud.selectionBrace == null)
+            {
+                GameObject selectionBrace = GameObject.Find("SelectionBrace");
+                if (selectionBrace != null) { hud.selectionBrace = selectionBrace; }
+            }
+
+            if (hud.selectionBrace != null)
+            {
+                RawImage rawImage = hud.selectionBrace.GetComponentInChildren<RawImage>();
+
+                if (rawImage != null)
+                {
+                    rawImage.color = newColour;
+                }
+            }
+
+            //The selection brace
+            if (hud.directionArrow == null)
+            {
+                GameObject directionArrow = GameObject.Find("DirectionArrow");
+                if (directionArrow != null) { hud.directionArrow = directionArrow; }
+            }
+
+            if (hud.directionArrow != null)
+            {
+                RawImage rawImage = hud.directionArrow.GetComponentInChildren<RawImage>();
 
                 if (rawImage != null)
                 {

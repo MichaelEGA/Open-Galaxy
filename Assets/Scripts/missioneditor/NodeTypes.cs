@@ -619,7 +619,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -714,7 +714,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -769,8 +769,8 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options5 = new List<string>();
-        options5.Add("true");
         options5.Add("false");
+        options5.Add("true");
 
         node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "include player", "false", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -1900,7 +1900,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2001,7 +2001,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2094,7 +2094,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2211,7 +2211,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

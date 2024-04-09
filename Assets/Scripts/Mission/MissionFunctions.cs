@@ -243,7 +243,7 @@ public static class MissionFunctions
 
         //Then this preloads all the objects in the scene
         foreach (MissionEvent missionEvent in mission.missionEventData)
-        {        
+        {
             if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
@@ -260,7 +260,7 @@ public static class MissionFunctions
                 } 
             }
             else if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
-            {           
+            {
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);                 

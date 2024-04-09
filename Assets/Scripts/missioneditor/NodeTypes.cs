@@ -261,11 +261,11 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options1 = new List<string>();
-        options1.Add("typea");
-        options1.Add("typeb");
-        options1.Add("typec");
+        options1.Add("asteroid01");
+        options1.Add("asteroid02");
+        options1.Add("asteroid03");
 
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "typea", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "asteroid01", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

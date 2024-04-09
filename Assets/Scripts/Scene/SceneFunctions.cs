@@ -58,7 +58,7 @@ public static class SceneFunctions
             scene.gcShipsPrefabPool = gcShipPrefabs;
         }
 
-        Object[] caShipPrefabs = Resources.LoadAll(OGGetAddress.cockpits_communityassets, typeof(GameObject));
+        Object[] caShipPrefabs = Resources.LoadAll(OGGetAddress.ships_communityassets, typeof(GameObject));
 
         if (caShipPrefabs != null)
         {
@@ -847,8 +847,10 @@ public static class SceneFunctions
             {
                 yield return null;
                 yieldCount = 0;
-            } 
+            }
         }
+
+        Debug.Log("AsteroidsFininshedLoading");
     }
 
     //This gets all the asteroids that can be loaded

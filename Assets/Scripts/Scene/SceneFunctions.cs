@@ -1126,7 +1126,6 @@ public static class SceneFunctions
 
             if (forward < 0)
             {
-
                 endPoint = fogDistance - distance;
             }
             else

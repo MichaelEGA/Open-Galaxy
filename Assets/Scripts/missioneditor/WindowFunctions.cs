@@ -447,7 +447,7 @@ public static class WindowFunctions
         }
 
         Image image = imageGO.AddComponent<Image>();
-        image.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "/" + imageName);
+        image.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + imageName);
     }
 
     //This draws a button and allocates a function
@@ -1369,7 +1369,7 @@ public static class WindowFunctions
                 node.nodeType == "setwaypoint" ||
                 node.nodeType == "changelocation")
             {
-                locationNodes.Add(node);
+                locationNodes.Add(node);               
             }
         }
 
@@ -1450,7 +1450,15 @@ public static class WindowFunctions
                 else if (mode == "side")
                 {
                     xPos = (((width/2f) / 15000f) * float.Parse(node.x.text));
-                    yPos = (((height/2f) / 15000f) * float.Parse(node.y.text));
+
+                    if (!node.nodeType.Contains("loadmultipleshipsonground"))
+                    {
+                        yPos = (((height / 2f) / 15000f) * float.Parse(node.y.text));
+                    }
+                    else
+                    {
+                        yPos = 0; //loadmultipleshipsonground have no set y value and so are just displayed at 0 when viewed from the side
+                    }
                 }
 
                 //This creates a new location marker and sets its parent
@@ -1563,7 +1571,7 @@ public static class WindowFunctions
 
         if (background != null)
         {
-            background.texture = Resources.Load<Texture2D>("EditorAssets/" + image);
+            background.texture = Resources.Load<Texture2D>(OGGetAddress.missioneditor + image);
         }
     }
 

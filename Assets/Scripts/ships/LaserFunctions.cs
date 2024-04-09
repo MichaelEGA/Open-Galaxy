@@ -296,7 +296,6 @@ public static class LaserFunctions
         {
             if (smallShip.weaponMode == "single")
             {
-
                 if (smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
                 {
                     smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
@@ -312,6 +311,19 @@ public static class LaserFunctions
                     else if (smallShip.laserCycleNumber == 4) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon4)); }
 
                 }
+                else if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null)
+                {
+                    smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
+
+                    if (smallShip.laserCycleNumber > 3)
+                    {
+                        smallShip.laserCycleNumber = 1;
+                    }
+
+                    if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
+                    else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
+                    else if (smallShip.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon3)); }
+                }
                 else if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null)
                 {
                     smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
@@ -323,6 +335,10 @@ public static class LaserFunctions
 
                     if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
                     else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
+                }
+                else if (smallShip.laserCannon1 != null)
+                {
+                    Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1));
                 }
 
             }

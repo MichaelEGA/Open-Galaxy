@@ -810,6 +810,8 @@ public static class SceneFunctions
             asteroid.transform.localScale = new Vector3(sizes[i], sizes[i], sizes[i]);
             asteroid.transform.rotation = Quaternion.Euler(rotations[i]);
             asteroid.name = "asteroid";
+            asteroid.layer = LayerMask.NameToLayer("collision_asteroid");
+            asteroid.AddComponent<MeshCollider>();
 
             if (scene.asteroidPool == null)
             {
@@ -826,8 +828,6 @@ public static class SceneFunctions
                 yieldCount = 0;
             }
         }
-
-        Debug.Log("AsteroidsFininshedLoading");
     }
 
     //This gets all the asteroids that can be loaded

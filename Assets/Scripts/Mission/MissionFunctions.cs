@@ -880,6 +880,9 @@ public static class MissionFunctions
             scene.hyperspaceTunnel.SetActive(true);
         }
 
+        //This sets the skybox to black
+        SceneFunctions.SetSkybox("space_black", true, "#000000");
+
         //This sets the scene location
         scene.currentLocation = jumpLocation;
 

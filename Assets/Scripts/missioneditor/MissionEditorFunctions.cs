@@ -626,6 +626,19 @@ public static class MissionEditorFunctions
         }
     }
 
+    //This modifies the menu and info bar position to ensure they remain on top
+    public static void ModifyBarPosition()
+    {
+        GameObject menuBar = GameObject.Find("Menu Bar");
+        GameObject infoBar = GameObject.Find("InfoBar");
+
+        if (menuBar != null)
+        {
+            menuBar.transform.SetAsLastSibling();
+            infoBar.transform.SetAsLastSibling();
+        }
+    }
+
     #endregion
 
     #region menus functions
@@ -707,6 +720,8 @@ public static class MissionEditorFunctions
             window.windowType = windowName;
             missionEditor.windows.Add(window);
         }
+
+        ModifyBarPosition(); //This ensures the top and bottom bars of the program stay above the windows
     }
 
     #endregion

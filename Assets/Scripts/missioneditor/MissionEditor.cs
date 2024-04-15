@@ -28,6 +28,7 @@ public class MissionEditor : MonoBehaviour
     public string selectedNodeTypeToLoad;
     public string selectedMissionToLoad;
     public float scale = 1;
+    public float scaleSave;
     public float timePressed;
     public bool scrolling = true;
     public bool menusClosed = true;
@@ -35,6 +36,7 @@ public class MissionEditor : MonoBehaviour
     public bool leftButtonGrid;
     public bool selectionHasRun;
     public bool pasting;
+
 
     void Start()
     {

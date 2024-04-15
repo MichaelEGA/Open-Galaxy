@@ -13,6 +13,7 @@ public static class OGGetAddress
     public static string cockpits_galacticconquest = "objects/cockpits/galacticconquest/";
     public static string missioneditor = "missioneditor/";
     public static string files = "files/";
+    public static string fogwall = "objects/fogwall/";
     public static string fonts = "fonts/";
     public static string hud = "hud/";
     public static string hyperspace = "objects/hyperspace/";

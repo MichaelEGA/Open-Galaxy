@@ -79,6 +79,7 @@ public class Scene : MonoBehaviour
     [Header("Skybox")]
     public GameObject terrain;
     public GameObject viewDistancePlane;
+    public GameObject fogwall;
     public float fogDistanceFromCenter = 15000;
 
     [Header("Cameras")]

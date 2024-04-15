@@ -1113,28 +1113,35 @@ public static class SceneFunctions
     //Creates a circular wall of fog at the set radius from the center point
     public static void DynamicFogWall(Scene scene)
     {
-        if (scene.mainCamera != null)
+        if (scene.fogwall == null)
         {
-            Vector3 relativePosition = scene.transform.position - scene.mainCamera.transform.position;
+            GameObject fogwall = Resources.Load(OGGetAddress.fogwall + "fogwall") as GameObject;
+            scene.fogwall = GameObject.Instantiate(fogwall);
+            scene.fogwall.transform.SetParent(scene.transform);
+            scene.fogwall.transform.localPosition = new Vector3(0, 0, 0);    
+        }
 
-            float forward = Vector3.Dot(scene.mainCamera.transform.forward, relativePosition.normalized);
+        if (scene.mainCamera != null & scene.fogwall != null)
+        {
+            float distance = 0;
 
-            float fogDistance = scene.fogDistanceFromCenter;
-            float endPoint = 0;
+            LayerMask layerMask = LayerMask.GetMask("fogwall");
 
-            float distance = Vector3.Distance(scene.transform.position, scene.mainCamera.transform.position);
+            RaycastHit hit;
 
-            if (forward < 0)
+            Physics.queriesHitBackfaces = true;
+
+            if (Physics.Raycast(scene.mainCamera.transform.position, scene.mainCamera.transform.forward, out hit, 30000, layerMask))
             {
-                endPoint = fogDistance - distance;
+                distance = Vector3.Distance(scene.mainCamera.transform.position, hit.point);
             }
-            else
-            {
-                endPoint = fogDistance + (fogDistance - (fogDistance - distance));
-            }
+                
+            RenderSettings.fogEndDistance = distance;
+            RenderSettings.fogStartDistance = distance - 1000;
 
-            RenderSettings.fogEndDistance = endPoint;
-            RenderSettings.fogStartDistance = endPoint - 500;
+            float scale = scene.fogDistanceFromCenter * 2;
+
+            scene.fogwall.transform.localScale = new Vector3(scale, scale, scale);
         }
     }
 
@@ -1596,7 +1603,7 @@ public static class SceneFunctions
 
             RaycastHit hit;
 
-            LayerMask mask = ~0;
+            LayerMask mask = LayerMask.GetMask("collision_asteroid");
 
             Debug.DrawRay(raycastPos, Vector3.down * 30000, Color.red, 500);
 

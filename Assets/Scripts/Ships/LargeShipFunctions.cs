@@ -291,6 +291,8 @@ public static class LargeShipFunctions
 
         largeShip.gameObject.transform.localPosition = endPosition;
 
+        AudioFunctions.PlayAudioClip(largeShip.audioManager, "hyperspace03_exit", "Explosions", largeShip.transform.position, 0, 1, 10000, 1f);
+
         HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " just exited hyperspace");
 
         largeShip.exitingHyperspace = false;

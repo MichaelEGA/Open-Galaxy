@@ -690,6 +690,7 @@ public static class WindowFunctions
         scrollRect.horizontal = false;
         scrollRect.inertia = false;
         scrollRect.elasticity = 0;
+        scrollRect.scrollSensitivity = 100;
 
         float buttonDrop = 0;
         int i = 0;
@@ -763,6 +764,7 @@ public static class WindowFunctions
         scrollRect.viewport = viewportRectTransform;
         scrollRect.horizontal = false;
         scrollRect.inertia = false;
+        scrollRect.scrollSensitivity = 100;
         scrollRect.elasticity = 0;
 
         //This draws the text box

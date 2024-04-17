@@ -33,7 +33,7 @@ public class MissionEditor : MonoBehaviour
     public bool scrolling = true;
     public bool menusClosed = true;
     public bool draggingGridStarted = false;
-    public bool leftButtonGrid;
+    public bool leftButtonDragging;
     public bool selectionHasRun;
     public bool pasting;
 
@@ -61,6 +61,7 @@ public class MissionEditor : MonoBehaviour
         MissionEditorFunctions.ToggleScrolling(this);
         MissionEditorFunctions.SelectionBox(this);
         MissionEditorFunctions.Shortcuts(this);
+        MissionEditorFunctions.DetectMouseClicks(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)

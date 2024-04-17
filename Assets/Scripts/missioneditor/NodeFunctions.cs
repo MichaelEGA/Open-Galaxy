@@ -594,9 +594,6 @@ public class NodeFunctions : MonoBehaviour
         inputFieldToText.text = transitionText;
         inputFieldToText.inputField = inputField;
 
-        //If this is not run the caret will display behind the text box...
-        ModifyCaretPosition(node);
-
         return transitionText;
     }
 
@@ -697,9 +694,6 @@ public class NodeFunctions : MonoBehaviour
         InputFieldToText inputFieldToText = transitionTextGO.AddComponent<InputFieldToText>();
         inputFieldToText.text = transitionText;
         inputFieldToText.inputField = inputField;
-
-        //If this is not run the caret will display behind the text box...
-        ModifyCaretPosition(node);
 
         return transitionText;
     }
@@ -1078,15 +1072,23 @@ public class NodeFunctions : MonoBehaviour
     }
 
     //This modifies the caret position to ensure its on top
-    public static void ModifyCaretPosition (Node node)
+    public static void ModifyCaretPosition ()
     {
-        Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(node.transform, "Caret");
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
 
-        int childNumber = node.transform.childCount;
-
-        foreach (Transform caret in carets)
+        if (missionEditor.nodes !=null)
         {
-            caret.SetAsLastSibling();
+            foreach (Node node in missionEditor.nodes)
+            {
+                Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(node.transform, "Caret");
+
+                int childNumber = node.transform.childCount;
+
+                foreach (Transform caret in carets)
+                {
+                    caret.SetAsLastSibling();
+                }
+            }
         }
     }
 

@@ -728,11 +728,21 @@ public static class MissionEditorFunctions
 
     #region edit tools
 
+    //This detects mouse clicks
+    public static void DetectMouseClicks(MissionEditor missionEditor)
+    {
+        //This deselects everything when the grid is clicked but not dragged
+        if (Input.GetMouseButtonUp(0) & missionEditor.leftButtonDragging != true & missionEditor.menusClosed == true)
+        {
+            SelectNone(missionEditor);
+        }
+    }
+
     //This deletes all currently selected nodes
     public static void Shortcuts(MissionEditor missionEditor)
     {
         var keyboard = Keyboard.current;
-        float delay = 0.5f + missionEditor.timePressed;
+        float delay = 0.1f + missionEditor.timePressed;
 
         if (keyboard.deleteKey.isPressed == true & Time.time > delay)
         {
@@ -774,7 +784,7 @@ public static class MissionEditorFunctions
     //This creates a selection box
     public static void SelectionBox(MissionEditor missionEditor)
     {
-        if (missionEditor.leftButtonGrid == true)
+        if (missionEditor.leftButtonDragging == true)
         {
             //This gets the mouse down
             if (missionEditor.draggingGridStarted == false)
@@ -825,7 +835,7 @@ public static class MissionEditorFunctions
 
             missionEditor.selectionHasRun = false;
         }
-        else if (missionEditor.leftButtonGrid == false & missionEditor.selectionHasRun == false)
+        else if (missionEditor.leftButtonDragging == false & missionEditor.selectionHasRun == false)
         {
             GetNodesWithinBounds(missionEditor, missionEditor.selectionRectTransform);
 
@@ -1534,6 +1544,9 @@ public static class MissionEditorFunctions
             yield return null;
         }
 
+        //This modifies the caret position to ensure that they display on top of the nodes and not behind them
+        NodeFunctions.ModifyCaretPosition();
+
         DisplayMessage("Loading Mission Complete");
     }
 
@@ -1710,6 +1723,9 @@ public static class MissionEditorFunctions
         {
             NodeFunctions.GetUniqueNodeID(node, true);
         }
+
+        //This modifies the caret position to ensure that they display on top of the nodes and not behind them
+        NodeFunctions.ModifyCaretPosition();
 
         missionEditor.pasting = false;
 

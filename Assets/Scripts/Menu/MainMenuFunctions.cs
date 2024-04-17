@@ -808,7 +808,7 @@ public static class MainMenuFunctions
     //Move back to parent menu
     public static void ActivateParentMenu()
     {
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+        MainMenu mainMenu = GameObject.FindFirstObjectByType<MainMenu>();
 
         //This loads all the information for the menu from the Json file
         TextAsset menuItemsFile = Resources.Load(OGGetAddress.files + "Menu") as TextAsset;
@@ -824,7 +824,7 @@ public static class MainMenuFunctions
                 }
                 else
                 {
-                    ActivateSubMenu(mainMenu.firstMenu);
+                    ActivateSubMenu("Start Game");
                 }
             }
         }

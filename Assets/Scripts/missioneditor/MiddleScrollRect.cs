@@ -27,7 +27,7 @@ public class MiddleScrollRect : ScrollRect
         //This tells the mission editor that the left mouse button was clicked
         if (buttonPressed == "Left")
         {
-            missionEditor.leftButtonGrid = true;
+            missionEditor.leftButtonDragging = true;
         }
         else if (buttonPressed == "Middle")
         {
@@ -51,7 +51,7 @@ public class MiddleScrollRect : ScrollRect
             missionEditor = MissionEditorFunctions.GetMissionEditor();
         }
 
-        missionEditor.leftButtonGrid = false;
+        missionEditor.leftButtonDragging = false;
 
         MissionEditorFunctions.CloseAllMenus();
     }

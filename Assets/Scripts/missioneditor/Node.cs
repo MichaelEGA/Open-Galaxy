@@ -131,6 +131,8 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
 
             if (eventData.button.ToString() == "Left")
             {
+                missionEditor.ignoreLeftCLickRelease = true;
+
                 if (keyboard.ctrlKey.isPressed == true)
                 {
                     MissionEditorFunctions.AddNodeToCurrentSelection(this);

@@ -1,10 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class MiddleScrollRect : ScrollRect
+public class MiddleScrollRect : ScrollRect, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     MissionEditor missionEditor;
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+       
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        //This gets the editor reference if its not found
+        if (missionEditor == null)
+        {
+            missionEditor = MissionEditorFunctions.GetMissionEditor();
+        }
+
+        if (missionEditor != null)
+        {
+            if (missionEditor.dragging != true)
+            {
+                MissionEditorFunctions.SelectNone(missionEditor);
+            }
+        }
+    }
 
     public override void OnBeginDrag(PointerEventData eventData)
     {
@@ -27,7 +51,7 @@ public class MiddleScrollRect : ScrollRect
         //This tells the mission editor that the left mouse button was clicked
         if (buttonPressed == "Left")
         {
-            missionEditor.leftButtonDragging = true;
+            missionEditor.dragging = true;
         }
         else if (buttonPressed == "Middle")
         {
@@ -51,7 +75,7 @@ public class MiddleScrollRect : ScrollRect
             missionEditor = MissionEditorFunctions.GetMissionEditor();
         }
 
-        missionEditor.leftButtonDragging = false;
+        Task a = new Task(EndDragging(missionEditor));
 
         MissionEditorFunctions.CloseAllMenus();
     }
@@ -63,5 +87,13 @@ public class MiddleScrollRect : ScrollRect
             eventData.button = PointerEventData.InputButton.Left;
             base.OnDrag(eventData);
         }
+    }
+
+    //This needs to be delayed slighty so that the editor doesn't register it was a pure left click release
+    public static IEnumerator EndDragging(MissionEditor missionEditor)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        missionEditor.dragging = false;
     }
 }

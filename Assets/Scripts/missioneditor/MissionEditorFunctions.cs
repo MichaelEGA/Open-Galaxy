@@ -732,10 +732,15 @@ public static class MissionEditorFunctions
     public static void DetectMouseClicks(MissionEditor missionEditor)
     {
         //This deselects everything when the grid is clicked but not dragged
-        if (Input.GetMouseButtonUp(0) & missionEditor.leftButtonDragging != true & missionEditor.menusClosed == true)
-        {
-            SelectNone(missionEditor);
-        }
+        //float delay = 0.1f + missionEditor.timePressed;
+
+        //if (Input.GetMouseButtonUp(0) & missionEditor.draggingActivated == false & missionEditor.menusClosed == true & missionEditor.ignoreLeftCLickRelease == false & Time.time > delay)
+        //{
+        //    SelectNone(missionEditor);
+        //    missionEditor.timePressed = Time.time;
+        //}
+
+        //missionEditor.ignoreLeftCLickRelease = false;
     }
 
     //This deletes all currently selected nodes
@@ -784,7 +789,7 @@ public static class MissionEditorFunctions
     //This creates a selection box
     public static void SelectionBox(MissionEditor missionEditor)
     {
-        if (missionEditor.leftButtonDragging == true)
+        if (missionEditor.dragging == true)
         {
             //This gets the mouse down
             if (missionEditor.draggingGridStarted == false)
@@ -835,7 +840,7 @@ public static class MissionEditorFunctions
 
             missionEditor.selectionHasRun = false;
         }
-        else if (missionEditor.leftButtonDragging == false & missionEditor.selectionHasRun == false)
+        else if (missionEditor.dragging == false & missionEditor.selectionHasRun == false)
         {
             GetNodesWithinBounds(missionEditor, missionEditor.selectionRectTransform);
 
@@ -1851,7 +1856,7 @@ public static class MissionEditorFunctions
         missionEditor.scaleSave = missionEditor.scale;
     }
 
-    //This snaps the scrollrect to the designated coordinates //This code is from geoathome on stackoverflow
+    //This snaps the scrollrect to the designated coordinates keeping the view centered while zooming //This code is from geoathome on stackoverflow
     public static void SnapTo(ScrollRect instance, Vector2 child)
     {
         instance.content.ForceUpdateRectTransforms();

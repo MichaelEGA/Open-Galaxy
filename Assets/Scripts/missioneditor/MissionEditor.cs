@@ -33,9 +33,10 @@ public class MissionEditor : MonoBehaviour
     public bool scrolling = true;
     public bool menusClosed = true;
     public bool draggingGridStarted = false;
-    public bool leftButtonDragging;
+    public bool dragging;
     public bool selectionHasRun;
     public bool pasting;
+    public bool ignoreLeftCLickRelease; 
 
 
     void Start()

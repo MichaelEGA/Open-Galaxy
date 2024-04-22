@@ -21,13 +21,13 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Switch between different asset sets (Implemented)
   - Terrain loading (Implemented)
 
-**Latest Development Release:** 1.8.05
+**Latest Development Release:** 2.0.0
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.8.05/Open.Galaxy.1.8.05.zip
+  - [https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.8.05/Open.Galaxy.1.8.05.zip](https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.0.0/Open.Galaxy.2.0.0.zip)
 
-**Latest Milestone Release:** 1.0.0
+**Latest Milestone Release:** 2.0.0
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.0.0/Open.Galaxy.1.0.0.zip
+  - [https://github.com/MichaelEGA/Open-Galaxy/releases/download/v1.0.0/Open.Galaxy.1.0.0.zip](https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.0.0/Open.Galaxy.2.0.0.zip)
 
 **Other Info**
 
@@ -36,6 +36,34 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Galaxy Data: https://docs.google.com/spreadsheets/d/13MOCvB86lFkK4HSIt8wtAJS5BCVGm4-Zh3ffCMEnTAI/edit?usp=sharing
 
 **Changelog**
+
+22/04/24 - v.2.0.0 (Unity 2023.2.14f1)
+  - Updated: numerous little changes
+  - Fixed: Dragging and Deselect work properly now
+  - Fixed: Caret displaying behind node again after unity engine update
+  - Update: scale in editor now works correctly
+  - Added: Exit hyperspace sound to all ships
+  - Updated: fogwall now works correctly
+  - Fixed: Windows no longer load on top of menu bars
+  - Fixed: Skybox not reseting on change location
+  - Update SceneFunctions.cs
+  - Fixed: X-Wing Cockpit canopy offcenter
+  - Fixed: mutlipleshipsnode doesn't include player by default
+  - Updated: Added new hud reticle
+  - Fixed: Null error when mission audio is not found
+  - Updated: Asteroids now have mesh colliders
+  - Fixed: Removed duplicate cockpit camera
+  - Updated: Asteroid names
+  - Fixed: Ships with 1 or 3 lasers don't fire correctly
+  - Update: can display on side view without error
+  - Fixed: Mission 'editor' conflict with unity editor
+  - Updated: file restructure part 3
+  - Updated: file restructure part 2
+  - Updated: file restructure part 1
+  - Updated: File references in several scripts
+  - Updated: File Address references in several scripts
+  - Updated: Get Address Function
+  - Added: Get Address Function
 
 07/04/24 - v.1.8.05 (Unity 2022.3.12f1)
   - Added: target locking now holds tone on confirmed lock

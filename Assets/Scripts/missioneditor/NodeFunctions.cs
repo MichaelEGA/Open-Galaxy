@@ -259,12 +259,6 @@ public class NodeFunctions : MonoBehaviour
                     {
                         if (nodeLink.connectedNode != null)
                         {
-                            if (nodeLink.connectedNode.node.selected == true)
-                            {
-                                GameObject.Destroy(nodeLink.line);
-                                GameObject.Destroy(nodeLink.gameObject);
-                            }
-
                             if (nodeLink.node.selected == true)
                             {
                                 GameObject.Destroy(nodeLink.line);
@@ -1080,13 +1074,44 @@ public class NodeFunctions : MonoBehaviour
         {
             foreach (Node node in missionEditor.nodes)
             {
-                Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(node.transform, "Caret");
-
-                int childNumber = node.transform.childCount;
-
-                foreach (Transform caret in carets)
+                if (node != null)
                 {
-                    caret.SetAsLastSibling();
+                    Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(node.transform, "Caret");
+
+                    int childNumber = node.transform.childCount;
+
+                    foreach (Transform caret in carets)
+                    {
+                        caret.SetAsLastSibling();
+                    }
+                }
+            }
+        }
+    }
+
+    public static IEnumerator ModifyCaretPositionTimed(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor != null)
+        {
+            if (missionEditor.nodes != null)
+            {
+                foreach (Node node in missionEditor.nodes)
+                {
+                    if (node != null)
+                    {
+                        Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(node.transform, "Caret");
+
+                        int childNumber = node.transform.childCount;
+
+                        foreach (Transform caret in carets)
+                        {
+                            caret.SetAsLastSibling();
+                        }
+                    }
                 }
             }
         }

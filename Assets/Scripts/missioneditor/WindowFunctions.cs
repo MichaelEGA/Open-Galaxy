@@ -306,7 +306,7 @@ public static class WindowFunctions
 
         DrawLineBreak(window, "#808080", 0, -20, 1, 250);
 
-        DrawText(window, "Made with Unity 2022.3.12f1", 8, 5, -25, 12.5f, 240);
+        DrawText(window, "Made with Unity 2023.2.18f1", 8, 5, -25, 12.5f, 240);
     }
 
     #endregion

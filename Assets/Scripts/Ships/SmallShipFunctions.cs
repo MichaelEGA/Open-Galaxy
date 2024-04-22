@@ -992,17 +992,20 @@ public static class SmallShipFunctions
     //This tells the damage system that a collision has begun
     public static void StartCollision(SmallShip smallShip, GameObject collidingWith)
     {
-        Debug.Log(smallShip.name + " colliding with " + collidingWith.name);
-
-        if (smallShip.docking == false)
+        if (smallShip != null & collidingWith != null)
         {
-            smallShip.isCurrentlyColliding = true;
+            Debug.Log(smallShip.name + " colliding with " + collidingWith.name);
 
-            if (smallShip.isAI == false & smallShip.invincible == false)
+            if (smallShip.docking == false)
             {
-                AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                smallShip.isCurrentlyColliding = true;
+
+                if (smallShip.isAI == false & smallShip.invincible == false)
+                {
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                }
             }
-        } 
+        }
     }
 
     //This tells the damage system that a collision has ended

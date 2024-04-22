@@ -1638,14 +1638,13 @@ public static class HudFunctions
     //This briefly displays a message in large text in the middle of the screen
     public static void DisplayTitle(string location, int fontsize, string colour = "#FFFFFF")
     {
-
         if (Time.timeScale != 0)
         {
             Hud hud = GetHud();
 
             if (fontsize <= 0)
             {
-                fontsize = 12;
+                fontsize = 25;
             }
 
             if (hud != null)
@@ -1664,7 +1663,7 @@ public static class HudFunctions
 
                 if (hud.locationInfo != null & hud.reticule != null)
                 {
-                    if (colour != "none")
+                    if (!colour.Contains("#"))
                     {
                         Color newColour = Color.white;
 

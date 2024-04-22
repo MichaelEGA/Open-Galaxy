@@ -25,11 +25,11 @@ public static class MissionEditorFunctions
     public static void Draw_ScaleIndicator(MissionEditor missionEditor)
     {
         //This draws the input label
-        GameObject titleGO = new GameObject();
-        titleGO.name = "Scale Indicator";
+        GameObject scaleIndGO = new GameObject();
+        scaleIndGO.name = "Scale Indicator";
 
-        titleGO.transform.SetParent(missionEditor.transform);
-        RectTransform rectTransform = titleGO.AddComponent<RectTransform>();
+        scaleIndGO.transform.SetParent(missionEditor.transform);
+        RectTransform rectTransform = scaleIndGO.AddComponent<RectTransform>();
         rectTransform.anchorMax = new Vector2(0, 0);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.pivot = new Vector2(0, 0);
@@ -37,7 +37,7 @@ public static class MissionEditorFunctions
         rectTransform.sizeDelta = new Vector2(90, 12f);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
-        Text text = titleGO.AddComponent<Text>();
+        Text text = scaleIndGO.AddComponent<Text>();
         text.supportRichText = false;
         text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         text.text = "100%";
@@ -449,7 +449,7 @@ public static class MissionEditorFunctions
         }
         else if (functionType == "OpenGitHub")
         {
-            button.onClick.AddListener(() => { OpenWebAddress("https://github.com/MichaelEGA/Open-Galaxy"); });
+            button.onClick.AddListener(() => { OpenWebAddress("https://github.com/MichaelEGA/Open-Galaxy/wiki"); });
         }
         else if (functionType == "OpenAbout")
         {
@@ -631,11 +631,17 @@ public static class MissionEditorFunctions
     {
         GameObject menuBar = GameObject.Find("Menu Bar");
         GameObject infoBar = GameObject.Find("InfoBar");
+        GameObject actionIndicator = GameObject.Find("Action Indicator");
+        GameObject missionName = GameObject.Find("Mission Name");
+        GameObject scaleInd = GameObject.Find("Scale Indicator");
 
         if (menuBar != null)
         {
             menuBar.transform.SetAsLastSibling();
             infoBar.transform.SetAsLastSibling();
+            actionIndicator.transform.SetAsLastSibling();
+            missionName.transform.SetAsLastSibling();
+            scaleInd.transform.SetAsLastSibling();
         }
     }
 
@@ -751,8 +757,13 @@ public static class MissionEditorFunctions
 
         if (keyboard.deleteKey.isPressed == true & Time.time > delay)
         {
-            DeleteNodes();
-            missionEditor.timePressed = Time.time;
+            bool inputFieldIsActive = CheckInputFields();
+
+            if (inputFieldIsActive == false)
+            {
+                DeleteNodes();
+                missionEditor.timePressed = Time.time;
+            }   
         }
 
         if (keyboard.xKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.time > delay)
@@ -763,8 +774,13 @@ public static class MissionEditorFunctions
 
         if (keyboard.cKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.time > delay)
         {
-            Copy();
-            missionEditor.timePressed = Time.time;
+            bool inputFieldIsActive = CheckInputFields();
+
+            if (inputFieldIsActive == false)
+            {
+                Copy();
+                missionEditor.timePressed = Time.time;
+            }   
         }
 
         if (keyboard.vKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.time > delay)
@@ -1388,6 +1404,9 @@ public static class MissionEditorFunctions
         {
             NodeFunctions.SetNodePosition(node, nodePosX, nodePosY);
         }
+
+        //The caret doens't load until a frame afer the component is added, and so this function needs to be delayed slighty
+        Task a = new Task(NodeFunctions.ModifyCaretPositionTimed(0.25f));
 
         return node;
     }

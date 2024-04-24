@@ -187,19 +187,17 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public int numberTargeting = 0;
 
     [Header("Ship AI")]
-    public bool isAI; //Value set in inspector or by loading script
-    public string aiMode;
-    public string aiOverideMode = "none";
-    public string savedOverideMode = "none";
-    public Vector3 aiTargetingErrorMargin = new Vector3(0, 0, 0);
+    [HideInInspector] public List<string> aiTags;
+    [HideInInspector] public Vector3 aiTargetingErrorMargin = new Vector3(0, 0, 0);
     [HideInInspector] public float aiRetreatTime;
     [HideInInspector] public float aiAttackTime;
-    [HideInInspector] public float aiPitchInput;
-    [HideInInspector] public float aiTurnInput;
-    [HideInInspector] public float aiRollInput;
     [HideInInspector] public float healthSave;
     [HideInInspector] public bool withdraw;
-    public bool requestingTarget;
+    [HideInInspector] public bool isAI;
+    [HideInInspector] public bool requestingTarget;
+    [HideInInspector] public bool aiMatchSpeed;
+    [HideInInspector] public bool aiStarted;
+    [HideInInspector] public bool aiEvade;
 
     [Header("Particle Effcets")]
     [HideInInspector] public GameObject smokeTrail;

@@ -6,21 +6,18 @@ using UnityEngine;
 public static class SmallShipAIFunctions
 {
 
-    #region Get AI Input i.e. function that calls all other functions
+    #region Base AI Functions
 
     //This is the base function that calls all the other AI functions except collisions which is called by an external script (evasions are called internally though)
     public static void GetAIInput(SmallShip smallShip)
     {
-        SetFlightMode(smallShip);  
-    }
+        //This adds all the default ai tags when the ship is first run
+        if (smallShip.aiStarted == false)
+        {
+            AddDefaultTags(smallShip);
+            smallShip.aiStarted = true;
+        }
 
-    #endregion
-
-    #region Set Flight Mode
-
-    //This selects the flight mode from the avaible patterns
-    public static void SetFlightMode(SmallShip smallShip)
-    {
         //This selects the next enemy target
         if (smallShip.target == null)
         {
@@ -35,284 +32,618 @@ public static class SmallShipAIFunctions
             smallShip.requestingTarget = false;
         }
 
-        //This chooses between attack and patrol
-        if (smallShip.target != null)
+        //This runs all the ai functions
+        RunTags(smallShip);
+    }
+
+    #endregion
+
+    #region AI Tagging System
+
+    //This adds the default ai tags
+    public static void AddDefaultTags(SmallShip smallShip)
+    {
+        AddTag(smallShip, "threequarterspeed");
+        AddTag(smallShip, "singlelaser");
+        AddTag(smallShip, "lowaccuracy");
+        AddTag(smallShip, "chasewithdraw");
+        AddTag(smallShip, "resetenergylevels");
+    }
+
+    //This adds an ai tag and removes conflicting tags using the two functions below
+    public static void AddTag(SmallShip smallShip, string tag)
+    {
+        if (smallShip != null)
         {
-            if (smallShip.target.activeSelf == true)
+            if (tag == "matchspeed" || tag == "fullspeed" || tag == "threequarterspeed" || tag == "halfspeed" || tag == "quarterspeed" || tag == "nospeed")
             {
-                if (smallShip.target.GetComponent<LargeShip>() == null)
-                {
-                    smallShip.aiMode = "AttackPatternAlpha";
-                }
-                else
-                {
-                    smallShip.aiMode = "AttackPatternBeta";
-                }        
+                RemoveSingleTag(smallShip, "fullspeed");
+                RemoveSingleTag(smallShip, "threequarterspeed");
+                RemoveSingleTag(smallShip, "halfspeed");
+                RemoveSingleTag(smallShip, "quarterspeed");
+                RemoveSingleTag(smallShip, "dynamicspeed");
+                RemoveSingleTag(smallShip, "nospeed");
+                           
             }
-            else
+            else if (tag == "singlelaser" || tag == "duallasers" || tag == "alllasers" || tag == "singletorpedo" || tag == "dualtorpedos" || tag == "noweapons")
             {
-                smallShip.aiMode = "PatrolPatternAlpha";
-            }             
+                RemoveSingleTag(smallShip, "singlelaser");
+                RemoveSingleTag(smallShip, "duallasers");
+                RemoveSingleTag(smallShip, "alllasers");
+                RemoveSingleTag(smallShip, "singletorpedo");
+                RemoveSingleTag(smallShip, "dualtorpedos");
+                RemoveSingleTag(smallShip, "alltorpedos");
+                RemoveSingleTag(smallShip, "noweapons");
+            }
+            else if (tag == "lowaccuracy" || tag == "mediumaccuracy" || tag == "highaccuracy")
+            {
+                RemoveSingleTag(smallShip, "lowaccuracy");
+                RemoveSingleTag(smallShip, "mediumaccuracy");
+                RemoveSingleTag(smallShip, "highaccuracy");
+            }
+            else if (tag == "chase" || tag == "chasewithdraw" || tag == "strafewithdraw" || tag == "movetowaypoint" || tag == "patrolrandom" || tag == "norotation")
+            {
+                RemoveSingleTag(smallShip, "chase");
+                RemoveSingleTag(smallShip, "chasewithdraw");
+                RemoveSingleTag(smallShip, "strafewithdraw");
+                RemoveSingleTag(smallShip, "movetowaypoint");
+                RemoveSingleTag(smallShip, "patrolrandom");
+                RemoveSingleTag(smallShip, "norotation");
+            }
+            else if (tag == "resetenergylevels" || tag == "energytoshields" || tag == "energytoengines" || tag == "energytolasers" || tag == "energyprotective" || tag == "energyaggressive" || tag == "energydynamic")
+            {
+                RemoveSingleTag(smallShip, "resetenergylevels");
+                RemoveSingleTag(smallShip, "energytoshields");
+                RemoveSingleTag(smallShip, "energytoengines");
+                RemoveSingleTag(smallShip, "energytolasers");
+                RemoveSingleTag(smallShip, "energyprotective");
+                RemoveSingleTag(smallShip, "energyaggressive");
+                RemoveSingleTag(smallShip, "energydynamic");
+            }
+
+            AddSingleTag(smallShip, tag);
+        }
+    }
+
+    //This adds an ai tag
+    public static void AddSingleTag(SmallShip smallShip, string tag)
+    {
+        if (smallShip != null)
+        {
+            //This checks the tag list exists
+            if (smallShip.aiTags == null)
+            {
+                smallShip.aiTags = new List<string>();
+            }
+
+            //This adds the new tag
+            if (smallShip.aiTags != null)
+            {
+                smallShip.aiTags.Add(tag);
+            }
+        }
+    }
+
+    //This removes an ai tag
+    public static void RemoveSingleTag(SmallShip smallShip, string tag)
+    {
+        if (smallShip != null)
+        {
+            //This checks the tag list exists
+            if (smallShip.aiTags == null)
+            {
+                smallShip.aiTags = new List<string>();
+            }
+
+            //This removes the designated tag
+            if (smallShip.aiTags != null)
+            {
+                //This creates a list of tags to remove
+                List<int> removeTagList = new List<int>();
+
+                for (int i = 0; i < smallShip.aiTags.Count; i++)
+                {
+                    if (smallShip.aiTags[i] == tag)
+                    {
+                        removeTagList.Add(i);
+                        smallShip.aiTags.RemoveAt(i);
+                    }
+                }
+
+                //This removes the tags
+                foreach (int tagInt in removeTagList)
+                {
+                    smallShip.aiTags.RemoveAt(tagInt);
+                }
+            }
+        }
+    }
+
+    //This runs the ai tags
+    public static void RunTags(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            //This checks the tag list exists
+            if (smallShip.aiTags == null)
+            {
+                smallShip.aiTags = new List<string>();
+            }
+
+            //This runs through the ship tags and runs the appropriate functions
+            if (smallShip.aiTags != null)
+            {
+                foreach (string tag in smallShip.aiTags.ToArray())
+                {
+                    if (tag == "fullspeed") //Speed control
+                    {
+                        FullSpeed(smallShip);
+                    }
+                    else if (tag == "threequarterspeed")
+                    {
+                        ThreeQuarterSpeed(smallShip);
+                    }
+                    else if (tag == "halfspeed")
+                    {
+                        HalfSpeed(smallShip);
+                    }
+                    else if (tag == "quarterspeed")
+                    {
+                        QuarterSpeed(smallShip);
+                    }
+                    else if (tag == "dynamicspeed")
+                    {
+                        DynamicSpeed(smallShip);
+                    }
+                    else if (tag == "nospeed")
+                    {
+                        NoSpeed(smallShip);
+                    }
+                    else if (tag == "singlelaser") //Weapon control
+                    {
+                        SingleLaser(smallShip);
+                    }
+                    else if (tag == "duallasers")
+                    {
+                        DualLasers(smallShip);
+                    }
+                    else if (tag == "alllasers")
+                    {
+                        AllLasers(smallShip);
+                    }
+                    else if (tag == "singletorpedo")
+                    {
+                        SingleTorpedo(smallShip);
+                    }
+                    else if (tag == "dualtorpedos")
+                    {
+                        DualTorpedos(smallShip);
+                    }
+                    else if (tag == "alltorpedos")
+                    {
+                        AllTorpedos(smallShip);
+                    }
+                    else if (tag == "noweapons")
+                    {
+                        //Do nothing
+                    }
+                    else if (tag == "lowaccuracy") //Weapon accuracy
+                    {
+                        LowAccuracy(smallShip);
+                    }
+                    else if (tag == "mediumaccuracy")
+                    {
+                        MediumAccuracy(smallShip);
+                    }
+                    else if (tag == "highaccuracy")
+                    {
+                        HighAccuracy(smallShip);
+                    }
+                    else if (tag == "chase") //Flight patterns
+                    {
+                        Chase(smallShip);
+                    }
+                    else if (tag == "chasewithdraw")
+                    {
+                        ChaseWithdraw(smallShip);
+                    }
+                    else if (tag == "strafewithdraw")
+                    {
+                        StrafeWithdraw(smallShip);
+                    }
+                    else if (tag == "movetowaypoint")
+                    {
+                        MoveToWayPoint(smallShip);
+                    }
+                    else if (tag == "patrolrandom")
+                    {
+                        PatrolRandom(smallShip);
+                    }
+                    else if (tag == "norotation")
+                    {
+                        //Do nothing
+                    }
+                    else if (tag == "resetenergylevels") //Energy Management
+                    {
+                        ResetEnergyLevels(smallShip);
+                    }
+                    else if (tag == "energytoshields") 
+                    {
+                        EnergyToShields(smallShip);
+                    }
+                    else if (tag == "energytoengines")
+                    {
+                        EnergyToEngines(smallShip);
+                    }
+                    else if (tag == "energytolasers")
+                    {
+                        EnergyToLasers(smallShip);
+                    }
+                    else if (tag == "energyprotective")
+                    {
+                        EnergyProtective(smallShip);
+                    }
+                    else if (tag == "energyaggressive")
+                    {
+                        EnergyAggressive(smallShip);
+                    }
+                    else if (tag == "energydynamic")
+                    {
+                        EnergyDynamic(smallShip);
+                    }
+                }
+            }
+        }
+    }
+
+    //This checks if an ai tag exists
+    public static bool TagExists(SmallShip smallShip, string tag)
+    {
+        bool exists = false;
+
+        foreach (string tempTag in smallShip.aiTags.ToArray())
+        {
+            if (tempTag == tag)
+            {
+                exists = true;
+                break;
+            }
+        }
+
+        return exists;
+    }
+
+    #endregion
+
+    #region AI Speed Functions
+
+    //This sets the ship to half speed (typically used when no enemies are detected)
+    public static void FullSpeed(SmallShip smallShip)
+    {
+        if (smallShip.aiMatchSpeed == false)
+        {
+            smallShip.thrustInput = 1;
+        }
+        else if (smallShip.target != null)
+        {
+            MatchSpeed(smallShip);
         }
         else
         {
-            smallShip.aiMode = "PatrolPatternAlpha";
+            HalfSpeed(smallShip);
         }
+    }
 
-        //This activates the appropriate flight patterns
-        if (smallShip.aiOverideMode == "none" || smallShip.aiOverideMode == "")
+    //This sets the ship to half speed (typically used when no enemies are detected)
+    public static void ThreeQuarterSpeed(SmallShip smallShip)
+    {
+        if (smallShip.aiMatchSpeed == false)
         {
-            if (smallShip.aiMode == "AttackPatternAlpha")
+            float threeQuarterSpeed = (smallShip.speedRating / 4f) * 3;
+
+            if (smallShip.thrustSpeed > threeQuarterSpeed)
             {
-                AttackPatternAlpha(smallShip);
+                smallShip.thrustInput = -1;
             }
-            else if (smallShip.aiMode == "AttackPatternBeta")
+            else
             {
-                AttackPatternBeta(smallShip);
+                smallShip.thrustInput = 1;
             }
-            else if (smallShip.aiMode == "PatrolPatternAlpha")
-            {
-                PatrolPatternAlpha(smallShip);
-            }
-        }   
-        else if (smallShip.aiOverideMode == "MoveToWaypoint")
-        {
-            MoveToWayPoint(smallShip);
         }
-        else if (smallShip.aiOverideMode == "Patrol")
+        else if (smallShip.target != null)
         {
-            PatrolPatternAlpha(smallShip);
+            MatchSpeed(smallShip);
         }
-        else if (smallShip.aiOverideMode == "Stationary")
+        else
         {
-            Stationary(smallShip);
+            HalfSpeed(smallShip);
+        }
+    }
+
+    //This sets the ship to half speed (typically used when no enemies are detected)
+    public static void HalfSpeed(SmallShip smallShip)
+    {
+        if (smallShip.aiMatchSpeed == false)
+        {
+            float halfSpeed = (smallShip.speedRating / 2f);
+
+            if (smallShip.thrustSpeed > halfSpeed)
+            {
+                smallShip.thrustInput = -1;
+            }
+            else
+            {
+                smallShip.thrustInput = 1;
+            }
+        }
+        else if (smallShip.target != null)
+        {
+            MatchSpeed(smallShip);
+        }
+        else
+        {
+            HalfSpeed(smallShip);
+        }
+    }
+
+    //This sets the ship to half speed (typically used when no enemies are detected)
+    public static void QuarterSpeed(SmallShip smallShip)
+    {
+        if (smallShip.aiMatchSpeed == false)
+        {
+            float quarterSpeed = (smallShip.speedRating / 4f);
+
+            if (smallShip.thrustSpeed > quarterSpeed)
+            {
+                smallShip.thrustInput = -1;
+            }
+            else
+            {
+                smallShip.thrustInput = 1;
+            }
+        }
+        else if (smallShip.target != null)
+        {
+            MatchSpeed(smallShip);
+        }
+        else
+        {
+            HalfSpeed(smallShip);
+        }
+    }
+
+    //This changes the speed of the ship dynamically to allow for a fast speed and sharp turns
+    public static void DynamicSpeed(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
+        {
+            if (smallShip.aiMatchSpeed == false)
+            {
+                if (smallShip.targetForward < 0.5f)
+                {
+                    float halfSpeed = (smallShip.speedRating / 2f);
+
+                    if (smallShip.thrustSpeed > halfSpeed)
+                    {
+                        smallShip.thrustInput = -1;
+                    }
+                    else
+                    {
+                        smallShip.thrustInput = 1;
+                    }
+                }
+                else
+                {
+                    FullSpeed(smallShip);
+                }
+            }
+            else
+            {
+                MatchSpeed(smallShip);
+            }
+        }
+        else
+        {
+            HalfSpeed(smallShip);
+        }
+    }
+
+    //This sets the ship to half speed (typically used when no enemies are detected)
+    public static void NoSpeed(SmallShip smallShip)
+    {
+        if (smallShip.thrustSpeed > 0)
+        {
+            smallShip.thrustInput = -1;
+        }
+        else
+        {
+            smallShip.thrustInput = 0;
+        }
+    }
+
+    //This sets the ship to half speed (typically used when no enemies are detected)
+    public static void MatchSpeed(SmallShip smallShip)
+    {
+        float oneThird = (smallShip.speedRating / 3f);
+
+        if (smallShip.thrustSpeed > smallShip.targetSpeed & smallShip.thrustSpeed > oneThird)
+        {
+            smallShip.thrustInput = -1;
+        }
+        else
+        {
+            smallShip.thrustInput = 1;
         }
     }
 
     #endregion
 
-    #region Flight Patterns
+    #region AI Weapon Control
 
-    //This is the basic flight pattern for attack
-    public static void AttackPatternAlpha(SmallShip smallShip)
+    //This fires one laser at a time
+    public static void SingleLaser(SmallShip smallShip)
     {
-        LaserControl(smallShip);
-        AttackSpeedPowerSettings(smallShip);
-
-        if (smallShip.targetDistance > 250)
+        if (smallShip.target != null)
         {
-            FullSpeed(smallShip);
-            AngleTowardsTarget(smallShip);
-        }
-        else
-        {
-            if (Time.time < smallShip.aiAttackTime)
+            if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
             {
-                MatchSpeed(smallShip);
-                AngleTowardsTarget(smallShip);
-                smallShip.aiRetreatTime = Time.time + Random.Range(15, 20);
-            }
-            else
-            {
+                bool dontFire = CheckFire(smallShip);
 
-                HalfSpeed(smallShip);
-
-                if (Time.time < smallShip.aiRetreatTime)
+                if (dontFire == false)
                 {
-                    AngleAwayFromTarget(smallShip);
-                }
-                else
-                {
-                    smallShip.aiAttackTime = Time.time + Random.Range(30, 35);
-                    SelectRandomWaypoint(smallShip);
+                    smallShip.weaponMode = "single";
+                    LaserFunctions.InitiateFiring(smallShip);
                 }
             }
-
         }
     }
 
-    //This is the basic flight pattern for attacking a capital ship
-    public static void AttackPatternBeta(SmallShip smallShip)
-    {       
-        AttackSpeedPowerSettings(smallShip);
-
-        float distance = 1500;
-
-        if (smallShip.targetLargeShip != null)
+    //This fires two lasers at a time
+    public static void DualLasers(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
         {
-            if (smallShip.targetLargeShip.shipClass == "large")
+            if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
             {
-                distance = 1500;
-            }
-            else if (smallShip.targetLargeShip.shipClass == "middle")
-            {
-                distance = 1000;
-            }
-            else
-            {
-                distance = 500;
+                bool dontFire = CheckFire(smallShip);
+
+                if (dontFire == false)
+                {
+                    smallShip.weaponMode = "dual";
+                    LaserFunctions.InitiateFiring(smallShip);
+                }
             }
         }
+    }
 
-        if (smallShip.targetDistance > distance & smallShip.withdraw == false)
+    //This fires all the ships lasers at once
+    public static void AllLasers(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
+        {
+            if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
+            {
+                bool dontFire = CheckFire(smallShip);
+
+                if (dontFire == false)
+                {
+                    smallShip.weaponMode = "quad";
+                    LaserFunctions.InitiateFiring(smallShip);
+                }
+            }
+        }
+    }
+
+    //This fires one torpedo at a time
+    public static void SingleTorpedo(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
         {
             if (smallShip.torpedoNumber > 0)
             {
-                TorpedoControl(smallShip);
+                if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                {
+                    smallShip.weaponMode = "single";
+                    TorpedoFunctions.FireTorpedo(smallShip);
+                }
             }
-            else
-            {
-                LaserControl(smallShip);
-            }
-            
-            FullSpeed(smallShip);
-            AngleTowardsTarget(smallShip);
-        }
-        else if (smallShip.targetDistance < distance & smallShip.withdraw == false)
-        {
-            smallShip.withdraw = true;
-        }
-        else if (smallShip.targetDistance > 3000 & smallShip.withdraw == true)
-        {
-            smallShip.withdraw = false;
         }
         else
         {
-            LaserControl(smallShip);
-
-            if (smallShip.targetForward > 0)
-            {
-                HalfSpeed(smallShip);
-            }
-            else
-            {
-                FullSpeed(smallShip);
-            }
-
-            AngleAwayFromTarget(smallShip);
+            SingleLaser(smallShip);
         }
     }
 
-    //This is the basic flight pattern for patrolling
-    public static void PatrolPatternAlpha(SmallShip smallShip)
+    //This fires two  torpedo at once
+    public static void DualTorpedos(SmallShip smallShip)
     {
-        if (smallShip.waypoint != null)
+        if (smallShip.target != null)
         {
-            float distanceToWaypoint = Vector3.Distance(smallShip.gameObject.transform.position, smallShip.waypoint.transform.position);
-
-            if (distanceToWaypoint < 50)
+            if (smallShip.target != null & smallShip.torpedoNumber > 0)
             {
-                SelectRandomWaypoint(smallShip);
+                if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                {
+                    smallShip.weaponMode = "dual";
+                    TorpedoFunctions.FireTorpedo(smallShip);
+                }
             }
+        }
+        else
+        {
+            SingleLaser(smallShip);
+        }       
+    }
 
-            AngleTowardsWaypoint(smallShip);
+    //This fires from all torpedo tubes
+    public static void AllTorpedos(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
+        {
+            if (smallShip.target != null & smallShip.torpedoNumber > 0)
+            {
+                if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                {
+                    smallShip.weaponMode = "quad";
+                    TorpedoFunctions.FireTorpedo(smallShip);
+                }
+            }
+        }
+        else
+        {
+            SingleLaser(smallShip);
+        }
+    }
+
+    //This checks whether a non hostile ship is in the firing line or not
+    public static bool CheckFire(SmallShip smallShip)
+    {
+        bool dontFire = false;
+
+        RaycastHit hit;
+
+        int layerMask = (1 << 6) | (1 << 7) | (1 << 8) | (1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13) | (1 << 14) | (1 << 15) | (1 << 16) | (1 << 17) | (1 << 18) | (1 << 19) | (1 << 20) | (1 << 21) | (1 << 22) | (1 << 23);
+
+        Vector3 forwardRaycast = smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * 10);
+
+        if (Physics.SphereCast(forwardRaycast, 10, smallShip.gameObject.gameObject.transform.TransformDirection(Vector3.forward), out hit, 1000, layerMask))
+        {
+            SmallShip otherSmallship = hit.collider.GetComponentInParent<SmallShip>();
+
+            if (otherSmallship != null)
+            {
+                bool isHostile = TargetingFunctions.GetHostility_SmallShipPlayer(smallShip, otherSmallship.allegiance);
+
+                if (isHostile != true)
+                {
+                    dontFire = true;
+                }
+            }
         }
 
-        HalfSpeed(smallShip);
-        PatrolSpeedPowerSettings(smallShip);
-        DontFire(smallShip);
-    }
-
-    //This angles towards the ships waypoint
-    public static void MoveToWayPoint(SmallShip smallShip)
-    {
-        LaserControl(smallShip);
-        ThreeQuarterSpeed(smallShip);
-        PatrolSpeedPowerSettings(smallShip);
-        AngleTowardsWaypoint(smallShip);
-    }
-
-    //This causes the ship to come to a full stop
-    public static void Stationary(SmallShip smallShip)
-    {
-        NoSpeed(smallShip);
-        DontFire(smallShip);
+        return dontFire;
     }
 
     #endregion
 
-    #region Evasion and Collision Avoidance
+    #region AI Weapon Accuracy
 
-    //This allows the ship to evade attacks and avoid collisions with other objects and ships
-    public static IEnumerator Evade(SmallShip smallShip, float time, string mode, int direction)
+    //This sets the targetting accuracy to low
+    public static void LowAccuracy(SmallShip smallShip)
     {
-
-        if (smallShip != null)
-        {
-            if (smallShip.aiOverideMode != "avoidCollision" & smallShip.aiOverideMode != "evadeAttack")
-            {
-                smallShip.savedOverideMode = smallShip.aiOverideMode; //This saves the current ai override mode and reapplies it at the end of the evasion sequence
-            }
-
-            smallShip.aiOverideMode = mode;
-
-            time = time + Time.time;
-
-            while (time > Time.time)
-            {
-
-                HalfSpeed(smallShip);
-
-                if (direction == 0)
-                {
-                    TurnRight(smallShip);
-                }
-                else if (direction == 1)
-                {
-                    TurnLeft(smallShip);
-                }
-                else if (direction == 2)
-                {
-                    PitchUp(smallShip);
-                }
-                else if (direction == 3)
-                {
-                    PitchDown(smallShip);
-                }
-                else if (direction == 4)
-                {
-                    RollRight(smallShip);
-                }
-                else if (direction == 5)
-                {
-                    RollLeft(smallShip);
-                }
-                else if (direction == 6)
-                {
-                    FlyFoward(smallShip);
-                }
-
-                yield return null;
-
-            }
-
-            smallShip.aiOverideMode = smallShip.savedOverideMode;
-
-            ResetSteeringInputs(smallShip);
-        }
-
+        SetTargetingErrorMargin(smallShip, "low");
     }
 
-    #endregion
-
-    #region Targetting and Waypoints
-
-    //This selects a random waypoint
-    public static void SelectRandomWaypoint(SmallShip smallship)
+    //This sets the targetting accuracy to medium
+    public static void MediumAccuracy(SmallShip smallShip)
     {
-        float x = Random.Range(0, 15000);
-        float y = Random.Range(0, 15000);
-        float z = Random.Range(0, 15000);
-
-        if (smallship.waypoint != null)
-        {
-            smallship.waypoint.transform.position = new Vector3(x, y, z);
-        }
+        SetTargetingErrorMargin(smallShip, "medium");
     }
 
-    #endregion
-
-    #region Fire Control
+    //This sets the targetting accuracy to jihj
+    public static void HighAccuracy(SmallShip smallShip)
+    {
+        SetTargetingErrorMargin(smallShip, "high");
+    }
 
     //Targeting error margin
     public static void SetTargetingErrorMargin(SmallShip smallShip, string mode)
@@ -347,308 +678,296 @@ public static class SmallShipAIFunctions
         smallShip.aiTargetingErrorMargin = new Vector3(x, y, z);
     }
 
-    //This controls the lasers
-    public static void LaserControl(SmallShip smallShip)
-    {
-        if (smallShip.activeWeapon != "lasers")
-        {
-            smallShip.toggleWeapons = true;
-        }
+    #endregion
 
-        if (smallShip.activeWeapon == "lasers")
+    #region AI Flight Patterns
+
+    //Chase: The enemy relenlessly pursues the player without withdrawing
+    public static void Chase(SmallShip smallShip)
+    {
+        if (smallShip.aiEvade == false)
         {
             if (smallShip.target != null)
             {
-                if (smallShip.interceptForward > 0.90f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
+                if (smallShip.targetDistance > 250)
                 {
-                    bool dontFire = CheckFire(smallShip);
+                    smallShip.aiMatchSpeed = false;
+                    AngleTowardsTarget(smallShip);
+                }
+                else
+                {
+                    smallShip.aiMatchSpeed = true;
+                    AngleTowardsTarget(smallShip);
+                }
+            }
+            else
+            {
+                PatrolRandom(smallShip);
+            }
+        }
+    }
 
-                    if (dontFire == false)
+    //Chase-Withdraw: Attack for 15-20 followed by withdrawal for 30-35 seconds
+    public static void ChaseWithdraw(SmallShip smallShip)
+    {
+        if (smallShip.aiEvade == false)
+        {
+            if (smallShip.target != null)
+            {
+                if (smallShip.targetDistance > 250)
+                {
+                    smallShip.aiMatchSpeed = false;
+                    AngleTowardsTarget(smallShip);
+                }
+                else
+                {
+                    if (Time.time < smallShip.aiAttackTime)
                     {
-                        LaserFunctions.InitiateFiring(smallShip);
+                        smallShip.aiMatchSpeed = true;
+                        AngleTowardsTarget(smallShip);
+                        smallShip.aiRetreatTime = Time.time + Random.Range(15, 20);
+                    }
+                    else
+                    {
+                        smallShip.aiMatchSpeed = false;
+
+                        if (Time.time < smallShip.aiRetreatTime)
+                        {
+                            AngleAwayFromTarget(smallShip);
+                        }
+                        else
+                        {
+                            smallShip.aiAttackTime = Time.time + Random.Range(30, 35);
+                        }
                     }
                 }
             }
+            else
+            {
+                PatrolRandom(smallShip);
+            }
         }
     }
 
-    //This checks whether a non hostile ship is in the firing line or not
-    public static bool CheckFire(SmallShip smallShip)
+    //Strafe-Withdraw: Attacks enemy ship at distance before withdrawing again (typically used for attack large ships)
+    public static void StrafeWithdraw(SmallShip smallShip)
     {
-        bool dontFire = false;
-
-        RaycastHit hit;
-
-        int layerMask = (1 << 6) | (1 << 7) | (1 << 8) | (1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13) | (1 << 14) | (1 << 15) | (1 << 16) | (1 << 17) | (1 << 18) | (1 << 19) | (1 << 20) | (1 << 21) | (1 << 22) | (1 << 23);
-
-        Vector3 forwardRaycast = smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * 10);
-
-        if (Physics.SphereCast(forwardRaycast, 10, smallShip.gameObject.gameObject.transform.TransformDirection(Vector3.forward), out hit, 1000, layerMask))
+        if (smallShip.aiEvade == false)
         {
-            SmallShip otherSmallship = hit.collider.GetComponentInParent<SmallShip>();
-
-            if (otherSmallship != null)
+            if (smallShip != null)
             {
-                bool isHostile = TargetingFunctions.GetHostility_SmallShipPlayer(smallShip, otherSmallship.allegiance);
+                float attackDistance = 250;
+                float withdrawDistance = 1000;
 
-                if (isHostile != true)
+                if (smallShip.targetLargeShip != null)
                 {
-                    dontFire = true;
+                    if (smallShip.targetLargeShip.shipClass == "large")
+                    {
+                        attackDistance = 1500;
+                        withdrawDistance = 3000;
+                    }
+                    else if (smallShip.targetLargeShip.shipClass == "middle")
+                    {
+                        attackDistance = 1000;
+                        withdrawDistance = 2000;
+                    }
+                    else
+                    {
+                        attackDistance = 500;
+                        withdrawDistance = 1000;
+                    }
+                }
+
+                if (smallShip.targetDistance > attackDistance & smallShip.withdraw == false)
+                {
+                    AngleTowardsTarget(smallShip);
+                }
+                else if (smallShip.targetDistance < attackDistance & smallShip.withdraw == false)
+                {
+                    smallShip.withdraw = true;
+                }
+                else if (smallShip.targetDistance > withdrawDistance & smallShip.withdraw == true)
+                {
+                    smallShip.withdraw = false;
+                }
+                else
+                {
+                    AngleAwayFromTarget(smallShip);
                 }
             }
-        }
-
-        return dontFire;
-    }
-
-    //This controls torpedos
-    public static void TorpedoControl(SmallShip smallShip)
-    {
-        if (smallShip.torpedoNumber > 0 & smallShip.activeWeapon != "torpedos")
-        {
-            smallShip.toggleWeapons = true;
-        }
-
-        if (smallShip.target != null & smallShip.activeWeapon == "torpedos")
-        {
-            if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+            else
             {
-                TorpedoFunctions.FireTorpedo(smallShip);     
+                PatrolRandom(smallShip);
             }
         }
     }
 
-    //This prevents all weapons from firing
-    public static void DontFire(SmallShip smallShip)
+    //This angles towards the ships waypoint
+    public static void MoveToWayPoint(SmallShip smallShip)
     {
-        smallShip.fireWeapon = false;
-    }
-
-    #endregion
-
-    #region Energy Management
-
-    //This controls the power guages
-    public static void AttackSpeedPowerSettings(SmallShip smallShip)
-    {
-
-        if (smallShip.targetDistance > 500 & smallShip.targetForward > 0)
+        if (smallShip.aiEvade == false)
         {
-            smallShip.powerMode = "engines";
-        }
-        else if (smallShip.targetDistance < 500 & smallShip.targetForward < 0)
-        {
-            smallShip.powerMode = "reset";
-        }
-        else if (smallShip.targetDistance < 500 & smallShip.targetForward > 0)
-        {
-            smallShip.powerMode = "lasers";
-        }
-        else
-        {
-            smallShip.powerMode = "reset";
+            AngleTowardsWaypoint(smallShip);
         }
     }
 
-    //Reset power guages
-    public static void PatrolSpeedPowerSettings(SmallShip smallShip)
+    //This is the basic flight pattern for patrolling
+    public static void PatrolRandom(SmallShip smallShip)
     {
-        smallShip.powerMode = "reset";
-    }
-
-    #endregion
-
-    #region Speed Control
-
-    //This sets the ship to half speed (typically used when no enemies are detected)
-    public static void MatchSpeed(SmallShip smallShip)
-    {
-        float oneThird = (smallShip.speedRating / 3f);
-
-        if (smallShip.thrustSpeed > smallShip.targetSpeed & smallShip.thrustSpeed > oneThird)
+        if (smallShip.aiEvade == false)
         {
-            smallShip.thrustInput = -1;
-        }
-        else
-        {
-            smallShip.thrustInput = 1;
+            if (smallShip.waypoint != null)
+            {
+                float distanceToWaypoint = Vector3.Distance(smallShip.gameObject.transform.position, smallShip.waypoint.transform.position);
+
+                if (distanceToWaypoint < 50)
+                {
+                    SelectRandomWaypoint(smallShip);
+                }
+
+                AngleTowardsWaypoint(smallShip);
+            }
         }
     }
 
-    //This sets the ship to half speed (typically used when no enemies are detected)
-    public static void FullSpeed(SmallShip smallShip)
+    //This selects a random waypoint
+    public static void SelectRandomWaypoint(SmallShip smallShip)
     {
-        smallShip.thrustInput = 1;
-    }
+        if (smallShip.aiEvade == false)
+        {
+            float x = Random.Range(0, 15000);
+            float y = Random.Range(0, 15000);
+            float z = Random.Range(0, 15000);
 
-    //This sets the ship to half speed (typically used when no enemies are detected)
-    public static void ThreeQuarterSpeed(SmallShip smallShip)
-    {
-        float threeQuarterSpeed = (smallShip.speedRating / 4f) * 3;
-
-        if (smallShip.thrustSpeed > threeQuarterSpeed)
-        {
-            smallShip.thrustInput = -1;
-        }
-        else
-        {
-            smallShip.thrustInput = 1;
-        }
-    }
-
-    //This sets the ship to half speed (typically used when no enemies are detected)
-    public static void HalfSpeed(SmallShip smallShip)
-    {
-        float halfSpeed = (smallShip.speedRating / 2f);
-
-        if (smallShip.thrustSpeed > halfSpeed)
-        {
-            smallShip.thrustInput = -1;     
-        }
-        else
-        {
-            smallShip.thrustInput = 1;
-        }
-    }
-
-    //This sets the ship to half speed (typically used when no enemies are detected)
-    public static void QuarterSpeed(SmallShip smallShip)
-    {
-        float quarterSpeed = (smallShip.speedRating / 4f);
-
-        if (smallShip.thrustSpeed > quarterSpeed)
-        {
-            smallShip.thrustInput = -1;
-        }
-        else
-        {
-            smallShip.thrustInput = 1;
-        }
-    }
-
-    //This sets the ship to half speed (typically used when no enemies are detected)
-    public static void NoSpeed(SmallShip smallShip)
-    {
-        if (smallShip.thrustSpeed > 0)
-        {
-            smallShip.thrustInput = -1;
-        }
-        else
-        {
-            smallShip.thrustInput = 0;
+            if (smallShip.waypoint != null)
+            {
+                smallShip.waypoint.transform.position = new Vector3(x, y, z);
+            }
         }
     }
 
     #endregion
 
-    #region Steering Control
+    #region AI Steering Control
 
     //This angles the ship towards the target vector
     public static void AngleTowardsTarget(SmallShip smallShip)
     {
-        if (smallShip.interceptForward < 0.8)
+        if (smallShip.target != null)
         {
-            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            if (smallShip.interceptForward < 0.8)
             {
-                //Right way up
-                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
-                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+                }
             }
             else
             {
-                //Upside down
-                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
-                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
-            }   
-        }
-        else
-        {
-            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-            {
-                //Right way up
-                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight * 5);
-                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight * 5);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight * 5);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
+                }
             }
-            else
-            {
-                //Upside down
-                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight * 5);
-                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
-            }  
         }
     }
 
     //This angles the ship away from the target vector
     public static void AngleAwayFromTarget(SmallShip smallShip)
     {
-        if (-smallShip.interceptForward < 1)
+        if (smallShip.target != null)
         {
-            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            if (-smallShip.interceptForward < 1)
             {
-                //Right way up
-                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
-                SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.interceptUp);
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.interceptUp);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+                }
             }
-            else
-            {
-                //Upside down
-                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
-                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
-            }  
-        }
+        } 
     }
 
     //This angles the ship towards the target vector
     public static void AngleTowardsWaypoint(SmallShip smallShip)
     {
-        if (smallShip.waypointForward < 0.8)
+        if (smallShip.waypoint != null)
         {
-            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            if (smallShip.waypointForward < 0.8)
             {
-                //Right way up
-                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
-                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+                }
             }
             else
             {
-                //Upside down
-                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
-                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight * 5);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight * 5);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
+                }
             }
-        }
-        else
-        {
-            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-            {
-                //Right way up
-                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight * 5);
-                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
-            }
-            else
-            {
-                //Upside down
-                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight * 5);
-                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
-            } 
         }
     }
 
     //This angles the ship away from the target vector
     public static void AngleAwayFromWaypoint(SmallShip smallShip)
     {
-        if (smallShip.waypointForward > -0.95)
+        if (smallShip.waypoint != null)
         {
-            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            if (smallShip.waypointForward > -0.95)
             {
-                //Right way up
-                SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
-                SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.waypointUp);
-            }
-            else
-            {
-                //Upside down
-                SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
-                SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.waypointUp);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+                }
             }
         }
     }
@@ -702,6 +1021,165 @@ public static class SmallShipAIFunctions
         smallShip.pitchInput = 0;
         smallShip.turnInput = 0;
         smallShip.rollInput = 0;
+    }
+
+    #endregion
+
+    #region AI Energy Management
+
+    //This sets shield power to maximum
+    public static void EnergyToShields(SmallShip smallShip)
+    {
+        smallShip.powerMode = "shields";
+    }
+
+    //This sets engine power to maximum
+    public static void EnergyToEngines(SmallShip smallShip)
+    {
+        smallShip.powerMode = "engines";
+    }
+
+    //This sets engine power to maximum
+    public static void EnergyToLasers(SmallShip smallShip)
+    {
+        smallShip.powerMode = "lasers";
+    }
+
+    //This resets all energy levels
+    public static void ResetEnergyLevels(SmallShip smallShip)
+    {
+        smallShip.powerMode = "reset";
+    }
+
+    //This uses the ships energy in a way that maxmises aggression but leaves lowers the defensive capabilites of the ship
+    public static void EnergyAggressive(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
+        {
+            if (smallShip.targetDistance < 1000 & smallShip.targetForward > 0)
+            {
+                smallShip.powerMode = "lasers";
+            }
+            else
+            {
+                smallShip.powerMode = "engines";
+            }
+        }
+        else
+        {
+            smallShip.powerMode = "reset";
+        }
+    }
+
+    //This uses the ships energy in a way that maxmises defenses but minimises attack capabilities
+    public static void EnergyProtective(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
+        {
+            if (smallShip.shieldLevel < smallShip.shieldRating / 2f)
+            {
+                smallShip.powerMode = "shields";
+            }
+            else
+            {
+                smallShip.powerMode = "reset";
+            }
+        }
+        else
+        {
+            smallShip.powerMode = "reset";
+        }
+    }
+
+    //This uses the ships energy in way that is most effective for both offense and defense
+    public static void EnergyDynamic(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
+        {
+            if (smallShip.shieldLevel < smallShip.shieldRating / 2f)
+            {
+                smallShip.powerMode = "shields";
+            }
+            else if (smallShip.targetDistance < 1000 & smallShip.targetForward > 0)
+            {
+                smallShip.powerMode = "lasers";
+            }
+            else if (smallShip.targetDistance > 2000 & smallShip.targetForward > 0)
+            {
+                smallShip.powerMode = "engines";
+            }
+            else
+            {
+                smallShip.powerMode = "reset";
+            }
+        }
+        else
+        {
+            smallShip.powerMode = "reset";
+        }
+    }
+
+    #endregion
+
+    #region Evasion and Collision Avoidance
+
+    //This allows the ship to evade attacks and avoid collisions with other objects and ships
+    public static IEnumerator Evade(SmallShip smallShip, float time, string mode, int direction)
+    {
+        if (TagExists(smallShip, "nospeed") == true & TagExists(smallShip, "norotation") == true)
+        {
+           //Do nothing
+        }
+        else
+        {
+            if (smallShip != null)
+            {
+                smallShip.aiEvade = true;
+
+                time = time + Time.time;
+
+                while (time > Time.time)
+                {
+                    HalfSpeed(smallShip);
+
+                    if (direction == 0)
+                    {
+                        TurnRight(smallShip);
+                    }
+                    else if (direction == 1)
+                    {
+                        TurnLeft(smallShip);
+                    }
+                    else if (direction == 2)
+                    {
+                        PitchUp(smallShip);
+                    }
+                    else if (direction == 3)
+                    {
+                        PitchDown(smallShip);
+                    }
+                    else if (direction == 4)
+                    {
+                        RollRight(smallShip);
+                    }
+                    else if (direction == 5)
+                    {
+                        RollLeft(smallShip);
+                    }
+                    else if (direction == 6)
+                    {
+                        FlyFoward(smallShip);
+                    }
+
+                    yield return null;
+
+                }
+
+                ResetSteeringInputs(smallShip);
+
+                smallShip.aiEvade = false;
+            }
+        }
     }
 
     #endregion

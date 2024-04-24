@@ -958,7 +958,7 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            smallShip.aiOverideMode = "none";
+                            //smallShip.aiOverideMode = "none";
                         }
                     }
                 }
@@ -1839,7 +1839,7 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            smallShip.aiOverideMode = missionEvent.data2;
+                            //smallShip.aiOverideMode = missionEvent.data2;
                         }
 
                         LargeShip largeShip = ship.GetComponent<LargeShip>();

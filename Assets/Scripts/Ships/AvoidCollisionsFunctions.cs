@@ -91,7 +91,7 @@ public static class AvoidCollisionsFunctions
                                 avoidCollisionB = true;
                             }
 
-                            if (avoidCollisionA == true & smallShipA.aiOverideMode == "none")
+                            if (avoidCollisionA == true & smallShipA.aiEvade == false)
                             {
                                 direction = 0; //Right = 0, Left = 1, Up = 2, Down, 3, RollRight 4, RollLeft 5, Fly Forward = 6 
                                 if (shipARight > 0) { direction = 1; } else { direction = 0; }
@@ -103,13 +103,13 @@ public static class AvoidCollisionsFunctions
                                 }
                             }
 
-                            if (avoidCollisionB == true & smallShipB.aiOverideMode == "none")
+                            if (avoidCollisionB == true & smallShipB.aiEvade == false)
                             {
                                 direction = 0; //Right = 0, Left = 1, Up = 2, Down, 3, RollRight 4, RollLeft 5, Fly Forward = 6 
                                 if (shipBRight > 0) { direction = 1; } else { direction = 0; }
                                 if (shipBUp > 0) { direction = 3; } else { direction = 2; }
 
-                                if (smallShipB.aiOverideMode == "none" & smallShipB.isAI == true)
+                                if (smallShipB.aiEvade == false & smallShipB.isAI == true)
                                 {
                                     Task b = new Task(SmallShipAIFunctions.Evade(smallShipB, 2, "avoidCollision", direction));
                                 }

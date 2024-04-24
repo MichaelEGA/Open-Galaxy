@@ -5,7 +5,6 @@ using UnityEngine;
 //These functions are called by the small ship functions script
 public static class SmallShipAIFunctions
 {
-
     #region Base AI Functions
 
     //This is the base function that calls all the other AI functions except collisions which is called by an external script (evasions are called internally though)
@@ -848,183 +847,6 @@ public static class SmallShipAIFunctions
 
     #endregion
 
-    #region AI Steering Control
-
-    //This angles the ship towards the target vector
-    public static void AngleTowardsTarget(SmallShip smallShip)
-    {
-        if (smallShip.target != null)
-        {
-            if (smallShip.interceptForward < 0.8)
-            {
-                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                {
-                    //Right way up
-                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
-                }
-                else
-                {
-                    //Upside down
-                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
-                }
-            }
-            else
-            {
-                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                {
-                    //Right way up
-                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight * 5);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
-                }
-                else
-                {
-                    //Upside down
-                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight * 5);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
-                }
-            }
-        }
-    }
-
-    //This angles the ship away from the target vector
-    public static void AngleAwayFromTarget(SmallShip smallShip)
-    {
-        if (smallShip.target != null)
-        {
-            if (-smallShip.interceptForward < 1)
-            {
-                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                {
-                    //Right way up
-                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.interceptUp);
-                }
-                else
-                {
-                    //Upside down
-                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
-                }
-            }
-        } 
-    }
-
-    //This angles the ship towards the target vector
-    public static void AngleTowardsWaypoint(SmallShip smallShip)
-    {
-        if (smallShip.waypoint != null)
-        {
-            if (smallShip.waypointForward < 0.8)
-            {
-                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                {
-                    //Right way up
-                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
-                }
-                else
-                {
-                    //Upside down
-                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
-                }
-            }
-            else
-            {
-                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                {
-                    //Right way up
-                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight * 5);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
-                }
-                else
-                {
-                    //Upside down
-                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight * 5);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
-                }
-            }
-        }
-    }
-
-    //This angles the ship away from the target vector
-    public static void AngleAwayFromWaypoint(SmallShip smallShip)
-    {
-        if (smallShip.waypoint != null)
-        {
-            if (smallShip.waypointForward > -0.95)
-            {
-                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                {
-                    //Right way up
-                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.waypointUp);
-                }
-                else
-                {
-                    //Upside down
-                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
-                }
-            }
-        }
-    }
-
-    //This pitches the ship up
-    public static void PitchUp(SmallShip smallShip)
-    {
-        SmallShipFunctions.SmoothPitchInput(smallShip, 1);
-    }
-
-    //This pitches the ship down
-    public static void PitchDown(SmallShip smallShip)
-    {
-        SmallShipFunctions.SmoothPitchInput(smallShip, -1);
-    }
-
-    //This turns the ship right
-    public static void TurnRight(SmallShip smallShip)
-    {
-        SmallShipFunctions.SmoothTurnInput(smallShip, 1);
-    }
-
-    //This turns the ship Left
-    public static void TurnLeft(SmallShip smallShip)
-    {
-        SmallShipFunctions.SmoothTurnInput(smallShip, -1);
-    }
-
-    //This causes the ship to roll Right
-    public static void RollRight(SmallShip smallShip)
-    {
-        SmallShipFunctions.SmoothRollInput(smallShip, 1);
-    }
-
-    //This causes the ship to roll left
-    public static void RollLeft(SmallShip smallShip)
-    {
-        SmallShipFunctions.SmoothRollInput(smallShip, -1);
-    }
-
-    //This causes the ship to fly forward
-    public static void FlyFoward(SmallShip smallShip)
-    {
-        SmallShipFunctions.SmoothPitchInput(smallShip, 0);
-        SmallShipFunctions.SmoothTurnInput(smallShip, 0);
-    }
-
-    //This resets all the inputs
-    public static void ResetSteeringInputs(SmallShip smallShip)
-    {
-        smallShip.pitchInput = 0;
-        smallShip.turnInput = 0;
-        smallShip.rollInput = 0;
-    }
-
-    #endregion
-
     #region AI Energy Management
 
     //This sets shield power to maximum
@@ -1180,6 +1002,183 @@ public static class SmallShipAIFunctions
                 smallShip.aiEvade = false;
             }
         }
+    }
+
+    #endregion
+
+    #region AI Steering Control
+
+    //This angles the ship towards the target vector
+    public static void AngleTowardsTarget(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
+        {
+            if (smallShip.interceptForward < 0.8)
+            {
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+                }
+            }
+            else
+            {
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight * 5);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight * 5);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp * 5);
+                }
+            }
+        }
+    }
+
+    //This angles the ship away from the target vector
+    public static void AngleAwayFromTarget(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
+        {
+            if (-smallShip.interceptForward < 1)
+            {
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.interceptRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.interceptUp);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.interceptRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.interceptUp);
+                }
+            }
+        }
+    }
+
+    //This angles the ship towards the target vector
+    public static void AngleTowardsWaypoint(SmallShip smallShip)
+    {
+        if (smallShip.waypoint != null)
+        {
+            if (smallShip.waypointForward < 0.8)
+            {
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+                }
+            }
+            else
+            {
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight * 5);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight * 5);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp * 5);
+                }
+            }
+        }
+    }
+
+    //This angles the ship away from the target vector
+    public static void AngleAwayFromWaypoint(SmallShip smallShip)
+    {
+        if (smallShip.waypoint != null)
+        {
+            if (smallShip.waypointForward > -0.95)
+            {
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -smallShip.waypointRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, smallShip.waypointUp);
+                }
+                else
+                {
+                    //Upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, smallShip.waypointRight);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -smallShip.waypointUp);
+                }
+            }
+        }
+    }
+
+    //This pitches the ship up
+    public static void PitchUp(SmallShip smallShip)
+    {
+        SmallShipFunctions.SmoothPitchInput(smallShip, 1);
+    }
+
+    //This pitches the ship down
+    public static void PitchDown(SmallShip smallShip)
+    {
+        SmallShipFunctions.SmoothPitchInput(smallShip, -1);
+    }
+
+    //This turns the ship right
+    public static void TurnRight(SmallShip smallShip)
+    {
+        SmallShipFunctions.SmoothTurnInput(smallShip, 1);
+    }
+
+    //This turns the ship Left
+    public static void TurnLeft(SmallShip smallShip)
+    {
+        SmallShipFunctions.SmoothTurnInput(smallShip, -1);
+    }
+
+    //This causes the ship to roll Right
+    public static void RollRight(SmallShip smallShip)
+    {
+        SmallShipFunctions.SmoothRollInput(smallShip, 1);
+    }
+
+    //This causes the ship to roll left
+    public static void RollLeft(SmallShip smallShip)
+    {
+        SmallShipFunctions.SmoothRollInput(smallShip, -1);
+    }
+
+    //This causes the ship to fly forward
+    public static void FlyFoward(SmallShip smallShip)
+    {
+        SmallShipFunctions.SmoothPitchInput(smallShip, 0);
+        SmallShipFunctions.SmoothTurnInput(smallShip, 0);
+    }
+
+    //This resets all the inputs
+    public static void ResetSteeringInputs(SmallShip smallShip)
+    {
+        smallShip.pitchInput = 0;
+        smallShip.turnInput = 0;
+        smallShip.rollInput = 0;
     }
 
     #endregion

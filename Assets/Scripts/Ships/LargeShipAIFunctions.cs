@@ -1,244 +1,220 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class LargeShipAIFunctions
 {
-
-    #region Get AI Input i.e. function that calls all other functions
+    #region Base AI Functions
 
     //This is the base function that calls all the other AI functions except collisions which is called by an external script (evasions are called internally though)
     public static void GetAIInput(LargeShip largeShip)
     {
-        SetFlightMode(largeShip);
-    }
+        //This adds all the default ai tags when the ship is first run
+        if (largeShip.aiStarted == false)
+        {
+            AddDefaultTags(largeShip);
+            largeShip.aiStarted = true;
+        }
 
-    #endregion
-
-    #region Set Flight Mode
-
-    //This selects the flight mode from the avaible patterns
-    public static void SetFlightMode(LargeShip largeShip)
-    {
-        //This selects the next enemy target
+        //This requests the next enemy target
         if (largeShip.target == null)
         {
-            largeShip.requestingTarget = true;
+            largeShip.aiRequestingTarget = true;
         }
         else if (largeShip.target.activeSelf == false)
         {
-            largeShip.requestingTarget = true;
+            largeShip.aiRequestingTarget = true;
         }
         else
         {
-            largeShip.requestingTarget = false;
+            largeShip.aiRequestingTarget = false;
         }
 
-        //This chooses between attack and patrol
-        if (largeShip.target != null)
-        {
-            if (largeShip.target.activeSelf == true)
-            {
-                LargeShip targetLargeShip = largeShip.target.GetComponent<LargeShip>();
-
-                if (targetLargeShip != null)
-                {
-                    if (largeShip.shipClass == "medium")
-                    {
-                        if (targetLargeShip.shipClass == "large")
-                        {
-                            largeShip.aiMode = "AttackPatternBeta";
-                        }
-                        else
-                        {
-                            largeShip.aiMode = "AttackPatternAlpha";
-                        }
-                    }
-                    else if (largeShip.shipClass == "small")
-                    {
-                        if (targetLargeShip.shipClass != "small")
-                        {
-                            largeShip.aiMode = "AttackPatternBeta";
-                        }
-                        else
-                        {
-                            largeShip.aiMode = "AttackPatternAlpha";
-                        }
-                    }
-                    else if (largeShip.shipClass == "large")
-                    {
-                        largeShip.aiMode = "AttackPatternAlpha";
-                    }
-                    else
-                    {
-                        largeShip.aiMode = "Stationary";
-                    }
-                }
-                else
-                {
-                    largeShip.aiMode = "Stationary";
-                }
-            }
-            else
-            {
-                largeShip.aiMode = "Stationary";
-            }
-        }
-        else
-        {
-            largeShip.aiMode = "Stationary";
-        }
-
-        //This activates the appropriate flight patterns
-        if (largeShip.aiOverideMode == "none" || largeShip.aiOverideMode == "")
-        {
-            if (largeShip.aiMode == "AttackPatternAlpha")
-            {
-                AttackPatternAlpha(largeShip);
-            }
-            else if (largeShip.aiMode == "AttackPatternBeta")
-            {
-                AttackPatternBeta(largeShip);
-            }
-            else if (largeShip.aiMode == "Stationary")
-            {
-                Stationary(largeShip);
-            }
-        }
-        else if (largeShip.aiOverideMode == "MoveToWaypoint")
-        {
-            MoveToWayPoint(largeShip);
-        }
-        else if (largeShip.aiOverideMode == "Stationary")
-        {
-            Stationary(largeShip);
-        }
+        //This runs all the ai functions
+        RunTags(largeShip);
     }
 
     #endregion
 
-    #region Flight Patterns
+    #region AI Tagging System
 
-    //This is the basic flight pattern for attack
-    public static void AttackPatternAlpha(LargeShip largeShip)
+    //This adds the default ai tags
+    public static void AddDefaultTags(LargeShip largeShip)
     {
-        if (largeShip.targetDistance > 1000)
-        {
-            FullSpeed(largeShip);
-            AngleTowardsTarget(largeShip);
-        }
-        else
-        {
-           NoSpeed(largeShip);
-           KeepTargetOnRight(largeShip);
-        }
+        AddTag(largeShip, "nospeed");
+        AddTag(largeShip, "fireweapons");
+        AddTag(largeShip, "norotation");
     }
 
-    //This causes the ship to circle around it's target
-    public static void AttackPatternBeta(LargeShip largeShip)
+    //This adds an ai tag and removes conflicting tags using the two functions below
+    public static void AddTag(LargeShip largeShip, string tag)
     {
-        if (largeShip.targetDistance > 1500)
+        if (largeShip != null)
         {
-            FullSpeed(largeShip);
-            AngleTowardsTarget(largeShip);
-        }
-        else
-        {
-            FullSpeed(largeShip);
-            KeepTargetOnRight(largeShip);
-        }
-    }
-
-    //This angles towards the ships waypoint
-    public static void MoveToWayPoint(LargeShip largeShip)
-    {
-        ThreeQuarterSpeed(largeShip);
-        AngleTowardsWaypoint(largeShip);
-    }
-
-    //This causes the ship to come to a full stop
-    public static void Stationary(LargeShip largeShip)
-    {
-        NoSpeed(largeShip);
-    }
-
-    #endregion
-
-    #region Evasion and Collision Avoidance
-
-    //This allows the ship to evade attacks and avoid collisions with other objects and ships
-    public static IEnumerator Evade(LargeShip largeShip, float time, string mode, int direction)
-    {
-        if (largeShip != null & largeShip.aiOverideMode != "Stationary")
-        {
-            if (largeShip.aiOverideMode != "avoidCollision")
+            if (tag == "matchspeed" || tag == "fullspeed" || tag == "threequarterspeed" || tag == "halfspeed" || tag == "quarterspeed" || tag == "nospeed")
             {
-                largeShip.savedOverideMode = largeShip.aiOverideMode; //This saves the current ai override mode and reapplies it at the end of the evasion sequence
+                RemoveSingleTag(largeShip, "fullspeed");
+                RemoveSingleTag(largeShip, "threequarterspeed");
+                RemoveSingleTag(largeShip, "halfspeed");
+                RemoveSingleTag(largeShip, "quarterspeed");
+                RemoveSingleTag(largeShip, "nospeed");
+            }
+            else if (tag == "fireweapons" || tag == "noweapons")
+            {
+                RemoveSingleTag(largeShip, "fireweapons");
+                RemoveSingleTag(largeShip, "noweapons");
+            }
+            else if (tag == "circletarget" || tag == "movetowaypoint" || tag == "stayinrangeoftarget" || tag == "norotation")
+            {
+                RemoveSingleTag(largeShip, "movetowaypoint");
+                RemoveSingleTag(largeShip, "stayinrangeoftarget");
+                RemoveSingleTag(largeShip, "circletarget");
+                RemoveSingleTag(largeShip, "norotation");
             }
 
-            largeShip.aiOverideMode = mode;
+            AddSingleTag(largeShip, tag);
+        }
+    }
 
-            time = time + Time.time;
-
-            while (time > Time.time)
+    //This adds an ai tag
+    public static void AddSingleTag(LargeShip largeShip, string tag)
+    {
+        if (largeShip != null)
+        {
+            //This checks the tag list exists
+            if (largeShip.aiTags == null)
             {
-                NoSpeed(largeShip);
-
-                if (direction == 0)
-                {
-                    TurnRight(largeShip);
-                }
-                else if (direction == 1)
-                {
-                    TurnLeft(largeShip);
-                }
-                else if (direction == 2)
-                {
-                    PitchUp(largeShip);
-                }
-                else if (direction == 3)
-                {
-                    PitchDown(largeShip);
-                }
-                else if (direction == 4)
-                {
-                    RollRight(largeShip);
-                }
-                else if (direction == 5)
-                {
-                    RollLeft(largeShip);
-                }
-                else if (direction == 6)
-                {
-                    FlyFoward(largeShip);
-                }
-
-                yield return null;
-
+                largeShip.aiTags = new List<string>();
             }
 
-            largeShip.aiOverideMode = largeShip.savedOverideMode;
+            //This adds the new tag
+            if (largeShip.aiTags != null)
+            {
+                largeShip.aiTags.Add(tag);
+            }
+        }
+    }
 
-            ResetSteeringInputs(largeShip);
+    //This removes an ai tag
+    public static void RemoveSingleTag(LargeShip largeShip, string tag)
+    {
+        if (largeShip != null)
+        {
+            //This checks the tag list exists
+            if (largeShip.aiTags == null)
+            {
+                largeShip.aiTags = new List<string>();
+            }
+
+            //This removes the designated tag
+            if (largeShip.aiTags != null)
+            {
+                //This creates a list of tags to remove
+                List<int> removeTagList = new List<int>();
+
+                for (int i = 0; i < largeShip.aiTags.Count; i++)
+                {
+                    if (largeShip.aiTags[i] == tag)
+                    {
+                        removeTagList.Add(i);
+                        largeShip.aiTags.RemoveAt(i);
+                    }
+                }
+
+                //This removes the tags
+                foreach (int tagInt in removeTagList)
+                {
+                    largeShip.aiTags.RemoveAt(tagInt);
+                }
+            }
+        }
+    }
+
+    //This runs the ai tags
+    public static void RunTags(LargeShip largeShip)
+    {
+        if (largeShip != null)
+        {
+            //This checks the tag list exists
+            if (largeShip.aiTags == null)
+            {
+                largeShip.aiTags = new List<string>();
+            }
+
+            //This runs through the ship tags and runs the appropriate functions
+            if (largeShip.aiTags != null)
+            {
+                foreach (string tag in largeShip.aiTags.ToArray())
+                {
+                    if (tag == "fullspeed") //Speed control
+                    {
+                        FullSpeed(largeShip);
+                    }
+                    else if (tag == "threequarterspeed")
+                    {
+                        ThreeQuarterSpeed(largeShip);
+                    }
+                    else if (tag == "halfspeed")
+                    {
+                        HalfSpeed(largeShip);
+                    }
+                    else if (tag == "quarterspeed")
+                    {
+                        QuarterSpeed(largeShip);
+                    }
+                    else if (tag == "nospeed")
+                    {
+                        NoSpeed(largeShip);
+                    }
+                    else if (tag == "fireweapons") //Weapon control
+                    {
+                        FireWeapons(largeShip);
+                    }
+                    else if (tag == "noweapons")
+                    {
+                        NoWeapons(largeShip);
+                    }
+                    else if (tag == "movetotargetrange") //Flight patterns
+                    {
+                        MoveToTargetRange(largeShip);
+                    }
+                    else if (tag == "circletarget")
+                    {
+                        CircleTarget(largeShip);
+                    }
+                    else if (tag == "movetowaypoint")
+                    {
+                        MoveToWayPoint(largeShip);
+                    }
+                    else if (tag == "norotation")
+                    {
+                        NoRotation(largeShip);
+                    }
+                }
+            }
+        }
+    }
+
+    //This checks if an ai tag exists
+    public static bool TagExists(LargeShip largeShip, string tag)
+    {
+        bool exists = false;
+
+        foreach (string tempTag in largeShip.aiTags.ToArray())
+        {
+            if (tempTag == tag)
+            {
+                exists = true;
+                break;
+            }
         }
 
+        return exists;
     }
 
     #endregion
 
-    #region Targetting and Waypoints
-
-    //This selects a random waypoint
-    public static void SelectRandomWaypoint(LargeShip largeShip)
-    {
-        float x = Random.Range(0, 15000);
-        float y = Random.Range(0, 15000);
-        float z = Random.Range(0, 15000);
-        largeShip.waypoint.transform.position = new Vector3(x, y, z);
-    }
-
-    #endregion
-
-    #region Speed Control
+    #region AI Speed Functions
 
     //This sets the ship to half speed (typically used when no enemies are detected)
     public static void MatchSpeed(LargeShip largeShip)
@@ -321,7 +297,148 @@ public static class LargeShipAIFunctions
 
     #endregion
 
-    #region Steering Control
+    #region AI Weapon Control
+
+    //This allows the turrets to fire
+    public static void FireWeapons(LargeShip largeShip)
+    {
+        largeShip.weaponsLock = false;
+    }
+
+    //This prevents the turrets from firing
+    public static void NoWeapons(LargeShip largeShip)
+    {
+        largeShip.weaponsLock = true;
+    }
+
+    #endregion
+
+    #region AI Flight Patterns
+
+    //This is the basic flight pattern for attack
+    public static void MoveToTargetRange(LargeShip largeShip)
+    {
+        if (largeShip.targetDistance > 1000)
+        {
+            FullSpeed(largeShip);
+            AngleTowardsTarget(largeShip);
+        }
+        else
+        {
+            NoSpeed(largeShip);
+            KeepTargetOnRight(largeShip);
+        }
+    }
+
+    //This causes the ship to circle around it's target
+    public static void CircleTarget(LargeShip largeShip)
+    {
+        if (largeShip.targetDistance > 1500)
+        {
+            FullSpeed(largeShip);
+            AngleTowardsTarget(largeShip);
+        }
+        else
+        {
+            FullSpeed(largeShip);
+            KeepTargetOnRight(largeShip);
+        }
+    }
+
+    //This angles towards the ships waypoint
+    public static void MoveToWayPoint(LargeShip largeShip)
+    {
+        ThreeQuarterSpeed(largeShip);
+        AngleTowardsWaypoint(largeShip);
+    }
+
+    //This causes the ship to come to a full stop
+    public static void Stationary(LargeShip largeShip)
+    {
+        NoSpeed(largeShip);
+    }
+
+    //This selects a random waypoint
+    public static void SelectRandomWaypoint(LargeShip largeShip)
+    {
+        float x = Random.Range(0, 15000);
+        float y = Random.Range(0, 15000);
+        float z = Random.Range(0, 15000);
+        largeShip.waypoint.transform.position = new Vector3(x, y, z);
+    }
+
+    //This prevents the ship from rotating and locks the direction forward
+    public static void NoRotation(LargeShip largeShip)
+    {
+        ResetSteeringInputs(largeShip);
+    }
+
+    #endregion
+
+    #region AI Evasion and Collision Avoidance
+
+    //This allows the ship to evade attacks and avoid collisions with other objects and ships
+    public static IEnumerator Evade(LargeShip largeShip, float time, string mode, int direction)
+    {
+        if (TagExists(largeShip, "nospeed") == true & TagExists(largeShip, "norotation") == true)
+        {
+            //Do nothing
+        }
+        else
+        {
+            if (largeShip != null)
+            {
+                largeShip.aiEvade = true;
+
+                time = time + Time.time;
+
+                while (time > Time.time)
+                {
+                    NoSpeed(largeShip);
+
+                    if (direction == 0)
+                    {
+                        TurnRight(largeShip);
+                    }
+                    else if (direction == 1)
+                    {
+                        TurnLeft(largeShip);
+                    }
+                    else if (direction == 2)
+                    {
+                        PitchUp(largeShip);
+                    }
+                    else if (direction == 3)
+                    {
+                        PitchDown(largeShip);
+                    }
+                    else if (direction == 4)
+                    {
+                        RollRight(largeShip);
+                    }
+                    else if (direction == 5)
+                    {
+                        RollLeft(largeShip);
+                    }
+                    else if (direction == 6)
+                    {
+                        FlyFoward(largeShip);
+                    }
+
+                    yield return null;
+
+                }
+
+                ResetSteeringInputs(largeShip);
+
+                largeShip.aiEvade = false;
+            }
+        }
+    }
+
+    #endregion
+
+    #region AI Steering Control
 
     //This angles the ship towards the target vector
     public static void AngleTowardsTarget(LargeShip largeShip)

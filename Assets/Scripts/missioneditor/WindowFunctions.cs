@@ -80,8 +80,9 @@ public static class WindowFunctions
         buttonList.Add("spliteventseries");
         buttonList.Add("activatedocking");
         buttonList.Add("activatehyperspace");
+        buttonList.Add("addaitagtolargeship");
+        buttonList.Add("addaitagtosmallship");
         buttonList.Add("changelocation");
-        buttonList.Add("clearaioverride");
         buttonList.Add("deactivateship");
         buttonList.Add("displaydialoguebox");
         buttonList.Add("displaytitle");
@@ -101,7 +102,6 @@ public static class WindowFunctions
         buttonList.Add("loadmultipleships");
         buttonList.Add("pausesequence");
         buttonList.Add("playmusictrack");
-        buttonList.Add("setaioverride");
         buttonList.Add("setcargo");
         buttonList.Add("setcontrollock");
         buttonList.Add("setobjective");

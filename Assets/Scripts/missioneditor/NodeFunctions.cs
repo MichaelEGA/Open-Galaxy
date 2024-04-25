@@ -81,13 +81,17 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ActivateHyperspace(node);
         }
+        else if (node.nodeType == "addaitagtolargeship")
+        {
+            NodeTypes.Draw_AddAITagToLargeShip(node);
+        }
+        else if (node.nodeType == "addaitagtosmallship")
+        {
+            NodeTypes.Draw_AddAITagToSmallShip(node);
+        }
         else if (node.nodeType == "changelocation")
         {
             NodeTypes.Draw_ChangeLocation(node);
-        }
-        else if (node.nodeType == "clearaioverride")
-        {
-            NodeTypes.Draw_ClearAIOverride(node);
         }
         else if (node.nodeType == "deactivateship")
         {
@@ -164,10 +168,6 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "playmusictrack")
         {
             NodeTypes.Draw_PlayMusicTrack(node);
-        }
-        else if (node.nodeType == "setaioverride")
-        {
-            NodeTypes.Draw_SetAIOverride(node);
         }
         else if (node.nodeType == "setcargo")
         {

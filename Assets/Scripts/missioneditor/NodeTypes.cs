@@ -1114,6 +1114,182 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
+    public static void Draw_AddAITagToLargeShip(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "addaitagtolargeship", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "addaitagtolargeship", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options = new List<string>();
+        options.Add("none");
+        options.Add("fullspeed");
+        options.Add("threequarterspeed");
+        options.Add("halfspeed");
+        options.Add("quarterspeed");
+        options.Add("nospeed");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "speed control", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options2 = new List<string>();
+        options2.Add("none");
+        options2.Add("fireweapons");
+        options2.Add("noweapons");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "speed control", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("none");
+        options4.Add("movetotargetrange");
+        options4.Add("circletarget");
+        options4.Add("movetowaypoint");
+        options4.Add("norotation");
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_AddAITagToSmallShip(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "addaitagtosmallship", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "addaitagtosmallship", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options = new List<string>();
+        options.Add("none");
+        options.Add("fullspeed");
+        options.Add("threequarterspeed");
+        options.Add("halfspeed");
+        options.Add("quarterspeed");
+        options.Add("dynamicspeed");
+        options.Add("nospeed");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "speed control", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options2 = new List<string>();
+        options2.Add("none");
+        options2.Add("singlelaser");
+        options2.Add("duallasers");
+        options2.Add("alllasers");
+        options2.Add("singletorpedo");
+        options2.Add("dualtorpedos");
+        options2.Add("alltorpedos");
+        options2.Add("noweapons");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "speed control", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options3 = new List<string>();
+        options3.Add("none");
+        options3.Add("lowaccuracy");
+        options3.Add("mediumaccuracy");
+        options3.Add("highaccuracy");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options3, "weapon accuracy", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("none");
+        options4.Add("chase");
+        options4.Add("chasewithdraw");
+        options4.Add("strafewithdraw");
+        options4.Add("movetowaypoint");
+        options4.Add("patrolrandom");
+        options4.Add("norotation");
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, options4, "flight patterns", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("none");
+        options5.Add("resetenergylevels");
+        options5.Add("energytoshields");
+        options5.Add("energytoengines");
+        options5.Add("energytolasers");
+        options5.Add("energyprotective");
+        options5.Add("energyaggressive");
+        options5.Add("energydynamic");
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options5, "energy management", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
     public static void Draw_ChangeLocation(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -1169,47 +1345,6 @@ public static class NodeTypes
         drop -= 15;
 
         node.data1 = NodeFunctions.DrawInputField(node, "Jump to", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
-    public static void Draw_ClearAIOverride(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "clearaioverride", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "clearaioverride", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data1 = NodeFunctions.DrawInputField(node, "ship name", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2388,57 +2523,6 @@ public static class NodeTypes
         drop -= 15;
 
         node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
-    public static void Draw_SetAIOverride(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "setaioverride", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "setaioverride", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options = new List<string>();
-        options.Add("none");
-        options.Add("MoveToWaypoint");
-        options.Add("Patrol");
-        options.Add("Stationary");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "override", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

@@ -1040,7 +1040,7 @@ public static class TargetingFunctions
         {
             if (largeShip != null)
             {
-                if (largeShip.gameObject.activeSelf == true & largeShip.requestingTarget == true)
+                if (largeShip.gameObject.activeSelf == true & largeShip.aiRequestingTarget == true)
                 {
                     if (largeShip.target == null)
                     {

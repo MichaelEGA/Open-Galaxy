@@ -117,14 +117,10 @@ public class LargeShip : MonoBehaviour
     public Transform castPoint;
 
     [Header("Ship AI")]
-    public string aiMode;
-    public string aiOverideMode = "none";
-    public string savedOverideMode = "none";
-    public string aiSkillLevel; 
-    [HideInInspector] public float aiPitchInput;
-    [HideInInspector] public float aiTurnInput;
-    [HideInInspector] public float aiRollInput;
-    public bool requestingTarget;
+    public List<string> aiTags;
+    public bool aiEvade;
+    public bool aiRequestingTarget;
+    public bool aiStarted;
 
     [Header("Ship Loading")]
     [HideInInspector] public bool loaded;

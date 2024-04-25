@@ -17,7 +17,7 @@ public static class SmallShipAIFunctions
             smallShip.aiStarted = true;
         }
 
-        //This selects the next enemy target
+        //This requests the next enemy target
         if (smallShip.target == null)
         {
             smallShip.requestingTarget = true;
@@ -54,7 +54,7 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (tag == "matchspeed" || tag == "fullspeed" || tag == "threequarterspeed" || tag == "halfspeed" || tag == "quarterspeed" || tag == "nospeed")
+            if (tag == "matchspeed" || tag == "fullspeed" || tag == "threequarterspeed" || tag == "halfspeed" || tag == "quarterspeed" || tag == "dynamicspeed" || tag == "nospeed")
             {
                 RemoveSingleTag(smallShip, "fullspeed");
                 RemoveSingleTag(smallShip, "threequarterspeed");
@@ -260,7 +260,7 @@ public static class SmallShipAIFunctions
                     }
                     else if (tag == "norotation")
                     {
-                        //Do nothing
+                        NoRotation(smallShip);
                     }
                     else if (tag == "resetenergylevels") //Energy Management
                     {
@@ -845,6 +845,12 @@ public static class SmallShipAIFunctions
         }
     }
 
+    //This prevents the ship from performing any rotations and locks the direction forward
+    public static void NoRotation(SmallShip smallShip)
+    {
+        ResetSteeringInputs(smallShip);
+    }
+
     #endregion
 
     #region AI Energy Management
@@ -943,7 +949,7 @@ public static class SmallShipAIFunctions
 
     #endregion
 
-    #region Evasion and Collision Avoidance
+    #region AI Evasion and Collision Avoidance
 
     //This allows the ship to evade attacks and avoid collisions with other objects and ships
     public static IEnumerator Evade(SmallShip smallShip, float time, string mode, int direction)

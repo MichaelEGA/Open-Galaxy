@@ -1306,7 +1306,6 @@ public static class SceneFunctions
                 largeShip.rearShieldLevel = shipType.shieldRating / 2f;
                 largeShip.speedRating = shipType.speedRating;
                 largeShip.laserColor = laserColor;
-                largeShip.aiSkillLevel = "easy";
                 largeShip.type = type;
                 largeShip.prefabName = shipType.prefab;
                 largeShip.thrustType = shipType.thrustType;

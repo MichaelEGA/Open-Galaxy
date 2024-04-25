@@ -1844,11 +1844,6 @@ public static class MissionFunctions
 
                         LargeShip largeShip = ship.GetComponent<LargeShip>();
 
-                        if (largeShip != null)
-                        {
-                            largeShip.aiOverideMode = missionEvent.data2;
-                            largeShip.savedOverideMode = missionEvent.data2;
-                        }
                     }
                 }
             }

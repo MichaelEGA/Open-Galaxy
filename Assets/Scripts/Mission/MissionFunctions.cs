@@ -370,16 +370,21 @@ public static class MissionFunctions
         {
             ActivateHyperspace(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }   
+        }
+        else if (missionEvent.eventType == "addaitagtolargeship")
+        {
+            AddAITagToLargeShip(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "addaitagtosmallship")
+        {
+            AddAITagToSmallShip(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "changelocation")
         {
             Task a = new Task(ChangeLocation(missionEvent));
             missionManager.missionTasks.Add(a);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "clearaioverride")
-        {
-            ClearAIOverride(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "exitmission")
@@ -531,11 +536,6 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "playmusictrack")
         {
             PlayMusicTrack(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "setaioverride")
-        {
-            SetAIOverride(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setcargo")
@@ -821,6 +821,102 @@ public static class MissionFunctions
         }
     }
 
+    //This adds an ai tag to a largeship
+    public static void AddAITagToLargeShip(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string speedControlTag = missionEvent.data2;
+        string weaponControlTag = missionEvent.data3;
+        string flightPatternsTag = missionEvent.data4;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            if (speedControlTag != "none")
+                            {
+                                LargeShipAIFunctions.AddTag(largeShip, speedControlTag);
+                            }
+
+                            if (weaponControlTag != "none")
+                            {
+                                LargeShipAIFunctions.AddTag(largeShip, weaponControlTag);
+                            }
+
+                            if (flightPatternsTag != "none")
+                            {
+                                LargeShipAIFunctions.AddTag(largeShip, flightPatternsTag);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //THis adds an ai tag to a smallship
+    public static void AddAITagToSmallShip(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string speedControlTag = missionEvent.data2;
+        string weaponControlTag = missionEvent.data3;
+        string weaponAccuracyTag = missionEvent.data4;
+        string flightPatternsTag = missionEvent.data5;
+        string enermyManagementTag = missionEvent.data6;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            if (speedControlTag != "none")
+                            {
+                                SmallShipAIFunctions.AddTag(smallShip, speedControlTag);
+                            }
+
+                            if (weaponControlTag != "none")
+                            {
+                                SmallShipAIFunctions.AddTag(smallShip, weaponControlTag);
+                            }
+
+                            if (weaponAccuracyTag != "none")
+                            {
+                                SmallShipAIFunctions.AddTag(smallShip, weaponAccuracyTag);
+                            }
+
+                            if (flightPatternsTag != "none")
+                            {
+                                SmallShipAIFunctions.AddTag(smallShip, flightPatternsTag);
+                            }
+
+                            if (enermyManagementTag != "none")
+                            {
+                                SmallShipAIFunctions.AddTag(smallShip, enermyManagementTag);
+                            } 
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
     public static IEnumerator ChangeLocation(MissionEvent missionEvent)
     {
@@ -939,31 +1035,6 @@ public static class MissionFunctions
         
         //This unpauses the event series
         missionManager.pauseEventSeries = false;
-    }
-
-    //This clears any AI overides on a ship/ships i.e. "waypoint", "dontattack" etc
-    public static void ClearAIOverride(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        if (scene != null)
-        {
-            if (scene.objectPool != null)
-            {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship.name.Contains(missionEvent.data1))
-                    {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                        if (smallShip != null)
-                        {
-                            //smallShip.aiOverideMode = "none";
-                        }
-                    }
-                }
-            }
-        }
     }
 
     //This exits the mission back to the main menu
@@ -1820,34 +1891,6 @@ public static class MissionFunctions
         {
             Task a = new Task(MusicFunctions.PlayMusicTrack(musicManager, track, loop));
         }       
-    }
-
-    //This manually sets the ai flight mode
-    public static void SetAIOverride(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        if (scene != null)
-        {
-            if (scene.objectPool != null)
-            {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship.name.Contains(missionEvent.data1))
-                    {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                        if (smallShip != null)
-                        {
-                            //smallShip.aiOverideMode = missionEvent.data2;
-                        }
-
-                        LargeShip largeShip = ship.GetComponent<LargeShip>();
-
-                    }
-                }
-            }
-        }
     }
 
     //This changes the selected ship/s cargo

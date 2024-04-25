@@ -1242,7 +1242,7 @@ public static class NodeTypes
         options2.Add("alltorpedos");
         options2.Add("noweapons");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "speed control", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "weapons control", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

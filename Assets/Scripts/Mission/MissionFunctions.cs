@@ -842,17 +842,17 @@ public static class MissionFunctions
 
                         if (largeShip != null)
                         {
-                            if (speedControlTag != "none")
+                            if (speedControlTag != "none" & speedControlTag != "nochange")
                             {
                                 LargeShipAIFunctions.AddTag(largeShip, speedControlTag);
                             }
 
-                            if (weaponControlTag != "none")
+                            if (weaponControlTag != "none" & weaponControlTag != "nochange")
                             {
                                 LargeShipAIFunctions.AddTag(largeShip, weaponControlTag);
                             }
 
-                            if (flightPatternsTag != "none")
+                            if (flightPatternsTag != "none" & flightPatternsTag != "nochange")
                             {
                                 LargeShipAIFunctions.AddTag(largeShip, flightPatternsTag);
                             }
@@ -886,27 +886,27 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            if (speedControlTag != "none")
+                            if (speedControlTag != "none" & speedControlTag != "nochange")
                             {
                                 SmallShipAIFunctions.AddTag(smallShip, speedControlTag);
                             }
 
-                            if (weaponControlTag != "none")
+                            if (weaponControlTag != "none" & weaponControlTag != "nochange")
                             {
                                 SmallShipAIFunctions.AddTag(smallShip, weaponControlTag);
                             }
 
-                            if (weaponAccuracyTag != "none")
+                            if (weaponAccuracyTag != "none" & weaponAccuracyTag != "nochange")
                             {
                                 SmallShipAIFunctions.AddTag(smallShip, weaponAccuracyTag);
                             }
 
-                            if (flightPatternsTag != "none")
+                            if (flightPatternsTag != "none" & flightPatternsTag != "nochange")
                             {
                                 SmallShipAIFunctions.AddTag(smallShip, flightPatternsTag);
                             }
 
-                            if (enermyManagementTag != "none")
+                            if (enermyManagementTag != "none" & enermyManagementTag != "nochange")
                             {
                                 SmallShipAIFunctions.AddTag(smallShip, enermyManagementTag);
                             } 

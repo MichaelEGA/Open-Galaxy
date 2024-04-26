@@ -109,22 +109,14 @@ public static class LargeShipAIFunctions
             //This removes the designated tag
             if (largeShip.aiTags != null)
             {
-                //This creates a list of tags to remove
-                List<int> removeTagList = new List<int>();
-
+                //This removes the tag
                 for (int i = 0; i < largeShip.aiTags.Count; i++)
                 {
                     if (largeShip.aiTags[i] == tag)
                     {
-                        removeTagList.Add(i);
                         largeShip.aiTags.RemoveAt(i);
+                        break;
                     }
-                }
-
-                //This removes the tags
-                foreach (int tagInt in removeTagList)
-                {
-                    largeShip.aiTags.RemoveAt(tagInt);
                 }
             }
         }

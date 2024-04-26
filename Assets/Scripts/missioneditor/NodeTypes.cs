@@ -1149,32 +1149,34 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options = new List<string>();
-        options.Add("none");
+        options.Add("nochange");
         options.Add("fullspeed");
         options.Add("threequarterspeed");
         options.Add("halfspeed");
         options.Add("quarterspeed");
         options.Add("nospeed");
 
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "speed control", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "speed control", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options2 = new List<string>();
-        options2.Add("none");
+        options2.Add("nochange");
         options2.Add("fireweapons");
         options2.Add("noweapons");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "speed control", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "weapon control", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options4 = new List<string>();
-        options4.Add("none");
+        options4.Add("nochange");
         options4.Add("movetotargetrange");
         options4.Add("circletarget");
         options4.Add("movetowaypoint");
         options4.Add("norotation");
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, options4, "flight pattern", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1220,7 +1222,7 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options = new List<string>();
-        options.Add("none");
+        options.Add("nochange");
         options.Add("fullspeed");
         options.Add("threequarterspeed");
         options.Add("halfspeed");
@@ -1228,12 +1230,12 @@ public static class NodeTypes
         options.Add("dynamicspeed");
         options.Add("nospeed");
 
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "speed control", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "speed control", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options2 = new List<string>();
-        options2.Add("none");
+        options2.Add("nochange");
         options2.Add("singlelaser");
         options2.Add("duallasers");
         options2.Add("alllasers");
@@ -1242,22 +1244,22 @@ public static class NodeTypes
         options2.Add("alltorpedos");
         options2.Add("noweapons");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "weapons control", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "weapons control", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options3 = new List<string>();
-        options3.Add("none");
+        options3.Add("nochange");
         options3.Add("lowaccuracy");
         options3.Add("mediumaccuracy");
         options3.Add("highaccuracy");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options3, "weapon accuracy", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "weapon accuracy", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options4 = new List<string>();
-        options4.Add("none");
+        options4.Add("nochange");
         options4.Add("chase");
         options4.Add("chasewithdraw");
         options4.Add("strafewithdraw");
@@ -1265,12 +1267,12 @@ public static class NodeTypes
         options4.Add("patrolrandom");
         options4.Add("norotation");
 
-        node.data4 = NodeFunctions.DrawDropDownMenu(node, options4, "flight patterns", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options4, "flight patterns", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options5 = new List<string>();
-        options5.Add("none");
+        options5.Add("nochange");
         options5.Add("resetenergylevels");
         options5.Add("energytoshields");
         options5.Add("energytoengines");
@@ -1279,7 +1281,7 @@ public static class NodeTypes
         options5.Add("energyaggressive");
         options5.Add("energydynamic");
 
-        node.data5 = NodeFunctions.DrawDropDownMenu(node, options5, "energy management", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options5, "energy management", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

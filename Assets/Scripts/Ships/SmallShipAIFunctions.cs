@@ -137,22 +137,14 @@ public static class SmallShipAIFunctions
             //This removes the designated tag
             if (smallShip.aiTags != null)
             {
-                //This creates a list of tags to remove
-                List<int> removeTagList = new List<int>();
-
+                //This removes the tag
                 for (int i = 0; i < smallShip.aiTags.Count; i++)
                 {
                     if (smallShip.aiTags[i] == tag)
                     {
-                        removeTagList.Add(i);
                         smallShip.aiTags.RemoveAt(i);
+                        break;
                     }
-                }
-
-                //This removes the tags
-                foreach (int tagInt in removeTagList)
-                {
-                    smallShip.aiTags.RemoveAt(tagInt);
                 }
             }
         }
@@ -484,6 +476,8 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.target != null)
         {
+            smallShip.activeWeapon = "lasers";
+
             if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
             {
                 bool dontFire = CheckFire(smallShip);
@@ -502,6 +496,8 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.target != null)
         {
+            smallShip.activeWeapon = "lasers";
+
             if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
             {
                 bool dontFire = CheckFire(smallShip);
@@ -520,6 +516,8 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.target != null)
         {
+            smallShip.activeWeapon = "lasers";
+
             if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
             {
                 bool dontFire = CheckFire(smallShip);
@@ -538,6 +536,8 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.target != null)
         {
+            smallShip.activeWeapon = "torpedos";
+
             if (smallShip.torpedoNumber > 0)
             {
                 if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
@@ -549,6 +549,7 @@ public static class SmallShipAIFunctions
         }
         else
         {
+            smallShip.activeWeapon = "lasers";
             SingleLaser(smallShip);
         }
     }
@@ -558,6 +559,8 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.target != null)
         {
+            smallShip.activeWeapon = "torpedos";
+
             if (smallShip.target != null & smallShip.torpedoNumber > 0)
             {
                 if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
@@ -569,6 +572,7 @@ public static class SmallShipAIFunctions
         }
         else
         {
+            smallShip.activeWeapon = "lasers";
             SingleLaser(smallShip);
         }       
     }
@@ -578,6 +582,8 @@ public static class SmallShipAIFunctions
     {
         if (smallShip.target != null)
         {
+            smallShip.activeWeapon = "torpedos";
+
             if (smallShip.target != null & smallShip.torpedoNumber > 0)
             {
                 if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
@@ -589,6 +595,7 @@ public static class SmallShipAIFunctions
         }
         else
         {
+            smallShip.activeWeapon = "lasers";
             SingleLaser(smallShip);
         }
     }

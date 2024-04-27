@@ -192,6 +192,28 @@ public static class NodeDescriptions
            "- This node is particulary helpful when you want several events to occur concurrently in response to a specific event. \n" +
            "- You can have as many event series as you want. \n";
         }
+        else if (name == "addaitagtolargeship")
+        {
+            description =
+            "Add AI Tag to Small Ship \n " +
+            "\n " +
+            "This node adds an AI Tag (command) to a large ship" +
+            "\n " +
+           "Extra Information \n" +
+           "- A large ship is any ship that cannot be controlled by the player i.e.  bulk freighters, corvettes, and stardestroyers are large ships but the tie fighter, x-wing, millenium falcon, and shuttles are not. \n" +
+           "- This function will affect any ship whose name contains the designated string. \n";
+        }
+        else if (name == "addaitagtosmallship")
+        {
+            description =
+            "Add AI Tag to Small Ship \n " +
+            "\n " +
+            "This node adds an AI Tag (command) to a small ship" +
+            "\n " +
+           "Extra Information \n" +
+           "- A small ship is any ship that can (theoretically) be controlled by the player i.e. the tie fighter, x-wing, millenium falcon, and shuttles are small ships but the bulk freighters, corvettes, and stardestroyers are not. \n" +
+           "- This function will affect any ship whose name contains the designated string. \n";
+        }
         else if (name == "activatehyperspace")
         {
             description =
@@ -230,20 +252,6 @@ public static class NodeDescriptions
             "\n " +
            "Extra Information \n" +
            "- You can only jump to locations you have created in the mission using the 'create location' node. The game will abort changing location if it can't the location.  \n" +
-           "- If the location is left as 'none' the node will runn regardless of location. \n";
-        }
-        else if (name == "clearaioverride")
-        {
-            description =
-           "Clear AI Override \n " +
-           "\n " +
-           "This is node clears all ai overrides on the selected craft \n" +
-           "\n " +
-           "Extra Information \n" +
-           "- An ai override forces a ship to deviate from its standard behaviour to perform only one task. \n" +
-           "- For a ship to return to its standard behavious the AI override must be cleared. \n" +
-           "- AI overrides inlcude: 'MoveToWayPoint', 'Stationary', 'Patrol'. \n" +
-           "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "exitmission")
@@ -491,19 +499,6 @@ public static class NodeDescriptions
             "- You can check a ships distance to its waypoint using the 'ifshipislessthandistancetowaypoint' function. \n" +
             "- You can direct an ai ship to fly toward its waypoint by setting the ai override to 'movetowaypoint'. \n" +
             "- This function will affect any ship whose name contains the designated string. \n" +
-           "- If the location is left as 'none' the node will runn regardless of location. \n";
-        }
-        else if (name == "setaioverride")
-        {
-            description =
-           "Set AI Override \n " +
-           "\n " +
-           "This function sets an AI override on the designated ship. \n" +
-           "\n " +
-           "Extra Information \n" +
-           "- This function will affect any ship whose name contains the designated string. \n" +
-           "- This is an ai override. An ai override forces a ship to deviate from its standard behaviour to perform only one task (move to waypoint). For a ship to return to its standard behavious the AI override must be cleared using the clearaioverride function. \n" +
-           "- AI overrides inlcude: 'MoveToWayPoint', 'Stationary', 'Patrol'. \n" +
            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "setcargo")

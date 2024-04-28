@@ -478,7 +478,7 @@ public static class SmallShipAIFunctions
         {
             smallShip.activeWeapon = "lasers";
 
-            if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
+            if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
             {
                 bool dontFire = CheckFire(smallShip);
 
@@ -498,7 +498,7 @@ public static class SmallShipAIFunctions
         {
             smallShip.activeWeapon = "lasers";
 
-            if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
+            if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
             {
                 bool dontFire = CheckFire(smallShip);
 
@@ -518,7 +518,7 @@ public static class SmallShipAIFunctions
         {
             smallShip.activeWeapon = "lasers";
 
-            if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 500 & smallShip.target.gameObject.activeSelf == true)
+            if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
             {
                 bool dontFire = CheckFire(smallShip);
 
@@ -546,11 +546,11 @@ public static class SmallShipAIFunctions
                     TorpedoFunctions.FireTorpedo(smallShip);
                 }
             }
-        }
-        else
-        {
-            smallShip.activeWeapon = "lasers";
-            SingleLaser(smallShip);
+            else
+            {
+                smallShip.activeWeapon = "lasers";
+                SingleLaser(smallShip);
+            }
         }
     }
 
@@ -561,7 +561,7 @@ public static class SmallShipAIFunctions
         {
             smallShip.activeWeapon = "torpedos";
 
-            if (smallShip.target != null & smallShip.torpedoNumber > 0)
+            if (smallShip.torpedoNumber > 0)
             {
                 if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
                 {
@@ -569,12 +569,12 @@ public static class SmallShipAIFunctions
                     TorpedoFunctions.FireTorpedo(smallShip);
                 }
             }
-        }
-        else
-        {
-            smallShip.activeWeapon = "lasers";
-            SingleLaser(smallShip);
-        }       
+            else
+            {
+                smallShip.activeWeapon = "lasers";
+                SingleLaser(smallShip);
+            }
+        }  
     }
 
     //This fires from all torpedo tubes
@@ -584,7 +584,7 @@ public static class SmallShipAIFunctions
         {
             smallShip.activeWeapon = "torpedos";
 
-            if (smallShip.target != null & smallShip.torpedoNumber > 0)
+            if (smallShip.torpedoNumber > 0)
             {
                 if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
                 {
@@ -592,12 +592,13 @@ public static class SmallShipAIFunctions
                     TorpedoFunctions.FireTorpedo(smallShip);
                 }
             }
+            else
+            {
+                smallShip.activeWeapon = "lasers";
+                SingleLaser(smallShip);
+            }
         }
-        else
-        {
-            smallShip.activeWeapon = "lasers";
-            SingleLaser(smallShip);
-        }
+       
     }
 
     //This checks whether a non hostile ship is in the firing line or not

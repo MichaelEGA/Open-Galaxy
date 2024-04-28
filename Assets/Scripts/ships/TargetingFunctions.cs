@@ -964,7 +964,7 @@ public static class TargetingFunctions
     #region AI turret targetting
 
     //Allocate targets to all the turrets one at a time to save processing power
-    public static IEnumerator AllocateTargets_TurretAI(Scene scene)
+    public static IEnumerator AllocateTargets_ShipsAI(Scene scene)
     {
         scene.allocatingTargets = true;
 
@@ -1000,30 +1000,26 @@ public static class TargetingFunctions
                 {
                     if (smallShip.target == null)
                     {
-                        if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
+                        Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                        while (a.Running == true) { yield return null; }
+
+                        if (smallShip.target == null)
                         {
-                            Task a = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
-                            while (a.Running == true) { yield return null; }
-                        }
-                        else
-                        {
-                            Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
-                            while (a.Running == true) { yield return null; }
+                            Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                            while (b.Running == true) { yield return null; }
                         }
                     }
                     else if (smallShip.target != null)
                     {
                         if (smallShip.target.activeSelf == false)
                         {
-                            if (smallShip.type.Contains("bomber") & smallShip.dontSelectLargeShips == false)
+                            Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                            while (a.Running == true) { yield return null; }
+
+                            if (smallShip.target.activeSelf == false)
                             {
-                                Task a = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
-                                while (a.Running == true) { yield return null; }
-                            }
-                            else
-                            {
-                                Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
-                                while (a.Running == true) { yield return null; }
+                                Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                                while (b.Running == true) { yield return null; }
                             }
                         }
                     }

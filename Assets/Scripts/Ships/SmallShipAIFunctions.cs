@@ -47,6 +47,7 @@ public static class SmallShipAIFunctions
         AddTag(smallShip, "lowaccuracy");
         AddTag(smallShip, "chasewithdraw");
         AddTag(smallShip, "resetenergylevels");
+        AddTag(smallShip, "targetallprefsmall");
     }
 
     //This adds an ai tag and removes conflicting tags using the two functions below
@@ -98,6 +99,14 @@ public static class SmallShipAIFunctions
                 RemoveSingleTag(smallShip, "energyprotective");
                 RemoveSingleTag(smallShip, "energyaggressive");
                 RemoveSingleTag(smallShip, "energydynamic");
+            }
+            else if (tag == "targetallprefsmall" || tag == "targetallpreflarge" || tag == "targetsmallshiponly" || tag == "targetlargeshiponly")
+            {
+                RemoveSingleTag(smallShip, "targetallprefsmall");
+                RemoveSingleTag(smallShip, "targetallpreflarge");
+                RemoveSingleTag(smallShip, "targetsmallshiponly");
+                RemoveSingleTag(smallShip, "targetlargeshiponly");
+                smallShip.requestingTarget = true; //This forces the ship to select a new target on the basis of the selected tag.
             }
 
             AddSingleTag(smallShip, tag);
@@ -281,6 +290,22 @@ public static class SmallShipAIFunctions
                     else if (tag == "energydynamic")
                     {
                         EnergyDynamic(smallShip);
+                    }
+                    else if (tag == "targetallprefsmall") //Targetting Preference
+                    {
+                        TargetAllPrefSmall(smallShip);
+                    }
+                    else if (tag == "targetallpreflarge")
+                    {
+                        TargetAllPrefLarge(smallShip);
+                    }
+                    else if (tag == "targetlargeshipsonly")
+                    {
+                        TargetLargeShipOnly(smallShip);
+                    }
+                    else if (tag == "targetsmallshipsonly")
+                    {
+                        TargetSmallShipsOnly(smallShip);
                     }
                 }
             }
@@ -953,6 +978,34 @@ public static class SmallShipAIFunctions
         {
             smallShip.powerMode = "reset";
         }
+    }
+
+    #endregion
+
+    #region AI Targetting Preferences
+
+    //Tagets all ships but looks for small ships first
+    public static void TargetAllPrefSmall(SmallShip smallShip)
+    {
+        smallShip.aiTargetingMode = "targetallprefsmall";
+    }
+
+    //Targets all ships but looks for large ships first
+    public static void TargetAllPrefLarge(SmallShip smallShip)
+    {
+        smallShip.aiTargetingMode = "targetallpreflarge";
+    }
+
+    //Targets only small ships
+    public static void TargetSmallShipsOnly(SmallShip smallShip)
+    {
+        smallShip.aiTargetingMode = "targetsmallshipsonly";
+    }
+
+    //Targets only small ships
+    public static void TargetLargeShipOnly(SmallShip smallShip)
+    {
+        smallShip.aiTargetingMode = "targetlargeshipsonly";
     }
 
     #endregion

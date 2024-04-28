@@ -1000,18 +1000,42 @@ public static class TargetingFunctions
                 {
                     if (smallShip.target == null)
                     {
-                        Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
-                        while (a.Running == true) { yield return null; }
+                        if (smallShip.aiTargetingMode == "targetallprefsmall")
+                        {
+                            Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                            while (a.Running == true) { yield return null; }
 
-                        if (smallShip.target == null)
+                            if (smallShip.target == null)
+                            {
+                                Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                                while (b.Running == true) { yield return null; }
+                            }
+                        }
+                        else if (smallShip.aiTargetingMode == "targetallpreflarge")
                         {
                             Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
                             while (b.Running == true) { yield return null; }
+
+                            if (smallShip.target == null)
+                            {
+                                Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                                while (a.Running == true) { yield return null; }
+                            }
+                        }
+                        else if (smallShip.aiTargetingMode == "targetonlysmallships")
+                        {
+                            Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                            while (a.Running == true) { yield return null; }
+                        }
+                        else if (smallShip.aiTargetingMode == "targetonlylargeships")
+                        {
+                            Task a = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                            while (a.Running == true) { yield return null; }
                         }
                     }
                     else if (smallShip.target != null)
                     {
-                        if (smallShip.target.activeSelf == false)
+                        if (smallShip.aiTargetingMode == "targetallprefsmall")
                         {
                             Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
                             while (a.Running == true) { yield return null; }
@@ -1021,6 +1045,27 @@ public static class TargetingFunctions
                                 Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
                                 while (b.Running == true) { yield return null; }
                             }
+                        }
+                        else if (smallShip.aiTargetingMode == "targetallpreflarge")
+                        {
+                            Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                            while (b.Running == true) { yield return null; }
+
+                            if (smallShip.target.activeSelf == false)
+                            {
+                                Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                                while (a.Running == true) { yield return null; }
+                            }
+                        }
+                        else if (smallShip.aiTargetingMode == "targetonlysmallships")
+                        {
+                            Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                            while (a.Running == true) { yield return null; }
+                        }
+                        else if (smallShip.aiTargetingMode == "targetonlylargeships")
+                        {
+                            Task a = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                            while (a.Running == true) { yield return null; }
                         }
                     }
                 }

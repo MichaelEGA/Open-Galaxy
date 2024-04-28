@@ -873,6 +873,7 @@ public static class MissionFunctions
         string weaponAccuracyTag = missionEvent.data4;
         string flightPatternsTag = missionEvent.data5;
         string enermyManagementTag = missionEvent.data6;
+        string targetingControlTag = missionEvent.data7;
 
         if (scene != null)
         {
@@ -909,7 +910,12 @@ public static class MissionFunctions
                             if (enermyManagementTag != "none" & enermyManagementTag != "nochange")
                             {
                                 SmallShipAIFunctions.AddTag(smallShip, enermyManagementTag);
-                            } 
+                            }
+
+                            if (targetingControlTag != "none" & targetingControlTag != "nochange")
+                            {
+                                SmallShipAIFunctions.AddTag(smallShip, targetingControlTag);
+                            }
                         }
                     }
                 }

@@ -188,6 +188,7 @@ public class SmallShip : MonoBehaviour
 
     [Header("Ship AI")]
     [HideInInspector] public List<string> aiTags;
+    [HideInInspector] public string aiTargetingMode;
     [HideInInspector] public Vector3 aiTargetingErrorMargin = new Vector3(0, 0, 0);
     [HideInInspector] public float aiRetreatTime;
     [HideInInspector] public float aiAttackTime;

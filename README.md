@@ -20,7 +20,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
   - Switch between different asset sets (Implemented)
   - Terrain loading (Implemented)
-  - Twelve Inbuilt Missions (Implemented)
+  - 12 Inbuilt Missions (Implemented)
   - Keyboard and Mouse Controls (Implemented)
   - X-Box Controller Controls (Implemented)
 

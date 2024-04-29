@@ -41,9 +41,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 29/04/24 - v.2.0.92 (Unity 2023.2.14f1)
   - Added: Targeting control to smallship AI
   - Updated: All missions now use the new AI tagging system
-  - Added: Node descriptions for add ai nodes
-  - Fixed: AI not selecting torpedos as active weapon
-  - Added: Node tagging system fully implemented
+  - Added: Node descriptions for add ai tag nodes
+  - Fixed: AI not selecting torpedoes as active weapon
+  - Added: Node ai tagging system fully implemented
   - Updated: AI Tagging System added to mission editor
 
 22/04/24 - v.2.0.0 (Unity 2023.2.14f1)

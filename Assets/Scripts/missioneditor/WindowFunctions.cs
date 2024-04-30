@@ -112,7 +112,6 @@ public static class WindowFunctions
         buttonList.Add("setshiptargettoclosestenemy");
         buttonList.Add("setshiptoinvincible");
         buttonList.Add("setwaypoint");
-        buttonList.Add("setweaponslock");
 
         List<string> functionList = new List<string>();
 

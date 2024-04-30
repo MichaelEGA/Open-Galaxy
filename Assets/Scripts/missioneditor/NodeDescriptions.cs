@@ -608,17 +608,6 @@ public static class NodeDescriptions
              "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
-        else if (name == "setweaponslock")
-        {
-            description =
-             "Set Weapon Lock \n " +
-             "\n " +
-             "This function locks the weapons on the designated ship which prevents the ship from firing its weapons. \n" +
-             "\n " +
-             "Extra Information \n" +
-             "- This function will affect any ship whose name contains the designated string. \n" +
-             "- If the location is left as 'none' the node will runn regardless of location. \n";
-        }
 
         return description;
     }

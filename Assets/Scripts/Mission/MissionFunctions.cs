@@ -588,11 +588,6 @@ public static class MissionFunctions
             SetWaypoint(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
-        else if (missionEvent.eventType == "setweaponslock")
-        {
-            SetWeaponsLock(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
     }
 
     #endregion
@@ -2460,45 +2455,6 @@ public static class MissionFunctions
 
                                 largeShip.waypoint.transform.position = waypoint;
                             }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    //This toggles whether a ship can fire their weapons or not
-    public static void SetWeaponsLock(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        bool isLocked = false;
-
-        if (bool.TryParse(missionEvent.data2, out _))
-        {
-            isLocked = bool.Parse(missionEvent.data2);
-        }
-
-        if (scene != null)
-        {
-            if (scene.objectPool != null)
-            {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship.name.Contains(missionEvent.data1))
-                    {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                        if (smallShip != null)
-                        {
-                            smallShip.weaponsLock = isLocked;
-                        }
-
-                        LargeShip largeShip = ship.GetComponent<LargeShip>();
-
-                        if (largeShip != null)
-                        {
-                            largeShip.weaponsLock = isLocked;
                         }
                     }
                 }

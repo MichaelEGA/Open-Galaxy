@@ -209,10 +209,6 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_SetWayPoint(node);
         }
-        else if (node.nodeType == "setweaponslock") 
-        {
-            NodeTypes.Draw_SetWeaponsLock(node);
-        }
         else
         {
             NodeTypes.Draw_CustomNode(node);

@@ -763,7 +763,7 @@ public static class SmallShipFunctions
 
         smallShip.gameObject.transform.localPosition = endPosition;
 
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Explosions", smallShip.transform.position, 0, 1, 1000, 1f);
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Explosions", smallShip.transform.position, 1, 1, 1000, 1f);
 
         HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " just exited hyperspace");
 

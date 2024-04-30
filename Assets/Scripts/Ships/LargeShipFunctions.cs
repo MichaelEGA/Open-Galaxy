@@ -291,7 +291,7 @@ public static class LargeShipFunctions
 
         largeShip.gameObject.transform.localPosition = endPosition;
 
-        AudioFunctions.PlayAudioClip(largeShip.audioManager, "hyperspace03_exit", "Explosions", largeShip.transform.position, 0, 1, 10000, 1f);
+        AudioFunctions.PlayAudioClip(largeShip.audioManager, "hyperspace03_exit", "Explosions", largeShip.transform.position, 1, 1, 10000, 1f);
 
         HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " just exited hyperspace");
 
@@ -422,7 +422,7 @@ public static class LargeShipFunctions
         {
             if (largeShip.scene != null)
             {
-                ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion02", 1000, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
+                ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion03", 1000, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
 
                 HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
 

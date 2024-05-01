@@ -851,7 +851,6 @@ public static class MissionFunctions
                             if (weaponControlTag != "none" & weaponControlTag != "nochange")
                             {
                                 LargeShipAIFunctions.AddTag(largeShip, weaponControlTag);
-                                Debug.Log("This was run: " + weaponControlTag + " " + largeShip.name);
                             }
 
                             if (flightPatternsTag != "none" & flightPatternsTag != "nochange")

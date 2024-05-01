@@ -187,7 +187,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public int numberTargeting = 0;
 
     [Header("Ship AI")]
-    [HideInInspector] public List<string> aiTags;
+    public List<string> aiTags;
     [HideInInspector] public string aiTargetingMode;
     [HideInInspector] public Vector3 aiTargetingErrorMargin = new Vector3(0, 0, 0);
     [HideInInspector] public float aiRetreatTime;
@@ -195,7 +195,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float healthSave;
     [HideInInspector] public bool withdraw;
     [HideInInspector] public bool isAI;
-    [HideInInspector] public bool requestingTarget;
+    public bool requestingTarget;
     [HideInInspector] public bool aiMatchSpeed;
     [HideInInspector] public bool aiStarted;
     [HideInInspector] public bool aiEvade;

@@ -100,12 +100,12 @@ public static class SmallShipAIFunctions
                 RemoveSingleTag(smallShip, "energyaggressive");
                 RemoveSingleTag(smallShip, "energydynamic");
             }
-            else if (tag == "targetallprefsmall" || tag == "targetallpreflarge" || tag == "targetsmallshiponly" || tag == "targetlargeshiponly")
+            else if (tag == "targetallprefsmall" || tag == "targetallpreflarge" || tag == "targetsmallshipsonly" || tag == "targetlargeshipsonly")
             {
                 RemoveSingleTag(smallShip, "targetallprefsmall");
                 RemoveSingleTag(smallShip, "targetallpreflarge");
-                RemoveSingleTag(smallShip, "targetsmallshiponly");
-                RemoveSingleTag(smallShip, "targetlargeshiponly");
+                RemoveSingleTag(smallShip, "targetsmallshipsonly");
+                RemoveSingleTag(smallShip, "targetlargeshipsonly");
                 smallShip.requestingTarget = true; //This forces the ship to select a new target on the basis of the selected tag.
             }
 

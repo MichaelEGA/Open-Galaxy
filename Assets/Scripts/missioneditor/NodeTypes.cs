@@ -1289,8 +1289,8 @@ public static class NodeTypes
         options6.Add("nochange");
         options6.Add("targetallprefsmall");
         options6.Add("targetallpreflarge");
-        options6.Add("taretsmallshipsonly");
-        options6.Add("taretlargeshipsonly");
+        options6.Add("targetsmallshipsonly");
+        options6.Add("targetlargeshipsonly");
 
         node.data7 = NodeFunctions.DrawDropDownMenu(node, options6, "targeting", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 

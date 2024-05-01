@@ -1692,7 +1692,9 @@ public static class SceneFunctions
         {
             for (int i = 0; i < number; i++)
             {
-                LoadSingleShip(hangarLaunch.localPosition, hangarLaunch.localRotation, type, name + i.ToString("00"), allegiance, cargo, false, true, false, laserColor);
+                int shipNo = i + 1;
+
+                LoadSingleShip(hangarLaunch.localPosition, hangarLaunch.localRotation, type, name + shipNo.ToString("00"), allegiance, cargo, false, true, false, laserColor);
 
                 yield return new WaitForSeconds(delay);
             }

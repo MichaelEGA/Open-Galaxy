@@ -105,7 +105,6 @@ public class Scene : MonoBehaviour
         SceneFunctions.RotateStarfieldAndPlanetCamera(this);
         SceneFunctions.DynamicFogWall(this);
         AvoidCollisionsFunctions.AvoidCollision(this);
-        SceneFunctions.TakeScreeenShot(this);
 
         if (allocatingTargets == false)
         {

@@ -153,13 +153,17 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_LoadSingleShipAtDistanceAndAngleFromPlayer(node);
         }
-        else if (node.nodeType == "loadmultipleshipsonground")
-        {
-            NodeTypes.Draw_LoadMultipleShipsOnGround(node);
-        }
         else if (node.nodeType == "loadmultipleships")
         {
             NodeTypes.Draw_LoadMultipleShips(node);
+        }
+        else if (node.nodeType == "loadmultipleshipsfromhangar")
+        {
+            NodeTypes.Draw_LoadMultipleShipsFromHangar(node);
+        }
+        else if (node.nodeType == "loadmultipleshipsonground")
+        {
+            NodeTypes.Draw_LoadMultipleShipsOnGround(node);
         }
         else if (node.nodeType == "pausesequence")
         {

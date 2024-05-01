@@ -98,8 +98,9 @@ public static class WindowFunctions
         buttonList.Add("ifshipofallegianceisactive");
         buttonList.Add("loadsingleship");
         buttonList.Add("loadsingleshipatdistanceandanglefromplayer");
-        buttonList.Add("loadmultipleshipsonground");
         buttonList.Add("loadmultipleships");
+        buttonList.Add("loadmultipleshipsfromhangar");
+        buttonList.Add("loadmultipleshipsonground");
         buttonList.Add("pausesequence");
         buttonList.Add("playmusictrack");
         buttonList.Add("setcargo");

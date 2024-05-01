@@ -131,18 +131,18 @@ public class LargeShip : MonoBehaviour
         //Start functions
         LargeShipFunctions.PrepareShip(this);
         TurretFunctions.LoadTurrets(this);
+        
+        //Input functions
+        LargeShipFunctions.GetAIInput(this);
+
+        //Targetting functions
+        TargetingFunctions.GetTargetInfo_LargeShipAI(this);
 
         if (shipClass != "station" & shipClass != "turret" & shipClass != "buoy")
         {
-            //Input functions
-            LargeShipFunctions.GetAIInput(this);
-
             //Ship movement functions
             LargeShipFunctions.CalculateThrustSpeed(this);
             LargeShipFunctions.CalculatePitchTurnRollSpeeds(this);
-
-            //Targetting functions
-            TargetingFunctions.GetTargetInfo_LargeShipAI(this);
         }
 
         //Damage functions

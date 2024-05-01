@@ -517,18 +517,24 @@ public static class MissionFunctions
             LoadSingleShipAtDistanceAndAngleFromPlayer(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
-        else if (missionEvent.eventType == "loadmultipleshipsonground")
-        {
-            Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
-            missionManager.missionTasks.Add(a);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
         else if (missionEvent.eventType == "loadmultipleships")
         {
             Task a = new Task(LoadMultipleShips(missionEvent));
             missionManager.missionTasks.Add(a);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "loadmultipleshipsfromhangar")
+        {
+            Task a = new Task(LoadMultipleShipsFromHangar(missionEvent));
+            missionManager.missionTasks.Add(a);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "loadmultipleshipsonground")
+        {
+            Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
+            missionManager.missionTasks.Add(a);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }      
         else if (missionEvent.eventType == "pausesequence")
         {
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
@@ -845,6 +851,7 @@ public static class MissionFunctions
                             if (weaponControlTag != "none" & weaponControlTag != "nochange")
                             {
                                 LargeShipAIFunctions.AddTag(largeShip, weaponControlTag);
+                                Debug.Log("This was run: " + weaponControlTag + " " + largeShip.name);
                             }
 
                             if (flightPatternsTag != "none" & flightPatternsTag != "nochange")
@@ -1676,6 +1683,157 @@ public static class MissionFunctions
     }
 
     //This loads multiple ships by name
+    public static IEnumerator LoadMultipleShips(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        Vector3 position = new Vector3(x, y, z);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "tiefighter";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        string name = "alpha";
+        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
+
+        string allegiance = "imperial";
+        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
+
+        string cargo = "no cargo";
+        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
+
+        int number = 1;
+
+        if (int.TryParse(missionEvent.data5, out _))
+        {
+            number = int.Parse(missionEvent.data5);
+        }
+
+        string pattern = "rectanglehorizontal";
+        if (missionEvent.data6 != "none") { pattern = missionEvent.data6; }
+
+        float width = 1000;
+
+        if (float.TryParse(missionEvent.data7, out _))
+        {
+            width = float.Parse(missionEvent.data7);
+        }
+
+        float length = 1000;
+
+        if (float.TryParse(missionEvent.data8, out _))
+        {
+            length = float.Parse(missionEvent.data8);
+        }
+
+        float height = 1000;
+
+        if (float.TryParse(missionEvent.data9, out _))
+        {
+            height = float.Parse(missionEvent.data9);
+        }
+
+        int shipsPerLine = 1;
+
+        if (int.TryParse(missionEvent.data10, out _))
+        {
+            shipsPerLine = int.Parse(missionEvent.data10);
+        }
+
+        float positionVariance = 10;
+
+        if (float.TryParse(missionEvent.data11, out _))
+        {
+            positionVariance = float.Parse(missionEvent.data11);
+        }
+
+        bool exitingHyperspace = false;
+
+        if (bool.TryParse(missionEvent.data12, out _))
+        {
+            exitingHyperspace = bool.Parse(missionEvent.data12);
+        }
+
+        bool includePlayer = false;
+
+        if (bool.TryParse(missionEvent.data13, out _))
+        {
+            includePlayer = bool.Parse(missionEvent.data13);
+        }
+
+        int playerNo = 0;
+
+        if (int.TryParse(missionEvent.data14, out _))
+        {
+            playerNo = int.Parse(missionEvent.data14);
+        }
+
+        if (playerNo > number - 1)
+        {
+            playerNo = number - 1;
+        }
+
+        string laserColor = "red";
+        if (missionEvent.data15 != "none") { laserColor = missionEvent.data15; }
+
+        Task c = new Task(SceneFunctions.LoadMultipleShips(position, rotation, type, name, allegiance, cargo, number, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo, laserColor));
+        while (c.Running == true) { yield return null; }
+    }
+
+    //This loads multiple ships from another ships hangar
+    public static IEnumerator LoadMultipleShipsFromHangar(MissionEvent missionEvent)
+    {
+        string type = "tiefighter";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        string name = "alpha";
+        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
+
+        string allegiance = "imperial";
+        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
+
+        string cargo = "no cargo";
+        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
+
+        int number = 1;
+
+        if (int.TryParse(missionEvent.data5, out _))
+        {
+            number = int.Parse(missionEvent.data5);
+        }
+
+        string launchShip = "none";
+        if (missionEvent.data6 != "none") { launchShip = missionEvent.data6; }
+
+        int hangarNo = 0;
+
+        if (int.TryParse(missionEvent.data7, out _))
+        {
+            hangarNo = int.Parse(missionEvent.data7);
+        }
+
+        float delay = 5;
+
+        if (float.TryParse(missionEvent.data8, out _))
+        {
+            delay = float.Parse(missionEvent.data8);
+        }
+
+        string laserColor = "red";
+        if (missionEvent.data9 != "none") { laserColor = missionEvent.data9; }
+
+        Task c = new Task(SceneFunctions.LoadMultipleShipsFromHangar(type, name, allegiance, cargo, number, launchShip, hangarNo, delay, laserColor));
+        while (c.Running == true) { yield return null; }
+    }
+
+    //This loads multiple ships by name
     public static IEnumerator LoadMultipleShipsOnGround(MissionEvent missionEvent)
     {
         float x = missionEvent.x;
@@ -1756,111 +1914,6 @@ public static class MissionFunctions
 
         Task a = new Task(SceneFunctions.LoadMultipleShipsOnGround(position, rotation, type, name, allegiance, cargo, number, length, width, distanceAboveGround, shipsPerLine, positionVariance, ifRaycastFailsStillLoad, laserColor));
         while (a.Running == true) { yield return null; }
-    }
-
-    //This loads multiple ships by name
-    public static IEnumerator LoadMultipleShips(MissionEvent missionEvent)
-    {
-        float x = missionEvent.x;
-        float y = missionEvent.y;
-        float z = missionEvent.z;
-
-        Vector3 position = new Vector3(x, y, z);
-
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        string type = "tiefighter";
-        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
-
-        string name = "alpha";
-        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
-
-        string allegiance = "imperial";
-        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
-
-        string cargo = "no cargo";
-        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
-
-        int number = 1;
-
-        if (int.TryParse(missionEvent.data5, out _))
-        {
-            number = int.Parse(missionEvent.data5);
-        }
-
-        string pattern = "rectanglehorizontal";
-        if (missionEvent.data6 != "none") {pattern = missionEvent.data6; }
-
-        float width = 1000;
-
-        if (float.TryParse(missionEvent.data7, out _))
-        {
-            width = float.Parse(missionEvent.data7);
-        }
-
-        float length = 1000;
-
-        if (float.TryParse(missionEvent.data8, out _))
-        {
-            length = float.Parse(missionEvent.data8);
-        }
-
-        float height = 1000;
-
-        if (float.TryParse(missionEvent.data9, out _))
-        {
-            height = float.Parse(missionEvent.data9);
-        }
-
-        int shipsPerLine = 1;
-
-        if (int.TryParse(missionEvent.data10, out _))
-        {
-            shipsPerLine = int.Parse(missionEvent.data10);
-        }
-
-        float positionVariance = 10;
-
-        if (float.TryParse(missionEvent.data11, out _))
-        {
-            positionVariance = float.Parse(missionEvent.data11);
-        }
-
-        bool exitingHyperspace = false;
-
-        if (bool.TryParse(missionEvent.data12, out _))
-        {
-            exitingHyperspace = bool.Parse(missionEvent.data12);
-        }
-
-        bool includePlayer = false;
-
-        if (bool.TryParse(missionEvent.data13, out _))
-        {
-            includePlayer = bool.Parse(missionEvent.data13);
-        }
-
-        int playerNo = 0;
-
-        if (int.TryParse(missionEvent.data14, out _))
-        {
-            playerNo = int.Parse(missionEvent.data14);
-        }
-
-        if (playerNo > number - 1)
-        {
-            playerNo = number - 1;
-        }
-
-        string laserColor = "red";
-        if (missionEvent.data15 != "none") { laserColor = missionEvent.data15; }
-
-        Task c = new Task(SceneFunctions.LoadMultipleShips(position, rotation, type, name, allegiance, cargo, number, pattern, width, length, height, shipsPerLine, positionVariance, exitingHyperspace, includePlayer, playerNo, laserColor));
-        while (c.Running == true) { yield return null; }
     }
 
     //This loads the terrain

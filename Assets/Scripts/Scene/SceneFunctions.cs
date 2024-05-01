@@ -1623,6 +1623,82 @@ public static class SceneFunctions
         }
     }
 
+    public static IEnumerator LoadMultipleShipsFromHangar(
+        string type,
+        string name,
+        string allegiance,
+        string cargo,
+        int number,
+        string launchship,
+        int hangarNo,
+        float delay,
+        string laserColor)
+    {
+        //This gets the scene reference
+        Scene scene = GetScene();
+
+        //This gets the Json ship data
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
+        ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
+
+        //This finds the ship type to load 
+        ShipType shipType = null;
+
+        foreach (ShipType tempShipType in shipTypes.shipTypeData)
+        {
+            if (tempShipType.type == type)
+            {
+                shipType = tempShipType;
+                break;
+            }
+        }
+
+        if (name == "none")
+        {
+            string[] names = new string[] { "alpha", "beta", "gamma", "delta", "epislon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron" };
+            int nameNo = names.Length;
+            int selectName = Random.Range(0, names.Length - 1);
+            name = names[selectName];
+        }
+
+        GameObject launchShipGO = FindShip(launchship);
+        Transform[] hangars = null;
+        Transform hangarLaunch = null;
+
+        //This gets all availible hangars on the ship
+        if (launchShipGO != null)
+        {
+            hangars = GameObjectUtils.FindAllChildTransformsContaining(launchShipGO.transform, "hangarLaunch");
+        }
+
+        //This selects the chosen hangar
+        if (hangars != null)
+        {
+            //This ensures the hangar number is within the range of availible hangars
+            if (hangarNo > hangars.Length)
+            {
+                hangarNo = hangars.Length;
+            }
+            else if (hangarNo < 0)
+            {
+                hangarNo = 0;
+            }
+
+            hangarLaunch = hangars[hangarNo];
+        }
+
+        //This loads the ship if the hangar launch is found
+        if (hangarLaunch != null)
+        {
+            for (int i = 0; i < number; i++)
+            {
+                LoadSingleShip(hangarLaunch.localPosition, hangarLaunch.localRotation, type, name + i.ToString("00"), allegiance, cargo, false, true, false, laserColor);
+
+                yield return new WaitForSeconds(delay);
+            }
+        }
+    }
+
     //This grabs the locations using the chosen pattern
     public static Vector3[] GetPositions(string pattern, Vector3 position, float width, float length, float height, int shipNumber, int shipsPerLine, float positionVariance)
     {
@@ -2348,16 +2424,29 @@ public static class SceneFunctions
         return scene;
     }
 
-    //This runs the screenshot function
-    public static void TakeScreeenShot(Scene scene)
+    //This returns the first ship with that contains the given name
+    public static GameObject FindShip(string name)
     {
-        Keyboard keyboard = Keyboard.current;
+        GameObject ship = null;
 
-        if (keyboard.f11Key.isPressed == true & scene.pressTime < Time.time)
+        Scene scene = SceneFunctions.GetScene();
+
+        foreach (GameObject tempShip in scene.objectPool)
         {
-            Task a = new Task(ScreenCaptureFunctions.CaptureScreenNoHud());
-            scene.pressTime = Time.time + 0.2f;
+            if (tempShip != null)
+            {
+                if (tempShip.activeSelf == true)
+                {
+                    if (tempShip.name.Contains(name))
+                    {
+                        ship = tempShip;
+                        break;
+                    }
+                }
+            }
         }
+
+        return ship;
     }
 
     #endregion

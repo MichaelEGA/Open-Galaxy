@@ -431,6 +431,39 @@ public static class NodeDescriptions
             "- This not is helpful if you want to deliberately load an enemy ship behind the player for example. \n" +
             "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
+        else if (name == "loadmultipleships")
+        {
+            description =
+            "Pre-Load Multiple Ships \n " +
+            "\n " +
+            "This node loads multiple ships of the same type \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
+            "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
+            "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
+            "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
+            "- Pattern: arrowhorizontalinverted uses with and length. Height is ignored. \n" +
+            "- Pattern: linehorizontallongways uses length. Width and height are ignored. \n" +
+            "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
+            "- Pattern: linevertical uses height. Width and length are ignored. \n" +
+            "- Pattern: randominsidecube uses width, length, height. \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
+        }
+        else if (name == "loadmultipleshipsfromhangar")
+        {
+            description =
+            "Pre-Load Multiple Ships from a ships hangar \n " +
+            "\n " +
+            "This node loads multiple ships of the same type from the designated hangar \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- The ships will not load if the launching ship is not found OR the launching ship has no hangars. \n" +
+            "- Some ships have multiple hangars. To select a particular hangar change the number of the hangar. \n" +
+            "- The hangar numbers begin at 0 not 1. So if you want to load from hangar 2, you need to write 1, and if you want to load from hangar 1 you need to write 0, etc. \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
+            "- If the location is left as 'none' the node will runn regardless of location. \n";
+        }
         else if (name == "loadmultipleshipsonground")
         {
             description =
@@ -442,26 +475,6 @@ public static class NodeDescriptions
             "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- For this node to work you need to also use the load tiles event node. \n" +
             "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
-            "- If the location is left as 'none' the node will runn regardless of location. \n";
-        }
-        else if (name == "loadmultipleships")
-        {
-            description =
-            "Pre-Load Multiple Ships \n " +
-            "\n " +
-            "This node loads multiple ships of the same type \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- Tie Bombers, Assault Gunboats, and Y-Wings are classed both as bombers and fighters. \n" +
-            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
-            "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
-            "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
-            "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
-            "- Pattern: arrowhorizontalinverted uses with and length. Height is ignored. \n" +
-            "- Pattern: linehorizontallongways uses length. Width and height are ignored. \n" +
-            "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
-            "- Pattern: linevertical uses height. Width and length are ignored. \n" +
-            "- Pattern: randominsidecube uses width, length, height. \n" +
             "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
         else if (name == "pausesequence")

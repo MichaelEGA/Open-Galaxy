@@ -554,6 +554,11 @@ public static class MissionFunctions
             SetControlLock(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "setfollowtarget")
+        {
+            SetFollowTarget(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "setobjective")
         {
             SetObjective(missionEvent);
@@ -2054,6 +2059,49 @@ public static class MissionFunctions
                 }
             }
         }   
+    }
+
+    //This sets the follow target needed for formation flying
+    public static void SetFollowTarget(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                //This finds the ship 
+                foreach (GameObject tempShip in scene.objectPool)
+                {
+                    if (tempShip.name.Contains(missionEvent.data2))
+                    {
+                        SmallShip followTarget = tempShip.GetComponent<SmallShip>();
+
+                        if (followTarget != null)
+                        {
+                            //This finds the target to follow
+                            foreach (GameObject tempShip2 in scene.objectPool)
+                            {
+                                if (tempShip2.name.Contains(missionEvent.data1))
+                                {
+                                    SmallShip smallShip = tempShip2.GetComponent<SmallShip>();
+
+                                    if (smallShip != null)
+                                    {
+                                        if (smallShip != followTarget)
+                                        {
+                                            smallShip.followTarget = followTarget;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     //This sets the galaxy location to the designated coordinates

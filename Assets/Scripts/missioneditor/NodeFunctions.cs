@@ -181,6 +181,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_SetControlLock(node);
         }
+        else if (node.nodeType == "setfollowtarget")
+        {
+            NodeTypes.Draw_SetFollowTarget(node);
+        }
         else if (node.nodeType == "setobjective")
         {
             NodeTypes.Draw_SetObjective(node);

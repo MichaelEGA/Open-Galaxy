@@ -199,6 +199,8 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool aiMatchSpeed;
     [HideInInspector] public bool aiStarted;
     [HideInInspector] public bool aiEvade;
+    public SmallShip followTarget;
+    public bool flyInFormation;
 
     [Header("Particle Effcets")]
     [HideInInspector] public GameObject smokeTrail;
@@ -287,6 +289,7 @@ public class SmallShip : MonoBehaviour
     void FixedUpdate()
     {
         SmallShipFunctions.MoveShip(this);
+        SmallShipFunctions.FormationFlying(this);
     }
 
     void OnCollisionEnter(Collision collision)

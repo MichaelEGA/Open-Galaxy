@@ -81,14 +81,16 @@ public static class SmallShipAIFunctions
                 RemoveSingleTag(smallShip, "mediumaccuracy");
                 RemoveSingleTag(smallShip, "highaccuracy");
             }
-            else if (tag == "chase" || tag == "chasewithdraw" || tag == "strafewithdraw" || tag == "movetowaypoint" || tag == "patrolrandom" || tag == "norotation")
+            else if (tag == "chase" || tag == "chasewithdraw" || tag == "strafewithdraw" || tag == "movetowaypoint" || tag == "patrolrandom" || tag == "norotation" || tag == "formationflying")
             {
                 RemoveSingleTag(smallShip, "chase");
                 RemoveSingleTag(smallShip, "chasewithdraw");
                 RemoveSingleTag(smallShip, "strafewithdraw");
                 RemoveSingleTag(smallShip, "movetowaypoint");
                 RemoveSingleTag(smallShip, "patrolrandom");
+                RemoveSingleTag(smallShip, "formationflying");
                 RemoveSingleTag(smallShip, "norotation");
+                smallShip.flyInFormation = false; //This deactivates formation flying when flying pattern is changed.
             }
             else if (tag == "resetenergylevels" || tag == "energytoshields" || tag == "energytoengines" || tag == "energytolasers" || tag == "energyprotective" || tag == "energyaggressive" || tag == "energydynamic")
             {
@@ -258,6 +260,10 @@ public static class SmallShipAIFunctions
                     else if (tag == "patrolrandom")
                     {
                         PatrolRandom(smallShip);
+                    }
+                    else if (tag == "formationflying")
+                    {
+                        FormationFlying(smallShip);
                     }
                     else if (tag == "norotation")
                     {
@@ -841,6 +847,8 @@ public static class SmallShipAIFunctions
         {
             AngleTowardsWaypoint(smallShip);
         }
+
+        smallShip.flyInFormation = false;
     }
 
     //This is the basic flight pattern for patrolling
@@ -875,6 +883,20 @@ public static class SmallShipAIFunctions
             {
                 smallShip.waypoint.transform.position = new Vector3(x, y, z);
             }
+        }
+    }
+
+    //This sets the ship to fly in formation
+    public static void FormationFlying(SmallShip smallShip)
+    {
+        if(smallShip.followTarget != null)
+        {
+            smallShip.flyInFormation = true;
+        }
+        else
+        {
+            smallShip.flyInFormation = false;
+            PatrolRandom(smallShip);
         }
     }
 

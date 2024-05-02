@@ -538,6 +538,18 @@ public static class NodeDescriptions
              "- This function will affect any ship whose name contains the designated string. \n" +
              "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
+        else if (name == "setfolowtarget")
+        {
+            description =
+            "Set Follow Target \n " +
+            "\n " +
+            "This function sets the designated ship for the ship to follow in formation. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- This function will affect the first target ship it finds, and then any other ship (that is not the designated target ship) whose name contains the designated string will follow it. \n" +
+            "- For example you can set the target ship to 'Alpha01' and then you can set the following ship to 'Alpha' and this will cause all ships with alpha in their name to follow alpha 1. \n" +
+            "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
         else if (name == "setobjective")
         {
             description =

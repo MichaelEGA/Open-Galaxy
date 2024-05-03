@@ -1240,7 +1240,6 @@ public static class MainMenuFunctions
     //This allows you to pause the game when the menu is active
     public static void PauseGame(bool isPaused)
     {
-
         if (isPaused == true)
         {
             Time.timeScale = 0;
@@ -1249,25 +1248,28 @@ public static class MainMenuFunctions
         {
             Time.timeScale = 1;
         }
-
     }
 
     //This coroutine can be used to fade the canvas group in
     public static IEnumerator FadeInCanvas(CanvasGroup canvasGroup, float duration)
     {
-
         //This sets the starting alpha value to 0
         float alpha1 = 0;
 
         //This fades in the canvas
         while (alpha1 < 1)
         {
-            alpha1 = alpha1 + (1f / (60f * duration));
-            canvasGroup.alpha = alpha1;
-            yield return new WaitForSecondsRealtime(0.016f);
+            if (canvasGroup != null)
+            {
+                alpha1 = alpha1 + (1f / (60f * duration));
+                canvasGroup.alpha = alpha1;
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+            else
+            {
+                break;
+            }
         }
-
-
     }
 
     //This coroutine can be used to fade the canvas group out
@@ -1279,9 +1281,18 @@ public static class MainMenuFunctions
         //This fades the canvas out
         while (alpha2 > 0)
         {
-            alpha2 = alpha2 - (1f / (60f * duration));
-            canvasGroup.alpha = alpha2;
-            yield return new WaitForSecondsRealtime(0.016f);
+            if (canvasGroup != null)
+            {
+                alpha2 = alpha2 - (1f / (60f * duration));
+                canvasGroup.alpha = alpha2;
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+            else
+            {
+                break;
+            }
+
+            
         }
     }
 
@@ -1294,9 +1305,16 @@ public static class MainMenuFunctions
         //This fades the canvas out
         while (alpha2 > 0)
         {
-            alpha2 = alpha2 - (1f / (60f * duration));
-            canvasGroup.alpha = alpha2;
-            yield return new WaitForSecondsRealtime(0.016f);
+            if (canvasGroup != null)
+            {
+                alpha2 = alpha2 - (1f / (60f * duration));
+                canvasGroup.alpha = alpha2;
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+            else
+            {
+                break;
+            }
         }
 
         canvasGroup.gameObject.SetActive(false);

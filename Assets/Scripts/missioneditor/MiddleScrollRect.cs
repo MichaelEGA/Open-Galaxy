@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class MiddleScrollRect : ScrollRect, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class MiddleScrollRect : ScrollRect, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     MissionEditor missionEditor;
 

@@ -38,7 +38,6 @@ public class MissionEditor : MonoBehaviour
     public bool pasting;
     public bool ignoreLeftCLickRelease; 
 
-
     void Start()
     {
         GameObject editorContentGo = GameObject.Find("EditorContent");
@@ -52,8 +51,7 @@ public class MissionEditor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-            
+   
     }
 
     void OnGUI()

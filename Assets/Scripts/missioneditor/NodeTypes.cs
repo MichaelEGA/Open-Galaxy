@@ -512,7 +512,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "tower", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -615,7 +615,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -710,7 +710,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -752,7 +752,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "2", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2045,7 +2045,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2146,7 +2146,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2243,7 +2243,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2285,7 +2285,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "2", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2362,7 +2362,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "alpha", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2459,7 +2459,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "tower", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

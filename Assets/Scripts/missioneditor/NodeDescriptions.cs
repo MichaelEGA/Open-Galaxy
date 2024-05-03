@@ -90,6 +90,7 @@ public static class NodeDescriptions
             "This loads multiple ships on ground, usually turrets, but can also be used to place normal ships as well \n" +
             "\n " +
             "Extra Information \n" +
+            "- The name of the ship will automatically be inumerated i.e. Alpha will become Alpha01, the next ship Alpha02 and so on \n" +
             "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- For this node to work you need to also use the load tiles event node. \n" +
             "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
@@ -114,8 +115,10 @@ public static class NodeDescriptions
             "This node loads multiple ships of the same type \n" +
             "\n " +
             "Extra Information \n" +
+            "- The name of the ship will automatically be inumerated i.e. Alpha will become Alpha01, the next ship Alpha02 and so on \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n" +
             "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
+            "- For pattern rectanglehorizontal or retangleVertical the shipsPerLine value must be atleast two. If it is less than this the game will automatically change it to 2. \n" +
             "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
             "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
             "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
@@ -439,7 +442,9 @@ public static class NodeDescriptions
             "This node loads multiple ships of the same type \n" +
             "\n " +
             "Extra Information \n" +
+            "- The name of the ship will automatically be inumerated i.e. Alpha will become Alpha01, the next ship Alpha02 and so on \n" +
             "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
+            "- For pattern rectanglehorizontal or retangleVertical the shipsPerLine value must be atleast two. If it is less than this the game will automatically change it to 2. \n" +
             "- Pattern: rectanglehorizontal uses with and length. Height is ignored. \n" +
             "- Pattern: rectanglevertical uses width and height. Length is ignored. \n" +
             "- Pattern: arrowhorizontal uses with and length. Height is ignored. \n" +
@@ -458,6 +463,7 @@ public static class NodeDescriptions
             "This node loads multiple ships of the same type from the designated hangar \n" +
             "\n " +
             "Extra Information \n" +
+            "- The name of the ship will automatically be inumerated i.e. Alpha will become Alpha01, the next ship Alpha02 and so on \n" +
             "- The ships will not load if the launching ship is not found OR the launching ship has no hangars. \n" +
             "- Some ships have multiple hangars. To select a particular hangar change the number of the hangar. \n" +
             "- The hangar numbers begin at 0 not 1. So if you want to load from hangar 2, you need to write 1, and if you want to load from hangar 1 you need to write 0, etc. \n" +
@@ -472,6 +478,7 @@ public static class NodeDescriptions
             "This loads multiple ships on ground, usually turrets, but can also be used to place normal ships as well \n" +
             "\n " +
             "Extra Information \n" +
+            "- The name of the ship will automatically be inumerated i.e. Alpha will become Alpha01, the next ship Alpha02 and so on \n" +
             "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
             "- For this node to work you need to also use the load tiles event node. \n" +
             "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +

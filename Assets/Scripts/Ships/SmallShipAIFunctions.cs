@@ -496,6 +496,20 @@ public static class SmallShipAIFunctions
         {
             smallShip.thrustInput = 1;
         }
+        
+        //This corrects the input for the follow target if necessary
+        if (smallShip.followTarget != null & smallShip.flyInFormation == true)
+        {
+            if (smallShip.thrustSpeed > smallShip.followTarget.thrustSpeed & smallShip.thrustSpeed > oneThird)
+            {
+                smallShip.thrustInput = -1;
+            }
+            else
+            {
+                smallShip.thrustInput = 1;
+            }
+        }
+        
     }
 
     #endregion
@@ -889,9 +903,30 @@ public static class SmallShipAIFunctions
     //This sets the ship to fly in formation
     public static void FormationFlying(SmallShip smallShip)
     {
-        if(smallShip.followTarget != null)
+        if (smallShip.followTarget != null)
         {
             smallShip.flyInFormation = true;
+
+            Transform target = smallShip.followTarget.transform;
+
+            float xOffset = smallShip.xFormationPos;
+            float yOffset = smallShip.yFormationPos;
+            float zOffset = smallShip.zFormationPos;
+
+            Pose dummyTransform = new Pose();
+            dummyTransform.position = target.position;
+            dummyTransform.rotation = new Quaternion(target.rotation.x, 0, target.rotation.y, 0);
+
+            Vector3 targetPosition = target.position + (target.right * xOffset) + (target.forward * zOffset) + (target.up * yOffset);
+
+            float distance = Vector3.Distance(smallShip.transform.position, targetPosition);
+
+            AngleTowardsFormationPoint(smallShip);
+
+            if (distance < 100)
+            {
+                smallShip.aiMatchSpeed = true;
+            }
         }
         else
         {
@@ -1217,6 +1252,56 @@ public static class SmallShipAIFunctions
                 }
             }
         }
+    }
+
+    //This angles the ship towards the target vector
+    public static void AngleTowardsFormationPoint(SmallShip smallShip)
+    {
+        Transform target = smallShip.followTarget.transform;
+
+        float xOffset = smallShip.xFormationPos;
+        float yOffset = smallShip.yFormationPos;
+        float zOffset = smallShip.zFormationPos;
+
+        Vector3 targetPosition = target.position + (target.right * xOffset) + (target.forward * zOffset) + (target.up * yOffset);
+
+        Vector3 targetRelativePosition = targetPosition - smallShip.transform.position;
+
+        float targetForward = Vector3.Dot(smallShip.transform.forward, targetRelativePosition.normalized);
+        float targetRight = Vector3.Dot(smallShip.transform.right, targetRelativePosition.normalized);
+        float targetUp = Vector3.Dot(smallShip.transform.up, targetRelativePosition.normalized);
+
+        if (targetForward < 0.8)
+        {
+            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                SmallShipFunctions.SmoothTurnInput(smallShip, targetRight);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp);
+            }
+            else
+            {
+                //Upside down
+                SmallShipFunctions.SmoothTurnInput(smallShip, -targetRight);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp);
+            }
+        }
+        else
+        {
+            if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                SmallShipFunctions.SmoothTurnInput(smallShip, targetRight * 5);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp * 5);
+            }
+            else
+            {
+                //Upside down
+                SmallShipFunctions.SmoothTurnInput(smallShip, -targetRight * 5);
+                SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp * 5);
+            }
+        }
+        
     }
 
     //This pitches the ship up

@@ -695,7 +695,7 @@ public static class SmallShipFunctions
             smallShip.shipRigidbody = smallShip.gameObject.GetComponent<Rigidbody>();
         }
 
-        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false & smallShip.flyInFormation == false)
+        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false)
         {
             //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
             float step = +Time.deltaTime / 0.1f;
@@ -715,33 +715,6 @@ public static class SmallShipFunctions
 
             Quaternion deltaRotation = Quaternion.Euler(rotationVector * Time.deltaTime);
             smallShip.shipRigidbody.MoveRotation(smallShip.shipRigidbody.rotation * deltaRotation);
-        }
-    }
-
-    //This makes the ship fly in formation with another ship
-    public static void FormationFlying(SmallShip smallShip)
-    {
-        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false & smallShip.flyInFormation == true)
-        {
-            if (smallShip.followTarget != null)
-            {
-                if (smallShip.followTarget.gameObject.activeSelf != false)
-                {
-                    Transform target = smallShip.followTarget.transform;
-
-                    float xOffset = 35;
-                    float yOffset = 50;
-
-                    // Sets the ship back and to the right or left of the leader
-                    Vector3 targetPosition = target.position + (target.right * xOffset) + (target.forward * Mathf.Abs(yOffset));
-
-                    Vector3 velocity = Vector3.zero;
-                    float smoothTime = 0.025f;
-
-                    smallShip.transform.rotation = SmoothDampQuaternion(smallShip.transform.rotation, target.rotation, ref velocity, smoothTime);
-                    smallShip.transform.position = Vector3.SmoothDamp(smallShip.transform.position, targetPosition, ref velocity, smoothTime);
-                }
-            }
         }
     }
 

@@ -1761,6 +1761,11 @@ public static class SceneFunctions
     {
         List<Vector3> shipPositions = new List<Vector3>();
 
+        if (shipsPerLine < 2)
+        {
+            shipsPerLine = 2;
+        }
+
         float lengthRadius = length / 2;
         float widthRadius = width / 2;
         float increment_width = width / (float)shipsPerLine;
@@ -1799,6 +1804,11 @@ public static class SceneFunctions
     public static Vector3[] Pattern_RectangleVertical(Vector3 position, float width, float height, int shipNumber, int shipsPerLine, float positionVariance)
     {
         List<Vector3> shipPositions = new List<Vector3>();
+
+        if (shipsPerLine < 2)
+        {
+            shipsPerLine = 2;
+        }
 
         float heightRadius = height / 2;
         float widthRadius = width / 2;

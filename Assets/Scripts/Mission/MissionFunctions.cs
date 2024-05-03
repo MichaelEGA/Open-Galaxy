@@ -2065,6 +2065,9 @@ public static class MissionFunctions
     public static void SetFollowTarget(MissionEvent missionEvent)
     {
         Scene scene = SceneFunctions.GetScene();
+        float xOffset = 0;
+        float yOffset = 0;
+        float zOffset = 0;
 
         if (scene != null)
         {
@@ -2090,7 +2093,15 @@ public static class MissionFunctions
                                     {
                                         if (smallShip != followTarget)
                                         {
+                                            var newPosition = GetNewPosition_Arrow(xOffset, yOffset, zOffset);
+                                            xOffset = newPosition.x;
+                                            yOffset = newPosition.y;
+                                            zOffset = newPosition.z;
+
                                             smallShip.followTarget = followTarget;
+                                            smallShip.xFormationPos = xOffset;
+                                            smallShip.yFormationPos = yOffset;
+                                            smallShip.zFormationPos = zOffset;
                                         }
                                     }
                                 }
@@ -2102,6 +2113,27 @@ public static class MissionFunctions
                 }
             }
         }
+    }
+
+    //This returns the next position in the formation based on the received values
+    public static (float x, float y, float z) GetNewPosition_Arrow(float x, float y, float z)
+    {
+        if (x == 0)
+        {
+            x = 30;
+            z = -50;
+        }
+        else if (x > 0)
+        {
+            x = -x;
+        }
+        else
+        {
+            x = Mathf.Abs(x) + 30;
+            z = z - 50;
+        }
+
+        return (x, y, z);
     }
 
     //This sets the galaxy location to the designated coordinates

@@ -2093,10 +2093,34 @@ public static class MissionFunctions
                                     {
                                         if (smallShip != followTarget)
                                         {
-                                            var newPosition = GetNewPosition_Arrow(xOffset, yOffset, zOffset);
-                                            xOffset = newPosition.x;
-                                            yOffset = newPosition.y;
-                                            zOffset = newPosition.z;
+                                            if (missionEvent.data3 == "arrow")
+                                            {
+                                                var newPosition = GetNewPosition_Arrow(xOffset, yOffset, zOffset);
+                                                xOffset = newPosition.x;
+                                                yOffset = newPosition.y;
+                                                zOffset = newPosition.z;
+                                            }
+                                            else if (missionEvent.data3 == "linesingle")
+                                            {
+                                                var newPosition = GetNewPosition_LineSingle(xOffset, yOffset, zOffset);
+                                                xOffset = newPosition.x;
+                                                yOffset = newPosition.y;
+                                                zOffset = newPosition.z;
+                                            }
+                                            else if (missionEvent.data3 == "linedual")
+                                            {
+                                                var newPosition = GetNewPosition_LineSingle(xOffset, yOffset, zOffset);
+                                                xOffset = newPosition.x;
+                                                yOffset = newPosition.y;
+                                                zOffset = newPosition.z;
+                                            }
+                                            else
+                                            {
+                                                var newPosition = GetNewPosition_Random(xOffset, yOffset, zOffset);
+                                                xOffset = newPosition.x;
+                                                yOffset = newPosition.y;
+                                                zOffset = newPosition.z;
+                                            }
 
                                             smallShip.followTarget = followTarget;
                                             smallShip.xFormationPos = xOffset;
@@ -2131,6 +2155,56 @@ public static class MissionFunctions
         {
             x = Mathf.Abs(x) + 30;
             z = z - 50;
+        }
+
+        return (x, y, z);
+    }
+
+    //This returns the next position in the formation based on the received values
+    public static (float x, float y, float z) GetNewPosition_LineSingle(float x, float y, float z)
+    {
+        if (x == 0)
+        {
+            x = 0;
+            z = -50;
+        }
+        else
+        {
+            z = z - 50;
+        }
+
+        return (x, y, z);
+    }
+
+    //This returns the next position in the formation based on the received values
+    public static (float x, float y, float z) GetNewPosition_LineDual(float x, float y, float z)
+    {
+        if (x == 0)
+        {
+            x = 50;
+            z = -50;
+        }
+        else if (x > 0)
+        {
+            x = -x;
+        }
+        else if (x < 0)
+        {
+            x = Mathf.Abs(x);
+            z = z - 50;
+        }
+
+        return (x, y, z);
+    }
+
+    //This returns the next position in the formation based on the received values
+    public static (float x, float y, float z) GetNewPosition_Random(float x, float y, float z)
+    {
+        if (x == 0)
+        {
+            x = Random.Range(-200, 200);
+            z = Random.Range(-200, 200);
+            y = Random.Range(-200, 200);
         }
 
         return (x, y, z);

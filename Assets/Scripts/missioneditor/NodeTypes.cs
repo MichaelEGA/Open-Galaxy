@@ -2756,6 +2756,16 @@ public static class NodeTypes
 
         drop -= 15;
 
+        List<string> options = new List<string>();
+        options.Add("arrow");
+        options.Add("linesingle");
+        options.Add("linedual");
+        options.Add("random");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options, "formation", "arrow", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;

@@ -346,7 +346,7 @@ public static class SmallShipAIFunctions
         {
             smallShip.thrustInput = 1;
         }
-        else if (smallShip.target != null)
+        else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
         {
             MatchSpeed(smallShip);
         }
@@ -372,7 +372,7 @@ public static class SmallShipAIFunctions
                 smallShip.thrustInput = 1;
             }
         }
-        else if (smallShip.target != null)
+        else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
         {
             MatchSpeed(smallShip);
         }
@@ -398,7 +398,7 @@ public static class SmallShipAIFunctions
                 smallShip.thrustInput = 1;
             }
         }
-        else if (smallShip.target != null)
+        else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
         {
             MatchSpeed(smallShip);
         }
@@ -424,7 +424,7 @@ public static class SmallShipAIFunctions
                 smallShip.thrustInput = 1;
             }
         }
-        else if (smallShip.target != null)
+        else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
         {
             MatchSpeed(smallShip);
         }
@@ -903,36 +903,39 @@ public static class SmallShipAIFunctions
     //This sets the ship to fly in formation
     public static void FormationFlying(SmallShip smallShip)
     {
-        if (smallShip.followTarget != null)
+        if (smallShip.aiEvade == false)
         {
-            smallShip.flyInFormation = true;
-
-            Transform target = smallShip.followTarget.transform;
-
-            float xOffset = smallShip.xFormationPos;
-            float yOffset = smallShip.yFormationPos;
-            float zOffset = smallShip.zFormationPos;
-
-            Pose dummyTransform = new Pose();
-            dummyTransform.position = target.position;
-            dummyTransform.rotation = new Quaternion(target.rotation.x, 0, target.rotation.y, 0);
-
-            Vector3 targetPosition = target.position + (target.right * xOffset) + (target.forward * zOffset) + (target.up * yOffset);
-
-            float distance = Vector3.Distance(smallShip.transform.position, targetPosition);
-
-            AngleTowardsFormationPoint(smallShip);
-
-            if (distance < 100)
+            if (smallShip.followTarget != null)
             {
-                smallShip.aiMatchSpeed = true;
+                smallShip.flyInFormation = true;
+
+                Transform target = smallShip.followTarget.transform;
+
+                float xOffset = smallShip.xFormationPos;
+                float yOffset = smallShip.yFormationPos;
+                float zOffset = smallShip.zFormationPos;
+
+                Pose dummyTransform = new Pose();
+                dummyTransform.position = target.position;
+                dummyTransform.rotation = new Quaternion(target.rotation.x, 0, target.rotation.y, 0);
+
+                Vector3 targetPosition = target.position + (target.right * xOffset) + (target.forward * zOffset) + (target.up * yOffset);
+
+                float distance = Vector3.Distance(smallShip.transform.position, targetPosition);
+
+                AngleTowardsFormationPoint(smallShip);
+
+                if (distance < 100)
+                {
+                    smallShip.aiMatchSpeed = true;
+                }
             }
-        }
-        else
-        {
-            smallShip.flyInFormation = false;
-            PatrolRandom(smallShip);
-        }
+            else
+            {
+                smallShip.flyInFormation = false;
+                ChaseWithdraw(smallShip);
+            }
+        }  
     }
 
     //This prevents the ship from performing any rotations and locks the direction forward

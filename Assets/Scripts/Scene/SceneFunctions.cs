@@ -811,7 +811,15 @@ public static class SceneFunctions
             asteroid.transform.rotation = Quaternion.Euler(rotations[i]);
             asteroid.name = "asteroid";
             asteroid.layer = LayerMask.NameToLayer("collision_asteroid");
-            asteroid.AddComponent<MeshCollider>();
+            Rigidbody rigidBody = GameObjectUtils.AddRigidbody(asteroid, 100f, 0, 0);
+            MeshCollider meshCollider = asteroid.AddComponent<MeshCollider>();
+            meshCollider.convex = true;
+
+            //This spins the asteroids up
+            rigidBody.angularVelocity = Random.onUnitSphere * Random.Range(0.01f, 0.1f);
+            rigidBody.angularDrag = 0; //Prevents the spin from stopping
+            rigidBody.velocity = Random.onUnitSphere * Random.Range(0.01f, 0.1f);
+            rigidBody.drag = 0; //Prevents the movements from stopping
 
             if (scene.asteroidPool == null)
             {

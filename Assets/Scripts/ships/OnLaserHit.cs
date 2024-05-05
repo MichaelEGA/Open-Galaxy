@@ -39,7 +39,6 @@ public class OnLaserHit : MonoBehaviour
             {
                 if (objectHitParent != null) //This prevents lasers from causing damage to the firing ship if they accidentally hit the collider
                 {
-
                     SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
                     LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
                     Turret turret = objectHit.gameObject.GetComponentInParent<Turret>();

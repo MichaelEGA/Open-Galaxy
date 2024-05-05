@@ -24,9 +24,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Keyboard and Mouse Controls (Implemented)
   - X-Box Controller Controls (Implemented)
 
-**Latest Development Release:** 2.0.92
+**Latest Development Release:** 2.2.05
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.0.92/Open.Galaxy.2.0.92.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.2.05/Open.Galaxy.2.2.05.zip
 
 **Latest Milestone Release:** 2.0.0
 
@@ -37,6 +37,15 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Roadmap: https://docs.google.com/spreadsheets/d/14mWjYlATWQYKEfD6AG4MwC_ppTzG-aDlsI2yR2h7D54/edit?usp=sharing
 
 **Changelog**
+
+05/05/24 - v.2.2.05 (Unity 2023.2.14f1)
+  - Updated: Asteroids now spin and move
+  - Fixed: Drag not releasing in editor
+  - Added: Different formations for formation flying
+  - Updated: Formation flying to be more dynamic
+  - Added: Base code for formation flying
+  - Fixed: bugs in ai targeting system
+  - Added: load multiple ships from hangar function
 
 29/04/24 - v.2.0.92 (Unity 2023.2.14f1)
   - Added: Targeting control to smallship AI

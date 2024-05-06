@@ -45,7 +45,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Updated: Enabled draw submissions through the GPU
 
 05/05/24 - v.2.2.06 (Unity 2023.2.14f1)
-  - Fixed game-stopping error caused by removal of old node type
+  - Fixed: game-stopping error caused by removal of old node type
 
 05/05/24 - v.2.2.05 (Unity 2023.2.14f1)
   - Updated: Asteroids now spin and move

@@ -1095,7 +1095,7 @@ public class NodeFunctions : MonoBehaviour
 
     public static IEnumerator ModifyCaretPositionTimed(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime (delay);
 
         MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
 

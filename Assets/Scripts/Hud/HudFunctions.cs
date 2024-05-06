@@ -271,7 +271,7 @@ public static class HudFunctions
         {
             if (hud.smallShip.shipRigidbody != null)
             {
-                hud.speedText.text = (hud.smallShip.shipRigidbody.velocity.magnitude * 3.6f).ToString("000");
+                hud.speedText.text = (hud.smallShip.shipRigidbody.linearVelocity.magnitude * 3.6f).ToString("000");
             } 
         }
     }
@@ -579,7 +579,7 @@ public static class HudFunctions
                 {
                     if (hud.smallShip.targetSmallShip.shipRigidbody != null)
                     {
-                        float speed = hud.smallShip.targetSmallShip.shipRigidbody.velocity.magnitude * 3.6f;
+                        float speed = hud.smallShip.targetSmallShip.shipRigidbody.linearVelocity.magnitude * 3.6f;
 
                         if (speed > hud.speed)
                         {

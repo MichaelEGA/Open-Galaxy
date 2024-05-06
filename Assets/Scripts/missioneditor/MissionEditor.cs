@@ -36,7 +36,8 @@ public class MissionEditor : MonoBehaviour
     public bool dragging;
     public bool selectionHasRun;
     public bool pasting;
-    public bool ignoreLeftCLickRelease; 
+    public bool ignoreLeftCLickRelease;
+    public bool hasRun;
 
     void Start()
     {
@@ -60,7 +61,7 @@ public class MissionEditor : MonoBehaviour
         MissionEditorFunctions.ToggleScrolling(this);
         MissionEditorFunctions.SelectionBox(this);
         MissionEditorFunctions.Shortcuts(this);
-        MissionEditorFunctions.DetectMouseClicks(this);
+        MissionEditorFunctions.CloseSelectionBox(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)

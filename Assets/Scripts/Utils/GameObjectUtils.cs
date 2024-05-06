@@ -9,8 +9,8 @@ public static class GameObjectUtils
     {
         Rigidbody rigibody = gameObject.AddComponent<Rigidbody>();
         rigibody.mass = mass;
-        rigibody.drag = drag;
-        rigibody.angularDrag = angularDrag;
+        rigibody.linearDamping = drag;
+        rigibody.angularDamping = angularDrag;
         rigibody.useGravity = false;
         return rigibody;
     }

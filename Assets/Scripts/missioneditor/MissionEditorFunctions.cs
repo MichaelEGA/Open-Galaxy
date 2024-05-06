@@ -734,21 +734,6 @@ public static class MissionEditorFunctions
 
     #region edit tools
 
-    //This detects mouse clicks
-    public static void DetectMouseClicks(MissionEditor missionEditor)
-    {
-        //This deselects everything when the grid is clicked but not dragged
-        //float delay = 0.1f + missionEditor.timePressed;
-
-        //if (Input.GetMouseButtonUp(0) & missionEditor.draggingActivated == false & missionEditor.menusClosed == true & missionEditor.ignoreLeftCLickRelease == false & Time.time > delay)
-        //{
-        //    SelectNone(missionEditor);
-        //    missionEditor.timePressed = Time.time;
-        //}
-
-        //missionEditor.ignoreLeftCLickRelease = false;
-    }
-
     //This deletes all currently selected nodes
     public static void Shortcuts(MissionEditor missionEditor)
     {
@@ -998,6 +983,26 @@ public static class MissionEditorFunctions
         }
 
         return isFocused;
+    }
+
+    //This detects mouse clicks
+    public static void CloseSelectionBox(MissionEditor missionEditor)
+    {
+        //if (Input.GetMouseButtonDown(0) == false & missionEditor.dragging == true & missionEditor.hasRun == false)
+        //{
+        //    Task a = new Task(EndDragging(missionEditor));
+        //    missionEditor.hasRun = true;
+        //}
+    }
+
+    //This needs to be delayed slighty so that the editor doesn't register it was a pure left click release
+    public static IEnumerator EndDragging(MissionEditor missionEditor)
+    {
+        //Debug.Log("is run");
+        yield return new WaitForSeconds(0.1f);
+
+        //missionEditor.dragging = false;
+        //missionEditor.hasRun = false;
     }
 
     #endregion
@@ -1406,7 +1411,7 @@ public static class MissionEditorFunctions
         }
 
         //The caret doens't load until a frame afer the component is added, and so this function needs to be delayed slighty
-        Task a = new Task(NodeFunctions.ModifyCaretPositionTimed(0.25f));
+        Task a = new Task(NodeFunctions.ModifyCaretPositionTimed(1f));
 
         return node;
     }

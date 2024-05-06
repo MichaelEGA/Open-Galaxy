@@ -40,7 +40,7 @@ public static class TargetingFunctions
 
                 if (smallShip.targetRigidbody != null)
                 {
-                    targetVelocity = smallShip.targetRigidbody.velocity;
+                    targetVelocity = smallShip.targetRigidbody.linearVelocity;
                 }
 
                 Vector3 targetRelativePosition = targetPosition - shipPosition;
@@ -851,7 +851,7 @@ public static class TargetingFunctions
 
                 if (largeShip.targetRigidbody != null)
                 {
-                    targetVelocity = largeShip.targetRigidbody.velocity;
+                    targetVelocity = largeShip.targetRigidbody.linearVelocity;
                 }
 
                 Vector3 targetRelativePosition = targetPosition - shipPosition;

@@ -359,7 +359,7 @@ public static class SceneFunctions
 
                     for (int i = 0; i < particleNo; i++)
                     {
-                        points[i].velocity = rigidbody.velocity;
+                        points[i].velocity = rigidbody.linearVelocity;
                     }
 
                     particleSystem.SetParticles(points, points.Length);
@@ -400,7 +400,7 @@ public static class SceneFunctions
 
                     for (int i = 0; i < particleNo; i++)
                     {
-                        points[i].velocity = rigidbody.velocity;
+                        points[i].velocity = rigidbody.linearVelocity;
                     }
 
                     particleSystem.SetParticles(points, points.Length);
@@ -812,14 +812,16 @@ public static class SceneFunctions
             asteroid.name = "asteroid";
             asteroid.layer = LayerMask.NameToLayer("collision_asteroid");
             Rigidbody rigidBody = GameObjectUtils.AddRigidbody(asteroid, 100f, 0, 0);
-            MeshCollider meshCollider = asteroid.AddComponent<MeshCollider>();
-            meshCollider.convex = true;
+            //MeshCollider meshCollider = asteroid.AddComponent<MeshCollider>();
+            //meshCollider.convex = true;
+
+            SphereCollider sphereCollider = asteroid.AddComponent<SphereCollider>();
 
             //This spins the asteroids up
             rigidBody.angularVelocity = Random.onUnitSphere * Random.Range(0.01f, 0.1f);
-            rigidBody.angularDrag = 0; //Prevents the spin from stopping
-            rigidBody.velocity = Random.onUnitSphere * Random.Range(0.01f, 0.1f);
-            rigidBody.drag = 0; //Prevents the movements from stopping
+            rigidBody.angularDamping = 0; //Prevents the spin from stopping
+            rigidBody.linearVelocity = Random.onUnitSphere * Random.Range(0.01f, 0.1f);
+            rigidBody.linearDamping = 0; //Prevents the movements from stopping
 
             if (scene.asteroidPool == null)
             {

@@ -276,7 +276,7 @@ public static class TorpedoFunctions
             torpedoScript.fireTime = Time.time;
             torpedoScript.target = null;
             torpedoScript.target = smallShip.target;
-            torpedoScript.torpedoRigidbody.velocity = new Vector3(0f, 0f, 0f);
+            torpedoScript.torpedoRigidbody.linearVelocity = new Vector3(0f, 0f, 0f);
             torpedoScript.torpedoRigidbody.angularVelocity = new Vector3(0f, 0f, 0f);
             torpedoScript.audioManager = smallShip.audioManager;
             torpedo.transform.position = position;

@@ -92,7 +92,7 @@ public class MiddleScrollRect : ScrollRect, IPointerDownHandler, IPointerUpHandl
     //This needs to be delayed slighty so that the editor doesn't register it was a pure left click release
     public static IEnumerator EndDragging(MissionEditor missionEditor)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSecondsRealtime(0.1f);
 
         missionEditor.dragging = false;
     }

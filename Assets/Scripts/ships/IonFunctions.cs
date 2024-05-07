@@ -158,8 +158,6 @@ public static class IonFunctions
 
     #region ship cannons
 
-    //Restart Editing Script From Here
-
     //This grabs all the ships ion cannons
     public static void GetCannons(SmallShip smallShip)
     {
@@ -206,6 +204,10 @@ public static class IonFunctions
             }
         }
 
+        if (ion1 != null || ion2 != null || ion3 != null || ion4 != null)
+        {
+            smallShip.hasIon = true;
+        }
     }
 
     //This sets the rotation of the ions to angle at the correct distance for the targetted ship

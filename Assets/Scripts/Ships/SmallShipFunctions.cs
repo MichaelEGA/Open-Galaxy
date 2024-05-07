@@ -426,13 +426,12 @@ public static class SmallShipFunctions
     #endregion
 
     #region energy management
+    
     //This calculates the ships power distribution
     public static void CalculatePower(SmallShip smallShip)
     {
-
         if (smallShip.powerPressedTime < Time.time)
         {
-
             //This checks the current power mode
             if (smallShip.powerToLasers == true)
             {
@@ -542,7 +541,6 @@ public static class SmallShipFunctions
     //This calculates the ships power levels
     public static void CalculateLevels(SmallShip smallShip)
     {
-
         //This sets the recharge and discharge rate if not set for wep
         if (smallShip.wepRecharge == 0) { smallShip.wepRecharge = 0.1f; }
         if (smallShip.wepDischarge == 0) { smallShip.wepDischarge = 0.25f; }
@@ -878,12 +876,44 @@ public static class SmallShipFunctions
 
     #region weapons
 
+    //This toggles between different types of weapons
     public static void ToggleWeapons(SmallShip smallShip)
     {
         if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.torpedoNumber > 0)
         {
+            if (smallShip.hasTorpedos == true & smallShip.hasIon == true)
+            {
+                if (smallShip.activeWeapon == "")
+                {
+                    smallShip.activeWeapon = "lasers";
+                    smallShip.weaponMode = "single";
+                }
 
-            if (smallShip.hasTorpedos == true)
+                if (smallShip.activeWeapon == "lasers")
+                {
+                    smallShip.activeWeapon = "ion";
+                    smallShip.weaponMode = "single";
+                }
+                else if (smallShip.activeWeapon == "ion")
+                {
+                    smallShip.activeWeapon = "torpedos";
+                    smallShip.weaponMode = "single";
+                }
+                else if (smallShip.activeWeapon == "torpedos")
+                {
+                    smallShip.activeWeapon = "lasers";
+                    smallShip.weaponMode = "single";
+                }
+
+                if (smallShip.isAI == false)
+                {
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                }
+
+                smallShip.toggleWeapons = false;
+
+            }
+            else if (smallShip.hasTorpedos == true & smallShip.hasIon == false)
             {
                 if (smallShip.activeWeapon == "")
                 {
@@ -895,7 +925,6 @@ public static class SmallShipFunctions
                 {
                     smallShip.activeWeapon = "torpedos";
                     smallShip.weaponMode = "single";
-
                 }
                 else if (smallShip.activeWeapon == "torpedos")
                 {
@@ -915,8 +944,6 @@ public static class SmallShipFunctions
             {
                 smallShip.activeWeapon = "lasers";
             }
-
-            
 
             smallShip.toggleWeaponPressedTime = Time.time + 0.25f;
         }

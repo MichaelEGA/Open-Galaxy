@@ -101,9 +101,7 @@ public class OnLaserHit : MonoBehaviour
                 else
                 {
                     ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 6, audioManager);
-                }
-
-                            
+                }          
             }
         }
     }

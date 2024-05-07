@@ -27,7 +27,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public Audio audioManager;
     [HideInInspector] public AudioSource engineAudioSource;
     [HideInInspector] public string laserAudio;
-    [HideInInspector] public string ionAudio;
+    [HideInInspector] public string ionAudio = "weapon_ioncannon";
     [HideInInspector] public string engineAudio;
 
     [Header("Ship LODs")]
@@ -144,14 +144,15 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool laserfiring;
 
     [HideInInspector] public GameObject ionParticleSystem;
-    [HideInInspector] public GameObject ionCannon1;
-    [HideInInspector] public GameObject ionCannon2;
-    [HideInInspector] public GameObject ionCannon3;
-    [HideInInspector] public GameObject ionCannon4;
+public GameObject ionCannon1;
+public GameObject ionCannon2;
+public GameObject ionCannon3;
+public GameObject ionCannon4;
     [HideInInspector] public float ionCycleNumber;
     [HideInInspector] public float ionPressedTime;
     [HideInInspector] public float ionModePressedTime;
     [HideInInspector] public bool ionfiring;
+    [HideInInspector] public bool hasIon;
 
     [HideInInspector] public GameObject torpedoTube1;
     [HideInInspector] public GameObject torpedoTube2;
@@ -288,6 +289,11 @@ public class SmallShip : MonoBehaviour
         LaserFunctions.ToggleWeaponMode(this);
         LaserFunctions.SetCannons(this);
         LaserFunctions.InitiateFiringPlayer(this);
+
+        //Ion Cannon functions
+        IonFunctions.ToggleWeaponMode(this);
+        IonFunctions.SetCannons(this);
+        IonFunctions.InitiateFiringPlayer(this);
 
         //Torpedo functions
         TorpedoFunctions.EstablishLockOn(this);

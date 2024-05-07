@@ -385,6 +385,10 @@ public static class HudFunctions
             {
                 hud.activeWeaponText.text = "LSR";
             }
+            else if (hud.smallShip.activeWeapon == "ion")
+            {
+                hud.activeWeaponText.text = "ION";
+            }
             else if (hud.smallShip.activeWeapon == "torpedos")
             {
                 hud.activeWeaponText.text = "TRP";
@@ -438,6 +442,10 @@ public static class HudFunctions
         if (hud.weaponNumberText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.activeWeapon == "lasers")
+            {
+                hud.weaponNumberText.text = "---";
+            }
+            else if (hud.smallShip.activeWeapon == "ion")
             {
                 hud.weaponNumberText.text = "---";
             }

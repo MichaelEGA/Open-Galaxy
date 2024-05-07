@@ -12,9 +12,12 @@ public static class LaserFunctions
     {
         //This loads the necessary prefabs
         GameObject laser = Resources.Load(OGGetAddress.particles + "Laser01/laser01") as GameObject;
+
         Mesh laserMesh = laser.GetComponent<MeshFilter>().sharedMesh;
+
         Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_red") as Material;
         Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_green") as Material;
+
         GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_red") as GameObject;
         GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_green") as GameObject;
 
@@ -25,6 +28,7 @@ public static class LaserFunctions
         ParticleSystemRenderer particleSystemRenderer = smallShip.laserParticleSystem.GetComponent<ParticleSystemRenderer>();
         OnLaserHit particleCollision = smallShip.laserParticleSystem.AddComponent<OnLaserHit>();
         particleCollision.relatedGameObject = smallShip.gameObject;
+        particleCollision.type = "laser";
 
         //This adds the new particle system to the pool
         if (smallShip.scene != null)
@@ -377,7 +381,7 @@ public static class LaserFunctions
 
         if (smallShip != null)
         {
-            if (smallShip.laserParticleSystem != null)
+            if (smallShip.ionParticleSystem != null)
             {
                 ParticleSystem particleSystem = smallShip.laserParticleSystem.GetComponent<ParticleSystem>();
 

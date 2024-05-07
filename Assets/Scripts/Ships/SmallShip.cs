@@ -27,6 +27,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public Audio audioManager;
     [HideInInspector] public AudioSource engineAudioSource;
     [HideInInspector] public string laserAudio;
+    [HideInInspector] public string ionAudio;
     [HideInInspector] public string engineAudio;
 
     [Header("Ship LODs")]
@@ -141,6 +142,16 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float laserPressedTime;
     [HideInInspector] public float laserModePressedTime;
     [HideInInspector] public bool laserfiring;
+
+    [HideInInspector] public GameObject ionParticleSystem;
+    [HideInInspector] public GameObject ionCannon1;
+    [HideInInspector] public GameObject ionCannon2;
+    [HideInInspector] public GameObject ionCannon3;
+    [HideInInspector] public GameObject ionCannon4;
+    [HideInInspector] public float ionCycleNumber;
+    [HideInInspector] public float ionPressedTime;
+    [HideInInspector] public float ionModePressedTime;
+    [HideInInspector] public bool ionfiring;
 
     [HideInInspector] public GameObject torpedoTube1;
     [HideInInspector] public GameObject torpedoTube2;

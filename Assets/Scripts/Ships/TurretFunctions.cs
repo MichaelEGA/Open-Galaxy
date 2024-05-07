@@ -599,7 +599,7 @@ public static class TurretFunctions
     #region damage
 
     //This causes the ship to take damage from lasers
-    public static void TakeLaserDamage(Turret turret, float damage, Vector3 hitPosition)
+    public static void TakeDamage(Turret turret, float damage, Vector3 hitPosition)
     {
         if (Time.time - turret.largeShip.loadTime > 10)
         {

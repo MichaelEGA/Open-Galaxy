@@ -12,6 +12,7 @@ public class OnLaserHit : MonoBehaviour
     private Audio audioManager;
     private SmallShip thisSmallShip;
     private Turret thisTurret;
+    public string type = "laser";
 
     // Start is called before the first frame update
     void Start()
@@ -48,15 +49,36 @@ public class OnLaserHit : MonoBehaviour
 
                     if (smallShip != null)
                     {
-                        SmallShipFunctions.TakeDamage(smallShip, damage, hitPosition);
+                        if (type == "laser")
+                        {
+                            SmallShipFunctions.TakeDamage(smallShip, damage, hitPosition);
+                        }
+                        else if (type == "ion")
+                        {
+                            Debug.Log(smallShip.name + " taking ion damage");
+                        }
                     }
                     else if (turret != null)
                     {
-                        TurretFunctions.TakeLaserDamage(turret, damage, hitPosition);
+                        if (type == "laser")
+                        {
+                            TurretFunctions.TakeDamage(turret, damage, hitPosition);
+                        }
+                        else if (type == "ion")
+                        {
+                            Debug.Log(turret.name + " taking ion damage");
+                        }
                     }
                     else if (largeShip != null)
                     {
-                        LargeShipFunctions.TakeDamage(largeShip, damage, hitPosition);
+                        if (type == "laser")
+                        {
+                            LargeShipFunctions.TakeDamage(largeShip, damage, hitPosition);
+                        }
+                        else if (type == "ion")
+                        {
+                            Debug.Log(largeShip.name + " taking ion damage");
+                        }
                     }
                 }
 

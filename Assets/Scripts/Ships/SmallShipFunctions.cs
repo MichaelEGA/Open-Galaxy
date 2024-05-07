@@ -44,6 +44,12 @@ public static class SmallShipFunctions
             LaserFunctions.GetCannons(smallShip);
             LaserFunctions.LoadLaserParticleSystem(smallShip);
         }
+
+        if (smallShip.ionParticleSystem == null)
+        {
+            IonFunctions.GetCannons(smallShip);
+            IonFunctions.LoadIonParticleSystem(smallShip);
+        }
     }
 
     //This attaches a particle system to the ship engines to simulate thrust

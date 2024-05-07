@@ -45,7 +45,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Updated: Enabled draw submissions through the GPU
 
 05/05/24 - v.2.2.06 (Unity 2023.2.14f1)
-  - Fixed game-stopping error caused by removal of old node type
+  - Fixed: game-stopping error caused by removal of old node type
 
 05/05/24 - v.2.2.05 (Unity 2023.2.14f1)
   - Updated: Asteroids now spin and move
@@ -392,10 +392,12 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 27/07/23 - v0.49.0
   - First Commit
 
-**Credit**  
+**Licence**  
+
 The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
 
 **Assets Used With Permission:**  
+
 - Battlefield: Galactic Conquest mod - ModDB
 - First Strike mod for Battlefield 2142 - ModDB
 - Star Wars: The Original Trilogy Mod for FS2_Open Source - ModDB

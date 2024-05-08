@@ -66,7 +66,7 @@ public class OnLaserHit : MonoBehaviour
                         }
                         else if (type == "ion")
                         {
-                            Debug.Log(turret.name + " taking ion damage");
+                            TurretFunctions.TakeSystemsDamage(turret, damage, hitPosition);
                         }
                     }
                     else if (largeShip != null)
@@ -87,21 +87,42 @@ public class OnLaserHit : MonoBehaviour
                     audioManager = GameObject.FindObjectOfType<Audio>();
                 }
 
-                if (thisTurret != null)
+                if (type == "laser")
                 {
-                    if (thisTurret.turretType == "large")
+                    if (thisTurret != null)
                     {
-                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 25, audioManager);
+                        if (thisTurret.turretType == "large")
+                        {
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 25, audioManager);
+                        }
+                        else
+                        {
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 6, audioManager);
+                        }
                     }
                     else
                     {
                         ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 6, audioManager);
                     }
                 }
-                else
+                else if (type == "ion")
                 {
-                    ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 6, audioManager);
-                }          
+                    if (thisTurret != null)
+                    {
+                        if (thisTurret.turretType == "large")
+                        {
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "lightning", 25, audioManager);
+                        }
+                        else
+                        {
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "lightning", 3, audioManager);
+                        }
+                    }
+                    else
+                    {
+                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "lightning", 3, audioManager);
+                    }
+                }     
             }
         }
     }

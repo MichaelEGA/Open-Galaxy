@@ -46,7 +46,7 @@ public static class IonFunctions
         main.startSizeX = 0.25f;
         main.startSizeY = 0.25f;
         main.startSizeZ = 5;
-        main.startSpeed = 1000;
+        main.startSpeed = 500;
         main.loop = false;
         main.playOnAwake = false;
 
@@ -279,7 +279,7 @@ public static class IonFunctions
     //This allows the player to fire the ions
     public static void InitiateFiringPlayer(SmallShip smallShip)
     {
-        if (smallShip.fireWeapon == true & smallShip.isAI == false)
+        if (smallShip.fireWeapon == true & smallShip.isAI == false & smallShip.systemsLevel > 0)
         {
             InitiateFiring(smallShip);
         }
@@ -288,52 +288,73 @@ public static class IonFunctions
     //This executes the firing according to the ion mode
     public static void InitiateFiring(SmallShip smallShip)
     {
-        //This calculates the delay before the next ion fires
-        float ionWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
+        if (smallShip.systemsLevel > 0)
+        {
+            //This calculates the delay before the next ion fires
+            float ionWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
 
-        if (smallShip.weaponMode == "dual")
-        {
-            ionWaitTime = ionWaitTime * 2;
-        }
-        else if (smallShip.weaponMode == "quad")
-        {
-            ionWaitTime = ionWaitTime * 4;
-        }
-
-        if (Time.time > smallShip.ionPressedTime & smallShip.ionfiring != true & smallShip.activeWeapon == "ion" & smallShip.weaponsLock == false)
-        {
-            if (smallShip.weaponMode == "single")
+            if (smallShip.weaponMode == "dual")
             {
-                if (smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
-                {
-                    smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
+                ionWaitTime = ionWaitTime * 2;
+            }
+            else if (smallShip.weaponMode == "quad")
+            {
+                ionWaitTime = ionWaitTime * 4;
+            }
 
-                    if (smallShip.ionCycleNumber > 4)
+            if (Time.time > smallShip.ionPressedTime & smallShip.ionfiring != true & smallShip.activeWeapon == "ion" & smallShip.weaponsLock == false)
+            {
+                if (smallShip.weaponMode == "single")
+                {
+                    if (smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
                     {
-                        smallShip.ionCycleNumber = 1;
+                        smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
+
+                        if (smallShip.ionCycleNumber > 4)
+                        {
+                            smallShip.ionCycleNumber = 1;
+                        }
+
+                        if (smallShip.ionCycleNumber == 1) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1)); }
+                        else if (smallShip.ionCycleNumber == 2) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon2)); }
+                        else if (smallShip.ionCycleNumber == 3) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon3)); }
+                        else if (smallShip.ionCycleNumber == 4) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon4)); }
+
+                    }
+                    else if (smallShip.ionCannon1 != null & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null)
+                    {
+                        smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
+
+                        if (smallShip.ionCycleNumber > 3)
+                        {
+                            smallShip.ionCycleNumber = 1;
+                        }
+
+                        if (smallShip.ionCycleNumber == 1) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1)); }
+                        else if (smallShip.ionCycleNumber == 2) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon2)); }
+                        else if (smallShip.ionCycleNumber == 3) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon3)); }
+                    }
+                    else if (smallShip.ionCannon1 != null & smallShip.ionCannon2 != null)
+                    {
+                        smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
+
+                        if (smallShip.ionCycleNumber > 2)
+                        {
+                            smallShip.ionCycleNumber = 1;
+                        }
+
+                        if (smallShip.ionCycleNumber == 1) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1)); }
+                        else if (smallShip.ionCycleNumber == 2) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon2)); }
+                    }
+                    else if (smallShip.ionCannon1 != null)
+                    {
+                        Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1));
                     }
 
-                    if (smallShip.ionCycleNumber == 1) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1)); }
-                    else if (smallShip.ionCycleNumber == 2) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon2)); }
-                    else if (smallShip.ionCycleNumber == 3) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon3)); }
-                    else if (smallShip.ionCycleNumber == 4) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon4)); }
-
                 }
-                else if (smallShip.ionCannon1 != null & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null)
+                else if (smallShip.weaponMode == "dual")
                 {
-                    smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
 
-                    if (smallShip.ionCycleNumber > 3)
-                    {
-                        smallShip.ionCycleNumber = 1;
-                    }
-
-                    if (smallShip.ionCycleNumber == 1) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1)); }
-                    else if (smallShip.ionCycleNumber == 2) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon2)); }
-                    else if (smallShip.ionCycleNumber == 3) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon3)); }
-                }
-                else if (smallShip.ionCannon1 != null & smallShip.ionCannon2 != null)
-                {
                     smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
 
                     if (smallShip.ionCycleNumber > 2)
@@ -341,40 +362,22 @@ public static class IonFunctions
                         smallShip.ionCycleNumber = 1;
                     }
 
-                    if (smallShip.ionCycleNumber == 1) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1)); }
-                    else if (smallShip.ionCycleNumber == 2) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon2)); }
+                    if (smallShip.ionCycleNumber == 1 & smallShip.ionCannon1 != null & smallShip.ionCannon2 != null)
+                    {
+                        Task a = new Task(FireIons(smallShip, 2, smallShip.ionCannon1, smallShip.ionCannon2));
+                    }
+                    else if (smallShip.ionCycleNumber == 2 & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
+                    {
+                        Task a = new Task(FireIons(smallShip, 2, smallShip.ionCannon3, smallShip.ionCannon4));
+                    }
                 }
-                else if (smallShip.ionCannon1 != null)
+                else if (smallShip.weaponMode == "quad" & smallShip.ionCannon1 != null & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
                 {
-                    Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1));
+                    Task a = new Task(FireIons(smallShip, 4, smallShip.ionCannon1, smallShip.ionCannon2, smallShip.ionCannon3, smallShip.ionCannon4));
                 }
 
+                smallShip.ionPressedTime = Time.time + ionWaitTime;
             }
-            else if (smallShip.weaponMode == "dual")
-            {
-
-                smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
-
-                if (smallShip.ionCycleNumber > 2)
-                {
-                    smallShip.ionCycleNumber = 1;
-                }
-
-                if (smallShip.ionCycleNumber == 1 & smallShip.ionCannon1 != null & smallShip.ionCannon2 != null)
-                {
-                    Task a = new Task(FireIons(smallShip, 2, smallShip.ionCannon1, smallShip.ionCannon2));
-                }
-                else if (smallShip.ionCycleNumber == 2 & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
-                {
-                    Task a = new Task(FireIons(smallShip, 2, smallShip.ionCannon3, smallShip.ionCannon4));
-                }
-            }
-            else if (smallShip.weaponMode == "quad" & smallShip.ionCannon1 != null & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
-            {
-                Task a = new Task(FireIons(smallShip, 4, smallShip.ionCannon1, smallShip.ionCannon2, smallShip.ionCannon3, smallShip.ionCannon4));
-            }
-
-            smallShip.ionPressedTime = Time.time + ionWaitTime;
         }
     }
 

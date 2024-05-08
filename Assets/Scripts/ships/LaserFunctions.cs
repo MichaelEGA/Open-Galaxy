@@ -306,52 +306,73 @@ public static class LaserFunctions
     //This executes the firing according to the laser mode
     public static void InitiateFiring(SmallShip smallShip)
     {
-        //This calculates the delay before the next laser fires
-        float laserWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
+        if (smallShip.systemsLevel > 0)
+        {
+            //This calculates the delay before the next laser fires
+            float laserWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
 
-        if (smallShip.weaponMode == "dual")
-        {
-            laserWaitTime = laserWaitTime * 2;
-        }
-        else if (smallShip.weaponMode == "quad")
-        {
-            laserWaitTime = laserWaitTime * 4;
-        }
-
-        if (Time.time > smallShip.laserPressedTime & smallShip.laserfiring != true & smallShip.activeWeapon == "lasers" & smallShip.weaponsLock == false)
-        {
-            if (smallShip.weaponMode == "single")
+            if (smallShip.weaponMode == "dual")
             {
-                if (smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
-                {
-                    smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
+                laserWaitTime = laserWaitTime * 2;
+            }
+            else if (smallShip.weaponMode == "quad")
+            {
+                laserWaitTime = laserWaitTime * 4;
+            }
 
-                    if (smallShip.laserCycleNumber > 4)
+            if (Time.time > smallShip.laserPressedTime & smallShip.laserfiring != true & smallShip.activeWeapon == "lasers" & smallShip.weaponsLock == false)
+            {
+                if (smallShip.weaponMode == "single")
+                {
+                    if (smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
                     {
-                        smallShip.laserCycleNumber = 1;
+                        smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
+
+                        if (smallShip.laserCycleNumber > 4)
+                        {
+                            smallShip.laserCycleNumber = 1;
+                        }
+
+                        if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
+                        else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
+                        else if (smallShip.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon3)); }
+                        else if (smallShip.laserCycleNumber == 4) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon4)); }
+
+                    }
+                    else if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null)
+                    {
+                        smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
+
+                        if (smallShip.laserCycleNumber > 3)
+                        {
+                            smallShip.laserCycleNumber = 1;
+                        }
+
+                        if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
+                        else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
+                        else if (smallShip.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon3)); }
+                    }
+                    else if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null)
+                    {
+                        smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
+
+                        if (smallShip.laserCycleNumber > 2)
+                        {
+                            smallShip.laserCycleNumber = 1;
+                        }
+
+                        if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
+                        else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
+                    }
+                    else if (smallShip.laserCannon1 != null)
+                    {
+                        Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1));
                     }
 
-                    if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
-                    else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
-                    else if (smallShip.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon3)); }
-                    else if (smallShip.laserCycleNumber == 4) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon4)); }
-
                 }
-                else if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null)
+                else if (smallShip.weaponMode == "dual")
                 {
-                    smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
 
-                    if (smallShip.laserCycleNumber > 3)
-                    {
-                        smallShip.laserCycleNumber = 1;
-                    }
-
-                    if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
-                    else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
-                    else if (smallShip.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon3)); }
-                }
-                else if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null)
-                {
                     smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
 
                     if (smallShip.laserCycleNumber > 2)
@@ -359,40 +380,22 @@ public static class LaserFunctions
                         smallShip.laserCycleNumber = 1;
                     }
 
-                    if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
-                    else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
+                    if (smallShip.laserCycleNumber == 1 & smallShip.laserCannon1 != null & smallShip.laserCannon2 != null)
+                    {
+                        Task a = new Task(FireLasers(smallShip, 2, smallShip.laserCannon1, smallShip.laserCannon2));
+                    }
+                    else if (smallShip.laserCycleNumber == 2 & smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
+                    {
+                        Task a = new Task(FireLasers(smallShip, 2, smallShip.laserCannon3, smallShip.laserCannon4));
+                    }
                 }
-                else if (smallShip.laserCannon1 != null)
+                else if (smallShip.weaponMode == "quad" & smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
                 {
-                    Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1));
+                    Task a = new Task(FireLasers(smallShip, 4, smallShip.laserCannon1, smallShip.laserCannon2, smallShip.laserCannon3, smallShip.laserCannon4));
                 }
 
+                smallShip.laserPressedTime = Time.time + laserWaitTime;
             }
-            else if (smallShip.weaponMode == "dual")
-            {
-
-                smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
-
-                if (smallShip.laserCycleNumber > 2)
-                {
-                    smallShip.laserCycleNumber = 1;
-                }
-
-                if (smallShip.laserCycleNumber == 1 & smallShip.laserCannon1 != null & smallShip.laserCannon2 != null)
-                {
-                    Task a = new Task(FireLasers(smallShip, 2, smallShip.laserCannon1, smallShip.laserCannon2));
-                }
-                else if (smallShip.laserCycleNumber == 2 & smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
-                {
-                    Task a = new Task(FireLasers(smallShip, 2, smallShip.laserCannon3, smallShip.laserCannon4));
-                }
-            }
-            else if (smallShip.weaponMode == "quad" & smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
-            {
-                Task a = new Task(FireLasers(smallShip, 4, smallShip.laserCannon1, smallShip.laserCannon2, smallShip.laserCannon3, smallShip.laserCannon4));
-            }
-
-            smallShip.laserPressedTime = Time.time + laserWaitTime;
         }
     }
 

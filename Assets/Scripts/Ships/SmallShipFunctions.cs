@@ -699,7 +699,7 @@ public static class SmallShipFunctions
             smallShip.shipRigidbody = smallShip.gameObject.GetComponent<Rigidbody>();
         }
 
-        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false)
+        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false & smallShip.systemsLevel > 0)
         {
             //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
             float step = +Time.deltaTime / 0.1f;
@@ -879,11 +879,11 @@ public static class SmallShipFunctions
     //This toggles between different types of weapons
     public static void ToggleWeapons(SmallShip smallShip)
     {
-        if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.torpedoNumber > 0)
+        if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.torpedoNumber > 0 & smallShip.systemsLevel > 0)
         {
             if (smallShip.hasTorpedos == true & smallShip.hasIon == true)
             {
-                if (smallShip.activeWeapon == "")
+                if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---")
                 {
                     smallShip.activeWeapon = "lasers";
                     smallShip.weaponMode = "single";
@@ -915,7 +915,7 @@ public static class SmallShipFunctions
             }
             else if (smallShip.hasTorpedos == true & smallShip.hasIon == false)
             {
-                if (smallShip.activeWeapon == "")
+                if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---")
                 {
                     smallShip.activeWeapon = "lasers";
                     smallShip.weaponMode = "single";
@@ -947,7 +947,7 @@ public static class SmallShipFunctions
 
             smallShip.toggleWeaponPressedTime = Time.time + 0.25f;
         }
-        else if (smallShip.torpedoNumber <= 0)
+        else if (smallShip.torpedoNumber <= 0 & smallShip.systemsLevel > 0)
         {
             //This switches the weapons back to lasers when there are no more torpedos
             if (smallShip.activeWeapon == "torpedos")
@@ -956,6 +956,11 @@ public static class SmallShipFunctions
             }
 
             smallShip.activeWeapon = "lasers";
+        }
+        else if (smallShip.systemsLevel <= 0)
+        {
+            smallShip.activeWeapon = "---";
+            smallShip.weaponMode = "---";
         }
     }
 
@@ -1077,6 +1082,65 @@ public static class SmallShipFunctions
                 }
             }
         }    
+    }
+
+    //This causes the ship to take damage from lasers and torpedoes
+    public static void TakeSystemDamage(SmallShip smallShip, float damage, Vector3 hitPosition)
+    {
+        if (Time.time - smallShip.loadTime > 10)
+        {
+            Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
+            float forward = -Vector3.Dot(smallShip.gameObject.transform.position, relativePosition.normalized);
+
+            if (smallShip.systemsLevel > 0)
+            {
+                if (forward > 0)
+                {
+                    if (smallShip.frontShieldLevel > 0)
+                    {
+                        smallShip.frontShieldLevel = smallShip.frontShieldLevel - damage;
+                        smallShip.shieldLevel = smallShip.shieldLevel - damage;
+                    }
+                    else
+                    {
+                        if (smallShip.systemsLevel - damage < 5 & smallShip.invincible == true)
+                        {
+                            smallShip.systemsLevel = 5;
+                        }
+                        else
+                        {
+                            smallShip.systemsLevel = smallShip.systemsLevel - damage;
+                        }
+                    }
+                }
+                else
+                {
+                    if (smallShip.rearShieldLevel > 0)
+                    {
+                        smallShip.rearShieldLevel = smallShip.rearShieldLevel - damage;
+                        smallShip.shieldLevel = smallShip.shieldLevel - damage;
+                    }
+                    else
+                    {
+                        if (smallShip.systemsLevel - damage < 5 & smallShip.invincible == true)
+                        {
+                            smallShip.systemsLevel = 5;
+                        }
+                        else
+                        {
+                            smallShip.systemsLevel = smallShip.systemsLevel - damage;
+                        }
+                    }
+                }
+
+                if (smallShip.frontShieldLevel < 0) { smallShip.frontShieldLevel = 0; }
+                if (smallShip.rearShieldLevel < 0) { smallShip.rearShieldLevel = 0; }
+                if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
+
+                //This shakes the cockpit camera
+                Task a = new Task(CockpitFunctions.CockpitDamageShake(smallShip, 1, 0.011f));
+            }
+        }
     }
 
     //This causes a smoke trail to appear behind the damaged ship

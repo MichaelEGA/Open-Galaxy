@@ -50,6 +50,7 @@ public class SmallShip : MonoBehaviour
     public float speedRating = 50; //Value set in inspector or by loading script
     public float maneuverabilityRating = 50; //Value set in inspector or by loading script
     public float hullRating = 50; //Value set in inspector or by loading script
+    public float systemsRating = 50;
     public float shieldRating = 50; //Value set in inspector or by loading script
     public float laserFireRating = 50; //Value set in inspector or by loading script
     public float laserRating = 50; //Value set in inspector or by loading script
@@ -90,6 +91,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float powerPressedTime;
 
     [Header("Ship Levels")]
+    public float systemsLevel = 100;
     public float hullLevel = 100;
     public float shieldLevel = 200;
     public float frontShieldLevel = 100;
@@ -144,10 +146,10 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool laserfiring;
 
     [HideInInspector] public GameObject ionParticleSystem;
-public GameObject ionCannon1;
-public GameObject ionCannon2;
-public GameObject ionCannon3;
-public GameObject ionCannon4;
+    [HideInInspector] public GameObject ionCannon1;
+    [HideInInspector] public GameObject ionCannon2;
+    [HideInInspector] public GameObject ionCannon3;
+    [HideInInspector] public GameObject ionCannon4;
     [HideInInspector] public float ionCycleNumber;
     [HideInInspector] public float ionPressedTime;
     [HideInInspector] public float ionModePressedTime;

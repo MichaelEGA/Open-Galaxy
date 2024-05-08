@@ -222,7 +222,7 @@ public static class LargeShipFunctions
             largeShip.shipRigidbody = largeShip.gameObject.GetComponent<Rigidbody>();
         }
 
-        if (largeShip.jumpingToHyperspace == false & largeShip.exitingHyperspace == false & largeShip.docking == false) 
+        if (largeShip.jumpingToHyperspace == false & largeShip.exitingHyperspace == false & largeShip.docking == false & largeShip.systemsLevel > 0) 
         {
             //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
             float step = +Time.deltaTime / 0.1f;
@@ -347,6 +347,62 @@ public static class LargeShipFunctions
                         else
                         {
                             largeShip.hullLevel = largeShip.hullLevel - damage;
+                        }
+                    }
+                }
+
+                if (largeShip.frontShieldLevel < 0) { largeShip.frontShieldLevel = 0; }
+                if (largeShip.rearShieldLevel < 0) { largeShip.rearShieldLevel = 0; }
+                if (largeShip.shieldLevel < 0) { largeShip.shieldLevel = 0; }
+            }
+        }
+    }
+
+    //This causes the ship to take damage from lasers
+    public static void TakeSystemsDamage(LargeShip largeShip, float damage, Vector3 hitPosition)
+    {
+        if (Time.time - largeShip.loadTime > 10)
+        {
+            Vector3 relativePosition = largeShip.gameObject.transform.position - hitPosition;
+            float forward = -Vector3.Dot(largeShip.gameObject.transform.position, relativePosition.normalized);
+
+            if (largeShip.systemsLevel > 0)
+            {
+                if (forward > 0)
+                {
+                    if (largeShip.frontShieldLevel > 0)
+                    {
+                        largeShip.frontShieldLevel = largeShip.frontShieldLevel - damage;
+                        largeShip.shieldLevel = largeShip.shieldLevel - damage;
+                    }
+                    else
+                    {
+                        if (largeShip.systemsLevel - damage < 5 & largeShip.invincible == true)
+                        {
+                            largeShip.systemsLevel = 5;
+                        }
+                        else
+                        {
+                            largeShip.systemsLevel = largeShip.systemsLevel - damage;
+                        }
+                    }
+                }
+                else
+                {
+                    if (largeShip.rearShieldLevel > 0)
+                    {
+                        largeShip.rearShieldLevel = largeShip.rearShieldLevel - damage;
+                        largeShip.shieldLevel = largeShip.shieldLevel - damage;
+                    }
+                    else
+                    {
+                        if (largeShip.systemsLevel - damage < 5 & largeShip.invincible == true)
+                        {
+                            largeShip.systemsLevel = 5;
+                        }
+                        else
+                        {
+                            largeShip.systemsLevel = largeShip.systemsLevel - damage;
                         }
                     }
                 }

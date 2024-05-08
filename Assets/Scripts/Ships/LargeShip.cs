@@ -38,6 +38,7 @@ public class LargeShip : MonoBehaviour
     public float speedRating = 50;
     public float maneuverabilityRating = 50;
     public float hullRating = 50;
+    public float systemsRating = 50;
     public float shieldRating = 50;
     public float laserFireRating = 50;
     public float laserRating = 50; 
@@ -72,6 +73,7 @@ public class LargeShip : MonoBehaviour
     public float shieldLevel = 200;
     public float frontShieldLevel = 100;
     public float rearShieldLevel = 100;
+    public float systemsLevel = 100;
 
     [Header("Ship Weapons")]
     public bool weaponsLock = false;

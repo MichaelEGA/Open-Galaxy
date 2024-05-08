@@ -105,6 +105,8 @@ public static class TurretFunctions
                 turret.laserColor = colour;
                 turret.laserDamage = 50;
                 turret.turretType = "large";
+                turret.systemsLevel = 100;
+                turret.hullLevel = 100;
                 turret.yRotationIsRestricted = true;
             }
             else if (turret.gameObject.name.Contains("isd_turretsmall"))
@@ -118,6 +120,8 @@ public static class TurretFunctions
                 turret.laserColor = colour;
                 turret.laserDamage = 10;
                 turret.turretType = "small";
+                turret.systemsLevel = 100;
+                turret.hullLevel = 100;
                 turret.yRotationIsRestricted = true;
             }
             else if (turret.gameObject.name.Contains("mc80a_turretlarge"))
@@ -131,6 +135,8 @@ public static class TurretFunctions
                 turret.laserColor = colour;
                 turret.laserDamage = 50;
                 turret.turretType = "large";
+                turret.systemsLevel = 100;
+                turret.hullLevel = 100;
                 turret.yRotationIsRestricted = true;
             }
             else if (turret.gameObject.name.Contains("mc80a_turretsmall"))
@@ -144,6 +150,8 @@ public static class TurretFunctions
                 turret.laserColor = colour;
                 turret.laserDamage = 10;
                 turret.turretType = "small";
+                turret.systemsLevel = 100;
+                turret.hullLevel = 100;
                 turret.yRotationIsRestricted = true;
             }
             else if (turret.gameObject.name.Contains("cr90_turretlarge"))
@@ -157,6 +165,8 @@ public static class TurretFunctions
                 turret.laserColor = colour;
                 turret.laserDamage = 30;
                 turret.turretType = "large";
+                turret.systemsLevel = 100;
+                turret.hullLevel = 100;
                 turret.yRotationIsRestricted = false;
             }
             else if (turret.gameObject.name.Contains("tt_tall_turretlarge"))
@@ -170,6 +180,8 @@ public static class TurretFunctions
                 turret.laserColor = colour;
                 turret.laserDamage = 30;
                 turret.turretType = "large";
+                turret.systemsLevel = 100;
+                turret.hullLevel = 100;
                 turret.yRotationIsRestricted = false;
             }
             else if (turret.gameObject.name.Contains("tt_short_turretlarge"))
@@ -183,6 +195,8 @@ public static class TurretFunctions
                 turret.laserColor = colour;
                 turret.laserDamage = 30;
                 turret.turretType = "large";
+                turret.systemsLevel = 100;
+                turret.hullLevel = 100;
                 turret.yRotationIsRestricted = false;
             }
             else
@@ -196,6 +210,8 @@ public static class TurretFunctions
                 turret.laserColor = colour;
                 turret.laserDamage = 10;
                 turret.turretType = "small";
+                turret.systemsLevel = 100;
+                turret.hullLevel = 100;
                 turret.yRotationIsRestricted = false;
             }
         }
@@ -542,7 +558,7 @@ public static class TurretFunctions
 
     public static void FireTurret(Turret turret)
     {
-        if (turret.target != null & turret.largeShip.weaponsLock == false)
+        if (turret.target != null & turret.largeShip.weaponsLock == false & turret.largeShip.systemsLevel > 0 & turret.systemsLevel > 0)
         {
             if (turret.target.activeSelf != false)
             {
@@ -643,6 +659,62 @@ public static class TurretFunctions
                         else
                         {
                             turret.hullLevel = turret.hullLevel - damage;
+                        }
+                    }
+                }
+
+                if (turret.largeShip.frontShieldLevel < 0) { turret.largeShip.frontShieldLevel = 0; }
+                if (turret.largeShip.rearShieldLevel < 0) { turret.largeShip.rearShieldLevel = 0; }
+                if (turret.largeShip.shieldLevel < 0) { turret.largeShip.shieldLevel = 0; }
+            }
+        }
+    }
+
+    //This causes the ship to take damage from lasers
+    public static void TakeSystemsDamage(Turret turret, float damage, Vector3 hitPosition)
+    {
+        if (Time.time - turret.largeShip.loadTime > 10)
+        {
+            Vector3 relativePosition = turret.largeShip.gameObject.transform.position - hitPosition;
+            float forward = -Vector3.Dot(turret.largeShip.gameObject.transform.position, relativePosition.normalized);
+
+            if (turret.largeShip.hullLevel > 0)
+            {
+                if (forward > 0)
+                {
+                    if (turret.largeShip.frontShieldLevel > 0)
+                    {
+                        turret.largeShip.frontShieldLevel = turret.largeShip.frontShieldLevel - damage;
+                        turret.largeShip.shieldLevel = turret.largeShip.shieldLevel - damage;
+                    }
+                    else
+                    {
+                        if (turret.systemsLevel - damage < 5 & turret.largeShip.invincible == true)
+                        {
+                            turret.systemsLevel = 5;
+                        }
+                        else
+                        {
+                            turret.systemsLevel = turret.systemsLevel - damage;
+                        }
+                    }
+                }
+                else
+                {
+                    if (turret.largeShip.rearShieldLevel > 0)
+                    {
+                        turret.largeShip.rearShieldLevel = turret.largeShip.rearShieldLevel - damage;
+                        turret.largeShip.shieldLevel = turret.largeShip.shieldLevel - damage;
+                    }
+                    else
+                    {
+                        if (turret.systemsLevel - damage < 5 & turret.largeShip.invincible == true)
+                        {
+                            turret.systemsLevel = 5;
+                        }
+                        else
+                        {
+                            turret.systemsLevel = turret.systemsLevel - damage;
                         }
                     }
                 }

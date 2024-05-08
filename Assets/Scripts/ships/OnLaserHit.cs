@@ -55,7 +55,7 @@ public class OnLaserHit : MonoBehaviour
                         }
                         else if (type == "ion")
                         {
-                            Debug.Log(smallShip.name + " taking ion damage");
+                            SmallShipFunctions.TakeSystemDamage(smallShip, damage, hitPosition);
                         }
                     }
                     else if (turret != null)
@@ -77,7 +77,7 @@ public class OnLaserHit : MonoBehaviour
                         }
                         else if (type == "ion")
                         {
-                            Debug.Log(largeShip.name + " taking ion damage");
+                            LargeShipFunctions.TakeSystemsDamage(largeShip, damage, hitPosition);
                         }
                     }
                 }

@@ -1234,6 +1234,8 @@ public static class SceneFunctions
                 smallShip.wepRating = shipType.wepRating;
                 smallShip.hullRating = shipType.hullRating;
                 smallShip.hullLevel = shipType.hullRating;
+                smallShip.systemsRating = shipType.hullRating;
+                smallShip.systemsLevel = shipType.hullRating;
                 smallShip.laserFireRating = shipType.laserFireRating;
                 smallShip.laserRating = shipType.laserRating;
                 smallShip.maneuverabilityRating = shipType.maneuverabilityRating;
@@ -1307,6 +1309,8 @@ public static class SceneFunctions
                 largeShip.wepRating = shipType.wepRating;
                 largeShip.hullRating = shipType.hullRating;
                 largeShip.hullLevel = shipType.hullRating;
+                largeShip.systemsRating = shipType.hullRating;
+                largeShip.systemsLevel = shipType.hullRating;
                 largeShip.laserFireRating = shipType.laserFireRating;
                 largeShip.laserRating = shipType.laserRating;
                 largeShip.maneuverabilityRating = shipType.maneuverabilityRating;

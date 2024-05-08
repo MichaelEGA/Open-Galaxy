@@ -26,6 +26,7 @@ public class Turret : MonoBehaviour
     public float xRotationMin = 0;
     public float laserDamage = 50;
     public float hullLevel = 100;
+    public float systemsLevel = 100;
     public float targetForward;
     public float targetRight;
     public float targetUp;

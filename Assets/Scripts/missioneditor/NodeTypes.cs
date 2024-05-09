@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public static class NodeTypes
 {
@@ -2548,27 +2549,34 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("traitor");
-        options1.Add("deathstar");
-        options1.Add("endor");
-        options1.Add("exodus");
-        options1.Add("beginning");
-        options1.Add("hoth");
-        options1.Add("lose");
-        options1.Add("mosespa");
-        options1.Add("taloraan");
-        options1.Add("win");
-        options1.Add("march01");
-        options1.Add("march02");
-        options1.Add("hope");
-        options1.Add("last");
-        options1.Add("adventure");
-        options1.Add("battle");
-        options1.Add("chase");
-        options1.Add("none");
+        //List<string> options1 = new List<string>();
+        //options1.Add("adventure");
+        //options1.Add("battle");
+        //options1.Add("beginning");
+        //options1.Add("calm");
+        //options1.Add("chase");
+        //options1.Add("deathstar");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "track", "first_strike", 7, 5, drop, 12.5f, 90, 5f);
+        //options1.Add("traitor");
+
+        //options1.Add("endor");
+        //options1.Add("exodus");
+
+        //options1.Add("hoth");
+        //options1.Add("lose");
+        //options1.Add("mosespa");
+        //options1.Add("taloraan");
+        //options1.Add("win");
+        //options1.Add("march01");
+        //options1.Add("march02");
+        //options1.Add("march03");
+        //options1.Add("hope");
+        //options1.Add("last");
+
+
+        //options1.Add("none");
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetTrackList(), "track", "adventure", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -3209,6 +3217,20 @@ public static class NodeTypes
         }
 
         return allegianceList;
+    }
+
+    public static List<string> GetTrackList()
+    {
+        List<string> trackList = new List<string>();
+
+        Object[] musicTracks = Resources.LoadAll(OGGetAddress.musicclips, typeof(AudioClip));
+
+        foreach (Object track in musicTracks)
+        {
+            trackList.Add(track.name);
+        }
+
+        return trackList;
     }
 
     #endregion

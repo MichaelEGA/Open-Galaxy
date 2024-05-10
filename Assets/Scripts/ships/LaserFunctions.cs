@@ -41,17 +41,7 @@ public static class LaserFunctions
             smallShip.scene.lasersPool.Add(smallShip.laserParticleSystem);
         }
 
-        //This sets the paticle to operate in world space (as opposed to local)
-        //var main = particleSystem.main;
-        //main.simulationSpace = ParticleSystemSimulationSpace.World;
-        //main.startSize3D = true;
-        //main.startSizeX = 1;
-        //main.startSizeY = 1;
-        //main.startSizeZ = 5;
-        //main.startSpeed = 1500;
-        //main.loop = false;
-        //main.playOnAwake = false;
-
+        //This sets the paticle to operate in scene space (as opposed to local and world)
         var main = particleSystem.main;
         main.simulationSpace = ParticleSystemSimulationSpace.Custom;
         main.customSimulationSpace = smallShip.scene.transform;
@@ -194,7 +184,6 @@ public static class LaserFunctions
     //This grabs all the ships laser cannons
     public static void GetCannons(SmallShip smallShip)
     {
-
         Transform laser1 = smallShip.gameObject.transform.Find("gunbank01/gunbank01-01");
         Transform laser2 = smallShip.gameObject.transform.Find("gunbank01/gunbank01-02");
         Transform laser3 = smallShip.gameObject.transform.Find("gunbank01/gunbank01-03");
@@ -247,15 +236,18 @@ public static class LaserFunctions
         {
             smallShip.laserCannon1.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
         }
-        else if (smallShip.laserCannon2 != null)
+
+        if (smallShip.laserCannon2 != null)
         {
             smallShip.laserCannon2.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
         }
-        else if (smallShip.laserCannon3 != null)
+
+        if (smallShip.laserCannon3 != null)
         {
             smallShip.laserCannon3.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
         }
-        else if (smallShip.laserCannon4 != null)
+
+        if (smallShip.laserCannon4 != null)
         {
             smallShip.laserCannon4.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
         }
@@ -306,6 +298,8 @@ public static class LaserFunctions
     //This executes the firing according to the laser mode
     public static void InitiateFiring(SmallShip smallShip)
     {
+        SetCannons(smallShip); //This sets cannon angle prior to firing the laser
+
         if (smallShip.systemsLevel > 0)
         {
             //This calculates the delay before the next laser fires

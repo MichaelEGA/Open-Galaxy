@@ -229,15 +229,18 @@ public static class IonFunctions
         {
             smallShip.ionCannon1.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
         }
-        else if (smallShip.ionCannon2 != null)
+
+        if (smallShip.ionCannon2 != null)
         {
             smallShip.ionCannon2.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
         }
-        else if (smallShip.ionCannon3 != null)
+
+        if (smallShip.ionCannon3 != null)
         {
             smallShip.ionCannon3.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
         }
-        else if (smallShip.ionCannon4 != null)
+
+        if (smallShip.ionCannon4 != null)
         {
             smallShip.ionCannon4.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
         }
@@ -288,6 +291,8 @@ public static class IonFunctions
     //This executes the firing according to the ion mode
     public static void InitiateFiring(SmallShip smallShip)
     {
+        SetCannons(smallShip); //This sets cannon angle prior to firing the laser
+
         if (smallShip.systemsLevel > 0)
         {
             //This calculates the delay before the next ion fires

@@ -102,6 +102,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float wepRecharge; //Value set in inspector or by loading script
     [HideInInspector] public float wepDischarge; //Value set in inspector or by loading script
     [HideInInspector] public bool invincible;
+    [HideInInspector] public bool isDisabled;
 
     [Header("Ship Controls")]
     public bool keyboadAndMouse = true;

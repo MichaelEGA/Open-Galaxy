@@ -412,6 +412,35 @@ public static class LargeShipFunctions
                 if (largeShip.shieldLevel < 0) { largeShip.shieldLevel = 0; }
             }
         }
+        else if (largeShip.isDisabled == false)
+        {
+            //This tells the player that the ship has been destroyed
+            HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was disabled");
+            largeShip.isDisabled = true;
+            largeShip.engineAudioSource.Stop();
+        }
+    }
+
+    //This restores a ships systems to the desired level
+    public static void RestoreShipsSystems(LargeShip largeShip, float systemLevel)
+    {
+        if (systemLevel > 100)
+        {
+            systemLevel = 100;
+        }
+
+        if (systemLevel < 0)
+        {
+            systemLevel = 0;
+        }
+
+        largeShip.systemsLevel = systemLevel;
+
+        if (systemLevel > 0)
+        {
+            largeShip.isDisabled = false;
+            largeShip.engineAudioSource.Play();
+        }
     }
 
     //This selects and runs the appropriate explosion type

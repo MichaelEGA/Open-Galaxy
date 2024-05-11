@@ -48,6 +48,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public Text targetCargo;
     [HideInInspector] public Text targetSpeedText;
     [HideInInspector] public Text targetShieldsText;
+    [HideInInspector] public Text targetSystemsText;
     [HideInInspector] public Text targetHullText;
     [HideInInspector] public RawImage reticule;
     [HideInInspector] public RawImage targetLockingReticule;
@@ -124,6 +125,7 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplayTargetCargo(this);
         HudFunctions.DisplayTargetSpeed(this);
         HudFunctions.DisplayTargetShield(this);
+        HudFunctions.DisplayTargetSystems(this);
         HudFunctions.DisplayTargetHull(this);
 
         HudFunctions.MoveReticule(this);

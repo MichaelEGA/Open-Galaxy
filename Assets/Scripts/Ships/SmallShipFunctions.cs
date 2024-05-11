@@ -1140,6 +1140,35 @@ public static class SmallShipFunctions
                 //This shakes the cockpit camera
                 Task a = new Task(CockpitFunctions.CockpitDamageShake(smallShip, 1, 0.011f));
             }
+            else if (smallShip.isDisabled == false)
+            {
+                //This tells the player that the ship has been destroyed
+                HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was disabled");
+                smallShip.isDisabled = true;
+                smallShip.engineAudioSource.Stop();
+            }
+        }
+    }
+
+    //This restores a ships systems to the desired level
+    public static void RestoreShipsSystems(SmallShip smallShip, float systemLevel)
+    {
+        if (systemLevel > 100)
+        {
+            systemLevel = 100;
+        }
+
+        if (systemLevel < 0)
+        {
+            systemLevel = 0;
+        }
+
+        smallShip.systemsLevel = systemLevel;
+
+        if (systemLevel > 0)
+        {
+            smallShip.isDisabled = false;
+            smallShip.engineAudioSource.Play();
         }
     }
 
@@ -1229,7 +1258,7 @@ public static class SmallShipFunctions
             //This makes an explosion sound
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
 
-            //This tells the game that the ship has been destroyed
+            //This tells the player that the ship has been destroyed
             HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
 
             //This deactivates the ship

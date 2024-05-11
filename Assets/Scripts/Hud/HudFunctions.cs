@@ -623,7 +623,7 @@ public static class HudFunctions
             }
             else
             {
-                hud.targetSpeedText.text = " ";
+                hud.targetSpeedText.text = "000";
             }            
         }
     }
@@ -645,7 +645,40 @@ public static class HudFunctions
             }
             else
             {
-                hud.targetShieldsText.text = " ";
+                hud.targetShieldsText.text = "000";
+            }
+        }
+    }
+
+    //Display target systems
+    public static void DisplayTargetSystems(Hud hud)
+    {
+        if (hud.targetSystemsText == null)
+        {
+            GameObject targetSystemsText = GameObject.Find("TargetSystemsText");
+            if (targetSystemsText != null) { hud.targetSystemsText = targetSystemsText.GetComponent<Text>(); }
+        }
+
+        if (hud.targetSystemsText != null & hud.smallShip != null & Time.timeScale != 0)
+        {
+            if (hud.smallShip.target != null)
+            {
+                if (hud.smallShip.targetSmallShip != null)
+                {
+                    hud.targetSystemsText.text = hud.smallShip.targetSmallShip.systemsLevel.ToString("000");
+                }
+                else if (hud.smallShip.targetLargeShip != null)
+                {
+                    hud.targetSystemsText.text = hud.smallShip.targetLargeShip.systemsLevel.ToString("000");
+                }
+                else
+                {
+                    hud.targetSystemsText.text = "000";
+                }
+            }
+            else
+            {
+                hud.targetSystemsText.text = "000";
             }
         }
     }
@@ -2163,6 +2196,23 @@ public static class HudFunctions
             if (hud.targetHullText != null)
             {
                 Text text = hud.targetHullText.GetComponent<Text>();
+
+                if (text != null)
+                {
+                    text.color = newColour;
+                }
+            }
+
+            //Target shield text
+            if (hud.targetSystemsText == null)
+            {
+                GameObject targetSystemsText = GameObject.Find("TargetSystemsText");
+                if (targetSystemsText != null) { hud.targetShieldsText = targetSystemsText.GetComponent<Text>(); }
+            }
+
+            if (hud.targetSystemsText != null)
+            {
+                Text text = hud.targetSystemsText.GetComponent<Text>();
 
                 if (text != null)
                 {

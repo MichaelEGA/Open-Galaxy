@@ -202,7 +202,6 @@ public static class SceneFunctions
             cockpitCamera.nearClipPlane = 0.01f;
             var cockpitCameraData = cockpitCamera.GetUniversalAdditionalCameraData();
             cockpitCameraData.renderType = CameraRenderType.Overlay;
-            cockpitCameraData.renderPostProcessing = true;
         }
 
         if (loading == true)

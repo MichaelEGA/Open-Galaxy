@@ -46,20 +46,9 @@ public static class IonFunctions
         main.startSizeX = 0.25f;
         main.startSizeY = 0.25f;
         main.startSizeZ = 5;
-        main.startSpeed = 500;
+        main.startSpeed = 1500;
         main.loop = false;
         main.playOnAwake = false;
-
-        //This speeds the particle up over time, start slow so they show on the screen then speed up quickly
-        var velocityOverLifetime = particleSystem.velocityOverLifetime;
-        velocityOverLifetime.enabled = true;
-
-        AnimationCurve curve = new AnimationCurve();
-        curve.AddKey(0.0f, 0.333f);
-        curve.AddKey(0.1f, 1.0f);
-
-        ParticleSystem.MinMaxCurve minMaxCurve = new ParticleSystem.MinMaxCurve(3.0f, curve);
-        velocityOverLifetime.speedModifier = minMaxCurve;
 
         //This causes the particle emmiter to only emit one particle per play
         var emission = particleSystem.emission;

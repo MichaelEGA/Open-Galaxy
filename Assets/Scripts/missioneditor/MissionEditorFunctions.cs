@@ -985,26 +985,6 @@ public static class MissionEditorFunctions
         return isFocused;
     }
 
-    //This detects mouse clicks
-    public static void CloseSelectionBox(MissionEditor missionEditor)
-    {
-        //if (Input.GetMouseButtonDown(0) == false & missionEditor.dragging == true & missionEditor.hasRun == false)
-        //{
-        //    Task a = new Task(EndDragging(missionEditor));
-        //    missionEditor.hasRun = true;
-        //}
-    }
-
-    //This needs to be delayed slighty so that the editor doesn't register it was a pure left click release
-    public static IEnumerator EndDragging(MissionEditor missionEditor)
-    {
-        //Debug.Log("is run");
-        yield return new WaitForSeconds(0.1f);
-
-        //missionEditor.dragging = false;
-        //missionEditor.hasRun = false;
-    }
-
     #endregion
 
     #region saving

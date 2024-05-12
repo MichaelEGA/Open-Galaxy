@@ -16,19 +16,9 @@ public static class LargeShipAIFunctions
             largeShip.aiStarted = true;
         }
 
-        //This requests the next enemy target
-        if (largeShip.target == null)
-        {
-            largeShip.aiRequestingTarget = true;
-        }
-        else if (largeShip.target.activeSelf == false)
-        {
-            largeShip.aiRequestingTarget = true;
-        }
-        else
-        {
-            largeShip.aiRequestingTarget = false;
-        }
+        //This clears old targets and requests new targets
+        ClearTarget(largeShip);
+        RequestTarget(largeShip);
 
         //This runs all the ai functions
         RunTags(largeShip);
@@ -363,6 +353,49 @@ public static class LargeShipAIFunctions
     public static void NoRotation(LargeShip largeShip)
     {
         ResetSteeringInputs(largeShip);
+    }
+
+    #endregion
+
+    #region AI Targetting
+
+    //This checks if the ship needs to request a new target - this function is run automatically
+    public static void RequestTarget(LargeShip largeShip)
+    {
+        if (largeShip.target == null)
+        {
+            largeShip.requestingTarget = true;
+        }
+        else
+        {
+            largeShip.requestingTarget = false;
+        }
+    }
+
+    //This clears the target if it doesn't meet certain conditions i.e. was destroyed or disabled  - this function is run automatically
+    public static void ClearTarget(LargeShip largeShip)
+    {
+        if (largeShip.target != null)
+        {
+            if (largeShip.target.activeSelf == false)
+            {
+                largeShip.target = null;
+            }
+            else if (largeShip.targetSmallShip != null)
+            {
+                if (largeShip.targetSmallShip.isDisabled == true)
+                {
+                    largeShip.target = null;
+                }
+            }
+            else if (largeShip.targetLargeShip != null)
+            {
+                if (largeShip.targetLargeShip.isDisabled == true)
+                {
+                    largeShip.target = null;
+                }
+            }
+        }
     }
 
     #endregion

@@ -45,11 +45,12 @@ public static class LaserFunctions
         var main = particleSystem.main;
         main.simulationSpace = ParticleSystemSimulationSpace.Custom;
         main.customSimulationSpace = smallShip.scene.transform;
+        main.startLifetime = 15;
         main.startSize3D = true;
         main.startSizeX = 0.25f;
         main.startSizeY = 0.25f;
         main.startSizeZ = 5;
-        main.startSpeed = 1500;
+        main.startSpeed = 750;
         main.loop = false;
         main.playOnAwake = false;
 

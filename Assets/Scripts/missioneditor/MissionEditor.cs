@@ -61,7 +61,6 @@ public class MissionEditor : MonoBehaviour
         MissionEditorFunctions.ToggleScrolling(this);
         MissionEditorFunctions.SelectionBox(this);
         MissionEditorFunctions.Shortcuts(this);
-        MissionEditorFunctions.CloseSelectionBox(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)

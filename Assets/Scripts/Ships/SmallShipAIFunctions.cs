@@ -19,20 +19,10 @@ public static class SmallShipAIFunctions
                 smallShip.aiStarted = true;
             }
 
-            //This requests the next enemy target
-            if (smallShip.target == null)
-            {
-                smallShip.requestingTarget = true;
-            }
-            else if (smallShip.target.activeSelf == false)
-            {
-                smallShip.requestingTarget = true;
-            }
-            else
-            {
-                smallShip.requestingTarget = false;
-            }
-
+            //This checks if the ship needs to request a new target
+            ClearTarget(smallShip);
+            RequestTarget(smallShip);
+            
             //This runs all the ai functions
             RunTags(smallShip);
         }
@@ -71,11 +61,14 @@ public static class SmallShipAIFunctions
                 RemoveSingleTag(smallShip, "nospeed");
                            
             }
-            else if (tag == "singlelaser" || tag == "duallasers" || tag == "alllasers" || tag == "singletorpedo" || tag == "dualtorpedos" || tag == "noweapons")
+            else if (tag == "singlelaser" || tag == "duallasers" || tag == "alllasers" || tag == "singleion" || tag == "dualion" || tag == "allion" || tag == "singletorpedo" || tag == "dualtorpedos" || tag == "noweapons")
             {
                 RemoveSingleTag(smallShip, "singlelaser");
                 RemoveSingleTag(smallShip, "duallasers");
                 RemoveSingleTag(smallShip, "alllasers");
+                RemoveSingleTag(smallShip, "singleion");
+                RemoveSingleTag(smallShip, "dualion");
+                RemoveSingleTag(smallShip, "allion");
                 RemoveSingleTag(smallShip, "singletorpedo");
                 RemoveSingleTag(smallShip, "dualtorpedos");
                 RemoveSingleTag(smallShip, "alltorpedos");
@@ -218,6 +211,18 @@ public static class SmallShipAIFunctions
                     else if (tag == "alllasers")
                     {
                         AllLasers(smallShip);
+                    }
+                    else if (tag == "singleion") 
+                    {
+                        SingleIon(smallShip);
+                    }
+                    else if (tag == "dualion")
+                    {
+                        DualIon(smallShip);
+                    }
+                    else if (tag == "allion")
+                    {
+                        AllIon(smallShip);
                     }
                     else if (tag == "singletorpedo")
                     {
@@ -421,7 +426,16 @@ public static class SmallShipAIFunctions
             }
             else
             {
-                HalfSpeed(smallShip);
+                float halfSpeed = (smallShip.speedRating / 2f);
+
+                if (smallShip.thrustSpeed > halfSpeed)
+                {
+                    smallShip.thrustInput = -1;
+                }
+                else
+                {
+                    smallShip.thrustInput = 1;
+                }
             }
         }
     }
@@ -609,6 +623,76 @@ public static class SmallShipAIFunctions
                     {
                         smallShip.weaponMode = "quad";
                         LaserFunctions.InitiateFiring(smallShip);
+                    }
+                }
+            }
+        }
+    }
+
+    //This fires one ion at a time
+    public static void SingleIon(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            if (smallShip.target != null)
+            {
+                smallShip.activeWeapon = "ion";
+
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    bool dontFire = CheckFire(smallShip);
+
+                    if (dontFire == false)
+                    {
+                        smallShip.weaponMode = "single";
+                        IonFunctions.InitiateFiring(smallShip);
+                    }
+                }
+            }
+        }
+    }
+
+    //This fires two ions at a time
+    public static void DualIon(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+
+            if (smallShip.target != null)
+            {
+                smallShip.activeWeapon = "ion";
+
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    bool dontFire = CheckFire(smallShip);
+
+                    if (dontFire == false)
+                    {
+                        smallShip.weaponMode = "dual";
+                        IonFunctions.InitiateFiring(smallShip);
+                    }
+                }
+            }
+        }
+    }
+
+    //This fires all the ships ions at once
+    public static void AllIon(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            if (smallShip.target != null)
+            {
+                smallShip.activeWeapon = "ion";
+
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    bool dontFire = CheckFire(smallShip);
+
+                    if (dontFire == false)
+                    {
+                        smallShip.weaponMode = "quad";
+                        IonFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -1149,7 +1233,46 @@ public static class SmallShipAIFunctions
 
     #endregion
 
-    #region AI Targetting Preferences
+    #region AI Targetting
+
+    //This checks if the ship needs to request a new target - this function is run automatically
+    public static void RequestTarget(SmallShip smallShip)
+    {
+        if (smallShip.target == null)
+        {
+            smallShip.requestingTarget = true;
+        }
+        else
+        {
+            smallShip.requestingTarget = false;
+        }
+    }
+
+    //This clears the target if it doesn't meet certain conditions i.e. was destroyed or disabled  - this function is run automatically
+    public static void ClearTarget(SmallShip smallShip)
+    {
+        if (smallShip.target != null)
+        {
+            if (smallShip.target.activeSelf == false)
+            {
+                smallShip.target = null;
+            }
+            else if (smallShip.targetSmallShip != null)
+            {
+                if (smallShip.targetSmallShip.isDisabled == true)
+                {
+                    smallShip.target = null;
+                }
+            }
+            else if (smallShip.targetLargeShip != null)
+            {
+                if (smallShip.targetLargeShip.isDisabled == true)
+                {
+                    smallShip.target = null;
+                }
+            }
+        }
+    }
 
     //Tagets all ships but looks for small ships first
     public static void TargetAllPrefSmall(SmallShip smallShip)
@@ -1174,7 +1297,6 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-
             smallShip.aiTargetingMode = "targetsmallshipsonly";
         }
     }
@@ -1184,7 +1306,6 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-
             smallShip.aiTargetingMode = "targetlargeshipsonly";
         }
     }

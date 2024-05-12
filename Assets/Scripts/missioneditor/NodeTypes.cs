@@ -1222,16 +1222,16 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("nochange");
-        options.Add("fullspeed");
-        options.Add("threequarterspeed");
-        options.Add("halfspeed");
-        options.Add("quarterspeed");
-        options.Add("dynamicspeed");
-        options.Add("nospeed");
+        List<string> options1 = new List<string>();
+        options1.Add("nochange");
+        options1.Add("fullspeed");
+        options1.Add("threequarterspeed");
+        options1.Add("halfspeed");
+        options1.Add("quarterspeed");
+        options1.Add("dynamicspeed");
+        options1.Add("nospeed");
 
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "speed", "nochange", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "speed", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1240,6 +1240,9 @@ public static class NodeTypes
         options2.Add("singlelaser");
         options2.Add("duallasers");
         options2.Add("alllasers");
+        options2.Add("singleion");
+        options2.Add("dualion");
+        options2.Add("allion");
         options2.Add("singletorpedo");
         options2.Add("dualtorpedos");
         options2.Add("alltorpedos");

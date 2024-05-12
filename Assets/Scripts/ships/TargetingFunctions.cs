@@ -51,7 +51,7 @@ public static class TargetingFunctions
                 smallShip.targetUp = Vector3.Dot(shipTransform.up, targetRelativePosition.normalized);
 
                 Vector3 targettingErrorMargin = smallShip.aiTargetingErrorMargin;
-                float distanceToIntercept = ((targetPosition) - shipPosition).magnitude / 500f;
+                float distanceToIntercept = ((targetPosition) - shipPosition).magnitude / 750f;
                 Vector3 interceptPosition = (targetPosition + targettingErrorMargin) + targetVelocity * distanceToIntercept;
 
                 Vector3 interceptRelativePosition = interceptPosition - shipPosition;
@@ -1043,7 +1043,7 @@ public static class TargetingFunctions
         {
             if (largeShip != null)
             {
-                if (largeShip.gameObject.activeSelf == true & largeShip.aiRequestingTarget == true)
+                if (largeShip.gameObject.activeSelf == true & largeShip.requestingTarget == true)
                 {
                     if (largeShip.target == null)
                     {

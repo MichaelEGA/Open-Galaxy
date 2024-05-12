@@ -122,7 +122,7 @@ public class LargeShip : MonoBehaviour
     [Header("Ship AI")]
     public List<string> aiTags;
     public bool aiEvade;
-    public bool aiRequestingTarget;
+    public bool requestingTarget;
     public bool aiStarted;
 
     [Header("Ship Loading")]

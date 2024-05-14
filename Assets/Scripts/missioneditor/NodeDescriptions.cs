@@ -507,20 +507,6 @@ public static class NodeDescriptions
             "- Select none if you want the music to fade out. \n" +
            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
-        else if (name == "setwaypoint")
-        {
-            description =
-            "Set Waypoint \n " +
-            "\n " +
-            "Allows you to set the position of the ships waypoint \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- Every ship has a waypoint. Settings its position can be useful for a number of purposes. \n" +
-            "- You can check a ships distance to its waypoint using the 'ifshipislessthandistancetowaypoint' function. \n" +
-            "- You can direct an ai ship to fly toward its waypoint by setting the ai override to 'movetowaypoint'. \n" +
-            "- This function will affect any ship whose name contains the designated string. \n" +
-           "- If the location is left as 'none' the node will runn regardless of location. \n";
-        }
         else if (name == "setcargo")
         {
             description =
@@ -587,6 +573,19 @@ public static class NodeDescriptions
            "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
+        else if (name == "setshiplevels")
+        {
+            description =
+            "Set Ship Levels \n " +
+            "\n " +
+            "This function allows you to manually modify the ships levels i.e. the hull, the shields, the systems, and wep \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- If you don't want to modify a level you can leave it as 'nochange'. \n" +
+            "- The game will automatically reduce a level that is inputted above a ships rating. i.e. if a ships hull is rated to 100 and you input 110, the game will automatically reduce the inputed amount to 100. \n" +
+            "- This node shouldn't be confused with the 'setshipstats' which actually changes the ships rating i.e. can increase or decrease the amount of damamge a ship can take. \n" +
+            "- This node is particularly helpful if you wish to reactivate a ship that has been disabled. \n";
+        }
         else if (name == "setshipstats")
         {
             description =
@@ -638,6 +637,31 @@ public static class NodeDescriptions
              "Extra Information \n" +
              "- A ship that is set to invincible will still receive damage until it only has 5 points of health left. \n" +
              "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will runn regardless of location. \n";
+        }
+        else if (name == "settorpedoes")
+        {
+            description =
+             "Set Torpedoes \n " +
+             "\n " +
+             "This function set the type and number of torpedoes a ship has. \n" +
+             "\n " +
+             "Extra Information \n" +
+             "- This function will affect any ship whose name contains the designated string. \n" +
+             "- If the location is left as 'none' the node will runn regardless of location. \n";
+        }
+        else if (name == "setwaypoint")
+        {
+            description =
+            "Set Waypoint \n " +
+            "\n " +
+            "Allows you to set the position of the ships waypoint \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- Every ship has a waypoint. Settings its position can be useful for a number of purposes. \n" +
+            "- You can check a ships distance to its waypoint using the 'ifshipislessthandistancetowaypoint' function. \n" +
+            "- You can direct an ai ship to fly toward its waypoint by setting the ai override to 'movetowaypoint'. \n" +
+            "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will runn regardless of location. \n";
         }
 

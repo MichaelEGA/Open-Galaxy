@@ -290,7 +290,7 @@ public static class TargetingFunctions
                         {
                             bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempSmallShip.allegiance);
 
-                            if (isHostile == true)
+                            if (isHostile == true & tempSmallShip.isDisabled == false)
                             {
                                 float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
 
@@ -331,6 +331,78 @@ public static class TargetingFunctions
                             {
                                 bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempLargeShip.allegiance);
 
+                                if (isHostile == true & tempLargeShip.isDisabled == false)
+                                {
+                                    float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
+
+                                    if (tempDistance < distance)
+                                    {
+                                        target = ship;
+                                        targetLargeShip = tempLargeShip;
+                                        distance = tempDistance;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //This checks for the closest small ship again but this time includes disabled ships
+                if (target == null)
+                {
+                    foreach (GameObject ship in scene.objectPool)
+                    {
+                        if (ship != null)
+                        {
+                            tempSmallShip = ship.GetComponent<SmallShip>();
+                            tempLargeShip = ship.GetComponent<LargeShip>();
+
+                            if (ship.activeSelf == true & tempSmallShip != null)
+                            {
+                                bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempSmallShip.allegiance);
+
+                                if (isHostile == true)
+                                {
+                                    float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
+
+                                    if (tempDistance < distance)
+                                    {
+                                        float numberTargetting = tempSmallShip.numberTargeting;
+
+                                        if (smallShip.isAI == true & smallShip.targetNumber <= 1)
+                                        {
+                                            target = ship;
+                                            targetSmallShip = tempSmallShip;
+                                            distance = tempDistance;
+                                        }
+                                        else if (smallShip.isAI == false)
+                                        {
+                                            target = ship;
+                                            targetSmallShip = tempSmallShip;
+                                            distance = tempDistance;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                //If the target is still null it looks for the closest large ship even if it's disabled
+                if (target == null)
+                {
+                    foreach (GameObject ship in scene.objectPool)
+                    {
+                        if (ship != null)
+                        {
+                            tempSmallShip = ship.GetComponent<SmallShip>();
+                            tempLargeShip = ship.GetComponent<LargeShip>();
+
+                            if (ship.activeSelf == true & tempLargeShip != null)
+                            {
+                                bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempLargeShip.allegiance);
+
                                 if (isHostile == true)
                                 {
                                     float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
@@ -347,6 +419,7 @@ public static class TargetingFunctions
                     }
                 }
 
+                //This applies the chosen target if it isn't null
                 if (target != null)
                 {
                     smallShip.target = target;
@@ -589,7 +662,7 @@ public static class TargetingFunctions
                 {
                     bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempSmallShip.allegiance);
 
-                    if (isHostile == true)
+                    if (isHostile == true & smallShip.isDisabled == false)
                     {
                         float tempDistance = Vector3.Distance(tempSmallShip.transform.position, smallShip.gameObject.transform.position);
 

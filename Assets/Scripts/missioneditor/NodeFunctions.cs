@@ -197,6 +197,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_SetShipAllegiance(node);
         }
+        else if (node.nodeType == "setshiplevels")
+        {
+            NodeTypes.Draw_SetShipLevels(node);
+        }
         else if (node.nodeType == "setshipstats")
         {
             NodeTypes.Draw_SetShipStats(node);
@@ -212,6 +216,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "setshiptoinvincible")
         {
             NodeTypes.Draw_SetShipToInvincible(node);
+        }
+        else if (node.nodeType == "settorpedoes")
+        {
+            NodeTypes.Draw_SetTorpedoes(node);
         }
         else if (node.nodeType == "setwaypoint")
         {

@@ -574,6 +574,11 @@ public static class MissionFunctions
             SetShipAllegiance(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "setshiplevels")
+        {
+            SetShipLevels(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "setshipstats")
         {
             SetShipStats(missionEvent);
@@ -592,6 +597,11 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "setshiptoinvincible")
         {
             SetShipToInvincible(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "settorpedoes")
+        {
+            SetTorpedoes(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setwaypoint")
@@ -2400,6 +2410,158 @@ public static class MissionFunctions
         }
     }
 
+    //This changes a ships levels
+    public static void SetShipLevels(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        float hullLevel = 0;
+        float shieldLevel = 0;
+        float systemsLevel = 0;
+        float wepLevel = 0;
+
+        bool noChangeHullLevel = false;
+        bool noChangeShieldLevel = false;
+        bool noChangeSystemsLevel = false;
+        bool noChangeWepLevel = false;
+
+        if (float.TryParse(missionEvent.data2, out _))
+        {
+            hullLevel = float.Parse(missionEvent.data2);
+
+            if (hullLevel > 100)
+            {
+                hullLevel = 100;
+            }
+        }
+        else
+        {
+            noChangeHullLevel = true;
+        }
+
+        if (float.TryParse(missionEvent.data3, out _))
+        {
+            shieldLevel = float.Parse(missionEvent.data3);
+
+            if (shieldLevel > 100)
+            {
+                shieldLevel = 100;
+            }
+        }
+        else
+        {
+            noChangeShieldLevel = true;
+        }
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            systemsLevel = float.Parse(missionEvent.data4);
+
+            if (systemsLevel > 100)
+            {
+                systemsLevel = 100;
+            }
+        }
+        else
+        {
+            noChangeSystemsLevel = false;
+        }
+
+        if (float.TryParse(missionEvent.data5, out _))
+        {
+            wepLevel = float.Parse(missionEvent.data5);
+
+            if (wepLevel > 100)
+            {
+                wepLevel = 100;
+            }
+        }
+        else
+        {
+            noChangeWepLevel = false;
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            //Change hull level
+                            if (noChangeHullLevel == true)
+                            {
+                                hullLevel = smallShip.hullLevel;
+                            }
+
+                            if (hullLevel > smallShip.hullRating)
+                            {
+                                hullLevel = smallShip.hullRating;
+                            }
+
+                            smallShip.hullLevel = hullLevel;
+
+                            //Change shield level
+                            if (noChangeShieldLevel == true)
+                            {
+                                shieldLevel = smallShip.shieldLevel;
+                            }
+
+                            if (shieldLevel > smallShip.shieldRating)
+                            {
+                                shieldLevel = smallShip.shieldRating;
+                            }
+
+                            smallShip.shieldLevel = shieldLevel;
+
+                            //Change systems level
+                            if (noChangeSystemsLevel == true)
+                            {
+                                systemsLevel = smallShip.systemsLevel;
+                            }
+
+                            if (systemsLevel > smallShip.systemsRating)
+                            {
+                                systemsLevel = smallShip.systemsRating;
+                            }
+
+                            if (systemsLevel <= 0)
+                            {
+                                systemsLevel = 0;
+                                smallShip.isDisabled = true;
+                            }
+
+                            if (systemsLevel > 0)
+                            {
+                                smallShip.isDisabled = false;
+                            }
+
+                            smallShip.systemsLevel = systemsLevel;
+
+                            //Change wep level
+                            if (noChangeWepLevel == true)
+                            {
+                                wepLevel = smallShip.wepLevel;
+                            }
+
+                            if (wepLevel > smallShip.wepRating)
+                            {
+                                wepLevel = smallShip.wepRating;
+                            }
+
+                            smallShip.wepLevel = wepLevel;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //This allows you to change a ships current stats
     public static void SetShipStats(MissionEvent missionEvent)
     {
@@ -2414,9 +2576,9 @@ public static class MissionFunctions
         float laserRating = 0;
         float WEPRating = 0;
 
-        if (float.TryParse(missionEvent.data1, out _))
+        if (float.TryParse(missionEvent.data2, out _))
         {
-            accelerationRating = float.Parse(missionEvent.data1);
+            accelerationRating = float.Parse(missionEvent.data2);
 
             if (accelerationRating > 100)
             {
@@ -2424,9 +2586,9 @@ public static class MissionFunctions
             }
         }
 
-        if (float.TryParse(missionEvent.data2, out _))
+        if (float.TryParse(missionEvent.data3, out _))
         {
-            speedRating = float.Parse(missionEvent.data2);
+            speedRating = float.Parse(missionEvent.data3);
 
             if (speedRating > 100)
             {
@@ -2434,9 +2596,9 @@ public static class MissionFunctions
             }
         }
 
-        if (float.TryParse(missionEvent.data3, out _))
+        if (float.TryParse(missionEvent.data4, out _))
         {
-            maneuverabilityRating = float.Parse(missionEvent.data3);
+            maneuverabilityRating = float.Parse(missionEvent.data4);
 
             if (maneuverabilityRating > 100)
             {
@@ -2444,9 +2606,9 @@ public static class MissionFunctions
             }
         }
 
-        if (float.TryParse(missionEvent.data4, out _))
+        if (float.TryParse(missionEvent.data5, out _))
         {
-            hullRating = float.Parse(missionEvent.data4);
+            hullRating = float.Parse(missionEvent.data5);
 
             if (hullRating > 100)
             {
@@ -2454,9 +2616,9 @@ public static class MissionFunctions
             }
         }
 
-        if (float.TryParse(missionEvent.data5, out _))
+        if (float.TryParse(missionEvent.data6, out _))
         {
-            shieldRating = float.Parse(missionEvent.data5);
+            shieldRating = float.Parse(missionEvent.data6);
 
             if (shieldRating > 100)
             {
@@ -2464,9 +2626,9 @@ public static class MissionFunctions
             }
         }
 
-        if (float.TryParse(missionEvent.data6, out _))
+        if (float.TryParse(missionEvent.data7, out _))
         {
-            laserFireRating = float.Parse(missionEvent.data6);
+            laserFireRating = float.Parse(missionEvent.data7);
 
             if (laserFireRating > 100)
             {
@@ -2474,9 +2636,9 @@ public static class MissionFunctions
             }
         }
 
-        if (float.TryParse(missionEvent.data7, out _))
+        if (float.TryParse(missionEvent.data8, out _))
         {
-            laserRating = float.Parse(missionEvent.data7);
+            laserRating = float.Parse(missionEvent.data8);
 
             if (laserRating > 100)
             {
@@ -2484,9 +2646,9 @@ public static class MissionFunctions
             }
         }
 
-        if (float.TryParse(missionEvent.data8, out _))
+        if (float.TryParse(missionEvent.data9, out _))
         {
-            WEPRating = float.Parse(missionEvent.data8);
+            WEPRating = float.Parse(missionEvent.data9);
 
             if (WEPRating > 100)
             {
@@ -2618,6 +2780,51 @@ public static class MissionFunctions
         }
 
         SceneFunctions.SetSkybox(skybox, stars, skyboxColour);
+    }
+
+    //This sets the number and type of torpedoes
+    public static void SetTorpedoes(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string torpedoType = missionEvent.data2;
+        float torpedoNo = 0;
+        bool noChangeToTorpedoNo = false;
+
+        if (float.TryParse(missionEvent.data3, out _))
+        {
+            torpedoNo = float.Parse(missionEvent.data3);
+        }
+        else
+        {
+            noChangeToTorpedoNo = true;
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            smallShip.torpedoType = torpedoType;
+
+                            if (noChangeToTorpedoNo == true)
+                            {
+                                torpedoNo = smallShip.torpedoNumber;
+                            }
+
+                            smallShip.torpedoNumber = torpedoNo;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //This tells a ship or ships to move toward a waypoint by position its waypoint and setting its ai override mode

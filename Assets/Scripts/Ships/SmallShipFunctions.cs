@@ -1342,4 +1342,105 @@ public static class SmallShipFunctions
 
     #endregion
 
+    #region open and close wings
+
+    //This opens the ships wings
+    public static void OpenWings(SmallShip smallShip)
+    {
+        Transform[] wings = GameObjectUtils.FindAllChildTransformsContaining(smallShip.transform, "wing");
+
+        GameObject wing01 = null;
+        GameObject wing02 = null;
+        GameObject wing03 = null;
+        GameObject wing04 = null;
+        GameObject wing01_open = null;
+        GameObject wing01_closed = null;
+        GameObject wing02_open = null;
+        GameObject wing02_closed = null;
+        GameObject wing03_open = null;
+        GameObject wing03_closed = null;
+        GameObject wing04_open = null;
+        GameObject wing04_closed = null;
+
+        if (wings != null)
+        {
+            foreach (Transform wing in wings)
+            {
+                if (wing.name == "wing01")
+                {
+                    wing01 = wing.gameObject;
+                }
+                else if (wing.name == "wing02")
+                {
+                    wing02 = wing.gameObject;
+                }
+                else if (wing.name == "wing03")
+                {
+                    wing03 = wing.gameObject;
+                }
+                else if (wing.name == "wing04")
+                {
+                    wing04 = wing.gameObject;
+                }
+                else if (wing.name == "wing01_open")
+                {
+                    wing01_open = wing.gameObject;
+                }
+                else if (wing.name == "wing02_open")
+                {
+                    wing02_open = wing.gameObject;
+                }
+                else if (wing.name == "wing03_open")
+                {
+                    wing03_open = wing.gameObject;
+                }
+                else if (wing.name == "wing04_open")
+                {
+                    wing04_open = wing.gameObject;
+                }
+                else if (wing.name == "wing01_closed")
+                {
+                    wing01_closed = wing.gameObject;
+                }
+                else if (wing.name == "wing02_closed")
+                {
+                    wing02_closed = wing.gameObject;
+                }
+                else if (wing.name == "wing03_closed")
+                {
+                    wing03_closed = wing.gameObject;
+                }
+                else if (wing.name == "wing04_closed")
+                {
+                    wing04_closed = wing.gameObject;
+                }
+            }
+        }
+
+        if (wing01 != null & wing01_open != null & wing01_closed != null)
+        {
+            RotateWing(wing01, wing01_open.transform, wing01_closed.transform, true);
+        }
+        else if (wing02 != null & wing02_open != null & wing02_closed != null)
+        {
+            RotateWing(wing02, wing02_open.transform, wing02_closed.transform, true);
+        }
+        else if (wing03 != null & wing03_open != null & wing03_closed != null)
+        {
+            RotateWing(wing03, wing03_open.transform, wing03_closed.transform, true);
+        }
+        else if (wing04 != null & wing04_open != null & wing04_closed != null)
+        {
+            RotateWing(wing04, wing04_open.transform, wing04_closed.transform, true);
+        }
+    }
+
+    public static IEnumerator RotateWing(GameObject wing, Transform startingAngle, Transform endingAngle, bool open)
+    {
+        //CONTINUE CODING WINGS FUNCTIONS HERE
+        yield return null;
+    }
+
+    #endregion
+
 }

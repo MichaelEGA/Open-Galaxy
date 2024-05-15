@@ -248,6 +248,21 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public Vector3 currentPosition;
     [HideInInspector] public Quaternion currentRotation;
 
+    [Header("Wings")]
+    public Transform[] wings;
+    public GameObject wing01;
+    public GameObject wing02;
+    public GameObject wing03;
+    public GameObject wing04;
+    public GameObject wing01_open;
+    public GameObject wing01_closed;
+    public GameObject wing02_open;
+    public GameObject wing02_closed;
+    public GameObject wing03_open;
+    public GameObject wing03_closed;
+    public GameObject wing04_open;
+    public GameObject wing04_closed;
+
     [Header("Ship Coroutine Tasks")]
     public List<Task> tasks;
 

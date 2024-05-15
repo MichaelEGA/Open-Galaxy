@@ -1419,7 +1419,7 @@ public static class SmallShipFunctions
         {
             if (rotate == true)
             {
-                RotateToWingPosition(smallShip.wing01, smallShip.wing01_open.transform, smallShip.wing01_closed.transform, 2, open);
+                Task a = new Task(RotateToWingPosition(smallShip.wing01, smallShip.wing01_open.transform, smallShip.wing01_closed.transform, 2, open));
             }
             else
             {
@@ -1430,7 +1430,7 @@ public static class SmallShipFunctions
         {
             if (rotate == true)
             {
-                RotateToWingPosition(smallShip.wing02, smallShip.wing02_open.transform, smallShip.wing02_closed.transform, 2, open);
+                Task a = new Task(RotateToWingPosition(smallShip.wing02, smallShip.wing02_open.transform, smallShip.wing02_closed.transform, 2, open));
             }
             else
             {
@@ -1441,7 +1441,7 @@ public static class SmallShipFunctions
         {
             if (rotate == true)
             {
-                RotateToWingPosition(smallShip.wing03, smallShip.wing03_open.transform, smallShip.wing03_closed.transform, 2, open);
+                Task a = new Task(RotateToWingPosition(smallShip.wing03, smallShip.wing03_open.transform, smallShip.wing03_closed.transform, 2, open));
             }
             else
             {
@@ -1452,7 +1452,7 @@ public static class SmallShipFunctions
         {
             if (rotate == true)
             {
-                RotateToWingPosition(smallShip.wing04, smallShip.wing04_open.transform, smallShip.wing04_closed.transform, 2, open);
+                Task a = new Task(RotateToWingPosition(smallShip.wing04, smallShip.wing04_open.transform, smallShip.wing04_closed.transform, 2, open));
             }
             else
             {

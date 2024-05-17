@@ -166,6 +166,7 @@ public static class DockingFunctions
         {
             smallShip.docking = true;
             smallShip.thrustSpeed = 0;
+            SmallShipFunctions.CloseWings(smallShip);
         }
 
         if (largeShip != null)
@@ -286,6 +287,7 @@ public static class DockingFunctions
         {
             smallShip.docking = false;
             smallShip.thrustSpeed = 0;
+            SmallShipFunctions.OpenWings(smallShip);
         }
 
         if (largeShip != null)

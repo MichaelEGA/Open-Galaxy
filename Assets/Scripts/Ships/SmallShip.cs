@@ -249,6 +249,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public Quaternion currentRotation;
 
     [Header("Wings")]
+    public bool wingsOpen = true;
     public Transform[] wings;
     public GameObject wing01;
     public GameObject wing02;

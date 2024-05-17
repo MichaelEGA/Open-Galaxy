@@ -969,6 +969,10 @@ public static class MissionFunctions
         //This fades out the hud
         Task fadeOut = new Task(HudFunctions.FadeOutHud(1));
 
+        SmallShipFunctions.CloseWings(smallShip);
+
+        yield return new WaitForSecondsRealtime(3.4f);
+
         //This plays the hyperspace entry sound
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace01_entry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
@@ -1054,7 +1058,11 @@ public static class MissionFunctions
         //This unlocks the player controls and turns off invincibility on the player ship
         smallShip.controlLock = controlLock; //This restores the set lock position
         smallShip.invincible = false;
-        
+
+        yield return new WaitForSecondsRealtime(1);
+
+        SmallShipFunctions.OpenWings(smallShip);
+
         //This unpauses the event series
         missionManager.pauseEventSeries = false;
     }

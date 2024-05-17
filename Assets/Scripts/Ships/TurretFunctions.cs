@@ -92,112 +92,38 @@ public static class TurretFunctions
     //This inputs the rotation values
     public static void CheckTurretType(Turret turret, string colour)
     {
+        //This gets the Json ship data
+        TextAsset turretTypesFile = Resources.Load(OGGetAddress.files + "TurretTypes") as TextAsset;
+        TurretTypes turretTypes = JsonUtility.FromJson<TurretTypes>(turretTypesFile.text);
+
+        //Check for ship type in shipTypeData
+        TurretType turretType = null;
+
         if (turret.gameObject != null)
         {
-            if (turret.gameObject.name.Contains("isd_turretlarge"))
+            foreach (TurretType tempTurretType in turretTypes.turretTypeData)
             {
-                turret.yRotationMax = 30;
-                turret.yRotationMin = -30;
-                turret.xRotationMax = 0;
-                turret.xRotationMin = -90;
-                turret.turretSpeed = 70;
-                turret.fireDelay = 6f;
-                turret.laserColor = colour;
-                turret.laserDamage = 50;
-                turret.turretType = "large";
-                turret.systemsLevel = 100;
-                turret.hullLevel = 100;
-                turret.yRotationIsRestricted = true;
+                if (turret.gameObject.name.Contains(tempTurretType.type))
+                {
+                    turretType = tempTurretType;
+                    break;
+                }
             }
-            else if (turret.gameObject.name.Contains("isd_turretsmall"))
+
+            if (turretType != null)
             {
-                turret.yRotationMax = 90;
-                turret.yRotationMin = -90;
-                turret.xRotationMax = 0;
-                turret.xRotationMin = -90;
-                turret.turretSpeed = 90;
-                turret.fireDelay = 4f;
+                turret.yRotationMax = turretType.yRotationMax;
+                turret.yRotationMin = turretType.yRotationMin;
+                turret.xRotationMax = turretType.xRotationMax;
+                turret.xRotationMin = turretType.xRotationMin;
+                turret.turretSpeed = turretType.turretSpeed;
+                turret.fireDelay = turretType.fireDelay;
                 turret.laserColor = colour;
-                turret.laserDamage = 10;
-                turret.turretType = "small";
-                turret.systemsLevel = 100;
-                turret.hullLevel = 100;
-                turret.yRotationIsRestricted = true;
-            }
-            else if (turret.gameObject.name.Contains("mc80a_turretlarge"))
-            {
-                turret.yRotationMax = 60;
-                turret.yRotationMin = -60;
-                turret.xRotationMax = 50;
-                turret.xRotationMin = 0;
-                turret.turretSpeed = 80;
-                turret.fireDelay = 6f;
-                turret.laserColor = colour;
-                turret.laserDamage = 50;
-                turret.turretType = "large";
-                turret.systemsLevel = 100;
-                turret.hullLevel = 100;
-                turret.yRotationIsRestricted = true;
-            }
-            else if (turret.gameObject.name.Contains("mc80a_turretsmall"))
-            {
-                turret.yRotationMax = 60;
-                turret.yRotationMin = -60;
-                turret.xRotationMax = 50;
-                turret.xRotationMin = 0;
-                turret.turretSpeed = 90;
-                turret.fireDelay = 4f;
-                turret.laserColor = colour;
-                turret.laserDamage = 10;
-                turret.turretType = "small";
-                turret.systemsLevel = 100;
-                turret.hullLevel = 100;
-                turret.yRotationIsRestricted = true;
-            }
-            else if (turret.gameObject.name.Contains("cr90_turretlarge"))
-            {
-                turret.yRotationMax = 180;
-                turret.yRotationMin = -180;
-                turret.xRotationMax = 0;
-                turret.xRotationMin = -90;
-                turret.turretSpeed = 80;
-                turret.fireDelay = 4f;
-                turret.laserColor = colour;
-                turret.laserDamage = 30;
-                turret.turretType = "large";
-                turret.systemsLevel = 100;
-                turret.hullLevel = 100;
-                turret.yRotationIsRestricted = false;
-            }
-            else if (turret.gameObject.name.Contains("tt_tall_turretlarge"))
-            {
-                turret.yRotationMax = 180;
-                turret.yRotationMin = -180;
-                turret.xRotationMax = 0;
-                turret.xRotationMin = -90;
-                turret.turretSpeed = 80;
-                turret.fireDelay = 4f;
-                turret.laserColor = colour;
-                turret.laserDamage = 30;
-                turret.turretType = "large";
-                turret.systemsLevel = 100;
-                turret.hullLevel = 100;
-                turret.yRotationIsRestricted = false;
-            }
-            else if (turret.gameObject.name.Contains("tt_short_turretlarge"))
-            {
-                turret.yRotationMax = 180;
-                turret.yRotationMin = -180;
-                turret.xRotationMax = 0;
-                turret.xRotationMin = -90;
-                turret.turretSpeed = 80;
-                turret.fireDelay = 4f;
-                turret.laserColor = colour;
-                turret.laserDamage = 30;
-                turret.turretType = "large";
-                turret.systemsLevel = 100;
-                turret.hullLevel = 100;
-                turret.yRotationIsRestricted = false;
+                turret.laserDamage = turretType.laserDamage;
+                turret.turretType = turretType.turretType;
+                turret.systemsLevel = turretType.systemsLevel;
+                turret.hullLevel = turretType.hullLevel;
+                turret.yRotationIsRestricted = turretType.yRotationIsRestricted;
             }
             else
             {

@@ -725,6 +725,8 @@ public static class SmallShipFunctions
     //Jump to Hyperspace
     public static IEnumerator JumpToHyperspace(SmallShip smallShip)
     {
+        CloseWings(smallShip);
+
         smallShip.jumpingToHyperspace = true;
 
         Vector3 startPosition = smallShip.gameObject.transform.localPosition;
@@ -750,6 +752,8 @@ public static class SmallShipFunctions
     //Exit Hyperspace
     public static IEnumerator ExitHyperspace(SmallShip smallShip)
     {
+        SnapClosedWings(smallShip); //Keeps wings shut on hyperspace exit
+
         smallShip.exitingHyperspace = true;
 
         Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 30000; 
@@ -770,6 +774,8 @@ public static class SmallShipFunctions
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Explosions", smallShip.transform.position, 1, 1, 1000, 1f);
 
         HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " just exited hyperspace");
+
+        OpenWings(smallShip); //Opens wings after hyperspace exit
 
         smallShip.exitingHyperspace = false;
     }
@@ -1344,6 +1350,218 @@ public static class SmallShipFunctions
 
     #region open and close wings
 
+    //Opens the wings
+    public static void OpenWings(SmallShip smallShip)
+    {
+        if (smallShip.wingsOpen != true)
+        {
+            //This searches for movable wings on the ship if they haven't already been loaded
+            if (smallShip.wings == null)
+            {
+                FindMovableWings(smallShip);
+            }
+
+            //This indicates to other functions whether the wings are open or closed
+            smallShip.wingsOpen = true;
+
+            //This activates the wing rotation
+            if (smallShip.wing01 != null & smallShip.wing01_open != null & smallShip.wing01_closed != null)
+            {
+                Task a = new Task(RotateToWingPosition(smallShip.wing01, smallShip.wing01_open.transform, smallShip.wing01_closed.transform, 3.4f, true));
+
+                //This plays the wings open and close sound
+                float spatialBlend = 1f;
+                string mixer = "External";
+
+                if (smallShip.isAI == false)
+                {
+                    spatialBlend = 0;
+                    mixer = "Cockpit";
+                }
+
+                AudioFunctions.PlayAudioClip(smallShip.audioManager, "wings_open", mixer, smallShip.transform.position, spatialBlend, 1, 500, 0.6f);
+            }
+
+            if (smallShip.wing02 != null & smallShip.wing02_open != null & smallShip.wing02_closed != null)
+            {
+                Task a = new Task(RotateToWingPosition(smallShip.wing02, smallShip.wing02_open.transform, smallShip.wing02_closed.transform, 3.4f, true));
+            }
+
+            if (smallShip.wing03 != null & smallShip.wing03_open != null & smallShip.wing03_closed != null)
+            {
+                Task a = new Task(RotateToWingPosition(smallShip.wing03, smallShip.wing03_open.transform, smallShip.wing03_closed.transform, 3.4f, true));
+            }
+
+            if (smallShip.wing04 != null & smallShip.wing04_open != null & smallShip.wing04_closed != null)
+            {
+                Task a = new Task(RotateToWingPosition(smallShip.wing04, smallShip.wing04_open.transform, smallShip.wing04_closed.transform, 3.4f, true));
+            }
+        }
+    }
+
+    //Closes the wings
+    public static void CloseWings(SmallShip smallShip)
+    {
+        if (smallShip.wingsOpen != false)
+        {
+            //This searches for movable wings on the ship if they haven't already been loaded
+            if (smallShip.wings == null)
+            {
+                FindMovableWings(smallShip);
+            }
+
+            //This indicates to other functions whether the wings are open or closed
+            smallShip.wingsOpen = false;
+
+            //This activates the wing rotation
+            if (smallShip.wing01 != null & smallShip.wing01_open != null & smallShip.wing01_closed != null)
+            {
+                Task a = new Task(RotateToWingPosition(smallShip.wing01, smallShip.wing01_open.transform, smallShip.wing01_closed.transform, 3.4f, false));
+
+                //This plays the wings open and close sound
+                float spatialBlend = 1f;
+                string mixer = "External";
+
+                if (smallShip.isAI == false)
+                {
+                    spatialBlend = 0;
+                    mixer = "Cockpit";
+                }
+
+                AudioFunctions.PlayAudioClip(smallShip.audioManager, "wings_close", mixer, smallShip.transform.position, spatialBlend, 1, 500, 0.6f);
+            }
+
+            if (smallShip.wing02 != null & smallShip.wing02_open != null & smallShip.wing02_closed != null)
+            {
+                Task a = new Task(RotateToWingPosition(smallShip.wing02, smallShip.wing02_open.transform, smallShip.wing02_closed.transform, 3.4f, false));
+            }
+
+            if (smallShip.wing03 != null & smallShip.wing03_open != null & smallShip.wing03_closed != null)
+            {
+                Task a = new Task(RotateToWingPosition(smallShip.wing03, smallShip.wing03_open.transform, smallShip.wing03_closed.transform, 3.4f, false));
+            }
+
+            if (smallShip.wing04 != null & smallShip.wing04_open != null & smallShip.wing04_closed != null)
+            {
+                Task a = new Task(RotateToWingPosition(smallShip.wing04, smallShip.wing04_open.transform, smallShip.wing04_closed.transform, 3.4f, false));
+            }
+        }
+    }
+
+    //This rotates a wing to the designated position
+    public static IEnumerator RotateToWingPosition(GameObject wing, Transform openPosition, Transform closePosition, float speed, bool open)
+    {
+        Quaternion startRotation = closePosition.rotation;
+        Quaternion endRotation = openPosition.rotation;
+
+        if (open == false)
+        {
+            startRotation = openPosition.localRotation;
+            endRotation = closePosition.localRotation;
+        }
+
+        float timeElapsed = 0;
+        float lerpDuration = speed;
+
+        while (timeElapsed < lerpDuration)
+        {
+            wing.transform.rotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        wing.transform.localRotation = endRotation;
+    }
+
+    //Snaps the wing open
+    public static void SnapOpenWings(SmallShip smallShip)
+    {
+        if (smallShip.wingsOpen != true)
+        {
+            //This searches for movable wings on the ship if they haven't already been loaded
+            if (smallShip.wings == null)
+            {
+                FindMovableWings(smallShip);
+            }
+
+            //This indicates to other functions whether the wings are open or closed
+            smallShip.wingsOpen = true;
+
+            //This activates the wing rotation
+            if (smallShip.wing01 != null & smallShip.wing01_open != null & smallShip.wing01_closed != null)
+            {
+                SnapToWingPosition(smallShip.wing01, smallShip.wing01_open.transform, smallShip.wing01_closed.transform, 2, true);
+            }
+
+            if (smallShip.wing02 != null & smallShip.wing02_open != null & smallShip.wing02_closed != null)
+            {
+                SnapToWingPosition(smallShip.wing02, smallShip.wing02_open.transform, smallShip.wing02_closed.transform, 2, true);
+            }
+
+            if (smallShip.wing03 != null & smallShip.wing03_open != null & smallShip.wing03_closed != null)
+            {
+                SnapToWingPosition(smallShip.wing03, smallShip.wing03_open.transform, smallShip.wing03_closed.transform, 2, true);
+            }
+
+            if (smallShip.wing04 != null & smallShip.wing04_open != null & smallShip.wing04_closed != null)
+            {
+                SnapToWingPosition(smallShip.wing04, smallShip.wing04_open.transform, smallShip.wing04_closed.transform, 2, true);
+            }
+        }
+    }
+
+    //Snaps the wings shut
+    public static void SnapClosedWings(SmallShip smallShip)
+    {
+        if (smallShip.wingsOpen != false)
+        {
+            //This searches for movable wings on the ship if they haven't already been loaded
+            if (smallShip.wings == null)
+            {
+                FindMovableWings(smallShip);
+            }
+
+            //This indicates to other functions whether the wings are open or closed
+            smallShip.wingsOpen = false;
+
+            //This activates the wing rotation
+            if (smallShip.wing01 != null & smallShip.wing01_open != null & smallShip.wing01_closed != null)
+            {
+                SnapToWingPosition(smallShip.wing01, smallShip.wing01_open.transform, smallShip.wing01_closed.transform, 2, false);
+            }
+
+            if (smallShip.wing02 != null & smallShip.wing02_open != null & smallShip.wing02_closed != null)
+            {
+                SnapToWingPosition(smallShip.wing02, smallShip.wing02_open.transform, smallShip.wing02_closed.transform, 2, false);
+            }
+
+            if (smallShip.wing03 != null & smallShip.wing03_open != null & smallShip.wing03_closed != null)
+            {
+                SnapToWingPosition(smallShip.wing03, smallShip.wing03_open.transform, smallShip.wing03_closed.transform, 2, false);
+            }
+
+            if (smallShip.wing04 != null & smallShip.wing04_open != null & smallShip.wing04_closed != null)
+            {
+                SnapToWingPosition(smallShip.wing04, smallShip.wing04_open.transform, smallShip.wing04_closed.transform, 2, false);
+            }
+        }
+    }
+
+    //This snaps a wing to the desinated position
+    public static void SnapToWingPosition(GameObject wing, Transform openPosition, Transform closePosition, float speed, bool open)
+    {
+        Quaternion startRotation = closePosition.localRotation;
+        Quaternion endRotation = openPosition.localRotation;
+
+        if (open == false)
+        {
+            startRotation = openPosition.localRotation;
+            endRotation = closePosition.localRotation;
+        }
+
+        wing.transform.localRotation = endRotation;
+    }
+
     //This finds any wings that can be open and closed on the craft    
     public static void FindMovableWings(SmallShip smallShip)
     {
@@ -1403,102 +1621,6 @@ public static class SmallShipFunctions
                 }
             }
         }
-    }
-
-    //This opens the wings on a ship with movable wings
-    public static void OpenAndCloseWings(SmallShip smallShip, bool open, bool rotate)
-    {
-        //This searches for movable wings on the ship if they haven't already been loaded
-        if (smallShip.wings == null)
-        {
-            FindMovableWings(smallShip);
-        }
-
-        //This activates the wing rotation
-        if (smallShip.wing01 != null & smallShip.wing01_open != null & smallShip.wing01_closed != null)
-        {
-            if (rotate == true)
-            {
-                Task a = new Task(RotateToWingPosition(smallShip.wing01, smallShip.wing01_open.transform, smallShip.wing01_closed.transform, 2, open));
-            }
-            else
-            {
-                SnapToWingPosition(smallShip.wing01, smallShip.wing01_open.transform, smallShip.wing01_closed.transform, 2, open);
-            }
-        }
-        else if (smallShip.wing02 != null & smallShip.wing02_open != null & smallShip.wing02_closed != null)
-        {
-            if (rotate == true)
-            {
-                Task a = new Task(RotateToWingPosition(smallShip.wing02, smallShip.wing02_open.transform, smallShip.wing02_closed.transform, 2, open));
-            }
-            else
-            {
-                SnapToWingPosition(smallShip.wing02, smallShip.wing02_open.transform, smallShip.wing02_closed.transform, 2, open);
-            }
-        }
-        else if (smallShip.wing03 != null & smallShip.wing03_open != null & smallShip.wing03_closed != null)
-        {
-            if (rotate == true)
-            {
-                Task a = new Task(RotateToWingPosition(smallShip.wing03, smallShip.wing03_open.transform, smallShip.wing03_closed.transform, 2, open));
-            }
-            else
-            {
-                SnapToWingPosition(smallShip.wing03, smallShip.wing03_open.transform, smallShip.wing03_closed.transform, 2, open);
-            }
-        }
-        else if (smallShip.wing04 != null & smallShip.wing04_open != null & smallShip.wing04_closed != null)
-        {
-            if (rotate == true)
-            {
-                Task a = new Task(RotateToWingPosition(smallShip.wing04, smallShip.wing04_open.transform, smallShip.wing04_closed.transform, 2, open));
-            }
-            else
-            {
-                SnapToWingPosition(smallShip.wing04, smallShip.wing04_open.transform, smallShip.wing04_closed.transform, 2, open);
-            }
-        }
-    }
-
-    //This rotates a wing to the designated position
-    public static IEnumerator RotateToWingPosition(GameObject wing, Transform openPosition, Transform closePosition, float speed, bool open)
-    {
-        Quaternion startRotation = closePosition.rotation;
-        Quaternion endRotation = openPosition.rotation;
-
-        if (open == false)
-        {
-            startRotation = openPosition.rotation;
-            endRotation = closePosition.rotation; 
-        }
-
-        float timeElapsed = 0;
-        float lerpDuration = speed;
-
-        while (timeElapsed < lerpDuration)
-        {
-            wing.transform.rotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        wing.transform.rotation = endRotation;
-    }
-
-    //This snaps a wing to the desinated position
-    public static void SnapToWingPosition(GameObject wing, Transform openPosition, Transform closePosition, float speed, bool open)
-    {
-        Quaternion startRotation = closePosition.rotation;
-        Quaternion endRotation = openPosition.rotation;
-
-        if (open == false)
-        {
-            startRotation = openPosition.rotation;
-            endRotation = closePosition.rotation;
-        }
-
-        wing.transform.rotation = endRotation;
     }
 
     #endregion

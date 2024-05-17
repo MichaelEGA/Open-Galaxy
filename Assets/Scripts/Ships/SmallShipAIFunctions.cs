@@ -899,6 +899,11 @@ public static class SmallShipAIFunctions
                         smallShip.aiMatchSpeed = true;
                         AngleTowardsTarget(smallShip);
                     }
+
+                    if (smallShip.wingsOpen == false & smallShip.docking == false)
+                    {
+                        SmallShipFunctions.OpenWings(smallShip);
+                    }
                 }
                 else
                 {
@@ -943,6 +948,11 @@ public static class SmallShipAIFunctions
                                 smallShip.aiAttackTime = Time.time + Random.Range(30, 35);
                             }
                         }
+                    }
+
+                    if (smallShip.wingsOpen == false & smallShip.docking == false)
+                    {
+                        SmallShipFunctions.OpenWings(smallShip);
                     }
                 }
                 else
@@ -1000,6 +1010,11 @@ public static class SmallShipAIFunctions
                     {
                         AngleAwayFromTarget(smallShip);
                     }
+
+                    if (smallShip.wingsOpen == false & smallShip.docking == false)
+                    {
+                        SmallShipFunctions.OpenWings(smallShip);
+                    }
                 }
                 else
                 {
@@ -1017,6 +1032,11 @@ public static class SmallShipAIFunctions
             if (smallShip.aiEvade == false)
             {
                 AngleTowardsWaypoint(smallShip);
+            }
+
+            if (smallShip.wingsOpen == true & smallShip.docking == false)
+            {
+                SmallShipFunctions.CloseWings(smallShip);
             }
 
             smallShip.flyInFormation = false;
@@ -1037,6 +1057,11 @@ public static class SmallShipAIFunctions
                     if (distanceToWaypoint < 50)
                     {
                         SelectRandomWaypoint(smallShip);
+                    }
+
+                    if (smallShip.wingsOpen == true & smallShip.docking == false)
+                    {
+                        SmallShipFunctions.CloseWings(smallShip);
                     }
 
                     AngleTowardsWaypoint(smallShip);
@@ -1094,6 +1119,21 @@ public static class SmallShipAIFunctions
                     if (distance < 100)
                     {
                         smallShip.aiMatchSpeed = true;
+                    }
+
+                    if (smallShip.followTarget.wingsOpen == true)
+                    {
+                        if (smallShip.wingsOpen != true)
+                        {
+                            SmallShipFunctions.OpenWings(smallShip);
+                        }
+                    }
+                    else if(smallShip.followTarget.wingsOpen == false & smallShip.docking == false)
+                    {
+                        if (smallShip.wingsOpen != false)
+                        {
+                            SmallShipFunctions.CloseWings(smallShip);
+                        }
                     }
                 }
                 else

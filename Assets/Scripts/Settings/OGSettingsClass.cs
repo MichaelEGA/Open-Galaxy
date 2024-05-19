@@ -13,6 +13,7 @@ public class OGSettingData
     public string shipAssets;
     public string gameWindowMode;
     public string editorWindowMode;
+    public string difficultly;
 }
 
 [System.Serializable]

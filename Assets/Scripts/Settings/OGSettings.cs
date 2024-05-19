@@ -13,4 +13,5 @@ public class OGSettings : MonoBehaviour
     public string shipAssets = "communityassets";
     public string gameWindowMode = "fullscreen";
     public string editorWindowMode = "fullscreen";
+    public string difficultly = "default";
 }

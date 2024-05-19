@@ -977,6 +977,11 @@ public static class SmallShipFunctions
     //This causes the ship to take damage from lasers and torpedoes
     public static void TakeDamage(SmallShip smallShip, float damage, Vector3 hitPosition)
     {
+        if (smallShip.isAI == false)
+        {
+            damage = CalculateDamage(damage);
+        }
+
         if (Time.time - smallShip.loadTime > 10)
         {
             Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
@@ -1033,66 +1038,14 @@ public static class SmallShipFunctions
         }
     }
 
-    //This tells the damage system that a collision has begun
-    public static void StartCollision(SmallShip smallShip, GameObject collidingWith)
-    {
-        if (smallShip != null & collidingWith != null)
-        {
-            Debug.Log(smallShip.name + " colliding with " + collidingWith.name);
-
-            if (smallShip.docking == false)
-            {
-                smallShip.isCurrentlyColliding = true;
-
-                if (smallShip.isAI == false & smallShip.invincible == false)
-                {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
-                }
-            }
-        }
-    }
-
-    //This tells the damage system that a collision has ended
-    public static void EndCollision(SmallShip smallShip)
-    {
-        smallShip.isCurrentlyColliding = false;
-    }
-
-    //This called when the ship collides with something causing it to take collision damage
-    public static void TakeCollisionDamage(SmallShip smallShip)
-    {
-        if (smallShip.isCurrentlyColliding == true & smallShip.invincible == false & smallShip.docking == false)
-        {
-            if (Time.time - smallShip.loadTime > 10)
-            {
-
-                if (smallShip.hullLevel > 0 & smallShip.invincible == false)
-                {
-
-                    if (smallShip.invincible == true & smallShip.hullLevel - 5 < 5)
-                    {
-                        smallShip.hullLevel = 5;
-                    }
-                    else
-                    {
-                        smallShip.hullLevel -= 5;
-                    }
-
-                    if (smallShip.hullLevel < 0)
-                    {
-                        smallShip.hullLevel = 0;
-                    }
-
-                    Task a = new Task(CockpitFunctions.ActivateCockpitShake(smallShip, 0.5f));
-
-                }
-            }
-        }    
-    }
-
     //This causes the ship to take damage from lasers and torpedoes
     public static void TakeSystemDamage(SmallShip smallShip, float damage, Vector3 hitPosition)
     {
+        if (smallShip.isAI == false)
+        {
+            damage = CalculateDamage(damage);
+        }
+
         if (Time.time - smallShip.loadTime > 10)
         {
             Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
@@ -1154,6 +1107,95 @@ public static class SmallShipFunctions
                 smallShip.engineAudioSource.Stop();
             }
         }
+    }
+
+    //Calculate damage according to difficulty
+    public static float CalculateDamage(float damage)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        if (settings != null)
+        {
+            if (settings.difficultly == "default")
+            {
+                //No change
+            }
+            else if (settings.difficultly == "moderate")
+            {
+                damage = (damage / 4f) * 3f;
+            }
+            else if (settings.difficultly == "low")
+            {
+                damage = (damage / 4f) * 2f;
+            }
+            else if (settings.difficultly == "minimal")
+            {
+                damage = (damage / 4f) * 2f;
+            }
+            else if (settings.difficultly == "nodamage")
+            {
+                damage = 0;
+            }
+        }
+
+        return damage;
+    }
+
+    //This tells the damage system that a collision has begun
+    public static void StartCollision(SmallShip smallShip, GameObject collidingWith)
+    {
+        if (smallShip != null & collidingWith != null)
+        {
+            Debug.Log(smallShip.name + " colliding with " + collidingWith.name);
+
+            if (smallShip.docking == false)
+            {
+                smallShip.isCurrentlyColliding = true;
+
+                if (smallShip.isAI == false & smallShip.invincible == false)
+                {
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                }
+            }
+        }
+    }
+
+    //This tells the damage system that a collision has ended
+    public static void EndCollision(SmallShip smallShip)
+    {
+        smallShip.isCurrentlyColliding = false;
+    }
+
+    //This called when the ship collides with something causing it to take collision damage
+    public static void TakeCollisionDamage(SmallShip smallShip)
+    {
+        if (smallShip.isCurrentlyColliding == true & smallShip.invincible == false & smallShip.docking == false)
+        {
+            if (Time.time - smallShip.loadTime > 10)
+            {
+
+                if (smallShip.hullLevel > 0 & smallShip.invincible == false)
+                {
+
+                    if (smallShip.invincible == true & smallShip.hullLevel - 5 < 5)
+                    {
+                        smallShip.hullLevel = 5;
+                    }
+                    else
+                    {
+                        smallShip.hullLevel -= 5;
+                    }
+
+                    if (smallShip.hullLevel < 0)
+                    {
+                        smallShip.hullLevel = 0;
+                    }
+
+                    Task a = new Task(CockpitFunctions.ActivateCockpitShake(smallShip, 0.5f));
+
+                }
+            }
+        }    
     }
 
     //This restores a ships systems to the desired level

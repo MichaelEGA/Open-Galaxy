@@ -160,6 +160,7 @@ public static class OGSettingsFunctions
             settings.cockpitAssets = ogSettingsClass.ogSettingsData[0].cockpitAssets;
             settings.gameWindowMode = ogSettingsClass.ogSettingsData[0].gameWindowMode;
             settings.editorWindowMode = ogSettingsClass.ogSettingsData[0].editorWindowMode;
+            settings.difficultly = ogSettingsClass.ogSettingsData[0].difficultly;
             CheckSettingsData();
         }
     }
@@ -199,6 +200,7 @@ public static class OGSettingsFunctions
         ogSettingsClass.ogSettingsData[0].shipAssets = settings.shipAssets;
         ogSettingsClass.ogSettingsData[0].gameWindowMode = settings.gameWindowMode;
         ogSettingsClass.ogSettingsData[0].editorWindowMode = settings.editorWindowMode;
+        ogSettingsClass.ogSettingsData[0].difficultly = settings.difficultly;
 
         // Write JSON to file.
         string stringOFSettingsData = JsonUtility.ToJson(ogSettingsClass, true);
@@ -233,30 +235,6 @@ public static class OGSettingsFunctions
         return settings;
     }
 
-    //This function selects the cockpits to be used 
-    public static void SelectCockpitAssets(string type)
-    {
-        OGSettings settings = OGSettingsFunctions.GetSettings();
-
-        settings.cockpitAssets = type;
-
-        CheckSettingsData();
-
-        SaveSettingsData();
-    }
-
-    //This function selects the cockpits to be used 
-    public static void SelectShipAssets(string type)
-    {
-        OGSettings settings = OGSettingsFunctions.GetSettings();
-
-        settings.shipAssets = type;
-
-        CheckSettingsData();
-
-        SaveSettingsData();
-    }
-
     //This modifies any incorrect values to prevent errors i.e. if the player manually edits the settings data
     public static void CheckSettingsData()
     {
@@ -284,6 +262,42 @@ public static class OGSettingsFunctions
     #endregion
 
     #region change settings functions
+
+    //This function selects the level of difficultly
+    public static void ChangeDifficultlyLevel(string level)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.difficultly = level;
+
+        CheckSettingsData();
+
+        SaveSettingsData();
+    }
+
+    //This function selects the cockpits to be used 
+    public static void SelectCockpitAssets(string type)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.cockpitAssets = type;
+
+        CheckSettingsData();
+
+        SaveSettingsData();
+    }
+
+    //This function selects the cockpits to be used 
+    public static void SelectShipAssets(string type)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.shipAssets = type;
+
+        CheckSettingsData();
+
+        SaveSettingsData();
+    }
 
     //This sets the window mode for the game
     public static void SetGameWindowMode(string windowMode)

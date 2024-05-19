@@ -80,7 +80,7 @@ public class SmallShip : MonoBehaviour
 
     [Header("Docking")]
     public GameObject targetDockingPoint;
-    public DockingPoint dockingPoint; //TRANSFORM INTO DOCKING POINTS!!!
+    public DockingPoint dockingPoint;
     public bool docking;
 
     [Header("Ship Power Distribution")]

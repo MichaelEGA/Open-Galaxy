@@ -398,6 +398,7 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("SetEditorWindowMode", new System.Action<string>(SetEditorWindowMode));
         mainMenu.functions.Add("ToggleDebugging", new System.Action<string>(ToggleDebugging));
         mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
+        mainMenu.functions.Add("ChangeDifficultly", new System.Action<string>(ChangeDifficultly));
         mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
         mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
         mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
@@ -1079,6 +1080,18 @@ public static class MainMenuFunctions
         }
 
         OGSettingsFunctions.SaveSettingsData();
+
+        ActivateSubMenu("Settings");
+    }
+
+    //This sets the screen resolution
+    public static void ChangeDifficultly(string level)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        OutputMenuMessage("The difficultly was set to " + level);
+
+        OGSettingsFunctions.ChangeDifficultlyLevel(level);
 
         ActivateSubMenu("Settings");
     }

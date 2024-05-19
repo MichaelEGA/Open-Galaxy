@@ -384,6 +384,62 @@
 		"Type": "ContentButton02",
 		"Variable": "none"
         },
+	{
+		"ParentMenu": "Settings",
+            "Name": "Change Difficultly",
+            "Description": "Change the game's difficultly",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton01",
+		"Variable": "Change Difficultly"
+        },
+	  {
+		"ParentMenu": "Change Difficultly",
+            "Name": "Back to Settings",
+            "Description": "Returns to settings sub menu",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton02",
+		"Variable": "Settings"
+        },
+	  {
+		"ParentMenu": "Change Difficultly",
+            "Name": "Default Damage",
+            "Description": "Change the game's resolution",
+            "Function": "ChangeDifficultly",
+		"Type": "ContentButton02",
+		"Variable": "default"
+        },
+	{
+		"ParentMenu": "Change Difficultly",
+            "Name": "Moderate Damage",
+            "Description": "Change the game's resolution",
+            "Function": "ChangeDifficultly",
+		"Type": "ContentButton02",
+		"Variable": "moderate"
+        },
+	{
+		"ParentMenu": "Change Difficultly",
+            "Name": "Low Damage",
+            "Description": "Change the game's resolution",
+            "Function": "ChangeDifficultly",
+		"Type": "ContentButton02",
+		"Variable": "low"
+        },
+	{
+		"ParentMenu": "Change Difficultly",
+            "Name": "Minimum Damage",
+            "Description": "Change the game's resolution",
+            "Function": "ChangeDifficultly",
+		"Type": "ContentButton02",
+		"Variable": "minimum"
+        },
+	{
+		"ParentMenu": "Change Difficultly",
+            "Name": "No Damage",
+            "Description": "Change the game's resolution",
+            "Function": "ChangeDifficultly",
+		"Type": "ContentButton02",
+		"Variable": "nodamage"
+        },
 	  {
 		"ParentMenu": "Settings",
             "Name": "Change Resolution",

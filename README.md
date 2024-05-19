@@ -32,7 +32,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
   - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.0.0/Open.Galaxy.2.0.0.zip
 
-**Other Info**
+**Roadmap**
 
   - Roadmap: https://docs.google.com/spreadsheets/d/14mWjYlATWQYKEfD6AG4MwC_ppTzG-aDlsI2yR2h7D54/edit?usp=sharing
 

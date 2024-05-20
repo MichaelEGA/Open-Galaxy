@@ -98,6 +98,9 @@ public class Hud : MonoBehaviour
     [HideInInspector] public List<GameObject> frontRadarDotsPool;
     [HideInInspector] public List<GameObject> rearRadarDotsPool;
 
+    [Header("Hud Task Pool")]
+    public List<Task> tasks;
+
     // Update is called once per frame
     void Update()
     {

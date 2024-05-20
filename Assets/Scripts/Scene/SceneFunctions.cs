@@ -1392,11 +1392,13 @@ public static class SceneFunctions
                 {
                     LargeShip largeShip = ship.GetComponent<LargeShip>();
                     Task a = new Task(LargeShipFunctions.ExitHyperspace(largeShip));
+                    LargeShipFunctions.AddTaskToPool(largeShip, a);
                 }
                 else if (shipType.scriptType == "smallship")
                 {
                     SmallShip smallShip = ship.GetComponent<SmallShip>();
                     Task a = new Task(SmallShipFunctions.ExitHyperspace(smallShip));
+                    SmallShipFunctions.AddTaskToPool(smallShip, a);
                 }
             }
 
@@ -2260,6 +2262,7 @@ public static class SceneFunctions
 
         if (scene != null)
         {
+            HudFunctions.EndAllTasks(); //This ends all hud functions before the scene is destroyed
             AvoidCollisionsFunctions.StopAvoidCollision();
             UnloadTerrain();
             yield return null;
@@ -2476,5 +2479,7 @@ public static class SceneFunctions
     }
 
     #endregion
+
+   
 
 }

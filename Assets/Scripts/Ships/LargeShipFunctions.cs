@@ -451,6 +451,7 @@ public static class LargeShipFunctions
             if (largeShip.explosionType == "type1")
             {
                 Task a = new Task(ExplosionType1(largeShip));
+                AddTaskToPool(largeShip, a);
                 largeShip.explode = true;
             }
             else if (largeShip.explosionType == "type2")
@@ -461,6 +462,7 @@ public static class LargeShipFunctions
             else
             {
                 Task a = new Task(ExplosionType1(largeShip));
+                AddTaskToPool(largeShip, a);
                 largeShip.explode = true;
             }
         }
@@ -526,13 +528,46 @@ public static class LargeShipFunctions
         DeactivateShip(largeShip);
     }
 
+    //This deactivates the ship so that it no longer appears in the scene
     public static void DeactivateShip(LargeShip largeShip)
     {
+        EndAllTasks(largeShip);
+
         //This sets the ship up for the next time it is loaded from the pool
         largeShip.spinShip = false;
         largeShip.explode = false;
 
         largeShip.gameObject.SetActive(false);
+    }
+
+    #endregion
+
+    #region largeship task manager
+
+    //This adds a task to the pool
+    public static void AddTaskToPool(LargeShip largeShip, Task task)
+    {
+        if (largeShip.tasks == null)
+        {
+            largeShip.tasks = new List<Task>();
+        }
+
+        largeShip.tasks.Add(task);
+    }
+
+    //This ends all task in the ppol
+    public static void EndAllTasks(LargeShip largeShip)
+    {
+        if (largeShip.tasks == null)
+        {
+            foreach (Task task in largeShip.tasks)
+            {
+                if (task != null)
+                {
+                    task.Stop();
+                }
+            }
+        }
     }
 
     #endregion

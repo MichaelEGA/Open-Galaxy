@@ -153,7 +153,7 @@ public static class WindowFunctions
 
         DrawRawImage(window, 5, drop, 170f, 170, "grid");
 
-        DrawText(window, "View", 7, 180, drop, 10, 65f, true, null, "topleft", TextAnchor.MiddleCenter);
+        DrawText(window, "View Angle", 7, 180, drop, 10, 65f, true, null, "topleft", TextAnchor.MiddleCenter);
 
         drop -= 12.5f;
 
@@ -162,6 +162,18 @@ public static class WindowFunctions
         options1.Add("side");
 
         DrawDropDownMenuSansLabel(window, options1, "view", "top", 7, 180f, drop, 10, 65);
+
+        drop -= 12.5f;
+
+        DrawText(window, "Display Nodes", 7, 180, drop, 10, 65f, true, null, "topleft", TextAnchor.MiddleCenter);
+
+        drop -= 12.5f;
+
+        List<string> options3 = new List<string>();
+        options3.Add("all");
+        options3.Add("selected");
+
+        DrawDropDownMenuSansLabel(window, options3, "nodes", "all", 7, 180f, drop, 10, 65);
 
         drop -= 12.5f;
 
@@ -180,7 +192,7 @@ public static class WindowFunctions
         options2.Add("mountain01");
         options2.Add("mountain02");
 
-        DrawDropDownMenuSansLabel(window, options2, "display", "none", 7, 180f, drop, 10, 65);
+        DrawDropDownMenuSansLabel(window, options2, "type", "none", 7, 180f, drop, 10, 65);
 
         drop -= 12.5f;
 
@@ -1296,13 +1308,17 @@ public static class WindowFunctions
     //This registers a change in the drop box
     public static void DropDownValueChanged(Dropdown dropdown)
     {
-        if (dropdown.name == "display")
+        if (dropdown.name == "type")
         {
             LoadBackgroundImage(dropdown.captionText.text);
         }
         else if (dropdown.name == "view")
         {
             ChangeView(dropdown.captionText.text);
+        }
+        else if (dropdown.name == "nodes")
+        {
+            ChangeNodesToDisplay(dropdown.captionText.text);
         }
     }
 
@@ -1347,7 +1363,7 @@ public static class WindowFunctions
     #region Display Location Functions
 
     //This displays the location of all nodes that utilise a realworld position on the display location window
-    public static void DisplayLocations(string mode)
+    public static void DisplayLocations(string displayAngle, string nodesToDisplay)
     {
         //This removes any current location markers
         DestroyLocationMarkers();
@@ -1356,7 +1372,8 @@ public static class WindowFunctions
         MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
 
         //This sets the display mode in the mission editor
-        missionEditor.locationdisplaymode = mode;
+        missionEditor.displayAngle = displayAngle;
+        missionEditor.nodesToDisplay = nodesToDisplay;
 
         //This gets a list of all the locations and the names of the nodes
         List<Node> locationNodes = new List<Node>();
@@ -1374,7 +1391,17 @@ public static class WindowFunctions
                 node.nodeType == "setwaypoint" ||
                 node.nodeType == "changelocation")
             {
-                locationNodes.Add(node);               
+                if (nodesToDisplay == "all")
+                {
+                    locationNodes.Add(node);
+                }
+                else if (nodesToDisplay == "selected")
+                {
+                    if (node.selected == true)
+                    {
+                        locationNodes.Add(node);
+                    }
+                }               
             }
         }
 
@@ -1447,12 +1474,12 @@ public static class WindowFunctions
                 float xPos = 0;
                 float yPos = 0; 
 
-                if (mode == "top")
+                if (displayAngle == "top")
                 {
                     xPos = (((width/2f) / 15000f) * float.Parse(node.x.text));
                     yPos = (((height/2f) / 15000f) * float.Parse(node.z.text));
                 }
-                else if (mode == "side")
+                else if (displayAngle == "side")
                 {
                     xPos = (((width/2f) / 15000f) * float.Parse(node.x.text));
 
@@ -1492,16 +1519,21 @@ public static class WindowFunctions
     }
 
     //This toggles the view between top and side based on the selection
-    public static void ChangeView(string mode)
+    public static void ChangeView(string displayAngle)
     {
-        if (mode == "top")
-        {
-            DisplayLocations("top");
-        }
-        else if (mode == "side")
-        {
-            DisplayLocations("side");
-        }
+        //This gets the mission editor
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        DisplayLocations(displayAngle, missionEditor.nodesToDisplay);
+    }
+
+    //This toggles the view between top and side based on the selection
+    public static void ChangeNodesToDisplay(string nodesToDisplay)
+    {
+        //This gets the mission editor
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        DisplayLocations(missionEditor.displayAngle, nodesToDisplay);
     }
 
     //This resets the display of locations after a change has been made
@@ -1510,7 +1542,7 @@ public static class WindowFunctions
         //This gets the mission editor
         MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
 
-        DisplayLocations(missionEditor.locationdisplaymode);
+        DisplayLocations(missionEditor.displayAngle, missionEditor.nodesToDisplay);
     }
 
     //This clears the display

@@ -23,7 +23,8 @@ public class MissionEditor : MonoBehaviour
     public Text messageTextbox;
     public Text missionName;
     public string gameWindowMode;
-    public string locationdisplaymode = "top";
+    public string nodesToDisplay = "all";
+    public string displayAngle = "top";
     public string clipboard;
     public string selectedNodeTypeToLoad;
     public string selectedMissionToLoad;

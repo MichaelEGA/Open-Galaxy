@@ -128,6 +128,9 @@ public class LargeShip : MonoBehaviour
     [Header("Ship Loading")]
     [HideInInspector] public bool loaded;
 
+    [Header("Ship Task Pool")]
+    public List<Task> tasks;
+
     // Update is called once per frame
     void Update()
     {

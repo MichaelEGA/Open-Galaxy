@@ -1033,7 +1033,8 @@ public static class SmallShipFunctions
                 if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
 
                 //This shakes the cockpit camera
-                Task a = new Task(CockpitFunctions.CockpitDamageShake(smallShip, 1, 0.011f));              
+                Task a = new Task(CockpitFunctions.CockpitDamageShake(smallShip, 1, 0.011f));
+                AddTaskToPool(smallShip, a);
             }
         }
     }
@@ -1098,6 +1099,7 @@ public static class SmallShipFunctions
 
                 //This shakes the cockpit camera
                 Task a = new Task(CockpitFunctions.CockpitDamageShake(smallShip, 1, 0.011f));
+                AddTaskToPool(smallShip, a);
             }
             else if (smallShip.isDisabled == false)
             {
@@ -1192,7 +1194,7 @@ public static class SmallShipFunctions
                     }
 
                     Task a = new Task(CockpitFunctions.ActivateCockpitShake(smallShip, 0.5f));
-
+                    AddTaskToPool(smallShip, a);
                 }
             }
         }    
@@ -1255,6 +1257,7 @@ public static class SmallShipFunctions
             if (smallShip.explosionType == "type1")
             {
                 Task a = new Task(ExplosionType1(smallShip));
+                AddTaskToPool(smallShip, a);
                 smallShip.exploded = true;
             }
             else if (smallShip.explosionType == "type2")
@@ -1265,6 +1268,7 @@ public static class SmallShipFunctions
             else
             {
                 Task a = new Task(ExplosionType1(smallShip));
+                AddTaskToPool(smallShip, a);
                 smallShip.exploded = true;
             }
         }
@@ -1360,6 +1364,9 @@ public static class SmallShipFunctions
 
     public static void DeactivateShip(SmallShip smallShip)
     {
+        //This stops all task being run by the ship
+        EndAllTasks(smallShip);
+
         //This removes the main camera
         CockpitFunctions.RemoveMainCamera(smallShip);
 
@@ -1410,6 +1417,7 @@ public static class SmallShipFunctions
             if (smallShip.wing01 != null & smallShip.wing01_open != null & smallShip.wing01_closed != null)
             {
                 Task a = new Task(RotateToWingPosition(smallShip.wing01, smallShip.wing01_open.transform, smallShip.wing01_closed.transform, 3.4f, true));
+                AddTaskToPool(smallShip, a);
 
                 //This plays the wings open and close sound
                 float spatialBlend = 1f;
@@ -1427,16 +1435,19 @@ public static class SmallShipFunctions
             if (smallShip.wing02 != null & smallShip.wing02_open != null & smallShip.wing02_closed != null)
             {
                 Task a = new Task(RotateToWingPosition(smallShip.wing02, smallShip.wing02_open.transform, smallShip.wing02_closed.transform, 3.4f, true));
+                AddTaskToPool(smallShip, a);
             }
 
             if (smallShip.wing03 != null & smallShip.wing03_open != null & smallShip.wing03_closed != null)
             {
                 Task a = new Task(RotateToWingPosition(smallShip.wing03, smallShip.wing03_open.transform, smallShip.wing03_closed.transform, 3.4f, true));
+                AddTaskToPool(smallShip, a);
             }
 
             if (smallShip.wing04 != null & smallShip.wing04_open != null & smallShip.wing04_closed != null)
             {
                 Task a = new Task(RotateToWingPosition(smallShip.wing04, smallShip.wing04_open.transform, smallShip.wing04_closed.transform, 3.4f, true));
+                AddTaskToPool(smallShip, a);
             }
         }
     }
@@ -1459,6 +1470,7 @@ public static class SmallShipFunctions
             if (smallShip.wing01 != null & smallShip.wing01_open != null & smallShip.wing01_closed != null)
             {
                 Task a = new Task(RotateToWingPosition(smallShip.wing01, smallShip.wing01_open.transform, smallShip.wing01_closed.transform, 3.4f, false));
+                AddTaskToPool(smallShip, a);
 
                 //This plays the wings open and close sound
                 float spatialBlend = 1f;
@@ -1476,16 +1488,19 @@ public static class SmallShipFunctions
             if (smallShip.wing02 != null & smallShip.wing02_open != null & smallShip.wing02_closed != null)
             {
                 Task a = new Task(RotateToWingPosition(smallShip.wing02, smallShip.wing02_open.transform, smallShip.wing02_closed.transform, 3.4f, false));
+                AddTaskToPool(smallShip, a);
             }
 
             if (smallShip.wing03 != null & smallShip.wing03_open != null & smallShip.wing03_closed != null)
             {
                 Task a = new Task(RotateToWingPosition(smallShip.wing03, smallShip.wing03_open.transform, smallShip.wing03_closed.transform, 3.4f, false));
+                AddTaskToPool(smallShip, a);
             }
 
             if (smallShip.wing04 != null & smallShip.wing04_open != null & smallShip.wing04_closed != null)
             {
                 Task a = new Task(RotateToWingPosition(smallShip.wing04, smallShip.wing04_open.transform, smallShip.wing04_closed.transform, 3.4f, false));
+                AddTaskToPool(smallShip, a);
             }
         }
     }
@@ -1660,6 +1675,36 @@ public static class SmallShipFunctions
                 else if (wing.name == "wing04_closed")
                 {
                     smallShip.wing04_closed = wing.gameObject;
+                }
+            }
+        }
+    }
+
+    #endregion
+
+    #region smallship task manager
+
+    //This adds a task to the pool
+    public static void AddTaskToPool(SmallShip smallShip, Task task)
+    {
+        if (smallShip.tasks == null)
+        {
+            smallShip.tasks = new List<Task>();
+        }
+
+        smallShip.tasks.Add(task);
+    }
+
+    //This ends all task in the ppol
+    public static void EndAllTasks(SmallShip smallShip)
+    {
+        if (smallShip.tasks == null)
+        {
+            foreach (Task task in smallShip.tasks)
+            {
+                if (task != null)
+                {
+                    task.Stop();
                 }
             }
         }

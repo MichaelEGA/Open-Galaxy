@@ -1078,11 +1078,11 @@ public class NodeFunctions : MonoBehaviour
     }
 
     //This modifies the caret position to ensure its on top
-    public static void ModifyCaretPosition ()
+    public static void ModifyCaretPosition()
     {
         MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
 
-        if (missionEditor.nodes !=null)
+        if (missionEditor.nodes != null)
         {
             foreach (Node node in missionEditor.nodes)
             {

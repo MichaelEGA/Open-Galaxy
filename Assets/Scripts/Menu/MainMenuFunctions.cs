@@ -22,6 +22,9 @@ public static class MainMenuFunctions
         //This starts the menu background music
         PlayBackgroundMusic(true);
 
+        //This updates the version number on the menu
+        UpdateVersionOnMenu();
+
         if (background != null)
         {
             CanvasGroup canvasGroup = background.GetComponent<CanvasGroup>();
@@ -152,6 +155,18 @@ public static class MainMenuFunctions
         GameObject menu = GameObject.Instantiate(menuPrefab);
         menu.name = "Menu";
         return menu;
+    }
+
+    //This makes the menu automaticaly display the correct version
+    public static void UpdateVersionOnMenu()
+    {
+        GameObject VersionInfo = GameObject.Find("VersionInfo");
+
+        if (VersionInfo != null)
+        {
+            Text text = VersionInfo.GetComponent<Text>();
+            text.text = "Open Galaxy " + Application.version;
+        }
     }
 
     #endregion

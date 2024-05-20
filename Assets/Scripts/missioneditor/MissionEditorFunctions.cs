@@ -1392,6 +1392,7 @@ public static class MissionEditorFunctions
 
         //The caret doens't load until a frame afer the component is added, and so this function needs to be delayed slighty
         Task a = new Task(NodeFunctions.ModifyCaretPositionTimed(1f));
+        NodeFunctions.SetDropDownMenu();
 
         return node;
     }
@@ -1555,6 +1556,7 @@ public static class MissionEditorFunctions
 
         //This modifies the caret position to ensure that they display on top of the nodes and not behind them
         NodeFunctions.ModifyCaretPosition();
+        NodeFunctions.SetDropDownMenu();
 
         DisplayMessage("Loading Mission Complete");
     }
@@ -1735,6 +1737,7 @@ public static class MissionEditorFunctions
 
         //This modifies the caret position to ensure that they display on top of the nodes and not behind them
         NodeFunctions.ModifyCaretPosition();
+        NodeFunctions.SetDropDownMenu();
 
         missionEditor.pasting = false;
 

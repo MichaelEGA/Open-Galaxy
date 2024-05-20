@@ -1101,6 +1101,33 @@ public class NodeFunctions : MonoBehaviour
         }
     }
 
+    //This sets all drop down menus to the inputed text
+    public static void SetDropDownMenu()
+    {
+        Dropdown[] dropdowns = GameObject.FindObjectsOfType<Dropdown>();
+
+        if (dropdowns != null)
+        {
+            foreach (Dropdown dropdown in dropdowns)
+            {
+                int i = 0;
+
+                foreach (Dropdown.OptionData option in dropdown.options)
+                {
+                    if (option.text == dropdown.captionText.text)
+                    {
+                        dropdown.SetValueWithoutNotify(i);
+                        dropdown.RefreshShownValue();
+                    }
+
+                    i++;
+                }
+            }
+        }
+
+
+    }
+
     public static IEnumerator ModifyCaretPositionTimed(float delay)
     {
         yield return new WaitForSecondsRealtime (delay);

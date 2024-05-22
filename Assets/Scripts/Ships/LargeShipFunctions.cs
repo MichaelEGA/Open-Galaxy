@@ -558,7 +558,7 @@ public static class LargeShipFunctions
     //This ends all task in the ppol
     public static void EndAllTasks(LargeShip largeShip)
     {
-        if (largeShip.tasks == null)
+        if (largeShip.tasks != null)
         {
             foreach (Task task in largeShip.tasks)
             {

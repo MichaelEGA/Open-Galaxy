@@ -521,7 +521,7 @@ public static class HudFunctions
             }
             else
             {
-                hud.targetDistanceText.text = " ";
+                hud.targetDistanceText.text = "---";
             }
         }
     }
@@ -543,7 +543,7 @@ public static class HudFunctions
             }
             else
             {
-                hud.targetType.text = " ";
+                hud.targetType.text = "---";
             }
         }
     }
@@ -565,7 +565,7 @@ public static class HudFunctions
             }
             else
             {
-                hud.targetName.text = " ";
+                hud.targetName.text = "---";
             }
         }
     }
@@ -623,7 +623,7 @@ public static class HudFunctions
             }
             else
             {
-                hud.targetSpeedText.text = "000";
+                hud.targetSpeedText.text = "---";
             }            
         }
     }
@@ -645,7 +645,7 @@ public static class HudFunctions
             }
             else
             {
-                hud.targetShieldsText.text = "000";
+                hud.targetShieldsText.text = "---";
             }
         }
     }
@@ -673,12 +673,12 @@ public static class HudFunctions
                 }
                 else
                 {
-                    hud.targetSystemsText.text = "000";
+                    hud.targetSystemsText.text = "---";
                 }
             }
             else
             {
-                hud.targetSystemsText.text = "000";
+                hud.targetSystemsText.text = "---";
             }
         }
     }
@@ -700,7 +700,7 @@ public static class HudFunctions
             }
             else
             {
-                hud.targetHullText.text = " ";
+                hud.targetHullText.text = "---";
             }
         }
     }
@@ -724,7 +724,7 @@ public static class HudFunctions
 
                     if (hud.smallShip.targetSmallShip.scanned == false & distance > 200)
                     {
-                        hud.targetCargo.text = "-";
+                        hud.targetCargo.text = "---";
                     }
                     else if (hud.smallShip.targetSmallShip.scanned == false & distance < 200)
                     {
@@ -748,7 +748,7 @@ public static class HudFunctions
 
                     if (hud.smallShip.targetLargeShip.scanned == false & distance > 300)
                     {
-                        hud.targetCargo.text = "-";
+                        hud.targetCargo.text = "---";
                     }
                     else if (hud.smallShip.targetLargeShip.scanned == false & distance < 300)
                     {
@@ -769,7 +769,7 @@ public static class HudFunctions
             }
             else
             {
-                hud.targetCargo.text = "-";
+                hud.targetCargo.text = "---";
             }
         }
     }
@@ -2395,7 +2395,7 @@ public static class HudFunctions
 
         if (hud != null)
         {
-            if (hud.tasks == null)
+            if (hud.tasks != null)
             {
                 foreach (Task task in hud.tasks)
                 {

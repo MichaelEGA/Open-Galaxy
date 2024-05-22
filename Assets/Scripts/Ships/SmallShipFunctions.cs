@@ -1698,7 +1698,7 @@ public static class SmallShipFunctions
     //This ends all task in the ppol
     public static void EndAllTasks(SmallShip smallShip)
     {
-        if (smallShip.tasks == null)
+        if (smallShip.tasks != null)
         {
             foreach (Task task in smallShip.tasks)
             {

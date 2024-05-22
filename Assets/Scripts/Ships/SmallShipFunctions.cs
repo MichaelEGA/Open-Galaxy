@@ -1508,8 +1508,8 @@ public static class SmallShipFunctions
     //This rotates a wing to the designated position
     public static IEnumerator RotateToWingPosition(GameObject wing, Transform openPosition, Transform closePosition, float speed, bool open)
     {
-        Quaternion startRotation = closePosition.rotation;
-        Quaternion endRotation = openPosition.rotation;
+        Quaternion startRotation = closePosition.localRotation;
+        Quaternion endRotation = openPosition.localRotation;
 
         if (open == false)
         {

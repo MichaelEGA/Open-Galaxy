@@ -1825,6 +1825,8 @@ public static class HudFunctions
     //This calls the unloading function before unloading the hud object itself
     public static void UnloadHud()
     {
+        EndAllTasks();
+
         Hud hud = GetHud();
 
         if (hud != null)
@@ -2391,13 +2393,16 @@ public static class HudFunctions
     {
         Hud hud = GetHud();
 
-        if (hud.tasks == null)
+        if (hud != null)
         {
-            foreach (Task task in hud.tasks)
+            if (hud.tasks == null)
             {
-                if (task != null)
+                foreach (Task task in hud.tasks)
                 {
-                    task.Stop();
+                    if (task != null)
+                    {
+                        task.Stop();
+                    }
                 }
             }
         }

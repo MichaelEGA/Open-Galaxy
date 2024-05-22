@@ -133,6 +133,14 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfShipIsActive(node);
         }
+        else if (node.nodeType == "ifshiphasbeendisabled")
+        {
+            NodeTypes.Draw_IfShipHasBeenDisabled(node);
+        }
+        else if (node.nodeType == "ifshiphasntbeendisabled")
+        {
+            NodeTypes.Draw_IfShipHasntBeenDisabled(node);
+        }
         else if (node.nodeType == "ifshiphasbeenscanned")
         {
             NodeTypes.Draw_IfShipHasBeenScanned(node);

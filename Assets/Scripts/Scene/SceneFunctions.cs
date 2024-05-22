@@ -2262,7 +2262,6 @@ public static class SceneFunctions
 
         if (scene != null)
         {
-            HudFunctions.EndAllTasks(); //This ends all hud functions before the scene is destroyed
             AvoidCollisionsFunctions.StopAvoidCollision();
             UnloadTerrain();
             yield return null;

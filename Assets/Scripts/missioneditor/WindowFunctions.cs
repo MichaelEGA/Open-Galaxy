@@ -90,6 +90,8 @@ public static class WindowFunctions
         buttonList.Add("displaymissionbriefing");
         buttonList.Add("exitmission");
         buttonList.Add("ifshipisactive");
+        buttonList.Add("ifshiphasbeendisabled");
+        buttonList.Add("ifshiphasntbeendisabled");
         buttonList.Add("ifshiphasbeenscanned");
         buttonList.Add("ifshiphasntbeenscanned");
         buttonList.Add("ifshipshullislessthan");

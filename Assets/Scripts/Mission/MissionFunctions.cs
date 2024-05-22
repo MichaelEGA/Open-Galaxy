@@ -468,6 +468,32 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
+        else if (missionEvent.eventType == "ifshiphasbeendisabled")
+        {
+            bool shipHasBeenDisabled = IfShipHasBeenDisabled(missionEvent);
+
+            if (shipHasBeenDisabled == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
+        else if (missionEvent.eventType == "ifshiphasntbeendisabled")
+        {
+            bool shiphasntbeendisabled = IfShipHasntBeenDisabled(missionEvent);
+
+            if (shiphasntbeendisabled == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
         else if (missionEvent.eventType == "ifshiphasbeenscanned")
         {
             bool shiphasbeenscanned = IfShipHasBeenScanned(missionEvent);
@@ -1363,6 +1389,96 @@ public static class MissionFunctions
         }
 
         return shipIsActive;
+    }
+
+    //This checks whether the requested ship has been disabled or not
+    public static bool IfShipHasBeenDisabled(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipHasBeenDisabled = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                            if (smallShip != null)
+                            {
+                                if (smallShip.isDisabled == true)
+                                {
+                                    shipHasBeenDisabled = true;
+                                    break;
+                                }
+                            }
+                            else if (largeShip != null)
+                            {
+                                if (largeShip.isDisabled == true)
+                                {
+                                    shipHasBeenDisabled = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return shipHasBeenDisabled;
+    }
+
+    //This checks a group of ships to check if one has not been scanned
+    public static bool IfShipHasntBeenDisabled(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipHasntBeenDisabled = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                            if (smallShip != null)
+                            {
+                                if (smallShip.isDisabled == false)
+                                {
+                                    shipHasntBeenDisabled = true;
+                                    break;
+                                }
+                            }
+                            else if (largeShip != null)
+                            {
+                                if (largeShip.isDisabled == false)
+                                {
+                                    shipHasntBeenDisabled = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return shipHasntBeenDisabled;
     }
 
     //This checks a single ship as to whether it has been scanned

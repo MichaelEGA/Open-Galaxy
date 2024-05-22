@@ -1034,7 +1034,7 @@ public static class TargetingFunctions
 
     #endregion
 
-    #region AI turret targetting
+    #region AI target allocation
 
     //Allocate targets to all the turrets one at a time to save processing power
     public static IEnumerator AllocateTargets_ShipsAI(Scene scene)
@@ -1138,6 +1138,10 @@ public static class TargetingFunctions
 
         scene.allocatingTargets = false;
     }
+
+    #endregion
+
+    #region AI turret targetting
 
     //This gets the closest enemy for turret
     public static IEnumerator GetClosestEnemy_TurretAI(Turret turret)

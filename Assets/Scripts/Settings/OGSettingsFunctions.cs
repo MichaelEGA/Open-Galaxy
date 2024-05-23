@@ -158,6 +158,7 @@ public static class OGSettingsFunctions
             settings.screenResX = ogSettingsClass.ogSettingsData[0].screenResX;
             settings.screenResY = ogSettingsClass.ogSettingsData[0].screenResY;
             settings.cockpitAssets = ogSettingsClass.ogSettingsData[0].cockpitAssets;
+            settings.shipAssets = ogSettingsClass.ogSettingsData[0].shipAssets;
             settings.gameWindowMode = ogSettingsClass.ogSettingsData[0].gameWindowMode;
             settings.editorWindowMode = ogSettingsClass.ogSettingsData[0].editorWindowMode;
             settings.difficultly = ogSettingsClass.ogSettingsData[0].difficultly;

@@ -1522,7 +1522,7 @@ public static class SmallShipFunctions
 
         while (timeElapsed < lerpDuration)
         {
-            wing.transform.rotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
+            wing.transform.localRotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
             timeElapsed += Time.deltaTime;
             yield return null;
         }

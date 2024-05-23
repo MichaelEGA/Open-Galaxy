@@ -1241,6 +1241,8 @@ public static class SceneFunctions
                 smallShip.maneuverabilityRating = shipType.maneuverabilityRating;
                 smallShip.shieldRating = shipType.shieldRating;
                 smallShip.shieldLevel = shipType.shieldRating;
+                smallShip.systemsRating = shipType.systemsRating;
+                smallShip.systemsLevel = shipType.systemsRating;
                 smallShip.frontShieldLevel = shipType.shieldRating / 2f;
                 smallShip.rearShieldLevel = shipType.shieldRating / 2f;
                 smallShip.speedRating = shipType.speedRating;
@@ -1316,6 +1318,8 @@ public static class SceneFunctions
                 largeShip.maneuverabilityRating = shipType.maneuverabilityRating;
                 largeShip.shieldRating = shipType.shieldRating;
                 largeShip.shieldLevel = shipType.shieldRating;
+                largeShip.systemsRating = shipType.systemsRating;
+                largeShip.systemsLevel = shipType.systemsRating;
                 largeShip.frontShieldLevel = shipType.shieldRating / 2f;
                 largeShip.rearShieldLevel = shipType.shieldRating / 2f;
                 largeShip.speedRating = shipType.speedRating;

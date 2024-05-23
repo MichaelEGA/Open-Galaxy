@@ -14,6 +14,7 @@ public class ShipType
     public float maneuverabilityRating;
     public float hullRating;
     public float shieldRating;
+    public float systemsRating;
     public float laserFireRating;
     public float laserRating;
     public float wepRating;

@@ -162,6 +162,7 @@ public static class OGSettingsFunctions
             settings.gameWindowMode = ogSettingsClass.ogSettingsData[0].gameWindowMode;
             settings.editorWindowMode = ogSettingsClass.ogSettingsData[0].editorWindowMode;
             settings.difficultly = ogSettingsClass.ogSettingsData[0].difficultly;
+            settings.quality = ogSettingsClass.ogSettingsData[0].quality;
             CheckSettingsData();
         }
     }
@@ -202,6 +203,7 @@ public static class OGSettingsFunctions
         ogSettingsClass.ogSettingsData[0].gameWindowMode = settings.gameWindowMode;
         ogSettingsClass.ogSettingsData[0].editorWindowMode = settings.editorWindowMode;
         ogSettingsClass.ogSettingsData[0].difficultly = settings.difficultly;
+        ogSettingsClass.ogSettingsData[0].quality = settings.quality;
 
         // Write JSON to file.
         string stringOFSettingsData = JsonUtility.ToJson(ogSettingsClass, true);
@@ -265,7 +267,7 @@ public static class OGSettingsFunctions
     #region change settings functions
 
     //This function selects the level of difficultly
-    public static void ChangeDifficultlyLevel(string level)
+    public static void SetDifficultlyLevel(string level)
     {
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
@@ -372,6 +374,31 @@ public static class OGSettingsFunctions
     public static void SetDefaultCursor()
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+    }
+
+    //This sets the quality of the game
+    public static void SetQualityLevel(string qualityMode)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.quality = qualityMode;
+
+        if (qualityMode == "Performant")
+        {
+            QualitySettings.SetQualityLevel(0, true);
+        }
+        else if (qualityMode == "Balanced")
+        {
+            QualitySettings.SetQualityLevel(1, true);
+        }
+        else if (qualityMode == "High Fidelity")
+        {
+            QualitySettings.SetQualityLevel(2, true);
+        }
+
+        CheckSettingsData();
+
+        SaveSettingsData();
     }
 
     #endregion

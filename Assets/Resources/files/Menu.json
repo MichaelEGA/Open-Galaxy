@@ -440,6 +440,46 @@
 		"Type": "ContentButton02",
 		"Variable": "nodamage"
         },
+  	{
+		"ParentMenu": "Settings",
+            "Name": "Change Quality",
+            "Description": "Change the game's graphics quality",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton01",
+		"Variable": "Change Quality"
+        },
+	  {
+		"ParentMenu": "Change Quality",
+            "Name": "Back to Settings",
+            "Description": "Returns to settings sub menu",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton02",
+		"Variable": "Settings"
+        },
+	  {
+		"ParentMenu": "Change Quality",
+            "Name": "Perfomant",
+            "Description": "Change the game's quality",
+            "Function": "ChangeQuality",
+		"Type": "ContentButton02",
+		"Variable": "Performant"
+        },
+	{
+		"ParentMenu": "Change Quality",
+            "Name": "Balanced",
+            "Description": "Change the game's quality",
+            "Function": "ChangeQuality",
+		"Type": "ContentButton02",
+		"Variable": "Balanced"
+        },
+	{
+		"ParentMenu": "Change Quality",
+            "Name": "High Fidelity",
+            "Description": "Change the game's quality",
+            "Function": "ChangeQuality",
+		"Type": "ContentButton02",
+		"Variable": "High Fidelity"
+        },
 	  {
 		"ParentMenu": "Settings",
             "Name": "Change Resolution",

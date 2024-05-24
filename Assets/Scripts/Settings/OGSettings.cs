@@ -14,4 +14,5 @@ public class OGSettings : MonoBehaviour
     public string gameWindowMode = "fullscreen";
     public string editorWindowMode = "fullscreen";
     public string difficultly = "default";
+    public string quality = "performant";
 }

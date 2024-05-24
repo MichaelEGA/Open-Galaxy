@@ -414,6 +414,7 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("ToggleDebugging", new System.Action<string>(ToggleDebugging));
         mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
         mainMenu.functions.Add("ChangeDifficultly", new System.Action<string>(ChangeDifficultly));
+        mainMenu.functions.Add("ChangeQuality", new System.Action<string>(ChangeQuality));
         mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
         mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
         mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
@@ -1106,7 +1107,19 @@ public static class MainMenuFunctions
 
         OutputMenuMessage("The difficultly was set to " + level);
 
-        OGSettingsFunctions.ChangeDifficultlyLevel(level);
+        OGSettingsFunctions.SetDifficultlyLevel(level);
+
+        ActivateSubMenu("Settings");
+    }
+
+    //This sets the screen resolution
+    public static void ChangeQuality(string qualityLevel)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        OutputMenuMessage("The quality was set to " + qualityLevel);
+
+        OGSettingsFunctions.SetQualityLevel(qualityLevel);
 
         ActivateSubMenu("Settings");
     }

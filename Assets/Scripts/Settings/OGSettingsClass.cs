@@ -14,6 +14,7 @@ public class OGSettingData
     public string gameWindowMode;
     public string editorWindowMode;
     public string difficultly;
+    public string quality;
 }
 
 [System.Serializable]

@@ -198,11 +198,13 @@ public static class NodeDescriptions
         else if (name == "addaitagtolargeship")
         {
             description =
-            "Add AI Tag to Small Ship \n " +
+            "Add AI Tag to Large Ship \n " +
             "\n " +
-            "This node adds an AI Tag (command) to a large ship" +
+            "This node adds an AI Tag (command) to a large ship. It does not work with small ships." +
             "\n " +
            "Extra Information \n" +
+           "- If your not sure if a ship is a largeship or smallship check the wiki. /n" +
+           "- The following tags are added to the largeship when first loaded: 'nospeed', 'fireweapons', 'norotation'. \n" +
            "- A large ship is any ship that cannot be controlled by the player i.e.  bulk freighters, corvettes, and stardestroyers are large ships but the tie fighter, x-wing, millenium falcon, and shuttles are not. \n" +
            "- This function will affect any ship whose name contains the designated string. \n";
         }
@@ -211,9 +213,11 @@ public static class NodeDescriptions
             description =
             "Add AI Tag to Small Ship \n " +
             "\n " +
-            "This node adds an AI Tag (command) to a small ship" +
+            "This node adds an AI Tag (command) to a small ship. It does not work with large ships." +
             "\n " +
            "Extra Information \n" +
+           "- If your not sure if a ship is a smallship or largeship check the wiki. /n" +
+           "- The following tags are added to the smallship when first loaded: 'threequarterspeed', 'singlelaser', 'lowaccuracy', 'chasewithdraw', 'resetenergylevels', 'targetallprefsmall'. \n" +
            "- A small ship is any ship that can (theoretically) be controlled by the player i.e. the tie fighter, x-wing, millenium falcon, and shuttles are small ships but the bulk freighters, corvettes, and stardestroyers are not. \n" +
            "- This function will affect any ship whose name contains the designated string. \n";
         }
@@ -436,6 +440,18 @@ public static class NodeDescriptions
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
             "- WARNING: The name of this node may change to accurately represent the function it runs. \n" +
             "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
+        else if (name == "ifshipssystemsarelessthan")
+        {
+            description =
+             "If Ships Systesm area Less Than \n " +
+             "\n " +
+             "This function checks the systems of the designated ship and returns true or false according to whether the ship's sytems are less or more than the designated amount. \n" +
+             "\n " +
+             "Extra Information \n" +
+             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+             "- If the location is left as 'none' the node will run regardless of location. \n";
         }
         else if (name == "loadsingleship")
         {

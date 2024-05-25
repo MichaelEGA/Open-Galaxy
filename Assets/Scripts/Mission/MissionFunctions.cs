@@ -533,6 +533,19 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
+        else if (missionEvent.eventType == "ifshipssystemsarelessthan")
+        {
+            bool isLessThan = IfShipsSystemsAreLessThan(missionEvent);
+
+            if (isLessThan == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
         else if (missionEvent.eventType == "loadsingleship")
         {
             LoadSingleShip(missionEvent);
@@ -1618,6 +1631,55 @@ public static class MissionFunctions
         }
 
         return shipTypeIsActive;
+    }
+
+    //This checks the ship distance to its waypoint
+    public static bool IfShipsSystemsAreLessThan(MissionEvent missionEvent)
+    {
+        bool islessthanamount = false;
+
+        Scene scene = SceneFunctions.GetScene();
+
+        float systemsLevel = Mathf.Infinity;
+
+        if (missionEvent.data2 != "none")
+        {
+            systemsLevel = float.Parse(missionEvent.data2);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (smallShip != null)
+                        {
+                            if (smallShip.systemsLevel < systemsLevel)
+                            {
+                                islessthanamount = true;
+                                break;
+                            }
+                        }
+                        else if (largeShip != null)
+                        {
+                            if (largeShip.systemsLevel < systemsLevel)
+                            {
+                                islessthanamount = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return islessthanamount;
     }
 
     //This loads the asteroid field

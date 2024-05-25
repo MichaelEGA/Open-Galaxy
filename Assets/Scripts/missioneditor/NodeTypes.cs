@@ -1246,6 +1246,9 @@ public static class NodeTypes
         options2.Add("singletorpedo");
         options2.Add("dualtorpedos");
         options2.Add("alltorpedos");
+        options2.Add("dynamicweapons_single");
+        options2.Add("dynamicweapons_dual");
+        options2.Add("dynamicweapons_quad");
         options2.Add("noweapons");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "weapons", "nochange", 7, 5, drop, 12.5f, 90, 5f);
@@ -2067,6 +2070,55 @@ public static class NodeTypes
         options2.Add("largeships");
 
         node.data2 = NodeFunctions.DrawDropDownMenu(node, options2, "mode", "allships", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "True", 7, 5);
+
+        drop -= 15;
+
+        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "False", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_IfShipsSystemsAreLessThan(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "ifshipssystemsarelessthan", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "ifshipssystemsarelessthan", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "is less than", "50", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

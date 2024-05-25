@@ -61,7 +61,7 @@ public static class SmallShipAIFunctions
                 RemoveSingleTag(smallShip, "nospeed");
                            
             }
-            else if (tag == "singlelaser" || tag == "duallasers" || tag == "alllasers" || tag == "singleion" || tag == "dualion" || tag == "allion" || tag == "singletorpedo" || tag == "dualtorpedos" || tag == "noweapons")
+            else if (tag == "singlelaser" || tag == "duallasers" || tag == "alllasers" || tag == "singleion" || tag == "dualion" || tag == "allion" || tag == "singletorpedo" || tag == "dualtorpedos" || tag == "noweapons" || tag == "dynamicweapons_single" || tag == "dynamicweapons_dual" || tag == "dynamicweapons_all")
             {
                 RemoveSingleTag(smallShip, "singlelaser");
                 RemoveSingleTag(smallShip, "duallasers");
@@ -72,6 +72,9 @@ public static class SmallShipAIFunctions
                 RemoveSingleTag(smallShip, "singletorpedo");
                 RemoveSingleTag(smallShip, "dualtorpedos");
                 RemoveSingleTag(smallShip, "alltorpedos");
+                RemoveSingleTag(smallShip, "dynamicweapons_single");
+                RemoveSingleTag(smallShip, "dynamicweapons_dual");
+                RemoveSingleTag(smallShip, "dynamicweapons_all");
                 RemoveSingleTag(smallShip, "noweapons");
             }
             else if (tag == "lowaccuracy" || tag == "mediumaccuracy" || tag == "highaccuracy")
@@ -236,6 +239,18 @@ public static class SmallShipAIFunctions
                     else if (tag == "alltorpedos")
                     {
                         AllTorpedos(smallShip);
+                    }
+                    else if (tag == "dynamicweapons_single")
+                    {
+                        DynamicWeapons_Single(smallShip);
+                    }
+                    else if (tag == "dynamicweapons_dual")
+                    {
+                        DynamicWeapons_Dual(smallShip);
+                    }
+                    else if (tag == "dynamicweapons_all")
+                    {
+                        DynamicWeapons_All(smallShip);
                     }
                     else if (tag == "noweapons")
                     {
@@ -773,6 +788,105 @@ public static class SmallShipAIFunctions
                 {
                     smallShip.activeWeapon = "lasers";
                     SingleLaser(smallShip);
+                }
+            }
+        }
+    }
+
+    //This switches between single lasers and torpedos
+    public static void DynamicWeapons_Single(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            if (smallShip.target != null)
+            {
+                if (smallShip.torpedoNumber > 0 & smallShip.interceptDistance > 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    smallShip.activeWeapon = "torpedos";
+
+                    if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                    {
+                        smallShip.weaponMode = "single";
+                        TorpedoFunctions.FireTorpedo(smallShip);
+                    }
+                }
+                else if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    smallShip.activeWeapon = "lasers";
+
+                    bool dontFire = CheckFire(smallShip);
+
+                    if (dontFire == false)
+                    {
+                        smallShip.weaponMode = "single";
+                        LaserFunctions.InitiateFiring(smallShip);
+                    }
+                }
+            }
+        }
+    }
+
+    //This switches betwene dual lasers and torpedos
+    public static void DynamicWeapons_Dual(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            if (smallShip.target != null)
+            {
+                if (smallShip.torpedoNumber > 0 & smallShip.interceptDistance > 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    smallShip.activeWeapon = "torpedos";
+
+                    if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                    {
+                        smallShip.weaponMode = "dual";
+                        TorpedoFunctions.FireTorpedo(smallShip);
+                    }
+                }
+                else if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    smallShip.activeWeapon = "lasers";
+
+                    bool dontFire = CheckFire(smallShip);
+
+                    if (dontFire == false)
+                    {
+                        smallShip.weaponMode = "dual";
+                        LaserFunctions.InitiateFiring(smallShip);
+                    }
+                }
+            }
+        }
+    }
+
+    //This switches betwene dual lasers and torpedos
+    public static void DynamicWeapons_All(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            if (smallShip.target != null)
+            {
+                if (smallShip.torpedoNumber > 0 & smallShip.interceptDistance > 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    smallShip.activeWeapon = "torpedos";
+
+                    if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                    {
+                        smallShip.weaponMode = "quad";
+                        TorpedoFunctions.FireTorpedo(smallShip);
+                    }
+                }
+                else if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    smallShip.activeWeapon = "lasers";
+
+                    bool dontFire = CheckFire(smallShip);
+
+                    if (dontFire == false)
+                    {
+                        smallShip.weaponMode = "quad";
+                        LaserFunctions.InitiateFiring(smallShip);
+                    }
                 }
             }
         }

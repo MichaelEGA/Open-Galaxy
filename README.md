@@ -55,7 +55,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Updated: Base code for wing rotations finished
   - Added: Base code for finding movable wings on ship
   - Added: ability to change torpedo type and number in editor
-  - Update: minor changes
+  - Updated: minor changes
   - Updated: Numerous systems updated
   - Added: Systems Target Hud Icon, Changed firerate
   - Minor changes

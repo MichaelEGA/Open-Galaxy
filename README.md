@@ -38,6 +38,33 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
 **Changelog**
 
+28/05/24 - v2.5.37 (Unity 6000.0.0f1)
+  - Added: Laat GC Cockpit
+  - Added: Galactic Conquest LAAT remove community asset ships
+  - Added: Ability to change quality settings in the menu
+  - Added: Systems rating to ship class
+  - Fixed: Settings load error
+  - Added: dummy makers for target gauges when empty
+  - Added: if ship has been disabled node
+  - Fixed: Can now select first item in dropdown
+  - Added: Automatic version update
+  - Added: Coroutine enders, display only selected nodes in editor
+  - Added: Wing rotations, hangars, and ion to all relevant ships
+  - Added: Turret loading from json
+  - Updated: Base code for wing rotations finished
+  - Added: Base code for finding movable wings on ship
+  - Added: ability to change torpedo type and number in editor
+  - Update: minor changes
+  - Updated: Numerous systems updated
+  - Added: Systems Target Hud Icon, Changed firerate
+  - Minor changes
+  - Updated: clean up audio node type
+  - Added: Two new tracks, automatic track listing
+  - Added: ion canon explosion
+  - Updated: Basic ion cannon system implemented
+  - Updated: laser particle effects
+  - Updated: Finished base code for ion cannons
+
 06/05/24 - v.2.2.10 (Unity 6000.0.0f1)
   - Fixed: drag still not releasing breaking editor
   - Updated: updated to unity 6

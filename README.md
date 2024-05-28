@@ -48,7 +48,8 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Added: if ship has been disabled node
   - Fixed: Can now select first item in dropdown
   - Added: Automatic version update
-  - Added: Coroutine enders, display only selected nodes in editor
+  - Added: Coroutine enders
+  - Added: display only selected nodes in editor
   - Added: Wing rotations, hangars, and ion to all relevant ships
   - Added: Turret loading from json
   - Updated: Base code for wing rotations finished

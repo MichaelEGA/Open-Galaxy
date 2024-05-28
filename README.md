@@ -38,7 +38,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
 **Changelog**
 
-28/05/24 - v2.5.37 (Unity 6000.0.0f1)
+28/05/24 - v2.5.37 (Unity 6000.0.2f1)
   - Added: Laat GC Cockpit
   - Added: Galactic Conquest LAAT remove community asset ships
   - Added: Ability to change quality settings in the menu

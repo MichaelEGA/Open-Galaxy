@@ -1,9 +1,9 @@
 # Open-Galaxy
 
 Gameplay
-![Screenshot (217)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/4530abf2-a644-4805-abe9-d17c38aaa9ae)
+![Screenshot (333)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/36866989-b98e-4db9-9099-b50bb00ef983)
 
-![Screenshot (236)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/69161c7d-b73b-4e9c-a0c8-6ac994ff5749)
+![Screenshot (367)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/6d3b1a82-5b5d-49e5-8379-8b05cc04443d)
 
 Mission Editor
 ![Screenshot (241)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/ac67c4b6-49b7-4452-9ff4-708156414d80)

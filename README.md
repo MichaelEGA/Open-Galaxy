@@ -1,9 +1,9 @@
 # Open-Galaxy
 
 Gameplay
-![Screenshot (217)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/4530abf2-a644-4805-abe9-d17c38aaa9ae)
+![Screenshot (333)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/36866989-b98e-4db9-9099-b50bb00ef983)
 
-![Screenshot (236)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/69161c7d-b73b-4e9c-a0c8-6ac994ff5749)
+![Screenshot (367)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/6d3b1a82-5b5d-49e5-8379-8b05cc04443d)
 
 Mission Editor
 ![Screenshot (241)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/ac67c4b6-49b7-4452-9ff4-708156414d80)
@@ -24,9 +24,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Keyboard and Mouse Controls (Implemented)
   - X-Box Controller Controls (Implemented)
 
-**Latest Development Release:** 2.2.10
+**Latest Development Release:** 2.5.37
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v2.2.10/Open.Galaxy.2.2.10.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.5.37/Open.Galaxy.2.5.37.zip
 
 **Latest Milestone Release:** 2.0.0
 
@@ -36,7 +36,39 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
   - Roadmap: https://docs.google.com/spreadsheets/d/14mWjYlATWQYKEfD6AG4MwC_ppTzG-aDlsI2yR2h7D54/edit?usp=sharing
 
+**Wiki and Mission Editor Tutorials**
+
+  - https://github.com/MichaelEGA/Open-Galaxy/wiki
+
 **Changelog**
+
+28/05/24 - v2.5.37 (Unity 6000.0.2f1)
+  - Added: Laat GC Cockpit
+  - Added: Galactic Conquest LAAT remove community asset ships
+  - Added: Ability to change quality settings in the menu
+  - Added: Systems rating to ship class
+  - Fixed: Settings load error
+  - Added: dummy makers for target gauges when empty
+  - Added: if ship has been disabled node
+  - Fixed: Can now select first item in dropdown
+  - Added: Automatic version update
+  - Added: Coroutine enders
+  - Added: display only selected nodes in editor
+  - Added: Wing rotations, hangars, and ion to all relevant ships
+  - Added: Turret loading from json
+  - Updated: Base code for wing rotations finished
+  - Added: Base code for finding movable wings on ship
+  - Added: ability to change torpedo type and number in editor
+  - Updated: minor changes
+  - Updated: Numerous systems updated
+  - Added: Systems Target Hud Icon, Changed firerate
+  - Minor changes
+  - Updated: clean up audio node type
+  - Added: Two new tracks, automatic track listing
+  - Added: ion canon explosion
+  - Updated: Basic ion cannon system implemented
+  - Updated: laser particle effects
+  - Updated: Finished base code for ion cannons
 
 06/05/24 - v.2.2.10 (Unity 6000.0.0f1)
   - Fixed: drag still not releasing breaking editor

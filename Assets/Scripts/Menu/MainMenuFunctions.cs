@@ -305,7 +305,7 @@ public static class MainMenuFunctions
 
             mainMenu.mainMissionNames.Add(mission.name);
             mainMenu.mainMissionCampaigns.Add(campaignName);
-        }
+        }      
     }
 
     //This loads all the external campaign data
@@ -395,6 +395,7 @@ public static class MainMenuFunctions
             mainMenu.customMissionNames.Add(mission.name);
             mainMenu.customMissionCampaigns.Add(campaignName);
         }
+
     }
 
     //This creates a dictionary of the all the functions the menu can call
@@ -873,29 +874,49 @@ public static class MainMenuFunctions
     //This loads a custom mission
     public static void LoadCustomMission(string name)
     {
-        Task a = new Task(MissionFunctions.RunMission(name, OGGetAddress.missions_custom, true));
+        MainMenu mainMenu = GetMainMenu();
 
-        GameObject menu = GameObject.Find("Menu");
-
-        if (menu != null)
+        if (mainMenu != null)
         {
-            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-            Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
+            if (mainMenu.missionRunning == false)
+            {
+                mainMenu.missionRunning = true; //This prevents multiple missions running
+
+                Task a = new Task(MissionFunctions.RunMission(name, OGGetAddress.missions_custom, true));
+
+                GameObject menu = GameObject.Find("Menu");
+
+                if (menu != null)
+                {
+                    CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
+                    Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
+                }
+            }
         }
     }
 
     //This loads a main mission
     public static void LoadMission(string name)
     {
-        Task a = new Task(MissionFunctions.RunMission(name, OGGetAddress.missions_internal));
+        MainMenu mainMenu = GetMainMenu();
 
-        GameObject menu = GameObject.Find("Menu");
-
-        if (menu != null)
+        if (mainMenu != null)
         {
-            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-            Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
-        }
+            if (mainMenu.missionRunning == false)
+            {
+                mainMenu.missionRunning = true; //This prevents multiple missions running
+
+                Task a = new Task(MissionFunctions.RunMission(name, OGGetAddress.missions_internal));
+
+                GameObject menu = GameObject.Find("Menu");
+
+                if (menu != null)
+                {
+                    CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
+                    Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
+                }
+            }
+        }   
     }
 
     //This loads the mission editor

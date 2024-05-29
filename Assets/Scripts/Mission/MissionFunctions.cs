@@ -3169,6 +3169,7 @@ public static class MissionFunctions
             if (mainMenu.menu != null)
             {
                 mainMenu.menu.SetActive(true);
+                mainMenu.missionRunning = false;
                 CanvasGroup canvasGroup = mainMenu.menu.GetComponent<CanvasGroup>();
                 Task b = new Task(MainMenuFunctions.FadeInCanvas(canvasGroup, 0.5f));
                 MainMenuFunctions.ActivateStartGameMenu();

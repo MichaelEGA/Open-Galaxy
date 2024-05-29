@@ -33,6 +33,8 @@ public class MainMenu: MonoBehaviour
     public List<string> customMissionNames;
     public List<Texture2D> campaignImages;
 
+    public bool missionRunning;
+
     void Start()
     {
         //This adds the event system if it can't already find one in the game

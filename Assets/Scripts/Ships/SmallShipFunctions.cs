@@ -27,7 +27,6 @@ public static class SmallShipFunctions
             smallShip.LODs = GameObjectUtils.GetLODs(smallShip.gameObject);
             TorpedoFunctions.GetTorpedoTubes(smallShip);
             smallShip.colliders = smallShip.GetComponentsInChildren<Collider>();
-            LoadThrusters(smallShip);
             TargetingFunctions.CreateWaypoint_SmallShipPlayer(smallShip);
             DockingFunctions.AddDockingPointsSmallShip(smallShip);
             SmallShipAIFunctions.SetTargetingErrorMargin(smallShip, "low");
@@ -49,56 +48,6 @@ public static class SmallShipFunctions
         {
             IonFunctions.GetCannons(smallShip);
             IonFunctions.LoadIonParticleSystem(smallShip);
-        }
-    }
-
-    //This attaches a particle system to the ship engines to simulate thrust
-    public static void LoadThrusters(SmallShip smallShip)
-    {
-        Transform thruster1 = smallShip.gameObject.transform.Find("thrusters/thruster");
-        Transform thruster2 = smallShip.gameObject.transform.Find("thrusters/thruster.001");
-        Transform thruster3 = smallShip.gameObject.transform.Find("thrusters/thruster.002");
-        Transform thruster4 = smallShip.gameObject.transform.Find("thrusters/thruster.003");
-
-        if (thruster1 != null)
-        {
-            AttachParticleThruster(smallShip, thruster1);
-        }
-
-        if (thruster2 != null)
-        {
-            AttachParticleThruster(smallShip, thruster2);
-        }
-
-        if (thruster3 != null)
-        {
-            AttachParticleThruster(smallShip, thruster3);
-        }
-
-        if (thruster4 != null)
-        {
-            AttachParticleThruster(smallShip, thruster4);
-        }
-    }
-
-    //This attaches the particle trail to the torpedo
-    public static void AttachParticleThruster(SmallShip smallShip, Transform thruster)
-    {
-        if (smallShip.scene == null)
-        {
-            smallShip.scene = SceneFunctions.GetScene();
-        }
-
-        if (smallShip.scene != null)
-        {
-            Object thrusterObject = PoolUtils.FindPrefabObjectInPool(smallShip.scene.particlePrefabPool, smallShip.thrustType);
-
-            if (thrusterObject != null)
-            {
-                GameObject trail = GameObject.Instantiate(thrusterObject) as GameObject;
-                trail.transform.position = thruster.position;
-                trail.transform.SetParent(smallShip.gameObject.transform);
-            }
         }
     }
 

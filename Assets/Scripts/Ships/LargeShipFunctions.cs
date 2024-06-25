@@ -18,68 +18,10 @@ public static class LargeShipFunctions
             largeShip.LODs = GameObjectUtils.GetLODs(largeShip.gameObject);
             largeShip.colliders = largeShip.GetComponentsInChildren<MeshCollider>();
             largeShip.castPoint = largeShip.gameObject.transform.Find("castPoint");
-            LoadThrusters(largeShip);
             CreateWaypoint(largeShip);
             DockingFunctions.AddDockingPointsLargeShip(largeShip);
 
             largeShip.loaded = true;
-        }
-    }
-
-    //This attaches a particle system to the ship engines to simulate thrust
-    public static void LoadThrusters(LargeShip largeShip)
-    {
-        List<Transform> thrusters = new List<Transform>();
-
-        Transform thruster1 = largeShip.gameObject.transform.Find("thrusters/thruster");
-        Transform thruster2 = largeShip.gameObject.transform.Find("thrusters/thruster.001");
-        Transform thruster3 = largeShip.gameObject.transform.Find("thrusters/thruster.002");
-        Transform thruster4 = largeShip.gameObject.transform.Find("thrusters/thruster.003");
-        Transform thruster5 = largeShip.gameObject.transform.Find("thrusters/thruster.004");
-        Transform thruster6 = largeShip.gameObject.transform.Find("thrusters/thruster.005");
-        Transform thruster7 = largeShip.gameObject.transform.Find("thrusters/thruster.006");
-        Transform thruster8 = largeShip.gameObject.transform.Find("thrusters/thruster.007");
-        Transform thruster9 = largeShip.gameObject.transform.Find("thrusters/thruster.008");
-        Transform thruster10 = largeShip.gameObject.transform.Find("thrusters/thruster.009");
-        Transform thruster11 = largeShip.gameObject.transform.Find("thrusters/thruster.010");
-
-        if (thruster1 != null) { thrusters.Add(thruster1); }
-        if (thruster2 != null) { thrusters.Add(thruster2); }
-        if (thruster3 != null) { thrusters.Add(thruster3); }
-        if (thruster4 != null) { thrusters.Add(thruster4); }
-        if (thruster5 != null) { thrusters.Add(thruster5); }
-        if (thruster6 != null) { thrusters.Add(thruster6); }
-        if (thruster7 != null) { thrusters.Add(thruster7); }
-        if (thruster8 != null) { thrusters.Add(thruster8); }
-        if (thruster9 != null) { thrusters.Add(thruster9); }
-        if (thruster10 != null) { thrusters.Add(thruster10); }
-        if (thruster11 != null) { thrusters.Add(thruster11); }
-
-        foreach (Transform thruster in thrusters)
-        {
-            AttachParticleThruster(largeShip, thruster);
-        }
-
-    }
-
-    //This attaches the particle trail to the torpedo
-    public static void AttachParticleThruster(LargeShip largeShip, Transform thruster)
-    {
-        if (largeShip.scene == null)
-        {
-            largeShip.scene = SceneFunctions.GetScene();
-        }
-
-        if (largeShip.scene != null)
-        {
-            Object thrusterObject = PoolUtils.FindPrefabObjectInPool(largeShip.scene.particlePrefabPool, largeShip.thrustType);
-
-            if (thrusterObject != null)
-            {
-                GameObject trail = GameObject.Instantiate(thrusterObject) as GameObject;
-                trail.transform.position = thruster.position;
-                trail.transform.SetParent(largeShip.gameObject.transform);
-            }
         }
     }
 

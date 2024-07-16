@@ -24,9 +24,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Keyboard and Mouse Controls (Implemented)
   - X-Box Controller Controls (Implemented)
 
-**Latest Development Release:** 2.5.37
+**Latest Development Release:** 2.6.82
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.5.37/Open.Galaxy.2.5.37.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.6.82/Open.Galaxy.2.6.82.zip
 
 **Latest Milestone Release:** 2.0.0
 
@@ -41,6 +41,31 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - https://github.com/MichaelEGA/Open-Galaxy/wiki
 
 **Changelog**
+
+16/07/24 - v2.6.82 (Unity 6000.0.2f1)
+  - Added: Base falcon cockpit
+  - Added: Assault Gunboat Cockpit
+  - Added: Base AGB Cockpit mesh
+  - Added: New B-Wing Cockpit
+  - Updated: Added base mesh for new b-wing cockpit
+  - Added: z95 cockpit
+  - Updated Y-Wing Cockpit
+  - Updated cockpits
+  - Updated: Y-Wing cockpit model and textures
+  - Added: finished new y-wing cockpit
+  - Removed: Old broken particle thruster system
+  - Added: E-Wing Cockpit
+  - Finished: Tie Phantom Cockpit
+  - Added: Phantom Cockpit
+  - Updated: Tie Cockpit Scale
+  - Updated: X-Wing cockpit complete
+  - Updated: tie cockpit finished
+  - Updated: Tie Fighter Cockpit
+  - Updated: Cockpits, new version of unity
+  - Update xwing_c.png
+  - Updated: Cockpits for x-wing and tie fighters
+  - Updated: x-wing and tie fighter cockpits
+  - Updated: settings
 
 28/05/24 - v2.5.37 (Unity 6000.0.2f1)
   - Added: Laat GC Cockpit

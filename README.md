@@ -1,9 +1,9 @@
 # Open-Galaxy
 
 Gameplay
-![Screenshot (333)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/36866989-b98e-4db9-9099-b50bb00ef983)
+![image](https://github.com/user-attachments/assets/24d27e84-eb47-438b-82b4-107a0fa671b7)
 
-![Screenshot (367)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/6d3b1a82-5b5d-49e5-8379-8b05cc04443d)
+![348623317-eb458da9-f24f-4c55-99b6-2638027fbc91](https://github.com/user-attachments/assets/744b6822-e9d0-4fd1-ba7e-461f83715572)
 
 Mission Editor
 ![Screenshot (241)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/ac67c4b6-49b7-4452-9ff4-708156414d80)
@@ -24,9 +24,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Keyboard and Mouse Controls (Implemented)
   - X-Box Controller Controls (Implemented)
 
-**Latest Development Release:** 2.5.37
+**Latest Development Release:** 2.6.82
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.5.37/Open.Galaxy.2.5.37.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.6.82/Open.Galaxy.2.6.82.zip
 
 **Latest Milestone Release:** 2.0.0
 
@@ -41,6 +41,31 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - https://github.com/MichaelEGA/Open-Galaxy/wiki
 
 **Changelog**
+
+16/07/24 - v2.6.82 (Unity 6000.0.2f1)
+  - Added: Base falcon cockpit
+  - Added: Assault Gunboat Cockpit
+  - Added: Base AGB Cockpit mesh
+  - Added: New B-Wing Cockpit
+  - Updated: Added base mesh for new b-wing cockpit
+  - Added: z95 cockpit
+  - Updated Y-Wing Cockpit
+  - Updated cockpits
+  - Updated: Y-Wing cockpit model and textures
+  - Added: finished new y-wing cockpit
+  - Removed: Old broken particle thruster system
+  - Added: E-Wing Cockpit
+  - Finished: Tie Phantom Cockpit
+  - Added: Phantom Cockpit
+  - Updated: Tie Cockpit Scale
+  - Updated: X-Wing cockpit complete
+  - Updated: tie cockpit finished
+  - Updated: Tie Fighter Cockpit
+  - Updated: Cockpits, new version of unity
+  - Update xwing_c.png
+  - Updated: Cockpits for x-wing and tie fighters
+  - Updated: x-wing and tie fighter cockpits
+  - Updated: settings
 
 28/05/24 - v2.5.37 (Unity 6000.0.2f1)
   - Added: Laat GC Cockpit

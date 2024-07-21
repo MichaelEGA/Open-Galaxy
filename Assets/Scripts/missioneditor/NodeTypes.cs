@@ -159,71 +159,9 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_CampaignInformation(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawText(node, "campaigninformation", 8, 5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventType = NodeFunctions.DrawText(node, "campaigninformation", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.data1 = NodeFunctions.DrawInputField(node, "Campaign", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        float multiplySize = 5;
-
-        node.data2 = NodeFunctions.DrawInputFieldLarge(node, "Information", "none", 7, 5, drop, 12.5f * multiplySize, 90);
-
-        drop -= 15 * multiplySize;
-
-        drop -= 15;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
     #endregion
 
     #region pre load event nodes
-
-    public static void Draw_CreateLocation(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawText(node, "createlocation", 8, 5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventType = NodeFunctions.DrawText(node, "createlocation", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options = new List<string>();
-        options.Add("false");
-        options.Add("true");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "Start Here", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
 
     public static void Draw_PreLoad_LoadAsteroids(Node node)
     {
@@ -469,200 +407,6 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_PreLoad_LoadMultipleShipsOnGround(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawText(node, "pl_loadmultipleshipsonground", 8, 5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventType = NodeFunctions.DrawText(node, "preload_loadmultipleshipsonground", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "dsturrettall", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data5 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data7 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data8 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data9 = NodeFunctions.DrawInputField(node, "above ground", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data11 = NodeFunctions.DrawInputField(node, "pos variance", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options4 = new List<string>();
-        options4.Add("false");
-        options4.Add("true");
-
-        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options5 = new List<string>();
-        options5.Add("red");
-        options5.Add("green");
-
-        node.data13= NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
-    public static void Draw_PreLoad_LoadSingleShip(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawText(node, "pl_loadsingleship", 8, 5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventType = NodeFunctions.DrawText(node, "preload_loadsingleship", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.y = NodeFunctions.DrawInputField(node, "y", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options3 = new List<string>();
-        options3.Add("false");
-        options3.Add("true");
-    
-        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options4 = new List<string>();
-        options4.Add("true");
-        options4.Add("false");
-
-        node.data6 = NodeFunctions.DrawDropDownMenu(node, options4, "is AI", "true", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options5 = new List<string>();
-        options5.Add("red");
-        options5.Add("green");
-
-        node.data7 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> optionsAR = new List<string>();
-        optionsAR.Add("false");
-        optionsAR.Add("true");
-
-        node.data8 = NodeFunctions.DrawDropDownMenu(node, optionsAR, "run once", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
     public static void Draw_PreLoad_LoadMultipleShips(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -786,6 +530,303 @@ public static class NodeTypes
         options6.Add("green");
 
         node.data15 = NodeFunctions.DrawDropDownMenu(node, options6, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_PreLoad_LoadMultipleShipsOnGround(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "pl_loadmultipleshipsonground", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadmultipleshipsonground", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "dsturrettall", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "imperial", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "number", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data7 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data8 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawInputField(node, "above ground", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawInputField(node, "pos variance", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("false");
+        options4.Add("true");
+
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options4, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("red");
+        options5.Add("green");
+
+        node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_PreLoad_LoadSingleShip(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "pl_loadsingleship", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadsingleship", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.y = NodeFunctions.DrawInputField(node, "y", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options3 = new List<string>();
+        options3.Add("false");
+        options3.Add("true");
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("true");
+        options4.Add("false");
+
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options4, "is AI", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("red");
+        options5.Add("green");
+
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> optionsAR = new List<string>();
+        optionsAR.Add("false");
+        optionsAR.Add("true");
+
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, optionsAR, "run once", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_PreLoad_LoadSingleShipOnGround(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "pl_loadsingleshiponground", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadsingleshiponground", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.y = NodeFunctions.DrawInputField(node, "y", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options3 = new List<string>();
+        options3.Add("true");
+        options3.Add("false");
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "is AI", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data6 = NodeFunctions.DrawInputField(node, "above ground", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data7 = NodeFunctions.DrawInputField(node, "pos variance", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("false");
+        options4.Add("true");
+
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, options4, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("red");
+        options5.Add("green");
+
+        node.data9 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> optionsAR = new List<string>();
+        optionsAR.Add("false");
+        optionsAR.Add("true");
+
+        node.data10 = NodeFunctions.DrawDropDownMenu(node, optionsAR, "run once", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -936,82 +977,6 @@ public static class NodeTypes
     #endregion
 
     #region event nodes
-
-    public static void Draw_StartEventSeries(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawText(node, "starteventseries", 8, 5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "starteventseries", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
-    public static void Draw_SplitEventSeries(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "spliteventseries", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "spliteventseries", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
-
-        drop -= 15;
-
-        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 2", 7, 5);
-
-        drop -= 15;
-
-        node.nextEvent3 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 3", 7, 5);
-
-        drop -= 15;
-
-        node.nextEvent4 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 4", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
 
     public static void Draw_ActivateDocking(Node node)
     {
@@ -1311,6 +1276,37 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
+    public static void Draw_CampaignInformation(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "campaigninformation", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "campaigninformation", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "Campaign", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        float multiplySize = 5;
+
+        node.data2 = NodeFunctions.DrawInputFieldLarge(node, "Information", "none", 7, 5, drop, 12.5f * multiplySize, 90);
+
+        drop -= 15 * multiplySize;
+
+        drop -= 15;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
     public static void Draw_ChangeLocation(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -1370,6 +1366,37 @@ public static class NodeTypes
         drop -= 15;
 
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_CreateLocation(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "createlocation", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "createlocation", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options = new List<string>();
+        options.Add("false");
+        options.Add("true");
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "Start Here", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -2133,204 +2160,6 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_LoadSingleShip(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "loadsingleship", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "loadsingleship", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.y = NodeFunctions.DrawInputField(node, "y", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options3 = new List<string>();
-        options3.Add("false");
-        options3.Add("true");
-
-        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options4 = new List<string>();
-        options4.Add("true");
-        options4.Add("false");
-
-        node.data6 = NodeFunctions.DrawDropDownMenu(node, options4, "is AI", "true", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options5 = new List<string>();
-        options5.Add("red");
-        options5.Add("green");
-
-        node.data7 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
-    public static void Draw_LoadSingleShipAtDistanceAndAngleFromPlayer(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "loadsingleshipatdistanceandanglefromplayer", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "loadsingleshipatdistanceandanglefromplayer", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.x = NodeFunctions.DrawInputField(node, "xAngle", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.y = NodeFunctions.DrawInputField(node, "yAngle", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.z = NodeFunctions.DrawInputField(node, "zAngle", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data5 = NodeFunctions.DrawInputField(node, "distance", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options3 = new List<string>();
-        options3.Add("false");
-        options3.Add("true");
-
-        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options4 = new List<string>();
-        options4.Add("red");
-        options4.Add("green");
-
-        node.data7 = NodeFunctions.DrawDropDownMenu(node, options4, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
     public static void Draw_LoadMultipleShips(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -2654,6 +2483,309 @@ public static class NodeTypes
         options5.Add("green");
 
         node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_LoadSingleShip(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "loadsingleship", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "loadsingleship", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.y = NodeFunctions.DrawInputField(node, "y", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options3 = new List<string>();
+        options3.Add("false");
+        options3.Add("true");
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("true");
+        options4.Add("false");
+
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options4, "is AI", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("red");
+        options5.Add("green");
+
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_LoadSingleShipAtDistanceAndAngleFromPlayer(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "loadsingleshipatdistanceandanglefromplayer", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "loadsingleshipatdistanceandanglefromplayer", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.x = NodeFunctions.DrawInputField(node, "xAngle", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.y = NodeFunctions.DrawInputField(node, "yAngle", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.z = NodeFunctions.DrawInputField(node, "zAngle", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "distance", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options3 = new List<string>();
+        options3.Add("false");
+        options3.Add("true");
+
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options3, "exiting hyperspace", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("red");
+        options4.Add("green");
+
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, options4, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_LoadSingleShipOnGround(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "loadsingleshiponground", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "loadsingleshiponground", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.y = NodeFunctions.DrawInputField(node, "y", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetAllegianceList(), "allegiance", "rebel", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "cargo", "no cargo", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options3 = new List<string>();
+        options3.Add("true");
+        options3.Add("false");
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "is AI", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data6 = NodeFunctions.DrawInputField(node, "above ground", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data7 = NodeFunctions.DrawInputField(node, "pos variance", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("false");
+        options4.Add("true");
+
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, options4, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("red");
+        options5.Add("green");
+
+        node.data9 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -3401,6 +3533,82 @@ public static class NodeTypes
         drop -= 15;
 
         node.data1 = NodeFunctions.DrawInputField(node, "ship name", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_SplitEventSeries(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "spliteventseries", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "spliteventseries", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 1", 7, 5);
+
+        drop -= 15;
+
+        node.nextEvent2 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 2", 7, 5);
+
+        drop -= 15;
+
+        node.nextEvent3 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 3", 7, 5);
+
+        drop -= 15;
+
+        node.nextEvent4 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event 4", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_StartEventSeries(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "starteventseries", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "starteventseries", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 

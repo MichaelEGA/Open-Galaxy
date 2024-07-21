@@ -1576,6 +1576,65 @@ public static class SceneFunctions
         }
     }
 
+    //A wrapper functions for load single ships that loads a single ship on the ground
+    public static void LoadSingleShipOnGround(
+        Vector3 position,
+        Quaternion rotation,
+        string type,
+        string name,
+        string allegiance,
+        string cargo,
+        bool isAI,
+        float distanceAboveGround,
+        float positionVariance,
+        bool ifRaycastFailsStillLoad,
+        string laserColor
+        )
+    {
+        //This gets the scene reference
+        Scene scene = GetScene();
+
+        //This gets the Json ship data
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
+        ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
+
+        //This finds the ship type to load 
+        ShipType shipType = null;
+
+        foreach (ShipType tempShipType in shipTypes.shipTypeData)
+        {
+            if (tempShipType.type == type)
+            {
+                shipType = tempShipType;
+                break;
+            }
+        }
+
+        Vector3 relativePosition = scene.transform.TransformPoint(position);
+
+        Vector3 raycastPos = new Vector3(relativePosition.x, 15000, relativePosition.z);
+
+        RaycastHit hit;
+
+        LayerMask mask = LayerMask.GetMask("collision_asteroid");
+
+        Debug.DrawRay(raycastPos, Vector3.down * 30000, Color.red, 500);
+
+        //NOTE: Raycasts only work when the time scale is set to zero IF "Auto Sync Transform" is set to true in the project settings
+
+        if (Physics.Raycast(raycastPos, Vector3.down, out hit, 30000, mask))
+        {
+            Vector3 newPosition = hit.point + new Vector3(0, distanceAboveGround, 0);
+            LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, isAI, true, laserColor);
+        }
+        else if (ifRaycastFailsStillLoad == true)
+        {
+            Vector3 newPosition = new Vector3(relativePosition.x, 0, relativePosition.z);
+            LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, isAI, true, laserColor);
+        }
+ 
+    }
+
     //A wrapper functions for load single ships that loads multiple ships on the ground
     public static IEnumerator LoadMultipleShipsOnGround(
         Vector3 position,
@@ -1643,6 +1702,7 @@ public static class SceneFunctions
         }
     }
 
+    //A wrapper functions for load single ship that loads multiple ships from another ships hangar
     public static IEnumerator LoadMultipleShipsFromHangar(
         string type,
         string name,

@@ -250,6 +250,14 @@ public static class MissionFunctions
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", Time.unscaledTime - time);  
             }
+            else if (missionEvent.eventType == "preload_loadsingleshipsonground" & missionEvent.conditionLocation == location)
+            {
+                if (firstRun == false & missionEvent.data10 == "false" || firstRun == false & missionEvent.data10 == "none" || firstRun == true)
+                {
+                    LoadSingleShipOnGround(missionEvent);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded on the ground", Time.unscaledTime - time);
+                }   
+            }
             else if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
             {
                 //This extra check is run to prevent the game loading the player ship twice
@@ -554,6 +562,11 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "loadsingleshipatdistanceandanglefromplayer")
         {
             LoadSingleShipAtDistanceAndAngleFromPlayer(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "loadsingleshiponground")
+        {
+            LoadSingleShipOnGround(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "loadmultipleships")
@@ -1880,6 +1893,67 @@ public static class MissionFunctions
         }
 
         SceneFunctions.LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, exitingHyperspace, true, false, laserColor);
+    }
+
+    //This loads a single ship on the ground
+    public static void LoadSingleShipOnGround(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        Vector3 position = new Vector3(x, y, z);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "tiefighter";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        string name = "alpha";
+        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
+
+        string allegiance = "imperial";
+        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
+
+        string cargo = "no cargo";
+        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
+
+        bool isAI = false;
+
+        if (bool.TryParse(missionEvent.data5, out _))
+        {
+            isAI = bool.Parse(missionEvent.data5);
+        }
+
+        float distanceAboveGround = 0;
+
+        if (float.TryParse(missionEvent.data6, out _))
+        {
+            distanceAboveGround = float.Parse(missionEvent.data6);
+        }
+
+        float positionVariance = 10;
+
+        if (float.TryParse(missionEvent.data7, out _))
+        {
+            positionVariance = float.Parse(missionEvent.data7);
+        }
+
+        bool ifRaycastFailsStillLoad = false;
+
+        if (bool.TryParse(missionEvent.data8, out _))
+        {
+            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data8);
+        }
+
+        string laserColor = "red";
+        if (missionEvent.data9 != "none") { laserColor = missionEvent.data9; }
+
+        SceneFunctions.LoadSingleShipOnGround(position, rotation, type, name, allegiance, cargo, isAI, distanceAboveGround, positionVariance, ifRaycastFailsStillLoad, laserColor);
     }
 
     //This loads multiple ships by name

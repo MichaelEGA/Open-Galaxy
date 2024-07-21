@@ -63,26 +63,14 @@ public static class WindowFunctions
 
         List<string> buttonList = new List<string>();
 
-        buttonList.Add("custom_node");
-        buttonList.Add("campaigninformation");
-        buttonList.Add("createlocation");
-        buttonList.Add("preload_loadasteroids");
-        buttonList.Add("preload_loadplanet");
-        buttonList.Add("preload_loadterrain");
-        buttonList.Add("preload_loadmultipleshipsonground");
-        buttonList.Add("preload_loadsingleship");
-        buttonList.Add("preload_loadmultipleships");
-        buttonList.Add("preload_setgalaxylocation");
-        buttonList.Add("preload_sethudcolour");
-        buttonList.Add("preload_setsceneradius");
-        buttonList.Add("preload_setskybox");
-        buttonList.Add("starteventseries");
-        buttonList.Add("spliteventseries");
         buttonList.Add("activatedocking");
         buttonList.Add("activatehyperspace");
         buttonList.Add("addaitagtolargeship");
         buttonList.Add("addaitagtosmallship");
+        buttonList.Add("campaigninformation");
         buttonList.Add("changelocation");
+        buttonList.Add("createlocation");
+        buttonList.Add("custom_node");
         buttonList.Add("deactivateship");
         buttonList.Add("displaydialoguebox");
         buttonList.Add("displaytitle");
@@ -99,13 +87,25 @@ public static class WindowFunctions
         buttonList.Add("ifshipislessthandistancetowaypoint");
         buttonList.Add("ifshipofallegianceisactive");
         buttonList.Add("ifshipssystemsarelessthan");
-        buttonList.Add("loadsingleship");
-        buttonList.Add("loadsingleshipatdistanceandanglefromplayer");
         buttonList.Add("loadmultipleships");
         buttonList.Add("loadmultipleshipsfromhangar");
         buttonList.Add("loadmultipleshipsonground");
+        buttonList.Add("loadsingleship");
+        buttonList.Add("loadsingleshipatdistanceandanglefromplayer");
+        buttonList.Add("loadsingleshiponground");
         buttonList.Add("pausesequence");
         buttonList.Add("playmusictrack");
+        buttonList.Add("preload_loadasteroids");
+        buttonList.Add("preload_loadplanet");
+        buttonList.Add("preload_loadterrain");
+        buttonList.Add("preload_loadmultipleships");
+        buttonList.Add("preload_loadmultipleshipsonground");
+        buttonList.Add("preload_loadsingleship");
+        buttonList.Add("preload_loadsingleshiponground");
+        buttonList.Add("preload_setgalaxylocation");
+        buttonList.Add("preload_sethudcolour");
+        buttonList.Add("preload_setsceneradius");
+        buttonList.Add("preload_setskybox");
         buttonList.Add("setcargo");
         buttonList.Add("setcontrollock");
         buttonList.Add("setfollowtarget");
@@ -119,6 +119,8 @@ public static class WindowFunctions
         buttonList.Add("setshiptoinvincible");
         buttonList.Add("settorpedoes");
         buttonList.Add("setwaypoint");
+        buttonList.Add("spliteventseries");
+        buttonList.Add("starteventseries");
 
         List<string> functionList = new List<string>();
 

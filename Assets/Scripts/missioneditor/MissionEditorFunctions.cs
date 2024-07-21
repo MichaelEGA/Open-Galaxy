@@ -267,14 +267,17 @@ public static class MissionEditorFunctions
         GameObject windowMenu = DrawDropDownMenu(missionEditor.transform, "Window", shiftRight02, window_Buttons.ToArray(), window_Functions.ToArray(), window_Shortcuts.ToArray());
 
         List<string> help_Buttons = new List<string>();
+        help_Buttons.Add(spaces + "Open Open-Galaxy Wiki");
         help_Buttons.Add(spaces + "Open Open-Galaxy Github");
         help_Buttons.Add(spaces + "About OG Mission Editor");
 
         List<string> help_Functions = new List<string>();
+        help_Functions.Add("OpenWiki");
         help_Functions.Add("OpenGitHub");
         help_Functions.Add("OpenAbout");
 
         List<string> help_Shortcuts = new List<string>();
+        help_Shortcuts.Add("");
         help_Shortcuts.Add("");
         help_Shortcuts.Add("");
 
@@ -447,9 +450,13 @@ public static class MissionEditorFunctions
         {
             button.onClick.AddListener(() => { SetWindowMode("window"); });
         }
-        else if (functionType == "OpenGitHub")
+        else if (functionType == "OpenWiki")
         {
             button.onClick.AddListener(() => { OpenWebAddress("https://github.com/MichaelEGA/Open-Galaxy/wiki"); });
+        }
+        else if (functionType == "OpenGitHub")
+        {
+            button.onClick.AddListener(() => { OpenWebAddress("https://github.com/MichaelEGA/Open-Galaxy"); });
         }
         else if (functionType == "OpenAbout")
         {
@@ -599,6 +606,10 @@ public static class MissionEditorFunctions
         else if (functionType == "MakeWindowed")
         {
             button.onClick.AddListener(() => { SetWindowMode("window"); });
+        }
+        else if (functionType == "OpenWiki")
+        {
+            button.onClick.AddListener(() => { OpenWebAddress("https://github.com/MichaelEGA/Open-Galaxy/wiki"); });
         }
         else if (functionType == "OpenGitHub")
         {

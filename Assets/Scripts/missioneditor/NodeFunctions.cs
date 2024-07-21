@@ -13,67 +13,7 @@ public class NodeFunctions : MonoBehaviour
         //This gets the reference to the mission editor
         node.missionEditor = MissionEditorFunctions.GetMissionEditor();
 
-        if (node.nodeType == "custom_node")
-        {
-            NodeTypes.Draw_CustomNode(node);
-        }
-        else if (node.nodeType == "campaigninformation")
-        {
-            NodeTypes.Draw_CampaignInformation(node);
-        }
-        else if (node.nodeType == "createlocation")
-        {
-            NodeTypes.Draw_CreateLocation(node);
-        }
-        else if (node.nodeType == "preload_loadasteroids")
-        {
-            NodeTypes.Draw_PreLoad_LoadAsteroids(node);
-        }
-        else if (node.nodeType == "preload_loadplanet")
-        {
-            NodeTypes.Draw_PreLoad_LoadPlanet(node);
-        }
-        else if (node.nodeType == "preload_loadterrain")
-        {
-            NodeTypes.Draw_PreLoad_LoadTerrain(node);
-        }
-        else if (node.nodeType == "preload_loadmultipleshipsonground")
-        {
-            NodeTypes.Draw_PreLoad_LoadMultipleShipsOnGround(node);
-        }
-        else if (node.nodeType == "preload_loadsingleship")
-        {
-            NodeTypes.Draw_PreLoad_LoadSingleShip(node);
-        }
-        else if (node.nodeType == "preload_loadmultipleships")
-        {
-            NodeTypes.Draw_PreLoad_LoadMultipleShips(node);
-        }
-        else if (node.nodeType == "preload_setgalaxylocation")
-        {
-            NodeTypes.Draw_PreLoad_SetGalaxyLocation(node);
-        }
-        else if (node.nodeType == "preload_sethudcolour")
-        {
-            NodeTypes.Draw_PreLoad_SetHudColour(node);
-        }
-        else if (node.nodeType == "preload_setsceneradius")
-        {
-            NodeTypes.Draw_PreLoad_SetSceneRadius(node);
-        }
-        else if (node.nodeType == "preload_setskybox")
-        {
-            NodeTypes.Draw_PreLoad_SetSkybox(node);
-        }
-        else if (node.nodeType == "starteventseries")
-        {
-            NodeTypes.Draw_StartEventSeries(node);
-        }
-        else if (node.nodeType == "spliteventseries")
-        {
-            NodeTypes.Draw_SplitEventSeries(node);
-        }
-        else if (node.nodeType == "activatedocking")
+        if (node.nodeType == "activatedocking")
         {
             NodeTypes.Draw_ActivateDocking(node);
         }
@@ -89,9 +29,21 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_AddAITagToSmallShip(node);
         }
+        else if (node.nodeType == "campaigninformation")
+        {
+            NodeTypes.Draw_CampaignInformation(node);
+        }
         else if (node.nodeType == "changelocation")
         {
             NodeTypes.Draw_ChangeLocation(node);
+        }
+        else if (node.nodeType == "createlocation")
+        {
+            NodeTypes.Draw_CreateLocation(node);
+        }
+        if (node.nodeType == "custom_node")
+        {
+            NodeTypes.Draw_CustomNode(node);
         }
         else if (node.nodeType == "deactivateship")
         {
@@ -165,6 +117,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_LoadSingleShipAtDistanceAndAngleFromPlayer(node);
         }
+        else if (node.nodeType == "loadsingleshiponground")
+        {
+            NodeTypes.Draw_LoadSingleShipOnGround(node);
+        }
         else if (node.nodeType == "loadmultipleships")
         {
             NodeTypes.Draw_LoadMultipleShips(node);
@@ -184,6 +140,50 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "playmusictrack")
         {
             NodeTypes.Draw_PlayMusicTrack(node);
+        }
+        else if (node.nodeType == "preload_loadasteroids")
+        {
+            NodeTypes.Draw_PreLoad_LoadAsteroids(node);
+        }
+        else if (node.nodeType == "preload_loadplanet")
+        {
+            NodeTypes.Draw_PreLoad_LoadPlanet(node);
+        }
+        else if (node.nodeType == "preload_loadterrain")
+        {
+            NodeTypes.Draw_PreLoad_LoadTerrain(node);
+        }
+        else if (node.nodeType == "preload_loadmultipleships")
+        {
+            NodeTypes.Draw_PreLoad_LoadMultipleShips(node);
+        }
+        else if (node.nodeType == "preload_loadmultipleshipsonground")
+        {
+            NodeTypes.Draw_PreLoad_LoadMultipleShipsOnGround(node);
+        }
+        else if (node.nodeType == "preload_loadsingleship")
+        {
+            NodeTypes.Draw_PreLoad_LoadSingleShip(node);
+        }
+        else if (node.nodeType == "preload_loadsingleshiponground")
+        {
+            NodeTypes.Draw_PreLoad_LoadSingleShipOnGround(node);
+        }
+        else if (node.nodeType == "preload_setgalaxylocation")
+        {
+            NodeTypes.Draw_PreLoad_SetGalaxyLocation(node);
+        }
+        else if (node.nodeType == "preload_sethudcolour")
+        {
+            NodeTypes.Draw_PreLoad_SetHudColour(node);
+        }
+        else if (node.nodeType == "preload_setsceneradius")
+        {
+            NodeTypes.Draw_PreLoad_SetSceneRadius(node);
+        }
+        else if (node.nodeType == "preload_setskybox")
+        {
+            NodeTypes.Draw_PreLoad_SetSkybox(node);
         }
         else if (node.nodeType == "setcargo")
         {
@@ -236,6 +236,14 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "setwaypoint")
         {
             NodeTypes.Draw_SetWayPoint(node);
+        }
+        else if (node.nodeType == "spliteventseries")
+        {
+            NodeTypes.Draw_SplitEventSeries(node);
+        }
+        else if (node.nodeType == "starteventseries")
+        {
+            NodeTypes.Draw_StartEventSeries(node);
         }
         else
         {

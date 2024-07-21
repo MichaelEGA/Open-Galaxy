@@ -82,31 +82,6 @@ public static class NodeDescriptions
             "- Remove this node if you want to load a scene without a terrain \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
-        else if (name == "preload_loadmultipleshipsonground")
-        {
-            description =
-            "Pre-Load Multiple Ships on Ground \n " +
-            "\n " +
-            "This loads multiple ships on ground, usually turrets, but can also be used to place normal ships as well \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- The name of the ship will automatically be inumerated i.e. Alpha will become Alpha01, the next ship Alpha02 and so on \n" +
-            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
-            "- For this node to work you need to also use the load tiles event node. \n" +
-            "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
-        }
-        else if (name == "preload_loadsingleship")
-        {
-            description =
-           "Pre-Load Single Ship \n " +
-           "\n " +
-           "This node loads a single ship \n" +
-           "\n " +
-           "Extra Information \n" +
-           "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
-           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
-        }
         else if (name == "preload_loadmultipleships")
         {
             description =
@@ -127,6 +102,42 @@ public static class NodeDescriptions
             "- Pattern: linehorizontalsideways uses width. Height and length are ignored. \n" +
             "- Pattern: linevertical uses height. Width and length are ignored. \n" +
             "- Pattern: randominsidecube uses width, length, height. \n";
+        }
+        else if (name == "preload_loadmultipleshipsonground")
+        {
+            description =
+            "Pre-Load Multiple Ships on Ground \n " +
+            "\n " +
+            "This loads multiple ships on ground, usually turrets, but can also be used to place normal ships as well \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- The name of the ship will automatically be inumerated i.e. Alpha will become Alpha01, the next ship Alpha02 and so on \n" +
+            "- For this node to work you need to also use the load terrain event node. \n" +
+            "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
+            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
+        else if (name == "preload_loadsingleship")
+        {
+            description =
+           "Pre-Load Single Ship \n " +
+           "\n " +
+           "This node loads a single ship \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
+           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
+        else if (name == "preload_loadsingleshiponground")
+        {
+            description =
+           "Pre-Load Single Ship on Ground \n " +
+           "\n " +
+           "This node loads a single ship on the ground\n" +
+           "\n " +
+           "Extra Information \n" +
+           "- For this node to work you need to also use the load terrain event node. \n" +
+           "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
+           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
         else if (name == "preload_setgalaxylocation")
         {
@@ -453,30 +464,6 @@ public static class NodeDescriptions
              "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
              "- If the location is left as 'none' the node will run regardless of location. \n";
         }
-        else if (name == "loadsingleship")
-        {
-            description =
-            "Single Ship \n " +
-            "\n " +
-            "This node loads a single ship \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
-            "- If the location is left as 'none' the node will run regardless of location. \n";
-        }
-        else if (name == "loadsingleshipatdistanceandanglefromplayer")
-        {
-            description =
-            "Load Single Ship at Distance and Angle From Player \n " +
-            "\n " +
-            "This node loads a single ship at the designated distance and angle from the player. \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
-            "- The angles are euler i.e. 360 degrees beginning at the from of the ship. \n" +
-            "- This not is helpful if you want to deliberately load an enemy ship behind the player for example. \n" +
-            "- If the location is left as 'none' the node will run regardless of location. \n";
-        }
         else if (name == "loadmultipleships")
         {
             description =
@@ -523,7 +510,43 @@ public static class NodeDescriptions
             "Extra Information \n" +
             "- The name of the ship will automatically be inumerated i.e. Alpha will become Alpha01, the next ship Alpha02 and so on \n" +
             "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
-            "- For this node to work you need to also use the load tiles event node. \n" +
+            "- For this node to work you need to also use the load terrain event node. \n" +
+            "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
+            "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
+        else if (name == "loadsingleship")
+        {
+            description =
+            "Load Single Ship \n " +
+            "\n " +
+            "This node loads a single ship \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
+            "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
+        else if (name == "loadsingleshipatdistanceandanglefromplayer")
+        {
+            description =
+            "Load Single Ship at Distance and Angle From Player \n " +
+            "\n " +
+            "This node loads a single ship at the designated distance and angle from the player. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
+            "- The angles are euler i.e. 360 degrees beginning at the from of the ship. \n" +
+            "- This not is helpful if you want to deliberately load an enemy ship behind the player for example. \n" +
+            "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
+        else if (name == "loadsingleshiponground")
+        {
+            description =
+            "Load Single Ship on Ground \n " +
+            "\n " +
+            "This node loads a single ship on the ground \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- For this node to work you need to also use the load terrain event node. \n" +
             "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
             "- If the location is left as 'none' the node will run regardless of location. \n";
         }

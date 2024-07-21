@@ -224,22 +224,22 @@ public static class LaserFunctions
     {      
         if (smallShip.laserCannon1 != null)
         {
-            smallShip.laserCannon1.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+            smallShip.laserCannon1.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
         }
 
         if (smallShip.laserCannon2 != null)
         {
-            smallShip.laserCannon2.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+            smallShip.laserCannon2.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
         }
 
         if (smallShip.laserCannon3 != null)
         {
-            smallShip.laserCannon3.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+            smallShip.laserCannon3.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
         }
 
         if (smallShip.laserCannon4 != null)
         {
-            smallShip.laserCannon4.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+            smallShip.laserCannon4.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
         }
     }
 

@@ -22,6 +22,21 @@ public static class SmallShipFunctions
                 SceneFunctions.IdentifyAsMainShip(smallShip);
             }
 
+            //This gets the camera position which is used for targetting as well as placing the cockpit
+            if (smallShip.cameraPosition == null)
+            {
+                Transform cameraPos = GameObjectUtils.FindChildTransformCalled(smallShip.gameObject.transform, "camera");
+
+                if (cameraPos != null)
+                {
+                    smallShip.cameraPosition = cameraPos.gameObject;
+                }
+                else
+                {
+                    smallShip.cameraPosition = smallShip.gameObject;
+                }
+            }
+
             GameObjectUtils.AddColliders(smallShip.gameObject, true);
             GameObjectUtils.AddRigidbody(smallShip.gameObject, 100f, 9f, 7.5f);
             smallShip.LODs = GameObjectUtils.GetLODs(smallShip.gameObject);

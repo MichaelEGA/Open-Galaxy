@@ -51,6 +51,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Up, down, left, and right control energy management
   - Left Mouse fires weapons
   - Right Mouse matches speed
+  - Scan a target by selecting it and then flying close
 
 **Changelog**
 

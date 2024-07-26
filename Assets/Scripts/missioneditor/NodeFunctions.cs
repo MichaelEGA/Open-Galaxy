@@ -426,8 +426,8 @@ public class NodeFunctions : MonoBehaviour
         {
             if (node.gameObject != null)
             {
-                //This sets up the base recttransform
                 node.rectTransform = node.gameObject.AddComponent<RectTransform>();
+
                 node.name = "Node";
 
                 node.rectTransform.sizeDelta = new Vector2(node.sizeX, node.sizeZ);

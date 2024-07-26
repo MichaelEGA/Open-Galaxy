@@ -1010,6 +1010,7 @@ public static class MissionFunctions
         SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
+        GameObject starfield = SceneFunctions.GetStarfield();
 
         missionManager.pauseEventSeries = true;
 
@@ -1052,6 +1053,7 @@ public static class MissionFunctions
         if(scene.hyperspaceTunnel != null)
         {
             scene.hyperspaceTunnel.SetActive(true);
+            SceneFunctions.SetStarfieldToInvisible(true);
         }
 
         //This sets the skybox to black
@@ -1090,6 +1092,7 @@ public static class MissionFunctions
         //This deactivates the hyperspace tunnel
         if (scene.hyperspaceTunnel != null)
         {
+            SceneFunctions.SetStarfieldToInvisible(false);
             scene.hyperspaceTunnel.SetActive(false);
         }
 

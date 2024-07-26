@@ -928,7 +928,7 @@ public static class NodeTypes
         options1.Add("sky_blue02");
         options1.Add("sky_blue03");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "mode", "space", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "skybox", "space", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

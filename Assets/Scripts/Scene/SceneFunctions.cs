@@ -490,6 +490,24 @@ public static class SceneFunctions
         return starfield;
     }
 
+    //This sets the starfield to invisible
+    public static void SetStarfieldToInvisible(bool invisible)
+    {
+        GameObject starfield = GetStarfield();
+
+        if (starfield != null)
+        {
+            if (invisible == true)
+            {
+                starfield.layer = LayerMask.NameToLayer("invisible");
+            }
+            else
+            {
+                starfield.layer = LayerMask.NameToLayer("starfield");
+            }
+        }
+    }
+
     #endregion
 
     #region transitions
@@ -1092,13 +1110,16 @@ public static class SceneFunctions
         //This toggles the starfield on and off
         GameObject starfield = GameObject.Find("starfield");
 
-        if (stars == false)
+        if (starfield != null)
         {
-            starfield.layer = LayerMask.NameToLayer("invisible");
-        }
-        else
-        {
-            starfield.layer = LayerMask.NameToLayer("starfield");
+            if (stars == false)
+            {
+                starfield.layer = LayerMask.NameToLayer("invisible");
+            }
+            else
+            {
+                starfield.layer = LayerMask.NameToLayer("starfield");
+            }
         }
 
         //This sets the skybox

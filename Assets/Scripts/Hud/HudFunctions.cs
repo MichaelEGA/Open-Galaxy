@@ -1801,9 +1801,9 @@ public static class HudFunctions
         {
             float distance = Vector2.Distance(hud.movingReticule.transform.position, hud.centerReticule.transform.position);
 
-            if (distance < 40 & distance > 10)
+            if (distance < 200 & distance > 10)
             {
-                float alpha = (1f / 30f) * distance;
+                float alpha = (1f /190f) * distance;
 
                 Color newColor = hud.movingReticleImage.color;
                 newColor.a = alpha;

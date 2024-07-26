@@ -58,12 +58,12 @@ public static class SceneFunctions
             scene.gcShipsPrefabPool = gcShipPrefabs;
         }
 
-        Object[] caShipPrefabs = Resources.LoadAll(OGGetAddress.ships_communityassets, typeof(GameObject));
+        Object[] ogShipPrefabs = Resources.LoadAll(OGGetAddress.ships_opengalaxyassets, typeof(GameObject));
 
-        if (caShipPrefabs != null)
+        if (ogShipPrefabs != null)
         {
-            scene.caShipsPrefabPool = new GameObject[caShipPrefabs.Length];
-            scene.caShipsPrefabPool = caShipPrefabs;
+            scene.ogShipsPrefabPool = new GameObject[ogShipPrefabs.Length];
+            scene.ogShipsPrefabPool = ogShipPrefabs;
         }
 
         //This loads the cockpit prefabs
@@ -83,18 +83,18 @@ public static class SceneFunctions
             scene.gcCockpitPrefabPool = gcCockpitPrefabs;
         }
 
-        Object[] caCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits_communityassets, typeof(GameObject));
+        Object[] ogCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits_opengalaxyassets, typeof(GameObject));
 
-        if (caCockpitPrefabs != null)
+        if (ogCockpitPrefabs != null)
         {
-            scene.caCockpitPrefabPool = new GameObject[caCockpitPrefabs.Length];
-            scene.caCockpitPrefabPool = caCockpitPrefabs;
+            scene.ogCockpitPrefabPool = new GameObject[ogCockpitPrefabs.Length];
+            scene.ogCockpitPrefabPool = ogCockpitPrefabs;
         }
 
         //This loads the asteroids
         Object[] asteroidPrefabs = Resources.LoadAll(OGGetAddress.asteroids, typeof(GameObject));
 
-        if (caShipPrefabs != null)
+        if (ogShipPrefabs != null)
         {
             scene.asteroidPrefabPool = new GameObject[asteroidPrefabs.Length];
             scene.asteroidPrefabPool = asteroidPrefabs;
@@ -1438,7 +1438,7 @@ public static class SceneFunctions
 
         if (tempPrefab == null)
         {
-            tempPrefab = ReturnShipPrefab(name, "communityassets");
+            tempPrefab = ReturnShipPrefab(name, "opengalaxy");
         }
 
         //This instantiates the prefab
@@ -1490,9 +1490,9 @@ public static class SceneFunctions
                 }
             }
         }
-        else if (pool == "communityassets")
+        else if (pool == "opengalaxy")
         {
-            foreach (GameObject objectPrefab in scene.caShipsPrefabPool)
+            foreach (GameObject objectPrefab in scene.ogShipsPrefabPool)
             {
                 if (objectPrefab.name == name)
                 {
@@ -2215,7 +2215,7 @@ public static class SceneFunctions
 
             if (tempPrefab == null)
             {
-                tempPrefab = ReturnCockpitPrefab(name, "communityassets");
+                tempPrefab = ReturnCockpitPrefab(name, "opengalaxy");
             }
         }
 
@@ -2260,9 +2260,9 @@ public static class SceneFunctions
                 }
             }
         }
-        else if (pool == "communityassets")
+        else if (pool == "opengalaxy")
         {
-            foreach (GameObject objectPrefab in scene.caCockpitPrefabPool)
+            foreach (GameObject objectPrefab in scene.ogCockpitPrefabPool)
             {
                 if (objectPrefab.name == name)
                 {

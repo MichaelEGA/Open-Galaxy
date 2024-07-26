@@ -24,9 +24,9 @@ public static class OGSettingsFunctions
         {
             address = "audio/audiomixers/";
         }
-        else if (name == "cockpits_communityassets")
+        else if (name == "cockpits_opengalaxy")
         {
-            address = "objects/cockpits/communityassets/";
+            address = "objects/cockpits/opengalaxy/";
         }
         else if (name == "cockpits_firststrike")
         {
@@ -84,9 +84,9 @@ public static class OGSettingsFunctions
         {
             address = "objects/radar/";
         }
-        else if (name == "ships_communityassets")
+        else if (name == "ships_opengalaxy")
         {
-            address = "objects/ships/communityassets/";
+            address = "objects/ships/opengalaxy/";
         }
         else if (name == "ships_firststrike")
         {
@@ -139,7 +139,7 @@ public static class OGSettingsFunctions
         //If this doesn't find the file it makes a new one
         if (settingsDataFile == "none")
         {
-            TextAsset internalSettingsDataFile = Resources.Load("Data/Files/Settings") as TextAsset;
+            TextAsset internalSettingsDataFile = Resources.Load("files/Settings") as TextAsset;
             System.IO.File.WriteAllText(Application.persistentDataPath + "/settings.json", internalSettingsDataFile.text);
             settingsDataFile = internalSettingsDataFile.text;
         }
@@ -182,7 +182,7 @@ public static class OGSettingsFunctions
         //If this doesn't find the file it makes a new one
         if (settingsDataFile == "none")
         {
-            TextAsset internalSettingsDataFile = Resources.Load("Data/Files/Settings") as TextAsset;
+            TextAsset internalSettingsDataFile = Resources.Load("files/Settings") as TextAsset;
             System.IO.File.WriteAllText(Application.persistentDataPath + "/settings.json", internalSettingsDataFile.text);
             settingsDataFile = internalSettingsDataFile.text;
         }

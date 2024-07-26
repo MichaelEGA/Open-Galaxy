@@ -8,7 +8,7 @@ public static class OGGetAddress
     public static string asteroids = "objects/debris/asteroids/";
     public static string audioclips = "audio/audioclips/";
     public static string audiomixers = "audio/audiomixers/";
-    public static string cockpits_communityassets = "objects/cockpits/communityassets/";
+    public static string cockpits_opengalaxyassets = "objects/cockpits/opengalaxy/";
     public static string cockpits_firststrike = "objects/cockpits/firststrike/";
     public static string cockpits_galacticconquest = "objects/cockpits/galacticconquest/";
     public static string missioneditor = "missioneditor/";
@@ -28,7 +28,7 @@ public static class OGGetAddress
     public static string planets_cloudmaterials = "objects/planets/cloudmaterials/";
     public static string planets_planetmaterials = "objects/planets/planetmaterials/";
     public static string radar = "objects/radar/";
-    public static string ships_communityassets = "objects/ships/communityassets/";
+    public static string ships_opengalaxyassets = "objects/ships/opengalaxy/";
     public static string ships_firststrike = "objects/ships/firststrike/";
     public static string ships_galacticconquest = "objects/ships/galacticconquest/";
     public static string ships_originaltrilogy = "objects/ships/originaltrilogy/";

@@ -856,16 +856,16 @@ public static class MainMenuFunctions
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
     {
         string[] messages = new string[10];
-        messages[0] = "Welcome to Open Galaxy. Version " + Application.version + " brings overall performance upgrades.";
+        messages[0] = "Welcome to Open Galaxy. Version " + Application.version + " brings AI Tagging and a new cockpit set.";
         messages[1] = "Open Galaxy's aim is to be a platform for X-Wing and Tie Fighter style custom missions.";
         messages[2] = "All Open Galaxy's missions were created using the inbuilt mission editor.";
         messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";
-        messages[4] = "Open Galaxy generates a real Star Wars galaxy with accurately positioned stars and planets.";
+        messages[4] = "Open Galaxy gives complete control to mission creators from events to AI behaviour to ship stats.";
         messages[5] = "Every ship in Open Galaxy handles a little differently. Adapt your tactics accordingly.";
         messages[6] = "Open Galaxy is designed for keyboard and mouse but you can use a controller";
         messages[7] = "Check out the credits to see who made Open Galaxy possible.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
-        messages[9] = "Post 2.0 plans for Open Galaxy include formation flying, ion cannons and a lot more missions";
+        messages[9] = "Post 3.0 plans for Open Galaxy includes new inbuilt missions and a full cockpit set";
         Random.InitState(System.DateTime.Now.Millisecond);
         int randomMessageNo = Random.Range(0, 9);
         titleScreenMessageBox.text = messages[randomMessageNo];

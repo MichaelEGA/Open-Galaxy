@@ -296,46 +296,15 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("city01");
-        options1.Add("desert01");
-        options1.Add("gas01");
-        options1.Add("gas02");
-        options1.Add("gas03");
-        options1.Add("gas04");
-        options1.Add("gas05");
-        options1.Add("habitable01");
-        options1.Add("habitable02");
-        options1.Add("habitable03");
-        options1.Add("rock01");
-        options1.Add("rock02");
-        options1.Add("rock03");
-        options1.Add("rock04");
-        options1.Add("rock05");
-        options1.Add("deathstar");
-        options1.Add("deathstar2");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "planet", "habitable01", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetPlanetList(), "planet", "habitable01", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        List<string> options2 = new List<string>();
-        options2.Add("none");
-        options2.Add("clouds01");
-        options2.Add("clouds02");
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "clouds", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetCloudList(), "clouds", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        List<string> options3 = new List<string>();
-        options3.Add("blue01");
-        options3.Add("orange01");
-        options3.Add("red01");
-        options3.Add("white01");
-        options3.Add("none");
-
-        node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "atmosphere", "blue", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, GetAtmosphereList(), "atmosphere", "blue", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -3683,6 +3652,51 @@ public static class NodeTypes
         }
 
         return trackList;
+    }
+
+    public static List<string> GetPlanetList()
+    {
+        List<string> planetList = new List<string>();
+
+        planetList.Add("deathstar");
+        planetList.Add("deathstar2");
+
+        Object[] planets = Resources.LoadAll(OGGetAddress.planets_planetmaterials, typeof(Material));
+
+        foreach (Object planet in planets)
+        {
+            planetList.Add(planet.name);
+        }
+
+        return planetList;
+    }
+
+    public static List<string> GetAtmosphereList()
+    {
+        List<string> atmosphereList = new List<string>();
+
+        Object[] atmospheres = Resources.LoadAll(OGGetAddress.planets_atmospherematerials, typeof(Material));
+
+        foreach (Object atmosphere in atmospheres)
+        {
+            atmosphereList.Add(atmosphere.name);
+        }
+
+        return atmosphereList;
+    }
+
+    public static List<string> GetCloudList()
+    {
+        List<string> cloudList = new List<string>();
+
+        Object[] clouds = Resources.LoadAll(OGGetAddress.planets_cloudmaterials, typeof(Material));
+
+        foreach (Object cloud in clouds)
+        {
+            cloudList.Add(cloud.name);
+        }
+
+        return cloudList;
     }
 
     #endregion

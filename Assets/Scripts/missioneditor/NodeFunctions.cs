@@ -422,47 +422,53 @@ public class NodeFunctions : MonoBehaviour
     //This draws the base node gameobject
     public static void DrawNodeBase(Node node)
     {
-        //This sets up the base recttransform
-        node.rectTransform = node.gameObject.AddComponent<RectTransform>();
-        node.name = "Node";
+        if (node != null)
+        {
+            if (node.gameObject != null)
+            {
+                //This sets up the base recttransform
+                node.rectTransform = node.gameObject.AddComponent<RectTransform>();
+                node.name = "Node";
 
-        node.rectTransform.sizeDelta = new Vector2(node.sizeX, node.sizeZ);
-        node.rectTransform.localPosition = new Vector2(node.nodePosX, node.nodePosY);
-        node.rectTransform.localScale = new Vector3(1, 1, 1);
+                node.rectTransform.sizeDelta = new Vector2(node.sizeX, node.sizeZ);
+                node.rectTransform.localPosition = new Vector2(node.nodePosX, node.nodePosY);
+                node.rectTransform.localScale = new Vector3(1, 1, 1);
 
-        //This sets up the node highlight
-        GameObject nodeHighlight = new GameObject();
-        nodeHighlight.name = "nodeHighlight";
-        nodeHighlight.transform.SetParent(node.gameObject.transform);
+                //This sets up the node highlight
+                GameObject nodeHighlight = new GameObject();
+                nodeHighlight.name = "nodeHighlight";
+                nodeHighlight.transform.SetParent(node.gameObject.transform);
 
-        Image highlight = nodeHighlight.AddComponent<Image>();
-        highlight.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
-        highlight.type = Image.Type.Sliced;
-        highlight.pixelsPerUnitMultiplier = 5;
+                Image highlight = nodeHighlight.AddComponent<Image>();
+                highlight.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
+                highlight.type = Image.Type.Sliced;
+                highlight.pixelsPerUnitMultiplier = 5;
 
-        node.highlightImage = highlight;
-        node.highlightImage.color = new Color(90f / 250f, 90f / 250f, 90f / 250f);
+                node.highlightImage = highlight;
+                node.highlightImage.color = new Color(90f / 250f, 90f / 250f, 90f / 250f);
 
-        node.highlightRect = nodeHighlight.GetComponent<RectTransform>();
-        node.highlightRect.sizeDelta = new Vector2(node.sizeX + 1, node.sizeZ + 1);
-        node.highlightRect.localPosition = new Vector2(0, 0);
-        node.highlightRect.localScale = new Vector3(1, 1, 1);
+                node.highlightRect = nodeHighlight.GetComponent<RectTransform>();
+                node.highlightRect.sizeDelta = new Vector2(node.sizeX + 1, node.sizeZ + 1);
+                node.highlightRect.localPosition = new Vector2(0, 0);
+                node.highlightRect.localScale = new Vector3(1, 1, 1);
 
-        //This sets up the node background
-        GameObject nodeBackground = new GameObject();
-        nodeBackground.name = "nodeBackground";
-        nodeBackground.transform.SetParent(node.gameObject.transform);
+                //This sets up the node background
+                GameObject nodeBackground = new GameObject();
+                nodeBackground.name = "nodeBackground";
+                nodeBackground.transform.SetParent(node.gameObject.transform);
 
-        Image background = nodeBackground.AddComponent<Image>();
-        background.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
-        background.type = Image.Type.Sliced;
-        background.pixelsPerUnitMultiplier = 5;
-        background.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
+                Image background = nodeBackground.AddComponent<Image>();
+                background.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
+                background.type = Image.Type.Sliced;
+                background.pixelsPerUnitMultiplier = 5;
+                background.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
 
-        node.backgroundRect = nodeBackground.GetComponent<RectTransform>();
-        node.backgroundRect.sizeDelta = new Vector2(node.sizeX, node.sizeZ);
-        node.backgroundRect.localPosition = new Vector2(0, 0);
-        node.backgroundRect.localScale = new Vector3(1, 1, 1);   
+                node.backgroundRect = nodeBackground.GetComponent<RectTransform>();
+                node.backgroundRect.sizeDelta = new Vector2(node.sizeX, node.sizeZ);
+                node.backgroundRect.localPosition = new Vector2(0, 0);
+                node.backgroundRect.localScale = new Vector3(1, 1, 1);
+            }
+        }
     }
 
     //This draws a title

@@ -24,13 +24,13 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Keyboard and Mouse Controls (Implemented)
   - X-Box Controller Controls (Implemented)
 
-**Latest Development Release:** 2.6.82
+**Latest Development Release:** 3.0.0
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.6.82/Open.Galaxy.2.6.82.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.3.0.0/Open.Galaxy.3.0.0.zip
+    
+**Latest Milestone Release:** 3.0.0
 
-**Latest Milestone Release:** 2.0.0
-
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.2.0.0/Open.Galaxy.2.0.0.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.3.0.0/Open.Galaxy.3.0.0.zip
 
 **Roadmap**
 
@@ -40,7 +40,34 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
   - https://github.com/MichaelEGA/Open-Galaxy/wiki
 
+**Controls**  
+  - Mouse Steers
+  - A-D roll left and right
+  - W-S speeds up and slows down
+  - TAB toggles weapons if more than one type is available
+  - CAPS toggles weapon linking (i.e. fire one laser at a time, or two at time, or all at once)
+  - R selects next target
+  - F selects next enemy target if available
+  - Up, down, left, and right control energy management
+  - Left Mouse fires weapons
+  - Right Mouse matches speed
+  - Scan a target by selecting it and then flying close
+
 **Changelog**
+
+26/07/24 - v3.0.0 (Unity 6000.0.2f1)
+  - Added: Latest mission files
+  - Added: Hangars to nbf and xq1 station
+  - Fixed: Direction cursor fades more quickly
+  - Updated: Credits
+  - Added: Open Galaxy as an asset set
+  - Added: Shinyman Planets
+  - Updated: Sentinel cockpit missing face
+  - Added: Sentinel Class Shuttle Cockpit
+  - Updated: lambda class shuttle cockpit
+  - Updated: lambda class shuttle cockpit
+  - Added: Load Single Ship on Ground Node
+  - Added: base lambda shuttle mesh
 
 16/07/24 - v2.6.82 (Unity 6000.0.2f1)
   - Added: Base falcon cockpit

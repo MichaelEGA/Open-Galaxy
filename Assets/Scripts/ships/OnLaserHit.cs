@@ -89,20 +89,35 @@ public class OnLaserHit : MonoBehaviour
 
                 if (type == "laser")
                 {
+
+                    string laserChoice = "explosion04";
+
+                    if (thisSmallShip != null)
+                    {
+                        if (thisSmallShip.laserColor == "red")
+                        {
+                            laserChoice = "explosion04";
+                        }
+                        else if (thisSmallShip.laserColor == "green")
+                        {
+                            laserChoice = "explosion05";
+                        }
+                    }
+
                     if (thisTurret != null)
                     {
                         if (thisTurret.turretType == "large")
                         {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 25, audioManager);
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, laserChoice, 25, audioManager);
                         }
                         else
                         {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 6, audioManager);
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, laserChoice, 6, audioManager);
                         }
                     }
                     else
                     {
-                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "explosion01", 6, audioManager);
+                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, laserChoice, 6, audioManager);
                     }
                 }
                 else if (type == "ion")

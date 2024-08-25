@@ -15,8 +15,8 @@ public static class TurretFunctions
             List<Turret> turrets = new List<Turret>();
             Transform[] turretTransforms = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "turret", "turrettransforms");
 
-            GameObject turretLarge = Resources.Load(OGGetAddress.turrets + largeShip.prefabName + "_turretlarge") as GameObject;
-            GameObject turretSmall = Resources.Load(OGGetAddress.turrets + largeShip.prefabName + "_turretsmall") as GameObject;
+            GameObject turretLarge = Resources.Load(OGGetAddress.turrets + largeShip.largeturret) as GameObject;
+            GameObject turretSmall = Resources.Load(OGGetAddress.turrets + largeShip.smallturret) as GameObject;
 
             foreach (Transform turretTransform in turretTransforms)
             {
@@ -26,11 +26,17 @@ public static class TurretFunctions
 
                     if (turretTransform.name == "turretsmall")
                     {
-                        turretGameObject = GameObject.Instantiate(turretSmall);
+                        if (turretSmall != null)
+                        {
+                            turretGameObject = GameObject.Instantiate(turretSmall);
+                        }
                     }
                     else if (turretTransform.name == "turretlarge")
                     {
-                        turretGameObject = GameObject.Instantiate(turretLarge);
+                        if (turretLarge != null)
+                        {
+                            turretGameObject = GameObject.Instantiate(turretLarge);
+                        }
                     }
 
                     if (turretGameObject != null)

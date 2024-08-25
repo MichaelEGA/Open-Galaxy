@@ -656,7 +656,7 @@ public static class TargetingFunctions
         //This checks for the closest small ship first
         foreach (SmallShip tempSmallShip in scene.smallShips)
         {
-            if (tempSmallShip != null)
+            if (tempSmallShip != null & smallShip != null)
             {
                 if (tempSmallShip.gameObject.activeSelf == true & tempSmallShip != null)
                 {

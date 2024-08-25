@@ -1495,7 +1495,10 @@ public static class SmallShipFunctions
             yield return null;
         }
 
-        wing.transform.localRotation = endRotation;
+        if (wing != null)
+        {
+            wing.transform.localRotation = endRotation;
+        }
     }
 
     //Snaps the wing open

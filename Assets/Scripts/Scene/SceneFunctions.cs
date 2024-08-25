@@ -1354,6 +1354,8 @@ public static class SceneFunctions
                 largeShip.loadTime = Time.time;
                 largeShip.cargo = cargo;
                 largeShip.explosionType = shipType.explosionType;
+                largeShip.smallturret = shipType.smallturret;
+                largeShip.largeturret = shipType.largeturret;
                 ship.name = largeShip.name;
             }
 

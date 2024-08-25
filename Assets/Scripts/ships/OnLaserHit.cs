@@ -89,7 +89,7 @@ public class OnLaserHit : MonoBehaviour
 
                 if (type == "laser")
                 {
-
+                    //This selects the correct explosion colour
                     string laserChoice = "explosion04";
 
                     if (thisSmallShip != null)
@@ -104,6 +104,19 @@ public class OnLaserHit : MonoBehaviour
                         }
                     }
 
+                    if (thisTurret != null)
+                    {
+                        if (thisTurret.laserColor == "red")
+                        {
+                            laserChoice = "explosion04";
+                        }
+                        else if (thisTurret.laserColor == "green")
+                        {
+                            laserChoice = "explosion05";
+                        }
+                    }
+
+                    //This instantiates an explosion at the point of impact
                     if (thisTurret != null)
                     {
                         if (thisTurret.turretType == "large")

@@ -25,6 +25,8 @@ public class ShipType
     public string thrustType;
     public string shipClass;
     public string explosionType;
+    public string smallturret;
+    public string largeturret;
 }
 
 [System.Serializable]

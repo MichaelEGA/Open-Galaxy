@@ -3,7 +3,7 @@
 Gameplay
 ![image](https://github.com/user-attachments/assets/24d27e84-eb47-438b-82b4-107a0fa671b7)
 
-![348623317-eb458da9-f24f-4c55-99b6-2638027fbc91](https://github.com/user-attachments/assets/744b6822-e9d0-4fd1-ba7e-461f83715572)
+![image](https://github.com/user-attachments/assets/6d92db28-8d50-443c-a813-314bf78fdf83)
 
 Mission Editor
 ![Screenshot (241)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/ac67c4b6-49b7-4452-9ff4-708156414d80)
@@ -24,9 +24,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Keyboard and Mouse Controls (Implemented)
   - X-Box Controller Controls (Implemented)
 
-**Latest Development Release:** 3.0.0
+**Latest Development Release:** 3.5.01
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.3.0.0/Open.Galaxy.3.0.0.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.3.5.01/Open.Galaxy.3.5.01.zip
     
 **Latest Milestone Release:** 3.0.0
 
@@ -54,6 +54,16 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Scan a target by selecting it and then flying close
 
 **Changelog**
+
+26/07/24 - v3.5.01 (Unity 6000.0.15f1)
+  - Added: Radar objects for new star destroyers
+  - Added: Turrets to new star destroyers
+  - Updated: Universalised turret selection
+  - Added: New star destroyer models
+  - Added: Drive glows for galactic conquest assets
+  - Added: Drive glows to Original Trilogy Asset Ships
+  - Added: New snow speeder cockpit
+  - Added: Drive glows for all First Strike ship assets
 
 26/07/24 - v3.0.0 (Unity 6000.0.2f1)
   - Added: Latest mission files

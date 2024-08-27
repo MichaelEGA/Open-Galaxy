@@ -1,7 +1,7 @@
 # Open-Galaxy
 
 Gameplay
-![image](https://github.com/user-attachments/assets/24d27e84-eb47-438b-82b4-107a0fa671b7)
+![image](https://github.com/user-attachments/assets/e92bcdf2-ba3e-4e61-a8e5-b316f7670f9c)
 
 ![image](https://github.com/user-attachments/assets/6d92db28-8d50-443c-a813-314bf78fdf83)
 

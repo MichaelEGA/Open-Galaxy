@@ -18,6 +18,7 @@ public static class LargeShipFunctions
             largeShip.LODs = GameObjectUtils.GetLODs(largeShip.gameObject);
             largeShip.colliders = largeShip.GetComponentsInChildren<MeshCollider>();
             largeShip.castPoint = largeShip.gameObject.transform.Find("castPoint");
+            largeShip.explosionPoints = GameObjectUtils.FindAllChildTransformsContaining(largeShip.gameObject.transform, "explosionPoint");
             CreateWaypoint(largeShip);
             DockingFunctions.AddDockingPointsLargeShip(largeShip);
 
@@ -417,47 +418,89 @@ public static class LargeShipFunctions
 
         yield return new WaitForSeconds(2);
 
-        if (largeShip != null)
+        if (largeShip.explosionPoints != null)
         {
-            if (largeShip.scene != null)
+            foreach (Transform explosionPoint in largeShip.explosionPoints)
             {
-                ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.forward * -Random.Range(50, 100), "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+                if (explosionPoint != null)
+                {
+                    if (largeShip != null)
+                    {
+                        if (largeShip.scene != null)
+                        {
+                            if (explosionPoint.name.Contains("large"))
+                            {
+                                ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, explosionPoint.position, "explosion02", 500, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+                            }
+                            else
+                            {
+                                ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, explosionPoint.position, "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+                            }
+
+                            yield return new WaitForSeconds(2);
+                        }
+                    }
+                }
+            }
+
+            if (largeShip != null)
+            {
+                if (largeShip.scene != null)
+                {
+                    ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion03", largeShip.shipLength + 100, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
+
+                    HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
+
+                    DeactivateShip(largeShip);
+                }
+            }
+        }
+        else
+        {
+            if (largeShip != null)
+            {
+                if (largeShip.scene != null)
+                {
+                    ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.forward * -Random.Range(50, 100), "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+                }
+            }
+
+            yield return new WaitForSeconds(2);
+
+            if (largeShip != null)
+            {
+                if (largeShip.scene != null)
+                {
+                    ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.right * Random.Range(25, 50), "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+                }
+            }
+
+            yield return new WaitForSeconds(2);
+
+            if (largeShip != null)
+            {
+                if (largeShip.scene != null)
+                {
+                    ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.right * -Random.Range(25, 50), "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+                }
+            }
+
+            yield return new WaitForSeconds(2);
+
+            if (largeShip != null)
+            {
+                if (largeShip.scene != null)
+                {
+                    ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion03", largeShip.shipLength + 100, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
+
+                    HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
+
+                    DeactivateShip(largeShip);
+                }
             }
         }
 
-        yield return new WaitForSeconds(2);
-
-        if (largeShip != null)
-        {
-            if (largeShip.scene != null)
-            {
-                ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.right * Random.Range(25, 50), "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
-            }
-        }
-
-        yield return new WaitForSeconds(2);
-
-        if (largeShip != null)
-        {
-            if (largeShip.scene != null)
-            {
-                ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position + Vector3.right * -Random.Range(25, 50), "explosion02", 125, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
-            }
-        }
-
-        yield return new WaitForSeconds(2);
-
-        if (largeShip != null)
-        {
-            if (largeShip.scene != null)
-            {
-                ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion03", 1000, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
-
-                HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
-
-                DeactivateShip(largeShip);
-            }
-        }
+       
     }
 
     //Ship blows up straight away

@@ -1356,6 +1356,7 @@ public static class SceneFunctions
                 largeShip.explosionType = shipType.explosionType;
                 largeShip.smallturret = shipType.smallturret;
                 largeShip.largeturret = shipType.largeturret;
+                largeShip.shipLength = shipType.shipLength;
                 ship.name = largeShip.name;
             }
 

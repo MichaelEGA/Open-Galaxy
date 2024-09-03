@@ -27,6 +27,7 @@ public class ShipType
     public string explosionType;
     public string smallturret;
     public string largeturret;
+    public float shipLength;
 }
 
 [System.Serializable]

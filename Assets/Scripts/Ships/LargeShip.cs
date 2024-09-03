@@ -16,11 +16,13 @@ public class LargeShip : MonoBehaviour
     public string cargo = "no cargo";
     public string thrustType = "thruster_blue_large";
     public string explosionType;
+    public float shipLength;
     [HideInInspector] public bool explode;
 
     [Header("Ship Components")]
     [HideInInspector] public Rigidbody shipRigidbody;
     [HideInInspector] public Collider[] colliders;
+    [HideInInspector] public Transform[] explosionPoints;
 
     [Header("Ship LODs")]
     public Scene scene;

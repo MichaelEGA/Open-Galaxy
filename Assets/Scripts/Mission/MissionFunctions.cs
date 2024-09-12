@@ -661,6 +661,11 @@ public static class MissionFunctions
             SetWaypoint(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "setwaypointtoship")
+        {
+            SetWaypointToShip(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
     }
 
     #endregion
@@ -3090,7 +3095,7 @@ public static class MissionFunctions
         }
     }
 
-    //This tells a ship or ships to move toward a waypoint by position its waypoint and setting its ai override mode
+    //This moves a ships waypoint to the designated position
     public static void SetWaypoint(MissionEvent missionEvent)
     {
         Scene scene = SceneFunctions.GetScene();
@@ -3130,6 +3135,66 @@ public static class MissionFunctions
                                 Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
 
                                 largeShip.waypoint.transform.position = waypoint;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //This moves a ships waypoint to the position of the designated ship
+    public static void SetWaypointToShip(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            if (smallShip.waypoint != null)
+                            {
+                                foreach (GameObject ship2 in scene.objectPool)
+                                {
+                                    if (ship.name.Contains(missionEvent.data2))
+                                    {
+                                        float x = ship2.transform.position.x;
+                                        float y = ship2.transform.position.y;
+                                        float z = ship2.transform.position.z;
+                                        Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
+
+                                        smallShip.waypoint.transform.position = waypoint;
+                                    }
+                                }
+                            }
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            if (largeShip.waypoint != null)
+                            {
+                                foreach (GameObject ship2 in scene.objectPool)
+                                {
+                                    if (ship.name.Contains(missionEvent.data2))
+                                    {
+                                        float x = ship2.transform.position.x;
+                                        float y = ship2.transform.position.y;
+                                        float z = ship2.transform.position.z;
+                                        Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
+
+                                        smallShip.waypoint.transform.position = waypoint;
+                                    }
+                                }
                             }
                         }
                     }

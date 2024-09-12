@@ -119,6 +119,7 @@ public static class WindowFunctions
         buttonList.Add("setshiptoinvincible");
         buttonList.Add("settorpedoes");
         buttonList.Add("setwaypoint");
+        buttonList.Add("setwaypointtoship");
         buttonList.Add("spliteventseries");
         buttonList.Add("starteventseries");
 

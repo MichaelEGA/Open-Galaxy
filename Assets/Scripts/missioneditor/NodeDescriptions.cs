@@ -724,7 +724,21 @@ public static class NodeDescriptions
             "Allows you to set the position of the ships waypoint \n" +
             "\n " +
             "Extra Information \n" +
-            "- Every ship has a waypoint. Settings its position can be useful for a number of purposes. \n" +
+            "- Every ship has a waypoint. Setting its position can be useful for a number of purposes. \n" +
+            "- You can check a ships distance to its waypoint using the 'ifshipislessthandistancetowaypoint' function. \n" +
+            "- You can direct an ai ship to fly toward its waypoint by setting the ai override to 'movetowaypoint'. \n" +
+            "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
+        else if (name == "setwaypointtoship")
+        {
+            description =
+            "Set Waypoint To Ship \n " +
+            "\n " +
+            "Allows you to set the position of the ships waypoint to the position of another ship \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- Every ship has a waypoint. Setting its position can be useful for a number of purposes. \n" +
             "- You can check a ships distance to its waypoint using the 'ifshipislessthandistancetowaypoint' function. \n" +
             "- You can direct an ai ship to fly toward its waypoint by setting the ai override to 'movetowaypoint'. \n" +
             "- This function will affect any ship whose name contains the designated string. \n" +

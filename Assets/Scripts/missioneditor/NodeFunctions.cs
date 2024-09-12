@@ -237,6 +237,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_SetWayPoint(node);
         }
+        else if (node.nodeType == "setwaypointtoship")
+        {
+            NodeTypes.Draw_SetWayPointToShip(node);
+        }
         else if (node.nodeType == "spliteventseries")
         {
             NodeTypes.Draw_SplitEventSeries(node);
@@ -244,10 +248,6 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "starteventseries")
         {
             NodeTypes.Draw_StartEventSeries(node);
-        }
-        else
-        {
-            NodeTypes.Draw_CustomNode(node);
         }
     }
 

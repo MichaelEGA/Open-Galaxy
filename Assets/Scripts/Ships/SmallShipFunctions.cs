@@ -1070,7 +1070,12 @@ public static class SmallShipFunctions
                 //This tells the player that the ship has been destroyed
                 HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was disabled");
                 smallShip.isDisabled = true;
-                smallShip.engineAudioSource.Stop();
+
+                //This creates an explosion where the ship is
+                ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "lightning", 12);
+
+                //This makes an explosion sound
+                AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact01_laserhitshield", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
             }
         }
     }

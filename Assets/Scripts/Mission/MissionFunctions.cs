@@ -424,6 +424,19 @@ public static class MissionFunctions
             DisplayMissionBriefing(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "ifobjectiveisactive")
+        {
+            bool ifObjectiveIsActive = IfObjectiveIsActive(missionEvent);
+
+            if (ifObjectiveIsActive == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
         else if (missionEvent.eventType == "ifshipshullislessthan")
         {
             bool isLessThan = IfShipsHullIsLessThan(missionEvent);
@@ -1234,6 +1247,27 @@ public static class MissionFunctions
         }
 
         MissionBriefingFunctions.ActivateMissionBriefing(message, missionBriefingAudio);
+    }
+
+    //This checks whether a mission objective is active or not
+    public static bool IfObjectiveIsActive(MissionEvent missionEvent)
+    {
+        bool objectiveIsActive = false;
+
+        Hud hud = HudFunctions.GetHud();
+
+        if (hud != null)
+        {
+            if (hud.objectiveLog != null)
+            {
+                if (hud.objectiveLog.text.Contains(missionEvent.data1))
+                {
+                    objectiveIsActive = true;
+                }
+            }
+        }
+
+        return objectiveIsActive;
     }
 
     //This checks the ship distance to its waypoint
@@ -3164,14 +3198,9 @@ public static class MissionFunctions
                             {
                                 foreach (GameObject ship2 in scene.objectPool)
                                 {
-                                    if (ship.name.Contains(missionEvent.data2))
+                                    if (ship2.name.Contains(missionEvent.data2))
                                     {
-                                        float x = ship2.transform.position.x;
-                                        float y = ship2.transform.position.y;
-                                        float z = ship2.transform.position.z;
-                                        Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
-
-                                        smallShip.waypoint.transform.position = waypoint;
+                                        smallShip.waypoint.transform.position = ship2.transform.position;
                                     }
                                 }
                             }
@@ -3185,14 +3214,9 @@ public static class MissionFunctions
                             {
                                 foreach (GameObject ship2 in scene.objectPool)
                                 {
-                                    if (ship.name.Contains(missionEvent.data2))
+                                    if (ship2.name.Contains(missionEvent.data2))
                                     {
-                                        float x = ship2.transform.position.x;
-                                        float y = ship2.transform.position.y;
-                                        float z = ship2.transform.position.z;
-                                        Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
-
-                                        smallShip.waypoint.transform.position = waypoint;
+                                        largeShip.waypoint.transform.position = ship2.transform.position;
                                     }
                                 }
                             }

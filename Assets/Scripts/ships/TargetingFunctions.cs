@@ -52,8 +52,8 @@ public static class TargetingFunctions
 
                 Vector3 targettingErrorMargin = smallShip.aiTargetingErrorMargin;
                 float distanceToIntercept = ((targetPosition) - shipPosition).magnitude / 750f;
-                Vector3 interceptPosition = (targetPosition + targettingErrorMargin) + targetVelocity * distanceToIntercept;
 
+                Vector3 interceptPosition = (targetPosition + targettingErrorMargin) + targetVelocity * distanceToIntercept;
                 Vector3 interceptRelativePosition = interceptPosition - shipPosition;
 
                 smallShip.interceptDistance = Vector3.Distance(interceptPosition, shipPosition);

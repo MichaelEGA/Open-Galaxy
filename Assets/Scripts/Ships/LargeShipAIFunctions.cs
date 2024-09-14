@@ -41,12 +41,13 @@ public static class LargeShipAIFunctions
     {
         if (largeShip != null)
         {
-            if (tag == "matchspeed" || tag == "fullspeed" || tag == "threequarterspeed" || tag == "halfspeed" || tag == "quarterspeed" || tag == "nospeed")
+            if (tag == "matchspeed" || tag == "fullspeed" || tag == "threequarterspeed" || tag == "halfspeed" || tag == "quarterspeed" || tag == "dynamicspeed" || tag == "nospeed")
             {
                 RemoveSingleTag(largeShip, "fullspeed");
                 RemoveSingleTag(largeShip, "threequarterspeed");
                 RemoveSingleTag(largeShip, "halfspeed");
                 RemoveSingleTag(largeShip, "quarterspeed");
+                RemoveSingleTag(largeShip, "dynamicspeed");
                 RemoveSingleTag(largeShip, "nospeed");
             }
             else if (tag == "fireweapons" || tag == "noweapons")
@@ -144,6 +145,10 @@ public static class LargeShipAIFunctions
                     {
                         QuarterSpeed(largeShip);
                     }
+                    else if (tag == "dynamicspeed")
+                    {
+                        DynamicSpeed(largeShip);
+                    }
                     else if (tag == "nospeed")
                     {
                         NoSpeed(largeShip);
@@ -197,22 +202,7 @@ public static class LargeShipAIFunctions
     #endregion
 
     #region AI Speed Functions
-
-    //This sets the ship to half speed (typically used when no enemies are detected)
-    public static void MatchSpeed(LargeShip largeShip)
-    {
-        float oneThird = (largeShip.speedRating / 3f);
-
-        if (largeShip.thrustSpeed > largeShip.targetSpeed & largeShip.thrustSpeed > oneThird)
-        {
-            largeShip.thrustInput = -1;
-        }
-        else
-        {
-            largeShip.thrustInput = 1;
-        }
-    }
-
+  
     //This sets the ship to half speed (typically used when no enemies are detected)
     public static void FullSpeed(LargeShip largeShip)
     {
@@ -264,6 +254,66 @@ public static class LargeShipAIFunctions
         }
     }
 
+    //This changes the speed of the ship dynamically to allow for a fast speed and sharp turns
+    public static void DynamicSpeed(LargeShip largeShip)
+    {
+        if (largeShip != null)
+        {
+            if (TagExists(largeShip, "movetowaypoint"))
+            {
+                if (largeShip.waypointForward < 0.95f)
+                {
+                    if (largeShip.thrustSpeed > 0)
+                    {
+                        largeShip.thrustInput = -1;
+                    }
+                }
+                else
+                {
+                    if (largeShip.thrustSpeed < largeShip.speedRating)
+                    {
+                        largeShip.thrustInput = 1;
+                    }
+                    else
+                    {
+                        largeShip.thrustInput = -1;
+                    }
+                }
+            }
+            else if (largeShip.target != null)
+            {
+                if (largeShip.targetDistance > 1000)
+                {
+                    if (largeShip.targetForward < 0.5f)
+                    {
+                        float halfSpeed = (largeShip.speedRating / 2f);
+
+                        if (largeShip.thrustSpeed > halfSpeed)
+                        {
+                            largeShip.thrustInput = -1;
+                        }
+                        else
+                        {
+                            largeShip.thrustInput = 1;
+                        }
+                    }
+                    else
+                    {
+                        FullSpeed(largeShip);
+                    }
+                }
+                else
+                {
+                    MatchSpeed(largeShip);
+                }
+            }
+            else
+            {
+                NoSpeed(largeShip);
+            }
+        }
+    }
+
     //This sets the ship to half speed (typically used when no enemies are detected)
     public static void NoSpeed(LargeShip largeShip)
     {
@@ -276,6 +326,22 @@ public static class LargeShipAIFunctions
             largeShip.thrustInput = 0;
         }
     }
+
+    //This sets the ship to half speed (typically used when no enemies are detected)
+    public static void MatchSpeed(LargeShip largeShip)
+    {
+        float oneThird = (largeShip.speedRating / 3f);
+
+        if (largeShip.thrustSpeed > largeShip.targetSpeed & largeShip.thrustSpeed > oneThird)
+        {
+            largeShip.thrustInput = -1;
+        }
+        else
+        {
+            largeShip.thrustInput = 1;
+        }
+    }
+
 
     #endregion
 
@@ -302,12 +368,10 @@ public static class LargeShipAIFunctions
     {
         if (largeShip.targetDistance > 1000)
         {
-            FullSpeed(largeShip);
             AngleTowardsTarget(largeShip);
         }
         else
         {
-            NoSpeed(largeShip);
             KeepTargetOnRight(largeShip);
         }
     }
@@ -317,12 +381,10 @@ public static class LargeShipAIFunctions
     {
         if (largeShip.targetDistance > 1500)
         {
-            FullSpeed(largeShip);
             AngleTowardsTarget(largeShip);
         }
         else
         {
-            FullSpeed(largeShip);
             KeepTargetOnRight(largeShip);
         }
     }
@@ -330,7 +392,6 @@ public static class LargeShipAIFunctions
     //This angles towards the ships waypoint
     public static void MoveToWayPoint(LargeShip largeShip)
     {
-        ThreeQuarterSpeed(largeShip);
         AngleTowardsWaypoint(largeShip);
     }
 

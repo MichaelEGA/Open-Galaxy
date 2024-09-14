@@ -337,6 +337,19 @@ public static class NodeDescriptions
             "- WARNING: This node is under development. Expect it to change over time. \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "ifobjectiveisactive")
+        {
+            description =
+            "If Objective is Active \n " +
+            "\n " +
+            "This node checks to see whether an objective is active or not. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- This node will return a result if the current list of objectives contains the given text.  \n" +
+            "- This string is case sensitive. If you write 'destroy tie fighters' and you are looking for 'DESTROY TIE FIGHTERS' the function wont find it. \n" +
+            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+            "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
         else if (name == "ifshipshullislessthan")
         {
             description =

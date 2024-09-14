@@ -1065,7 +1065,8 @@ public static class SmallShipFunctions
                 Task a = new Task(CockpitFunctions.CockpitDamageShake(smallShip, 1, 0.011f));
                 AddTaskToPool(smallShip, a);
             }
-            else if (smallShip.isDisabled == false)
+
+            if (smallShip.isDisabled == false & smallShip.systemsLevel < 1)
             {
                 //This tells the player that the ship has been destroyed
                 HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was disabled");

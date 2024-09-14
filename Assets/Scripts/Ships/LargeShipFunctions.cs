@@ -355,12 +355,12 @@ public static class LargeShipFunctions
                 if (largeShip.shieldLevel < 0) { largeShip.shieldLevel = 0; }
             }
         }
-        else if (largeShip.isDisabled == false)
+
+        if (largeShip.isDisabled == false & largeShip.systemsLevel < 1)
         {
             //This tells the player that the ship has been destroyed
             HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was disabled");
             largeShip.isDisabled = true;
-            largeShip.engineAudioSource.Stop();
         }
     }
 

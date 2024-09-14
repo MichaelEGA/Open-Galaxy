@@ -69,6 +69,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ExitMission(node);
         }
+        else if (node.nodeType == "ifobjectiveisactive")
+        {
+            NodeTypes.Draw_IfObjectiveIsActive(node);
+        }
         else if (node.nodeType == "ifshipshullislessthan")
         {
             NodeTypes.Draw_IfShipsHullIsLessThan(node);

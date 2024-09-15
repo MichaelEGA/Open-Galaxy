@@ -71,6 +71,7 @@ public class LargeShip : MonoBehaviour
 
     [Header("Ship Levels")]
     public bool invincible = false;
+    public bool cannotbedisabled = false;
     public bool isDisabled = false;
     public float hullLevel = 100;
     public float shieldLevel = 200;

@@ -117,6 +117,7 @@ public static class WindowFunctions
         buttonList.Add("setshipstats");
         buttonList.Add("setshiptarget");
         buttonList.Add("setshiptargettoclosestenemy");
+        buttonList.Add("setshiptocannotbedisabled");
         buttonList.Add("setshiptoinvincible");
         buttonList.Add("settorpedoes");
         buttonList.Add("setwaypoint");

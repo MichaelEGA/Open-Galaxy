@@ -1046,7 +1046,7 @@ public static class SmallShipFunctions
                     }
                     else
                     {
-                        if (smallShip.systemsLevel - damage < 5 & smallShip.invincible == true)
+                        if (smallShip.systemsLevel - damage < 5 & smallShip.cannotbedisabled == true)
                         {
                             smallShip.systemsLevel = 5;
                         }

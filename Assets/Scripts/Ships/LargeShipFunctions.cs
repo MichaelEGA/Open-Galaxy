@@ -339,7 +339,7 @@ public static class LargeShipFunctions
                     }
                     else
                     {
-                        if (largeShip.systemsLevel - damage < 5 & largeShip.invincible == true)
+                        if (largeShip.systemsLevel - damage < 5 & largeShip.cannotbedisabled == true)
                         {
                             largeShip.systemsLevel = 5;
                         }

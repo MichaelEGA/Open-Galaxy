@@ -659,6 +659,11 @@ public static class MissionFunctions
             SetShipTargetToClosestEnemy(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "setshiptocannotbedisabled")
+        {
+            SetShipToCannotBeDisabled(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "setshiptoinvincible")
         {
             SetShipToInvincible(missionEvent);
@@ -2666,6 +2671,46 @@ public static class MissionFunctions
                         {
                             smallShip.allegiance = missionEvent.data2;
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    //This tells a ship or ships to move toward a waypoint by position its waypoint and setting its ai override mode
+    public static void SetShipToCannotBeDisabled(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool cannotBeDisabled = false;
+
+        if (missionEvent.data2 != "none")
+        {
+            cannotBeDisabled = bool.Parse(missionEvent.data2);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            smallShip.cannotbedisabled = cannotBeDisabled;
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            largeShip.cannotbedisabled = cannotBeDisabled;
+                        }
+
                     }
                 }
             }

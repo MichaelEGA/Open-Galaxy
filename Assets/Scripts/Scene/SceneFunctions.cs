@@ -1798,7 +1798,7 @@ public static class SceneFunctions
             {
                 int shipNo = i + 1;
 
-                LoadSingleShip(hangarLaunch.localPosition, hangarLaunch.localRotation, type, name + shipNo.ToString("00"), allegiance, cargo, false, true, false, laserColor);
+                LoadSingleShip(hangarLaunch.position, hangarLaunch.rotation, type, name + shipNo.ToString("00"), allegiance, cargo, false, true, true, laserColor);
 
                 yield return new WaitForSeconds(delay);
             }

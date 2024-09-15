@@ -706,6 +706,18 @@ public static class NodeDescriptions
             "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "setshiptocannotbedisabled")
+        {
+            description =
+             "Set Ship To Cannot Be Disabled \n " +
+             "\n " +
+             "This function sets the designated ship so that it cannot be disbaled by ion cannons. \n" +
+             "\n " +
+             "Extra Information \n" +
+             "- A ship that is set to cannotbedisabled will still receive system damage until it only has 5 points of health left. \n" +
+             "- This function will affect any ship whose name contains the designated string. \n" +
+           "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
         else if (name == "setshiptoinvincible")
         {
             description =

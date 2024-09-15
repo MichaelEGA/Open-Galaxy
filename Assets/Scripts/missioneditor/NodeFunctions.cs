@@ -229,7 +229,11 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_SetShipTargetToClosestEnemy(node);
         }
-        else if (node.nodeType == "setshiptoinvincible")
+        else if (node.nodeType == "setshiptocannotbedisabled")
+        {
+            NodeTypes.Draw_SetShipToCannotBeDisabled(node);
+        }
+        else if (node.nodeType == "setshiptocannotbedisabled")
         {
             NodeTypes.Draw_SetShipToInvincible(node);
         }

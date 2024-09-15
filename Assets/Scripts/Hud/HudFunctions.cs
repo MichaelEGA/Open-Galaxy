@@ -1722,7 +1722,7 @@ public static class HudFunctions
 
             if (hud != null)
             {
-                if (hud.title == null)
+                if (hud.hint == null)
                 {
                     GameObject hint = GameObject.Find("Hint");
                     if (hint != null) { hud.hint = hint.GetComponent<Text>(); }
@@ -1730,9 +1730,9 @@ public static class HudFunctions
 
                 if (hud.hint != null)
                 {
-                    hud.title.text = hintText;
-                    hud.title.fontSize = fontsize;
-                    Task a = new Task(FadeTextInAndOut(hud.title, 0.5f, 3, 0.5f)); //This fades the title in and out
+                    hud.hint.text = hintText;
+                    hud.hint.fontSize = fontsize;
+                    Task a = new Task(FadeTextInAndOut(hud.hint, 0.5f, 10, 0.5f)); //This fades the title in and out
                     AddTaskToPool(hud, a);
                 }
             }

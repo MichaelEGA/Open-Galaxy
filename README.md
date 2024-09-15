@@ -24,6 +24,19 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Keyboard and Mouse Controls (Implemented)
   - X-Box Controller Controls (Implemented)
 
+**Controls**  
+  - Mouse Steers
+  - A-D roll left and right
+  - W-S speeds up and slows down
+  - TAB toggles weapons if more than one type is available
+  - CAPS toggles weapon linking (i.e. fire one laser at a time, or two at time, or all at once)
+  - R selects next target
+  - F selects next enemy target if available
+  - Up, down, left, and right control energy management
+  - Left Mouse fires weapons
+  - Right Mouse matches speed
+  - Scan a target by selecting it and then flying close
+
 **Latest Development Release:** 3.5.01
 
   - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.3.5.01/Open.Galaxy.3.5.01.zip
@@ -39,19 +52,6 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 **Wiki and Mission Editor Tutorials**
 
   - https://github.com/MichaelEGA/Open-Galaxy/wiki
-
-**Controls**  
-  - Mouse Steers
-  - A-D roll left and right
-  - W-S speeds up and slows down
-  - TAB toggles weapons if more than one type is available
-  - CAPS toggles weapon linking (i.e. fire one laser at a time, or two at time, or all at once)
-  - R selects next target
-  - F selects next enemy target if available
-  - Up, down, left, and right control energy management
-  - Left Mouse fires weapons
-  - Right Mouse matches speed
-  - Scan a target by selecting it and then flying close
 
 **Changelog**
 

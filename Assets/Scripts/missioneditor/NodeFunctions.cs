@@ -53,6 +53,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DisplayDialogueBox(node);
         }
+        else if (node.nodeType == "displayhint")
+        {
+            NodeTypes.Draw_DisplayHint(node);
+        }
         else if (node.nodeType == "displaytitle")
         {
             NodeTypes.Draw_DisplayTitle(node);

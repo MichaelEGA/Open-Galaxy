@@ -409,6 +409,11 @@ public static class MissionFunctions
             DisplayDialogueBox(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "displayhint")
+        {
+            DisplayHint(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "displaytitle")
         {
             DisplayTitle(missionEvent);
@@ -1195,6 +1200,20 @@ public static class MissionFunctions
     public static void DisplayDialogueBox(MissionEvent missionEvent)
     {
         DialogueBoxFunctions.DisplayDialogueBox(true, missionEvent.data1);
+    }
+
+    //This temporary displays a large print hint in the center bottom of the screen
+    public static void DisplayHint(MissionEvent missionEvent)
+    {
+        string hint = missionEvent.data1;
+        int fontsize = 12;
+
+        if (int.TryParse(missionEvent.data2, out _))
+        {
+            fontsize = int.Parse(missionEvent.data2);
+        }
+
+        HudFunctions.DisplayHint(hint, fontsize);
     }
 
     //This temporary displays a large message in the center of the screen

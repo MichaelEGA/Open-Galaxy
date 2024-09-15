@@ -73,6 +73,7 @@ public static class WindowFunctions
         buttonList.Add("custom_node");
         buttonList.Add("deactivateship");
         buttonList.Add("displaydialoguebox");
+        buttonList.Add("displayhint");
         buttonList.Add("displaytitle");
         buttonList.Add("displaymessage");
         buttonList.Add("displaymissionbriefing");

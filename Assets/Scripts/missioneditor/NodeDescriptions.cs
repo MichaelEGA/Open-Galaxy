@@ -302,6 +302,16 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "displayhint")
+        {
+            description =
+            "Display Hint \n " +
+            "\n " +
+            "This node displays a hint in the middle bottom of the screen, like 'HINT: Press CAPS to change your weapons' or similar for a short period of time. \n" +
+            "\n " +
+           "Extra Information \n" +
+            "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
         else if (name == "displaytitle")
         {
             description =

@@ -1653,32 +1653,12 @@ public static class HudFunctions
         }      
     }
 
-    //This updates the location of the ship and the selected location
-    public static void UpdateLocation(string currentLocation, string selectedLocation)
-    {
-        Hud hud = GetHud();
-
-        if (hud != null)
-        {
-            if (hud.destination == null)
-            {
-                GameObject destinationGO = GameObject.Find("Destination");
-                hud.destination = destinationGO.GetComponent<Text>();
-            }
-
-            if (hud.destination != null)
-            {
-                hud.destination.text = "LOC: " + currentLocation.ToUpper() + "\n" + "DES: " + selectedLocation.ToUpper();
-            }
-        }      
-    }
-
     #endregion
 
-    #region location display
+    #region player information
 
     //This briefly displays a message in large text in the middle of the screen
-    public static void DisplayTitle(string location, int fontsize, string colour = "#FFFFFF")
+    public static void DisplayTitle(string title, int fontsize, string colour = "#FFFFFF")
     {
         if (Time.timeScale != 0)
         {
@@ -1691,10 +1671,10 @@ public static class HudFunctions
 
             if (hud != null)
             {
-                if (hud.locationInfo == null)
+                if (hud.title == null)
                 {
                     GameObject locationInfo = GameObject.Find("LocationInfo");
-                    if (locationInfo != null) { hud.locationInfo = locationInfo.GetComponent<Text>(); }
+                    if (locationInfo != null) { hud.title = locationInfo.GetComponent<Text>(); }
                 }
 
                 if (hud.reticule == null)
@@ -1703,7 +1683,7 @@ public static class HudFunctions
                     if (reticule != null) { hud.reticule = reticule.GetComponent<RawImage>(); }
                 }
 
-                if (hud.locationInfo != null & hud.reticule != null)
+                if (hud.title != null & hud.reticule != null)
                 {
                     if (!colour.Contains("#"))
                     {
@@ -1714,18 +1694,49 @@ public static class HudFunctions
                             //Do nothing
                         }
 
-                        hud.locationInfo.color = newColour;
+                        hud.title.color = newColour;
                     }
 
-                    hud.locationInfo.text = location;
-                    hud.locationInfo.fontSize = fontsize;
-                    Task a = new Task(FadeTextInAndOut(hud.locationInfo, 0.5f, 3, 0.5f)); //This fades the title in and out
+                    hud.title.text = title;
+                    hud.title.fontSize = fontsize;
+                    Task a = new Task(FadeTextInAndOut(hud.title, 0.5f, 3, 0.5f)); //This fades the title in and out
                     AddTaskToPool(hud, a);
                     Task b = new Task(FadeImageOutAndIn(hud.reticule, 0.25f, 4, 0.5f)); //This briefly fades the hud reticule to avoid a clash with the title
                     AddTaskToPool(hud, b);
                 }
             }
         } 
+    }
+
+    //This briefly displays a message in large text in the middle of the screen
+    public static void DisplayHint(string hintText, int fontsize)
+    {
+        if (Time.timeScale != 0)
+        {
+            Hud hud = GetHud();
+
+            if (fontsize <= 0)
+            {
+                fontsize = 25;
+            }
+
+            if (hud != null)
+            {
+                if (hud.title == null)
+                {
+                    GameObject hint = GameObject.Find("Hint");
+                    if (hint != null) { hud.hint = hint.GetComponent<Text>(); }
+                }
+
+                if (hud.hint != null)
+                {
+                    hud.title.text = hintText;
+                    hud.title.fontSize = fontsize;
+                    Task a = new Task(FadeTextInAndOut(hud.title, 0.5f, 3, 0.5f)); //This fades the title in and out
+                    AddTaskToPool(hud, a);
+                }
+            }
+        }
     }
 
     #endregion

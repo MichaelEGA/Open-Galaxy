@@ -67,9 +67,9 @@ public class Hud : MonoBehaviour
     [HideInInspector] public GameObject centerReticule;
     [HideInInspector] public GameObject line;
 
-    [Header("Location Information")]
-    public Text locationInfo;
-    [HideInInspector] public Text destination;
+    [Header("Player Information")]
+    public Text title;
+    public Text hint;
 
     [Header("Radar Information")]
     [HideInInspector] public GameObject radarObject;

@@ -361,6 +361,7 @@ public static class NodeTypes
         options2.Add("Desert03");
         options2.Add("Forest01");
         options2.Add("Forest02");
+        options2.Add("Forest03");
         options2.Add("Snow01");
         options2.Add("Snow02");
         options2.Add("Snow03");

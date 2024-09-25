@@ -237,7 +237,7 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_SetShipToCannotBeDisabled(node);
         }
-        else if (node.nodeType == "setshiptocannotbedisabled")
+        else if (node.nodeType == "setshiptoinvincible")
         {
             NodeTypes.Draw_SetShipToInvincible(node);
         }

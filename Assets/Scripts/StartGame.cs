@@ -20,6 +20,10 @@ public class StartGame : MonoBehaviour
         OGSettingsFunctions.SetGameWindowMode(settings.gameWindowMode);
 
         Debug.developerConsoleVisible = false;
+
+        //AudioConfiguration config = AudioSettings.GetConfiguration();
+        //config.dspBufferSize = 1024; // Best Performance is 1024 on Samsung S6 in the GearVR
+        //AudioSettings.Reset(config);
     }
 
     void Update()

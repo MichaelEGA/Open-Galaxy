@@ -71,15 +71,15 @@ public static class NodeDescriptions
            "- No data is need for this event. OG simply looks to see if it is there or not. \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
-        else if (name == "preload_loadterrain")
+        else if (name == "preload_loadenvironment")
         {
             description =
-            "Pre-Load Planet \n " +
+            "Pre-Load Environment \n " +
             "\n " +
-            "This event tells the scene to load the terrain with the selected heightmap and material. \n" +
+            "This event tells scene to load the selected environment. \n" +
             "\n " +
             "Extra Information \n" +
-            "- Remove this node if you want to load a scene without a terrain \n" +
+            "- Remove this node if you want to load a scene without an environment \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
         else if (name == "preload_loadmultipleships")

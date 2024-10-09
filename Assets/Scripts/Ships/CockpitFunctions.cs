@@ -317,8 +317,32 @@ public static class CockpitFunctions
                     gForceMagnitude = 5f / 125f * 50f;
                 }
 
-                float xLocation = 0 + (0.0001f * smallShip.turnInput * 100 * gForceMagnitude);
-                float yLocation = 0 + (0.0001f * smallShip.pitchInput * 100 * gForceMagnitude);
+                //This gives the cockpit a little bit of sway so that's it's never completely static
+                smallShip.movementTime += Time.deltaTime;
+
+                float randomnumber1 = Random.Range(-10, 10);
+                float randomnumber2 = Random.Range(-10, 10);
+
+                if (randomnumber1 > 0)
+                {
+                    smallShip.randomisationX += 0.001f;
+                }
+                else if (randomnumber1 < 0)
+                {
+                    smallShip.randomisationX -= 0.001f;
+                }
+
+                if (randomnumber2 > 0)
+                {
+                    smallShip.randomisationY += 0.001f;
+                }
+                else if (randomnumber2 < 0)
+                {
+                    smallShip.randomisationY -= 0.001f;
+                }
+
+                float xLocation = 0 + (0.0001f * smallShip.turnInput * 100 * gForceMagnitude) + (0.015f * (Mathf.PerlinNoise(smallShip.randomisationX, smallShip.movementTime) - 0.5f)); 
+                float yLocation = 0 + (0.0001f * smallShip.pitchInput * 100 * gForceMagnitude) + (0.015f * (Mathf.PerlinNoise(smallShip.randomisationY, smallShip.movementTime) - 0.5f));
                 float zLocation = 0 - 0.0005f * smallShip.thrustSpeed;
 
                 float xRotation = 3f * smallShip.pitchInput;

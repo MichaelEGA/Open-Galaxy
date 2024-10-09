@@ -238,6 +238,9 @@ public class SmallShip : MonoBehaviour
     public bool inHyperspace;
     [HideInInspector] public bool cockpitShake;
     [HideInInspector] public float shakeMagnitude = 0.1f;
+    [HideInInspector] public float movementTime = 0.1f;
+    [HideInInspector] public float randomisationX = 0;
+    [HideInInspector] public float randomisationY = 0;
     [HideInInspector] public string cockpitName;
     [HideInInspector] public GameObject cockpitAnchor;
     [HideInInspector] public GameObject cockpit;

@@ -206,12 +206,12 @@ public static class MissionFunctions
                 LoadPlanet(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
             }
-            else if (missionEvent.eventType == "preload_loadterrain" & missionEvent.conditionLocation == location)
+            else if (missionEvent.eventType == "preload_loadenvironment" & missionEvent.conditionLocation == location)
             {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain...", Time.unscaledTime - time);
-                Task a = new Task(LoadTerrain(missionEvent));
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading environment...", Time.unscaledTime - time);
+                Task a = new Task(LoadEnvironment(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", Time.unscaledTime - time);
+                LoadScreenFunctions.AddLogToLoadingScreen("Environment loaded", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_setgalaxylocation" & missionEvent.conditionLocation == location)
             {
@@ -2257,13 +2257,19 @@ public static class MissionFunctions
     }
 
     //This loads the terrain
-    public static IEnumerator LoadTerrain(MissionEvent missionEvent)
+    public static IEnumerator LoadEnvironment(MissionEvent missionEvent)
     {
         string terrainName = missionEvent.data1;
-        string terrainMaterialName = missionEvent.data2;
-        float terrainPosition = missionEvent.y;
 
-        SceneFunctions.LoadTerrain(terrainName, terrainMaterialName, terrainPosition);
+        float positionX = missionEvent.x;
+        float positionY = missionEvent.y;
+        float positionZ = missionEvent.z;
+
+        float rotationX = missionEvent.xRotation;
+        float rotationY = missionEvent.yRotation;
+        float rotationZ = missionEvent.zRotation;
+
+        SceneFunctions.LoadEnvironment(terrainName, positionX, positionY, positionZ, rotationX, rotationY, rotationZ);
 
         yield return null;
     }

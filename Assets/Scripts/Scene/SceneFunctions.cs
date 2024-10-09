@@ -1016,38 +1016,39 @@ public static class SceneFunctions
     #region terrain loading
 
     //This loads the terrain mesh and applies the correct material
-    public static void LoadTerrain(string terrainName, string terrainMaterialName, float terrainPosition)
+    public static void LoadEnvironment(string terrainName, float positionX, float positionY, float positionZ, float rotationX, float rotationY, float rotationZ)
     {
         Scene scene = GetScene();
 
         //This loads the terrain gameobject
-        GameObject terrain = null;
+        GameObject environment = null;
 
-        Object[] terrainPrefabs = Resources.LoadAll(OGGetAddress.terrainmeshes, typeof(GameObject));
+        Object[] environmentPrefabs = Resources.LoadAll(OGGetAddress.environments, typeof(GameObject));
 
-        foreach (Object tempTerrain in terrainPrefabs)
+        foreach (Object tempTerrain in environmentPrefabs)
         {
             if (terrainName == tempTerrain.name)
             {
-                terrain = GameObject.Instantiate((GameObject)tempTerrain);
+                environment = GameObject.Instantiate((GameObject)tempTerrain);
             }
         }
 
-        if (terrain != null & scene != null)
+        if (environment != null & scene != null)
         {
-            Rigidbody terrainRigidbody = terrain.AddComponent<Rigidbody>();
+            Rigidbody terrainRigidbody = environment.AddComponent<Rigidbody>();
             terrainRigidbody.isKinematic = true;
-            terrain.AddComponent<MeshCollider>();
-            terrain.layer = 7;
-            terrain.transform.SetParent(scene.transform);
-            terrain.transform.localPosition = new Vector3(0, terrainPosition, 0);
-            scene.terrain = terrain;
+            environment.AddComponent<MeshCollider>();
+            environment.layer = 7;
+            environment.transform.SetParent(scene.transform);
+            environment.transform.localPosition = new Vector3(positionX, positionY, positionZ);
+            environment.transform.localRotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
+            scene.terrain = environment;
         }
 
         //This loads the view distance plane
         GameObject plane = null;
 
-        foreach (Object tempTerrain in terrainPrefabs)
+        foreach (Object tempTerrain in environmentPrefabs)
         {
             if (tempTerrain.name == "Plane")
             {
@@ -1060,24 +1061,6 @@ public static class SceneFunctions
             plane.transform.SetParent(scene.transform);
             plane.transform.localPosition = new Vector3(0, -15000, 0);
             scene.viewDistancePlane = plane;
-        }
-
-        //This applies the material
-        Object[] terrainMaterials = Resources.LoadAll(OGGetAddress.terrainmaterials, typeof(Material));
-
-        Material terrainMaterial = null;
-
-        foreach (Object tempMaterial in terrainMaterials)
-        {
-            if (terrainMaterialName == tempMaterial.name)
-            {
-                terrainMaterial = (Material)tempMaterial;
-            }
-        }
-
-        if (terrain != null & terrainMaterial != null)
-        {
-            terrain.GetComponent<Renderer>().material = terrainMaterial;
         }
     }
 

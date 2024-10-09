@@ -319,11 +319,11 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_PreLoad_LoadTerrain(Node node)
+    public static void Draw_PreLoad_LoadEnvironment(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
 
-        NodeFunctions.DrawText(node, "pl_preload_loadterrain", 8, 5f, -5, 12.5f, 65);
+        NodeFunctions.DrawText(node, "pl_preload_loadenvironment", 8, 5f, -5, 12.5f, 65);
 
         NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
 
@@ -331,7 +331,7 @@ public static class NodeTypes
 
         float drop = -25;
 
-        node.eventType = NodeFunctions.DrawText(node, "preload_loadterrain", 7, 5, drop, 12.5f, 90);
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadenvironment", 7, 5, drop, 12.5f, 90);
 
         drop -= 15;
 
@@ -339,38 +339,33 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("Canyon01");
-        options1.Add("Canyon02");
-        options1.Add("Cliff01");
-        options1.Add("Cliff02");
-        options1.Add("Flat01");
-        options1.Add("Flat02");
-        options1.Add("Mountain01");
-        options1.Add("Mountain02");
+        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.y = NodeFunctions.DrawInputField(node, "y", "-3000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "-90", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options1 = GetEnvironmentList();
 
         node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "terrain", "Canyon01", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options2 = new List<string>();
-        options2.Add("Asteroid01");
-        options2.Add("Asteroid02");
-        options2.Add("Desert01");
-        options2.Add("Desert02");
-        options2.Add("Desert03");
-        options2.Add("Forest01");
-        options2.Add("Forest02");
-        options2.Add("Forest03");
-        options2.Add("Snow01");
-        options2.Add("Snow02");
-        options2.Add("Snow03");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options2, "material", "Asteroid01", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.y = NodeFunctions.DrawInputField(node, "position", "-2000", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -3794,6 +3789,20 @@ public static class NodeTypes
         }
 
         return allegianceList;
+    }
+
+    public static List<string> GetEnvironmentList()
+    {
+        List<string> environmentList = new List<string>();
+
+        Object[] environments = Resources.LoadAll(OGGetAddress.environments, typeof(GameObject));
+
+        foreach (Object environment in environments)
+        {
+            environmentList.Add(environment.name);
+        }
+
+        return environmentList;
     }
 
     public static List<string> GetShipList()

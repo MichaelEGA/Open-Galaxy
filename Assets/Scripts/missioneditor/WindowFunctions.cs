@@ -99,7 +99,7 @@ public static class WindowFunctions
         buttonList.Add("playmusictrack");
         buttonList.Add("preload_loadasteroids");
         buttonList.Add("preload_loadplanet");
-        buttonList.Add("preload_loadterrain");
+        buttonList.Add("preload_loadenvironment");
         buttonList.Add("preload_loadmultipleships");
         buttonList.Add("preload_loadmultipleshipsonground");
         buttonList.Add("preload_loadsingleship");

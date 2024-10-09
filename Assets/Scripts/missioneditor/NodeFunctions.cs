@@ -157,9 +157,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadPlanet(node);
         }
-        else if (node.nodeType == "preload_loadterrain")
+        else if (node.nodeType == "preload_loadenvironment")
         {
-            NodeTypes.Draw_PreLoad_LoadTerrain(node);
+            NodeTypes.Draw_PreLoad_LoadEnvironment(node);
         }
         else if (node.nodeType == "preload_loadmultipleships")
         {

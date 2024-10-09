@@ -351,7 +351,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "-90", 7, 5, drop, 12.5f, 90, 5f);
+        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -3799,7 +3799,10 @@ public static class NodeTypes
 
         foreach (Object environment in environments)
         {
-            environmentList.Add(environment.name);
+            if (!environment.name.Contains("plane"))
+            {
+                environmentList.Add(environment.name);
+            }
         }
 
         return environmentList;

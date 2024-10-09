@@ -3140,7 +3140,7 @@ public static class MissionFunctions
         }
         else if (skybox == "sky_blue01")
         {
-            skyboxColour = "#85909A";
+            skyboxColour = "#98AFD3";
         }
         else if (skybox == "sky_blue02")
         {

@@ -1037,7 +1037,6 @@ public static class SceneFunctions
         {
             Rigidbody terrainRigidbody = environment.AddComponent<Rigidbody>();
             terrainRigidbody.isKinematic = true;
-            environment.AddComponent<MeshCollider>();
             environment.layer = 7;
             environment.transform.SetParent(scene.transform);
             environment.transform.localPosition = new Vector3(positionX, positionY, positionZ);

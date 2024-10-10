@@ -3,7 +3,7 @@
 Gameplay
 ![image](https://github.com/user-attachments/assets/e92bcdf2-ba3e-4e61-a8e5-b316f7670f9c)
 
-![image](https://github.com/user-attachments/assets/6d92db28-8d50-443c-a813-314bf78fdf83)
+![image](https://github.com/user-attachments/assets/4ee3cee4-91ca-464b-b43c-421a3417e3c5)
 
 Mission Editor
 ![Screenshot (241)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/ac67c4b6-49b7-4452-9ff4-708156414d80)

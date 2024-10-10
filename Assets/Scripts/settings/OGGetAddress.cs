@@ -33,6 +33,6 @@ public static class OGGetAddress
     public static string ships_galacticconquest = "objects/ships/galacticconquest/";
     public static string ships_originaltrilogy = "objects/ships/originaltrilogy/";
     public static string skyboxes = "skyboxes/";
-    public static string environments = "environments/";
+    public static string environments = "objects/environments/";
     public static string turrets = "objects/turrets/";
 }

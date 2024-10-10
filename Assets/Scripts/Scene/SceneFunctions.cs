@@ -1049,7 +1049,7 @@ public static class SceneFunctions
 
         foreach (Object tempTerrain in environmentPrefabs)
         {
-            if (tempTerrain.name == "Plane")
+            if (tempTerrain.name == "plane")
             {
                 plane = GameObject.Instantiate((GameObject)tempTerrain);
             }

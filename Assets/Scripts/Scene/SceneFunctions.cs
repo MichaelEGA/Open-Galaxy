@@ -155,6 +155,8 @@ public static class SceneFunctions
             starfieldCamera = starfieldCameraGO.AddComponent<Camera>();
             starfieldCamera.nearClipPlane = 0.01f;
             starfieldCamera.cullingMask = LayerMask.GetMask("starfield");
+            var starfieldCameraData = starfieldCamera.GetUniversalAdditionalCameraData();
+            starfieldCameraData.renderPostProcessing = true;
             loading = true;
         }
 
@@ -202,6 +204,7 @@ public static class SceneFunctions
             cockpitCamera.nearClipPlane = 0.01f;
             var cockpitCameraData = cockpitCamera.GetUniversalAdditionalCameraData();
             cockpitCameraData.renderType = CameraRenderType.Overlay;
+            cockpitCameraData.renderPostProcessing = true;
         }
 
         if (loading == true)

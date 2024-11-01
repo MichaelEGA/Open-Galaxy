@@ -138,6 +138,31 @@ public static class AudioFunctions
                     audioSource.gameObject.transform.position = location;
                     ConnectAudioMixerGroup(audioManager, audioSource, mixer);
                 }
+
+                AudioDistortionFilter audioDistortionFilter = audioSource.gameObject.GetComponent<AudioDistortionFilter>();
+                AudioHighPassFilter audioHighPassFilter = audioSource.gameObject.GetComponent<AudioHighPassFilter>();
+
+                if (audioDistortionFilter == null)
+                {
+                    audioDistortionFilter = audioSource.gameObject.AddComponent<AudioDistortionFilter>();
+                }
+
+                if (audioHighPassFilter == null)
+                {
+                    audioHighPassFilter = audioSource.gameObject.AddComponent<AudioHighPassFilter>();
+                }
+
+                if (audioDistortionFilter != null)
+                {
+                    audioDistortionFilter.enabled = false;
+                    audioDistortionFilter.distortionLevel = 0.5f;
+                }
+
+                if (audioHighPassFilter != null)
+                {
+                    audioHighPassFilter.enabled = false;
+                    audioHighPassFilter.cutoffFrequency = 4000;
+                }
             }
         }
 
@@ -145,7 +170,7 @@ public static class AudioFunctions
     }
 
     //This plays the requested voice audio file
-    public static AudioSource PlayMissionAudioClip(Audio audioManager, string audioName, string mixer = "voice", Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128)
+    public static AudioSource PlayMissionAudioClip(Audio audioManager, string audioName, string mixer = "voice", Vector3 location = new Vector3(), float spatialBlend = 1, float pitch = 1, float distance = 500, float volume = 0.5f, int priority = 128, bool distortion = false, float distortionLevel = 0.5f, bool external = false)
     {
         AudioSource audioSource = null;
 
@@ -178,7 +203,7 @@ public static class AudioFunctions
             //This finds and plays the audio clip
             if (dontPlay == false)
             {
-                AudioClip audioClip = GetMissionAudioClip(audioManager, audioName);
+                AudioClip audioClip = GetMissionAudioClip(audioManager, audioName, external);
                 audioSource = GetAudioSource(audioManager);
 
                 if (audioClip != null & audioSource != null)
@@ -193,9 +218,35 @@ public static class AudioFunctions
                     audioSource.priority = priority;
                     audioSource.rolloffMode = AudioRolloffMode.Linear;
                     audioSource.loop = false;
-                    audioSource.Play();
                     audioSource.gameObject.transform.position = location;
                     ConnectAudioMixerGroup(audioManager, audioSource, mixer);
+
+                    AudioDistortionFilter audioDistortionFilter = audioSource.gameObject.GetComponent<AudioDistortionFilter>();
+                    AudioHighPassFilter audioHighPassFilter = audioSource.gameObject.GetComponent<AudioHighPassFilter>();
+
+                    if (audioDistortionFilter == null)
+                    {
+                        audioDistortionFilter = audioSource.gameObject.AddComponent<AudioDistortionFilter>();                      
+                    }
+
+                    if (audioHighPassFilter == null)
+                    {
+                        audioHighPassFilter = audioSource.gameObject.AddComponent<AudioHighPassFilter>();
+                    }
+
+                    if (audioDistortionFilter != null)
+                    {
+                        audioDistortionFilter.enabled = distortion;
+                        audioDistortionFilter.distortionLevel = distortionLevel;
+                    }
+
+                    if (audioHighPassFilter != null)
+                    {
+                        audioHighPassFilter.enabled = distortion;
+                        audioHighPassFilter.cutoffFrequency = 4000;
+                    }
+
+                    audioSource.Play();
                 }
             }
         }
@@ -324,22 +375,42 @@ public static class AudioFunctions
     }
 
     //This gets the voice clip to be played
-    public static AudioClip GetMissionAudioClip(Audio audioManager, string audioName)
+    public static AudioClip GetMissionAudioClip(Audio audioManager, string audioName, bool external)
     {
         AudioClip audioClip = null;
 
         if (audioManager != null)
         {
-            if (audioManager.missionAudioClips != null)
+            if (external == true)
             {
-                foreach (AudioClip tempAudioClip in audioManager.missionAudioClips)
+                if (audioManager.missionAudioClips != null)
                 {
-                    if (tempAudioClip != null)
+                    foreach (AudioClip tempAudioClip in audioManager.missionAudioClips)
                     {
-                        if (tempAudioClip.name == audioName)
+                        if (tempAudioClip != null)
                         {
-                            audioClip = tempAudioClip;
-                            break;
+                            if (tempAudioClip.name == audioName)
+                            {
+                                audioClip = tempAudioClip;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (audioManager.audioClips != null)
+                {
+                    foreach (AudioClip tempAudioClip in audioManager.audioClips)
+                    {
+                        if (tempAudioClip != null)
+                        {
+                            if (tempAudioClip.name == audioName)
+                            {
+                                audioClip = tempAudioClip;
+                                break;
+                            }
                         }
                     }
                 }

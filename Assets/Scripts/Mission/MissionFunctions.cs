@@ -1238,6 +1238,20 @@ public static class MissionFunctions
         string message = missionEvent.data1;
         string internalAudioFile = missionEvent.data3;
 
+        bool distortion = false;
+
+        if (bool.TryParse(missionEvent.data4, out _))
+        {
+            distortion = bool.Parse(missionEvent.data4);
+        }
+
+        float distortionLevel = 0.5f;
+
+        if (float.TryParse(missionEvent.data5, out _))
+        {
+            distortionLevel = float.Parse(missionEvent.data5);
+        }
+
         if (message != "none")
         {
             HudFunctions.AddToShipLog(message);
@@ -1245,11 +1259,11 @@ public static class MissionFunctions
 
         if (audio != "none" & internalAudioFile != "true")
         {
-            AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
+            AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
         }
         else if (audio != "none" & internalAudioFile == "true")
         {
-            AudioFunctions.PlayAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
+            AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, false);
         }
     }
 
@@ -1259,15 +1273,30 @@ public static class MissionFunctions
         string audio = missionEvent.data2;
         string message = missionEvent.data1;
         string internalAudioFile = missionEvent.data3;
+
+        bool distortion = false;
+
+        if (bool.TryParse(missionEvent.data4, out _))
+        {
+            distortion = bool.Parse(missionEvent.data4);
+        }
+
+        float distortionLevel = 0.5f;
+
+        if (float.TryParse(missionEvent.data5, out _))
+        {
+            distortionLevel = float.Parse(missionEvent.data5);
+        }
+
         AudioSource missionBriefingAudio = null;
 
         if (audio != "none" & internalAudioFile != "true")
         {
-            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
+            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
         }
         else if (audio != "none" & internalAudioFile == "true")
         {
-            missionBriefingAudio = AudioFunctions.PlayAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1);
+            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
         }
 
         MissionBriefingFunctions.ActivateMissionBriefing(message, missionBriefingAudio);

@@ -1624,11 +1624,23 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("true");
-        options.Add("false");
+        List<string> options01 = new List<string>();
+        options01.Add("true");
+        options01.Add("false");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options, "internal file", "true", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options01, "internal file", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options02 = new List<string>();
+        options02.Add("true");
+        options02.Add("false");
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, options02, "distortion", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "level", "0.5", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1679,11 +1691,23 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options = new List<string>();
-        options.Add("true");
-        options.Add("false");
+        List<string> options01 = new List<string>();
+        options01.Add("true");
+        options01.Add("false");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options, "internal file", "true", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options01, "internal file", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options02 = new List<string>();
+        options02.Add("true");
+        options02.Add("false");
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, options02, "distortion", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "level", "0.5", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

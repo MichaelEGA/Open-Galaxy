@@ -3884,6 +3884,7 @@ public static class NodeTypes
 
         planetList.Add("deathstar");
         planetList.Add("deathstar2");
+        planetList.Add("cloudcity");
 
         Object[] planets = Resources.LoadAll(OGGetAddress.planets_planetmaterials, typeof(Material));
 
@@ -3899,6 +3900,8 @@ public static class NodeTypes
     {
         List<string> atmosphereList = new List<string>();
 
+        atmosphereList.Add("none");
+
         Object[] atmospheres = Resources.LoadAll(OGGetAddress.planets_atmospherematerials, typeof(Material));
 
         foreach (Object atmosphere in atmospheres)
@@ -3912,6 +3915,8 @@ public static class NodeTypes
     public static List<string> GetCloudList()
     {
         List<string> cloudList = new List<string>();
+
+        cloudList.Add("none");
 
         Object[] clouds = Resources.LoadAll(OGGetAddress.planets_cloudmaterials, typeof(Material));
 

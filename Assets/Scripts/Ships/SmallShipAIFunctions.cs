@@ -1149,11 +1149,6 @@ public static class SmallShipAIFunctions
                 AngleTowardsWaypoint(smallShip);
             }
 
-            if (smallShip.wingsOpen == true & smallShip.docking == false)
-            {
-                SmallShipFunctions.CloseWings(smallShip);
-            }
-
             smallShip.flyInFormation = false;
         }
     }
@@ -1172,11 +1167,6 @@ public static class SmallShipAIFunctions
                     if (distanceToWaypoint < 50)
                     {
                         SelectRandomWaypoint(smallShip);
-                    }
-
-                    if (smallShip.wingsOpen == true & smallShip.docking == false)
-                    {
-                        SmallShipFunctions.CloseWings(smallShip);
                     }
 
                     AngleTowardsWaypoint(smallShip);

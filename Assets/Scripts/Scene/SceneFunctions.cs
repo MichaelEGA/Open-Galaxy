@@ -548,6 +548,7 @@ public static class SceneFunctions
             scene.planet = GameObject.Find("planet");
             scene.deathstar = GameObject.Find("deathstar");
             scene.deathstar2 = GameObject.Find("deathstar2");
+            scene.cloudcity = GameObject.Find("cloudcity");
             scene.clouds = GameObject.Find("clouds");
             scene.atmosphere = GameObject.Find("atmosphere");
             scene.rings = GameObject.Find("rings");
@@ -586,16 +587,24 @@ public static class SceneFunctions
             scene.rings.SetActive(true);
         }
 
-        if (planetType == "deathstar" || planetType == "deathstar2")
+        if (planetType == "deathstar" || planetType == "deathstar2" || planetType == "cloudcity")
         {
             if (planetType == "deathstar")
             {
                 scene.deathstar.SetActive(true);
                 scene.deathstar2.SetActive(false);
+                scene.cloudcity.SetActive(false);
+            }
+            else if (planetType == "deathstar2")
+            {
+                scene.deathstar2.SetActive(true);
+                scene.deathstar.SetActive(false);
+                scene.cloudcity.SetActive(false);
             }
             else
             {
-                scene.deathstar2.SetActive(true);
+                scene.cloudcity.SetActive(true);
+                scene.deathstar2.SetActive(false);
                 scene.deathstar.SetActive(false);
             }
 
@@ -605,11 +614,12 @@ public static class SceneFunctions
         {
             scene.deathstar.SetActive(false);
             scene.deathstar2.SetActive(false);
+            scene.cloudcity.SetActive(false);
             scene.planet.SetActive(true);
         }
 
         //Set materials
-        if (planetType != "deathstar")
+        if (planetType != "deathstar" & planetType != "deathstar2" & planetType != "cloudcity")
         {
             if (planetRenderer != null)
             {

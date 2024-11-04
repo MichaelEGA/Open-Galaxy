@@ -15,42 +15,6 @@ public static class GameObjectUtils
         return rigibody;
     }
 
-    //This function finds all the LODs on the ship
-    public static GameObject[] GetLODs(GameObject gameObject)
-    {
-
-        List<GameObject> lods = new List<GameObject>();
-
-        for (int i = 0; i < 100; i++)
-        {
-
-            Transform lod = gameObject.transform.Find("detail" + i.ToString());
-
-            if (lod != null)
-            {
-                lods.Add(lod.gameObject);
-
-                if (i == 0)
-                {
-                    lod.gameObject.SetActive(true);
-                }
-                else
-                {
-                    lod.gameObject.SetActive(false);
-                }
-            }
-
-            if (lod == null)
-            {
-                break;
-            }
-
-        }
-
-        return lods.ToArray();
-
-    }
-
     //This functions adds a collider to all the mesh gameobjects
     public static void AddColliders(GameObject gameObject, bool convex)
     {

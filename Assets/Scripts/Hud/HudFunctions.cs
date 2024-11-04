@@ -419,9 +419,9 @@ public static class HudFunctions
             {
                 hud.weaponModeText.text = "DUL";
             }
-            else if (hud.smallShip.weaponMode == "quad")
+            else if (hud.smallShip.weaponMode == "all")
             {
-                hud.weaponModeText.text = "QUD";
+                hud.weaponModeText.text = "ALL";
             }
             else
             {

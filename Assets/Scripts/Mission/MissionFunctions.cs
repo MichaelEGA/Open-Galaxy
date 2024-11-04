@@ -1084,7 +1084,13 @@ public static class MissionFunctions
             SceneFunctions.SetStarfieldToInvisible(true);
         }
 
-        //This sets the skybox to black
+        //This sets the rotation of the ship in the new location designated in the node
+        smallShip.transform.rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        //This sets the position of the ship in the new location designated in the node
+        smallShip.transform.localPosition = new Vector3(x, y, z);
+
+        //This resets the skybox to black
         SceneFunctions.SetSkybox("space_black", true, "#000000");
 
         //This sets the scene location
@@ -1096,12 +1102,6 @@ public static class MissionFunctions
 
         yield return new WaitForSecondsRealtime(1);
 
-        //This sets the position of the ship in the new location designated in the node
-        smallShip.transform.rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        //This yield allows the new position and rotation to be registered in the rigidbody component which is needed for the shrinkstarfield function
-        yield return null;
-
         //This ensures that hyperspace continues for atleast ten seconds
         while (time + 10 > Time.unscaledTime)
         {
@@ -1112,8 +1112,6 @@ public static class MissionFunctions
         Time.timeScale = 1;
 
         yield return new WaitForSecondsRealtime(1); //This gives the rigidbody time to calculate the new velocity
-
-        smallShip.transform.localPosition = new Vector3(x, y, z);
 
         smallShip.inHyperspace = false;
 

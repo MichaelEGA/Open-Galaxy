@@ -15,7 +15,6 @@ public static class LargeShipFunctions
             largeShip.shipRigidbody = GameObjectUtils.AddRigidbody(largeShip.gameObject, 100f, 9f, 7.5f);
             largeShip.shipRigidbody.isKinematic = true;
             GameObjectUtils.AddColliders(largeShip.gameObject, false);
-            largeShip.LODs = GameObjectUtils.GetLODs(largeShip.gameObject);
             largeShip.colliders = largeShip.GetComponentsInChildren<MeshCollider>();
             largeShip.castPoint = largeShip.gameObject.transform.Find("castPoint");
             largeShip.explosionPoints = GameObjectUtils.FindAllChildTransformsContaining(largeShip.gameObject.transform, "explosionPoint");

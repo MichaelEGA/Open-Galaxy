@@ -24,12 +24,8 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public Collider[] colliders;
     [HideInInspector] public Transform[] explosionPoints;
 
-    [Header("Ship LODs")]
+    [Header("Scene Reference")]
     public Scene scene;
-    public GameObject[] LODs;
-    [HideInInspector] public GameObject currentLOD;
-    [HideInInspector] public float distanceToPlayer;
-    [HideInInspector] public float savedPlayerDistance;
 
     [Header("Ship Audio")]
     [HideInInspector] public Audio audioManager;

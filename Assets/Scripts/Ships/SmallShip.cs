@@ -30,12 +30,8 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public string ionAudio = "weapon_ioncannon";
     [HideInInspector] public string engineAudio;
 
-    [Header("Ship LODs")]
+    [Header("Scene Reference")]
     public Scene scene;
-    public GameObject[] LODs;
-    [HideInInspector] public GameObject currentLOD;
-    [HideInInspector] public float distanceToPlayer;
-    [HideInInspector] public float savedPlayerDistance;
 
     [Header("Ship Cameras")]
     [HideInInspector] public GameObject mainCamera;

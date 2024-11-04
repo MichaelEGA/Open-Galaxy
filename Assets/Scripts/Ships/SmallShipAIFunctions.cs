@@ -637,7 +637,7 @@ public static class SmallShipAIFunctions
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "quad";
+                        smallShip.weaponMode = "all";
                         LaserFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -707,7 +707,7 @@ public static class SmallShipAIFunctions
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "quad";
+                        smallShip.weaponMode = "all";
                         IonFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -780,7 +780,7 @@ public static class SmallShipAIFunctions
                 {
                     if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
                     {
-                        smallShip.weaponMode = "quad";
+                        smallShip.weaponMode = "all";
                         TorpedoFunctions.FireTorpedo(smallShip);
                     }
                 }
@@ -872,7 +872,7 @@ public static class SmallShipAIFunctions
 
                     if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
                     {
-                        smallShip.weaponMode = "quad";
+                        smallShip.weaponMode = "all";
                         TorpedoFunctions.FireTorpedo(smallShip);
                     }
                 }
@@ -884,7 +884,7 @@ public static class SmallShipAIFunctions
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "quad";
+                        smallShip.weaponMode = "all";
                         LaserFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -1014,11 +1014,6 @@ public static class SmallShipAIFunctions
                         smallShip.aiMatchSpeed = true;
                         AngleTowardsTarget(smallShip);
                     }
-
-                    if (smallShip.wingsOpen == false & smallShip.docking == false)
-                    {
-                        SmallShipFunctions.OpenWings(smallShip);
-                    }
                 }
                 else
                 {
@@ -1063,11 +1058,6 @@ public static class SmallShipAIFunctions
                                 smallShip.aiAttackTime = Time.time + Random.Range(30, 35);
                             }
                         }
-                    }
-
-                    if (smallShip.wingsOpen == false & smallShip.docking == false)
-                    {
-                        SmallShipFunctions.OpenWings(smallShip);
                     }
                 }
                 else
@@ -1124,11 +1114,6 @@ public static class SmallShipAIFunctions
                     else
                     {
                         AngleAwayFromTarget(smallShip);
-                    }
-
-                    if (smallShip.wingsOpen == false & smallShip.docking == false)
-                    {
-                        SmallShipFunctions.OpenWings(smallShip);
                     }
                 }
                 else
@@ -1224,21 +1209,6 @@ public static class SmallShipAIFunctions
                     if (distance < 100)
                     {
                         smallShip.aiMatchSpeed = true;
-                    }
-
-                    if (smallShip.followTarget.wingsOpen == true)
-                    {
-                        if (smallShip.wingsOpen != true)
-                        {
-                            SmallShipFunctions.OpenWings(smallShip);
-                        }
-                    }
-                    else if(smallShip.followTarget.wingsOpen == false & smallShip.docking == false)
-                    {
-                        if (smallShip.wingsOpen != false)
-                        {
-                            SmallShipFunctions.CloseWings(smallShip);
-                        }
                     }
                 }
                 else

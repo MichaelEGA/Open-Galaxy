@@ -193,7 +193,7 @@ public static class TorpedoFunctions
                 smallShip.torpedoNumber -= 2;
 
             }
-            else if (smallShip.weaponMode == "quad")
+            else if (smallShip.weaponMode == "all")
             {
                 if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
                 Torpedo torpedo01 = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
@@ -389,7 +389,7 @@ public static class TorpedoFunctions
             }
             else if (smallShip.weaponMode == "dual" & smallShip.torpedoTube3 != null & smallShip.torpedoTube4 != null & smallShip.torpedoNumber > 3)
             {
-                smallShip.weaponMode = "quad";
+                smallShip.weaponMode = "all";
             }
             else
             {

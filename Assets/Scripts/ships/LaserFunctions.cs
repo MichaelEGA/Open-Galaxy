@@ -256,9 +256,9 @@ public static class LaserFunctions
             {
                 smallShip.weaponMode = "dual";
             }
-            else if (smallShip.weaponMode == "dual" & smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
+            else if (smallShip.weaponMode == "dual" & smallShip.laserCannon3 != null)
             {
-                smallShip.weaponMode = "quad";
+                smallShip.weaponMode = "all";
             }
             else
             {
@@ -299,7 +299,7 @@ public static class LaserFunctions
             {
                 laserWaitTime = laserWaitTime * 2;
             }
-            else if (smallShip.weaponMode == "quad")
+            else if (smallShip.weaponMode == "all")
             {
                 laserWaitTime = laserWaitTime * 4;
             }
@@ -368,16 +368,27 @@ public static class LaserFunctions
                     {
                         Task a = new Task(FireLasers(smallShip, 2, smallShip.laserCannon1, smallShip.laserCannon2));
                     }
+                    else if (smallShip.laserCycleNumber == 2 & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null & smallShip.laserCannon4 == null)
+                    {
+                        Task a = new Task(FireLasers(smallShip, 2, smallShip.laserCannon2, smallShip.laserCannon3));
+                    }
                     else if (smallShip.laserCycleNumber == 2 & smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
                     {
                         Task a = new Task(FireLasers(smallShip, 2, smallShip.laserCannon3, smallShip.laserCannon4));
                     }
                 }
-                else if (smallShip.weaponMode == "quad" & smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
+                else if (smallShip.weaponMode == "all")
                 {
-                    Task a = new Task(FireLasers(smallShip, 4, smallShip.laserCannon1, smallShip.laserCannon2, smallShip.laserCannon3, smallShip.laserCannon4));
+                    if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null & smallShip.laserCannon4 == null)
+                    {
+                        Task a = new Task(FireLasers(smallShip, 3, smallShip.laserCannon1, smallShip.laserCannon2, smallShip.laserCannon3));
+                    }
+                    else if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
+                    {
+                        Task a = new Task(FireLasers(smallShip, 4, smallShip.laserCannon1, smallShip.laserCannon2, smallShip.laserCannon3, smallShip.laserCannon4));
+                    }
                 }
-
+               
                 smallShip.laserPressedTime = Time.time + laserWaitTime;
             }
         }
@@ -405,7 +416,7 @@ public static class LaserFunctions
 
                 string audioFile = smallShip.laserAudio;
 
-                if (lasersToFire == 1 || lasersToFire == 2 || lasersToFire == 4)
+                if (lasersToFire == 1 || lasersToFire == 2 || lasersToFire == 3 || lasersToFire == 4)
                 {
                     if (particleSystem != null & firstCannon != null & smallShip != null)
                     {
@@ -417,7 +428,7 @@ public static class LaserFunctions
                     }  
                 }
 
-                if (lasersToFire == 2 || lasersToFire == 4)
+                if (lasersToFire == 2 || lasersToFire == 3 || lasersToFire == 4)
                 {
                     if (particleSystem != null & secondCannon != null & smallShip != null)
                     {
@@ -429,9 +440,9 @@ public static class LaserFunctions
                     }
                 }
 
-                if (lasersToFire == 4)
+                if (lasersToFire == 3 || lasersToFire == 4)
                 {
-                    if (particleSystem != null & thirdCannon != null & smallShip != null)
+                    if (particleSystem != null & thirdCannon != null)
                     {
                         yield return null;
                         particleSystem.transform.position = thirdCannon.transform.position;
@@ -439,7 +450,10 @@ public static class LaserFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, 1, 500, 0.6f);
                     }
+                }
 
+                if (lasersToFire == 4)
+                {
                     if (particleSystem != null & fourthCannon != null & smallShip != null)
                     {
                         yield return null;

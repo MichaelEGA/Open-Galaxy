@@ -251,7 +251,7 @@ public static class IonFunctions
             }
             else if (smallShip.weaponMode == "dual" & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
             {
-                smallShip.weaponMode = "quad";
+                smallShip.weaponMode = "all";
             }
             else
             {
@@ -292,7 +292,7 @@ public static class IonFunctions
             {
                 ionWaitTime = ionWaitTime * 2;
             }
-            else if (smallShip.weaponMode == "quad")
+            else if (smallShip.weaponMode == "all")
             {
                 ionWaitTime = ionWaitTime * 4;
             }
@@ -361,14 +361,25 @@ public static class IonFunctions
                     {
                         Task a = new Task(FireIons(smallShip, 2, smallShip.ionCannon1, smallShip.ionCannon2));
                     }
+                    else if (smallShip.ionCycleNumber == 2 & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null & smallShip.ionCannon4 == null)
+                    {
+                        Task a = new Task(FireIons(smallShip, 2, smallShip.ionCannon2, smallShip.ionCannon3));
+                    }
                     else if (smallShip.ionCycleNumber == 2 & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
                     {
                         Task a = new Task(FireIons(smallShip, 2, smallShip.ionCannon3, smallShip.ionCannon4));
                     }
                 }
-                else if (smallShip.weaponMode == "quad" & smallShip.ionCannon1 != null & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
+                else if (smallShip.weaponMode == "all")
                 {
-                    Task a = new Task(FireIons(smallShip, 4, smallShip.ionCannon1, smallShip.ionCannon2, smallShip.ionCannon3, smallShip.ionCannon4));
+                    if (smallShip.ionCannon1 != null & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null & smallShip.ionCannon4 == null)
+                    {
+                        Task a = new Task(FireIons(smallShip, 3, smallShip.ionCannon1, smallShip.ionCannon2, smallShip.ionCannon3));
+                    }
+                    else if (smallShip.ionCannon1 != null & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
+                    {
+                        Task a = new Task(FireIons(smallShip, 4, smallShip.ionCannon1, smallShip.ionCannon2, smallShip.ionCannon3, smallShip.ionCannon4));
+                    } 
                 }
 
                 smallShip.ionPressedTime = Time.time + ionWaitTime;
@@ -398,7 +409,7 @@ public static class IonFunctions
 
                 string audioFile = smallShip.ionAudio;
 
-                if (ionCannonsToFire == 1 || ionCannonsToFire == 2 || ionCannonsToFire == 4)
+                if (ionCannonsToFire == 1 || ionCannonsToFire == 2 || ionCannonsToFire == 3 || ionCannonsToFire == 4)
                 {
                     if (particleSystem != null & firstCannon != null & smallShip != null)
                     {
@@ -410,7 +421,7 @@ public static class IonFunctions
                     }
                 }
 
-                if (ionCannonsToFire == 2 || ionCannonsToFire == 4)
+                if (ionCannonsToFire == 2 || ionCannonsToFire == 3 || ionCannonsToFire == 4)
                 {
                     if (particleSystem != null & secondCannon != null & smallShip != null)
                     {
@@ -422,7 +433,7 @@ public static class IonFunctions
                     }
                 }
 
-                if (ionCannonsToFire == 4)
+                if (ionCannonsToFire == 3 || ionCannonsToFire == 4)
                 {
                     if (particleSystem != null & thirdCannon != null & smallShip != null)
                     {
@@ -432,7 +443,10 @@ public static class IonFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, 1, 500, 0.6f);
                     }
+                }
 
+                if (ionCannonsToFire == 4)
+                {
                     if (particleSystem != null & fourthCannon != null & smallShip != null)
                     {
                         yield return null;

@@ -39,7 +39,6 @@ public static class SmallShipFunctions
 
             GameObjectUtils.AddColliders(smallShip.gameObject, true);
             GameObjectUtils.AddRigidbody(smallShip.gameObject, 100f, 9f, 7.5f);
-            smallShip.LODs = GameObjectUtils.GetLODs(smallShip.gameObject);
             TorpedoFunctions.GetTorpedoTubes(smallShip);
             smallShip.colliders = smallShip.GetComponentsInChildren<Collider>();
             TargetingFunctions.CreateWaypoint_SmallShipPlayer(smallShip);
@@ -346,9 +345,13 @@ public static class SmallShipFunctions
             {
                 SmoothRollInput(smallShip, 1);
             }
-            else if (smallShip.rollInputActual <= 0)
+            else if (smallShip.rollInputActual < 0)
             {
                 SmoothRollInput(smallShip, -1);
+            }
+            else
+            {
+                SmoothRollInput(smallShip, 1);
             }
         }
         else
@@ -792,58 +795,6 @@ public static class SmallShipFunctions
 
     #endregion
 
-    #region level of detail control
-
-    //This function checks what LOD should be displayed
-    public static void LODCheck(SmallShip smallShip)
-    {
-        if (smallShip.isAI == true)
-        {
-            if (smallShip.scene == null)
-            {
-                smallShip.scene = SceneFunctions.GetScene();
-            }
-
-            if (smallShip.scene != null)
-            {
-                if (smallShip.scene.mainShip != null)
-                {
-                    smallShip.distanceToPlayer = Vector3.Distance(smallShip.gameObject.transform.position, smallShip.scene.mainShip.transform.position);
-
-                    if (Mathf.Abs(smallShip.savedPlayerDistance) - Mathf.Abs(smallShip.distanceToPlayer) > 500)
-                    {
-                        float distance = 500;
-                        int i = 0;
-
-                        foreach (GameObject lod in smallShip.LODs)
-                        {
-                            if (smallShip.distanceToPlayer < distance)
-                            {
-                                if (lod.name == "detail" + i.ToString())
-                                {
-                                    smallShip.currentLOD = lod;
-                                }
-                                else
-                                {
-                                    lod.SetActive(false);
-                                }
-
-                                distance += 500;
-                                i++;
-                            }
-                        }
-
-                        smallShip.currentLOD.SetActive(true);
-
-                        smallShip.savedPlayerDistance = smallShip.distanceToPlayer;
-                    }
-                }
-            }
-        }        
-    }
-
-    #endregion
-
     #region weapons
 
     //This toggles between different types of weapons
@@ -1068,6 +1019,20 @@ public static class SmallShipFunctions
 
             if (smallShip.isDisabled == false & smallShip.systemsLevel < 1)
             {
+                //Stops listing the ship as targetting another ship
+                if (smallShip.target != null)
+                {
+                    if (smallShip.target.gameObject.activeSelf == true)
+                    {
+                        if (smallShip.targetSmallShip != null)
+                        {
+                            smallShip.targetSmallShip.numberTargeting -= 1;
+                        }
+                    }
+
+                    smallShip.target = null;
+                }
+
                 //This tells the player that the ship has been destroyed
                 HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was disabled");
                 smallShip.isDisabled = true;
@@ -1247,25 +1212,12 @@ public static class SmallShipFunctions
     //Explode after spinning
     public static IEnumerator ExplosionType1(SmallShip smallShip)
     {
-        //Stops listing the ship as targetting another ship
-        if (smallShip.target != null)
-        {
-            if (smallShip.target.gameObject.activeSelf == true)
-            {
-                if (smallShip.targetSmallShip != null)
-                {
-                    smallShip.targetSmallShip.numberTargeting -= 1;
-                }
-            }
-        }
-
         if (smallShip.isCurrentlyColliding == false)
         {
             smallShip.spinShip = true;
             float time = Random.Range(2, 6);
             yield return new WaitForSeconds(time);
         }
-
 
         if (smallShip != null)
         {
@@ -1291,17 +1243,6 @@ public static class SmallShipFunctions
     //Explode straight away
     public static void ExplosionType2(SmallShip smallShip)
     {
-        if (smallShip.target != null)
-        {
-            if (smallShip.target.gameObject.activeSelf == true)
-            {
-                if (smallShip.targetSmallShip != null)
-                {
-                    smallShip.targetSmallShip.numberTargeting -= 1;
-                }
-            }
-        }
-
         if (smallShip.scene == null)
         {
             smallShip.scene = SceneFunctions.GetScene();
@@ -1334,6 +1275,20 @@ public static class SmallShipFunctions
 
     public static void DeactivateShip(SmallShip smallShip)
     {
+        //Stops listing the ship as targetting another ship
+        if (smallShip.target != null)
+        {
+            if (smallShip.target.gameObject.activeSelf == true)
+            {
+                if (smallShip.targetSmallShip != null)
+                {
+                    smallShip.targetSmallShip.numberTargeting -= 1;
+                }
+            }
+
+            smallShip.target = null;
+        }
+
         //This stops all task being run by the ship
         EndAllTasks(smallShip);
 

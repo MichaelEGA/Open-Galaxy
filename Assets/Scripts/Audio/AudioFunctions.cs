@@ -134,35 +134,28 @@ public static class AudioFunctions
                     audioSource.priority = priority;
                     audioSource.rolloffMode = AudioRolloffMode.Linear;
                     audioSource.loop = false;
-                    audioSource.Play();
                     audioSource.gameObject.transform.position = location;
                     ConnectAudioMixerGroup(audioManager, audioSource, mixer);
+
+                    AudioDistortionFilter audioDistortionFilter = audioSource.gameObject.GetComponent<AudioDistortionFilter>();
+                    AudioHighPassFilter audioHighPassFilter = audioSource.gameObject.GetComponent<AudioHighPassFilter>();
+
+                    if (audioDistortionFilter != null)
+                    {
+                        audioDistortionFilter.enabled = false;
+                        audioDistortionFilter.distortionLevel = 0.5f;
+                    }
+
+                    if (audioHighPassFilter != null)
+                    {
+                        audioHighPassFilter.enabled = false;
+                        audioHighPassFilter.cutoffFrequency = 4000;
+                    }
+
+                    audioSource.Play();
+
                 }
 
-                AudioDistortionFilter audioDistortionFilter = audioSource.gameObject.GetComponent<AudioDistortionFilter>();
-                AudioHighPassFilter audioHighPassFilter = audioSource.gameObject.GetComponent<AudioHighPassFilter>();
-
-                if (audioDistortionFilter == null)
-                {
-                    audioDistortionFilter = audioSource.gameObject.AddComponent<AudioDistortionFilter>();
-                }
-
-                if (audioHighPassFilter == null)
-                {
-                    audioHighPassFilter = audioSource.gameObject.AddComponent<AudioHighPassFilter>();
-                }
-
-                if (audioDistortionFilter != null)
-                {
-                    audioDistortionFilter.enabled = false;
-                    audioDistortionFilter.distortionLevel = 0.5f;
-                }
-
-                if (audioHighPassFilter != null)
-                {
-                    audioHighPassFilter.enabled = false;
-                    audioHighPassFilter.cutoffFrequency = 4000;
-                }
             }
         }
 
@@ -277,6 +270,21 @@ public static class AudioFunctions
             {
                 smallShip.engineAudioSource = audioSource;
                 smallShip.engineAudioSource.clip = audioClip;
+
+                AudioDistortionFilter audioDistortionFilter = audioSource.gameObject.GetComponent<AudioDistortionFilter>();
+                AudioHighPassFilter audioHighPassFilter = audioSource.gameObject.GetComponent<AudioHighPassFilter>();
+
+                if (audioDistortionFilter != null)
+                {
+                    audioDistortionFilter.enabled = false;
+                    audioDistortionFilter.distortionLevel = 0.5f;
+                }
+
+                if (audioHighPassFilter != null)
+                {
+                    audioHighPassFilter.enabled = false;
+                    audioHighPassFilter.cutoffFrequency = 4000;
+                }
             }
         }
 

@@ -1722,17 +1722,29 @@ public static class HudFunctions
 
             if (hud != null)
             {
-                if (hud.hint == null)
+                if (hud.hintTextGO == null)
                 {
-                    GameObject hint = GameObject.Find("Hint");
-                    if (hint != null) { hud.hint = hint.GetComponent<Text>(); }
+                    GameObject hintTextGO = GameObject.Find("HintText");
+                    if (hintTextGO != null) { hud.hintTextGO = hintTextGO.GetComponent<Text>(); }
                 }
 
-                if (hud.hint != null)
+                if (hud.hintTextGO != null)
                 {
-                    hud.hint.text = hintText;
-                    hud.hint.fontSize = fontsize;
-                    Task a = new Task(FadeTextInAndOut(hud.hint, 0.5f, 10, 0.5f)); //This fades the title in and out
+                    hud.hintTextGO.text = hintText;
+                    hud.hintTextGO.fontSize = fontsize;
+                    Task a = new Task(FadeTextInAndOut(hud.hintTextGO, 0.5f, 10, 0.5f)); //This fades the text in and out
+                    AddTaskToPool(hud, a);
+                }
+
+                if (hud.hintImage == null)
+                {
+                    GameObject hintImage = GameObject.Find("Hint");
+                    if (hintImage != null) { hud.hintImage = hintImage.GetComponent<RawImage>(); }
+                }
+
+                if (hud.hintImage != null)
+                {
+                    Task a = new Task(FadeImageInAndOut(hud.hintImage, 0.5f, 10, 0.5f)); //This fades the background image in and out
                     AddTaskToPool(hud, a);
                 }
             }

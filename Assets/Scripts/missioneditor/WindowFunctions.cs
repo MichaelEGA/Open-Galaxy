@@ -72,7 +72,6 @@ public static class WindowFunctions
         buttonList.Add("createlocation");
         buttonList.Add("custom_node");
         buttonList.Add("deactivateship");
-        buttonList.Add("displaydialoguebox");
         buttonList.Add("displayhint");
         buttonList.Add("displaytitle");
         buttonList.Add("displaymessage");
@@ -99,12 +98,10 @@ public static class WindowFunctions
         buttonList.Add("playmusictrack");
         buttonList.Add("preload_loadasteroids");
         buttonList.Add("preload_loadplanet");
-        buttonList.Add("preload_loadenvironment");
         buttonList.Add("preload_loadmultipleships");
         buttonList.Add("preload_loadmultipleshipsonground");
         buttonList.Add("preload_loadsingleship");
         buttonList.Add("preload_loadsingleshiponground");
-        buttonList.Add("preload_setgalaxylocation");
         buttonList.Add("preload_sethudcolour");
         buttonList.Add("preload_setsceneradius");
         buttonList.Add("preload_setskybox");
@@ -187,21 +184,6 @@ public static class WindowFunctions
         drop -= 12.5f;
 
         DrawText(window, "Background", 7, 180, drop, 10, 65f, true, null, "topleft", TextAnchor.MiddleCenter);
-
-        drop -= 12.5f;
-
-        List<string> options2 = new List<string>();
-        options2.Add("none");
-        options2.Add("canyon01");
-        options2.Add("canyon02");
-        options2.Add("cliff01");
-        options2.Add("cliff02");
-        options2.Add("flat01");
-        options2.Add("flat02");
-        options2.Add("mountain01");
-        options2.Add("mountain02");
-
-        DrawDropDownMenuSansLabel(window, options2, "type", "none", 7, 180f, drop, 10, 65);
 
         drop -= 12.5f;
 
@@ -1317,11 +1299,7 @@ public static class WindowFunctions
     //This registers a change in the drop box
     public static void DropDownValueChanged(Dropdown dropdown)
     {
-        if (dropdown.name == "type")
-        {
-            LoadBackgroundImage(dropdown.captionText.text);
-        }
-        else if (dropdown.name == "view")
+        if (dropdown.name == "view")
         {
             ChangeView(dropdown.captionText.text);
         }
@@ -1558,8 +1536,6 @@ public static class WindowFunctions
     public static void ClearDisplay()
     {
         DestroyLocationMarkers();
-
-        LoadBackgroundImage("none");
     }
 
     //This destroys all location markers
@@ -1579,45 +1555,6 @@ public static class WindowFunctions
 
                 missionEditor.locationMarkers.Clear();
             }
-        }
-    }
-
-    //Load background image
-    public static void LoadBackgroundImage(string image)
-    {
-        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
-
-        //This gets the display location window
-        Window displayLocation = null;
-
-        foreach (Window window in missionEditor.windows)
-        {
-            if (window.windowType == "displaylocation")
-            {
-                displayLocation = window;
-            }
-        }
-
-        //This gets the background raw image
-        RawImage background = null;
-
-        if (displayLocation != null)
-        {
-            RawImage[] rawimages = displayLocation.gameObject.GetComponentsInChildren<RawImage>();
-
-            foreach (RawImage rawImage in rawimages)
-            {
-                if (rawImage.gameObject.name.Contains("background"))
-                {
-                    background = rawImage;
-                    break;
-                }
-            }
-        }
-
-        if (background != null)
-        {
-            background.texture = Resources.Load<Texture2D>(OGGetAddress.missioneditor + image);
         }
     }
 

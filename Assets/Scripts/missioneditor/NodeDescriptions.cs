@@ -71,17 +71,6 @@ public static class NodeDescriptions
            "- No data is need for this event. OG simply looks to see if it is there or not. \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
-        else if (name == "preload_loadenvironment")
-        {
-            description =
-            "Pre-Load Environment \n " +
-            "\n " +
-            "This event tells scene to load the selected environment. \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- Remove this node if you want to load a scene without an environment \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
-        }
         else if (name == "preload_loadmultipleships")
         {
             description =
@@ -137,19 +126,6 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- For this node to work you need to also use the load terrain event node. \n" +
            "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
-           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
-        }
-        else if (name == "preload_setgalaxylocation")
-        {
-            description =
-           "Pre-Load Set Galaxy Location \n " +
-           "\n " +
-           "This sets the moves the starfield camera to the designated location in the starfield \n" +
-           "\n " +
-           "Extra Information \n" +
-           "- You can simply type in the name of the planet where you want scene to be i.e. 'Alderaan' and the game will automatically supply the correct location or you can manually enter the coordinates.  \n" +
-           "- If you use the 'search' mode you don't need to enter any coordinates. Open Galaxy will autmotically supply the correct coordinates if the planet exists. \n" +
-           "- The galaxy is 15000 units by width, 15000 units by length, and 15000 units by height. So the coordinates you enter will need to be smaller than this. \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
         else if (name == "preload_sethudcolour")
@@ -288,16 +264,6 @@ public static class NodeDescriptions
            "Deactivate Ship \n " +
            "\n " +
            "This node deactivates a ship so that is is no longer part of the scene. \n" +
-           "\n " +
-           "Extra Information \n" +
-           "- If the location is left as 'none' the node will run regardless of location. \n";
-        }
-        else if (name == "displaydialoguebox")
-        {
-            description =
-           "Display Dialogue Box \n " +
-           "\n " +
-           "This node pauses the game and displays a dialogue box with a message. When the button on the dialogue box is pressed the box disappears and the game resumes. \n" +
            "\n " +
            "Extra Information \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";

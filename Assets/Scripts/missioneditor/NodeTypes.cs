@@ -319,59 +319,6 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_PreLoad_LoadEnvironment(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawText(node, "pl_preload_loadenvironment", 8, 5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventType = NodeFunctions.DrawText(node, "preload_loadenvironment", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.y = NodeFunctions.DrawInputField(node, "y", "-3000", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options1 = GetEnvironmentList();
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "terrain", "Canyon01", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
     public static void Draw_PreLoad_LoadMultipleShips(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -798,49 +745,6 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_PreLoad_SetGalaxyLocation(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawText(node, "pl_setgalaxylocation", 8, 5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventType = NodeFunctions.DrawText(node, "preload_setgalaxylocation", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options1 = new List<string>();
-        options1.Add("search");
-        options1.Add("setcoordinates");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "mode", "search", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.x = NodeFunctions.DrawInputField(node, "location x", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.y = NodeFunctions.DrawInputField(node, "location y", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.z = NodeFunctions.DrawInputField(node, "location z", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
     public static void Draw_PreLoad_SetHudColour(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -915,16 +819,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("space_black");
-        options1.Add("space_nebula01");
-        options1.Add("space_nebula02");
-        options1.Add("space_nebula03");
-        options1.Add("sky_blue01");
-        options1.Add("sky_blue02");
-        options1.Add("sky_blue03");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "skybox", "space", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetSkyboxList(), "skybox", "space", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1435,49 +1330,6 @@ public static class NodeTypes
         node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
-    public static void Draw_DisplayDialogueBox(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "displaydialoguebox", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "displaydialoguebox", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        float multiplySize = 5;
-
-        node.data1 = NodeFunctions.DrawInputFieldLarge(node, "message", "none", 7, 5, drop, 12.5f * multiplySize, 90);
-
-        drop -= 15 * multiplySize;
 
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
@@ -3797,7 +3649,7 @@ public static class NodeTypes
 
     #endregion
 
-    #region standard lists for different dropdown menus
+    #region automatically generated lists for different dropdown menus
 
     public static List<string> GetAllegianceList()
     {
@@ -3926,6 +3778,20 @@ public static class NodeTypes
         }
 
         return cloudList;
+    }
+
+    public static List<string> GetSkyboxList()
+    {
+        List<string> skyboxList = new List<string>();
+
+        Object[] skyboxes = Resources.LoadAll(OGGetAddress.skyboxes, typeof(Material));
+
+        foreach (Object skybox in skyboxes)
+        {
+            skyboxList.Add(skybox.name);
+        }
+
+        return skyboxList;
     }
 
     #endregion

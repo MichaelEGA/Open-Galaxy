@@ -49,10 +49,6 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DeactivateShip(node);
         }
-        else if (node.nodeType == "displaydialoguebox")
-        {
-            NodeTypes.Draw_DisplayDialogueBox(node);
-        }
         else if (node.nodeType == "displayhint")
         {
             NodeTypes.Draw_DisplayHint(node);
@@ -157,10 +153,6 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadPlanet(node);
         }
-        else if (node.nodeType == "preload_loadenvironment")
-        {
-            NodeTypes.Draw_PreLoad_LoadEnvironment(node);
-        }
         else if (node.nodeType == "preload_loadmultipleships")
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShips(node);
@@ -176,10 +168,6 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "preload_loadsingleshiponground")
         {
             NodeTypes.Draw_PreLoad_LoadSingleShipOnGround(node);
-        }
-        else if (node.nodeType == "preload_setgalaxylocation")
-        {
-            NodeTypes.Draw_PreLoad_SetGalaxyLocation(node);
         }
         else if (node.nodeType == "preload_sethudcolour")
         {

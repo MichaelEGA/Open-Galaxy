@@ -862,7 +862,7 @@ public static class MainMenuFunctions
         messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";
         messages[4] = "Open Galaxy gives complete control to mission creators from events to AI behaviour to ship stats.";
         messages[5] = "Every ship in Open Galaxy handles a little differently. Adapt your tactics accordingly.";
-        messages[6] = "Open Galaxy is designed for keyboard and mouse but you can use a controller";
+        messages[6] = "Open Galaxy is designed for keyboard and mouse.";
         messages[7] = "Check out the credits to see who made Open Galaxy possible.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
         messages[9] = "Post 3.0 plans for Open Galaxy includes new inbuilt missions and a full cockpit set";

@@ -283,9 +283,6 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.PrepareShip(this);
         SmallShipFunctions.LoadLaserParticleSystem(this);
 
-        //LOD functions
-        SmallShipFunctions.LODCheck(this);
-
         //Energy Management functions
         SmallShipFunctions.CalculatePower(this);
         SmallShipFunctions.CalculateLevels(this);

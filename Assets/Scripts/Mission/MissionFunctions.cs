@@ -64,12 +64,9 @@ public static class MissionFunctions
         }
 
         //This sets the skybox to the default space and view distance
-        SceneFunctions.SetSkybox("space_black", true, "#000000");
+        SceneFunctions.SetSkybox("space_black", true);
         RenderSettings.fogEndDistance = 40000;
         RenderSettings.fogStartDistance = 30000;
-
-        //This sets the default camera location in the starfield
-        SetGalaxyLocationToCenter();
 
         //This finds and sets the first location
         MissionEvent firstLocationNode = FindFirstLocationNode(mission);
@@ -205,18 +202,6 @@ public static class MissionFunctions
                 LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
                 LoadPlanet(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
-            }
-            else if (missionEvent.eventType == "preload_loadenvironment" & missionEvent.conditionLocation == location)
-            {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading environment...", Time.unscaledTime - time);
-                Task a = new Task(LoadEnvironment(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Environment loaded", Time.unscaledTime - time);
-            }
-            else if (missionEvent.eventType == "preload_setgalaxylocation" & missionEvent.conditionLocation == location)
-            {
-                SetGalaxyLocation(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Galaxy location set", Time.unscaledTime - time);
             }
             else if (missionEvent.eventType == "preload_sethudcolour" & missionEvent.conditionLocation == location)
             {
@@ -402,11 +387,6 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "deactivateship")
         {
             DeactivateShip(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "displaydialoguebox")
-        {
-            DisplayDialogueBox(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "displayhint")
@@ -1091,7 +1071,7 @@ public static class MissionFunctions
         smallShip.transform.localPosition = new Vector3(x, y, z);
 
         //This resets the skybox to black
-        SceneFunctions.SetSkybox("space_black", true, "#000000");
+        SceneFunctions.SetSkybox("space_black", true);
 
         //This sets the scene location
         scene.currentLocation = jumpLocation;
@@ -1192,12 +1172,6 @@ public static class MissionFunctions
                 }
             }
         }
-    }
-
-    //This displays the dialogue box with a message
-    public static void DisplayDialogueBox(MissionEvent missionEvent)
-    {
-        DialogueBoxFunctions.DisplayDialogueBox(true, missionEvent.data1);
     }
 
     //This temporary displays a large print hint in the center bottom of the screen
@@ -2283,24 +2257,6 @@ public static class MissionFunctions
         while (a.Running == true) { yield return null; }
     }
 
-    //This loads the terrain
-    public static IEnumerator LoadEnvironment(MissionEvent missionEvent)
-    {
-        string terrainName = missionEvent.data1;
-
-        float positionX = missionEvent.x;
-        float positionY = missionEvent.y;
-        float positionZ = missionEvent.z;
-
-        float rotationX = missionEvent.xRotation;
-        float rotationY = missionEvent.yRotation;
-        float rotationZ = missionEvent.zRotation;
-
-        SceneFunctions.LoadEnvironment(terrainName, positionX, positionY, positionZ, rotationX, rotationY, rotationZ);
-
-        yield return null;
-    }
-
     //This changes the type of music that is playing
     public static void PlayMusicTrack(MissionEvent missionEvent)
     {
@@ -2577,39 +2533,6 @@ public static class MissionFunctions
         }
 
         return (x, y, z);
-    }
-
-    //This sets the galaxy location to the designated coordinates
-    public static void SetGalaxyLocation(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        //This scales the coordinate information
-        float xPos = (missionEvent.x / 15000f) * 50f;
-        float yPos = (missionEvent.y / 15000f) * 25f;
-        float zPos = (missionEvent.z / 15000f) * 50f;
-
-        Vector3 coordinates = new Vector3(xPos, yPos, zPos);
-
-        if (missionEvent.data1 != "setcoordinates")
-        {
-            string location = missionEvent.conditionLocation;
-            var planetData = SceneFunctions.FindLocation(location);
-
-            if (planetData.wasFound == true)
-            {
-                coordinates = planetData.location;
-            }
-        }
-
-        SceneFunctions.MoveStarfieldCamera(coordinates);
-    }
-
-    //This sets the galaxy location to the center
-    public static void SetGalaxyLocationToCenter()
-    {
-        Vector3 coordinates = new Vector3(0, 0, 0);
-        SceneFunctions.MoveStarfieldCamera(coordinates);
     }
 
     //This sets the coloured aspects of the hud
@@ -3137,48 +3060,13 @@ public static class MissionFunctions
     {
         string skybox = missionEvent.data1;
         bool stars = true;
-        string skyboxColour = "#000000";
 
         if (bool.TryParse(missionEvent.data2, out _))
         {
             stars = bool.Parse(missionEvent.data2);
         }
 
-        //This sets the correct value for the fog colour so that it matches the skybox
-        if (skybox == "space_black")
-        {
-            skyboxColour = "#000000";
-        }
-        else if (skybox == "space_nebula01")
-        {
-            skyboxColour = "#000000";
-        }
-        else if (skybox == "space_nebula01")
-        {
-            skyboxColour = "#000000";
-        }
-        else if (skybox == "space_nebula02")
-        {
-            skyboxColour = "#000000";
-        }
-        else if (skybox == "space_nebula03")
-        {
-            skyboxColour = "#000000";
-        }
-        else if (skybox == "sky_blue01")
-        {
-            skyboxColour = "#98AFD3";
-        }
-        else if (skybox == "sky_blue02")
-        {
-            skyboxColour = "#8693B3";
-        }
-        else if (skybox == "sky_blue03")
-        {
-            skyboxColour = "#8A8A8A";
-        }
-
-        SceneFunctions.SetSkybox(skybox, stars, skyboxColour);
+        SceneFunctions.SetSkybox(skybox, stars);
     }
 
     //This sets the number and type of torpedoes

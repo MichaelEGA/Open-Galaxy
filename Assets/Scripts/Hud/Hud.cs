@@ -69,7 +69,8 @@ public class Hud : MonoBehaviour
 
     [Header("Player Information")]
     public Text title;
-    public Text hint;
+    public Text hintTextGO;
+    public RawImage hintImage;
 
     [Header("Radar Information")]
     [HideInInspector] public GameObject radarObject;

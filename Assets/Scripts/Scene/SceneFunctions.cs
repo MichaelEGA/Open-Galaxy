@@ -454,35 +454,6 @@ public static class SceneFunctions
         }
     }
 
-    //Move starfield camera to planet location
-    public static void MoveStarfieldCamera(Vector3 coordinates)
-    {
-        //This finds the starfield camera
-        GameObject starfieldCamera = GameObject.Find("Starfield Camera");
-
-        //This prevents the coordinates being outside the bound of the galaxy
-        if (coordinates.x > 50)
-        {
-            coordinates.x = 50;
-        }
-
-        if (coordinates.y > 25)
-        {
-            coordinates.y = 25;
-        }
-
-        if (coordinates.z > 50)
-        {
-            coordinates.z = 50;
-        }
-
-        //This moves the starfield camera to the designated coordinates
-        if (starfieldCamera != null)
-        {
-            starfieldCamera.transform.position = coordinates;
-        }
-    }
-
     //This grabs the starfield
     public static GameObject GetStarfield()
     {
@@ -1026,78 +997,10 @@ public static class SceneFunctions
 
     #endregion
 
-    #region terrain loading
-
-    //This loads the terrain mesh and applies the correct material
-    public static void LoadEnvironment(string terrainName, float positionX, float positionY, float positionZ, float rotationX, float rotationY, float rotationZ)
-    {
-        Scene scene = GetScene();
-
-        //This loads the terrain gameobject
-        GameObject environment = null;
-
-        Object[] environmentPrefabs = Resources.LoadAll(OGGetAddress.environments, typeof(GameObject));
-
-        foreach (Object tempTerrain in environmentPrefabs)
-        {
-            if (terrainName == tempTerrain.name)
-            {
-                environment = GameObject.Instantiate((GameObject)tempTerrain);
-            }
-        }
-
-        if (environment != null & scene != null)
-        {
-            Rigidbody terrainRigidbody = environment.AddComponent<Rigidbody>();
-            terrainRigidbody.isKinematic = true;
-            environment.layer = 7;
-            environment.transform.SetParent(scene.transform);
-            environment.transform.localPosition = new Vector3(positionX, positionY, positionZ);
-            environment.transform.localRotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
-            scene.terrain = environment;
-        }
-
-        //This loads the view distance plane
-        GameObject plane = null;
-
-        foreach (Object tempTerrain in environmentPrefabs)
-        {
-            if (tempTerrain.name == "plane")
-            {
-                plane = GameObject.Instantiate((GameObject)tempTerrain);
-            }
-        }
-
-        if (plane != null)
-        {
-            plane.transform.SetParent(scene.transform);
-            plane.transform.localPosition = new Vector3(0, -15000, 0);
-            scene.viewDistancePlane = plane;
-        }
-    }
-
-    //This unloads the terrain mesh
-    public static void UnloadTerrain()
-    {
-        Scene scene = GetScene();
-
-        if(scene.terrain != null)
-        {
-            GameObject.Destroy(scene.terrain);
-        }
-
-        if (scene.viewDistancePlane != null)
-        {
-            GameObject.Destroy(scene.viewDistancePlane);
-        }
-    }
-
-    #endregion
-
     #region skybox loading
 
     //This sets the skybox
-    public static void SetSkybox(string name, bool stars, string skyboxColour)
+    public static void SetSkybox(string name, bool stars)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1125,49 +1028,6 @@ public static class SceneFunctions
                 RenderSettings.skybox = skybox;
                 break;
             }
-        }
-
-        //This sets the fog color to match the skybox
-        Color newColour;
-
-        if (ColorUtility.TryParseHtmlString(skyboxColour, out newColour))
-        {
-            RenderSettings.fogColor = newColour;
-        }
-    }
-
-    //Creates a circular wall of fog at the set radius from the center point
-    public static void DynamicFogWall(Scene scene)
-    {
-        if (scene.fogwall == null)
-        {
-            GameObject fogwall = Resources.Load(OGGetAddress.fogwall + "fogwall") as GameObject;
-            scene.fogwall = GameObject.Instantiate(fogwall);
-            scene.fogwall.transform.SetParent(scene.transform);
-            scene.fogwall.transform.localPosition = new Vector3(0, 0, 0);    
-        }
-
-        if (scene.mainCamera != null & scene.fogwall != null)
-        {
-            float distance = 0;
-
-            LayerMask layerMask = LayerMask.GetMask("fogwall");
-
-            RaycastHit hit;
-
-            Physics.queriesHitBackfaces = true;
-
-            if (Physics.Raycast(scene.mainCamera.transform.position, scene.mainCamera.transform.forward, out hit, 30000, layerMask))
-            {
-                distance = Vector3.Distance(scene.mainCamera.transform.position, hit.point);
-            }
-                
-            RenderSettings.fogEndDistance = distance;
-            RenderSettings.fogStartDistance = distance - 1000;
-
-            float scale = scene.fogDistanceFromCenter * 2;
-
-            scene.fogwall.transform.localScale = new Vector3(scale, scale, scale);
         }
     }
 
@@ -2346,7 +2206,6 @@ public static class SceneFunctions
         if (scene != null)
         {
             AvoidCollisionsFunctions.StopAvoidCollision();
-            UnloadTerrain();
             yield return null;
             ClearScene(scene);
             GameObject.Destroy(scene.gameObject);
@@ -2428,8 +2287,6 @@ public static class SceneFunctions
     public static void ClearLocation()
     {
         Scene scene = GetScene();
-
-        UnloadTerrain();
 
         if (scene.objectPool != null)
         {

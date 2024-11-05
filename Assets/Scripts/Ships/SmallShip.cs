@@ -102,15 +102,9 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool isDisabled;
 
     [Header("Ship Controls")]
-    public bool keyboadAndMouse = true;
     public bool controlLock = false;
     public bool invertUpDown;
     public bool invertLeftRight;
-    [HideInInspector] public float controllerSenstivity = 0.05f;
-    [HideInInspector] public float controllerPitch;
-    [HideInInspector] public float controllerRoll;
-    [HideInInspector] public float controllerTurn;
-    [HideInInspector] public float controllerThrust;
     [HideInInspector] public bool powerToShields;
     [HideInInspector] public bool powerToLasers;
     [HideInInspector] public bool powerToEngine;
@@ -273,8 +267,6 @@ public class SmallShip : MonoBehaviour
         //Input functions
         SmallShipFunctions.GetAIInput(this);
         SmallShipFunctions.GetKeyboardAndMouseInput(this);
-        SmallShipFunctions.GetGameControllerInput(this);
-        SmallShipFunctions.DetectInputType(this);
         SmallShipFunctions.TurnShipAround(this);
         SmallShipFunctions.SpinShip(this);
         SmallShipFunctions.ControlLock(this);

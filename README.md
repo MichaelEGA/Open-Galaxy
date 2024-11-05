@@ -3,10 +3,10 @@
 Gameplay
 ![image](https://github.com/user-attachments/assets/e92bcdf2-ba3e-4e61-a8e5-b316f7670f9c)
 
-![image](https://github.com/user-attachments/assets/4ee3cee4-91ca-464b-b43c-421a3417e3c5)
+![image](https://github.com/user-attachments/assets/3df4d5a6-63a2-4bcc-b111-9e28017c1d3f)
 
 Mission Editor
-![Screenshot (241)](https://github.com/MichaelEGA/Open-Galaxy/assets/67586167/ac67c4b6-49b7-4452-9ff4-708156414d80)
+![Screenshot (668)](https://github.com/user-attachments/assets/82905984-8da3-47fb-b885-5ab8783ffb1c)
 
 Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platform for custom missions made by the community. 
 
@@ -19,10 +19,8 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - External mission loading (Implemented)
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy (Implemented)
   - Switch between different asset sets (Implemented)
-  - Terrain loading (Implemented)
-  - 12 Inbuilt Missions (Implemented)
+  - 14 Inbuilt Missions (Implemented)
   - Keyboard and Mouse Controls (Implemented)
-  - X-Box Controller Controls (Implemented)
 
 **Controls**  
   - Mouse Steers

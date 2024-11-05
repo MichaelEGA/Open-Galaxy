@@ -220,28 +220,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data6 = NodeFunctions.DrawInputField(node, "maxSize", "0.5f", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data7 = NodeFunctions.DrawInputField(node, "minSize", "0.01f", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options2 = new List<string>();
-        options2.Add("none");
-        options2.Add("large");
-        options2.Add("small");
-
-        node.data8 = NodeFunctions.DrawDropDownMenu(node, options2, "preference", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data9 = NodeFunctions.DrawInputField(node, "percentage", "10", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data10 = NodeFunctions.DrawInputField(node, "seed", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawInputField(node, "seed", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 

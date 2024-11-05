@@ -786,11 +786,11 @@ public static class SceneFunctions
     #region asteroid loading
 
     //This loads asteroids 
-    public static IEnumerator LoadAsteroids(float number, string type, Vector3 location, float width, float height, float length, float maxSize, float minSize, string preference = "none", float percentage = 50, int seed = 1138)
+    public static IEnumerator LoadAsteroids(float number, string type, Vector3 position, float width, float height, float length, int seed)
     {
         Vector3[] positions = GetAsteroidPostions(number, height, width, length, seed);
         Vector3[] rotations = GetAsteroidRotations(number, seed);
-        float[] sizes = GetAsteroidSizes(number, minSize, maxSize, preference, percentage, seed);
+        float[] sizes = GetAsteroidSizes(number, seed);
         int[] asteroidTypes = GetAsteroidTypes(number, type, seed);
 
         Scene scene = GetScene();
@@ -798,7 +798,7 @@ public static class SceneFunctions
         GameObject asteroidAnchor = new GameObject();
         asteroidAnchor.name = "asteroidanchor";
         asteroidAnchor.transform.SetParent(scene.transform);
-        asteroidAnchor.transform.localPosition = location;
+        asteroidAnchor.transform.localPosition = position;
 
         Vector3 centerPosition = new Vector3(width/2f, height/2f, length/2f);
 
@@ -898,81 +898,47 @@ public static class SceneFunctions
     }
 
     //This gets all the sizes of the asteroids
-    public static float[] GetAsteroidSizes(float number, float minSize, float maxSize, string preference, float percentage, int seed)
+    public static float[] GetAsteroidSizes(float number, int seed)
     {
         List<float> asteroidSizes = new List<float>();
 
         Random.InitState(seed);
 
-        if (preference == "none") //This results in a asteroid field that is fairly uniform
+        float maxSize = 0.5f;
+        float minSize = 0.02f;
+        float percentage = 3f;
+
+        float limit = (maxSize / 10f);
+
+        if (limit < minSize)
         {
-            for (int i = 0; i < number; i++)
+            limit = minSize;
+        }
+
+        for (int i = 0; i < number; i++)
+        {
+            float randomNumber = Random.Range(0, 100);
+
+            bool loadLarge = false;
+
+            if (randomNumber < percentage)
             {
-                float size = Random.Range(minSize, maxSize);
+                loadLarge = true;
+            }
+
+            if (loadLarge == true)
+            {
+                float size = Random.Range(limit, maxSize);
+                asteroidSizes.Add(size);
+            }
+            else
+            {
+                float size = Random.Range(minSize, limit);
                 asteroidSizes.Add(size);
             }
         }
-        else if (preference == "large") //This results in a asteroid field that is more variegated with some large features
-        {
-            float limit = (maxSize / 10f);
 
-            if (limit < minSize)
-            {
-                limit = minSize;
-            }
-
-            for (int i = 0; i < number; i++)
-            {
-                float randomNumber = Random.Range(0, 100);
-
-                bool loadLarge = false;
-
-                if (randomNumber < percentage)
-                {
-                    loadLarge = true;
-                }
-
-                if (loadLarge == true)
-                {
-                    float size = Random.Range(limit, maxSize);
-                    asteroidSizes.Add(size);
-                }
-                else
-                {
-                    float size = Random.Range(minSize, limit);
-                    asteroidSizes.Add(size);
-                }
-            }
-        }
-        else if (preference == "small") //This results in a asteroid field that is more variegated but less large features
-        {
-            float average = (maxSize + minSize) / 2f;
-
-            for (int i = 0; i < number; i++)
-            {
-                float randomNumber = Random.Range(0, 100);
-
-                bool loadSmall = false;
-
-                if (randomNumber < percentage)
-                {
-                    loadSmall = true;
-                }
-
-                if (loadSmall == true)
-                {
-                    float size = Random.Range(minSize, average);
-                    asteroidSizes.Add(size);
-                }
-                else
-                {
-                    float size = Random.Range(minSize, average);
-                    asteroidSizes.Add(size);
-                }  
-            }
-        }
-
-       return asteroidSizes.ToArray();
+        return asteroidSizes.ToArray();
     }
 
     //This gets all the positions at once so as not to break the seed

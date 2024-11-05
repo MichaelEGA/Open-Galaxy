@@ -1770,59 +1770,45 @@ public static class MissionFunctions
         float x = missionEvent.x;
         float y = missionEvent.y;
         float z = missionEvent.z;
-        Vector3 position = new Vector3(x, y, z);
-        float number = 1;
+        Vector3 position = new Vector3(x, y, z);      
         string type = missionEvent.data2;
-        float width = 30000;
-        float height = 1000;
-        float length = 30000;
-        float maxSize = 0.5f;
-        float minSize = 0.01f;
-        string preference = missionEvent.data8;
-        float percentage = 10;
-        int seed = 1138;
+        
+        float number = 1000;
 
         if (float.TryParse(missionEvent.data1, out _))
         {
             number = float.Parse(missionEvent.data1);
         }
 
+        float width = 30000;
+
         if (float.TryParse(missionEvent.data3, out _))
         {
             width = float.Parse(missionEvent.data3);
         }
+
+        float height = 1000;
 
         if (float.TryParse(missionEvent.data4, out _))
         {
             height = float.Parse(missionEvent.data4);
         }
 
+        float length = 30000;
+
         if (float.TryParse(missionEvent.data5, out _))
         {
             length = float.Parse(missionEvent.data5);
         }
 
-        if (float.TryParse(missionEvent.data6, out _))
+        int seed = 0;
+
+        if (int.TryParse(missionEvent.data6, out _))
         {
-            maxSize = float.Parse(missionEvent.data6);
+            seed = int.Parse(missionEvent.data6);
         }
 
-        if (float.TryParse(missionEvent.data7, out _))
-        {
-            minSize = float.Parse(missionEvent.data7);
-        }
-
-        if (float.TryParse(missionEvent.data9, out _))
-        {
-            percentage = float.Parse(missionEvent.data9);
-        }
-
-        if (int.TryParse(missionEvent.data10, out _))
-        {
-            seed = int.Parse(missionEvent.data10);
-        }
-
-        Task a = new Task(SceneFunctions.LoadAsteroids(number, type, position, width, height, length, maxSize, minSize, preference, percentage, seed));
+        Task a = new Task(SceneFunctions.LoadAsteroids(number, type, position, width, height, length, seed));
         while (a.Running == true) { yield return null; }
 
         yield return null;

@@ -310,8 +310,7 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- At the moment you can only add a message to the briefing screen. \n" +
-            "- WARNING: This node is under development. Expect it to change over time. \n" +
-           "- If the location is left as 'none' the node will run regardless of location. \n";
+            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
         else if (name == "ifobjectiveisactive")
         {
@@ -335,8 +334,8 @@ public static class NodeDescriptions
              "\n " +
              "Extra Information \n" +
              "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
-           "- If the location is left as 'none' the node will run regardless of location. \n";
+             "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
+            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
         else if (name == "ifshipislessthandistancetoothership")
         {
@@ -347,7 +346,7 @@ public static class NodeDescriptions
              "\n " +
              "Extra Information \n" +
              "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+             "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
              "- If the location is left as 'none' the node will run regardless of location. \n";
         }
         else if (name == "ifshipislessthandistancetowaypoint")
@@ -359,7 +358,7 @@ public static class NodeDescriptions
              "\n " +
              "Extra Information \n" +
              "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+             "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
              "- If the location is left as 'none' the node will run regardless of location. \n";
         }
         else if (name == "ifshipisactive")
@@ -370,7 +369,7 @@ public static class NodeDescriptions
             "This node checks to see whether a particular ship is active or not. \n" +
             "\n " +
             "Extra Information \n" +
-            "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+            "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
             "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
             "- If the location is left as 'none' the node will run regardless of location. \n";
@@ -383,7 +382,7 @@ public static class NodeDescriptions
             "This node checks to see whether a particular ship has been disabled or not. \n" +
             "\n " +
             "Extra Information \n" +
-            "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+            "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
             "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
             "- If the location is left as 'none' the node will run regardless of location. \n";
@@ -396,7 +395,7 @@ public static class NodeDescriptions
             "This node checks to see whether a particular ship hasn't been disabled or not. \n" +
             "\n " +
             "Extra Information \n" +
-            "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+            "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
             "- This node is useful for checking if a player has finished scanning a group of ships/containers with a similar name. \n" +
             "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
@@ -410,7 +409,7 @@ public static class NodeDescriptions
             "This node checks to see whether a particular ship has been scanned or not. \n" +
             "\n " +
             "Extra Information \n" +
-            "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+            "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
             "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
             "- If the location is left as 'none' the node will run regardless of location. \n";
@@ -423,7 +422,7 @@ public static class NodeDescriptions
             "This node checks to see whether a ship hasn't been scanned or not. \n" +
             "\n " +
             "Extra Information \n" +
-            "- This node will return a result on the first ship it finds that hasn't been scanned. For example if you type 'Container', the node will check all ships that have 'Container' in the name. If it finds one that hasn't been scanned it returns true. \n" +
+            "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
             "- This node is useful for checking if a player has finished scanning a group of ships/containers with a similar name. \n" +
             "- This string is case sensitive. If you write 'container' and you are looking for 'Container' the function wont find it. \n" +
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
@@ -438,7 +437,7 @@ public static class NodeDescriptions
             "\n " +
             "Extra Information \n" +
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-            "- WARNING: The name of this node may change to accurately represent the function it runs. \n" +
+            "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
             "- If the location is left as 'none' the node will run regardless of location. \n";
         }
         else if (name == "ifshipssystemsarelessthan")
@@ -450,7 +449,7 @@ public static class NodeDescriptions
              "\n " +
              "Extra Information \n" +
              "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
-             "- This node will return a result on the first ship that contains the given text. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first of the two ships it checks. \n" +
+             "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
              "- If the location is left as 'none' the node will run regardless of location. \n";
         }
         else if (name == "loadmultipleships")

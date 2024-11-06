@@ -275,6 +275,8 @@ public static class WindowFunctions
         drop -= 15;
 
         DrawTextButton(window, 80, -80, 10, 90, "none", "Save Mission As", 7, "SaveMissionAs", TextAnchor.MiddleCenter);
+
+        Task a = new Task(WindowFunctions.ModifyCaretPositionTimed(1f));
     }
 
     //This draws the save mission window
@@ -1595,6 +1597,35 @@ public static class WindowFunctions
         }
 
         return buttonList.ToArray();
+    }
+
+    //This modifies the caret position
+    public static IEnumerator ModifyCaretPositionTimed(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor != null)
+        {
+            if (missionEditor.windows != null)
+            {
+                foreach (Window window in missionEditor.windows)
+                {
+                    if (window != null)
+                    {
+                        Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(window.transform, "Caret");
+
+                        int childNumber = window.transform.childCount;
+
+                        foreach (Transform caret in carets)
+                        {
+                            caret.SetAsLastSibling();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #endregion

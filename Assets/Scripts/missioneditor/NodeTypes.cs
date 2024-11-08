@@ -3699,6 +3699,8 @@ public static class NodeTypes
     {
         List<string> trackList = new List<string>();
 
+        trackList.Add("none");
+
         Object[] musicTracks = Resources.LoadAll(OGGetAddress.musicclips, typeof(AudioClip));
 
         foreach (Object track in musicTracks)

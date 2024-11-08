@@ -16,7 +16,7 @@ public static class HudFunctions
 
         hud.name = "Hud";
         Hud hudScript = hud.AddComponent<Hud>();
-        hudScript.loadTime = Time.time;
+        hudScript.startTime = Time.time;
 
         LoadRadarPrefabs(hudScript);
         InstantiateRadarShips(hudScript);
@@ -1605,13 +1605,18 @@ public static class HudFunctions
     //This adds a message to the ship log
     public static void AddToShipLog(string message)
     {
-
         if (Time.timeScale != 0)
         {
             Hud hud = GetHud();
 
             if (hud != null)
             {
+                //This caculates the time in 60 second increments
+                float timer = Time.time - hud.startTime;
+                int minutes = Mathf.FloorToInt(timer / 60F);
+                int seconds = Mathf.FloorToInt(timer - minutes * 60);
+                string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
+
                 if (hud.shipLog == null)
                 {
                     GameObject shipLog = GameObject.Find("ShipLog");
@@ -1620,7 +1625,7 @@ public static class HudFunctions
 
                 if (hud.shipLog != null)
                 {
-                    hud.shipLog.text = (Time.time - hud.loadTime).ToString("00:00") + " " + message + "\n" + hud.shipLog.text;
+                    hud.shipLog.text = niceTime + " " + message + "\n" + hud.shipLog.text;
                 }
             }
         }

@@ -192,37 +192,37 @@ public static class MissionFunctions
     }
 
     //This looks for and runs preload events
-    public static IEnumerator FindAndRunPreLoadEvents(Mission mission, string location, float time, bool firstRun = false)
+    public static IEnumerator FindAndRunPreLoadEvents(Mission mission, string location, float savedTime, bool firstRun = false)
     {
         //This preloads all scene objects first
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
             if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
             {
-                LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - time);
+                LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - savedTime);
                 LoadPlanet(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - time);
+                LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", savedTime);
             }
             else if (missionEvent.eventType == "preload_sethudcolour" & missionEvent.conditionLocation == location)
             {
                 SetHudColour(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Hud Colour Set", Time.unscaledTime - time);
+                LoadScreenFunctions.AddLogToLoadingScreen("Hud Colour Set", savedTime);
             }
             else if (missionEvent.eventType == "preload_setsceneradius" & missionEvent.conditionLocation == location)
             {
                 SetSceneRadius(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", Time.unscaledTime - time);
+                LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", savedTime);
             }
             else if (missionEvent.eventType == "preload_setskybox" & missionEvent.conditionLocation == location)
             {
                 SetSkyBox(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - time);
+                LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", savedTime);
             }
             else if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadAsteroids(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - time);
+                LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", savedTime);
             }
         }
 
@@ -233,14 +233,14 @@ public static class MissionFunctions
             {
                 Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", Time.unscaledTime - time);  
+                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", savedTime);  
             }
             else if (missionEvent.eventType == "preload_loadsingleshipsonground" & missionEvent.conditionLocation == location)
             {
                 if (firstRun == false & missionEvent.data10 == "false" || firstRun == false & missionEvent.data10 == "none" || firstRun == true)
                 {
                     LoadSingleShipOnGround(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded on the ground", Time.unscaledTime - time);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded on the ground", savedTime);
                 }   
             }
             else if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
@@ -249,14 +249,14 @@ public static class MissionFunctions
                 if (firstRun == false & missionEvent.data8 == "false" || firstRun == false & missionEvent.data8 == "none" || firstRun == true)
                 {
                     LoadSingleShip(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", Time.unscaledTime - time);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", savedTime);
                 } 
             }
             else if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - time);                 
+                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", savedTime);                 
             }        
         }
     }

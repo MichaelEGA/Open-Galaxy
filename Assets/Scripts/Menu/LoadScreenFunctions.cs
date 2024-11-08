@@ -78,7 +78,7 @@ public static class LoadScreenFunctions
             {
                 if (showTime == true)
                 {
-                    loadingInfoText.text = loadingInfoText.text + "\n" + time.ToString("00:00") + " " + message;
+                    loadingInfoText.text = loadingInfoText.text + "\n" + GetTimeAsString(time) + " " + message;
                 }
                 else
                 {
@@ -86,5 +86,17 @@ public static class LoadScreenFunctions
                 }  
             }
         }
+    }
+
+
+    //This caculates the time in 60 second increments
+    public static string GetTimeAsString(float startTime)
+    {
+        float timer = Time.unscaledTime - startTime;
+        int minutes = Mathf.FloorToInt(timer / 60F);
+        int seconds = Mathf.FloorToInt(timer - minutes * 60);
+        string timeAsString = string.Format("{0:0}:{1:00}", minutes, seconds);
+
+        return timeAsString;
     }
 }

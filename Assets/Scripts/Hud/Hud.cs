@@ -10,7 +10,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public SmallShip smallShip;
     [HideInInspector] public Camera mainCamera;
     [HideInInspector] public Camera starfieldCamera;
-    [HideInInspector] public float loadTime;
+    [HideInInspector] public float startTime;
     [HideInInspector] public Color colour;
 
     [Header("Hud Elements Check")]

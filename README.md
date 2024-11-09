@@ -35,13 +35,13 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Right Mouse matches speed
   - Scan a target by selecting it and then flying close
 
-**Latest Development Release:** 3.5.01
+**Latest Development Release:** 4.0.11
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.3.5.01/Open.Galaxy.3.5.01.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.4.0.11/Open.Galaxy.4.0.11.zip
     
-**Latest Milestone Release:** 3.0.0
+**Latest Milestone Release:** 4.0.11
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.3.0.0/Open.Galaxy.3.0.0.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.4.0.11/Open.Galaxy.4.0.11.zip
 
 **Roadmap**
 
@@ -51,7 +51,77 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
   - https://github.com/MichaelEGA/Open-Galaxy/wiki
 
+**All Open Galaxy resources are free to use in your own project**
+  - Open Galaxy Assets: https://sketchfab.com/michael.evan.allison/models
+  - First Strike Assets: https://www.moddb.com/mods/first-strike/news/public-release-of-first-strike-models
+  - Original Trilogy Mode Assets: https://www.indiedb.com/downloads/original-trilogy-assets
+
 **Changelog**
+
+08/11/24 - 4.0.11 (Unity 6000.0.15f1)
+  - Added: Sulon Star Model
+  - Added: mc80cc
+  - Added: Escape Pod Cockpit
+  - Added: Cloud Car Cockpit
+  - Added: new node set waypoint to ship location
+  - Added: new node ifobjectiveisactive
+  - Added: new node/function: cannotbedisabled
+  - Added: new node/function: display a hint
+  - Added: x-wing mission 7
+  - Added: slow cockpit sway
+  - Added: sound radio distortion system
+  - Added: x-wing mission 8
+  - Updated: x-wing mission descriptions
+  - Updated: tie fighter mission descriptions
+  - Fixed: Tie Fighter mission 5 x-wings don't launch in third wave
+  - Fixed: unresolved node functions null error in mission editor
+  - Fixed: incorrect position of waypoint
+  - Fixed: smallship not being marked as disabled
+  - Fixed: mission 5 interceptors don't launch from SD
+  - Fixed: ships not launching from correct hangar position
+  - Removed: terrains
+  - Added: add audio distortion option
+  - Updated: post processing
+  - Fixed: sentinel wings don't rotate
+  - Fixed: sentinel wings on radar model in wrong position
+  - Added: cloud city as background city option
+  - Fixed: tie fighter mission 5 doesn't finish
+  - Fixed: disabled ship should deselect target to make room for more ai attackers
+  - Removed: wing position from ai control and make it automatic i.e. hyperspace/docking wings closed, otherwise open
+  - Fixed: newly loaded ships can be heard while in hyperspace
+  - Fixed: ship rolls one way and then the other when destroyed
+  - Fixed: dual lasers on three laser ships doesn't work properly
+  - Fixed: make build version use high fidelity by default
+  - Fixed: change lower fidelity versions to include drive glows
+  - Removed: all lod system code - largeship
+  - Removed: environments
+  - Removed: set galaxy location function
+  - Removed: randomised explosions
+  - Fixed: x-wing mission 6 freighter should exit more quickly
+  - Fixed: x-wing mission 3 slight delay one of the ship destroyed notification messages
+  - Fixed: x-wing mission 4 move red 2 so he is not destroyed straight away
+  - Fixed: make fogger invincible in Tie Fighter mission 5
+  - Fixed: remove dialogue box node, function, and assets
+  - Fixed: ships not turning around at edge of game area
+  - Fixed: make skybox options load dynamically in editor
+  - Fixed: red bar behind hint box
+  - Fixed: prevent x-wings attacking buoy in X-Wing mission 7
+  - Removed: terrain image option from editor
+  - Removed: controller code
+  - Removed: controller information from menu
+  - Updated: tutorials to remove terrain tutorial
+  - Removed: menu mouse-over button sound
+  - Updated: asteroid node and function to be less confusing
+  - Fixed: no cursor on save name for mission editor
+  - Updated: rename first x-wing campaign to A New Ally
+  - Updated: rename Tie Fighter campaign to Aftermath of Hoth
+  - Added: new campaign Imperial Assault
+  - Added: 'none' option to music tracks in editor
+  - Fixed: time should be in minutes
+  - Updated: write a new description for A New Ally
+  - Updated: write a new description for Aftermath of Hoth
+  - Updated: write a new descrition for Imperial Assault
+  - Updated: copy data from custom mission file back into internal folder
 
 26/07/24 - v3.5.01 (Unity 6000.0.15f1)
   - Added: Radar objects for new star destroyers

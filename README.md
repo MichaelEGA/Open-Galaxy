@@ -1,9 +1,9 @@
 # Open-Galaxy
 
 Gameplay
-![image](https://github.com/user-attachments/assets/e92bcdf2-ba3e-4e61-a8e5-b316f7670f9c)
-
 ![image](https://github.com/user-attachments/assets/3df4d5a6-63a2-4bcc-b111-9e28017c1d3f)
+
+![image](https://github.com/user-attachments/assets/edb7a80c-6c47-4832-a04b-03456be6d05c)
 
 Mission Editor
 ![Screenshot (668)](https://github.com/user-attachments/assets/82905984-8da3-47fb-b885-5ab8783ffb1c)

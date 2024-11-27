@@ -814,10 +814,8 @@ public static class SceneFunctions
             asteroid.name = "asteroid";
             asteroid.layer = LayerMask.NameToLayer("collision_asteroid");
             Rigidbody rigidBody = GameObjectUtils.AddRigidbody(asteroid, 100f, 0, 0);
-            //MeshCollider meshCollider = asteroid.AddComponent<MeshCollider>();
-            //meshCollider.convex = true;
-
-            SphereCollider sphereCollider = asteroid.AddComponent<SphereCollider>();
+            MeshCollider meshCollider = asteroid.AddComponent<MeshCollider>();
+            meshCollider.convex = true;
 
             //This spins the asteroids up
             rigidBody.angularVelocity = Random.onUnitSphere * Random.Range(0.01f, 0.1f);

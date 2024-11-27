@@ -911,10 +911,11 @@ public static class SmallShipFunctions
                 HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was disabled");
                 smallShip.isDisabled = true;
 
+                //This causes the ship to spin a little rather than being completely stationary
                 smallShip.shipRigidbody.angularVelocity = Random.onUnitSphere * Random.Range(0.1f, 1f);
                 smallShip.shipRigidbody.angularDamping = 0; //Prevents the spin from stopping
                 smallShip.shipRigidbody.linearVelocity = Random.onUnitSphere * Random.Range(0.1f, 1f);
-                smallShip.shipRigidbody.linearDamping = 0; //Preve
+                smallShip.shipRigidbody.linearDamping = 0; //Prevents the movements from stopping
 
                 //This creates an explosion where the ship is
                 ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "lightning", 12);

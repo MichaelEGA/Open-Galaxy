@@ -48,6 +48,7 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float thrustInput = 1;
 
     [Header("Ship Rotation")]
+    public bool reducemaneuvarability;
     [HideInInspector] public float pitchSpeed;
     [HideInInspector] public float pitchInput;
     [HideInInspector] public float pitchInputActual;
@@ -59,6 +60,7 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float rollInputActual;
     [HideInInspector] public float maneuvarabilityActual;
     [HideInInspector] public bool spinShip;
+
 
     [Header("Docking")]
     [HideInInspector] public DockingPoint[] dockingPoints;

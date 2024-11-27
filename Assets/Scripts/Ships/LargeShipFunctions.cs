@@ -129,26 +129,14 @@ public static class LargeShipFunctions
     //This calculates pitch, turn, and roll according to the speed of the vehicle
     public static void CalculatePitchTurnRollSpeeds(LargeShip largeShip)
     {
-        float peakManeuverSpeed = largeShip.speedRating / 2f;
-        float currentManeuverablity = 0f;
-        float manveurablityPercentageAsDecimal = 0f;
-
-        if (largeShip.thrustSpeed <= peakManeuverSpeed & largeShip.thrustSpeed > (peakManeuverSpeed / 3f))
+        if (largeShip.reducemaneuvarability == true)
         {
-            currentManeuverablity = (100f / peakManeuverSpeed) * largeShip.thrustSpeed;
-        }
-        else if (largeShip.thrustSpeed >= peakManeuverSpeed & largeShip.thrustSpeed < (largeShip.speedRating - (peakManeuverSpeed / 3f)))
-        {
-            currentManeuverablity = (100f / peakManeuverSpeed) * (peakManeuverSpeed - (largeShip.thrustSpeed - peakManeuverSpeed));
+            largeShip.maneuvarabilityActual = 1;
         }
         else
         {
-            currentManeuverablity = (100f / peakManeuverSpeed) * (peakManeuverSpeed / 3f);
+            largeShip.maneuvarabilityActual = largeShip.maneuverabilityRating;
         }
-
-        manveurablityPercentageAsDecimal = (largeShip.maneuverabilityRating / 100f);
-
-        largeShip.maneuvarabilityActual = (10f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal); 
 
         if (largeShip.spinShip == true)
         {

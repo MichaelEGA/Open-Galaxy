@@ -953,6 +953,78 @@ public static class MainMenuFunctions
             settings.screenResX = width;
             settings.screenResY = height;
         }
+        else if (resolution == "My Aspect Ratio - 640 Resolution")
+        {
+            int width = 640;
+            int height = (int)Mathf.Abs((640f/ Display.main.systemWidth) * Display.main.systemHeight);
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "My Aspect Ratio - 1024 Resolution")
+        {
+            int width = 1024;
+            int height = (int)Mathf.Abs((1024f / Display.main.systemWidth) * Display.main.systemHeight);
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "My Aspect Ratio - 1280 Resolution")
+        {
+            int width = 1280;
+            int height = (int)Mathf.Abs((1280f / Display.main.systemWidth) * Display.main.systemHeight);
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "My Aspect Ratio - 1680 Resolution")
+        {
+            int width = 1680;
+            int height = (int)Mathf.Abs((1680f / Display.main.systemWidth) * Display.main.systemHeight);
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "My Aspect Ratio - 1920 Resolution")
+        {
+            int width = 1920;
+            int height = (int)Mathf.Abs((1920f / Display.main.systemWidth) * Display.main.systemHeight);
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "My Aspect Ratio - 2560 Resolution")
+        {
+            int width = 2560;
+            int height = (int)Mathf.Abs((2560f / Display.main.systemWidth) * Display.main.systemHeight);
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "My Aspect Ratio - 3840 Resolution")
+        {
+            int width = 3840;
+            int height = (int)Mathf.Abs((3840f / Display.main.systemWidth) * Display.main.systemHeight);
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "My Aspect Ratio - 3840 Resolution")
+        {
+            int width = 3840;
+            int height = (int)Mathf.Abs((3840f / Display.main.systemWidth) * Display.main.systemHeight);
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "My Aspect Ratio - 7680 Resolution")
+        {
+            int width = 7680;
+            int height = (int)Mathf.Abs((7680f / Display.main.systemWidth) * Display.main.systemHeight);
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
         else if (resolution == "640 x 480 (4:3)")
         {
             Screen.SetResolution(640, 480, screenMode);

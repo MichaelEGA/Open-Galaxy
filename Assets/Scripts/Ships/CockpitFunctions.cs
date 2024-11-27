@@ -341,8 +341,20 @@ public static class CockpitFunctions
                     smallShip.randomisationY -= 0.001f;
                 }
 
-                float xLocation = 0 + (0.0001f * smallShip.turnInput * 100 * gForceMagnitude) + (0.015f * (Mathf.PerlinNoise(smallShip.randomisationX, smallShip.movementTime) - 0.5f)); 
-                float yLocation = 0 + (0.0001f * smallShip.pitchInput * 100 * gForceMagnitude) + (0.015f * (Mathf.PerlinNoise(smallShip.randomisationY, smallShip.movementTime) - 0.5f));
+                float variation = 0.015f; //This makes minor adjustments to the variation according to speed
+
+                if (smallShip.thrustSpeed < 10)
+                {
+                    variation = 0.005f;
+                }
+                else if (smallShip.thrustSpeed < 20)
+                {
+                    variation = 0.01f;
+                }
+
+                //This calculates the final movement
+                float xLocation = 0 + (0.0001f * smallShip.turnInput * 100 * gForceMagnitude) + (variation * (Mathf.PerlinNoise(smallShip.randomisationX, smallShip.movementTime) - 0.5f)); 
+                float yLocation = 0 + (0.0001f * smallShip.pitchInput * 100 * gForceMagnitude) + (variation * (Mathf.PerlinNoise(smallShip.randomisationY, smallShip.movementTime) - 0.5f));
                 float zLocation = 0 - 0.0005f * smallShip.thrustSpeed;
 
                 float xRotation = 3f * smallShip.pitchInput;

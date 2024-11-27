@@ -749,44 +749,44 @@ public static class MissionEditorFunctions
     public static void Shortcuts(MissionEditor missionEditor)
     {
         var keyboard = Keyboard.current;
-        float delay = 0.1f + missionEditor.timePressed;
+        float delay = 0.25f + missionEditor.timePressed;
 
-        if (keyboard.deleteKey.isPressed == true & Time.time > delay)
+        if (keyboard.deleteKey.isPressed == true & Time.unscaledTime > delay)
         {
             bool inputFieldIsActive = CheckInputFields();
 
             if (inputFieldIsActive == false)
             {
                 DeleteNodes();
-                missionEditor.timePressed = Time.time;
+                missionEditor.timePressed = Time.unscaledTime;
             }   
         }
 
-        if (keyboard.xKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.time > delay)
+        if (keyboard.xKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.unscaledTime > delay)
         {
             Cut();
-            missionEditor.timePressed = Time.time;
+            missionEditor.timePressed = Time.unscaledTime;
         }
 
-        if (keyboard.cKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.time > delay)
+        if (keyboard.cKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.unscaledTime > delay)
         {
             bool inputFieldIsActive = CheckInputFields();
 
             if (inputFieldIsActive == false)
             {
                 Copy();
-                missionEditor.timePressed = Time.time;
+                missionEditor.timePressed = Time.unscaledTime;
             }   
         }
 
-        if (keyboard.vKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.time > delay)
+        if (keyboard.vKey.isPressed == true & keyboard.ctrlKey.isPressed == true & Time.unscaledTime > delay)
         {
             bool inputFieldIsActive = CheckInputFields();
 
             if (inputFieldIsActive == false)
             {
                 Paste(missionEditor);
-                missionEditor.timePressed = Time.time;
+                missionEditor.timePressed = Time.unscaledTime;
             }
         }
     }

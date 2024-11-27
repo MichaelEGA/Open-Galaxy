@@ -202,7 +202,7 @@ public static class WindowFunctions
     {
         window.transform.name = "window_loadmission";
 
-        DrawWindowBase(window, 250, 100);
+        DrawWindowBase(window, 250, 200);
 
         DrawText(window, "Load Mission", 8, 5, -5, 12.5f, 90);
 
@@ -221,9 +221,9 @@ public static class WindowFunctions
 
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(window, 5, -29, 50, 240, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -29, 150, 240, 10, 7, buttons, functions);
 
-        DrawTextButton(window, 80, -84, 10, 90, "none", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
+        DrawTextButton(window, 80, -184, 10, 90, "none", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
     }
 
     //This draws the load mission window

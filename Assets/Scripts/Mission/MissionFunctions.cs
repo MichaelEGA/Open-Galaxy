@@ -2532,7 +2532,7 @@ public static class MissionFunctions
     //This sets an objective for the player to complete, removes an objective, or clears all objectives.
     public static void SetObjective(MissionEvent missionEvent)
     {
-        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();
 
         string mode = missionEvent.data1;
         string objective = missionEvent.data2;
@@ -2590,6 +2590,20 @@ public static class MissionFunctions
                 }
 
                 HudFunctions.AddToShipLog("OBJECTIVE COMPLETED: " + objective);
+            }
+            else if (mode == "clearobjective")
+            {
+                foreach (string tempObjective in missionManager.objectiveList)
+                {
+                    if (tempObjective != objective)
+                    {
+                        newObjectiveList.Add(tempObjective);
+                    }
+
+                    missionManager.objectiveList = newObjectiveList.ToArray();
+
+                    HudFunctions.UpdateObjectives(missionManager.objectiveList);
+                }
             }
             else if (mode == "clearallobjectives")
             {

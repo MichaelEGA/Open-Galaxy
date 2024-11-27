@@ -2978,6 +2978,7 @@ public static class NodeTypes
         options.Add("addobjective");
         options.Add("cancelobjective");
         options.Add("completeobjective");
+        options.Add("clearobjective");
         options.Add("clearallobjectives");
 
         node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "mode", "addobjective", 7, 5, drop, 12.5f, 90, 5f);

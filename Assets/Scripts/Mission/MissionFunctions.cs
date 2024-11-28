@@ -384,6 +384,10 @@ public static class MissionFunctions
         {
             ExitMission();
         }
+        else if (missionEvent.eventType == "exitanddisplaynextmissionmenu")
+        {
+            ExitAndDisplayNextMissionMenu(missionEvent);
+        }
         else if (missionEvent.eventType == "deactivateship")
         {
             DeactivateShip(missionEvent);
@@ -1131,7 +1135,7 @@ public static class MissionFunctions
     //This exits the mission back to the main menu
     public static void ExitMission()
     {
-        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();
         
         if (missionManager != null)
         {
@@ -1139,7 +1143,16 @@ public static class MissionFunctions
         }
 
         MissionFunctions.ExitAndUnload();
+    }
+    
+    //This exist the mission to the Nexy Mission menu
+    public static void ExitAndDisplayNextMissionMenu(MissionEvent missionEvent)
+    {
+        string nextMissionName = missionEvent.data1;
 
+        //Exit and Unload Mission but don't return to main menu;
+
+        NextMissionFunctions.ActivateNextMissionMenu(nextMissionName);
     }
 
     //This deactivates a ship so that it is no longer part of the scene

@@ -77,6 +77,7 @@ public static class WindowFunctions
         buttonList.Add("displaymessage");
         buttonList.Add("displaymissionbriefing");
         buttonList.Add("exitmission");
+        buttonList.Add("exitanddisplaynextmissionmenu");
         buttonList.Add("ifobjectiveisactive");
         buttonList.Add("ifshipisactive");
         buttonList.Add("ifshiphasbeendisabled");

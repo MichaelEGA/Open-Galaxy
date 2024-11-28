@@ -23,7 +23,7 @@ public static class MissionBriefingFunctions
     //This activates the mission briefing when called by a mission event
     public static void ActivateMissionBriefing(string briefingText, AudioSource audioSource)
     {
-        MissionBriefing missionBriefing = GameObject.FindObjectOfType<MissionBriefing>();
+        MissionBriefing missionBriefing = GameObject.FindFirstObjectByType<MissionBriefing>();
 
         if (missionBriefing == null)
         {        

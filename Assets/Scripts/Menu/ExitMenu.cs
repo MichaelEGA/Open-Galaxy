@@ -11,6 +11,7 @@ public class ExitMenu : MonoBehaviour
 
     public void ExitGame()
     {
-        MissionFunctions.ExitAndUnload();
+        MissionFunctions.ReturnToMainMenu();
+        MissionFunctions.UnloadMission();
     }
 }

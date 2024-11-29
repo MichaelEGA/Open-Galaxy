@@ -262,7 +262,6 @@ public static class MainMenuFunctions
         Object[] mainMissions = Resources.LoadAll(OGGetAddress.missions_internal, typeof(TextAsset));
 
         //This loads the image data
-
         Object[] mainMissionImages = Resources.LoadAll(OGGetAddress.missions_internal, typeof(Texture2D));
 
         foreach (Object campaignImage in mainMissionImages)
@@ -1457,7 +1456,7 @@ public static class MainMenuFunctions
     //This returns the main menu
     public static MainMenu GetMainMenu()
     {
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>(true);
         return mainMenu;
     }
 

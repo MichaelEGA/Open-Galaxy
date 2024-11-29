@@ -796,6 +796,7 @@ public static class MissionEditorFunctions
     {
         NodeFunctions.DeleteSelectedNodes();
         CloseAllMenus();
+        DisplayMessage("Selection Deleted");
     }
 
     //This creates a selection box
@@ -956,6 +957,7 @@ public static class MissionEditorFunctions
     {
         CopySelection();
         CloseAllMenus();
+        DisplayMessage("Selection Copied");
     }
 
     //This cuts the selected nodes
@@ -964,6 +966,7 @@ public static class MissionEditorFunctions
         CopySelection();
         DeleteNodes();
         CloseAllMenus();
+        DisplayMessage("Selection Cut");
     }
 
     //This pastes anything in the clipboard
@@ -1752,7 +1755,7 @@ public static class MissionEditorFunctions
 
         missionEditor.pasting = false;
 
-        DisplayMessage("Nodes Pasted from Clipboard");
+        DisplayMessage("Selection Pasted");
     }
 
     //This searches the given list for a node with a matching id

@@ -1142,7 +1142,8 @@ public static class MissionFunctions
             missionManager.running = false;
         }
 
-        MissionFunctions.ExitAndUnload();
+        ReturnToMainMenu();
+        UnloadMission();
     }
     
     //This exist the mission to the Nexy Mission menu
@@ -1150,9 +1151,11 @@ public static class MissionFunctions
     {
         string nextMissionName = missionEvent.data1;
 
-        //Exit and Unload Mission but don't return to main menu;
-
+        //Load next mission screen
         NextMissionFunctions.ActivateNextMissionMenu(nextMissionName);
+
+        //Unload mission
+        UnloadMission();
     }
 
     //This deactivates a ship so that it is no longer part of the scene
@@ -3265,7 +3268,8 @@ public static class MissionFunctions
     {
         yield return new WaitForSeconds(time);
 
-        MissionFunctions.ExitAndUnload();
+        UnloadMission();
+        ReturnToMainMenu();
     }
 
     //This activates the exit menu
@@ -3277,7 +3281,7 @@ public static class MissionFunctions
 
         if (missionManager.missionBriefing == null)
         {
-            missionManager.missionBriefing = GameObject.FindObjectOfType<MissionBriefing>();
+            missionManager.missionBriefing = GameObject.FindFirstObjectByType<MissionBriefing>();
         }
 
         if (missionManager.missionBriefing != null)
@@ -3310,22 +3314,9 @@ public static class MissionFunctions
         }
     }
 
-    //This unloads the game and exits back to the main screen
-    public static void ExitAndUnload()
+    //This unloads the mission and exits back to the main screen
+    public static void ReturnToMainMenu()
     {
-        HudFunctions.UnloadHud();
-        MusicFunctions.UnloadMusicManager();
-        AudioFunctions.UnloadAudioManager();
-        Task a = new Task(SceneFunctions.UnloadScene());
-
-        ExitMenu exitMenu = GameObject.FindObjectOfType<ExitMenu>();
-        GameObject loadingScreen = GameObject.Find("LoadingScreen");
-        GameObject missionBriefing = GameObject.Find("MissionBriefing");
-
-        if (exitMenu != null) { GameObject.Destroy(exitMenu.gameObject); }
-        if (loadingScreen != null) { GameObject.Destroy(loadingScreen); }
-        if (missionBriefing != null) { GameObject.Destroy(missionBriefing); }
-
         MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>(true);
 
         if (mainMenu != null)
@@ -3333,14 +3324,41 @@ public static class MissionFunctions
             if (mainMenu.menu != null)
             {
                 mainMenu.menu.SetActive(true);
-                mainMenu.missionRunning = false;
                 CanvasGroup canvasGroup = mainMenu.menu.GetComponent<CanvasGroup>();
                 Task b = new Task(MainMenuFunctions.FadeInCanvas(canvasGroup, 0.5f));
                 MainMenuFunctions.ActivateStartGameMenu();
             }
         }
 
-        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    //This unloads the mission
+    public static void UnloadMission()
+    {
+        HudFunctions.UnloadHud();
+        MusicFunctions.UnloadMusicManager();
+        AudioFunctions.UnloadAudioManager();
+        Task a = new Task(SceneFunctions.UnloadScene());
+
+        ExitMenu exitMenu = GameObject.FindFirstObjectByType<ExitMenu>();
+        GameObject loadingScreen = GameObject.Find("LoadingScreen");
+        GameObject missionBriefing = GameObject.Find("MissionBriefing");
+
+        if (exitMenu != null) { GameObject.Destroy(exitMenu.gameObject); }
+        if (loadingScreen != null) { GameObject.Destroy(loadingScreen); }
+        if (missionBriefing != null) { GameObject.Destroy(missionBriefing); }
+
+        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();
+
+        //This tells the main menu that the mission is no longer running
+        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>(true);
+
+        if (mainMenu != null)
+        {
+            mainMenu.missionRunning = false;          
+        }
 
         //This stops any active event series coroutines so they don't continue running when a new mission is loaded
         foreach (Task eventSeries in missionManager.missionTasks)
@@ -3358,9 +3376,6 @@ public static class MissionFunctions
 
         //This destroys the mission manager
         if (missionManager != null) { GameObject.Destroy(missionManager.gameObject); }
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
     }
 
     #endregion

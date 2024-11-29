@@ -1278,62 +1278,61 @@ public static class HudFunctions
     }
 
     //This displays the nav point marker when the destination is in view and an arrow pointing to the destination when offscreen
-    public static void DisplayNavPointMarker(Hud hud)
+    public static void DisplayWaypointMarker(Hud hud)
     {
         if (Time.timeScale != 0)
         {
-            if (hud.navSelectionBrace == null)
+            if (hud.waypointMarker == null)
             {
-                hud.navSelectionBrace = GameObject.Find("NavSelectionBrace");        
+                hud.waypointMarker = GameObject.Find("WaypointMarker");        
             }
 
-            if (hud.navDirectionArrow == null)
+            if (hud.waypointArrow == null)
             {
-                hud.navDirectionArrow = GameObject.Find("NavDirectionArrow");
+                hud.waypointArrow = GameObject.Find("WaypointArrow");
             }
 
-            if (hud.scene.navPointMarker == null)
+            if (hud.scene.waypointObject == null)
             {
-                hud.scene.navPointMarker = new GameObject();
-                hud.scene.navPointMarker.name = "NavPointMarker";
+                hud.scene.waypointObject = hud.smallShip.waypoint;
             }
 
-            GameObject navSelectionBrace = hud.navSelectionBrace;
-            GameObject navDirectionArrow = hud.navDirectionArrow;
-            GameObject navPointMarker = hud.scene.navPointMarker;
+            GameObject waypointMarker = hud.waypointMarker;
+            GameObject waypointArrow = hud.waypointArrow;
+            GameObject waypointObject = hud.scene.waypointObject;
 
-            if (navSelectionBrace != null & navDirectionArrow != null)
+            if (waypointMarker != null & waypointArrow != null)
             {
-                navSelectionBrace.SetActive(false);
-                navDirectionArrow.SetActive(false);
+                waypointMarker.SetActive(false);
+                waypointArrow.SetActive(false);
             }
 
-            if (hud.starfieldCamera == null)
+            if (hud.mainCamera == null)
             {
                 if (hud.smallShip != null)
                 {
                     if (hud.smallShip.mainCamera != null)
                     {
-                        hud.starfieldCamera = hud.scene.starfieldCamera.GetComponent<Camera>();
+                        hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
                     }
                 }
             }
 
-            if (hud.starfieldCamera != null & navPointMarker != null & navSelectionBrace != null & navDirectionArrow != null)
+            if (hud.waypointIsActive == true & hud.mainCamera != null & waypointObject != null & waypointMarker != null & waypointArrow != null)
             {
-                GameObject starfieldTargetPosition = navPointMarker;
-                GameObject starfieldCurrentPosition = hud.starfieldCamera.gameObject;
+                GameObject waypointGO = waypointObject;
+                GameObject shipCurrentPosition = hud.smallShip.gameObject;
 
                 //This gets the targets position on the camera
-                Vector3 screenPosition = hud.starfieldCamera.WorldToScreenPoint(starfieldTargetPosition.transform.position);
+                Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(waypointGO.transform.position);
 
                 //This sets key values
-                Vector3 targetPosition = starfieldTargetPosition.transform.position - starfieldCurrentPosition.transform.position;
-                float forward = Vector3.Dot(starfieldCurrentPosition.transform.forward, targetPosition.normalized);
-                float up = Vector3.Dot(starfieldCurrentPosition.transform.up, targetPosition.normalized);
-                float right = Vector3.Dot(starfieldCurrentPosition.transform.right, targetPosition.normalized);
+                Vector3 targetPosition = waypointGO.transform.position - shipCurrentPosition.transform.position;
+                float forward = Vector3.Dot(shipCurrentPosition.transform.forward, targetPosition.normalized);
+                float up = Vector3.Dot(shipCurrentPosition.transform.up, targetPosition.normalized);
+                float right = Vector3.Dot(shipCurrentPosition.transform.right, targetPosition.normalized);
 
-                Vector3 viewPos = hud.starfieldCamera.WorldToViewportPoint(starfieldTargetPosition.transform.position);
+                Vector3 viewPos = hud.mainCamera.WorldToViewportPoint(waypointGO.transform.position);
 
                 bool onscreen = false;
 
@@ -1350,23 +1349,23 @@ public static class HudFunctions
                 if (forward > 0 & onscreen == true)
                 {
                     //This sets the braces to active when the target is on screen
-                    navSelectionBrace.SetActive(true);
-                    navDirectionArrow.SetActive(false);
+                    waypointMarker.SetActive(true);
+                    waypointArrow.SetActive(false);
 
                     //This translates that position to the selection brace
-                    navSelectionBrace.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+                    waypointMarker.transform.position = new Vector2(screenPosition.x, screenPosition.y);
                 }
                 else
                 {
                     //This sets the braces to inactive when the target is behind the camera
-                    navSelectionBrace.SetActive(false);
-                    navDirectionArrow.SetActive(true);
+                    waypointMarker.SetActive(false);
+                    waypointArrow.SetActive(true);
 
                     //This gets values from atlasCommon
                     RectTransform rectTransform = hud.gameObject.GetComponent<RectTransform>();
-                    float previousArrowRotation = hud.navPreviousArrowRotation;
-                    float arrowTargetRotation = hud.navArrowTargetRotation;
-                    float arrowLerpTime = hud.navArrowLerpTime;
+                    float previousArrowRotation = hud.waypointPreviousArrowRotation;
+                    float arrowTargetRotation = hud.waypointArrowTargetRotation;
+                    float arrowLerpTime = hud.waypointArrowLerpTime;
 
                     //This gets screen width and height values
                     float screenWidth = rectTransform.rect.width;
@@ -1375,13 +1374,13 @@ public static class HudFunctions
                     //This controls the arrow rotation
                     arrowLerpTime += 5f * Time.deltaTime;
                     float arrowRotation = Mathf.Lerp(previousArrowRotation, arrowTargetRotation, arrowLerpTime);
-                    navDirectionArrow.transform.localRotation = Quaternion.Euler(0, 0, arrowRotation);
+                    waypointArrow.transform.localRotation = Quaternion.Euler(0, 0, arrowRotation);
 
                     if (right > 0)
                     {
                         if (up > 0.5f)
                         {
-                            navDirectionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f - (up - 0.5f)) * 2f), screenHeight / 2f);
+                            waypointArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f - (up - 0.5f)) * 2f), screenHeight / 2f);
 
                             if (arrowTargetRotation != -90)
                             {
@@ -1394,7 +1393,7 @@ public static class HudFunctions
 
                         else if (up < 0.5f & up > 0f)
                         {
-                            navDirectionArrow.transform.localPosition = new Vector2(screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+                            waypointArrow.transform.localPosition = new Vector2(screenWidth / 2f, (screenHeight / 2f) * up * 2f);
 
                             if (arrowTargetRotation != -90)
                             {
@@ -1407,7 +1406,7 @@ public static class HudFunctions
 
                         else if (up < 0f & up > -0.5f)
                         {
-                            navDirectionArrow.transform.localPosition = new Vector2(screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+                            waypointArrow.transform.localPosition = new Vector2(screenWidth / 2f, (screenHeight / 2f) * up * 2f);
 
                             if (arrowTargetRotation != -180)
                             {
@@ -1420,7 +1419,7 @@ public static class HudFunctions
 
                         else if (up < -0.5)
                         {
-                            navDirectionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f + (up + 0.5f)) * 2f), -screenHeight / 2f);
+                            waypointArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f + (up + 0.5f)) * 2f), -screenHeight / 2f);
 
                             if (arrowTargetRotation != -180)
                             {
@@ -1436,7 +1435,7 @@ public static class HudFunctions
                     {
                         if (up > 0.5f)
                         {
-                            navDirectionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f - (up - 0.5f)) * -2f), screenHeight / 2f);
+                            waypointArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f - (up - 0.5f)) * -2f), screenHeight / 2f);
 
                             if (arrowTargetRotation != 0)
                             {
@@ -1449,7 +1448,7 @@ public static class HudFunctions
 
                         else if (up < 0.5f & up > 0f)
                         {
-                            navDirectionArrow.transform.localPosition = new Vector2(-screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+                            waypointArrow.transform.localPosition = new Vector2(-screenWidth / 2f, (screenHeight / 2f) * up * 2f);
 
                             if (arrowTargetRotation != 0)
                             {
@@ -1462,7 +1461,7 @@ public static class HudFunctions
 
                         else if (up < 0f & up > -0.5f)
                         {
-                            navDirectionArrow.transform.localPosition = new Vector2(-screenWidth / 2f, (screenHeight / 2f) * up * 2f);
+                            waypointArrow.transform.localPosition = new Vector2(-screenWidth / 2f, (screenHeight / 2f) * up * 2f);
 
                             if (arrowTargetRotation != -270)
                             {
@@ -1475,7 +1474,7 @@ public static class HudFunctions
 
                         else if (up < -0.5)
                         {
-                            navDirectionArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f + (up + 0.5f)) * -2f), -screenHeight / 2f);
+                            waypointArrow.transform.localPosition = new Vector2((screenWidth / 2f) * ((0.5f + (up + 0.5f)) * -2f), -screenHeight / 2f);
 
                             if (arrowTargetRotation != -270)
                             {
@@ -1488,9 +1487,9 @@ public static class HudFunctions
 
                     }
 
-                    hud.navPreviousArrowRotation = previousArrowRotation;
-                    hud.navArrowTargetRotation = arrowTargetRotation;
-                    hud.navArrowLerpTime = arrowLerpTime;
+                    hud.waypointPreviousArrowRotation = previousArrowRotation;
+                    hud.waypointArrowTargetRotation = arrowTargetRotation;
+                    hud.waypointArrowLerpTime = arrowLerpTime;
                 }
             }
         }

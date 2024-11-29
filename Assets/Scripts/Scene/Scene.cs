@@ -91,7 +91,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public GameObject cockpitCamera;
 
     [Header("Starfield")]
-    [HideInInspector] public GameObject navPointMarker;
+    [HideInInspector] public GameObject waypointObject;
 
     [Header("Avoid Collison")]
     [HideInInspector] public float loadTime;

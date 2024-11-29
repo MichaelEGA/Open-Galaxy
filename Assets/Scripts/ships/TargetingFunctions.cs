@@ -89,6 +89,7 @@ public static class TargetingFunctions
         GetClosestEnemy_SmallShipPlayer(smallShip);
         GetNextEnemy_SmallShipPlayer(smallShip);
         GetNextTarget_SmallShipPlayer(smallShip);
+        GetTargetDirectlyAhead_SmallShipPlayer(smallShip);
     }
 
     //This gets the next target of any kind
@@ -454,6 +455,63 @@ public static class TargetingFunctions
                 //This prevents the torpedo from immediately locking on to the new target
                 smallShip.torpedoLockedOn = false;
                 smallShip.torpedoLockingOn = false;
+            }
+        }
+    }
+
+    //This gets the target directly ahead
+    public static void GetTargetDirectlyAhead_SmallShipPlayer(SmallShip smallShip = null)
+    {
+        if (smallShip.isAI == false)
+        {     
+            if (smallShip.targetPressedTime < Time.time & smallShip.selectTargetInFront == true)
+            {
+                Scene scene = smallShip.scene;
+                float forward = 0.9f;
+                GameObject target = null;
+                SmallShip targetSmallShip = null;
+                LargeShip targetLargeShip = null;
+
+                //This checks for the closest small ship first
+                foreach (GameObject tempTarget in scene.objectPool)
+                {
+                    float targetForward = 0;
+                    Vector3 targetPosition = tempTarget.transform.position;
+                    Vector3 targetRelativePosition = targetPosition - smallShip.transform.position;
+                    targetForward = Vector3.Dot(smallShip.transform.forward, targetRelativePosition.normalized);
+
+                    if (targetForward > forward)
+                    {
+                        forward = targetForward;
+                        target = tempTarget;
+                    }
+                }
+
+                if (target != null)
+                {
+                    smallShip.target = target;
+                    smallShip.targetName = target.name;
+                    targetSmallShip = target.GetComponent<SmallShip>();
+                    targetLargeShip = target.GetComponent<LargeShip>();
+
+                    if (targetSmallShip != null)
+                    {
+                        smallShip.targetSmallShip = targetSmallShip;
+                        smallShip.targetLargeShip = null;
+                        smallShip.targetPrefabName = targetSmallShip.prefabName;
+                    }
+                    else if (targetLargeShip != null)
+                    {
+                        smallShip.targetSmallShip = null;
+                        smallShip.targetLargeShip = targetLargeShip;
+                        smallShip.targetPrefabName = targetLargeShip.prefabName;
+                    }
+
+                    smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
+                }
+
+                smallShip.targetPressedTime = Time.time + 0.2f;
+
             }
         }
     }

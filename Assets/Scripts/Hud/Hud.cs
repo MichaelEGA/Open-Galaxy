@@ -86,12 +86,13 @@ public class Hud : MonoBehaviour
     [HideInInspector] public float arrowTargetRotation;
     [HideInInspector] public float arrowLerpTime;
 
-    [Header("NavComp Information")]
-    [HideInInspector] public GameObject navDirectionArrow;
-    [HideInInspector] public GameObject navSelectionBrace;
-    [HideInInspector] public float navPreviousArrowRotation;
-    [HideInInspector] public float navArrowTargetRotation;
-    [HideInInspector] public float navArrowLerpTime;
+    [Header("Waypoint Information")]
+    [HideInInspector] public bool waypointIsActive;
+    [HideInInspector] public GameObject waypointArrow;
+    [HideInInspector] public GameObject waypointMarker;
+    [HideInInspector] public float waypointPreviousArrowRotation;
+    [HideInInspector] public float waypointArrowTargetRotation;
+    [HideInInspector] public float waypointArrowLerpTime;
 
     [Header("Hud Object Pools")]
     [HideInInspector] public Object[] radarPrefabPool;
@@ -140,7 +141,7 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplaySelectionBraces(this);
         HudFunctions.DisplayTargetLockReticule(this);
 
-        //HudFunctions.DisplayNavPointMarker(this);
+        HudFunctions.DisplayWaypointMarker(this);
 
         HudFunctions.DisplayShipPreview(this);             
     }

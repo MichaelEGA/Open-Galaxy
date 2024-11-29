@@ -113,6 +113,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool getNextTarget;
     [HideInInspector] public bool getNextEnemy;
     [HideInInspector] public bool getClosestEnemy;
+    [HideInInspector] public bool selectTargetInFront;
     [HideInInspector] public bool toggleWeapons;
     [HideInInspector] public bool toggleWeaponNumber;
     [HideInInspector] public bool lookRight;

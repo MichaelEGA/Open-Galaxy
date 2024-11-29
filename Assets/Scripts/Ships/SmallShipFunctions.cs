@@ -122,6 +122,7 @@ public static class SmallShipFunctions
             smallShip.getNextTarget = keyboard.rKey.isPressed;
             smallShip.getNextEnemy = keyboard.tKey.isPressed;
             smallShip.getClosestEnemy = keyboard.fKey.isPressed;
+            smallShip.selectTargetInFront = keyboard.gKey.isPressed;
             smallShip.fireWeapon = mouse.leftButton.isPressed;
             smallShip.toggleWeapons = keyboard.tabKey.isPressed;
             smallShip.toggleWeaponNumber = keyboard.capsLockKey.isPressed;

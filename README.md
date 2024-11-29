@@ -30,7 +30,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - TAB toggles weapons if more than one type is available
   - CAPS toggles weapon linking (i.e. fire one laser at a time, or two at time, or all at once)
   - R selects next target
-  - F selects next enemy target if available
+  - F selects closest enemy target if available
+  - T selects next enemy target if available
+  - G selects the target directly ahead of the player
   - Up, down, left, and right control energy management
   - Left Mouse fires weapons
   - Right Mouse matches speed

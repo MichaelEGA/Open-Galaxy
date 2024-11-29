@@ -343,33 +343,22 @@ public static class LargeShipFunctions
             }
         }
 
-        if (largeShip.isDisabled == false & largeShip.systemsLevel < 1)
+        if (largeShip.isDisabled == false & largeShip.systemsLevel <= 0)
         {
             //This tells the player that the ship has been destroyed
             HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was disabled");
             largeShip.isDisabled = true;
         }
+        
     }
 
     //This restores a ships systems to the desired level
-    public static void RestoreShipsSystems(LargeShip largeShip, float systemLevel)
+    public static void RestoreShipsSystems(LargeShip largeShip)
     {
-        if (systemLevel > 100)
+        if (largeShip.isDisabled == true & largeShip.systemsLevel > 0)
         {
-            systemLevel = 100;
-        }
-
-        if (systemLevel < 0)
-        {
-            systemLevel = 0;
-        }
-
-        largeShip.systemsLevel = systemLevel;
-
-        if (systemLevel > 0)
-        {
+            HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " has restored systems");
             largeShip.isDisabled = false;
-            largeShip.engineAudioSource.Play();
         }
     }
 

@@ -243,21 +243,6 @@ public static class HudFunctions
         }
     }
 
-    //This updates the hyperspace meter
-    public static void DisplayHyperspaceMeter(Hud hud)
-    {
-        if (hud.HyperspaceMeter == null)
-        {
-            GameObject HyperspaceMeter = GameObject.Find("HyperspaceMeter");
-            if (HyperspaceMeter != null) { hud.HyperspaceMeter = HyperspaceMeter.GetComponent<Slider>(); }
-        }
-
-        if (hud.HyperspaceMeter != null)
-        {
-            hud.HyperspaceMeter.value = hud.hyperspaceValue;
-        }
-    }
-
     //This displays the speed of the ship
     public static void DisplayShipSpeed(Hud hud)
     {
@@ -479,24 +464,17 @@ public static class HudFunctions
     }
 
     //This displays whether the WEP boost is on or not
-    public static void DisplayHyperdrive(Hud hud)
+    public static void DisplaySystemsStrength(Hud hud)
     {
-        if (hud.hyperdriveText == null)
+        if (hud.systemsText == null)
         {
-            GameObject hyperdriveText = GameObject.Find("HyperdriveText");
-            if (hyperdriveText != null) { hud.hyperdriveText = hyperdriveText.GetComponent<Text>(); }
+            GameObject systemsText = GameObject.Find("SystemsText");
+            if (systemsText != null) { hud.systemsText = systemsText.GetComponent<Text>(); }
         }
 
-        if (hud.hyperdriveText != null & hud.smallShip != null & Time.timeScale != 0)
+        if (hud.systemsText != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.hyperdriveActive == true)
-            {
-                hud.hyperdriveText.text = "ON";
-            }
-            else
-            {
-                hud.hyperdriveText.text = "OFF";
-            }
+            hud.systemsText.text = hud.smallShip.systemsLevel.ToString("000");
         }
     }
 

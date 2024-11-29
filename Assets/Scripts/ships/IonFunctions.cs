@@ -272,7 +272,7 @@ public static class IonFunctions
     //This allows the player to fire the ions
     public static void InitiateFiringPlayer(SmallShip smallShip)
     {
-        if (smallShip.fireWeapon == true & smallShip.isAI == false & smallShip.systemsLevel > 0)
+        if (smallShip.fireWeapon == true & smallShip.isAI == false & smallShip.isDisabled == false)
         {
             InitiateFiring(smallShip);
         }
@@ -283,7 +283,7 @@ public static class IonFunctions
     {
         SetCannons(smallShip); //This sets cannon angle prior to firing the laser
 
-        if (smallShip.systemsLevel > 0)
+        if (smallShip.isDisabled == false)
         {
             //This calculates the delay before the next ion fires
             float ionWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;

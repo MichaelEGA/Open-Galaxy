@@ -156,6 +156,9 @@ public class LargeShip : MonoBehaviour
 
         //Damage functions
         LargeShipFunctions.Explode(this);
+
+        //Systems functions
+        LargeShipFunctions.RestoreShipsSystems(this);
     }
 
     void FixedUpdate()

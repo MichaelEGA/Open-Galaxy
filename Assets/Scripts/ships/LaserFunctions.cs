@@ -290,7 +290,7 @@ public static class LaserFunctions
     {
         SetCannons(smallShip); //This sets cannon angle prior to firing the laser
 
-        if (smallShip.systemsLevel > 0)
+        if (smallShip.isDisabled == false)
         {
             //This calculates the delay before the next laser fires
             float laserWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;

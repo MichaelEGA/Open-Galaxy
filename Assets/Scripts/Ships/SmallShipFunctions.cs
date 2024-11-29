@@ -541,7 +541,7 @@ public static class SmallShipFunctions
             smallShip.shipRigidbody = smallShip.gameObject.GetComponent<Rigidbody>();
         }
 
-        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false & smallShip.systemsLevel > 0)
+        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false & smallShip.isDisabled == false)
         {
             //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
             float step = +Time.deltaTime / 0.1f;
@@ -675,7 +675,7 @@ public static class SmallShipFunctions
     //This toggles between different types of weapons
     public static void ToggleWeapons(SmallShip smallShip)
     {
-        if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.torpedoNumber > 0 & smallShip.systemsLevel > 0)
+        if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.torpedoNumber > 0 & smallShip.isDisabled == false)
         {
             if (smallShip.hasTorpedos == true & smallShip.hasIon == true)
             {
@@ -743,7 +743,7 @@ public static class SmallShipFunctions
 
             smallShip.toggleWeaponPressedTime = Time.time + 0.25f;
         }
-        else if (smallShip.torpedoNumber <= 0 & smallShip.systemsLevel > 0)
+        else if (smallShip.torpedoNumber <= 0 & smallShip.isDisabled == false)
         {
             //This switches the weapons back to lasers when there are no more torpedos
             if (smallShip.activeWeapon == "torpedos")
@@ -753,7 +753,7 @@ public static class SmallShipFunctions
 
             smallShip.activeWeapon = "lasers";
         }
-        else if (smallShip.systemsLevel <= 0)
+        else if (smallShip.isDisabled == true)
         {
             smallShip.activeWeapon = "---";
             smallShip.weaponMode = "---";
@@ -832,11 +832,16 @@ public static class SmallShipFunctions
     //This causes the ship to take damage from lasers and torpedoes
     public static void TakeSystemDamage(SmallShip smallShip, float damage, Vector3 hitPosition)
     {
+        //This sets the time until the ship systems start restoring
+        smallShip.restoreDelayTime = Time.time + 15;
+
+        //This calculates the damage level for different difficultes
         if (smallShip.isAI == false)
         {
-            damage = CalculateDamage(damage);
+            damage = CalculateDamage(damage); 
         }
 
+        //This calculates the damage
         if (Time.time - smallShip.loadTime > 10)
         {
             Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
@@ -892,7 +897,8 @@ public static class SmallShipFunctions
                 AddTaskToPool(smallShip, a);
             }
 
-            if (smallShip.isDisabled == false & smallShip.systemsLevel < 1)
+            //This disables a ship that has less than 1 percent systems power
+            if (smallShip.isDisabled == false & smallShip.systemsLevel <= 0)
             {
                 //Stops listing the ship as targetting another ship
                 if (smallShip.target != null)
@@ -924,6 +930,37 @@ public static class SmallShipFunctions
                 //This makes an explosion sound
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact01_laserhitshield", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
             }
+        }
+    }
+
+    //This restores a ships systems to the desired level
+    public static void RestoreShipsSystems(SmallShip smallShip)
+    {
+        if (smallShip.isAI == false)
+        {
+            if (Time.time > smallShip.restoreDelayTime)
+            {
+                if (smallShip.systemsLevel < 0)
+                {
+                    smallShip.systemsLevel = 0;
+                }
+                else if (smallShip.systemsLevel < 100)
+                {
+                    smallShip.systemsLevel += 1;
+                }
+            }
+        }
+
+        if (smallShip.isDisabled == true & smallShip.systemsLevel > 0)
+        {
+            smallShip.shipRigidbody.linearVelocity = new Vector3(0f, 0f, 0f);
+            smallShip.shipRigidbody.angularVelocity = new Vector3(0f, 0f, 0f);
+            smallShip.shipRigidbody.linearDamping = 9;
+            smallShip.shipRigidbody.angularDamping = 7.5f;
+
+            smallShip.isDisabled = false;
+
+            HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " has restored systems");
         }
     }
 
@@ -1014,28 +1051,6 @@ public static class SmallShipFunctions
                 }
             }
         }    
-    }
-
-    //This restores a ships systems to the desired level
-    public static void RestoreShipsSystems(SmallShip smallShip, float systemLevel)
-    {
-        if (systemLevel > 100)
-        {
-            systemLevel = 100;
-        }
-
-        if (systemLevel < 0)
-        {
-            systemLevel = 0;
-        }
-
-        smallShip.systemsLevel = systemLevel;
-
-        if (systemLevel > 0)
-        {
-            smallShip.isDisabled = false;
-            smallShip.engineAudioSource.Play();
-        }
     }
 
     //This causes a smoke trail to appear behind the damaged ship

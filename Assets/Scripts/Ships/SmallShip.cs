@@ -243,6 +243,9 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public Vector3 currentPosition;
     [HideInInspector] public Quaternion currentRotation;
 
+    [Header("Systems")]
+    public float restoreDelayTime;
+
     [Header("Wings")]
     public bool wingsOpen = true;
     public Transform[] wings;
@@ -313,6 +316,9 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.TakeCollisionDamage(this);
         SmallShipFunctions.SmokeTrail(this);
         SmallShipFunctions.Explode(this);
+
+        //Systems functions
+        SmallShipFunctions.RestoreShipsSystems(this);
 
         //Cockpit Functions
         CockpitFunctions.RunCockpitFunctions(this);

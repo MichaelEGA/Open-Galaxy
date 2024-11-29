@@ -364,6 +364,11 @@ public static class MissionFunctions
             ActivateHyperspace(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "activatewaypointmarker")
+        {
+            ActivateWaypointMarker(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "addaitagtolargeship")
         {
             AddAITagToLargeShip(missionEvent);
@@ -870,7 +875,6 @@ public static class MissionFunctions
     //This causes the designated ships to jump to hyperspace
     public static void ActivateHyperspace(MissionEvent missionEvent)
     {
-
         Scene scene = SceneFunctions.GetScene();
 
         if (scene != null)
@@ -898,6 +902,42 @@ public static class MissionFunctions
                     }
                 }
             }
+        }
+    }
+
+    //This activates the players onscreen waypoint marker
+    public static void ActivateWaypointMarker(MissionEvent missionEvent)
+    {
+        Hud hud = HudFunctions.GetHud();
+
+        bool waypointIsActive = false;
+
+        if (bool.TryParse(missionEvent.data1, out _))
+        {
+            waypointIsActive = bool.Parse(missionEvent.data1);
+        }
+
+        string waypointTitleString = missionEvent.data2;
+
+        if (hud != null)
+        {
+            hud.waypointIsActive = waypointIsActive;
+
+            if (waypointIsActive == true)
+            {
+                hud.waypointTitleString = waypointTitleString;
+            }
+            else
+            {
+                hud.waypointTitleString = "";
+            }
+
+            if (hud.smallShip != null)
+            {
+                AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep01_toggle", "Cockpit", hud.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+            }
+
+            HudFunctions.AddToShipLog("Waypoint activated " + waypointTitleString);
         }
     }
 

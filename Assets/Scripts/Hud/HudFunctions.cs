@@ -1121,17 +1121,6 @@ public static class HudFunctions
 
                                 //This translates that position to the selection brace
                                 selectionBrace.transform.position = new Vector2(screenPosition.x, screenPosition.y);
-
-                                //This scales the brace according to world distance
-                                //if (screenPosition.z > 500)
-                                //{
-                                //    selectionBrace.transform.localScale = new Vector2(1, 1);
-                                //}
-                                //else
-                                //{
-                                //    selectionBrace.transform.localScale = new Vector2(2f - (0.002f * screenPosition.z), 2f - (0.002f * screenPosition.z));
-                                //}
-
                             }
                             else
                             {
@@ -1282,6 +1271,18 @@ public static class HudFunctions
     {
         if (Time.timeScale != 0)
         {
+            if (hud.waypointText == null)
+            {
+                GameObject waypointText = GameObject.Find("WaypointText");
+                if (waypointText != null) { hud.waypointText = waypointText.GetComponent<Text>(); }
+            }
+
+            if (hud.waypointTitle == null)
+            {
+                GameObject waypointTitle = GameObject.Find("WaypointTitle");
+                if (waypointTitle != null) { hud.waypointTitle = waypointTitle.GetComponent<Text>(); }
+            }
+
             if (hud.waypointMarker == null)
             {
                 hud.waypointMarker = GameObject.Find("WaypointMarker");        
@@ -1318,19 +1319,26 @@ public static class HudFunctions
                 }
             }
 
-            if (hud.waypointIsActive == true & hud.mainCamera != null & waypointObject != null & waypointMarker != null & waypointArrow != null)
+            if (hud.waypointIsActive == true & hud.mainCamera != null & waypointObject != null & waypointMarker != null & waypointArrow != null & hud.waypointText != null & hud.waypointTitle != null)
             {
                 GameObject waypointGO = waypointObject;
-                GameObject shipCurrentPosition = hud.smallShip.gameObject;
+                GameObject shipGO = hud.smallShip.gameObject;
 
                 //This gets the targets position on the camera
                 Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(waypointGO.transform.position);
 
+                //This gets the distance to the waypoint
+                float distance = Vector3.Distance(waypointGO.transform.position, shipGO.transform.position);
+                hud.waypointText.text = (distance / 1000f).ToString("0.000");
+
+                //This sets the title of the waypoint
+                hud.waypointTitle.text = hud.waypointTitleString;
+
                 //This sets key values
-                Vector3 targetPosition = waypointGO.transform.position - shipCurrentPosition.transform.position;
-                float forward = Vector3.Dot(shipCurrentPosition.transform.forward, targetPosition.normalized);
-                float up = Vector3.Dot(shipCurrentPosition.transform.up, targetPosition.normalized);
-                float right = Vector3.Dot(shipCurrentPosition.transform.right, targetPosition.normalized);
+                Vector3 targetPosition = waypointGO.transform.position - shipGO.transform.position;
+                float forward = Vector3.Dot(shipGO.transform.forward, targetPosition.normalized);
+                float up = Vector3.Dot(shipGO.transform.up, targetPosition.normalized);
+                float right = Vector3.Dot(shipGO.transform.right, targetPosition.normalized);
 
                 Vector3 viewPos = hud.mainCamera.WorldToViewportPoint(waypointGO.transform.position);
 

@@ -87,9 +87,12 @@ public class Hud : MonoBehaviour
     [HideInInspector] public float arrowLerpTime;
 
     [Header("Waypoint Information")]
-    [HideInInspector] public bool waypointIsActive;
+    public bool waypointIsActive;
     [HideInInspector] public GameObject waypointArrow;
     [HideInInspector] public GameObject waypointMarker;
+    [HideInInspector] public Text waypointText;
+    [HideInInspector] public Text waypointTitle;
+    [HideInInspector] public string waypointTitleString;
     [HideInInspector] public float waypointPreviousArrowRotation;
     [HideInInspector] public float waypointArrowTargetRotation;
     [HideInInspector] public float waypointArrowLerpTime;

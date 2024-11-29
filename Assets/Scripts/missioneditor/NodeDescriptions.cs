@@ -237,6 +237,16 @@ public static class NodeDescriptions
            "- When docking the while will always rotate BEFORE it moves into position \n" +
            "- When disengaging from docking only there is not rotation and the rotation speed value is not used. \n";
         }
+        else if (name == "activatewaypointmarker")
+        {
+            description =
+            "Activate Waypoint Marker \n " +
+            "\n " +
+            "This activates and deactivates the waypoint marker so the waypoint is visible to the player" +
+            "\n " +
+           "Extra Information \n" +
+           "- This function only works for the players waypoint. \n";
+        }
         else if (name == "changelocation")
         {
             description =

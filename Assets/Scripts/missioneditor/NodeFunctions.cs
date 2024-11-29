@@ -21,6 +21,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ActivateHyperspace(node);
         }
+        else if (node.nodeType == "activatewaypointmarker")
+        {
+            NodeTypes.Draw_ActivateWaypointMarker(node);
+        }
         else if (node.nodeType == "addaitagtolargeship")
         {
             NodeTypes.Draw_AddAITagToLargeShip(node);

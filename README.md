@@ -38,9 +38,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Right Mouse matches speed
   - Scan a target by selecting it and then flying close
 
-**Latest Development Release:** 4.0.11
+**Latest Development Release:** 4.3.07
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.4.0.11/Open.Galaxy.4.0.11.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.4.3.07/Open.Galaxy.4.3.07.zip
     
 **Latest Milestone Release:** 4.0.11
 
@@ -60,6 +60,43 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Original Trilogy Mode Assets: https://www.indiedb.com/downloads/original-trilogy-assets
 
 **Changelog**
+
+30/11/24 - 4.3.07 (Unity 6000.0.15f1)
+  - Added: load next mission node/function
+  - Added: select ship in front
+  - Added: activate waypoint marker node/function
+  - Added: systems level display on hud for player ship
+  - Updated: remade audio in x-wing mission 6 and 7
+  - Updated: remade x-wing mission 3
+  - Updated: modify all missions to use radio distortion function
+  - Updated: make disabled ship spin slightly while slowing down to a complete halt
+  - Updated: different resolutions that match monitor aspect ratio
+  - Updated: fade in and out next mission window
+  - Updated: link all relevant missions together
+  - Updated: increase rotation speed on stationary largeships
+  - Updated: Add a hyperspace jump at end of X-Wing mission 4
+  - Fixed: X-Wing mission 4 doesn't finish
+  - Updated: increasing turn speed on GR75 transport
+  - Added: add new function: clear objective
+  - Updated: double size of open mission window in editor
+  - Fixed: loading information should scroll not run of edge of screen
+  - Updated: hyperspace at the end of x-wing mission 4
+  - Fixed: cockpit movement should be low when speed is low
+  - Fixed: shortcut commands stop working when the editor is run more than once
+  - Fixed: fix polygon error on assault gunboat cockpit
+  - Fixed: mesh colliders restored on asteroids
+  - Updated: make planet further away in TF mission 5 and 6
+  - Updated: add 'node copied' and 'node pasted' and 'node deleted' messages to editor
+  - Fixed: xq1 station should be invincible in tie fighter mission 1
+  - Added: created systems recharge for player craft
+  - Fixed: overlapping audio files on X-Wing misison 6
+  - Fixed: x-wing mission 7, next mission screen loads too quickly
+  - Fixed: y-wings should only have two torpedo tubes
+  - Fixed: assault gunboats should only have two torpedo tubes
+  - Updated: update internal mission files with external missions
+  - Fixed: right UI boxes should not overlap with radar
+  - Fixed: tie fighter mission 1: buoy should be invincible
+  - Fixed: systems number doesn't change colour on hud
 
 08/11/24 - 4.0.11 (Unity 6000.0.15f1)
   - Added: Sulon Star Model

@@ -59,6 +59,10 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - First Strike Assets: https://www.moddb.com/mods/first-strike/news/public-release-of-first-strike-models
   - Original Trilogy Mode Assets: https://www.indiedb.com/downloads/original-trilogy-assets
 
+**Licence**  
+
+The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
+
 **Changelog**
 
 30/11/24 - 4.3.07 (Unity 6000.0.15f1)
@@ -593,7 +597,3 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 
 27/07/23 - v0.49.0
   - First Commit
-
-**Licence**  
-
-The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.

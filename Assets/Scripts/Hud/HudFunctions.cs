@@ -2189,6 +2189,23 @@ public static class HudFunctions
                 }
             }
 
+            //System text
+            if (hud.systemsText == null)
+            {
+                GameObject systemsText = GameObject.Find("SystemsText");
+                if (systemsText != null) { hud.systemsText = systemsText.GetComponent<Text>(); }
+            }
+
+            if (hud.systemsText != null)
+            {
+                Text text = hud.systemsText.GetComponent<Text>();
+
+                if (text != null)
+                {
+                    text.color = newColour;
+                }
+            }
+
             //Target shield text
             if (hud.targetShieldsText == null)
             {

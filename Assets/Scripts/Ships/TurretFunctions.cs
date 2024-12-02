@@ -193,7 +193,8 @@ public static class TurretFunctions
 
         //This sets the paticle to operate in world space (as opposed to local)
         var main = particleSystem.main;
-        main.simulationSpace = ParticleSystemSimulationSpace.World;
+        main.simulationSpace = ParticleSystemSimulationSpace.Custom;
+        main.customSimulationSpace = scene.transform;
         main.startLifetime = 15;
         main.startSize3D = true;
         main.startSizeX = 1;

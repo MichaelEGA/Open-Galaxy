@@ -103,6 +103,7 @@ public static class TargetingFunctions
             {
                 if (smallShip.target.activeSelf == false)
                 {
+                    Debug.Log("was automatically run 1");
                     automaticSearch = true;
                 }
             }
@@ -530,8 +531,10 @@ public static class TargetingFunctions
         {
             if (ship != null)
             {
+
                 if (ship.activeSelf == true)
                 {
+
                     if (ship.name.Contains(targetName))
                     {
                         target = ship;
@@ -544,7 +547,7 @@ public static class TargetingFunctions
                         }
                         else if (tempLargeShip != null)
                         {
-                            targetLargeShip = tempLargeShip;
+                            targetLargeShip = tempLargeShip;                           
                         }
 
                         break;

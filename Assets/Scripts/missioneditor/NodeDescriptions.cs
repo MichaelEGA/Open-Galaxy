@@ -191,6 +191,7 @@ public static class NodeDescriptions
             "\n " +
            "Extra Information \n" +
            "- If your not sure if a ship is a largeship or smallship check the wiki. /n" +
+           "- If you change the targetting tags the ships target will be set to null and it will search for a new ship, so if you want to set the manually, set it after you have run the tag. /n" +
            "- The following tags are added to the largeship when first loaded: 'nospeed', 'fireweapons', 'norotation'. \n" +
            "- A large ship is any ship that cannot be controlled by the player i.e.  bulk freighters, corvettes, and stardestroyers are large ships but the tie fighter, x-wing, millenium falcon, and shuttles are not. \n" +
            "- This function will affect any ship whose name contains the designated string. \n";
@@ -204,8 +205,9 @@ public static class NodeDescriptions
             "\n " +
            "Extra Information \n" +
            "- If your not sure if a ship is a smallship or largeship check the wiki. /n" +
+           "- If you change the targetting tags the ships target will be set to null and it will search for a new ship, so if you want to set the manually, set it after you have run the tag. /n" +
            "- The following tags are added to the smallship when first loaded: 'threequarterspeed', 'singlelaser', 'lowaccuracy', 'chasewithdraw', 'resetenergylevels', 'targetallprefsmall'. \n" +
-           "- A small ship is any ship that can (theoretically) be controlled by the player i.e. the tie fighter, x-wing, millenium falcon, and shuttles are small ships but the bulk freighters, corvettes, and stardestroyers are not. \n" +
+           "- A small ship is any ship that can (theoretically) be controlled by the player i.e. tie fighter, x-wing, millenium falcon, and shuttles are small ships but the bulk freighters, corvettes, and stardestroyers are not. \n" +
            "- This function will affect any ship whose name contains the designated string. \n";
         }
         else if (name == "activatehyperspace")

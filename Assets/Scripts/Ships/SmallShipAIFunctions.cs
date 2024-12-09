@@ -110,7 +110,6 @@ public static class SmallShipAIFunctions
                 RemoveSingleTag(smallShip, "targetallpreflarge");
                 RemoveSingleTag(smallShip, "targetsmallshipsonly");
                 RemoveSingleTag(smallShip, "targetlargeshipsonly");
-                smallShip.target = null;
                 smallShip.requestingTarget = true; //This forces the ship to select a new target on the basis of the selected tag.
             }
 

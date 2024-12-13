@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8472592353944188102}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!1 &6551102933629894123
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3691294382244070731}
+  m_Layer: 0
+  m_Name: ionbank01-02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3691294382244070731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551102933629894123}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0082, y: 0.022, z: 0.0701}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2055580223016424201}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &483793207245150007
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -225,17 +256,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: a4a9e573d7a66e346a5abc34fcf49692,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2520.3748
+      value: -0.05290222
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4a9e573d7a66e346a5abc34fcf49692,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 467.39963
+      value: -3.1287622
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4a9e573d7a66e346a5abc34fcf49692,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3499.5793
+      value: -6.085492
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4a9e573d7a66e346a5abc34fcf49692,
         type: 3}
@@ -297,10 +328,40 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3108602354160210725, guid: a4a9e573d7a66e346a5abc34fcf49692,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0058
+      objectReference: {fileID: 0}
+    - target: {fileID: 3108602354160210725, guid: a4a9e573d7a66e346a5abc34fcf49692,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.022
+      objectReference: {fileID: 0}
+    - target: {fileID: 3108602354160210725, guid: a4a9e573d7a66e346a5abc34fcf49692,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0701
+      objectReference: {fileID: 0}
     - target: {fileID: 3880870034258669693, guid: a4a9e573d7a66e346a5abc34fcf49692,
         type: 3}
       propertyPath: m_Name
       value: gunbank01-01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4516845901142051436, guid: a4a9e573d7a66e346a5abc34fcf49692,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.00481
+      objectReference: {fileID: 0}
+    - target: {fileID: 4516845901142051436, guid: a4a9e573d7a66e346a5abc34fcf49692,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0087
+      objectReference: {fileID: 0}
+    - target: {fileID: 4516845901142051436, guid: a4a9e573d7a66e346a5abc34fcf49692,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.127
       objectReference: {fileID: 0}
     - target: {fileID: 9091773688803638764, guid: a4a9e573d7a66e346a5abc34fcf49692,
         type: 3}
@@ -333,8 +394,18 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8684723799971510916}
+    - targetCorrespondingSourceObject: {fileID: -1253993062061604828, guid: a4a9e573d7a66e346a5abc34fcf49692,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3691294382244070731}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4a9e573d7a66e346a5abc34fcf49692, type: 3}
+--- !u!4 &2055580223016424201 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -1253993062061604828, guid: a4a9e573d7a66e346a5abc34fcf49692,
+    type: 3}
+  m_PrefabInstance: {fileID: 8223019480045179693}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8472592353944188102 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a4a9e573d7a66e346a5abc34fcf49692,

@@ -433,7 +433,7 @@ public static class TurretFunctions
         if (turret.turretBase != null)
         {
             //This applies the rotation
-            turret.turretBase.transform.Rotate(baseRotation, Time.fixedDeltaTime * baseSpeed, Space.World);
+            turret.turretBase.transform.Rotate(baseRotation, Time.deltaTime * baseSpeed, Space.World);
             turret.turretBase.transform.localRotation = Quaternion.Euler(0, turret.turretBase.transform.localRotation.eulerAngles.y, 0);
 
             if (turret.yRotationIsRestricted == true)
@@ -466,7 +466,7 @@ public static class TurretFunctions
         if (turret.turretArm != null)
         {
             //This applies the rotation
-            turret.turretArm.transform.Rotate(armRotation, Time.fixedDeltaTime * armSpeed, Space.World);
+            turret.turretArm.transform.Rotate(armRotation, Time.deltaTime * armSpeed, Space.World);
             turret.turretArm.transform.localRotation = Quaternion.Euler(turret.turretArm.transform.localRotation.eulerAngles.x, 0, 0); //This removes unwanted transforms on y and z asix
 
             //This tracks the rotation and prevents it from going beyond predefined parameters

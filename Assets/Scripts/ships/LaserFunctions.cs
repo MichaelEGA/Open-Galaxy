@@ -17,9 +17,11 @@ public static class LaserFunctions
 
         Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_red") as Material;
         Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_green") as Material;
+        Material yellowLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_yellow") as Material;
 
         GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_red") as GameObject;
         GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_green") as GameObject;
+        GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_yellow") as GameObject;
 
         //This loads the particle system and the particle collider
         smallShip.laserParticleSystem = new GameObject();
@@ -95,10 +97,15 @@ public static class LaserFunctions
             particleSystemRenderer.material = redLaserMaterial;
             lights.light = redLaserLight.GetComponent<Light>();
         }
-        else
+        else if (smallShip.laserColor == "green")
         {
             particleSystemRenderer.material = greenLaserMaterial;
             lights.light = greenLaserLight.GetComponent<Light>();
+        }
+        else
+        {
+            particleSystemRenderer.material = yellowLaserMaterial;
+            lights.light = yellowLaserLight.GetComponent<Light>();
         }
 
         //This prevents the particle system playing when loaded

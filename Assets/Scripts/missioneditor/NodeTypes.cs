@@ -419,6 +419,7 @@ public static class NodeTypes
         List<string> options6 = new List<string>();
         options6.Add("red");
         options6.Add("green");
+        options6.Add("yellow");
 
         node.data15 = NodeFunctions.DrawDropDownMenu(node, options6, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -518,6 +519,7 @@ public static class NodeTypes
         List<string> options5 = new List<string>();
         options5.Add("red");
         options5.Add("green");
+        options5.Add("yellow");
 
         node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -605,6 +607,7 @@ public static class NodeTypes
         List<string> options5 = new List<string>();
         options5.Add("red");
         options5.Add("green");
+        options5.Add("yellow");
 
         node.data7 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -708,6 +711,7 @@ public static class NodeTypes
         List<string> options5 = new List<string>();
         options5.Add("red");
         options5.Add("green");
+        options5.Add("yellow");
 
         node.data9 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2290,6 +2294,7 @@ public static class NodeTypes
         List<string> options6 = new List<string>();
         options6.Add("red");
         options6.Add("green");
+        options6.Add("yellow");
 
         node.data15 = NodeFunctions.DrawDropDownMenu(node, options6, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2365,6 +2370,7 @@ public static class NodeTypes
         List<string> options = new List<string>();
         options.Add("red");
         options.Add("green");
+        options.Add("yellow");
 
         drop -= 15;
 
@@ -2480,6 +2486,7 @@ public static class NodeTypes
         List<string> options5 = new List<string>();
         options5.Add("red");
         options5.Add("green");
+        options5.Add("yellow");
 
         node.data13 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2581,6 +2588,7 @@ public static class NodeTypes
         List<string> options5 = new List<string>();
         options5.Add("red");
         options5.Add("green");
+        options5.Add("yellow");
 
         node.data7 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2678,6 +2686,7 @@ public static class NodeTypes
         List<string> options4 = new List<string>();
         options4.Add("red");
         options4.Add("green");
+        options4.Add("yellow");
 
         node.data7 = NodeFunctions.DrawDropDownMenu(node, options4, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -2783,6 +2792,7 @@ public static class NodeTypes
         List<string> options5 = new List<string>();
         options5.Add("red");
         options5.Add("green");
+        options5.Add("yellow");
 
         node.data9 = NodeFunctions.DrawDropDownMenu(node, options5, "laser color", "red", 7, 5, drop, 12.5f, 90, 5f);
 

@@ -165,10 +165,14 @@ public static class TurretFunctions
         }
 
         Mesh laserMesh = laser.GetComponent<MeshFilter>().sharedMesh;
+
         Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_red") as Material;
         Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_green") as Material;
+        Material yellowLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_yellow") as Material;
+
         GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_red") as GameObject;
         GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_green") as GameObject;
+        GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_yellow") as GameObject;
 
         //This loads the particle system and the particle collider
         turret.turretParticleSystem = new GameObject();
@@ -245,10 +249,15 @@ public static class TurretFunctions
             particleSystemRenderer.material = redLaserMaterial;
             lights.light = redLaserLight.GetComponent<Light>();
         }
-        else
+        else if (turret.laserColor == "green")
         {
             particleSystemRenderer.material = greenLaserMaterial;
             lights.light = greenLaserLight.GetComponent<Light>();
+        }
+        else if (turret.laserColor == "yellow")
+        {
+            particleSystemRenderer.material = yellowLaserMaterial;
+            lights.light = yellowLaserLight.GetComponent<Light>();
         }
 
         //This prevents the particle system playing when loaded

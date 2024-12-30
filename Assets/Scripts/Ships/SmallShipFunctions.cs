@@ -675,9 +675,9 @@ public static class SmallShipFunctions
     //This toggles between different types of weapons
     public static void ToggleWeapons(SmallShip smallShip)
     {
-        if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.torpedoNumber > 0 & smallShip.isDisabled == false)
+        if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.isDisabled == false)
         {
-            if (smallShip.hasTorpedos == true & smallShip.hasIon == true)
+            if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.hasIon == true)
             {
                 if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---")
                 {
@@ -709,9 +709,9 @@ public static class SmallShipFunctions
                 smallShip.toggleWeapons = false;
 
             }
-            else if (smallShip.hasTorpedos == true & smallShip.hasIon == false)
+            else if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.hasIon == false)
             {
-                if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---")
+                if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---" || smallShip.activeWeapon == "ion")
                 {
                     smallShip.activeWeapon = "lasers";
                     smallShip.weaponMode = "single";
@@ -736,6 +736,33 @@ public static class SmallShipFunctions
                 smallShip.toggleWeapons = false;
 
             }
+            else if (smallShip.hasTorpedos == false & smallShip.hasIon == true || smallShip.hasTorpedos == true & smallShip.torpedoNumber <= 0 & smallShip.hasIon == true)
+            {
+                if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---" || smallShip.activeWeapon == "torpedos")
+                {
+                    smallShip.activeWeapon = "lasers";
+                    smallShip.weaponMode = "single";
+                }
+
+                if (smallShip.activeWeapon == "lasers")
+                {
+                    smallShip.activeWeapon = "ion";
+                    smallShip.weaponMode = "single";
+                }
+                else if (smallShip.activeWeapon == "ion")
+                {
+                    smallShip.activeWeapon = "lasers";
+                    smallShip.weaponMode = "single";
+                }
+
+                if (smallShip.isAI == false)
+                {
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                }
+
+                smallShip.toggleWeapons = false;
+
+            }
             else
             {
                 smallShip.activeWeapon = "lasers";
@@ -743,20 +770,16 @@ public static class SmallShipFunctions
 
             smallShip.toggleWeaponPressedTime = Time.time + 0.25f;
         }
-        else if (smallShip.torpedoNumber <= 0 & smallShip.isDisabled == false)
-        {
-            //This switches the weapons back to lasers when there are no more torpedos
-            if (smallShip.activeWeapon == "torpedos")
-            {
-                smallShip.weaponMode = "single";
-            }
-
-            smallShip.activeWeapon = "lasers";
-        }
         else if (smallShip.isDisabled == true)
         {
             smallShip.activeWeapon = "---";
             smallShip.weaponMode = "---";
+        }
+
+        if (smallShip.hasTorpedos == true & smallShip.torpedoNumber <= 0 & smallShip.activeWeapon == "torpedos")
+        {
+            smallShip.activeWeapon = "lasers";
+            smallShip.weaponMode = "single";
         }
     }
 
@@ -1001,7 +1024,8 @@ public static class SmallShipFunctions
     {
         if (smallShip != null & collidingWith != null)
         {
-            Debug.Log(smallShip.name + " colliding with " + collidingWith.name);
+            //Debug.Log(smallShip.name + " colliding with " + collidingWith.name);
+            Debug.LogError(smallShip.name + " colliding with " + collidingWith.name + " sub object of " + collidingWith.transform.parent.parent.name);
 
             if (smallShip.docking == false)
             {

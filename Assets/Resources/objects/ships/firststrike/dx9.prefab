@@ -192,6 +192,37 @@ Transform:
   - {fileID: 522666588745506039}
   m_Father: {fileID: 7653525145560957740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3359460181447016998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2912895288940811839}
+  m_Layer: 0
+  m_Name: missilebank01-02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2912895288940811839
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3359460181447016998}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0388, y: 0.0054, z: -0.051}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5360986083216506280}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3698233904517727759
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,6 +316,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6303502114623881685}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5552621282924789012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4611400457155712482}
+  m_Layer: 0
+  m_Name: missilebank01-01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4611400457155712482
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5552621282924789012}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.039, y: 0.0047, z: -0.0498}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5360986083216506280}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6041931594668352975
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,6 +409,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7653525145560957740}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+--- !u!1 &8785805912966589482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5360986083216506280}
+  m_Layer: 0
+  m_Name: 'missilebank01 '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5360986083216506280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8785805912966589482}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000003774895, y: -1.11022296e-16, z: 1.11022296e-16, w: 1}
+  m_LocalPosition: {x: -0, y: 1.84, z: 4.53}
+  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4611400457155712482}
+  - {fileID: 2912895288940811839}
+  m_Father: {fileID: 7653525145560957740}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6462118239148848704
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -420,7 +515,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: engineglow_square_blue
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7258553106481050522, guid: 35c579f021cbe924997d6cb4d88fb810, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -447,17 +543,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d29e677d1c64a354aa4227c9d5fa2c18,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.0545431
+      value: 1.7719462
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d29e677d1c64a354aa4227c9d5fa2c18,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.5173357
+      value: -1.4047152
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d29e677d1c64a354aa4227c9d5fa2c18,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.0291195
+      value: 1.8634081
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d29e677d1c64a354aa4227c9d5fa2c18,
         type: 3}
@@ -598,6 +694,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d29e677d1c64a354aa4227c9d5fa2c18,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 5360986083216506280}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d29e677d1c64a354aa4227c9d5fa2c18,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 5088952567540955042}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d29e677d1c64a354aa4227c9d5fa2c18,
         type: 3}
@@ -696,7 +796,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: engineglow_square_blue
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7258553106481050522, guid: 35c579f021cbe924997d6cb4d88fb810, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

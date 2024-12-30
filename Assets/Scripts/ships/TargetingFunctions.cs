@@ -103,7 +103,6 @@ public static class TargetingFunctions
             {
                 if (smallShip.target.activeSelf == false)
                 {
-                    Debug.Log("was automatically run 1");
                     automaticSearch = true;
                 }
             }

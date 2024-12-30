@@ -147,7 +147,7 @@ public class LargeShip : MonoBehaviour
         //Targetting functions
         TargetingFunctions.GetTargetInfo_LargeShipAI(this);
 
-        if (shipClass != "station" & shipClass != "turret" & shipClass != "buoy")
+        if (shipClass != "station" & shipClass != "turret" & shipClass != "buoy" & shipClass != "container")
         {
             //Ship movement functions
             LargeShipFunctions.CalculateThrustSpeed(this);
@@ -163,7 +163,7 @@ public class LargeShip : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (shipClass != "station" & shipClass != "turret" & shipClass != "buoy")
+        if (shipClass != "station" & shipClass != "turret" & shipClass != "buoy" & shipClass != "container")
         {
             LargeShipFunctions.MoveShip(this);
         }           

@@ -199,9 +199,15 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
             {
-                LoadScreenFunctions.AddLogToLoadingScreen("Generating unique planet heightmap. This may take a while...", Time.unscaledTime - savedTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading planet", Time.unscaledTime - savedTime);
                 LoadPlanet(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", savedTime);
+            }
+            if (missionEvent.eventType == "preload_loadenvironment" & missionEvent.conditionLocation == location)
+            {
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading environment", Time.unscaledTime - savedTime);
+                LoadEnvironment(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Environment loaded", savedTime);
             }
             else if (missionEvent.eventType == "preload_sethudcolour" & missionEvent.conditionLocation == location)
             {
@@ -1871,6 +1877,18 @@ public static class MissionFunctions
         while (a.Running == true) { yield return null; }
 
         yield return null;
+    }
+
+    //This loads an environment
+    public static void LoadEnvironment(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        string type = missionEvent.data1;
+
+        SceneFunctions.LoadEnvironment(type, x, y, z);
     }
 
     //This loads a planet in the scene

@@ -32,6 +32,7 @@ public class Scene : MonoBehaviour
 
     [HideInInspector] public Object[] asteroidPrefabPool;
     [HideInInspector] public Object[] debrisPrefabPool;
+    [HideInInspector] public Object[] environmentsPrefabPool;
 
     [HideInInspector] public Object[] particlePrefabPool;
 
@@ -44,6 +45,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> lasersPool;
     [HideInInspector] public List<GameObject> ionPool;
     [HideInInspector] public List<GameObject> torpedosPool;
+    [HideInInspector] public List<GameObject> environmentsPool;
     [HideInInspector] public List<GameObject> cockpitPool;
     [HideInInspector] public List<GameObject> tilesPool;
     [HideInInspector] public List<GameObject> tilesSetPool;

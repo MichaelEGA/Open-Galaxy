@@ -100,6 +100,15 @@ public static class SceneFunctions
             scene.asteroidPrefabPool = asteroidPrefabs;
         }
 
+        //This loads the environments
+        Object[] environmentsPrefabs = Resources.LoadAll(OGGetAddress.environments, typeof(GameObject));
+
+        if (ogShipPrefabs != null)
+        {
+            scene.environmentsPrefabPool = new GameObject[environmentsPrefabs.Length];
+            scene.environmentsPrefabPool = environmentsPrefabs;
+        }
+
         //This loads the particle prefabs
         Object[] particlePrefabs = Resources.LoadAll(OGGetAddress.particles, typeof(GameObject));
 
@@ -990,6 +999,38 @@ public static class SceneFunctions
             if (skybox.name == name)
             {
                 RenderSettings.skybox = skybox;
+                break;
+            }
+        }
+    }
+
+    #endregion
+
+    #region environment loading
+
+    //This loads the environment
+    public static void LoadEnvironment(string type, float x, float y, float z)
+    {
+        Scene scene = GetScene();
+
+        foreach (GameObject environmentsPrefab in scene.environmentsPrefabPool)
+        {
+            if (environmentsPrefab.name == type)
+            {
+                GameObject environment = GameObject.Instantiate(environmentsPrefab);
+
+                environment.transform.position = new Vector3(x, y, z);
+                
+                if (scene != null)
+                {
+                    if (scene.environmentsPool == null)
+                    {
+                        scene.environmentsPool = new List<GameObject>();
+                    }
+
+                    environment.transform.SetParent(scene.transform);
+                }
+
                 break;
             }
         }
@@ -2206,6 +2247,16 @@ public static class SceneFunctions
             scene.asteroidPool.Clear();
         }
 
+        if (scene.environmentsPool != null)
+        {
+            foreach (GameObject gameobject in scene.environmentsPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.environmentsPool.Clear();
+        }
+
         if (scene.particlesPool != null)
         {
             foreach (GameObject gameobject in scene.particlesPool)
@@ -2265,6 +2316,16 @@ public static class SceneFunctions
             scene.objectPool.Clear();
 
             scene.objectPool.Add(scene.mainShip);
+        }
+
+        if (scene.environmentsPool != null)
+        {
+            foreach (GameObject gameobject in scene.environmentsPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.environmentsPool.Clear();
         }
 
         //Clears the smallship list but preserves the player smallship

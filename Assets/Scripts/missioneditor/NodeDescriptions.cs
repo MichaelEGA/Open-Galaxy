@@ -59,6 +59,18 @@ public static class NodeDescriptions
             "- Seed: allows you to generate the same field each time, by typing in the same seed number and setting the same values. \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
+        else if (name == "preload_loadenvironment")
+        {
+            description =
+            "Pre-Load Environment \n " +
+            "\n " +
+            "This node loads an environment in the scene. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- The X,Y,Z values set the centre of the asteroid field. \n" +
+            "- Type: selects the type of environment to load. \n" +
+            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
         else if (name == "preload_loadplanet")
         {
            description =

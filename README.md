@@ -38,11 +38,11 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Right Mouse matches speed
   - Scan a target by selecting it and then flying close
 
-**Latest Development Release:** 4.3.07
+**Latest Development Release:** 5.0.89
 
   - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.4.3.07/Open.Galaxy.4.3.07.zip
     
-**Latest Milestone Release:** 4.0.11
+**Latest Milestone Release:** 5.0.89
 
   - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.4.0.11/Open.Galaxy.4.0.11.zip
 
@@ -64,6 +64,101 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
 
 **Changelog**
+
+10/01/25 - 5.0.89 (Unity 6000.0.15f1)
+  - Added: Mon Calamari Cruiser mc80a
+  - Added: Mon Calamari Cruiser mc80lc
+  - Added: Mon Calamari Cruiser mc90
+  - Added: Carrack Cruiser
+  - Added: Lancer Class Frigate
+  - Added: skyhopper cockpit
+  - Added: dx9 transport cockpit
+  - Added: firespray cockpit
+  - Added: Mon Calamari Cruiser cannon small
+  - Added: Mon Calamari Cruiser cannon large
+  - Added: remake x-wing cockpit
+  - Added: load next mission node/function
+  - Added: select ship in front button added, press G
+  - Added: waypoint paths
+  - Added: systems level display on hud for player ship
+  - Added: new splash image for A New Ally
+  - Added: new splash image for Aftermath of Hoth
+  - Added: new splash image for Imperial Assault
+  - Added: setup space turret cannons
+  - Updated: update phantoms in the graveyard
+  - Added: mc80a setup
+  - Added: mc80cc setup
+  - Added: mc80lc setup
+  - Added: mc90 setup
+  - Added: carrack cruiser setup
+  - Added: lancer setup
+  - Added: SSD setup
+  - Added: add a yellow lasers colour option
+  - Added: imperial assault mission 2
+  - Added: x-wing mission 9
+  - Added: add back in code for loading and unloading enviroments
+  - Updated: remake audio in x-wing mission 6 and 7
+  - Updated: remake x-wing mission 3
+  - Updated: modify all missions to use radio distortion function
+  - Updated: make disabled ship spin slightly while slowing down to a complete halt
+  - Added: detect screen aspect ratio
+  - Added: fade in and out nextmission window
+  - Updated: link all relevant missions together
+  - Fixed: fix some lasers not being set to scene space
+  - Fixed: new ship models need to have read/write turned on
+  - Added: added space turret
+  - Fixed: set target problem in imperial assault mission 1
+  - Updated: remove debugging code lines from set target problem
+  - Updated: make corvette start to move in imperial assault mission 1
+  - Updated: reposition small turrets on mc80a
+  - Updated: add cast points to all new large ships
+  - Updated: add dockpit points to all open galaxy ships: mc80a forward
+  - Fixed: stop turrets rotating while game is paused
+  - Updated: check to see if corvette still exists at end of imperial assault mission 1
+  - Fixed: no victory music after finishing ars opus mission
+  - Updated: make sure radar objects are centered for all mcShips
+  - Updated: radar objects for all new ships
+  - Fixed: ion cannons on dx9 not working
+  - Fixed: can't switch weapons when torpedos are finished
+  - Updated: containers are way to strong
+  - Updated: remove colliders from First Strike engine glows
+  - Fixed: invisible collider problem on imperial assault mission 2
+  - Updated: modify IA mission 1 to be set on the border of Thyferra
+  - Updated: add voice to imperial assault mission 2
+  - Updated: add objectives to imperial assault mission 2
+  - Updated: connect mission 8 to mission 9
+  - Updated: renumber all missions
+  - Fixed: preloaded tie fightes aren't attacking player
+  - Fixed: ships flying through terrain
+  - Updated: update screens on x-wing model
+  - Fixed: fix up mesh on X-Wing screens
+  - Updated: remove canyon 01 and 02 terrain due to inferior quality
+  - Fixed: cockpit doesn't reflect hyperspace light in build
+  - Updated: lower vingnette strength
+  - Updated: increase rotation speed on stationary largeships
+  - Updated: Add a hyperspace jump at end of X-Wing mission 4
+  - Updated: X-Wing mission 4 doesn't finish
+  - Updated: increasing turn speed on GR75 transport
+  - Added: add new function: clear objective
+  - Updated: double size of open mission window in editor
+  - Fixed: loading information should scroll not run of edge of screen
+  - Updated: hyperspace at the end of x-wing mission 4
+  - Updated: cockpit movement should be low when speed is low
+  - Fixed: shortcut commands stop working when the editor is run more than once
+  - Fixed: fix polygon error on assault gunboat cockpit
+  - Updated: mesh colliders restored on asteroids
+  - Updated: make planet further away in TF mission 5 and 6
+  - Updated: add 'node copied' and 'node pasted' and 'node deleted' messages to editor
+  - Updated: xq1 station should be invincible in tie fighter mission 1
+  - Updated: create systems recharge for player craft
+  - Fixed: overlapping audio files on X-Wing misison 6
+  - Fixed: x-wing mission 7, next mission screen loads too quickly
+  - Fixed: y-wings should only have two torpedo tubes
+  - Fixed: assault gunboats should only have two torpedo tubes
+  - Updated: update internal mission files with external missions
+  - Fixed: right UI boxes should not overlap with radar
+  - Updated: tie fighter mission 1: buoy should be invincible
+  - Fixed: systems number doesn't change colour on hud
 
 30/11/24 - 4.3.07 (Unity 6000.0.15f1)
   - Added: load next mission node/function

@@ -3,7 +3,7 @@
 Gameplay
 ![screenshot](https://github.com/user-attachments/assets/dc01d328-2662-40ea-ab1d-585a48315463)
 
-![screenshot02](https://github.com/user-attachments/assets/39932a13-6733-4ec0-a8ee-89abb752168b)
+![image](https://github.com/user-attachments/assets/489143ab-a256-49a8-a60f-3143d11029d1)
 
 Mission Editor
 ![Screenshot (668)](https://github.com/user-attachments/assets/82905984-8da3-47fb-b885-5ab8783ffb1c)

@@ -1,9 +1,9 @@
 # Open-Galaxy
 
 Gameplay
-![image](https://github.com/user-attachments/assets/3df4d5a6-63a2-4bcc-b111-9e28017c1d3f)
+![screenshot](https://github.com/user-attachments/assets/dc01d328-2662-40ea-ab1d-585a48315463)
 
-![image](https://github.com/user-attachments/assets/dcf59720-56d5-49b3-bca9-33d6d1688397)
+![image](https://github.com/user-attachments/assets/489143ab-a256-49a8-a60f-3143d11029d1)
 
 Mission Editor
 ![Screenshot (668)](https://github.com/user-attachments/assets/82905984-8da3-47fb-b885-5ab8783ffb1c)
@@ -20,7 +20,7 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - External mission loading
   - Accurate Star Wars galaxy i.e the star locations accurately represent the galaxy
   - Switch between different asset sets
-  - 14 Inbuilt Missions
+  - 18 Inbuilt Missions
   - Keyboard and Mouse Controls
 
 **Controls**  
@@ -38,13 +38,13 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Right Mouse matches speed
   - Scan a target by selecting it and then flying close
 
-**Latest Development Release:** 4.3.07
+**Latest Development Release:** 5.0.89
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.4.3.07/Open.Galaxy.4.3.07.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.5.0.89/Open.Galaxy.5.0.89.zip
     
-**Latest Milestone Release:** 4.0.11
+**Latest Milestone Release:** 5.0.89
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.4.0.11/Open.Galaxy.4.0.11.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.5.0.89/Open.Galaxy.5.0.89.zip
 
 **Roadmap**
 
@@ -64,6 +64,66 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
 
 **Changelog**
+
+10/01/25 - 5.0.89 (Unity 6000.0.15f1)
+  - Added: Mon Calamari Cruiser mc80a
+  - Added: Mon Calamari Cruiser mc80lc
+  - Added: Mon Calamari Cruiser mc90
+  - Added: Carrack Cruiser
+  - Added: Lancer Class Frigate
+  - Added: skyhopper cockpit
+  - Added: dx9 transport cockpit
+  - Added: firespray cockpit
+  - Added: Mon Calamari Cruiser cannon small
+  - Added: Mon Calamari Cruiser cannon large
+  - Added: remake x-wing cockpit
+  - Added: new splash image for A New Ally
+  - Added: new splash image for Aftermath of Hoth
+  - Added: new splash image for Imperial Assault
+  - Added: setup space turret cannons
+  - Updated: update phantoms in the graveyard
+  - Added: mc80a setup
+  - Added: mc80cc setup
+  - Added: mc80lc setup
+  - Added: mc90 setup
+  - Added: carrack cruiser setup
+  - Added: lancer setup
+  - Added: SSD setup
+  - Added: add a yellow lasers colour option
+  - Added: imperial assault mission 2
+  - Added: x-wing mission 9
+  - Added: add back in code for loading and unloading enviroments
+  - Fixed: fix some lasers not being set to scene space
+  - Fixed: new ship models need to have read/write turned on
+  - Added: added space turret
+  - Fixed: set target problem in imperial assault mission 1
+  - Updated: remove debugging code lines from set target problem
+  - Updated: make corvette start to move in imperial assault mission 1
+  - Updated: reposition small turrets on mc80a
+  - Updated: add cast points to all new large ships
+  - Updated: add dockpit points to all open galaxy ships: mc80a forward
+  - Fixed: stop turrets rotating while game is paused
+  - Updated: check to see if corvette still exists at end of imperial assault mission 1
+  - Fixed: no victory music after finishing ars opus mission
+  - Updated: make sure radar objects are centered for all mcShips
+  - Updated: radar objects for all new ships
+  - Fixed: ion cannons on dx9 not working
+  - Fixed: can't switch weapons when torpedos are finished
+  - Updated: containers are way to strong
+  - Updated: remove colliders from First Strike engine glows
+  - Fixed: invisible collider problem on imperial assault mission 2
+  - Updated: modify IA mission 1 to be set on the border of Thyferra
+  - Updated: add voice to imperial assault mission 2
+  - Updated: add objectives to imperial assault mission 2
+  - Updated: connect mission 8 to mission 9
+  - Updated: renumber all missions
+  - Fixed: preloaded tie fightes aren't attacking player
+  - Fixed: ships flying through terrain
+  - Updated: update screens on x-wing model
+  - Fixed: fix up mesh on X-Wing screens
+  - Updated: remove canyon 01 and 02 terrain due to inferior quality
+  - Fixed: cockpit doesn't reflect hyperspace light in build
+  - Updated: lower vingnette strength
 
 30/11/24 - 4.3.07 (Unity 6000.0.15f1)
   - Added: load next mission node/function

@@ -90,17 +90,17 @@ public class OnLaserHit : MonoBehaviour
                 if (type == "laser")
                 {
                     //This selects the correct explosion colour
-                    string laserChoice = "explosion04";
+                    string laserChoice = "laserblast_red";
 
                     if (thisSmallShip != null)
                     {
                         if (thisSmallShip.laserColor == "red")
                         {
-                            laserChoice = "explosion04";
+                            laserChoice = "laserblast_red";
                         }
                         else if (thisSmallShip.laserColor == "green")
                         {
-                            laserChoice = "explosion05";
+                            laserChoice = "laserblast_green";
                         }
                     }
 
@@ -108,11 +108,11 @@ public class OnLaserHit : MonoBehaviour
                     {
                         if (thisTurret.laserColor == "red")
                         {
-                            laserChoice = "explosion04";
+                            laserChoice = "laserblast_red";
                         }
                         else if (thisTurret.laserColor == "green")
                         {
-                            laserChoice = "explosion05";
+                            laserChoice = "laserblast_green";
                         }
                     }
 
@@ -139,16 +139,16 @@ public class OnLaserHit : MonoBehaviour
                     {
                         if (thisTurret.turretType == "large")
                         {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "lightning", 25, audioManager);
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "laserblast_ion", 25, audioManager);
                         }
                         else
                         {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "lightning", 3, audioManager);
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "laserblast_ion", 3, audioManager);
                         }
                     }
                     else
                     {
-                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "lightning", 3, audioManager);
+                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "laserblast_ion", 3, audioManager);
                     }
                 }     
             }

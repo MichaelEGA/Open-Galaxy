@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 //This holds all the key elements of the scene and makes the avaible to other scripts
 public class Scene : MonoBehaviour
@@ -64,6 +65,11 @@ public class Scene : MonoBehaviour
 
     [Header("Skyboxes")]
     public Material[] skyboxes;
+
+    [Header("Lighting")]
+    public GameObject sceneLightGO;
+    public Light sceneLight;
+    public LensFlareComponentSRP lensFlare;
 
     [Header("Planet")]
     [HideInInspector] public GameObject centerPivot;

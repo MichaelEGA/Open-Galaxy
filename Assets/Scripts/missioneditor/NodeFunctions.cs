@@ -185,6 +185,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_SetHudColour(node);
         }
+        else if (node.nodeType == "preload_setlighting")
+        {
+            NodeTypes.Draw_PreLoad_SetLighting(node);
+        }
         else if (node.nodeType == "preload_setsceneradius")
         {
             NodeTypes.Draw_PreLoad_SetSceneRadius(node);

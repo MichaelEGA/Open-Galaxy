@@ -68,6 +68,9 @@ public static class MissionFunctions
         RenderSettings.fogEndDistance = 40000;
         RenderSettings.fogStartDistance = 30000;
 
+        //This sets the scene lighting to default
+        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 0, 0);
+
         //This finds and sets the first location
         MissionEvent firstLocationNode = FindFirstLocationNode(mission);
 
@@ -223,6 +226,11 @@ public static class MissionFunctions
             {
                 SetSkyBox(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", savedTime);
+            }
+            else if (missionEvent.eventType == "preload_setlighting" & missionEvent.conditionLocation == location)
+            {
+                SetLighting(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Lighting set", savedTime);
             }
             else if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
             {
@@ -1125,6 +1133,9 @@ public static class MissionFunctions
 
         //This resets the skybox to black
         SceneFunctions.SetSkybox("space_black", true);
+
+        //This resets the lighting to default
+        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 0, 0);
 
         //This sets the scene location
         scene.currentLocation = jumpLocation;
@@ -2604,6 +2615,38 @@ public static class MissionFunctions
         string colour = missionEvent.data1;
 
         HudFunctions.SetHudColour(colour);
+    }
+
+    //This changes the lighting in the scene
+    public static void SetLighting(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+        float rotX = missionEvent.xRotation;
+        float rotY = missionEvent.yRotation;
+        float rotZ = missionEvent.zRotation;
+        string colour = missionEvent.data1;
+        bool sunIsEnabled = false;
+        float sunIntensity = 1;
+        float sunScale = 1;
+
+        if (bool.TryParse(missionEvent.data2, out _))
+        {
+            sunIsEnabled = bool.Parse(missionEvent.data2);
+        }
+
+        if (float.TryParse(missionEvent.data3, out _))
+        {
+            sunIntensity = float.Parse(missionEvent.data3);
+        }
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            sunScale = float.Parse(missionEvent.data4);
+        }
+
+        SceneFunctions.SetLighting(colour, sunIsEnabled, sunIntensity, sunScale, x, y, z, rotX, rotY, rotZ);
     }
 
     //This sets an objective for the player to complete, removes an objective, or clears all objectives.

@@ -106,6 +106,7 @@ public static class WindowFunctions
         buttonList.Add("preload_loadsingleship");
         buttonList.Add("preload_loadsingleshiponground");
         buttonList.Add("preload_sethudcolour");
+        buttonList.Add("preload_setlighting");
         buttonList.Add("preload_setsceneradius");
         buttonList.Add("preload_setskybox");
         buttonList.Add("setcargo");

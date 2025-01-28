@@ -150,6 +150,16 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n" ;
         }
+        else if (name == "preload_setlighting")
+        {
+            description =
+           "Pre-Load Set Lighting \n " +
+           "\n " +
+           "Sets the colour of the lighting and also turns on and off and toggles the intensity of the sun" +
+           "\n " +
+           "Extra Information \n" +
+           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
         else if (name == "preload_setsceneradius")
         {
             description =

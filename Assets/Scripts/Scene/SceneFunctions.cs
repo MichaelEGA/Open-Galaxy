@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 
 //These functions are used to generate a scene including scenery and ship loading/unloading
@@ -488,6 +489,65 @@ public static class SceneFunctions
             {
                 starfield.layer = LayerMask.NameToLayer("starfield");
             }
+        }
+    }
+
+    #endregion
+
+    #region scene lighting
+
+    //This changes the lighting in the scene
+    public static void SetLighting(string colour, bool sunIsEnabled, float sunIntensity, float sunScale, float x, float y, float z, float xRot, float yRot, float zRot)
+    {
+        Scene scene = GetScene();
+
+        if (scene.sceneLightGO == null)
+        {
+            scene.sceneLightGO = GameObject.Find("Directional Light");
+        }
+
+        if (scene.sceneLightGO != null)
+        {
+            if (scene.sceneLight == null)
+            {
+                scene.sceneLight = scene.sceneLightGO.GetComponent<Light>();
+            }
+
+            if (scene.lensFlare == null)
+            {
+                scene.lensFlare = scene.sceneLightGO.GetComponent<LensFlareComponentSRP>();
+            }
+        }
+
+        //This sets the position and angle of the light
+        if (scene.sceneLightGO != null)
+        {
+            Vector3 lightPosition = new Vector3(x, y, z);
+            Quaternion lightRotation = Quaternion.Euler(xRot, yRot, zRot);
+
+            scene.sceneLightGO.transform.position = lightPosition;
+            scene.sceneLightGO.transform.rotation = lightRotation;
+        }
+
+        //This changes the colour temperature
+        if (scene.sceneLight != null)
+        {
+            Color newColour;
+
+            if (ColorUtility.TryParseHtmlString(colour, out newColour))
+            {
+                //Do nothing
+            }
+
+            scene.sceneLight.color = newColour;
+        }
+
+        //This sets the sun on and off and changes its intensity
+        if (scene.lensFlare != null)
+        {
+            scene.lensFlare.enabled = sunIsEnabled;
+            scene.lensFlare.intensity = sunIntensity;
+            scene.lensFlare.scale = sunScale;
         }
     }
 

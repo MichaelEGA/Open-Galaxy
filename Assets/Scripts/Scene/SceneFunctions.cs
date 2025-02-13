@@ -242,30 +242,54 @@ public static class SceneFunctions
         scene.cockpitCamera = cockpitCamera;
     }
 
-    //This ensures all the right cameras are on
-    public static void ResetCameras()
+    //This activates or deactivates the game cameras
+    public static void ActivateCameras(bool active)
     {
-        Scene scene = GetScene();
+        GameObject starfieldCameraGO = GameObject.Find("Starfield Camera");
+        GameObject planetCameraGO = GameObject.Find("Planet Camera");
+        GameObject mainCameraGO = GameObject.Find("Main Camera");
+        GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
 
-        if (scene.starfieldCamera != null)
+        if (starfieldCameraGO != null)
         {
-            scene.starfieldCamera.GetComponent<Camera>().enabled = true;
+            Camera starfieldCamera = starfieldCameraGO.GetComponent<Camera>();
+
+            if (starfieldCamera != null)
+            {
+                starfieldCamera.enabled = active;
+            }
         }
 
-        if (scene.planetCamera != null)
+        if (planetCameraGO != null)
         {
-            scene.planetCamera.GetComponent<Camera>().enabled = true;
+            Camera planetCamera = planetCameraGO.GetComponent<Camera>();
+
+            if (planetCamera != null)
+            {
+                planetCamera.enabled = active;
+            }
         }
 
-        if (scene.mainCamera != null)
+        if (mainCameraGO != null)
         {
-            scene.mainCamera.GetComponent<Camera>().enabled = true;
+            Camera mainCamera = mainCameraGO.GetComponent<Camera>();
+
+            if (mainCamera != null)
+            {
+                mainCamera.enabled = active;
+            }
         }
 
-        if (scene.cockpitCamera != null)
+        if (cockpitCameraGO != null)
         {
-            scene.cockpitCamera.GetComponent<Camera>().enabled = true;
+            Camera cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
+
+            if (cockpitCamera != null)
+            {
+                cockpitCamera.enabled = active;
+            }
         }
+
     }
 
     #endregion

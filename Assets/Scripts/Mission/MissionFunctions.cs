@@ -706,14 +706,14 @@ public static class MissionFunctions
         //This marks the load time using unscaled time
         float time = Time.unscaledTime;
 
+        //This creates the hud
+        HudFunctions.CreateHud();
+        LoadScreenFunctions.AddLogToLoadingScreen("Hud created.", Time.unscaledTime - time);
+
         //This creates the scene and gets the cameras
         SceneFunctions.CreateScene();
         SceneFunctions.GetCameras();
         LoadScreenFunctions.AddLogToLoadingScreen("Scene created.", Time.unscaledTime - time);
-
-        //This creates the hud
-        HudFunctions.CreateHud();
-        LoadScreenFunctions.AddLogToLoadingScreen("Hud created.", Time.unscaledTime - time);
 
         //THis loads the audio and music manager
         AudioFunctions.CreateAudioManager(missionAddress + missionName + "_audio/", addressIsExternal);
@@ -3475,8 +3475,13 @@ public static class MissionFunctions
 
         //This resets the starfield to ensure that it's not stretched
         SceneFunctions.ResetStarfield();
-        SceneFunctions.ResetCameras();
         SceneFunctions.ResetHyperSpaceTunnel();
+
+        //This resets the skybox to black
+        SceneFunctions.SetSkybox("space_black", true);
+
+        //This resets the lighting to default
+        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 0, 0);
 
         //This destroys the mission manager
         if (missionManager != null) { GameObject.Destroy(missionManager.gameObject); }

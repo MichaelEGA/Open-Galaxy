@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public static class ExitMenuFunctions
 {
     //This display the exit menu

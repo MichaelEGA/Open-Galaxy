@@ -63,6 +63,13 @@ public static class LoadScreenFunctions
 
             }
         }
+
+        //This sets the background of the load screen to the same as the menu
+        MainMenu mainMenu = MainMenuFunctions.GetMainMenu();
+
+        RawImage background = loadingScreen.GetComponentInChildren<RawImage>();
+
+        background.texture = mainMenu.background;
     }
 
     //This adds a message to the ship log

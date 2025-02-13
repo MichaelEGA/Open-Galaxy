@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System.Globalization;
+using System.Text;
 
 public static class MainMenuFunctions
 {
@@ -18,6 +20,23 @@ public static class MainMenuFunctions
         GameObject disclaimer = LoadDisclaimerPrefab();
         GameObject title = LoadTitlePrefab();
         GameObject menu = LoadMenuPrefab();
+
+        //This loads the background image
+        Texture2D texture = LoadBackgroundImage();
+
+        RawImage titleBackgroundImage = background.GetComponentInChildren<RawImage>();
+        titleBackgroundImage.texture = texture;
+
+        RawImage menuBackgroundImage = menu.GetComponentInChildren<RawImage>();
+        menuBackgroundImage.texture = texture;
+
+        GameObject artCredit = GameObject.Find("ArtCredit");
+        Text creditText = artCredit.GetComponent<Text>();
+        string artworkName = CapitalizeFirstLetters(texture.name);
+        creditText.text = artworkName + " by Tegnemaskin";
+
+        MainMenu mainMenu = GetMainMenu();
+        mainMenu.background = texture;
 
         //This starts the menu background music
         PlayBackgroundMusic(true);
@@ -167,6 +186,59 @@ public static class MainMenuFunctions
             Text text = VersionInfo.GetComponent<Text>();
             text.text = "Open Galaxy " + Application.version;
         }
+    }
+
+    //This loads the background images
+    public static Texture2D LoadBackgroundImage()
+    {
+        Texture2D texture = null;
+
+        MainMenu mainMenu = GetMainMenu();
+
+        Object[] backgroundImages = Resources.LoadAll("artwork/", typeof(Texture2D));
+
+        foreach (Object backgroundImage in backgroundImages)
+        {
+            mainMenu.backgroundPictures.Add((Texture2D)backgroundImage);
+        }
+
+        int numberOfPictures = mainMenu.backgroundPictures.Count - 1;
+
+        int pictureSelection = Random.Range(0, numberOfPictures);
+
+        texture = backgroundImages[pictureSelection] as Texture2D;
+
+        return texture;
+    }
+
+    //Capitilises the first letters of a given screen
+    public static string CapitalizeFirstLetters(this string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return input;
+
+        StringBuilder result = new StringBuilder(input.Length);
+        bool newWord = true;
+
+        foreach (char c in input)
+        {
+            if (char.IsWhiteSpace(c))
+            {
+                newWord = true;
+                result.Append(c);
+            }
+            else if (newWord)
+            {
+                result.Append(char.ToUpper(c, CultureInfo.InvariantCulture));
+                newWord = false;
+            }
+            else
+            {
+                result.Append(c);
+            }
+        }
+
+        return result.ToString();
     }
 
     #endregion
@@ -529,31 +601,12 @@ public static class MainMenuFunctions
         foreach (GameObject subMenu in mainMenu.SubMenus)
         {
             float buttonDrop = 20;
-            float buttonRight = 25;
 
             if ("Start Game_Settings" == subMenu.name)
             {
                 foreach (string campaign in mainMenu.campaigns)
                 {
-                    Texture2D campaignImage = null;
-
-                    foreach (Texture2D texture in mainMenu.campaignImages)
-                    {
-                        if (texture.name == campaign)
-                        {
-                            campaignImage = texture;
-                        }
-                    }
-
-                    CreationCampaignButton(mainMenu, subMenu, buttonDrop, buttonRight, campaign, "GameButton01", "ActivateSubMenu", "none", campaign, campaignImage);
-
-                    buttonRight += 160;
-
-                    if (buttonRight > 480)
-                    {
-                        buttonRight = 25;
-                        buttonDrop += 110;
-                    }
+                    buttonDrop = CreateCampaignButton(mainMenu, subMenu, buttonDrop, campaign, "ContentButton02", "ActivateSubMenu", "", campaign);
                 }
 
                 //This sets the size of the sub menu according to the how many buttons have been generated
@@ -692,7 +745,7 @@ public static class MainMenuFunctions
     }
 
     //This creates a sub menu button
-    public static void CreationCampaignButton(MainMenu mainMenu, GameObject subMenu, float buttonDrop, float buttonRight, string buttonName, string buttonType, string functionName, string buttonDescription = "", string variable = "none", Texture2D campaignImage = null)
+    public static float CreateCampaignButton(MainMenu mainMenu, GameObject subMenu, float buttonDrop, string buttonName, string buttonType, string functionName, string buttonDescription = "", string variable = "none")
     {
         GameObject button = null;
 
@@ -712,14 +765,9 @@ public static class MainMenuFunctions
             button.GetComponent<ButtonInfo>().description.text = buttonDescription;
         }
 
-        button.transform.localPosition = new Vector3(buttonRight, 0, 0);
-        button.GetComponent<RectTransform>().SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, buttonDrop, 102);
+        button.transform.localPosition = new Vector3(20, 0, 0);
+        button.GetComponent<RectTransform>().SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, buttonDrop, 20);
         button.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-
-        if (campaignImage != null)
-        {
-            button.GetComponentInChildren<RawImage>().texture = campaignImage;
-        }
 
         if (button.GetComponent<Button>() != null)
         {
@@ -732,6 +780,17 @@ public static class MainMenuFunctions
                 button.GetComponent<Button>().onClick.AddListener(() => mainMenu.functions[functionName].DynamicInvoke(variable));
             }
         }
+
+        if (button.GetComponent<ButtonInfo>() != null)
+        {
+            buttonDrop = buttonDrop + button.GetComponent<ButtonInfo>().buttonShiftDown;
+        }
+        else
+        {
+            buttonDrop = 60;
+        }
+
+        return buttonDrop;
     }
 
     //This adds a button for each mission avaible in the folder
@@ -888,7 +947,7 @@ public static class MainMenuFunctions
                 if (menu != null)
                 {
                     CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-                    Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
+                    Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.01f));
                 }
             }
         }
@@ -912,7 +971,7 @@ public static class MainMenuFunctions
                 if (menu != null)
                 {
                     CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-                    Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.25f));
+                    Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.01f));
                 }
             }
         }   

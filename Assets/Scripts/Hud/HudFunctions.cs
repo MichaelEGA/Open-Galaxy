@@ -1271,7 +1271,7 @@ public static class HudFunctions
                 hud.waypointArrow = GameObject.Find("WaypointArrow");
             }
 
-            if (hud.scene.waypointObject == null)
+            if (hud.scene.waypointObject == null & hud.smallShip != null)
             {
                 hud.scene.waypointObject = hud.smallShip.waypoint;
             }

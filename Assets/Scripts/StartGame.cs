@@ -8,6 +8,8 @@ public class StartGame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Camera menuCamera = GameObject.FindAnyObjectByType<Camera>();
+
         SceneFunctions.CreateCameras();
 
         Task special = new Task(SceneFunctions.GenerateStarField());

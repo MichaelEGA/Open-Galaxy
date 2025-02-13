@@ -25,6 +25,8 @@ public class MainMenu: MonoBehaviour
     public AudioSource buttonAudioSource;
     public AudioClip buttonHighlight;
 
+    public Texture2D background;
+
     public List<string> campaigns;
     public List<string> campaignDescriptions;
     public List<string> mainMissionCampaigns;
@@ -32,6 +34,7 @@ public class MainMenu: MonoBehaviour
     public List<string> customMissionCampaigns;
     public List<string> customMissionNames;
     public List<Texture2D> campaignImages;
+    public List<Texture2D> backgroundPictures;
 
     public bool missionRunning;
 

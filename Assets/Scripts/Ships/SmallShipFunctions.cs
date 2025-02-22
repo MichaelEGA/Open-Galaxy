@@ -1025,7 +1025,7 @@ public static class SmallShipFunctions
         if (smallShip != null & collidingWith != null)
         {
             //Debug.Log(smallShip.name + " colliding with " + collidingWith.name);
-            Debug.LogError(smallShip.name + " colliding with " + collidingWith.name + " sub object of " + collidingWith.transform.parent.parent.name);
+            //Debug.LogError(smallShip.name + " colliding with " + collidingWith.name + " sub object of " + collidingWith.transform.parent.parent.name);
 
             if (smallShip.docking == false)
             {

@@ -140,6 +140,16 @@ public static class NodeDescriptions
            "- You can force the function to load without hitting a tile by using the 'if raycast fails still load function'. \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
+        else if (name == "preload_setfogdistanceandcolor")
+        {
+            description =
+           "Pre-Load Set Fog Distance and Color \n " +
+           "\n " +
+           "Sets the fog distance and color # i.e. The default distance is 30000-40000 and the default color us black #000000. The settings in the nodes are the optimal settings for a planetary environment. \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
         else if (name == "preload_sethudcolour")
         {
             description =

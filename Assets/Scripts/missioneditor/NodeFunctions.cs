@@ -181,6 +181,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadSingleShipOnGround(node);
         }
+        else if (node.nodeType == "preload_setfogdistanceandcolor")
+        {
+            NodeTypes.Draw_PreLoad_SetFogDistanceAndColor(node);
+        }
         else if (node.nodeType == "preload_sethudcolour")
         {
             NodeTypes.Draw_PreLoad_SetHudColour(node);

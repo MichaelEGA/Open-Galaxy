@@ -1054,7 +1054,7 @@ public static class SceneFunctions
 
     #endregion
 
-    #region skybox loading
+    #region skybox, fog, and lighting settings
 
     //This sets the skybox
     public static void SetSkybox(string name, bool stars)
@@ -1085,6 +1085,32 @@ public static class SceneFunctions
                 RenderSettings.skybox = skybox;
                 break;
             }
+        }
+    }
+
+    //This set the fog distance and colour
+    public static void SetFogDistanceAndColor(float fogStart, float fogEnd, string fogColor)
+    {
+        Color newColour;
+
+        if (ColorUtility.TryParseHtmlString(fogColor, out newColour))
+        {
+            //Do nothing
+        }
+
+        RenderSettings.fogStartDistance = fogStart;
+        RenderSettings.fogEndDistance = fogEnd;
+        RenderSettings.fogColor = newColour;
+    }
+
+    //This sets the radius of the scene i.e. the distance the ship can travel before being forcibly turned back
+    public static void SetSceneRadius(float sceneRadius)
+    {
+        Scene scene = GetScene();
+
+        if (scene != null)
+        {
+            scene.sceneRadius = sceneRadius;
         }
     }
 

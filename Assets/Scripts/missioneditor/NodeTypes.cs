@@ -767,6 +767,41 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
+    public static void Draw_PreLoad_SetFogDistanceAndColor(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "pl_setfogdistanceandcolor", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_setfogdistanceandcolor", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "Fog Start", "5000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawInputField(node, "Fog End", "10000", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawInputField(node, "Fog Colour", "#919DA0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
     public static void Draw_PreLoad_SetLighting(Node node)
     {
         NodeFunctions.DrawNodeBase(node);

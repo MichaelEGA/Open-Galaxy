@@ -65,11 +65,15 @@ public static class MissionFunctions
 
         //This sets the skybox to the default space and view distance
         SceneFunctions.SetSkybox("space_black", true);
-        RenderSettings.fogEndDistance = 40000;
-        RenderSettings.fogStartDistance = 30000;
+
+        //This sets the fog and distance color to their default settings
+        SceneFunctions.SetFogDistanceAndColor(30000, 40000, "#000000");
 
         //This sets the scene lighting to default
         SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 0, 0);
+
+        //This sets the scene to it's default size
+        SceneFunctions.SetSceneRadius(15000);
 
         //This finds and sets the first location
         MissionEvent firstLocationNode = FindFirstLocationNode(mission);
@@ -206,7 +210,7 @@ public static class MissionFunctions
                 LoadPlanet(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", savedTime);
             }
-            if (missionEvent.eventType == "preload_loadenvironment" & missionEvent.conditionLocation == location)
+            else if (missionEvent.eventType == "preload_loadenvironment" & missionEvent.conditionLocation == location)
             {
                 LoadScreenFunctions.AddLogToLoadingScreen("Loading environment", Time.unscaledTime - savedTime);
                 LoadEnvironment(missionEvent);
@@ -231,6 +235,11 @@ public static class MissionFunctions
             {
                 SetLighting(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Lighting set", savedTime);
+            }
+            else if (missionEvent.eventType == "preload_setfogdistanceandcolor" & missionEvent.conditionLocation == location)
+            {
+                SetFogDistanceAndColor(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Fog settings set", savedTime);
             }
             else if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
             {
@@ -1136,6 +1145,12 @@ public static class MissionFunctions
 
         //This resets the lighting to default
         SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 0, 0);
+
+        //This resets the fog distanc and colour
+        SceneFunctions.SetFogDistanceAndColor(30000, 40000, "#000000");
+
+        //This sets the scene to it's default size
+        SceneFunctions.SetSceneRadius(15000);
 
         //This sets the scene location
         scene.currentLocation = jumpLocation;
@@ -2609,6 +2624,26 @@ public static class MissionFunctions
         return (x, y, z);
     }
 
+    //This sets the colour and distance of the fog for the scene
+    public static void SetFogDistanceAndColor(MissionEvent missionEvent)
+    {
+        float fogStart = 30000;
+        float fogEnd = 40000;
+        string fogColor = missionEvent.data3;
+
+        if (float.TryParse(missionEvent.data1, out _))
+        {
+            fogStart = float.Parse(missionEvent.data1);
+        }
+
+        if (float.TryParse(missionEvent.data2, out _))
+        {
+            fogEnd = float.Parse(missionEvent.data2);
+        }
+
+        SceneFunctions.SetFogDistanceAndColor(fogStart, fogEnd, fogColor);
+    }
+
     //This sets the coloured aspects of the hud
     public static void SetHudColour(MissionEvent missionEvent)
     {
@@ -2737,14 +2772,15 @@ public static class MissionFunctions
     //This sets the size of the play area
     public static void SetSceneRadius(MissionEvent missionEvent)
     {
-        Scene scene = SceneFunctions.GetScene();
+        float sceneRadius = 15000;
 
-        float sceneRadius = ParseStringToFloat(missionEvent.data1);
-
-        if (scene != null)
+        if (float.TryParse(missionEvent.data1, out _))
         {
-            scene.sceneRadius = sceneRadius;
+            sceneRadius = float.Parse(missionEvent.data1);
         }
+
+        SceneFunctions.SetSceneRadius(sceneRadius);
+
     }
 
     //This sets the designated ships target to the closest enemy, provided both the ship can be found

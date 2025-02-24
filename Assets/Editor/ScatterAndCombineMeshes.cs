@@ -10,8 +10,15 @@ public class ObjectScatter : EditorWindow
     private int numberInClump = 30;
     private float clumpRadius = 100f;
     private float maxSlopeAngle = 30.0f;
-    private float objectPlaced = 0;
+    private float objectsPlaced = 0;
     private float attemptedToPlaceObject = 0;
+    private int seed = 0;
+    private bool randomiseScale = false;
+    private float scaleMax = 150;
+    private float scaleMin = 50;
+    private bool randomiseRotation = false;
+    private bool useLimit = false;
+    private int limit = 0;
 
     [UnityEditor.MenuItem("Tools/Object Scatter")]
     public static void ShowWindow()
@@ -29,6 +36,14 @@ public class ObjectScatter : EditorWindow
         numberInClump = EditorGUILayout.IntField("Number In Count", numberInClump);
         clumpRadius = EditorGUILayout.FloatField("Clump Radius", clumpRadius);
         maxSlopeAngle = EditorGUILayout.FloatField("Max Slope Angle", maxSlopeAngle);
+        randomiseScale = EditorGUILayout.Toggle("Randomise Scale", randomiseScale);
+        scaleMax = EditorGUILayout.FloatField("Scale Maximum", scaleMax);
+        scaleMin = EditorGUILayout.FloatField("Scale Minimum", scaleMin);
+        randomiseRotation = EditorGUILayout.Toggle("Randomise Rotation", randomiseRotation);
+        useLimit = EditorGUILayout.Toggle("Use Limit", useLimit);
+        limit = EditorGUILayout.IntField("Limit", limit);
+        seed = EditorGUILayout.IntField("Seed", seed);
+        
 
         if (GUILayout.Button("Scatter"))
         {
@@ -38,6 +53,8 @@ public class ObjectScatter : EditorWindow
 
     void ScatterAndCombine()
     {
+        objectsPlaced = 0;
+
         if (objectToScatter == null || targetObject == null)
         {
             Debug.LogError("Please assign both the object to scatter and the target object.");
@@ -53,6 +70,8 @@ public class ObjectScatter : EditorWindow
         MeshCollider targetCollider = targetObject.GetComponent<MeshCollider>();
         List<GameObject> scatteredObjects = new List<GameObject>();
 
+        Random.InitState(seed);
+
         for (int i = 0; i < scatterCount; i++)
         {
             Vector3 clumpCenter = GetRandomPointInMesh(targetCollider);
@@ -62,14 +81,50 @@ public class ObjectScatter : EditorWindow
                 Vector3 randomPointInClump = clumpCenter + Random.insideUnitSphere * clumpRadius;
                 randomPointInClump = GetClosestPointOnMesh(targetCollider, randomPointInClump);
 
+                Quaternion rotation = Quaternion.identity;
+
+                if (randomiseRotation == true)
+                {
+                    rotation = Quaternion.Euler(0, Random.Range(0, 180), 0);
+                }
+
+                float scale = 100;
+
+                if (randomiseScale == true)
+                {
+                    scale = Random.Range(scaleMin, scaleMax);
+                }
+
                 attemptedToPlaceObject++;
 
                 if (IsSlopeAcceptable(randomPointInClump, targetCollider))
                 {
-                    GameObject instance = Instantiate(objectToScatter, randomPointInClump, Quaternion.identity);
+                    GameObject instance = Instantiate(objectToScatter);
+                    instance.transform.localScale = (instance.transform.localScale / 100f) * scale;
+                    instance.transform.position = randomPointInClump;
+                    instance.transform.rotation = rotation;
                     instance.transform.SetParent(targetObject.transform);
                     scatteredObjects.Add(instance);
-                    objectPlaced++;
+                    objectsPlaced++;
+
+                    if (useLimit == true)
+                    {
+                        if (objectsPlaced >= limit)
+                        {
+                            Debug.Log("Limit of objects placed was reached in clump");
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+            if (useLimit == true)
+            {
+                if (objectsPlaced >= limit)
+                {
+                    Debug.Log("Limit of objects placed was reached overall");
+                    break;
                 }
             }
         }
@@ -200,8 +255,7 @@ public class ObjectScatter : EditorWindow
         combinedMeshRenderer.materials = materials.ToArray();
 
         combinedMeshObject.SetActive(true);
-        Debug.Log("Objects scattered and combined successfully.");
-        Debug.Log("Combined Mesh Vertex Count: " + combinedMeshFilter.sharedMesh.vertexCount);
-        Debug.Log("Number of objects succesfully placed is " + objectPlaced + " of " + attemptedToPlaceObject + " attempted.");
+
+        Debug.Log("Number of objects succesfully placed is " + objectsPlaced + " of " + attemptedToPlaceObject + " attempted. For a vertex count of " + combinedMeshFilter.sharedMesh.vertexCount);
     }
 }

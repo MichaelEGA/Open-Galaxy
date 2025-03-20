@@ -2396,6 +2396,26 @@ public static class HudFunctions
         }
     }
 
+    //This manually sets the alpha of the hud, the value must be between 0 and 1
+    public static void SetHudTransparency(float alpha)
+    {
+        //This fixes any wrongly inputed values
+        if (alpha > 1)
+        {
+            alpha = 1;
+        }
+        else if (alpha < 0)
+        {
+            alpha = 0;
+        }
+
+        //This applies the alpha to the canvas group
+        GameObject hud = GetHudGameObject();
+        CanvasGroup canvasGroup = hud.GetComponent<CanvasGroup>();
+
+        canvasGroup.alpha = alpha;
+    }
+
     #endregion
 
     #region scene task manager

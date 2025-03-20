@@ -1349,20 +1349,9 @@ public static class MissionFunctions
         if (float.TryParse(missionEvent.data5, out _))
         {
             distortionLevel = float.Parse(missionEvent.data5);
-        }
+        } 
 
-        AudioSource missionBriefingAudio = null;
-
-        if (audio != "none" & internalAudioFile != "true")
-        {
-            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
-        }
-        else if (audio != "none" & internalAudioFile == "true")
-        {
-            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
-        }
-
-        MissionBriefingFunctions.ActivateMissionBriefing(message, missionBriefingAudio);
+        Task a = new Task(MissionBriefingFunctions.ActivateMissionBriefing(message, audio, internalAudioFile, distortion, distortionLevel));
     }
 
     //This checks whether a mission objective is active or not
@@ -2647,9 +2636,9 @@ public static class MissionFunctions
     //This sets the coloured aspects of the hud
     public static void SetHudColour(MissionEvent missionEvent)
     {
-        string colour = missionEvent.data1;
+        //string colour = missionEvent.data1;
 
-        HudFunctions.SetHudColour(colour);
+        //HudFunctions.SetHudColour(colour);
     }
 
     //This changes the lighting in the scene

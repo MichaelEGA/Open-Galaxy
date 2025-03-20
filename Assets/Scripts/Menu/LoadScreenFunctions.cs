@@ -58,7 +58,7 @@ public static class LoadScreenFunctions
 
                 if (hudCanvasGroup != null)
                 {
-                    Task a = new Task(MainMenuFunctions.FadeInCanvas(hudCanvasGroup, 2f));
+                    HudFunctions.SetHudTransparency(1);
                 }
 
             }

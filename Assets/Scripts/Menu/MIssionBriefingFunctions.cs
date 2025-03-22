@@ -39,21 +39,22 @@ public static class MissionBriefingFunctions
         //This turns off all the other cameras not used for the mission briefing scene
         SceneFunctions.ActivateCameras(false);
 
-        //This loads the ready room
-        GameObject readyroomGO = Resources.Load<GameObject>("objects/readyrooms/readyroom_rebel");
-        GameObject readyroom = GameObject.Instantiate(readyroomGO) as GameObject;
+        //This code is blocked out until I have made some actual ready rooms
+        ////This loads the ready room
+        //GameObject readyroomGO = Resources.Load<GameObject>("objects/readyrooms/readyroom_rebel");
+        //GameObject readyroom = GameObject.Instantiate(readyroomGO) as GameObject;
 
-        //This moves the camera into position
-        Vector3 endPosition = new Vector3(0, 1.94000006f, -4.6500001f);
-        Vector3 startPosition = new Vector3(0, 1.94000006f, -12.4399996f);
-        Camera camera = readyroom.GetComponentInChildren<Camera>();
-        Task a = new Task(LerpPosition(camera.transform.gameObject, startPosition, endPosition, 2));
+        ////This moves the camera into position
+        //Vector3 endPosition = new Vector3(0, 1.94000006f, -4.6500001f);
+        //Vector3 startPosition = new Vector3(0, 1.94000006f, -12.4399996f);
+        //Camera camera = readyroom.GetComponentInChildren<Camera>();
+        //Task a = new Task(LerpPosition(camera.transform.gameObject, startPosition, endPosition, 2));
 
-        //This gives the camera time to zoom in
-        while (a.Running == true)
-        {
-            yield return null;
-        }
+        ////This gives the camera time to zoom in
+        //while (a.Running == true)
+        //{
+        //    yield return null;
+        //}
 
         //This activates the mission briefing screen
         MissionBriefing missionBriefing = GameObject.FindFirstObjectByType<MissionBriefing>();
@@ -66,7 +67,7 @@ public static class MissionBriefingFunctions
             missionBriefing = missionBriefingGO.GetComponent<MissionBriefing>();
         }
 
-        missionBriefing.readyroom = readyroom;
+        //missionBriefing.readyroom = readyroom;
 
         GameObject missionBriefingTextGO = GameObject.Find("MissionInfo");
         Text missionBriefingText = missionBriefingTextGO.GetComponent<Text>();
@@ -96,6 +97,8 @@ public static class MissionBriefingFunctions
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0;
+
+        yield return null;
     }
 
     //This lerps the camera to it's new position

@@ -1,9 +1,9 @@
 # Open-Galaxy
 
 Gameplay
-![screenshot](https://github.com/user-attachments/assets/dc01d328-2662-40ea-ab1d-585a48315463)
+![image](https://github.com/user-attachments/assets/8fa7cd2a-11ca-4173-b212-b6ba33e470f4)
 
-![image](https://github.com/user-attachments/assets/489143ab-a256-49a8-a60f-3143d11029d1)
+![image](https://github.com/user-attachments/assets/9ac17e2b-1115-48e9-9509-04408d9a96ca)
 
 Mission Editor
 ![Screenshot (668)](https://github.com/user-attachments/assets/82905984-8da3-47fb-b885-5ab8783ffb1c)
@@ -38,9 +38,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Right Mouse matches speed
   - Scan a target by selecting it and then flying close
 
-**Latest Development Release:** 5.0.89
+**Latest Development Release:** 5.7.1
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.5.0.89/Open.Galaxy.5.0.89.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.5.7.1/Open.Galaxy.5.7.1.zip
     
 **Latest Milestone Release:** 5.0.89
 
@@ -64,6 +64,28 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
 
 **Changelog**
+
+23/03/25 - 5.7.1 (Unity  6.035f1)
+  - Added: new a-wing cockpit
+  - Added: new y-wing cockpit
+  - Added: new tie fighter cockpit
+  - Added: new x-wing cockpit
+  - Added: Hoth Base Test terrain
+  - Added: Endor Test Terrain
+  - Added: Mos Eisley Test Terrain
+  - Added: Death Star Test Environment
+  - Added: Set lighting node function
+  - Added: dynamic shadows in cockpit
+  - Added: Background Images to menu
+  - Added: Set boundary node function
+  - Added: fog color and distance function
+  - Updated: Unity to version 6.035f1
+  - Updated: Hud and Menu Design
+  - Updated: Stars are now tinged blue
+  - Fixed: Reduce glare on all cockpits
+  - Fixed: light shining through cockpits
+  - Fixed: massive ion glow 
+  - Fixed: scroll speed on menu too fast
 
 10/01/25 - 5.0.89 (Unity 6000.0.15f1)
   - Added: Mon Calamari Cruiser mc80a

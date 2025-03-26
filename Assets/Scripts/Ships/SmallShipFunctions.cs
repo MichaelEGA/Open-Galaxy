@@ -994,23 +994,23 @@ public static class SmallShipFunctions
 
         if (settings != null)
         {
-            if (settings.difficultly == "default")
+            if (settings.damage == "default")
             {
                 //No change
             }
-            else if (settings.difficultly == "moderate")
+            else if (settings.damage == "moderate")
             {
                 damage = (damage / 4f) * 3f;
             }
-            else if (settings.difficultly == "low")
+            else if (settings.damage == "low")
             {
                 damage = (damage / 4f) * 2f;
             }
-            else if (settings.difficultly == "minimal")
+            else if (settings.damage == "minimal")
             {
                 damage = (damage / 4f) * 2f;
             }
-            else if (settings.difficultly == "nodamage")
+            else if (settings.damage == "nodamage")
             {
                 damage = 0;
             }

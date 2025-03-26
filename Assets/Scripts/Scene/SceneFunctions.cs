@@ -1313,6 +1313,7 @@ public static class SceneFunctions
 
                     smallShip.invertUpDown = settings.invertY;
                     smallShip.invertLeftRight = settings.invertX;
+                    smallShip.autoaim = settings.autoaim;
 
                     scene.mainShip = smallShip.gameObject;
                 }

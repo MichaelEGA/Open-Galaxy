@@ -481,11 +481,12 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
         mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
         mainMenu.functions.Add("SelectShipAssets", new System.Action<string>(SelectShipAssets));
+        mainMenu.functions.Add("SetAutoaim", new System.Action<string>(SetAutoaim));
         mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
         mainMenu.functions.Add("SetEditorWindowMode", new System.Action<string>(SetEditorWindowMode));
         mainMenu.functions.Add("ToggleDebugging", new System.Action<string>(ToggleDebugging));
         mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
-        mainMenu.functions.Add("ChangeDifficultly", new System.Action<string>(ChangeDifficultly));
+        mainMenu.functions.Add("ChangeDamageLevel", new System.Action<string>(ChangeDamageLevel));
         mainMenu.functions.Add("ChangeQuality", new System.Action<string>(ChangeQuality));
         mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
         mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
@@ -913,8 +914,8 @@ public static class MainMenuFunctions
     //Displays a message on the title screen
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
     {
-        string[] messages = new string[10];
-        messages[0] = "Welcome to Open Galaxy. Version " + Application.version + " bring new cockpits, ships, bugfixes.";
+        string[] messages = new string[12];
+        messages[0] = "Welcome to Open Galaxy. Version " + Application.version + " bring new cockpits, autoaim, and damage control.";
         messages[1] = "Open Galaxy's is a platform for X-Wing and Tie Fighter style custom missions.";
         messages[2] = "All Open Galaxy's missions were created using the inbuilt mission editor.";
         messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";
@@ -923,9 +924,11 @@ public static class MainMenuFunctions
         messages[6] = "Open Galaxy is designed for keyboard and mouse.";
         messages[7] = "Check out the credits to see who made Open Galaxy possible.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
-        messages[9] = "Post 4.0 plans for Open Galaxy includes new ships, missions, and a stat screen.";
+        messages[9] = "Post 6.0 plans for Open Galaxy includes controller support, more cockpits, and more missions.";
+        messages[10] = "Finding it hard to hit your target? Try turning on autoaim in the control menu.";
+        messages[11] = "Getting blown out of the sky? Try changing the damage level in the settings menu";
         Random.InitState(System.DateTime.Now.Millisecond);
-        int randomMessageNo = Random.Range(0, 9);
+        int randomMessageNo = Random.Range(0, 11);
         titleScreenMessageBox.text = messages[randomMessageNo];
     }
 
@@ -1252,13 +1255,13 @@ public static class MainMenuFunctions
     }
 
     //This sets the screen resolution
-    public static void ChangeDifficultly(string level)
+    public static void ChangeDamageLevel(string level)
     {
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
-        OutputMenuMessage("The difficultly was set to " + level);
+        OutputMenuMessage("The damage level was set to " + level);
 
-        OGSettingsFunctions.SetDifficultlyLevel(level);
+        OGSettingsFunctions.SetDamageLevel(level);
 
         ActivateSubMenu("Settings");
     }
@@ -1293,6 +1296,23 @@ public static class MainMenuFunctions
         ActivateSubMenu("Settings");
 
         OutputMenuMessage("The ship assets were set to " + type);
+    }
+
+    //This sets the autoaim preference
+    public static void SetAutoaim(string autoaim)
+    {
+        if (autoaim == "false")
+        {
+            OGSettingsFunctions.SetAutoaim(false);
+        }
+        else
+        {
+            OGSettingsFunctions.SetAutoaim(true);
+        }
+
+        ActivateSubMenu("Controls");
+
+        OutputMenuMessage("The autoaim was set to " + autoaim);
     }
 
     //This sets the window mode

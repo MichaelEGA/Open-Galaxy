@@ -1284,7 +1284,7 @@ public static class HudFunctions
                             GameObject mainShip = hud.smallShip.gameObject;
 
                             //This gets the intercept point
-                            Vector3 interceptPosition = CalculateInterceptPoint(mainShip.transform.position, target.transform.position, hud.smallShip.targetRigidbody.linearVelocity, 750);
+                            Vector3 interceptPosition = GameObjectUtils.CalculateInterceptPoint(mainShip.transform.position, target.transform.position, hud.smallShip.targetRigidbody.linearVelocity, 750);
 
                             //This gets the targets position on the camera
                             Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(interceptPosition);
@@ -2486,36 +2486,6 @@ public static class HudFunctions
         CanvasGroup canvasGroup = hud.GetComponent<CanvasGroup>();
 
         canvasGroup.alpha = alpha;
-    }
-
-    //This calculates the intercept point between the target and the ships lasers
-    public static Vector3 CalculateInterceptPoint(Vector3 playerPosition, Vector3 targetPosition, Vector3 targetVelocity, float laserSpeed)
-    {
-        Vector3 toTarget = targetPosition - playerPosition;
-        float a = Vector3.Dot(targetVelocity, targetVelocity) - laserSpeed * laserSpeed;
-        float b = 2 * Vector3.Dot(targetVelocity, toTarget);
-        float c = Vector3.Dot(toTarget, toTarget);
-
-        float discriminant = b * b - 4 * a * c;
-
-        if (discriminant < 0)
-        {
-            // No real solution, return the target's current position
-            return targetPosition;
-        }
-
-        float t1 = (-b - Mathf.Sqrt(discriminant)) / (2 * a);
-        float t2 = (-b + Mathf.Sqrt(discriminant)) / (2 * a);
-
-        float t = Mathf.Max(t1, t2);
-
-        if (t < 0)
-        {
-            // No valid intercept point in the future, return the target's current position
-            return targetPosition;
-        }
-
-        return targetPosition + t * targetVelocity;
     }
 
     #endregion

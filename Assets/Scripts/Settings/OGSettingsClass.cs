@@ -9,11 +9,12 @@ public class OGSettingData
     public int screenResY;
     public bool invertY;
     public bool invertX;
+    public bool autoaim;
     public string cockpitAssets;
     public string shipAssets;
     public string gameWindowMode;
     public string editorWindowMode;
-    public string difficultly;
+    public string damage;
     public string quality;
 }
 

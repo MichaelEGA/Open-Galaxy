@@ -47,7 +47,39 @@
             "Function": "ActivateSubMenu",
 		"Type": "LeftBarButton_Quit",
 		"Variable": "Quit"
-        }, 	      
+        }, 
+	{
+		"ParentMenu": "Controls",
+            "Name": "Autoaim",
+            "Description": "Turns and autoaim on and off",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton01",
+		"Variable": "Autoaim"
+        },     
+ 	{
+		"ParentMenu": "Autoaim",
+            "Name": "Back to Controls",
+            "Description": "Returns to control sub menu",
+            "Function": "ActivateSubMenu",
+		"Type": "ContentButton02",
+		"Variable": "Controls"
+        },
+        {
+		"ParentMenu": "Autoaim",
+            "Name": "True",
+            "Description": "Turns autoaim on",
+            "Function": "SetAutoaim",
+		"Type": "ContentButton02",
+		"Variable": "true"
+        },
+        {
+		"ParentMenu": "Autoaim",
+            "Name": "False",
+            "Description": "Turns autoaim off",
+            "Function": "SetAutoaim",
+		"Type": "ContentButton02",
+		"Variable": "false"
+        },
         {
 		"ParentMenu": "Controls",
             "Name": "Invert Vertical Axis",
@@ -258,14 +290,14 @@
         },
 	 {
 		"ParentMenu": "Settings",
-            "Name": "Change Difficultly",
-            "Description": "Change the game's difficultly",
+            "Name": "Change Damage Level",
+            "Description": "Change the damage level",
             "Function": "ActivateSubMenu",
 		"Type": "ContentButton01",
-		"Variable": "Change Difficultly"
+		"Variable": "Change Damage Level"
         },
 	  {
-		"ParentMenu": "Change Difficultly",
+		"ParentMenu": "Change Damage Level",
             "Name": "Back to Settings",
             "Description": "Returns to settings sub menu",
             "Function": "ActivateSubMenu",
@@ -273,42 +305,42 @@
 		"Variable": "Settings"
         },
 	  {
-		"ParentMenu": "Change Difficultly",
+		"ParentMenu": "Change Damage Level",
             "Name": "Default Damage",
-            "Description": "Change the game's resolution",
-            "Function": "ChangeDifficultly",
+            "Description": "Change the damage level",
+            "Function": "ChangeDamageLevel",
 		"Type": "ContentButton02",
 		"Variable": "default"
         },
 	{
-		"ParentMenu": "Change Difficultly",
+		"ParentMenu": "Change Damage Level",
             "Name": "Moderate Damage",
-            "Description": "Change the game's resolution",
-            "Function": "ChangeDifficultly",
+            "Description": "Change the damage level",
+            "Function": "ChangeDamageLevel",
 		"Type": "ContentButton02",
 		"Variable": "moderate"
         },
 	{
-		"ParentMenu": "Change Difficultly",
+		"ParentMenu": "Change Damage Level",
             "Name": "Low Damage",
-            "Description": "Change the game's resolution",
-            "Function": "ChangeDifficultly",
+            "Description": "Change the damage level",
+            "Function": "ChangeDamageLevel",
 		"Type": "ContentButton02",
 		"Variable": "low"
         },
 	{
-		"ParentMenu": "Change Difficultly",
+		"ParentMenu": "Change Damage Level",
             "Name": "Minimum Damage",
-            "Description": "Change the game's resolution",
-            "Function": "ChangeDifficultly",
+            "Description": "Change the damage level",
+            "Function": "ChangeDamageLevel",
 		"Type": "ContentButton02",
 		"Variable": "minimum"
         },
 	{
-		"ParentMenu": "Change Difficultly",
+		"ParentMenu": "Change Damage Level",
             "Name": "No Damage",
-            "Description": "Change the game's resolution",
-            "Function": "ChangeDifficultly",
+            "Description": "Change the damage level",
+            "Function": "ChangeDamageLevel",
 		"Type": "ContentButton02",
 		"Variable": "nodamage"
         },

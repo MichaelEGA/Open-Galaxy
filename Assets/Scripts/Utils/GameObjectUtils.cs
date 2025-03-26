@@ -4,6 +4,9 @@ using UnityEngine;
 
 public static class GameObjectUtils
 {
+
+    //TRANSFORM AND GAMEOBJECT FUNCTIONS
+
     //This function adds a rigidbody to the gameobject
     public static Rigidbody AddRigidbody(GameObject gameObject, float mass, float drag, float angularDrag)
     {
@@ -179,6 +182,38 @@ public static class GameObjectUtils
         }
 
         return selectedTransform;
+    }
+
+    //RIGIDBODY FUNCTIONS
+
+    //This calculates the intercept point between the target and the ships lasers
+    public static Vector3 CalculateInterceptPoint(Vector3 playerPosition, Vector3 targetPosition, Vector3 targetVelocity, float projectileSpeed)
+    {
+        Vector3 toTarget = targetPosition - playerPosition;
+        float a = Vector3.Dot(targetVelocity, targetVelocity) - projectileSpeed * projectileSpeed;
+        float b = 2 * Vector3.Dot(targetVelocity, toTarget);
+        float c = Vector3.Dot(toTarget, toTarget);
+
+        float discriminant = b * b - 4 * a * c;
+
+        if (discriminant < 0)
+        {
+            // No real solution, return the target's current position
+            return targetPosition;
+        }
+
+        float t1 = (-b - Mathf.Sqrt(discriminant)) / (2 * a);
+        float t2 = (-b + Mathf.Sqrt(discriminant)) / (2 * a);
+
+        float t = Mathf.Max(t1, t2);
+
+        if (t < 0)
+        {
+            // No valid intercept point in the future, return the target's current position
+            return targetPosition;
+        }
+
+        return targetPosition + t * targetVelocity;
     }
 
 }

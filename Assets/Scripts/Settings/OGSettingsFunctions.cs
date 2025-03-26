@@ -155,13 +155,14 @@ public static class OGSettingsFunctions
             settings.heightMapResolution = ogSettingsClass.ogSettingsData[0].heightMapResolution;
             settings.invertX = ogSettingsClass.ogSettingsData[0].invertX;
             settings.invertY = ogSettingsClass.ogSettingsData[0].invertY;
+            settings.autoaim = ogSettingsClass.ogSettingsData[0].autoaim;
             settings.screenResX = ogSettingsClass.ogSettingsData[0].screenResX;
             settings.screenResY = ogSettingsClass.ogSettingsData[0].screenResY;
             settings.cockpitAssets = ogSettingsClass.ogSettingsData[0].cockpitAssets;
             settings.shipAssets = ogSettingsClass.ogSettingsData[0].shipAssets;
             settings.gameWindowMode = ogSettingsClass.ogSettingsData[0].gameWindowMode;
             settings.editorWindowMode = ogSettingsClass.ogSettingsData[0].editorWindowMode;
-            settings.difficultly = ogSettingsClass.ogSettingsData[0].difficultly;
+            settings.damage = ogSettingsClass.ogSettingsData[0].damage;
             settings.quality = ogSettingsClass.ogSettingsData[0].quality;
             CheckSettingsData();
         }
@@ -196,13 +197,14 @@ public static class OGSettingsFunctions
         ogSettingsClass.ogSettingsData[0].heightMapResolution = settings.heightMapResolution;
         ogSettingsClass.ogSettingsData[0].invertX = settings.invertX;
         ogSettingsClass.ogSettingsData[0].invertY = settings.invertY;
+        ogSettingsClass.ogSettingsData[0].autoaim = settings.autoaim;
         ogSettingsClass.ogSettingsData[0].screenResX = settings.screenResX;
         ogSettingsClass.ogSettingsData[0].screenResY = settings.screenResY;
         ogSettingsClass.ogSettingsData[0].cockpitAssets = settings.cockpitAssets;
         ogSettingsClass.ogSettingsData[0].shipAssets = settings.shipAssets;
         ogSettingsClass.ogSettingsData[0].gameWindowMode = settings.gameWindowMode;
         ogSettingsClass.ogSettingsData[0].editorWindowMode = settings.editorWindowMode;
-        ogSettingsClass.ogSettingsData[0].difficultly = settings.difficultly;
+        ogSettingsClass.ogSettingsData[0].damage = settings.damage;
         ogSettingsClass.ogSettingsData[0].quality = settings.quality;
 
         // Write JSON to file.
@@ -267,11 +269,23 @@ public static class OGSettingsFunctions
     #region change settings functions
 
     //This function selects the level of difficultly
-    public static void SetDifficultlyLevel(string level)
+    public static void SetDamageLevel(string level)
     {
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
-        settings.difficultly = level;
+        settings.damage = level;
+
+        CheckSettingsData();
+
+        SaveSettingsData();
+    }
+
+    //Set autoaim on and off
+    public static void SetAutoaim(bool autoaim)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.autoaim = autoaim;
 
         CheckSettingsData();
 

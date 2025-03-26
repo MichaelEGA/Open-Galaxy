@@ -166,6 +166,7 @@ public class SmallShip : MonoBehaviour
     public GameObject waypoint;
     public GameObject target;
     public bool dontSelectLargeShips;
+    public bool autoaim;
     [HideInInspector] public SmallShip targetSmallShip;
     [HideInInspector] public LargeShip targetLargeShip;
     [HideInInspector] public Rigidbody targetRigidbody;

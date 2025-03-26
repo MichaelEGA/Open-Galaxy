@@ -12,17 +12,22 @@ public static class MissionBriefingFunctions
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
 
+        //This restores the scenes lighting
+        SceneFunctions.SetLighting("#" + missionBriefing.colour, missionBriefing.sunIsEnabled, missionBriefing.sunIntensity, missionBriefing.sunScale, missionBriefing.x, missionBriefing.y, missionBriefing.z, missionBriefing.xRot, missionBriefing.yRot, missionBriefing.zRot);
+
+        //This stopes the audio briefing if it is still playing
         if (missionBriefing.missionBriefingAudio != null)
         {
             missionBriefing.missionBriefingAudio.Stop();
         }
 
-        missionBriefing.gameObject.SetActive(false);
-
-        if (missionBriefing.readyroom != null)
+        //This destroys the environment
+        if (missionBriefing.environment != null)
         {
-            GameObject.Destroy(missionBriefing.readyroom);
+            GameObject.Destroy(missionBriefing.environment);
         }
+
+        missionBriefing.gameObject.SetActive(false);
 
         //This makes the hud visible again
         HudFunctions.SetHudTransparency(1);
@@ -31,30 +36,46 @@ public static class MissionBriefingFunctions
     }
 
     //This activates the mission briefing when called by a mission event
-    public static IEnumerator ActivateMissionBriefing(string briefingText, string audioName, string internalAudioFile, bool distortion, float distortionLevel)
+    public static IEnumerator ActivateMissionBriefing(string briefingText, string audioName, string internalAudioFile, bool distortion, float distortionLevel, string model)
     {
+        //This gets the current settings for the scene lighting and changes
+        var lightingData = SceneFunctions.GetLightingData();
+
+        //This resets the lighting to default
+        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 60, 0, 0);
+
         //This makes the hud invisible
         HudFunctions.SetHudTransparency(0);
 
         //This turns off all the other cameras not used for the mission briefing scene
         SceneFunctions.ActivateCameras(false);
 
-        //This code is blocked out until I have made some actual ready rooms
-        ////This loads the ready room
-        //GameObject readyroomGO = Resources.Load<GameObject>("objects/readyrooms/readyroom_rebel");
-        //GameObject readyroom = GameObject.Instantiate(readyroomGO) as GameObject;
+        //This loads the ready room
+        GameObject environmentGO = Resources.Load<GameObject>("objects/readyrooms/readyroom_white");
+        GameObject environment = GameObject.Instantiate(environmentGO) as GameObject;
 
-        ////This moves the camera into position
-        //Vector3 endPosition = new Vector3(0, 1.94000006f, -4.6500001f);
-        //Vector3 startPosition = new Vector3(0, 1.94000006f, -12.4399996f);
-        //Camera camera = readyroom.GetComponentInChildren<Camera>();
-        //Task a = new Task(LerpPosition(camera.transform.gameObject, startPosition, endPosition, 2));
+        //This moves the camera into position
+        if (model != "none" & model != "") //This checks to see whether the camera should zoom in or not
+        {
+            Camera camera = environment.GetComponentInChildren<Camera>();
+            Vector3 endPosition = camera.transform.localPosition;
+            Vector3 startPosition = camera.transform.localPosition - new Vector3(0, 0, -1);
+            Task a = new Task(LerpPosition(camera.transform.gameObject, startPosition, endPosition, 2));
 
-        ////This gives the camera time to zoom in
-        //while (a.Running == true)
-        //{
-        //    yield return null;
-        //}
+            //This activates one of the models in the ready room to display
+            Transform modelTransform = GameObjectUtils.FindChildTransformContaining(environment.transform, model);
+
+            if (modelTransform != null)
+            {
+                modelTransform.gameObject.SetActive(true);
+            }
+
+            //This gives the camera time to zoom in
+            while (a.Running == true)
+            {
+                yield return null;
+            }
+        }
 
         //This activates the mission briefing screen
         MissionBriefing missionBriefing = GameObject.FindFirstObjectByType<MissionBriefing>();
@@ -67,8 +88,22 @@ public static class MissionBriefingFunctions
             missionBriefing = missionBriefingGO.GetComponent<MissionBriefing>();
         }
 
-        //missionBriefing.readyroom = readyroom;
+        //This adds the enviroment to mission briefing so it can access it later to destroy it
+        missionBriefing.environment = environment;
 
+        //This stores the main scenes lighting data
+        missionBriefing.colour = lightingData.colour;
+        missionBriefing.sunIsEnabled = lightingData.sunIsEnabled;
+        missionBriefing.sunIntensity = lightingData.sunIntensity;
+        missionBriefing.sunScale = lightingData.sunScale;
+        missionBriefing.x = lightingData.x;
+        missionBriefing.y = lightingData.y;
+        missionBriefing.z = lightingData.z;
+        missionBriefing.xRot = lightingData.xRot;
+        missionBriefing.yRot = lightingData.yRot;
+        missionBriefing.zRot = lightingData.zRot;
+
+        //This adds the mission briefing text
         GameObject missionBriefingTextGO = GameObject.Find("MissionInfo");
         Text missionBriefingText = missionBriefingTextGO.GetComponent<Text>();
 
@@ -121,5 +156,6 @@ public static class MissionBriefingFunctions
         // Ensure the final position is set
         gameObject.transform.localPosition = endPosition;
     }
+
 
 }

@@ -83,6 +83,9 @@ public class Hud : MonoBehaviour
     [HideInInspector] public float arrowTargetRotation;
     [HideInInspector] public float arrowLerpTime;
 
+    [Header("Intercept Point")]
+    [HideInInspector] public GameObject interceptPoint;
+
     [Header("Waypoint Information")]
     public bool waypointIsActive;
     [HideInInspector] public GameObject waypointArrow;
@@ -139,6 +142,8 @@ public class Hud : MonoBehaviour
 
         HudFunctions.DisplaySelectionBraces(this);
         HudFunctions.DisplayTargetLockReticule(this);
+
+        HudFunctions.DisplayInterceptPoint(this);
 
         HudFunctions.DisplayWaypointMarker(this);
 

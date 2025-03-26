@@ -147,7 +147,7 @@ public static class SceneFunctions
 
         scene.hyperspaceTunnelPrefab = Resources.Load(OGGetAddress.hyperspace + "HyperspaceTunnel") as GameObject;
 
-        scene.skyboxes = Resources.LoadAll<Material>(OGGetAddress.skyboxes);    
+        scene.skyboxes = Resources.LoadAll<Material>(OGGetAddress.skyboxes);
     }
 
     //This creates the starfield Camera
@@ -441,7 +441,7 @@ public static class SceneFunctions
                     }
 
                     particleSystem.SetParticles(points, points.Length);
-                    
+
                     float waitTime = 10f / 1000f;
 
                     while (particleSystemRenderer.lengthScale > 1)
@@ -475,7 +475,7 @@ public static class SceneFunctions
 
                 for (int i = 0; i < particleNo; i++)
                 {
-                    points[i].velocity = new Vector3(0,0,0);
+                    points[i].velocity = new Vector3(0, 0, 0);
                 }
 
                 particleSystem.SetParticles(points, points.Length);
@@ -484,7 +484,7 @@ public static class SceneFunctions
 
                 particleSystemRenderer.renderMode = ParticleSystemRenderMode.Billboard;
             }
-            
+
         }
     }
 
@@ -573,6 +573,50 @@ public static class SceneFunctions
             scene.lensFlare.intensity = sunIntensity;
             scene.lensFlare.scale = sunScale;
         }
+    }
+
+    //This gets the lightning info 
+    public static (string colour, bool sunIsEnabled, float sunIntensity, float sunScale, float x, float y, float z, float xRot, float yRot, float zRot) GetLightingData()
+    {
+        string colour = "#FFFFFF";
+        bool sunIsEnabled = true;
+        float sunIntensity = 1;
+        float sunScale = 1;
+        float x = 0;
+        float y = 0;
+        float z = 0;
+        float xRot = 60;
+        float yRot = 0;
+        float zRot = 0;
+
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene.sceneLightGO != null)
+        {
+            x = scene.sceneLightGO.transform.position.x;
+            y = scene.sceneLightGO.transform.position.y;
+            z = scene.sceneLightGO.transform.position.z;
+
+            xRot = scene.sceneLightGO.transform.rotation.eulerAngles.x;
+            yRot = scene.sceneLightGO.transform.rotation.eulerAngles.y;
+            zRot = scene.sceneLightGO.transform.rotation.eulerAngles.z;
+        }
+
+        //This changes the colour temperature
+        if (scene.sceneLight != null)
+        {
+            colour = ColorUtility.ToHtmlStringRGB(scene.sceneLight.color);
+        }
+
+        //This sets the sun on and off and changes its intensity
+        if (scene.lensFlare != null)
+        {
+            sunIsEnabled = scene.lensFlare.enabled;
+            sunIntensity = scene.lensFlare.intensity;
+            scene.lensFlare.scale = sunScale;
+        }
+
+        return (colour, sunIsEnabled, sunIntensity, sunScale, x, y, z, xRot, yRot, zRot);
     }
 
     #endregion

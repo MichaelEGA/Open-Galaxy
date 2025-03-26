@@ -1502,6 +1502,21 @@ public static class NodeTypes
 
         node.data1 = NodeFunctions.DrawInputField(node, "Next Mission", "none", 7, 5, drop, 12.5f, 90, 5f);
 
+        List<string> options01 = new List<string>();
+        options01.Add("none");
+        options01.Add("fx7");
+        options01.Add("gonk");
+        options01.Add("ito");
+        options01.Add("med");
+        options01.Add("mk4");
+        options01.Add("probe");
+        options01.Add("r2");
+        options01.Add("r4");
+        options01.Add("r5");
+        options01.Add("wed");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options01, "model", "none", 7, 5, drop, 12.5f, 90, 5f);
+
         drop -= 30;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
@@ -1703,6 +1718,23 @@ public static class NodeTypes
         drop -= 15;
 
         node.data5 = NodeFunctions.DrawInputField(node, "level", "0.5", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options03 = new List<string>();
+        options03.Add("none");
+        options03.Add("fx7");
+        options03.Add("gonk");
+        options03.Add("ito");
+        options03.Add("med");
+        options03.Add("mk4");
+        options03.Add("probe");
+        options03.Add("r2");
+        options03.Add("r4");
+        options03.Add("r5");
+        options03.Add("wed");
+
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options03, "model", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

@@ -7,7 +7,7 @@ using System.IO;
 public class NextMissionFunctions 
 {
     //This activates the mission briefing when called by a mission event
-    public static void ActivateNextMissionMenu(string nextMissionName)
+    public static void ActivateNextMissionMenu(string nextMissionName, string model = "none")
     {
         NextMission nextMission = GameObject.FindFirstObjectByType<NextMission>();
 
@@ -27,6 +27,23 @@ public class NextMissionFunctions
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0;
+
+        //This resets the lighting to default
+        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 60, 0, 0);
+
+        //This loads the environment background
+        GameObject environmentGO = Resources.Load<GameObject>("objects/readyrooms/readyroom_white");
+        GameObject environment = GameObject.Instantiate(environmentGO) as GameObject;
+
+        nextMission.environment = environment;
+
+        //This loads the chosen model
+        Transform modelTransform = GameObjectUtils.FindChildTransformContaining(environment.transform, model);
+
+        if (modelTransform != null)
+        {
+            modelTransform.gameObject.SetActive(true);
+        }
     }
 
     //This checks if the mission exists
@@ -92,11 +109,16 @@ public class NextMissionFunctions
     //This unloads the next mission menu
     public static void UnloadNextMissionMenu()
     {
-        NextMission nextMenu = GameObject.FindFirstObjectByType<NextMission>();
+        NextMission nextMission = GameObject.FindFirstObjectByType<NextMission>();
 
-        if (nextMenu != null)
+        if (nextMission.environment != null)
         {
-            GameObject.Destroy(nextMenu.gameObject);
+            GameObject.Destroy(nextMission.environment);
+        }
+
+        if (nextMission != null)
+        {
+            GameObject.Destroy(nextMission.gameObject);
         }
     }
 }

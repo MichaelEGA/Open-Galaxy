@@ -8,6 +8,7 @@ public class NextMission : MonoBehaviour
     public bool internalMissionExists;
     public bool externalMissionExists;
     public string nextMissionName;
+    public GameObject environment;
 
     //This runs the next selected mission
     public void RunNextMission()

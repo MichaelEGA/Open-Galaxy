@@ -70,7 +70,7 @@ public static class MissionFunctions
         SceneFunctions.SetFogDistanceAndColor(30000, 40000, "#000000");
 
         //This sets the scene lighting to default
-        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 0, 0);
+        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 60, 0, 0);
 
         //This sets the scene to it's default size
         SceneFunctions.SetSceneRadius(15000);
@@ -1225,9 +1225,10 @@ public static class MissionFunctions
     public static void ExitAndDisplayNextMissionMenu(MissionEvent missionEvent)
     {
         string nextMissionName = missionEvent.data1;
+        string model = missionEvent.data2;
 
         //Load next mission screen
-        NextMissionFunctions.ActivateNextMissionMenu(nextMissionName);
+        NextMissionFunctions.ActivateNextMissionMenu(nextMissionName, model);
 
         //Unload mission
         UnloadMission();
@@ -1349,9 +1350,11 @@ public static class MissionFunctions
         if (float.TryParse(missionEvent.data5, out _))
         {
             distortionLevel = float.Parse(missionEvent.data5);
-        } 
+        }
 
-        Task a = new Task(MissionBriefingFunctions.ActivateMissionBriefing(message, audio, internalAudioFile, distortion, distortionLevel));
+        string model = missionEvent.data6;
+
+        Task a = new Task(MissionBriefingFunctions.ActivateMissionBriefing(message, audio, internalAudioFile, distortion, distortionLevel, model));
     }
 
     //This checks whether a mission objective is active or not

@@ -1244,6 +1244,78 @@ public static class HudFunctions
         }
     }
 
+    //This displays a target where the intercept point for the target ship is
+    public static void DisplayInterceptPoint(Hud hud)
+    {
+        if (hud.interceptPoint == null)
+        {
+            hud.interceptPoint = GameObject.Find("InterceptPoint");
+        }
+
+        if (Time.timeScale != 0)
+        {
+            GameObject interceptPoint = hud.interceptPoint;
+
+            if (interceptPoint != null)
+            {
+                interceptPoint.SetActive(false);
+            }
+
+            if (hud.mainCamera == null)
+            {
+                if (hud.smallShip != null)
+                {
+                    if (hud.smallShip.mainCamera != null)
+                    {
+                        hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
+                    }
+                }
+            }
+
+            if (hud.mainCamera != null)
+            {
+                if (hud.smallShip != null & interceptPoint != null)
+                {
+                    if (hud.smallShip.target != null)
+                    {
+                        if (hud.smallShip.target.activeSelf != false & hud.smallShip.targetRigidbody != null & hud.smallShip.targetSmallShip != null)
+                        {
+                            GameObject target = hud.smallShip.target;
+                            GameObject mainShip = hud.smallShip.gameObject;
+
+                            //This gets the intercept point
+                            Vector3 interceptPosition = CalculateInterceptPoint(mainShip.transform.position, target.transform.position, hud.smallShip.targetRigidbody.linearVelocity, 750);
+
+                            //This gets the targets position on the camera
+                            Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(interceptPosition);
+
+                            //This sets key values
+                            Vector3 targetPosition = target.transform.position - mainShip.transform.position;
+                            float forward = Vector3.Dot(mainShip.transform.forward, targetPosition.normalized);
+                            float up = Vector3.Dot(mainShip.transform.up, targetPosition.normalized);
+                            float right = Vector3.Dot(mainShip.transform.right, targetPosition.normalized);
+
+                            //This checks that the target is on screen
+                            if (target.GetComponentInChildren<Renderer>().isVisible == true & forward > 0)
+                            {
+                                //This sets the intercept point to active when the target is on screen
+                                interceptPoint.SetActive(true);
+
+                                //This translates that position to the intercept point
+                                interceptPoint.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+                            }
+                            else
+                            {
+                                //This sets the intercept point to inactive when the target is behind the camera
+                                interceptPoint.SetActive(false);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //This displays the nav point marker when the destination is in view and an arrow pointing to the destination when offscreen
     public static void DisplayWaypointMarker(Hud hud)
     {
@@ -2414,6 +2486,36 @@ public static class HudFunctions
         CanvasGroup canvasGroup = hud.GetComponent<CanvasGroup>();
 
         canvasGroup.alpha = alpha;
+    }
+
+    //This calculates the intercept point between the target and the ships lasers
+    public static Vector3 CalculateInterceptPoint(Vector3 playerPosition, Vector3 targetPosition, Vector3 targetVelocity, float laserSpeed)
+    {
+        Vector3 toTarget = targetPosition - playerPosition;
+        float a = Vector3.Dot(targetVelocity, targetVelocity) - laserSpeed * laserSpeed;
+        float b = 2 * Vector3.Dot(targetVelocity, toTarget);
+        float c = Vector3.Dot(toTarget, toTarget);
+
+        float discriminant = b * b - 4 * a * c;
+
+        if (discriminant < 0)
+        {
+            // No real solution, return the target's current position
+            return targetPosition;
+        }
+
+        float t1 = (-b - Mathf.Sqrt(discriminant)) / (2 * a);
+        float t2 = (-b + Mathf.Sqrt(discriminant)) / (2 * a);
+
+        float t = Mathf.Max(t1, t2);
+
+        if (t < 0)
+        {
+            // No valid intercept point in the future, return the target's current position
+            return targetPosition;
+        }
+
+        return targetPosition + t * targetVelocity;
     }
 
     #endregion

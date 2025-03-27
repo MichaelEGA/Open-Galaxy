@@ -292,6 +292,17 @@ public static class NodeDescriptions
            "- You can only jump to locations you have created in the mission using the 'create location' node. The game will abort changing location if it can't the location.  \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "changelocationfade")
+        {
+            description =
+            "Change Location \n " +
+            "\n " +
+            "This node unloads the current location and loads a new one while using a simple fade in and out" +
+            "\n " +
+           "Extra Information \n" +
+           "- You can only move to locations you have created in the mission using the 'create location' node. The game will abort changing location if it can't the location.  \n" +
+           "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
         else if (name == "exitmission")
         {
             description =

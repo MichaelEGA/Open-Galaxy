@@ -404,7 +404,13 @@ public static class MissionFunctions
         }
         else if (missionEvent.eventType == "changelocation")
         {
-            Task a = new Task(ChangeLocation(missionEvent));
+            Task a = new Task(ChangeLocationHyperspace(missionEvent));
+            missionManager.missionTasks.Add(a);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "changelocationfade")
+        {
+            Task a = new Task(ChangeLocationFade(missionEvent));
             missionManager.missionTasks.Add(a);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
@@ -1070,7 +1076,7 @@ public static class MissionFunctions
     }
 
     //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
-    public static IEnumerator ChangeLocation(MissionEvent missionEvent)
+    public static IEnumerator ChangeLocationHyperspace(MissionEvent missionEvent)
     {
         //This gets all the required data from the event node
         float x = missionEvent.x;
@@ -1203,6 +1209,108 @@ public static class MissionFunctions
 
         SmallShipFunctions.OpenWings(smallShip);
 
+        //This unpauses the event series
+        missionManager.pauseEventSeries = false;
+    }
+
+    //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
+    public static IEnumerator ChangeLocationFade(MissionEvent missionEvent)
+    {
+        //This gets all the required data from the event node
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        string location = missionEvent.data1;
+        string colour = missionEvent.data2;
+
+        //This gets several important references
+        Scene scene = SceneFunctions.GetScene();
+        SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+        MissionManager missionManager = GetMissionManager();
+        Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
+        GameObject starfield = SceneFunctions.GetStarfield();
+
+        missionManager.pauseEventSeries = true;
+
+        bool controlLock = smallShip.controlLock; //This preserves the current lock position
+
+        smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
+        smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
+
+        //This fades out the hud
+        Task a = new Task(HudFunctions.FadeOutHud(1));
+
+        while (a.Running == true)
+        {
+            yield return null;
+        }
+
+        //This fades the scene out
+        HudFunctions.FadeInBackground(1, colour);
+
+        yield return new WaitForSeconds(1.5f);
+
+        //This marks the jump time
+        float time = Time.unscaledTime;
+
+        //This clears the current location
+        SceneFunctions.ClearLocation();
+
+        Time.timeScale = 0;
+
+        //This sets the rotation of the ship in the new location designated in the node
+        smallShip.transform.rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        //This sets the position of the ship in the new location designated in the node
+        smallShip.transform.localPosition = new Vector3(x, y, z);
+
+        //This resets the skybox to black
+        SceneFunctions.SetSkybox("space_black", true);
+
+        //This resets the lighting to default
+        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 0, 0);
+
+        //This resets the fog distanc and colour
+        SceneFunctions.SetFogDistanceAndColor(30000, 40000, "#000000");
+
+        //This sets the scene to it's default size
+        SceneFunctions.SetSceneRadius(15000);
+
+        //This sets the scene location
+        scene.currentLocation = location;
+
+        //This finds and loads all 'preload' nodes for the new location
+        Task b = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, location, time, false));
+        while (b.Running == true) { yield return null; }
+
+        yield return new WaitForSecondsRealtime(1);
+
+        //This time scale needs to be turned on before shrinking the starfield to ensure that the function can get the correct velocity angle from the ship
+        Time.timeScale = 1;
+
+        yield return new WaitForSecondsRealtime(1); //This gives the rigidbody time to calculate the new velocity
+
+        //This makes the stars stretch out
+        scene.planetCamera.GetComponent<Camera>().enabled = true;
+        scene.mainCamera.GetComponent<Camera>().enabled = true;
+
+        //This fades the hud back in
+        Task fadeIN = new Task(HudFunctions.FadeInHud(1));
+
+        yield return new WaitForSeconds(1.5f);
+
+        //This fades the scene back ing
+        HudFunctions.FadeOutBackground(1, colour);
+
+        //This unlocks the player controls and turns off invincibility on the player ship
+        smallShip.controlLock = controlLock; //This restores the set lock position
+        smallShip.invincible = false;
+   
         //This unpauses the event series
         missionManager.pauseEventSeries = false;
     }

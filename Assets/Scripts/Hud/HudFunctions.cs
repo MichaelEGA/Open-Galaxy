@@ -12,11 +12,15 @@ public static class HudFunctions
     public static void CreateHud()
     {
         GameObject hudPrefab = Resources.Load(OGGetAddress.hud + "hud") as GameObject;
-        GameObject hud = GameObject.Instantiate(hudPrefab);
+        GameObject hudGO = GameObject.Instantiate(hudPrefab);
 
-        hud.name = "Hud";
-        Hud hudScript = hud.AddComponent<Hud>();
+        hudGO.name = "Hud";
+        Hud hudScript = hudGO.AddComponent<Hud>();
         hudScript.startTime = Time.time;
+
+        GameObject fadePrefab = Resources.Load(OGGetAddress.hud + "Fade") as GameObject;
+        GameObject fadeGO = GameObject.Instantiate(fadePrefab);
+        fadeGO.name = "Fade";
 
         LoadRadarPrefabs(hudScript);
         InstantiateRadarShips(hudScript);
@@ -1893,6 +1897,70 @@ public static class HudFunctions
                 newColor.a = 0;
                 hud.movingReticleImage.color = newColor;
             }
+        }
+    }
+
+    #endregion
+
+    #region fade and flashes
+
+    //Fades in from designated colour
+    public static void FadeInBackground(float time, string colour)
+    {
+        CanvasGroup fadeGroup = null;
+        RawImage fadeImage = null;
+
+        //This gets the references
+        GameObject fadeGO = GameObject.Find("Fade");
+        if (fadeGO != null) { fadeGroup = fadeGO.GetComponent<CanvasGroup>(); }
+
+        GameObject fadeImageGO = GameObject.Find("FadeImage");
+        if (fadeImageGO != null) { fadeImage = fadeImageGO.GetComponent<RawImage>(); }
+
+        //This changes the colour
+        Color newColour;
+
+        if (ColorUtility.TryParseHtmlString(colour, out newColour))
+        {
+            //Do nothing
+        }
+
+        fadeImage.color = newColour;
+
+        //This fades the fade in
+        if (fadeGroup != null & fadeImage != null)
+        {
+            Task a = new Task(MainMenuFunctions.FadeInCanvas(fadeGroup, 1));
+        }
+    }
+
+    //Fades out from designated colour
+    public static void FadeOutBackground(float time, string colour)
+    {
+        CanvasGroup fadeGroup = null;
+        RawImage fadeImage = null;
+
+        //This gets the references
+        GameObject fadeGO = GameObject.Find("Fade");
+        if (fadeGO != null) { fadeGroup = fadeGO.GetComponent<CanvasGroup>(); }
+
+        GameObject fadeImageGO = GameObject.Find("FadeImage");
+        if (fadeImageGO != null) { fadeImage = fadeImageGO.GetComponent<RawImage>(); }
+
+        //This changes the colour of the fade
+        Color newColour;
+
+        if (ColorUtility.TryParseHtmlString(colour, out newColour))
+        {
+            //Do nothing
+        }
+
+        fadeImage.color = newColour;
+
+        //This fades the fade out
+        if (fadeGroup != null & fadeImage != null)
+        {
+            Task a = new Task(MainMenuFunctions.FadeOutCanvas(fadeGroup, 1));
         }
     }
 

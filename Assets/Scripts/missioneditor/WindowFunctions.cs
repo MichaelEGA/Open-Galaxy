@@ -70,6 +70,7 @@ public static class WindowFunctions
         buttonList.Add("addaitagtosmallship");
         buttonList.Add("campaigninformation");
         buttonList.Add("changelocation");
+        buttonList.Add("changelocationfade");
         buttonList.Add("createlocation");
         buttonList.Add("custom_node");
         buttonList.Add("deactivateship");

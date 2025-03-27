@@ -41,6 +41,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ChangeLocation(node);
         }
+        else if (node.nodeType == "changelocationfade")
+        {
+            NodeTypes.Draw_ChangeLocationFade(node);
+        }
         else if (node.nodeType == "createlocation")
         {
             NodeTypes.Draw_CreateLocation(node);

@@ -1173,8 +1173,6 @@ public static class SceneFunctions
             {
                 GameObject environment = GameObject.Instantiate(environmentsPrefab);
 
-                environment.transform.position = new Vector3(x, y, z);
-                
                 if (scene != null)
                 {
                     if (scene.environmentsPool == null)
@@ -1183,6 +1181,8 @@ public static class SceneFunctions
                     }
 
                     environment.transform.SetParent(scene.transform);
+
+                    environment.transform.localPosition = new Vector3(x, y, z);
                 }
 
                 break;

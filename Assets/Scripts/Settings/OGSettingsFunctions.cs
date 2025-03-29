@@ -158,7 +158,6 @@ public static class OGSettingsFunctions
             settings.autoaim = ogSettingsClass.ogSettingsData[0].autoaim;
             settings.screenResX = ogSettingsClass.ogSettingsData[0].screenResX;
             settings.screenResY = ogSettingsClass.ogSettingsData[0].screenResY;
-            settings.cockpitAssets = ogSettingsClass.ogSettingsData[0].cockpitAssets;
             settings.shipAssets = ogSettingsClass.ogSettingsData[0].shipAssets;
             settings.gameWindowMode = ogSettingsClass.ogSettingsData[0].gameWindowMode;
             settings.editorWindowMode = ogSettingsClass.ogSettingsData[0].editorWindowMode;
@@ -200,7 +199,6 @@ public static class OGSettingsFunctions
         ogSettingsClass.ogSettingsData[0].autoaim = settings.autoaim;
         ogSettingsClass.ogSettingsData[0].screenResX = settings.screenResX;
         ogSettingsClass.ogSettingsData[0].screenResY = settings.screenResY;
-        ogSettingsClass.ogSettingsData[0].cockpitAssets = settings.cockpitAssets;
         ogSettingsClass.ogSettingsData[0].shipAssets = settings.shipAssets;
         ogSettingsClass.ogSettingsData[0].gameWindowMode = settings.gameWindowMode;
         ogSettingsClass.ogSettingsData[0].editorWindowMode = settings.editorWindowMode;
@@ -286,18 +284,6 @@ public static class OGSettingsFunctions
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
         settings.autoaim = autoaim;
-
-        CheckSettingsData();
-
-        SaveSettingsData();
-    }
-
-    //This function selects the cockpits to be used 
-    public static void SelectCockpitAssets(string type)
-    {
-        OGSettings settings = OGSettingsFunctions.GetSettings();
-
-        settings.cockpitAssets = type;
 
         CheckSettingsData();
 

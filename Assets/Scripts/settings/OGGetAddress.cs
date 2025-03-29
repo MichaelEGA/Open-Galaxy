@@ -8,9 +8,7 @@ public static class OGGetAddress
     public static string asteroids = "objects/debris/asteroids/";
     public static string audioclips = "audio/audioclips/";
     public static string audiomixers = "audio/audiomixers/";
-    public static string cockpits_opengalaxyassets = "objects/cockpits/opengalaxy/";
-    public static string cockpits_firststrike = "objects/cockpits/firststrike/";
-    public static string cockpits_galacticconquest = "objects/cockpits/galacticconquest/";
+    public static string cockpits = "objects/cockpits/";
     public static string missioneditor = "missioneditor/";
     public static string files = "files/";
     public static string fogwall = "objects/fogwall/";

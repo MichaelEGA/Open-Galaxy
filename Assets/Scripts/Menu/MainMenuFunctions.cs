@@ -479,7 +479,6 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
         mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadEditor));
         mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
-        mainMenu.functions.Add("SelectCockpitAssets", new System.Action<string>(SelectCockpitAssets));
         mainMenu.functions.Add("SelectShipAssets", new System.Action<string>(SelectShipAssets));
         mainMenu.functions.Add("SetAutoaim", new System.Action<string>(SetAutoaim));
         mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
@@ -1276,16 +1275,6 @@ public static class MainMenuFunctions
         OGSettingsFunctions.SetQualityLevel(qualityLevel);
 
         ActivateSubMenu("Settings");
-    }
-
-    //This selects the cockpit types to be used in the game
-    public static void SelectCockpitAssets(string type)
-    {
-        OGSettingsFunctions.SelectCockpitAssets(type);
-
-        ActivateSubMenu("Settings");
-
-        OutputMenuMessage("The cockpit assets were set to " + type);
     }
 
     //This selects the cockpit types to be used in the game

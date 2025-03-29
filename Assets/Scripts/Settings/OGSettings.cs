@@ -10,7 +10,6 @@ public class OGSettings : MonoBehaviour
     public bool invertY = true;
     public bool invertX = true;
     public bool autoaim = false;
-    public string cockpitAssets = "opengalaxy";
     public string shipAssets = "opengalaxy";
     public string gameWindowMode = "fullscreen";
     public string editorWindowMode = "fullscreen";

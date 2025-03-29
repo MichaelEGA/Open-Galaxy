@@ -67,24 +67,7 @@ public static class SceneFunctions
             scene.ogShipsPrefabPool = ogShipPrefabs;
         }
 
-        //This loads the cockpit prefabs
-        Object[] fsCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits_firststrike, typeof(GameObject));
-
-        if (fsCockpitPrefabs != null)
-        {
-            scene.fsCockpitPrefabPool = new GameObject[fsCockpitPrefabs.Length];
-            scene.fsCockpitPrefabPool = fsCockpitPrefabs;
-        }
-
-        Object[] gcCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits_galacticconquest, typeof(GameObject));
-
-        if (gcCockpitPrefabs != null)
-        {
-            scene.gcCockpitPrefabPool = new GameObject[gcCockpitPrefabs.Length];
-            scene.gcCockpitPrefabPool = gcCockpitPrefabs;
-        }
-
-        Object[] ogCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits_opengalaxyassets, typeof(GameObject));
+        Object[] ogCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits, typeof(GameObject));
 
         if (ogCockpitPrefabs != null)
         {
@@ -2231,30 +2214,18 @@ public static class SceneFunctions
     //This instanties the designated prefabe from the pool listed in the settings or finds a substitute from another pool if the prefab is not present
     public static GameObject InstantiateCockpitPrefab(string name)
     {
+        Scene scene = SceneFunctions.GetScene();
+
         GameObject cockpitPrefab = null;
         GameObject tempPrefab = null;
 
-        OGSettings settings = OGSettingsFunctions.GetSettings();
-
         //This gets the prefab from the designated pool
-        tempPrefab = ReturnCockpitPrefab(name, settings.cockpitAssets);
-
-        //This gets a backup prefab from another pool if the selected pool doesn't have the requested prefab
-        if (settings.cockpitAssets != "nocockpits")
+        foreach (GameObject objectPrefab in scene.ogCockpitPrefabPool)
         {
-            if (tempPrefab == null)
+            if (objectPrefab.name == name)
             {
-                tempPrefab = ReturnCockpitPrefab(name, "firststrike");
-            }
-
-            if (tempPrefab == null)
-            {
-                tempPrefab = ReturnCockpitPrefab(name, "galacticconquest");
-            }
-
-            if (tempPrefab == null)
-            {
-                tempPrefab = ReturnCockpitPrefab(name, "opengalaxy");
+                tempPrefab = objectPrefab;
+                break;
             }
         }
 
@@ -2268,50 +2239,6 @@ public static class SceneFunctions
         }
 
         return cockpitPrefab;
-    }
-
-    //This returns the designated prefab from the designated pool
-    public static GameObject ReturnCockpitPrefab(string name, string pool)
-    {
-        GameObject prefab = null;
-
-        Scene scene = SceneFunctions.GetScene();
-
-        if (pool == "firststrike")
-        {
-            foreach (GameObject objectPrefab in scene.fsCockpitPrefabPool)
-            {
-                if (objectPrefab.name == name)
-                {
-                    prefab = objectPrefab;
-                    break;
-                }
-            }
-        }
-        else if (pool == "galacticconquest")
-        {
-            foreach (GameObject objectPrefab in scene.gcCockpitPrefabPool)
-            {
-                if (objectPrefab.name == name)
-                {
-                    prefab = objectPrefab;
-                    break;
-                }
-            }
-        }
-        else if (pool == "opengalaxy")
-        {
-            foreach (GameObject objectPrefab in scene.ogCockpitPrefabPool)
-            {
-                if (objectPrefab.name == name)
-                {
-                    prefab = objectPrefab;
-                    break;
-                }
-            }
-        }
-
-        return prefab;
     }
 
     #endregion

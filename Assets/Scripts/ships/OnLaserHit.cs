@@ -121,7 +121,7 @@ public class OnLaserHit : MonoBehaviour
                     {
                         if (thisTurret.turretType == "large")
                         {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, laserChoice, 25, audioManager);
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, laserChoice, 100, audioManager);
                         }
                         else
                         {
@@ -139,7 +139,7 @@ public class OnLaserHit : MonoBehaviour
                     {
                         if (thisTurret.turretType == "large")
                         {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "laserblast_ion", 25, audioManager);
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "laserblast_ion", 100, audioManager);
                         }
                         else
                         {

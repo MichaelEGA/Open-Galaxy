@@ -157,22 +157,22 @@ public static class TurretFunctions
         //This loads the necessary prefabs
         if (turret.name.Contains("small"))
         {
-            laser = Resources.Load(OGGetAddress.particles + "Laser01/laser01") as GameObject;
+            laser = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
         }
         else
         {
-            laser = Resources.Load(OGGetAddress.particles + "Laser_Turbo/laser_turbo") as GameObject;
+            laser = Resources.Load(OGGetAddress.particles + "models/laser_turbo") as GameObject;
         }
 
         Mesh laserMesh = laser.GetComponent<MeshFilter>().sharedMesh;
 
-        Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_red") as Material;
-        Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_green") as Material;
-        Material yellowLaserMaterial = Resources.Load(OGGetAddress.particles + "Laser01/laser01_material_yellow") as Material;
+        Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
+        Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_green") as Material;
+        Material yellowLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_yellow") as Material;
 
-        GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_red") as GameObject;
-        GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_green") as GameObject;
-        GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "Laser01/laser01_light_yellow") as GameObject;
+        GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
+        GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
+        GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
 
         //This loads the particle system and the particle collider
         turret.turretParticleSystem = new GameObject();

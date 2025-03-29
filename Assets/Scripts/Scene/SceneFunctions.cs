@@ -321,7 +321,7 @@ public static class SceneFunctions
         var psShape = particleSystem.shape;
         psShape.enabled = false;
 
-        Material starMaterial = Resources.Load(OGGetAddress.particles + "Star/Star") as Material;
+        Material starMaterial = Resources.Load(OGGetAddress.particles + "materials/star") as Material;
         starfield.GetComponent<ParticleSystemRenderer>().material = starMaterial as Material;
 
         yield return new WaitForSeconds(10);

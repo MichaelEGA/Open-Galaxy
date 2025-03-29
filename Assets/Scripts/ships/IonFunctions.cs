@@ -11,12 +11,12 @@ public static class IonFunctions
     public static void LoadIonParticleSystem(SmallShip smallShip)
     {
         //This loads the necessary prefabs
-        GameObject ion = Resources.Load(OGGetAddress.particles + "ion/ion") as GameObject; //This needs to be created then changed
+        GameObject ion = Resources.Load(OGGetAddress.particles + "models/ion") as GameObject; //This needs to be created then changed
 
         Mesh ionMesh = ion.GetComponent<MeshFilter>().sharedMesh;
 
-        Material ionMaterial = Resources.Load(OGGetAddress.particles + "ion/ion_material") as Material;  //This needs to be created then changed
-        GameObject ionLight = Resources.Load(OGGetAddress.particles + "ion/ion_light") as GameObject;  //This needs to be created then changed
+        Material ionMaterial = Resources.Load(OGGetAddress.particles + "materials/ion_material") as Material;  //This needs to be created then changed
+        GameObject ionLight = Resources.Load(OGGetAddress.particles + "lights/ion_light") as GameObject;  //This needs to be created then changed
 
         //This loads the particle system and the particle collider
         smallShip.ionParticleSystem = new GameObject();

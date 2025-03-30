@@ -27,7 +27,7 @@ public class MissionEditor : MonoBehaviour
     public string displayAngle = "top";
     public string clipboard;
     public string selectedNodeTypeToLoad;
-    public string selectedMissionToLoad;
+    public string missionFileAddress;
     public float scale = 1;
     public float scaleSave;
     public float timePressed;

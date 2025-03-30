@@ -475,22 +475,23 @@ public static class MainMenuFunctions
         mainMenu.functions = new Dictionary<string, System.Delegate>();
 
         //Add your functions here
+        mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
+        mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
+        mainMenu.functions.Add("ChangeDamageLevel", new System.Action<string>(ChangeDamageLevel));
+        mainMenu.functions.Add("ChangeQuality", new System.Action<string>(ChangeQuality));
+        mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
+        mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
         mainMenu.functions.Add("LoadMainMission", new System.Action<string>(LoadMission));
         mainMenu.functions.Add("LoadCustomMission", new System.Action<string>(LoadCustomMission));
         mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadEditor));
-        mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
+        mainMenu.functions.Add("OpenCustomMissionDirectory", new System.Action(OpenCustomMissionDirectory));
+        mainMenu.functions.Add("OpenWebAddressAndQuit", new System.Action<string>(OpenWebAddressAndQuit));
         mainMenu.functions.Add("SelectShipAssets", new System.Action<string>(SelectShipAssets));
         mainMenu.functions.Add("SetAutoaim", new System.Action<string>(SetAutoaim));
         mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
         mainMenu.functions.Add("SetEditorWindowMode", new System.Action<string>(SetEditorWindowMode));
         mainMenu.functions.Add("ToggleDebugging", new System.Action<string>(ToggleDebugging));
-        mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
-        mainMenu.functions.Add("ChangeDamageLevel", new System.Action<string>(ChangeDamageLevel));
-        mainMenu.functions.Add("ChangeQuality", new System.Action<string>(ChangeQuality));
-        mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
-        mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
-        mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
-        mainMenu.functions.Add("OpenWebAddressAndQuit", new System.Action<string>(OpenWebAddressAndQuit));
+        mainMenu.functions.Add("QuitToDesktop", new System.Action(QuitToDesktop));
     }
 
     //This creates all the sub menus of the menu
@@ -1275,6 +1276,15 @@ public static class MainMenuFunctions
         OGSettingsFunctions.SetQualityLevel(qualityLevel);
 
         ActivateSubMenu("Settings");
+    }
+
+    //This opens the custom mission directory
+    public static void OpenCustomMissionDirectory()
+    {
+        string address = Application.persistentDataPath + "/Custom Missions/";
+        address = address.Replace(@"/", @"\"); //Because explorer doesn't like forward leaning slashes
+
+        System.Diagnostics.Process.Start("explorer.exe", "/select," + address);
     }
 
     //This selects the cockpit types to be used in the game

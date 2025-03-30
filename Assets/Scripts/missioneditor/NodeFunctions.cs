@@ -358,7 +358,7 @@ public class NodeFunctions : MonoBehaviour
             }
         }
 
-        MissionEditorFunctions.UpdateMissionName("Untitled Mission");
+        missionEditor.missionName.text = "Untitled Mission";
     }
 
     //This gets a unique ID for the node

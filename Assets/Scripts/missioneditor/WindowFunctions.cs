@@ -19,26 +19,6 @@ public static class WindowFunctions
         {
             WindowFunctions.Draw_DisplayLocation(window);
         }
-        else if (window.windowType == "loadmission")
-        {
-            WindowFunctions.Draw_LoadMission(window);
-        }
-        else if (window.windowType == "mergemissions")
-        {
-            WindowFunctions.Draw_MergeMissions(window);
-        }
-        else if (window.windowType == "savemission")
-        {
-            WindowFunctions.Draw_SaveMissionAs(window);
-        }
-        else if (window.windowType == "savemissionas")
-        {
-            WindowFunctions.Draw_SaveMissionAs(window);
-        }
-        else if (window.windowType == "exportselectionas")
-        {
-            WindowFunctions.Draw_ExportSelectionAs(window);
-        }
         else if (window.windowType == "abouteditor")
         {
             WindowFunctions.Draw_AboutWindow(window);
@@ -204,35 +184,6 @@ public static class WindowFunctions
     }
 
     //This draws the load mission window
-    public static void Draw_LoadMission(Window window)
-    {
-        window.transform.name = "window_loadmission";
-
-        DrawWindowBase(window, 250, 200);
-
-        DrawText(window, "Load Mission", 8, 5, -5, 12.5f, 90);
-
-        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
-
-        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
-
-        string[] buttons = GetMissionList();
-
-        List<string> functionList = new List<string>();
-
-        foreach (string button in buttons)
-        {
-            functionList.Add("SelectMissionToLoad");
-        }
-
-        string[] functions = functionList.ToArray();
-
-        DrawScrollableButtons(window, 5, -29, 150, 240, 10, 7, buttons, functions);
-
-        DrawTextButton(window, 80, -184, 10, 90, "none", "Load Mission", 7, "LoadMission", TextAnchor.MiddleCenter);
-    }
-
-    //This draws the load mission window
     public static void Draw_MergeMissions(Window window)
     {
         window.transform.name = "window_mergemission";
@@ -259,30 +210,6 @@ public static class WindowFunctions
         DrawScrollableButtons(window, 5, -29, 50, 240, 10, 7, buttons, functions);
 
         DrawTextButton(window, 80, -84, 10, 90, "none", "Merge Mission", 7, "MergeMission", TextAnchor.MiddleCenter);
-    }
-
-    //This draws the save mission window
-    public static void Draw_SaveMissionAs(Window window)
-    {
-        window.transform.name = "window_savemissionas";
-
-        DrawWindowBase(window, 250, 100);
-
-        DrawText(window, "Save Mission As", 8, 5, -5, 12.5f, 90);
-
-        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
-
-        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
-
-        float drop = -35f;
-
-        DrawInputFieldLarge(window, "Mission Name", "none", 7, 5, drop, 25, 240f, "MissionNameField");
-
-        drop -= 15;
-
-        DrawTextButton(window, 80, -80, 10, 90, "none", "Save Mission As", 7, "SaveMissionAs", TextAnchor.MiddleCenter);
-
-        Task a = new Task(WindowFunctions.ModifyCaretPositionTimed(1f));
     }
 
     //This draws the save mission window
@@ -613,29 +540,9 @@ public static class WindowFunctions
         {
             button.onClick.AddListener(() => { UpdateDisplay(); });
         }
-        else if (functionType == "SelectMissionToLoad")
-        {
-            button.onClick.AddListener(() => { MissionEditorFunctions.SelectMission(buttonText); });
-        }
-        else if (functionType == "LoadMission")
-        {
-            button.onClick.AddListener(() => { MissionEditorFunctions.LoadMission(window); });
-        }
-        else if (functionType == "MergeMission")
-        {
-            button.onClick.AddListener(() => { MissionEditorFunctions.MergeMissions(window); });
-        }
-        else if (functionType == "SaveMission")
-        {
-            button.onClick.AddListener(() => { MissionEditorFunctions.SaveMission(window); });
-        }
-        else if (functionType == "SaveMissionAs")
-        {
-            button.onClick.AddListener(() => { MissionEditorFunctions.SaveMission(window); });
-        }
         else if (functionType == "ExportSelectionAs")
         {
-            button.onClick.AddListener(() => { MissionEditorFunctions.ExportSelectionAs(window); });
+            button.onClick.AddListener(() => { MissionEditorFunctions.ExportSelectionAs(); });
         }
         else if (functionType == "DeleteWindow")
         {

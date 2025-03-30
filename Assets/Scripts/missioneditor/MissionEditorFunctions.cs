@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using System.IO;
+using SFB;
 
 public static class MissionEditorFunctions
 {
@@ -416,19 +417,19 @@ public static class MissionEditorFunctions
         }
         else if (functionType == "OpenSaveAsWindow")
         {
-            button.onClick.AddListener(() => { OpenWindow("savemissionas"); });
+            button.onClick.AddListener(() => { SaveMissionAs(); });
         }
         else if (functionType == "OpenExportSelectionAsWindow")
         {
-            button.onClick.AddListener(() => { OpenWindow("exportselectionas"); });
+            button.onClick.AddListener(() => { ExportSelectionAs(); });
         }
         else if (functionType == "OpenOpenWindow")
         {
-            button.onClick.AddListener(() => { OpenWindow("loadmission"); });
+            button.onClick.AddListener(() => { OpenFileLoadMenu(); });
         }
         else if (functionType == "OpenMergeWindow")
         {
-            button.onClick.AddListener(() => { OpenWindow("mergemissions"); });
+            button.onClick.AddListener(() => { OpenFileMergeMenu(); });
         }
         else if (functionType == "OpenNewWindow")
         {
@@ -573,19 +574,19 @@ public static class MissionEditorFunctions
         }
         else if (functionType == "OpenSaveAsWindow")
         {
-            button.onClick.AddListener(() => { OpenWindow("savemissionas"); });
+            button.onClick.AddListener(() => { SaveMissionAs(); });
         }
         else if (functionType == "OpenExportSelectionAsWindow")
         {
-            button.onClick.AddListener(() => { OpenWindow("exportselectionas"); });
+            button.onClick.AddListener(() => { ExportSelectionAs(); });
         }
         else if (functionType == "OpenOpenWindow")
         {
-            button.onClick.AddListener(() => { OpenWindow("loadmission"); });
+            button.onClick.AddListener(() => { OpenFileLoadMenu(); });
         }
         else if (functionType == "OpenMergeWindow")
         {
-            button.onClick.AddListener(() => { OpenWindow("mergemissions"); });
+            button.onClick.AddListener(() => { OpenFileMergeMenu(); });
         }
         else if (functionType == "OpenNewWindow")
         {
@@ -1003,15 +1004,13 @@ public static class MissionEditorFunctions
 
     #region saving
 
-    public static void SaveMission(Window window = null)
+    public static void SaveMission()
     {
         List<MissionEvent> missionList = new List<MissionEvent>();
 
         MissionEditor missionEditor = GetMissionEditor();
 
-        string missionName = GetMissionNameFromSaveDialog();
-
-        UpdateMissionName(missionName);
+        string missionName = missionEditor.missionName.text;
 
         if (missionName != "Untitled Mission")
         {
@@ -1062,41 +1061,91 @@ public static class MissionEditorFunctions
 
             string jsonString = JsonHelper.ToJson(missionEventData, true);
 
-            string saveFile = "none";
-
-            if (missionEditor.missionName.text.Contains(".json"))
-            {
-                saveFile = OGGetAddress.missions_custom + missionEditor.missionName.text;
-            }
-            else
-            {
-                saveFile = OGGetAddress.missions_custom + missionEditor.missionName.text + ".json";
-            }
+            string saveFile = missionEditor.missionFileAddress;
 
             File.WriteAllText(saveFile, jsonString);
 
-            DisplayMessage(missionEditor.missionName.text + " saved to " + OGGetAddress.missions_custom);
-
-            if (window != null)
-            {
-                WindowFunctions.DeleteWindow(window);
-            }
+            DisplayMessage(missionEditor.missionName.text + " saved to " + saveFile);         
         }
         else
         {
-            OpenWindow("savemissionas");
+            SaveMissionAs();
         }
 
         CloseAllMenus();
     }
 
-    public static void ExportSelectionAs(Window window = null)
+    public static void SaveMissionAs()
+    {
+        List<MissionEvent> missionList = new List<MissionEvent>();
+
+        MissionEditor missionEditor = GetMissionEditor();
+
+        foreach (Node node in missionEditor.nodes)
+        {
+            if (node != null)
+            {
+
+                MissionEvent missionEvent = new MissionEvent();
+
+                missionEvent.eventID = ParseTextToString(node.eventID);
+                missionEvent.eventType = ParseTextToString(node.eventType);
+                missionEvent.conditionLocation = ParseTextToString(node.conditionLocation);
+                missionEvent.conditionTime = ParseTextToFloat(node.conditionTime);
+                missionEvent.x = ParseTextToFloat(node.x);
+                missionEvent.y = ParseTextToFloat(node.y);
+                missionEvent.z = ParseTextToFloat(node.z);
+                missionEvent.xRotation = ParseTextToFloat(node.xRotation);
+                missionEvent.yRotation = ParseTextToFloat(node.yRotation);
+                missionEvent.zRotation = ParseTextToFloat(node.zRotation);
+                missionEvent.data1 = ParseTextToString(node.data1);
+                missionEvent.data2 = ParseTextToString(node.data2);
+                missionEvent.data3 = ParseTextToString(node.data3);
+                missionEvent.data4 = ParseTextToString(node.data4);
+                missionEvent.data5 = ParseTextToString(node.data5);
+                missionEvent.data6 = ParseTextToString(node.data6);
+                missionEvent.data7 = ParseTextToString(node.data7);
+                missionEvent.data8 = ParseTextToString(node.data8);
+                missionEvent.data9 = ParseTextToString(node.data9);
+                missionEvent.data10 = ParseTextToString(node.data10);
+                missionEvent.data11 = ParseTextToString(node.data11);
+                missionEvent.data12 = ParseTextToString(node.data12);
+                missionEvent.data13 = ParseTextToString(node.data13);
+                missionEvent.data14 = ParseTextToString(node.data14);
+                missionEvent.data15 = ParseTextToString(node.data15);
+                missionEvent.nextEvent1 = ParseTextToString(node.nextEvent1);
+                missionEvent.nextEvent2 = ParseTextToString(node.nextEvent2);
+                missionEvent.nextEvent3 = ParseTextToString(node.nextEvent3);
+                missionEvent.nextEvent4 = ParseTextToString(node.nextEvent4);
+                missionEvent.nodePosX = node.nodePosX;
+                missionEvent.nodePosY = node.nodePosY;
+
+                missionList.Add(missionEvent);
+            }
+        }
+
+        MissionEvent[] missionEventData = missionList.ToArray();
+
+        string jsonString = JsonHelper.ToJson(missionEventData, true);
+
+        var path = StandaloneFileBrowser.SaveFilePanel("Save File", Application.persistentDataPath + "/Custom Missions/", missionEditor.missionName.text, "json");
+
+        File.WriteAllText(path, jsonString);
+
+        missionEditor.missionFileAddress = path;
+
+        missionEditor.missionName.text = System.IO.Path.GetFileNameWithoutExtension(path);
+
+        DisplayMessage(missionEditor.missionName.text + " saved to " + path);
+
+        CloseAllMenus();
+    }
+
+    public static void ExportSelectionAs()
     {
         List<MissionEvent> exportList = new List<MissionEvent>();
 
         MissionEditor missionEditor = GetMissionEditor();
-
-        string exportFileName = GetMissionNameFromExportDialog();
 
         foreach (Node node in missionEditor.nodes)
         {
@@ -1147,18 +1196,11 @@ public static class MissionEditorFunctions
 
         string jsonString = JsonHelper.ToJson(exportListEventData, true);
 
-        string saveFile = "none";
+        var path = StandaloneFileBrowser.SaveFilePanel("Save File", Application.persistentDataPath + "/Custom Missions/", missionEditor.missionName.text + "_selection", "json");   
 
-        saveFile = OGGetAddress.missions_custom + exportFileName + ".json";       
+        File.WriteAllText(path, jsonString);
 
-        File.WriteAllText(saveFile, jsonString);
-
-        DisplayMessage(exportFileName + " saved to " + OGGetAddress.missions_custom);
-
-        if (window != null)
-        {
-            WindowFunctions.DeleteWindow(window);
-        }
+        DisplayMessage(System.IO.Path.GetFileNameWithoutExtension(path) + " saved to " + path);
 
         CloseAllMenus();
     }
@@ -1168,8 +1210,6 @@ public static class MissionEditorFunctions
         List<MissionEvent> exportList = new List<MissionEvent>();
 
         MissionEditor missionEditor = GetMissionEditor();
-
-        string exportFileName = GetMissionNameFromExportDialog();
 
         foreach (Node node in missionEditor.nodes)
         {
@@ -1223,68 +1263,6 @@ public static class MissionEditorFunctions
         missionEditor.clipboard = clipboard;
 
         CloseAllMenus();
-    }
-
-    public static void UpdateMissionName(string name)
-    {
-        MissionEditor missionEditor = GetMissionEditor();
-
-        if (missionEditor != null)
-        {
-            missionEditor.missionName.text = name;
-        }
-    }
-
-    public static string GetMissionNameFromSaveDialog()
-    {
-        MissionEditor missionEditor = GetMissionEditor();
-
-        string name = "Untitled Mission";
-
-        if (missionEditor != null)
-        {
-            name = missionEditor.missionName.text;
-        }
-
-        GameObject MissionNameField = GameObject.Find("MissionNameField");
-
-        if (MissionNameField != null)
-        {
-            Text missionName = MissionNameField.GetComponent<Text>();
-
-            if (missionName != null)
-            {
-                name = missionName.text;
-            }
-        }
-
-        return name;
-    }
-
-    public static string GetMissionNameFromExportDialog()
-    {
-        MissionEditor missionEditor = GetMissionEditor();
-
-        string name = "Untitled Export";
-
-        if (missionEditor != null)
-        {
-            name = missionEditor.missionName.text;
-        }
-
-        GameObject MissionNameField = GameObject.Find("FileNameField");
-
-        if (MissionNameField != null)
-        {
-            Text missionName = MissionNameField.GetComponent<Text>();
-
-            if (missionName != null)
-            {
-                name = missionName.text;
-            }
-        }
-
-        return name;
     }
 
     public static void DisplayMessage(string message)
@@ -1345,6 +1323,34 @@ public static class MissionEditorFunctions
     #endregion
 
     #region loading functions
+
+    public static void OpenFileLoadMenu()
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        var paths = StandaloneFileBrowser.OpenFilePanel("Open File", Application.persistentDataPath + "/Custom Missions/", "json", false);
+
+        missionEditor.missionFileAddress = paths[0];
+
+        LoadMission(paths[0]);
+
+        CloseAllMenus();
+    }
+
+    public static void OpenFileMergeMenu()
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        var paths = StandaloneFileBrowser.OpenFilePanel("Open File", Application.persistentDataPath + "/Custom Missions/", "json", false);
+
+        missionEditor.missionFileAddress = paths[0];
+
+        missionEditor.missionName.text = System.IO.Path.GetFileNameWithoutExtension(paths[0]);
+
+        MergeMissions(paths[0]);
+
+        CloseAllMenus();
+    }
 
     public static void SelectNodeType(string nodeType)
     {
@@ -1411,7 +1417,7 @@ public static class MissionEditorFunctions
         return node;
     }
 
-    public static void LoadMission(Window window)
+    public static void LoadMission(string address)
     {
         MissionEditor missionEditor = GetMissionEditor();
 
@@ -1419,34 +1425,30 @@ public static class MissionEditorFunctions
 
         if (missionEditor != null)
         {
-            string missionAddress = OGGetAddress.missions_custom + missionEditor.selectedMissionToLoad;
+            string missionAddress = address;
             string missionDataString = File.ReadAllText(missionAddress);
             TextAsset missionDataTextAsset = new TextAsset(missionDataString);
             Mission mission = JsonUtility.FromJson<Mission>(missionDataTextAsset.text);
             Task a = new Task(LoadMissionData(mission));
         }
 
-        UpdateMissionName(missionEditor.selectedMissionToLoad);
-
-        WindowFunctions.DeleteWindow(window);
+        missionEditor.missionName.text = System.IO.Path.GetFileNameWithoutExtension(address);
     }
 
-    public static void MergeMissions(Window window)
+    public static void MergeMissions(string address)
     {
         MissionEditor missionEditor = GetMissionEditor();
 
         if (missionEditor != null)
         {
-            string missionAddress = OGGetAddress.missions_custom + missionEditor.selectedMissionToLoad;
+            string missionAddress = address;
             string missionDataString = File.ReadAllText(missionAddress);
             TextAsset missionDataTextAsset = new TextAsset(missionDataString);
             Mission mission = JsonUtility.FromJson<Mission>(missionDataTextAsset.text);
             Task a = new Task(LoadMissionData(mission));
 
-            DisplayMessage("Loaded " + missionEditor.selectedMissionToLoad);
+            DisplayMessage("Merged " + System.IO.Path.GetFileNameWithoutExtension(address) + " into current mission.");
         }
-
-        WindowFunctions.DeleteWindow(window);
     }
 
     public static IEnumerator LoadMissionData(Mission mission)
@@ -1796,13 +1798,6 @@ public static class MissionEditorFunctions
 
             text.text = input;
         }
-    }
-
-    public static void SelectMission(string mission)
-    {
-        MissionEditor missionEditor = GetMissionEditor();
-
-        missionEditor.selectedMissionToLoad = mission;
     }
 
     #endregion

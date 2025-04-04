@@ -270,14 +270,17 @@ public static class MissionEditorFunctions
         List<string> help_Buttons = new List<string>();
         help_Buttons.Add(spaces + "Open Open-Galaxy Wiki");
         help_Buttons.Add(spaces + "Open Open-Galaxy Github");
+        help_Buttons.Add(spaces + "Open Custom Missions Folder");
         help_Buttons.Add(spaces + "About OG Mission Editor");
 
         List<string> help_Functions = new List<string>();
         help_Functions.Add("OpenWiki");
         help_Functions.Add("OpenGitHub");
+        help_Functions.Add("OpenCustomMissionsFolder");
         help_Functions.Add("OpenAbout");
 
         List<string> help_Shortcuts = new List<string>();
+        help_Shortcuts.Add("");
         help_Shortcuts.Add("");
         help_Shortcuts.Add("");
         help_Shortcuts.Add("");
@@ -451,6 +454,10 @@ public static class MissionEditorFunctions
         {
             button.onClick.AddListener(() => { SetWindowMode("window"); });
         }
+        else if (functionType == "OpenCustomMissionsFolder")
+        {
+            button.onClick.AddListener(() => { OpenFolder(Application.persistentDataPath + "/Custom Missions/"); });
+        }
         else if (functionType == "OpenWiki")
         {
             button.onClick.AddListener(() => { OpenWebAddress("https://github.com/MichaelEGA/Open-Galaxy/wiki"); });
@@ -607,6 +614,10 @@ public static class MissionEditorFunctions
         else if (functionType == "MakeWindowed")
         {
             button.onClick.AddListener(() => { SetWindowMode("window"); });
+        }
+        else if (functionType == "OpenCustomMissionsFolder")
+        {
+            button.onClick.AddListener(() => { OpenFolder(Application.persistentDataPath + "/Custom Missions/"); });
         }
         else if (functionType == "OpenWiki")
         {
@@ -1077,6 +1088,8 @@ public static class MissionEditorFunctions
 
     public static void SaveMissionAs()
     {
+        CloseAllMenus();
+
         List<MissionEvent> missionList = new List<MissionEvent>();
 
         MissionEditor missionEditor = GetMissionEditor();
@@ -1130,15 +1143,20 @@ public static class MissionEditorFunctions
 
         var path = StandaloneFileBrowser.SaveFilePanel("Save File", Application.persistentDataPath + "/Custom Missions/", missionEditor.missionName.text, "json");
 
-        File.WriteAllText(path, jsonString);
+        if (path != "")
+        {
+            File.WriteAllText(path, jsonString);
 
-        missionEditor.missionFileAddress = path;
+            missionEditor.missionFileAddress = path;
 
-        missionEditor.missionName.text = System.IO.Path.GetFileNameWithoutExtension(path);
+            missionEditor.missionName.text = System.IO.Path.GetFileNameWithoutExtension(path);
 
-        DisplayMessage(missionEditor.missionName.text + " saved to " + path);
-
-        CloseAllMenus();
+            DisplayMessage(missionEditor.missionName.text + " saved to " + path);
+        }
+        else
+        {
+            DisplayMessage("Mission not saved");
+        }
     }
 
     public static void ExportSelectionAs()
@@ -1322,34 +1340,36 @@ public static class MissionEditorFunctions
 
     #endregion
 
-    #region loading functions
+    #region loading, merging, and pasting functions
 
     public static void OpenFileLoadMenu()
     {
         MissionEditor missionEditor = GetMissionEditor();
 
+        CloseAllMenus();
+
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", Application.persistentDataPath + "/Custom Missions/", "json", false);
 
-        missionEditor.missionFileAddress = paths[0];
+        if (paths.Length > 0)
+        {
+            missionEditor.missionFileAddress = paths[0];
 
-        LoadMission(paths[0]);
-
-        CloseAllMenus();
+            LoadMission(paths[0]);
+        }
     }
 
     public static void OpenFileMergeMenu()
     {
         MissionEditor missionEditor = GetMissionEditor();
 
+        CloseAllMenus();
+
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", Application.persistentDataPath + "/Custom Missions/", "json", false);
 
-        missionEditor.missionFileAddress = paths[0];
-
-        missionEditor.missionName.text = System.IO.Path.GetFileNameWithoutExtension(paths[0]);
-
-        MergeMissions(paths[0]);
-
-        CloseAllMenus();
+        if (paths.Length > 0)
+        {
+            MergeMissions(paths[0]);
+        }
     }
 
     public static void SelectNodeType(string nodeType)
@@ -1445,9 +1465,7 @@ public static class MissionEditorFunctions
             string missionDataString = File.ReadAllText(missionAddress);
             TextAsset missionDataTextAsset = new TextAsset(missionDataString);
             Mission mission = JsonUtility.FromJson<Mission>(missionDataTextAsset.text);
-            Task a = new Task(LoadMissionData(mission));
-
-            DisplayMessage("Merged " + System.IO.Path.GetFileNameWithoutExtension(address) + " into current mission.");
+            Task a = new Task(MergeMissionData(mission));
         }
     }
 
@@ -1575,6 +1593,174 @@ public static class MissionEditorFunctions
         NodeFunctions.SetDropDownMenu();
 
         DisplayMessage("Loading Mission Complete");
+    }
+
+    public static IEnumerator MergeMissionData(Mission mission)
+    {
+        float number = mission.missionEventData.Length * 2;
+        float count = 0;
+
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+            Node node = AddNode(missionEvent.eventType, true, missionEvent.nodePosX, missionEvent.nodePosY);
+
+            yield return null;
+
+            InputData(node.eventID, missionEvent.eventID);
+            InputData(node.eventType, missionEvent.eventType);
+            InputData(node.conditionTime, missionEvent.conditionTime.ToString());
+            InputData(node.conditionLocation, missionEvent.conditionLocation);
+            InputData(node.x, missionEvent.x.ToString());
+            InputData(node.y, missionEvent.y.ToString());
+            InputData(node.z, missionEvent.z.ToString());
+            InputData(node.xRotation, missionEvent.xRotation.ToString());
+            InputData(node.yRotation, missionEvent.yRotation.ToString());
+            InputData(node.zRotation, missionEvent.zRotation.ToString());
+            InputData(node.data1, missionEvent.data1);
+            InputData(node.data2, missionEvent.data2);
+            InputData(node.data3, missionEvent.data3);
+            InputData(node.data4, missionEvent.data4);
+            InputData(node.data5, missionEvent.data5);
+            InputData(node.data6, missionEvent.data6);
+            InputData(node.data7, missionEvent.data7);
+            InputData(node.data8, missionEvent.data8);
+            InputData(node.data9, missionEvent.data9);
+            InputData(node.data10, missionEvent.data10);
+            InputData(node.data11, missionEvent.data11);
+            InputData(node.data12, missionEvent.data12);
+            InputData(node.data13, missionEvent.data13);
+            InputData(node.data14, missionEvent.data14);
+            InputData(node.data15, missionEvent.data15);
+            InputData(node.nextEvent1, missionEvent.nextEvent1);
+            InputData(node.nextEvent2, missionEvent.nextEvent2);
+            InputData(node.nextEvent3, missionEvent.nextEvent3);
+            InputData(node.nextEvent4, missionEvent.nextEvent4);
+            node.nodePosX = missionEvent.nodePosX;
+            node.nodePosY = missionEvent.nodePosY;
+
+            //This adds an 'M' to the event ID to indicate that the node has been merged and to prevent confusion with any existing node IDs
+            if (node.eventID != null)
+            {
+                if (node.eventID.text != "" & node.eventID.text != "none")
+                {
+                    node.eventID.text = node.eventID.text + "M";
+                }
+            }
+
+            if (node.nextEvent1 != null)
+            {
+                if (node.nextEvent1.text != "" & node.nextEvent1.text != "none")
+                {
+                    node.nextEvent1.text = node.nextEvent1.text + "M";
+                }
+            }
+
+            if (node.nextEvent2 != null)
+            {
+                if (node.nextEvent2.text != "" & node.nextEvent2.text != "none")
+                {
+                    node.nextEvent2.text = node.nextEvent2.text + "M";
+                }
+            }
+
+            if (node.nextEvent3 != null)
+            {
+                if (node.nextEvent3.text != "" & node.nextEvent3.text != "none")
+                {
+                    node.nextEvent3.text = node.nextEvent3.text + "M";
+                }
+            }
+
+            if (node.nextEvent4 != null)
+            {
+                if (node.nextEvent4.text != "" & node.nextEvent4.text != "none")
+                {
+                    node.nextEvent4.text = node.nextEvent4.text + "M";
+                }
+            }
+
+            //This caluclates the merging completion rate
+            float percentage = (count / number) * 100;
+            DisplayMessage("Merging " + percentage.ToString("00") + "% Complete");
+            count++;
+        }
+
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+            MissionEditor missionEditor = GetMissionEditor();
+
+            Node firstNode = SearchNodes(missionEvent.eventID + "M", missionEditor.nodes.ToArray());
+
+            if (firstNode != null)
+            {
+                if (firstNode.maleNodeLinks != null)
+                {
+                    if (missionEvent.nextEvent1 != "none" & firstNode.maleNodeLinks.Count > 0)
+                    {
+                        Node nextEvent1 = SearchNodes(missionEvent.nextEvent1 + "M", missionEditor.nodes.ToArray());
+
+                        if (nextEvent1 != null & firstNode.maleNodeLinks[0] != null)
+                        {
+                            if (nextEvent1.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[0].connectedNode = nextEvent1.femaleNodeLink;
+                            }
+                        }
+                    }
+
+                    if (missionEvent.nextEvent2 != "none" & firstNode.maleNodeLinks.Count > 1)
+                    {
+                        Node nextEvent2 = SearchNodes(missionEvent.nextEvent2 + "M", missionEditor.nodes.ToArray());
+
+                        if (nextEvent2 != null & firstNode.maleNodeLinks[1] != null)
+                        {
+                            if (nextEvent2.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[1].connectedNode = nextEvent2.femaleNodeLink;
+                            }
+                        }
+                    }
+
+                    if (missionEvent.nextEvent3 != "none" & firstNode.maleNodeLinks.Count > 2)
+                    {
+                        Node nextEvent3 = SearchNodes(missionEvent.nextEvent3 + "M", missionEditor.nodes.ToArray());
+
+                        if (nextEvent3 != null & firstNode.maleNodeLinks[2] != null)
+                        {
+                            if (nextEvent3.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[2].connectedNode = nextEvent3.femaleNodeLink;
+                            }
+                        }
+                    }
+
+                    if (missionEvent.nextEvent4 != "none" & firstNode.maleNodeLinks.Count > 3)
+                    {
+                        Node nextEvent4 = SearchNodes(missionEvent.nextEvent4 + "M", missionEditor.nodes.ToArray());
+
+                        if (nextEvent4 != null & firstNode.maleNodeLinks[3] != null)
+                        {
+                            if (nextEvent4.femaleNodeLink != null)
+                            {
+                                firstNode.maleNodeLinks[3].connectedNode = nextEvent4.femaleNodeLink;
+                            }
+                        }
+                    }
+                }
+            }
+
+            float percentage = (count / number) * 100;
+            DisplayMessage("Merging " + percentage.ToString("00") + "% Complete");
+            count++;
+
+            yield return null;
+        }
+
+        //This modifies the caret position to ensure that they display on top of the nodes and not behind them
+        NodeFunctions.ModifyCaretPosition();
+        NodeFunctions.SetDropDownMenu();
+
+        DisplayMessage("Merging Mission Complete");
     }
 
     public static IEnumerator PasteMissionData(bool useMousePosition = false)
@@ -1783,7 +1969,7 @@ public static class MissionEditorFunctions
         }
         
         return node;
-    } 
+    }
 
     public static void InputData(Text text, string input)
     {
@@ -2005,6 +2191,16 @@ public static class MissionEditorFunctions
     public static void OpenWebAddress(string url)
     {
         Application.OpenURL(url);
+        CloseAllMenus();
+    }
+
+    //This opens a folder in explorer
+    public static void OpenFolder(string address)
+    {
+        address = address.Replace(@"/", @"\"); //Because explorer doesn't like forward leaning slashes
+
+        System.Diagnostics.Process.Start("explorer.exe", "/select," + address);
+
         CloseAllMenus();
     }
 

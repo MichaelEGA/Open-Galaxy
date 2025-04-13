@@ -638,7 +638,7 @@ public static class SmallShipFunctions
                     if (movementEffect != null)
                     {
                         movementEffect.transform.SetParent(smallShip.gameObject.transform);
-                        movementEffect.transform.position = smallShip.gameObject.transform.position + new Vector3(0, 0, 5);
+                        movementEffect.transform.position = smallShip.cameraPosition.transform.position + new Vector3(0, 0, 5);
                         movementEffect.transform.localRotation = Quaternion.identity;
                         smallShip.movementEffect = movementEffect.GetComponent<ParticleSystem>();
                     }

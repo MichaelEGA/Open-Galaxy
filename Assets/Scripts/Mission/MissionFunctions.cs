@@ -2995,6 +2995,8 @@ public static class MissionFunctions
 
         float hullLevel = 0;
         float shieldLevel = 0;
+        float forwardshield = 0;
+        float rearshields = 0;
         float systemsLevel = 0;
         float wepLevel = 0;
 
@@ -3006,11 +3008,6 @@ public static class MissionFunctions
         if (float.TryParse(missionEvent.data2, out _))
         {
             hullLevel = float.Parse(missionEvent.data2);
-
-            if (hullLevel > 100)
-            {
-                hullLevel = 100;
-            }
         }
         else
         {
@@ -3020,11 +3017,6 @@ public static class MissionFunctions
         if (float.TryParse(missionEvent.data3, out _))
         {
             shieldLevel = float.Parse(missionEvent.data3);
-
-            if (shieldLevel > 100)
-            {
-                shieldLevel = 100;
-            }
         }
         else
         {
@@ -3034,11 +3026,6 @@ public static class MissionFunctions
         if (float.TryParse(missionEvent.data4, out _))
         {
             systemsLevel = float.Parse(missionEvent.data4);
-
-            if (systemsLevel > 100)
-            {
-                systemsLevel = 100;
-            }
         }
         else
         {
@@ -3048,11 +3035,6 @@ public static class MissionFunctions
         if (float.TryParse(missionEvent.data5, out _))
         {
             wepLevel = float.Parse(missionEvent.data5);
-
-            if (wepLevel > 100)
-            {
-                wepLevel = 100;
-            }
         }
         else
         {
@@ -3077,11 +3059,6 @@ public static class MissionFunctions
                                 hullLevel = smallShip.hullLevel;
                             }
 
-                            if (hullLevel > smallShip.hullRating)
-                            {
-                                hullLevel = smallShip.hullRating;
-                            }
-
                             smallShip.hullLevel = hullLevel;
 
                             //Change shield level
@@ -3090,22 +3067,15 @@ public static class MissionFunctions
                                 shieldLevel = smallShip.shieldLevel;
                             }
 
-                            if (shieldLevel > smallShip.shieldRating)
-                            {
-                                shieldLevel = smallShip.shieldRating;
-                            }
 
                             smallShip.shieldLevel = shieldLevel;
+                            smallShip.frontShieldLevel = shieldLevel / 2f;
+                            smallShip.rearShieldLevel = shieldLevel / 2f;
 
                             //Change systems level
                             if (noChangeSystemsLevel == true)
                             {
                                 systemsLevel = smallShip.systemsLevel;
-                            }
-
-                            if (systemsLevel > smallShip.systemsRating)
-                            {
-                                systemsLevel = smallShip.systemsRating;
                             }
 
                             if (systemsLevel <= 0)
@@ -3127,12 +3097,49 @@ public static class MissionFunctions
                                 wepLevel = smallShip.wepLevel;
                             }
 
-                            if (wepLevel > smallShip.wepRating)
+                            smallShip.wepLevel = wepLevel;
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            //Change hull level
+                            if (noChangeHullLevel == true)
                             {
-                                wepLevel = smallShip.wepRating;
+                                hullLevel = largeShip.hullLevel;
                             }
 
-                            smallShip.wepLevel = wepLevel;
+                            largeShip.hullLevel = hullLevel;
+
+                            //Change shield level
+                            if (noChangeShieldLevel == true)
+                            {
+                                shieldLevel = largeShip.shieldLevel;
+                            }
+
+                            largeShip.shieldLevel = shieldLevel;
+                            largeShip.frontShieldLevel = shieldLevel / 2f;
+                            largeShip.rearShieldLevel = shieldLevel / 2f;
+
+                            //Change systems level
+                            if (noChangeSystemsLevel == true)
+                            {
+                                systemsLevel = largeShip.systemsLevel;
+                            }
+
+                            if (systemsLevel <= 0)
+                            {
+                                systemsLevel = 0;
+                                largeShip.isDisabled = true;
+                            }
+
+                            if (systemsLevel > 0)
+                            {
+                                largeShip.isDisabled = false;
+                            }
+
+                            largeShip.systemsLevel = systemsLevel;
                         }
                     }
                 }

@@ -1584,6 +1584,8 @@ public static class NodeTypes
         options01.Add("r5");
         options01.Add("wed");
 
+        drop -= 15;
+
         node.data2 = NodeFunctions.DrawDropDownMenu(node, options01, "model", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
@@ -4060,7 +4062,6 @@ public static class NodeTypes
 
         planetList.Add("deathstar");
         planetList.Add("deathstar2");
-        planetList.Add("cloudcity");
 
         Object[] planets = Resources.LoadAll(OGGetAddress.planets_planetmaterials, typeof(Material));
 

@@ -639,7 +639,6 @@ public static class SceneFunctions
             scene.planet = GameObject.Find("planet");
             scene.deathstar = GameObject.Find("deathstar");
             scene.deathstar2 = GameObject.Find("deathstar2");
-            scene.cloudcity = GameObject.Find("cloudcity");
             scene.clouds = GameObject.Find("clouds");
             scene.atmosphere = GameObject.Find("atmosphere");
             scene.rings = GameObject.Find("rings");
@@ -678,23 +677,20 @@ public static class SceneFunctions
             scene.rings.SetActive(true);
         }
 
-        if (planetType == "deathstar" || planetType == "deathstar2" || planetType == "cloudcity")
+        if (planetType == "deathstar" || planetType == "deathstar2")
         {
             if (planetType == "deathstar")
             {
                 scene.deathstar.SetActive(true);
                 scene.deathstar2.SetActive(false);
-                scene.cloudcity.SetActive(false);
             }
             else if (planetType == "deathstar2")
             {
                 scene.deathstar2.SetActive(true);
                 scene.deathstar.SetActive(false);
-                scene.cloudcity.SetActive(false);
             }
             else
             {
-                scene.cloudcity.SetActive(true);
                 scene.deathstar2.SetActive(false);
                 scene.deathstar.SetActive(false);
             }
@@ -705,12 +701,11 @@ public static class SceneFunctions
         {
             scene.deathstar.SetActive(false);
             scene.deathstar2.SetActive(false);
-            scene.cloudcity.SetActive(false);
             scene.planet.SetActive(true);
         }
 
         //Set materials
-        if (planetType != "deathstar" & planetType != "deathstar2" & planetType != "cloudcity")
+        if (planetType != "deathstar" & planetType != "deathstar2")
         {
             if (planetRenderer != null)
             {
@@ -1695,6 +1690,8 @@ public static class SceneFunctions
 
         Vector3[] positions = GetPositions("special_rectanglehorizontal", position, width, length, 0, number, shipsPerLine, positionVariance);
 
+        int shipNo = 1;
+
         foreach (Vector3 tempPosition in positions)
         {
             Vector3 relativePosition = scene.transform.TransformPoint(tempPosition); 
@@ -1712,12 +1709,14 @@ public static class SceneFunctions
             if (Physics.Raycast(raycastPos, Vector3.down, out hit, 30000, mask))
             {
                 Vector3 newPosition = hit.point + new Vector3(0,distanceAboveGround,0);
-                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, true, true, laserColor);
+                LoadSingleShip(newPosition, rotation, type, name + shipNo.ToString("00"), allegiance, cargo, false, true, true, laserColor);
+                shipNo++;
             }
             else if (ifRaycastFailsStillLoad == true)
             {
                 Vector3 newPosition = new Vector3(relativePosition.x, 0, relativePosition.z);
-                LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, true, true, laserColor);
+                LoadSingleShip(newPosition, rotation, type, name + shipNo.ToString("00"), allegiance, cargo, false, true, true, laserColor);
+                shipNo++;
             }
 
             yield return null;

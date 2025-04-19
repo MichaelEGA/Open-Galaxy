@@ -1092,7 +1092,22 @@ public static class SmallShipFunctions
                 smokeTrail.transform.localPosition = new Vector3(0, 0, 0);
                 smokeTrail.layer = smallShip.gameObject.layer;
                 smokeTrail.SetActive(true);
-            }           
+            }      
+            
+            //This sets the smoke trails simulation space to the scene
+            if (smallShip.smokeTrail != null)
+            {
+                ParticleSystem particleSystem = smallShip.smokeTrail.GetComponent<ParticleSystem>();
+
+                if (particleSystem != null)
+                {
+                    Scene scene = SceneFunctions.GetScene();
+
+                    var main = particleSystem.main;
+
+                    main.customSimulationSpace = scene.transform;
+                }
+            }
         }
         else if (smallShip.hullLevel < 10 & smallShip.smokeTrail != null)
         {

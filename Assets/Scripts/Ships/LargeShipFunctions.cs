@@ -235,76 +235,49 @@ public static class LargeShipFunctions
     //This causes the ship to take damage from lasers
     public static void TakeDamage(LargeShip largeShip, float damage, Vector3 hitPosition)
     {
-        Debug.Log("Run 1");
-
         if (Time.time - largeShip.loadTime > 10)
         {
-
-            Debug.Log("Run 2");
-
             Vector3 relativePosition = largeShip.gameObject.transform.position - hitPosition;
             float forward = -Vector3.Dot(largeShip.gameObject.transform.position, relativePosition.normalized);
 
             if (largeShip.hullLevel > 0)
             {
-                Debug.Log("Run 3");
 
                 if (forward > 0)
                 {
-
-                    Debug.Log("Run 3a");
-
                     if (largeShip.frontShieldLevel > 0)
                     {
                         largeShip.frontShieldLevel = largeShip.frontShieldLevel - damage;
                         largeShip.shieldLevel = largeShip.shieldLevel - damage;
-
-                        Debug.Log("Run 3b");
                     }
                     else
                     {
-                        Debug.Log("Run 3c");
-
                         if (largeShip.hullLevel - damage < 5 & largeShip.invincible == true)
                         {
                             largeShip.hullLevel = 5;
-
-                            Debug.Log("Run 3d");
                         }
                         else
                         {
                             largeShip.hullLevel = largeShip.hullLevel - damage;
-
-                            Debug.Log("Run 3e");
                         }
                     }
                 }
                 else
                 {
-                    Debug.Log("Run 4");
-
                     if (largeShip.rearShieldLevel > 0)
                     {
                         largeShip.rearShieldLevel = largeShip.rearShieldLevel - damage;
                         largeShip.shieldLevel = largeShip.shieldLevel - damage;
-
-                        Debug.Log("Run 4a");
                     }
                     else
                     {
-                        Debug.Log("Run 4b");
-
                         if (largeShip.hullLevel - damage < 5 & largeShip.invincible == true)
                         {
                             largeShip.hullLevel = 5;
-
-                            Debug.Log("Run 4c");
                         }
                         else
                         {
                             largeShip.hullLevel = largeShip.hullLevel - damage;
-
-                            Debug.Log("Run 4d");
                         }
                     }
                 }

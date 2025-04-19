@@ -5,4 +5,5 @@ using UnityEngine;
 public class DockingPoint : MonoBehaviour
 {
     public bool isActive;
+    public bool releaseDown = false;
 }

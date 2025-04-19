@@ -279,37 +279,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7909031295903156483}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1383489934586184563
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2112373370538708415}
-  m_Layer: 0
-  m_Name: dockingpoint02
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2112373370538708415
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1383489934586184563}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: -58, z: 731}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7909031295903156483}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1701177914465245745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,7 +1354,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1897266271527178305}
   m_Layer: 0
-  m_Name: dockingpoint01_ls
+  m_Name: dockingpoint01_ls_down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1400,7 +1369,7 @@ Transform:
   m_GameObject: {fileID: 6859136867720331333}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 516, y: -79, z: 509}
+  m_LocalPosition: {x: 516, y: -140, z: 531}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1503,10 +1472,8 @@ Transform:
   - {fileID: 3753739264291637588}
   - {fileID: 7779343089703270170}
   - {fileID: 809773371137549690}
-  - {fileID: 2112373370538708415}
   - {fileID: 3237127317589901235}
   - {fileID: 1897266271527178305}
-  - {fileID: 760965990797251012}
   - {fileID: 954990024352764622}
   - {fileID: 5019999844703630811}
   - {fileID: 7355033710909474949}
@@ -1578,37 +1545,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6593115270476997622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7846346252143797664
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 760965990797251012}
-  m_Layer: 0
-  m_Name: dockingpoint02_ls
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &760965990797251012
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7846346252143797664}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -520, y: -79, z: 509}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7909031295903156483}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &8251052169962492208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1712,7 +1648,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3237127317589901235}
   m_Layer: 0
-  m_Name: dockingpoint01
+  m_Name: dockingpoint01_down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1727,7 +1663,7 @@ Transform:
   m_GameObject: {fileID: 8497003586640098155}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: -69.2, z: 533.2}
+  m_LocalPosition: {x: -1, y: -104, z: 533.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

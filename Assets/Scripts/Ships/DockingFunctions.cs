@@ -26,6 +26,11 @@ public static class DockingFunctions
         {
             DockingPoint dockPoint = dockingPointTransform.gameObject.AddComponent<DockingPoint>();
             dockingPointGameObjects.Add(dockPoint);
+
+            if (dockingPointTransform.name.Contains("down"));
+            {
+                dockPoint.releaseDown = true;
+            }
             
         }
 
@@ -108,32 +113,45 @@ public static class DockingFunctions
         //This searches for a docking point on a large ship
         if (dockingPointFound == false)
         {
+            Debug.Log("run a");
+
             foreach (LargeShip tempLargeShip in scene.largeShips)
             {
+                Debug.Log("run b " + tempLargeShip.name);
+
                 if (tempLargeShip.name.Contains(targetShipName))
                 {
+
+                    Debug.Log("run c " + tempLargeShip.name);
+
                     float distance = Mathf.Infinity;
 
                     foreach (DockingPoint tempDockingPoint in tempLargeShip.dockingPoints)
                     {
+                        Debug.Log("run d " + tempDockingPoint.name);
+
                         if (tempDockingPoint.isActive == false || tempDockingPoint.isActive == true & includeActive == true)
                         {
-                            //This gets the closest docking point on the large ship
-                            Vector3 tempDockPointLocalPosition = scene.transform.InverseTransformPoint(tempDockingPoint.transform.position);
+                            Debug.Log("run e " + tempDockingPoint.name);
 
-                            float tempDistance = Vector3.Distance(tempDockPointLocalPosition, ship.localPosition);
+                            //This gets the closest docking point on the large ship
+                            float tempDistance = Vector3.Distance(tempDockingPoint.transform.position, ship.position);
 
                             if (tempDistance < distance)
                             {
+                                Debug.Log("run f");
+
                                 if (largeShip == null & !tempDockingPoint.name.Contains("ls"))
                                 {
                                     distance = tempDistance;
                                     dockingPoint = tempDockingPoint;
+                                    Debug.Log("run 1z");
                                 }
                                 else if (largeShip != null & tempDockingPoint.name.Contains("ls"))
                                 {
                                     distance = tempDistance;
                                     dockingPoint = tempDockingPoint;
+                                    Debug.Log("run 2z");
                                 }
                             }
                         }
@@ -179,6 +197,15 @@ public static class DockingFunctions
         {
             targetSmallShip.docking = true;
             targetSmallShip.thrustSpeed = 0;
+
+            //This stops spinning on disabled ships so that the docking happens correctly
+            if (targetSmallShip.isDisabled == true)
+            {
+                targetSmallShip.shipRigidbody.linearVelocity = new Vector3(0f, 0f, 0f);
+                targetSmallShip.shipRigidbody.angularVelocity = new Vector3(0f, 0f, 0f);
+                targetSmallShip.shipRigidbody.linearDamping = 9;
+                targetSmallShip.shipRigidbody.angularDamping = 7.5f;
+            }
         }
 
         if (targetLargeShip != null)
@@ -257,9 +284,16 @@ public static class DockingFunctions
         Scene scene = SceneFunctions.GetScene();
         ship.transform.SetParent(scene.transform);
 
-        //Move out
+        //This sets the default position to launch up
         Vector3 startPosition = ship.transform.localPosition;
         Vector3 endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (targetDockingPoint.transform.up * 20);
+
+        //This modifies the positions to launch down
+        if (targetDockingPoint.releaseDown == true)
+        {
+            startPosition = ship.transform.localPosition;
+            endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (targetDockingPoint.transform.up * -20);
+        }
 
         if (largeShip != null)
         {

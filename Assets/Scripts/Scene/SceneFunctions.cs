@@ -1857,89 +1857,63 @@ public static class SceneFunctions
         return shipPositions;
     }
 
-    //This returns a set of positions in the shape of a rectangle
     public static Vector3[] Pattern_RectangleHorizontal(Vector3 position, float width, float length, int shipNumber, int shipsPerLine, float positionVariance)
     {
         List<Vector3> shipPositions = new List<Vector3>();
 
-        if (shipsPerLine < 2)
+        // Calculate spacing between points
+        float xSpacing = width / (shipsPerLine - 1);
+        float zSpacing = length / Mathf.Ceil((float)shipNumber / shipsPerLine);
+
+        int pointsCreated = 0;
+
+        // Generate points
+        for (int i = 0; pointsCreated < shipNumber; i++) // Row iteration
         {
-            shipsPerLine = 2;
-        }
-
-        float lengthRadius = length / 2;
-        float widthRadius = width / 2;
-        float increment_width = width / (float)shipsPerLine;
-        float increment_length = length / (Mathf.Floor((float)shipNumber / (float)shipsPerLine));
-        float positionX = 0;
-        float positionZ = 0;
-
-        Vector3 adjustedCenterPoint = new Vector3(position.x - widthRadius, position.y, position.z - lengthRadius);
-
-        for (int i = 0; i < shipNumber; i++)
-        {
-            for (int i2 = 0; i2 < shipsPerLine; i2++)
+            for (int j = 0; j < shipsPerLine && pointsCreated < shipNumber; j++) // Column iteration
             {
                 float varianceX = Random.Range(0, positionVariance);
                 float varianceY = Random.Range(0, positionVariance);
                 float varianceZ = Random.Range(0, positionVariance);
 
-                Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
-                Vector3 relativeShipPosition = new Vector3(positionX, 0, positionZ);
-                Vector3 actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+                float x = j * xSpacing - width / 2; // Offset by width/2 to center the grid
+                float z = i * zSpacing - length / 2; // Offset by length/2 to center the grid
 
-                shipPositions.Add(actualShipPosition);
-
-                positionX += increment_width;
-                i++;
+                Vector3 point = new Vector3(x + varianceX, 0 + varianceY, z + varianceZ) + position; // Shift by the center point
+                shipPositions.Add(point);
+                pointsCreated++;
             }
-
-            positionX = 0;
-            positionZ += increment_length;
         }
 
         return shipPositions.ToArray();
     }
 
-    //This returns a set of positions in the shape of a rectangle
-    public static Vector3[] Pattern_RectangleVertical(Vector3 position, float width, float height, int shipNumber, int shipsPerLine, float positionVariance)
+    public static Vector3[] Pattern_RectangleVertical(Vector3 position, float width, float length, int shipNumber, int shipsPerLine, float positionVariance)
     {
         List<Vector3> shipPositions = new List<Vector3>();
 
-        if (shipsPerLine < 2)
+        // Calculate spacing between points
+        float ySpacing = width / (shipsPerLine - 1);
+        float zSpacing = length / Mathf.Ceil((float)shipNumber / shipsPerLine);
+
+        int pointsCreated = 0;
+
+        // Generate points
+        for (int i = 0; pointsCreated < shipNumber; i++) // Row iteration
         {
-            shipsPerLine = 2;
-        }
-
-        float heightRadius = height / 2;
-        float widthRadius = width / 2;
-        float increment_width = width / (float)shipsPerLine;
-        float increment_height = height / (Mathf.Floor((float)shipNumber / (float)shipsPerLine));
-        float positionX = 0;
-        float positionY = 0;
-
-        Vector3 adjustedCenterPoint = new Vector3(position.x - widthRadius, position.y - heightRadius, position.z);
-
-        for (int i = 0; i < shipNumber; i++)
-        {
-            for (int i2 = 0; i2 < shipsPerLine; i2++)
+            for (int j = 0; j < shipsPerLine && pointsCreated < shipNumber; j++) // Column iteration
             {
                 float varianceX = Random.Range(0, positionVariance);
-                float varianceY = 0;
+                float varianceY = Random.Range(0, positionVariance);
                 float varianceZ = Random.Range(0, positionVariance);
 
-                Vector3 variancePosition = new Vector3(varianceX, varianceY, varianceZ);
-                Vector3 relativeShipPosition = new Vector3(positionX, positionY, 0);
-                Vector3 actualShipPosition = relativeShipPosition + adjustedCenterPoint + variancePosition;
+                float y = j * ySpacing - width / 2; // Offset by width/2 to center the grid
+                float z = i * zSpacing - length / 2; // Offset by length/2 to center the grid
 
-                shipPositions.Add(actualShipPosition);
-
-                positionX += increment_width;
-                i++;
+                Vector3 point = new Vector3(position.x + varianceX, y + varianceY, z + varianceZ) + position; // Adjust Y and Z, keep X constant
+                shipPositions.Add(point);
+                pointsCreated++;
             }
-
-            positionX = 0;
-            positionY += increment_height;
         }
 
         return shipPositions.ToArray();

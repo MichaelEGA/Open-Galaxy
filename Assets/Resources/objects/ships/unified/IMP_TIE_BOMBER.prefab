@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6050490749929906336
+--- !u!1001 &51964753036293050
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d9cb134f79bc8d74ca6869bcf9c7f10c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9776.791
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9cb134f79bc8d74ca6869bcf9c7f10c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5918.735
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9cb134f79bc8d74ca6869bcf9c7f10c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12188.679
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9cb134f79bc8d74ca6869bcf9c7f10c,
         type: 3}
@@ -58,10 +58,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8171920074747177209, guid: d9cb134f79bc8d74ca6869bcf9c7f10c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d9cb134f79bc8d74ca6869bcf9c7f10c,
         type: 3}
       propertyPath: m_Name
-      value: TIE_BOMBER
+      value: IMP_TIE_BOMBER
       objectReference: {fileID: 0}
     - target: {fileID: 4545228012704222838, guid: d9cb134f79bc8d74ca6869bcf9c7f10c,
         type: 3}
@@ -78,7 +83,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4742473837712756890, guid: d9cb134f79bc8d74ca6869bcf9c7f10c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

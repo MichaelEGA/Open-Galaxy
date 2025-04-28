@@ -35,36 +35,12 @@ public static class SceneFunctions
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
         //This loads the ship prefabs
-        Object[] otShipPrefabs = Resources.LoadAll(OGGetAddress.ships_originaltrilogy, typeof(GameObject));
+        Object[] shipPrefabs = Resources.LoadAll(OGGetAddress.ships, typeof(GameObject));
 
-        if (otShipPrefabs != null)
+        if (shipPrefabs != null)
         {
-            scene.otShipsPrefabPool = new GameObject[otShipPrefabs.Length];
-            scene.otShipsPrefabPool = otShipPrefabs;
-        }
-
-        Object[] fsShipPrefabs = Resources.LoadAll(OGGetAddress.ships_firststrike, typeof(GameObject));
-
-        if (fsShipPrefabs != null)
-        {
-            scene.fsShipsPrefabPool = new GameObject[fsShipPrefabs.Length];
-            scene.fsShipsPrefabPool = fsShipPrefabs;
-        }
-
-        Object[] gcShipPrefabs = Resources.LoadAll(OGGetAddress.ships_galacticconquest, typeof(GameObject));
-
-        if (gcShipPrefabs != null)
-        {
-            scene.gcShipsPrefabPool = new GameObject[gcShipPrefabs.Length];
-            scene.gcShipsPrefabPool = gcShipPrefabs;
-        }
-
-        Object[] ogShipPrefabs = Resources.LoadAll(OGGetAddress.ships_opengalaxyassets, typeof(GameObject));
-
-        if (ogShipPrefabs != null)
-        {
-            scene.ogShipsPrefabPool = new GameObject[ogShipPrefabs.Length];
-            scene.ogShipsPrefabPool = ogShipPrefabs;
+            scene.shipsPrefabPool = new GameObject[shipPrefabs.Length];
+            scene.shipsPrefabPool = shipPrefabs;
         }
 
         Object[] ogCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits, typeof(GameObject));
@@ -78,7 +54,7 @@ public static class SceneFunctions
         //This loads the asteroids
         Object[] asteroidPrefabs = Resources.LoadAll(OGGetAddress.asteroids, typeof(GameObject));
 
-        if (ogShipPrefabs != null)
+        if (asteroidPrefabs != null)
         {
             scene.asteroidPrefabPool = new GameObject[asteroidPrefabs.Length];
             scene.asteroidPrefabPool = asteroidPrefabs;
@@ -87,7 +63,7 @@ public static class SceneFunctions
         //This loads the environments
         Object[] environmentsPrefabs = Resources.LoadAll(OGGetAddress.environments, typeof(GameObject));
 
-        if (ogShipPrefabs != null)
+        if (environmentsPrefabs != null)
         {
             scene.environmentsPrefabPool = new GameObject[environmentsPrefabs.Length];
             scene.environmentsPrefabPool = environmentsPrefabs;
@@ -102,7 +78,6 @@ public static class SceneFunctions
             scene.particlePrefabPool = particlePrefabs;
         }
 
-        //ADD THIS TO THE ADDRESS SCRIPT THEN CONTINUE WORK FROM HERE
         //This loads the planet materials
         Object[] planetMaterials = Resources.LoadAll(OGGetAddress.planets_planetmaterials, typeof(Material));
 
@@ -1429,34 +1404,22 @@ public static class SceneFunctions
     //This instanties the designated prefabe from the pool listed in the settings or finds a substitute from another pool if the prefab is not present
     public static GameObject InstantiateShipPrefab(string name)
     {
+        Scene scene = SceneFunctions.GetScene();
+
         GameObject shipPrefab = null;
         GameObject tempPrefab = null;
 
         OGSettings settings = OGSettingsFunctions.GetSettings();
 
-        //This gets the prefab from the designated pool
-        tempPrefab = ReturnShipPrefab(name, settings.shipAssets);
-
         //This gets a backup prefab from another pool if the selected pool doesn't have the requested prefab
-        if (tempPrefab == null)
+        foreach (GameObject objectPrefab in scene.shipsPrefabPool)
         {
-            tempPrefab = ReturnShipPrefab(name, "originaltrilogy");
-        }
-
-        if (tempPrefab == null)
-        {
-            tempPrefab = ReturnShipPrefab(name, "firststrike");
-        }
-
-        if (tempPrefab == null)
-        {
-            tempPrefab = ReturnShipPrefab(name, "galacticconquest");
-        }
-
-        if (tempPrefab == null)
-        {
-            tempPrefab = ReturnShipPrefab(name, "opengalaxy");
-        }
+            if (objectPrefab.name == name)
+            {
+                tempPrefab = objectPrefab;
+                break;
+            }
+        }      
 
         //This instantiates the prefab
         if (tempPrefab != null)
@@ -1465,61 +1428,6 @@ public static class SceneFunctions
         }
 
         return shipPrefab;
-    }
-
-    //This returns the designated prefab from the designated pool
-    public static GameObject ReturnShipPrefab(string name, string pool)
-    {
-        GameObject prefab = null;
-
-        Scene scene = SceneFunctions.GetScene();
-
-        if (pool == "originaltrilogy")
-        {
-            foreach (GameObject objectPrefab in scene.otShipsPrefabPool)
-            {
-                if (objectPrefab.name == name)
-                {
-                    prefab = objectPrefab;
-                    break;
-                }
-            }
-        }
-        else if (pool == "firststrike")
-        {
-            foreach (GameObject objectPrefab in scene.fsShipsPrefabPool)
-            {
-                if (objectPrefab.name == name)
-                {
-                    prefab = objectPrefab;
-                    break;
-                }
-            }
-        }
-        else if (pool == "galacticconquest")
-        {
-            foreach (GameObject objectPrefab in scene.gcShipsPrefabPool)
-            {
-                if (objectPrefab.name == name)
-                {
-                    prefab = objectPrefab;
-                    break;
-                }
-            }
-        }
-        else if (pool == "opengalaxy")
-        {
-            foreach (GameObject objectPrefab in scene.ogShipsPrefabPool)
-            {
-                if (objectPrefab.name == name)
-                {
-                    prefab = objectPrefab;
-                    break;
-                }
-            }
-        }
-       
-        return prefab;
     }
 
     //A wrapper function for load single ships that loads multiple ships

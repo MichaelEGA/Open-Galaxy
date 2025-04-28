@@ -26,10 +26,7 @@ public static class OGGetAddress
     public static string planets_cloudmaterials = "objects/planets/cloudmaterials/";
     public static string planets_planetmaterials = "objects/planets/planetmaterials/";
     public static string radar = "objects/radar/";
-    public static string ships_opengalaxyassets = "objects/ships/opengalaxy/";
-    public static string ships_firststrike = "objects/ships/firststrike/";
-    public static string ships_galacticconquest = "objects/ships/galacticconquest/";
-    public static string ships_originaltrilogy = "objects/ships/originaltrilogy/";
+    public static string ships = "objects/ships/";
     public static string skyboxes = "skyboxes/";
     public static string environments = "objects/environments/";
     public static string turrets = "objects/turrets/";

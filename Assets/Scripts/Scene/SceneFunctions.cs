@@ -1379,6 +1379,9 @@ public static class SceneFunctions
                 GameObjectUtils.SetLayerAllChildren(ship.transform, LayerMask.NameToLayer("collision_player"));
             }
 
+            //This scales the ship
+            ScaleGameObjectByZAxis(ship, shipType.shipLength);
+
             //This causes the ship to come out of hyperspace on loading
             if (exitingHyperspace == true)
             {
@@ -2405,8 +2408,55 @@ public static class SceneFunctions
         return ship;
     }
 
+    //This scales the ship to the gameobject / ship to the size given in meteres 
+    public static void ScaleGameObjectByZAxis(GameObject gameObject, float targetZLengthInMeters)
+    {
+        if (gameObject == null)
+        {
+            Debug.LogError("GameObject is null. Please provide a valid GameObject.");
+            return;
+        }
+
+        if (targetZLengthInMeters <= 0)
+        {
+            targetZLengthInMeters = 1;
+            Debug.Log("Target Z-axis length was less than zero. Length will be set to 1.");
+            return;
+        }
+
+        // Reset scale to 1 before calculating bounds
+        Vector3 originalScale = gameObject.transform.localScale;
+        gameObject.transform.localScale = Vector3.one;
+
+        // Calculate the bounds of the GameObject
+        Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0)
+        {
+            Debug.LogError("GameObject does not have a Renderer component. Cannot calculate bounds.");
+            gameObject.transform.localScale = originalScale; // Restore original scale
+            return;
+        }
+
+        Bounds gameObjectBounds = new Bounds(renderers[0].bounds.center, Vector3.zero);
+        foreach (Renderer renderer in renderers)
+        {
+            gameObjectBounds.Encapsulate(renderer.bounds);
+        }
+
+        // Get the current size along the Z-axis
+        float currentZLength = gameObjectBounds.size.z;
+
+        // Calculate the uniform scale factor based on the Z-axis
+        float scaleFactor = targetZLengthInMeters / currentZLength;
+
+        // Apply the scale factor proportionally to all axes
+        gameObject.transform.localScale = originalScale * scaleFactor;
+
+        Debug.Log($"GameObject '{gameObject.name}' scaled to fit Z-axis length {targetZLengthInMeters} meters.");
+    }
+
     #endregion
 
-   
+
 
 }

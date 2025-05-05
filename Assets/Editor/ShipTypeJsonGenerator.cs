@@ -57,7 +57,7 @@ public class ShipTypeJsonGenerator : EditorWindow
                     prefab = prefabName,
                     cockpitPrefab = "none",
                     callsign = "none",
-                    scriptType = "smallship",
+                    scriptType = "largeship",
                     accelerationRating = 50,
                     speedRating = 50,
                     maneuverabilityRating = 50,
@@ -74,9 +74,13 @@ public class ShipTypeJsonGenerator : EditorWindow
                     thrustType = "none",
                     shipClass = "fighter",
                     explosionType = "default",
-                    smallturret = "none",
-                    largeturret = "none",
-                    shipLength = 10.0f
+                    smallturret = "default",
+                    largeturret = "default",
+                    shipLength = 10.0f,
+                    modelauthor = "warb_null",
+                    textureauthor = "warb_null",
+                    allegiance = "imperial",
+                    era = "empire"
                 };
 
                 shipTypeDataList.Add(shipTypeData);
@@ -136,5 +140,9 @@ public class ShipTypeJsonGenerator : EditorWindow
         public string smallturret;
         public string largeturret;
         public float shipLength;
+        public string modelauthor;
+        public string textureauthor;
+        public string allegiance;
+        public string era;
     }
 }

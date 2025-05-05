@@ -28,6 +28,10 @@ public class ShipType
     public string smallturret;
     public string largeturret;
     public float shipLength;
+    public string modelauthor;
+    public string textureauthor;
+    public string allegiance;
+    public string era;
 }
 
 [System.Serializable]

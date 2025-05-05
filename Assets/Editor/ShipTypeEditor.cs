@@ -60,6 +60,10 @@ public class ShipTypeEditor : EditorWindow
             ship.smallturret = EditorGUILayout.TextField("Small Turret", ship.smallturret);
             ship.largeturret = EditorGUILayout.TextField("Large Turret", ship.largeturret);
             ship.shipLength = EditorGUILayout.FloatField("Ship Length", ship.shipLength);
+            ship.modelauthor = EditorGUILayout.TextField("Model Author", ship.modelauthor);
+            ship.textureauthor = EditorGUILayout.TextField("Texture Author", ship.textureauthor);
+            ship.allegiance = EditorGUILayout.TextField("Allegiance", ship.allegiance);
+            ship.era = EditorGUILayout.TextField("Era", ship.era);
 
             if (GUILayout.Button("Remove"))
             {
@@ -146,8 +150,12 @@ public class ShipTypeEditor : EditorWindow
         public string thrustType = "thruster_red_small";
         public string shipClass = "fighter_bomber";
         public string explosionType = "default";
-        public string smallturret = "none";
-        public string largeturret = "none";
+        public string smallturret = "default";
+        public string largeturret = "default";
         public float shipLength = 10;
+        public string modelauthor = "warb_null";
+        public string textureauthor = "warb_null";
+        public string allegiance = "empire";
+        public string era = "empire";
     }
 }

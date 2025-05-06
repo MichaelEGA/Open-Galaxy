@@ -1160,6 +1160,9 @@ public static class SceneFunctions
         bool dontModifyPosition,
         string laserColor)
     {
+        //Key reference
+        GameObject ship = null;
+
         //Get scene script reference
         Scene scene = GetScene();
         Audio audioManager = AudioFunctions.GetAudioManager();
@@ -1181,14 +1184,17 @@ public static class SceneFunctions
         }
 
         //Look for ship model in prefabs and load;
-        GameObject ship = InstantiateShipPrefab(shipType.prefab);
-
-        if (cargo.ToLower().Contains("random") || cargo.ToLower().Contains("randomise"))
+        if (shipType != null)
         {
-            string[] cargoTypes = GetCargoTypesList();
-            int cargoTypeNo = cargoTypes.Length;
-            int randomChoice = Random.Range(0, cargoTypeNo - 1);
-            cargo = cargoTypes[randomChoice];
+            ship = InstantiateShipPrefab(shipType.prefab);
+
+            if (cargo.ToLower().Contains("random") || cargo.ToLower().Contains("randomise"))
+            {
+                string[] cargoTypes = GetCargoTypesList();
+                int cargoTypeNo = cargoTypes.Length;
+                int randomChoice = Random.Range(0, cargoTypeNo - 1);
+                cargo = cargoTypes[randomChoice];
+            }
         }
 
         if (ship != null)

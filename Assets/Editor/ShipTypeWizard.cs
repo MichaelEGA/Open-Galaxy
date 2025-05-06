@@ -9,6 +9,10 @@ public class ShipTypeWizard : ScriptableWizard
     private ShipTypeDataWrapper shipTypeDataWrapper;
     private int currentIndex = 0;
     private float manualLengthInput;
+    private string searchforship;
+    private Vector2 scrollPosition;
+    private GameObject selectedPrefab; // The prefab selected by the user
+    private Texture2D previewTexture;
 
     // Fields for displaying and modifying the current ship data
     private ShipTypeData currentShip;
@@ -50,6 +54,8 @@ public class ShipTypeWizard : ScriptableWizard
 
     private void OnGUI()
     {
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Width(position.width), GUILayout.Height(position.height));
+
         if (shipTypeDataWrapper == null || shipTypeDataWrapper.shipTypeData.Count == 0)
         {
             EditorGUILayout.HelpBox("No valid JSON data loaded. Please assign a valid JSON file.", MessageType.Warning);
@@ -60,6 +66,38 @@ public class ShipTypeWizard : ScriptableWizard
                 LoadJsonData();
             }
             return;
+        }
+
+        GUILayout.Space(5);
+
+        GUILayout.BeginHorizontal();
+
+        searchforship = EditorGUILayout.TextField("Search for Ship:", searchforship);
+
+        if (GUILayout.Button("Search"))
+        {
+            SearchForEntry();
+        }
+
+        GUILayout.EndHorizontal();
+
+        selectedPrefab = Resources.Load<GameObject>("objects/ships/" + currentShip.prefab);
+
+        // Display the preview if a prefab is selected
+        if (selectedPrefab != null)
+        {
+            // Get the preview texture
+            previewTexture = AssetPreview.GetAssetPreview(selectedPrefab);
+
+            if (previewTexture != null)
+            {
+                // Display the preview texture
+                GUILayout.Label(previewTexture, GUILayout.Width(previewTexture.width), GUILayout.Height(previewTexture.height));
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("Preview is not available for this asset.", MessageType.Info);
+            }
         }
 
         // Display all fields of the current ship data
@@ -118,11 +156,10 @@ public class ShipTypeWizard : ScriptableWizard
 
         GUILayout.EndHorizontal();
 
-        GUILayout.Space(5);
-
         // Buttons for navigation and saving
+        EditorGUILayout.LabelField("Largeship", EditorStyles.boldLabel);
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Largeship - Stationary - Large"))
+        if (GUILayout.Button("Stationary - Large"))
         {
             SetScriptType("largeship");
             SetShipClass("stationary");
@@ -138,7 +175,7 @@ public class ShipTypeWizard : ScriptableWizard
             SetTorpedoRating(0);
         }
 
-        if (GUILayout.Button("Largeship - Stationary - Small"))
+        if (GUILayout.Button("Stationary - Small"))
         {
             SetScriptType("largeship");
             SetShipClass("stationary");
@@ -154,7 +191,7 @@ public class ShipTypeWizard : ScriptableWizard
             SetTorpedoRating(0);
         }
 
-        if (GUILayout.Button("Largeship - Superlarge"))
+        if (GUILayout.Button("Superlarge"))
         {
             SetScriptType("largeship");
             SetShipClass("superlarge");
@@ -170,7 +207,7 @@ public class ShipTypeWizard : ScriptableWizard
             SetTorpedoRating(0);
         }
 
-        if (GUILayout.Button("Largeship - Large"))
+        if (GUILayout.Button("Large"))
         {
             SetScriptType("largeship");
             SetShipClass("large");
@@ -186,7 +223,7 @@ public class ShipTypeWizard : ScriptableWizard
             SetTorpedoRating(0);
         }
 
-        if (GUILayout.Button("Largeship - Medium"))
+        if (GUILayout.Button("Medium"))
         {
             SetScriptType("largeship");
             SetShipClass("medium");
@@ -202,7 +239,7 @@ public class ShipTypeWizard : ScriptableWizard
             SetTorpedoRating(0);
         }
 
-        if (GUILayout.Button("Largeship - Small"))
+        if (GUILayout.Button("Small"))
         {
             SetScriptType("largeship");
             SetShipClass("small");
@@ -220,21 +257,23 @@ public class ShipTypeWizard : ScriptableWizard
 
         GUILayout.EndHorizontal();
 
+        EditorGUILayout.LabelField("Smallship", EditorStyles.boldLabel);
+
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Smallship - Large"))
+        if (GUILayout.Button("Large"))
         {
             SetScriptType("smallship");
             SetShipClass("large");
         }
 
-        if (GUILayout.Button("Smallship - Medium"))
+        if (GUILayout.Button("Medium"))
         {
             SetScriptType("smallship");
             SetShipClass("medium");
         }
 
-        if (GUILayout.Button("Smallship - Small"))
+        if (GUILayout.Button("Small"))
         {
             SetScriptType("smallship");
             SetShipClass("small");
@@ -244,7 +283,7 @@ public class ShipTypeWizard : ScriptableWizard
 
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Smallship - VeryFast"))
+        if (GUILayout.Button("VeryFast"))
         {
             SetScriptType("smallship");
             SetAccelrationRating(74);
@@ -258,7 +297,7 @@ public class ShipTypeWizard : ScriptableWizard
             SetWepRating(35);
         }
 
-        if (GUILayout.Button("Smallship - Fast"))
+        if (GUILayout.Button("Fast"))
         {
             SetScriptType("smallship");
             SetAccelrationRating(62);
@@ -272,7 +311,7 @@ public class ShipTypeWizard : ScriptableWizard
             SetWepRating(30);
         }
 
-        if (GUILayout.Button("Smallship - Medium"))
+        if (GUILayout.Button("Medium"))
         {
             SetScriptType("smallship");
             SetAccelrationRating(62);
@@ -286,7 +325,7 @@ public class ShipTypeWizard : ScriptableWizard
             SetWepRating(25);
         }
 
-        if (GUILayout.Button("Smallship - Slow"))
+        if (GUILayout.Button("Slow"))
         {
             SetScriptType("smallship");
             SetAccelrationRating(62);
@@ -304,32 +343,26 @@ public class ShipTypeWizard : ScriptableWizard
 
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Torpedos - 0"))
+        if (GUILayout.Button("No Torpedos"))
         {
             SetTorpedoRating(0);
         }
 
-        if (GUILayout.Button("Torpedos - 6"))
+        if (GUILayout.Button("Protontorpedos - 6"))
         {
             SetTorpedoRating(6);
-        }
-
-        if (GUILayout.Button("Torpedos - 12"))
-        {
-            SetTorpedoRating(12);
-        }
-
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("ProtonTorpedos"))
-        {
             SetTorpedoType("proton torpedo");
         }
 
-        if (GUILayout.Button("ConcussionMissiles"))
+        if (GUILayout.Button("Protontorpedos - 12"))
         {
+            SetTorpedoRating(12);
+            SetTorpedoType("proton torpedo");
+        }
+
+        if (GUILayout.Button("Concussion Missile - 6"))
+        {
+            SetTorpedoRating(6);
             SetTorpedoType("concussion missile");
         }
 
@@ -346,10 +379,6 @@ public class ShipTypeWizard : ScriptableWizard
         {
             SetLaserAudio("weapon02_xwinglaser");
         }
-
-        GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
 
         if (GUILayout.Button("TieFighterEngine"))
         {
@@ -368,24 +397,36 @@ public class ShipTypeWizard : ScriptableWizard
 
         GUILayout.EndHorizontal();
 
+        EditorGUILayout.LabelField("Allegiance", EditorStyles.boldLabel);
+
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("allegiance: old rep"))
+        if (GUILayout.Button("old rep"))
         {
             SetAllegiance("oldrepublic");
         }
 
         if (GUILayout.Button("sith emp"))
         {
-            SetAllegiance("kraytempire");
+            SetAllegiance("sithempire");
         }
 
-        if (GUILayout.Button("republic"))
+        if (GUILayout.Button("mando"))
+        {
+            SetAllegiance("mandalorian");
+        }
+
+        if (GUILayout.Button("rep"))
         {
             SetAllegiance("republic");
         }
 
-        if (GUILayout.Button("empire"))
+        if (GUILayout.Button("cis"))
+        {
+            SetAllegiance("cis");
+        }
+
+        if (GUILayout.Button("emp"))
         {
             SetAllegiance("empire");
         }
@@ -395,7 +436,7 @@ public class ShipTypeWizard : ScriptableWizard
             SetAllegiance("rebel");
         }
 
-        if (GUILayout.Button("blacksun"))
+        if (GUILayout.Button("bsun"))
         {
             SetAllegiance("blacksun");
         }
@@ -405,31 +446,43 @@ public class ShipTypeWizard : ScriptableWizard
             SetAllegiance("pirate");
         }
 
-        if (GUILayout.Button("gal all"))
+        if (GUILayout.Button("vong"))
+        {
+            SetAllegiance("vong");
+        }
+
+        if (GUILayout.Button("fo"))
+        {
+            SetAllegiance("firstorder");
+        }
+
+        if (GUILayout.Button("galall"))
         {
             SetAllegiance("galacticalliance");
         }
 
-        if (GUILayout.Button("fel empire"))
+        if (GUILayout.Button("fel emp"))
         {
             SetAllegiance("felempire");
         }
 
-        if (GUILayout.Button("kra empire"))
+        if (GUILayout.Button("kra emp"))
         {
             SetAllegiance("kraytempire");
         }
 
         GUILayout.EndHorizontal();
 
+        EditorGUILayout.LabelField("Era", EditorStyles.boldLabel);
+
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("era: old republic"))
+        if (GUILayout.Button("old rep"))
         {
             SetEra("oldrepublic");
         }
 
-        if (GUILayout.Button("high republic"))
+        if (GUILayout.Button("high rep"))
         {
             SetEra("highrepublic");
         }
@@ -449,12 +502,19 @@ public class ShipTypeWizard : ScriptableWizard
             SetEra("newrepublic");
         }
 
+        if (GUILayout.Button("fo"))
+        {
+            SetEra("firstorder");
+        }
+
         if (GUILayout.Button("gal all"))
         {
             SetEra("galacticalliance");
         }
 
         GUILayout.EndHorizontal();
+
+        EditorGUILayout.LabelField("Author", EditorStyles.boldLabel);
 
         GUILayout.BeginHorizontal();
 
@@ -499,6 +559,8 @@ public class ShipTypeWizard : ScriptableWizard
         }
 
         GUILayout.EndHorizontal();
+
+        EditorGUILayout.EndScrollView();
     }
 
     private void SetAccelrationRating(float rating)
@@ -590,6 +652,21 @@ public class ShipTypeWizard : ScriptableWizard
     private void SetTorpedoType(string torpedo)
     {
         currentShip.torpedoType = torpedo;
+    }
+
+    private void SearchForEntry()
+    {
+        for (int i = 0; i < shipTypeDataWrapper.shipTypeData.Count; i ++)
+        {
+            ShipTypeData tempShip = shipTypeDataWrapper.shipTypeData[i];
+
+            if (tempShip.type.Contains(searchforship))
+            {
+                currentIndex = i;
+                currentShip = tempShip;
+                break;
+            }
+        }
     }
 
     private void IncrementIndex()

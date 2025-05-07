@@ -1256,6 +1256,7 @@ public static class SceneFunctions
                 smallShip.loadTime = Time.time;
                 smallShip.cargo = cargo;
                 smallShip.explosionType = shipType.explosionType;
+                smallShip.shipLength = shipType.shipLength;
                 ship.name = smallShip.name;
 
                 if (smallShip.torpedoNumber == 0)
@@ -1687,6 +1688,32 @@ public static class SceneFunctions
         if (launchShipGO != null)
         {
             hangars = GameObjectUtils.FindAllChildTransformsContaining(launchShipGO.transform, "hangarLaunch");
+        }
+
+        if (hangars == null || hangars.Length < 1)
+        {
+            LargeShip largeShip = launchShipGO.GetComponent<LargeShip>();
+            SmallShip smallShip = launchShipGO.GetComponent<SmallShip>();
+
+            GameObject hangarLaunchGO = new GameObject();
+            hangarLaunchGO.name = "hangarLaunch";
+            hangarLaunchGO.transform.SetParent(launchShipGO.transform);
+
+            float shipLength = 0;
+
+            if (largeShip != null)
+            {
+                shipLength = largeShip.shipLength;
+            }
+
+            if (smallShip != null)
+            {
+                shipLength = smallShip.shipLength;
+            }
+
+            hangarLaunchGO.transform.localPosition = new Vector3(0, -shipLength, 0);
+
+            hangars = new Transform[]{hangarLaunch.transform};
         }
 
         //This selects the chosen hangar

@@ -11,6 +11,7 @@ public class SmallShip : MonoBehaviour
     public string shipClass;
     public string prefabName;
     public float loadTime;
+    public float shipLength;
     public string thrustType;
     public bool exploded;
     public bool scanned = false;

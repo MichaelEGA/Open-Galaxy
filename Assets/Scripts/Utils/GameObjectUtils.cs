@@ -27,6 +27,16 @@ public static class GameObjectUtils
         {
             MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
             meshCollider.convex = convex;
+            meshCollider.sharedMesh = meshFilter.sharedMesh;
+        }
+
+        SkinnedMeshRenderer[] skinnedMeshRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
+        {
+            MeshCollider meshCollider = skinnedMeshRenderer.gameObject.AddComponent<MeshCollider>();
+            meshCollider.convex = convex;
+            meshCollider.sharedMesh = skinnedMeshRenderer.sharedMesh;
         }
     }
 

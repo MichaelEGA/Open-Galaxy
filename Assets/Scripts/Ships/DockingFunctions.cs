@@ -13,6 +13,19 @@ public static class DockingFunctions
         {
             smallShip.dockingPoint = dockingPoint.gameObject.AddComponent<DockingPoint>();
         }
+        else
+        {
+            GameObject dockingPointGO = new GameObject();
+            dockingPointGO.name = "dockingPoint";
+
+            dockingPoint = dockingPointGO.transform;
+            dockingPoint.SetParent(smallShip.transform);
+
+            dockingPoint.localPosition = new Vector3(0, -(smallShip.shipLength/2), 0);
+
+            smallShip.dockingPoint = dockingPointGO.AddComponent<DockingPoint>();
+        }
+
     }
 
     //This finds and adds the docking points to the large ship
@@ -32,6 +45,20 @@ public static class DockingFunctions
                 dockPoint.releaseDown = true;
             }
             
+        }
+
+        if (dockingPointGameObjects.Count < 1)
+        {
+            GameObject dockingPointGO = new GameObject();
+            dockingPointGO.name = "dockingPoint";
+
+            Transform dockingPoint = dockingPointGO.transform;
+            dockingPoint.SetParent(largeShip.transform);
+
+            dockingPoint.localPosition = new Vector3(0, -(largeShip.shipLength/2), 0);
+
+            DockingPoint dockPoint = dockingPointGO.AddComponent<DockingPoint>();
+            dockingPointGameObjects.Add(dockPoint);
         }
 
         largeShip.dockingPoints = dockingPointGameObjects.ToArray();

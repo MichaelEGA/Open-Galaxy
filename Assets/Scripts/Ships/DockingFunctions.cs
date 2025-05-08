@@ -7,7 +7,12 @@ public static class DockingFunctions
     //This finds and adds the docking points to the smallship
     public static void AddDockingPointsSmallShip(SmallShip smallShip)
     {
-        Transform dockingPoint = smallShip.gameObject.transform.Find("dockingPoint");
+        Transform dockingPoint = smallShip.gameObject.transform.Find("dockingpoint");
+
+        if (dockingPoint == null)
+        {
+            dockingPoint = smallShip.gameObject.transform.Find("dockingPoint");
+        }
 
         if (dockingPoint != null)
         {
@@ -16,7 +21,7 @@ public static class DockingFunctions
         else
         {
             GameObject dockingPointGO = new GameObject();
-            dockingPointGO.name = "dockingPoint";
+            dockingPointGO.name = "dockingpoint";
 
             dockingPoint = dockingPointGO.transform;
             dockingPoint.SetParent(smallShip.transform);
@@ -31,7 +36,12 @@ public static class DockingFunctions
     //This finds and adds the docking points to the large ship
     public static void AddDockingPointsLargeShip(LargeShip largeShip)
     {
-        Transform[] dockingPointTransforms = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockingPoint");
+        Transform[] dockingPointTransforms = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockingoint");
+
+        if (dockingPointTransforms.Length < 1)
+        {
+            GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockinPoint");
+        }
 
         List<DockingPoint> dockingPointGameObjects = new List<DockingPoint>();
 
@@ -50,7 +60,7 @@ public static class DockingFunctions
         if (dockingPointGameObjects.Count < 1)
         {
             GameObject dockingPointGO = new GameObject();
-            dockingPointGO.name = "dockingPoint";
+            dockingPointGO.name = "dockingpoint";
 
             Transform dockingPoint = dockingPointGO.transform;
             dockingPoint.SetParent(largeShip.transform);
@@ -140,45 +150,30 @@ public static class DockingFunctions
         //This searches for a docking point on a large ship
         if (dockingPointFound == false)
         {
-            Debug.Log("run a");
-
             foreach (LargeShip tempLargeShip in scene.largeShips)
             {
-                Debug.Log("run b " + tempLargeShip.name);
-
                 if (tempLargeShip.name.Contains(targetShipName))
                 {
-
-                    Debug.Log("run c " + tempLargeShip.name);
-
                     float distance = Mathf.Infinity;
 
                     foreach (DockingPoint tempDockingPoint in tempLargeShip.dockingPoints)
                     {
-                        Debug.Log("run d " + tempDockingPoint.name);
-
                         if (tempDockingPoint.isActive == false || tempDockingPoint.isActive == true & includeActive == true)
                         {
-                            Debug.Log("run e " + tempDockingPoint.name);
-
                             //This gets the closest docking point on the large ship
                             float tempDistance = Vector3.Distance(tempDockingPoint.transform.position, ship.position);
 
                             if (tempDistance < distance)
                             {
-                                Debug.Log("run f");
-
                                 if (largeShip == null & !tempDockingPoint.name.Contains("ls"))
                                 {
                                     distance = tempDistance;
                                     dockingPoint = tempDockingPoint;
-                                    Debug.Log("run 1z");
                                 }
                                 else if (largeShip != null & tempDockingPoint.name.Contains("ls"))
                                 {
                                     distance = tempDistance;
                                     dockingPoint = tempDockingPoint;
-                                    Debug.Log("run 2z");
                                 }
                             }
                         }

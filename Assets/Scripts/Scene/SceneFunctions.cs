@@ -1687,7 +1687,12 @@ public static class SceneFunctions
         //This gets all availible hangars on the ship
         if (launchShipGO != null)
         {
-            hangars = GameObjectUtils.FindAllChildTransformsContaining(launchShipGO.transform, "hangarLaunch");
+            hangars = GameObjectUtils.FindAllChildTransformsContaining(launchShipGO.transform, "hangarlaunch");
+
+            if (hangars.Length < 1)
+            {
+                hangars = GameObjectUtils.FindAllChildTransformsContaining(launchShipGO.transform, "hangarLaunch");
+            }
         }
 
         if (hangars == null || hangars.Length < 1)
@@ -1696,7 +1701,7 @@ public static class SceneFunctions
             SmallShip smallShip = launchShipGO.GetComponent<SmallShip>();
 
             GameObject hangarLaunchGO = new GameObject();
-            hangarLaunchGO.name = "hangarLaunch";
+            hangarLaunchGO.name = "hangarlaunch";
             hangarLaunchGO.transform.SetParent(launchShipGO.transform);
 
             float shipLength = 0;

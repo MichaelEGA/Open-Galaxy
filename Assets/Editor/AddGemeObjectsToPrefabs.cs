@@ -92,7 +92,7 @@ public class AddGameObjectsToPrefabs : EditorWindow
 
         GUILayout.EndHorizontal();
 
-        EditorGUILayout.LabelField("IOnPoints", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("IonPoints", EditorStyles.boldLabel);
 
         GUILayout.BeginHorizontal();
 
@@ -297,27 +297,27 @@ public class AddGameObjectsToPrefabs : EditorWindow
 
             if (number > 0)
             {
-                GameObject dockingPoint01 = new GameObject("dockingPoint01");
+                GameObject dockingPoint01 = new GameObject("dockingpoint01");
                 dockingPoint01.transform.parent = prefabInstance.transform;
                 dockingPoint01.transform.localPosition = new Vector3(0, 0, 0);
 
                 if (number > 1)
                 {
-                    GameObject dockingPoint02 = new GameObject("dockingPoint02");
+                    GameObject dockingPoint02 = new GameObject("dockingpoint02");
                     dockingPoint02.transform.parent = prefabInstance.transform;
                     dockingPoint02.transform.localPosition = new Vector3(0, 0, 0);
                 }
 
                 if (number > 2)
                 {
-                    GameObject dockingPoint03 = new GameObject("gunbank01-03");
+                    GameObject dockingPoint03 = new GameObject("dockingpoint03");
                     dockingPoint03.transform.parent = prefabInstance.transform;
                     dockingPoint03.transform.localPosition = new Vector3(0, 0, 0);
                 }
 
                 if (number > 3)
                 {
-                    GameObject dockingPoint04 = new GameObject("dockingPoint04");
+                    GameObject dockingPoint04 = new GameObject("dockingpoint04");
                     dockingPoint04.transform.parent = prefabInstance.transform;
                     dockingPoint04.transform.localPosition = new Vector3(0, 0, 0);
                 }
@@ -364,27 +364,27 @@ public class AddGameObjectsToPrefabs : EditorWindow
 
             if (number > 0)
             {
-                GameObject dockingPoint01 = new GameObject("dockingPoint01_ls");
+                GameObject dockingPoint01 = new GameObject("dockingpoint01_ls");
                 dockingPoint01.transform.parent = prefabInstance.transform;
                 dockingPoint01.transform.localPosition = new Vector3(0, 0, 0);
 
                 if (number > 1)
                 {
-                    GameObject dockingPoint02 = new GameObject("dockingPoint02_ls");
+                    GameObject dockingPoint02 = new GameObject("dockingpoint02_ls");
                     dockingPoint02.transform.parent = prefabInstance.transform;
                     dockingPoint02.transform.localPosition = new Vector3(0, 0, 0);
                 }
 
                 if (number > 2)
                 {
-                    GameObject dockingPoint03 = new GameObject("gunbank01-03_ls");
+                    GameObject dockingPoint03 = new GameObject("dockingpoint03_ls");
                     dockingPoint03.transform.parent = prefabInstance.transform;
                     dockingPoint03.transform.localPosition = new Vector3(0, 0, 0);
                 }
 
                 if (number > 3)
                 {
-                    GameObject dockingPoint04 = new GameObject("dockingPoint04_ls");
+                    GameObject dockingPoint04 = new GameObject("dockingpoint04_ls");
                     dockingPoint04.transform.parent = prefabInstance.transform;
                     dockingPoint04.transform.localPosition = new Vector3(0, 0, 0);
                 }
@@ -430,7 +430,7 @@ public class AddGameObjectsToPrefabs : EditorWindow
 
             if (number > 0)
             {
-                GameObject gunbank01 = new GameObject("gunBank01");
+                GameObject gunbank01 = new GameObject("gunbank01");
                 gunbank01.transform.parent = prefabInstance.transform;
                 gunbank01.transform.localPosition = new Vector3(0, 0, 0);
 
@@ -500,7 +500,7 @@ public class AddGameObjectsToPrefabs : EditorWindow
 
             if (number > 0)
             {
-                GameObject gunbank01 = new GameObject("ionBank01");
+                GameObject gunbank01 = new GameObject("ionbank01");
                 gunbank01.transform.parent = prefabInstance.transform;
                 gunbank01.transform.localPosition = new Vector3(0, 0, 0);
 
@@ -641,27 +641,27 @@ public class AddGameObjectsToPrefabs : EditorWindow
 
             if (number > 0)
             {
-                GameObject dockingPoint01 = new GameObject("hangarLaunch");
+                GameObject dockingPoint01 = new GameObject("hangarlaunch");
                 dockingPoint01.transform.parent = prefabInstance.transform;
                 dockingPoint01.transform.localPosition = new Vector3(0, 0, 0);
 
                 if (number > 1)
                 {
-                    GameObject dockingPoint02 = new GameObject("hangarLaunch");
+                    GameObject dockingPoint02 = new GameObject("hangarlaunch");
                     dockingPoint02.transform.parent = prefabInstance.transform;
                     dockingPoint02.transform.localPosition = new Vector3(0, 0, 0);
                 }
 
                 if (number > 2)
                 {
-                    GameObject dockingPoint03 = new GameObject("hangarLaunch");
+                    GameObject dockingPoint03 = new GameObject("hangarlaunch");
                     dockingPoint03.transform.parent = prefabInstance.transform;
                     dockingPoint03.transform.localPosition = new Vector3(0, 0, 0);
                 }
 
                 if (number > 3)
                 {
-                    GameObject dockingPoint04 = new GameObject("hangarLaunch");
+                    GameObject dockingPoint04 = new GameObject("hangarlaunch");
                     dockingPoint04.transform.parent = prefabInstance.transform;
                     dockingPoint04.transform.localPosition = new Vector3(0, 0, 0);
                 }

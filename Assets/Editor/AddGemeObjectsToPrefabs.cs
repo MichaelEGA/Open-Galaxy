@@ -14,6 +14,17 @@ public class AddGameObjectsToPrefabs : EditorWindow
     {
         GUILayout.Label("Add GameObject to Selected Prefabs", EditorStyles.boldLabel);
 
+        EditorGUILayout.LabelField("Camera Position", EditorStyles.boldLabel);
+
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("One"))
+        {
+            AddCameraPosition();
+        }
+
+        GUILayout.EndHorizontal();
+
         EditorGUILayout.LabelField("Smallship Docking Points", EditorStyles.boldLabel);
 
         GUILayout.BeginHorizontal();
@@ -666,6 +677,48 @@ public class AddGameObjectsToPrefabs : EditorWindow
                     dockingPoint04.transform.localPosition = new Vector3(0, 0, 0);
                 }
             }
+
+            PrefabUtility.SaveAsPrefabAsset(prefabInstance, path);
+
+            DestroyImmediate(prefabInstance);
+
+            Debug.Log($"Added smallship gameObjects to prefab: {prefab.name}");
+        }
+
+        AssetDatabase.Refresh();
+    }
+
+    private void AddCameraPosition()
+    {
+        Object[] selectedObjects = Selection.objects;
+
+        foreach (Object obj in selectedObjects)
+        {
+            string path = AssetDatabase.GetAssetPath(obj);
+
+            if (string.IsNullOrEmpty(path) || !path.EndsWith(".prefab"))
+            {
+                Debug.LogWarning($"Skipped {obj.name}. Not a valid prefab.");
+                continue;
+            }
+
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefab == null)
+            {
+                Debug.LogWarning($"Could not load prefab at path: {path}");
+                continue;
+            }
+
+            GameObject prefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            if (prefabInstance == null)
+            {
+                Debug.LogWarning($"Could not instantiate prefab: {prefab.name}");
+                continue;
+            }
+
+            GameObject dockingPoint01 = new GameObject("camera");
+            dockingPoint01.transform.parent = prefabInstance.transform;
+            dockingPoint01.transform.localPosition = new Vector3(0, 0, 0);
 
             PrefabUtility.SaveAsPrefabAsset(prefabInstance, path);
 

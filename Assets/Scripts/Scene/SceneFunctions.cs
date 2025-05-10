@@ -1718,7 +1718,7 @@ public static class SceneFunctions
 
             hangarLaunchGO.transform.localPosition = new Vector3(0, -shipLength, 0);
 
-            hangars = new Transform[]{hangarLaunch.transform};
+            hangars = new Transform[]{hangarLaunchGO.transform};
         }
 
         //This selects the chosen hangar

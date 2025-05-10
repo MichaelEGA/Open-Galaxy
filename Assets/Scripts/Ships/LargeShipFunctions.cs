@@ -17,6 +17,16 @@ public static class LargeShipFunctions
             GameObjectUtils.AddColliders(largeShip.gameObject, false);
             largeShip.colliders = largeShip.GetComponentsInChildren<MeshCollider>();
             largeShip.castPoint = largeShip.gameObject.transform.Find("castPoint");
+
+            //This generates a cast point if none exists on the ship prefab
+            if (largeShip.castPoint == null)
+            {
+                GameObject castPoint = new GameObject();
+                castPoint.transform.SetParent(largeShip.transform);
+                castPoint.name = "castPoint";
+                castPoint.transform.localPosition = new Vector3(0, 0, largeShip.shipLength);
+            }
+
             largeShip.explosionPoints = GameObjectUtils.FindAllChildTransformsContaining(largeShip.gameObject.transform, "explosionPoint");
             CreateWaypoint(largeShip);
             DockingFunctions.AddDockingPointsLargeShip(largeShip);

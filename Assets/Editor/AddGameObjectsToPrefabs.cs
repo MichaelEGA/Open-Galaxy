@@ -25,6 +25,17 @@ public class AddGameObjectsToPrefabs : EditorWindow
 
         GUILayout.EndHorizontal();
 
+        EditorGUILayout.LabelField("Cast Position", EditorStyles.boldLabel);
+
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("One"))
+        {
+            AddCastPoint();
+        }
+
+        GUILayout.EndHorizontal();
+
         EditorGUILayout.LabelField("Smallship Docking Points", EditorStyles.boldLabel);
 
         GUILayout.BeginHorizontal();
@@ -73,6 +84,58 @@ public class AddGameObjectsToPrefabs : EditorWindow
         if (GUILayout.Button("Four"))
         {
             AddLargeShipDockingPointsToPrefabs(4);
+        }
+
+        GUILayout.EndHorizontal();
+
+        EditorGUILayout.LabelField("Turret Points Small", EditorStyles.boldLabel);
+
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Four"))
+        {
+            AddSmallTurrets(4);
+        }
+
+        if (GUILayout.Button("Eight"))
+        {
+            AddSmallTurrets(8);
+        }
+
+        if (GUILayout.Button("Twelve"))
+        {
+            AddSmallTurrets(12);
+        }
+
+        if (GUILayout.Button("Sixteen"))
+        {
+            AddSmallTurrets(16);
+        }
+
+        GUILayout.EndHorizontal();
+
+        EditorGUILayout.LabelField("Turret Points Large", EditorStyles.boldLabel);
+
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Two"))
+        {
+            AddLargeTurrets(2);
+        }
+
+        if (GUILayout.Button("Four"))
+        {
+            AddLargeTurrets(4);
+        }
+
+        if (GUILayout.Button("Six"))
+        {
+            AddLargeTurrets(6);
+        }
+
+        if (GUILayout.Button("Eight"))
+        {
+            AddLargeTurrets(8);
         }
 
         GUILayout.EndHorizontal();
@@ -411,6 +474,132 @@ public class AddGameObjectsToPrefabs : EditorWindow
         AssetDatabase.Refresh();
     }
 
+    private void AddSmallTurrets(int number)
+    {
+        Object[] selectedObjects = Selection.objects;
+
+        foreach (Object obj in selectedObjects)
+        {
+            string path = AssetDatabase.GetAssetPath(obj);
+
+            if (string.IsNullOrEmpty(path) || !path.EndsWith(".prefab"))
+            {
+                Debug.LogWarning($"Skipped {obj.name}. Not a valid prefab.");
+                continue;
+            }
+
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefab == null)
+            {
+                Debug.LogWarning($"Could not load prefab at path: {path}");
+                continue;
+            }
+
+            GameObject prefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            if (prefabInstance == null)
+            {
+                Debug.LogWarning($"Could not instantiate prefab: {prefab.name}");
+                continue;
+            }
+
+            if (number > 0)
+            {
+                GameObject turrettransforms = null;
+                Transform tempTranform = prefabInstance.transform.Find("turrettransforms");
+
+                if (tempTranform != null)
+                {
+                    turrettransforms = tempTranform.gameObject;
+                }
+
+                if (turrettransforms == null)
+                {
+                    turrettransforms = new GameObject("turrettransforms");
+                    turrettransforms.transform.parent = prefabInstance.transform;
+                    turrettransforms.transform.localPosition = new Vector3(0, 0, 0);
+                }
+                
+                for (int i = 0; i < number; i++)
+                {
+                    GameObject smallTurret = new GameObject("turretsmall");
+                    smallTurret.transform.parent = turrettransforms.transform;
+                    smallTurret.transform.localPosition = new Vector3(0, 0, 0);
+                }
+            }
+
+            PrefabUtility.SaveAsPrefabAsset(prefabInstance, path);
+
+            DestroyImmediate(prefabInstance);
+
+            Debug.Log($"Added smallship gameObjects to prefab: {prefab.name}");
+        }
+
+        AssetDatabase.Refresh();
+    }
+
+    private void AddLargeTurrets(int number)
+    {
+        Object[] selectedObjects = Selection.objects;
+
+        foreach (Object obj in selectedObjects)
+        {
+            string path = AssetDatabase.GetAssetPath(obj);
+
+            if (string.IsNullOrEmpty(path) || !path.EndsWith(".prefab"))
+            {
+                Debug.LogWarning($"Skipped {obj.name}. Not a valid prefab.");
+                continue;
+            }
+
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefab == null)
+            {
+                Debug.LogWarning($"Could not load prefab at path: {path}");
+                continue;
+            }
+
+            GameObject prefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            if (prefabInstance == null)
+            {
+                Debug.LogWarning($"Could not instantiate prefab: {prefab.name}");
+                continue;
+            }
+
+            if (number > 0)
+            {
+                GameObject turrettransforms = null;
+                Transform tempTranform = prefabInstance.transform.Find("turrettransforms");
+
+                if (tempTranform != null)
+                {
+                    turrettransforms = tempTranform.gameObject;
+                }
+
+                if (turrettransforms == null)
+                {
+                    turrettransforms = new GameObject("turrettransforms");
+                    turrettransforms.transform.parent = prefabInstance.transform;
+                    turrettransforms.transform.localPosition = new Vector3(0, 0, 0);
+                }
+
+                for (int i = 0; i < number; i++)
+                {
+                    GameObject smallTurret = new GameObject("turretlarge");
+                    smallTurret.transform.parent = turrettransforms.transform;
+                    smallTurret.transform.localPosition = new Vector3(0, 0, 0);
+                }
+            }
+
+            PrefabUtility.SaveAsPrefabAsset(prefabInstance, path);
+
+            DestroyImmediate(prefabInstance);
+
+            Debug.Log($"Added smallship gameObjects to prefab: {prefab.name}");
+        }
+
+        AssetDatabase.Refresh();
+    }
+
     private void AddGunsToPrefabs(int number)
     {
         Object[] selectedObjects = Selection.objects;
@@ -716,9 +905,51 @@ public class AddGameObjectsToPrefabs : EditorWindow
                 continue;
             }
 
-            GameObject dockingPoint01 = new GameObject("camera");
-            dockingPoint01.transform.parent = prefabInstance.transform;
-            dockingPoint01.transform.localPosition = new Vector3(0, 0, 0);
+            GameObject cameraGO = new GameObject("camera");
+            cameraGO.transform.parent = prefabInstance.transform;
+            cameraGO.transform.localPosition = new Vector3(0, 0, 0);
+
+            PrefabUtility.SaveAsPrefabAsset(prefabInstance, path);
+
+            DestroyImmediate(prefabInstance);
+
+            Debug.Log($"Added smallship gameObjects to prefab: {prefab.name}");
+        }
+
+        AssetDatabase.Refresh();
+    }
+
+    private void AddCastPoint()
+    {
+        Object[] selectedObjects = Selection.objects;
+
+        foreach (Object obj in selectedObjects)
+        {
+            string path = AssetDatabase.GetAssetPath(obj);
+
+            if (string.IsNullOrEmpty(path) || !path.EndsWith(".prefab"))
+            {
+                Debug.LogWarning($"Skipped {obj.name}. Not a valid prefab.");
+                continue;
+            }
+
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefab == null)
+            {
+                Debug.LogWarning($"Could not load prefab at path: {path}");
+                continue;
+            }
+
+            GameObject prefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            if (prefabInstance == null)
+            {
+                Debug.LogWarning($"Could not instantiate prefab: {prefab.name}");
+                continue;
+            }
+
+            GameObject castPoint = new GameObject("castPoint");
+            castPoint.transform.parent = prefabInstance.transform;
+            castPoint.transform.localPosition = new Vector3(0, 0, 0);
 
             PrefabUtility.SaveAsPrefabAsset(prefabInstance, path);
 

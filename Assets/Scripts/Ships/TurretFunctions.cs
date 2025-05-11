@@ -10,6 +10,46 @@ public static class TurretFunctions
     //This loads all the turrets on the ship
     public static void LoadTurrets(LargeShip largeShip)
     {
+        if(largeShip.largeturret == "default")
+        {
+            largeShip.largeturret = "default_turretmedium_norestriction";
+        }
+
+        if(largeShip.smallturret == "default")
+        {
+            largeShip.smallturret = "default_turretsmall_norestriction";
+        }
+
+        if (largeShip.largeturret == "default_large")
+        {
+            largeShip.largeturret = "default_turretlarge_norestriction";
+        }
+
+        if (largeShip.largeturret == "default_medium")
+        {
+            largeShip.largeturret = "default_turretmedium_norestriction";
+        }
+
+        if (largeShip.largeturret == "default_large_locked")
+        {
+            largeShip.largeturret = "default_turretlarge";
+        }
+
+        if (largeShip.largeturret == "default_medium_locked")
+        {
+            largeShip.largeturret = "default_turretmedium";
+        }
+
+        if (largeShip.largeturret == "default_locked")
+        {
+            largeShip.largeturret = "default_turretmedium";
+        }
+
+        if (largeShip.smallturret == "default_locked")
+        {
+            largeShip.smallturret = "default_turretsmall";
+        }
+
         if (largeShip.turretsLoaded == false)
         {
             List<Turret> turrets = new List<Turret>();

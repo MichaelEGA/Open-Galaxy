@@ -946,9 +946,13 @@ public static class SceneFunctions
 
         foreach (Object asteroid in scene.asteroidPrefabPool)
         {
+            Debug.Log("Asteroid name is " + asteroid.name);
+
             if (asteroid.name.Contains(type))
             {
                 asteroidTypes.Add(asteroidNo);
+
+                Debug.Log("Asteroid added " + asteroid.name);
             }
 
             asteroidNo++;

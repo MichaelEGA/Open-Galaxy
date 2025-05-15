@@ -1339,7 +1339,9 @@ public static class SceneFunctions
                 ship.name = largeShip.name;
             }
 
-            //Set ship position and rotation
+            //Set ship position, rotation and scale
+
+            ScaleGameObjectByZAxis(ship, shipType.shipLength); //The scale must be applied before the ship is position and rotated otherwise the scaling will be inaccurate
 
             if (dontModifyPosition == false)
             {
@@ -1389,9 +1391,6 @@ public static class SceneFunctions
 
                 GameObjectUtils.SetLayerAllChildren(ship.transform, LayerMask.NameToLayer("collision_player"));
             }
-
-            //This scales the ship
-            ScaleGameObjectByZAxis(ship, shipType.shipLength);
 
             //This causes the ship to come out of hyperspace on loading
             if (exitingHyperspace == true)
@@ -2472,6 +2471,7 @@ public static class SceneFunctions
 
         // Calculate the bounds of the GameObject
         Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
+
         if (renderers.Length == 0)
         {
             Debug.LogError("GameObject does not have a Renderer component. Cannot calculate bounds.");
@@ -2480,6 +2480,7 @@ public static class SceneFunctions
         }
 
         Bounds gameObjectBounds = new Bounds(renderers[0].bounds.center, Vector3.zero);
+
         foreach (Renderer renderer in renderers)
         {
             gameObjectBounds.Encapsulate(renderer.bounds);
@@ -2494,7 +2495,7 @@ public static class SceneFunctions
         // Apply the scale factor proportionally to all axes
         gameObject.transform.localScale = originalScale * scaleFactor;
 
-        Debug.Log($"GameObject '{gameObject.name}' scaled to fit Z-axis length {targetZLengthInMeters} meters.");
+        Debug.Log($"GameObject '{gameObject.name}' scaled to fit Z-axis length {targetZLengthInMeters} meters. But actual length is " + gameObjectBounds.size.z);
     }
 
     #endregion

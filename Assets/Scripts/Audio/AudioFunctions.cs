@@ -130,6 +130,7 @@ public static class AudioFunctions
                     audioSource.reverbZoneMix = 1;
                     audioSource.dopplerLevel = 0;
                     audioSource.spread = 45;
+                    audioSource.volume = volume;
                     audioSource.maxDistance = distance;
                     audioSource.priority = priority;
                     audioSource.rolloffMode = AudioRolloffMode.Linear;
@@ -207,6 +208,7 @@ public static class AudioFunctions
                     audioSource.reverbZoneMix = 1;
                     audioSource.dopplerLevel = 0;
                     audioSource.spread = 45;
+                    audioSource.volume = volume;
                     audioSource.maxDistance = distance;
                     audioSource.priority = priority;
                     audioSource.rolloffMode = AudioRolloffMode.Linear;
@@ -236,7 +238,7 @@ public static class AudioFunctions
                     if (audioHighPassFilter != null)
                     {
                         audioHighPassFilter.enabled = distortion;
-                        audioHighPassFilter.cutoffFrequency = 4000;
+                        audioHighPassFilter.cutoffFrequency = 2000;
                     }
 
                     audioSource.Play();

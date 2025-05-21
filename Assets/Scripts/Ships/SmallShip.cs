@@ -36,6 +36,7 @@ public class SmallShip : MonoBehaviour
 
     [Header("Ship Cameras")]
     [HideInInspector] public GameObject mainCamera;
+    [HideInInspector] public GameObject secondaryCamera;
     [HideInInspector] public bool cameraAttached;
     [HideInInspector] public bool attachCameraToAI;
     [HideInInspector] public Vector3 cameraLocalPosition;
@@ -301,12 +302,10 @@ public class SmallShip : MonoBehaviour
 
         //Laser functions
         LaserFunctions.ToggleWeaponMode(this);
-        //LaserFunctions.SetCannons(this);
         LaserFunctions.InitiateFiringPlayer(this);
 
         //Ion Cannon functions
         IonFunctions.ToggleWeaponMode(this);
-        //IonFunctions.SetCannons(this);
         IonFunctions.InitiateFiringPlayer(this);
 
         //Torpedo functions
@@ -324,11 +323,17 @@ public class SmallShip : MonoBehaviour
 
         //Cockpit Functions
         CockpitFunctions.RunCockpitFunctions(this);
+        
     }
     
     void FixedUpdate()
     {
         SmallShipFunctions.MoveShip(this);
+    }
+
+    void LateUpdate()
+    {
+        CockpitFunctions.ThirdPersonCameraMovement(this);
     }
 
     void OnCollisionEnter(Collision collision)

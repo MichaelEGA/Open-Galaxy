@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public static class CockpitFunctions
 {
@@ -68,6 +70,48 @@ public static class CockpitFunctions
             smallShip.mainCamera.transform.SetParent(null);
             smallShip.mainCamera = null;
             smallShip.cameraAttached = false;
+        }
+    }
+
+    //This runs the movement of the third person camera
+    public static void ThirdPersonCameraMovement(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            if(smallShip.isAI == false)
+            {
+                var keyboard = Keyboard.current;
+
+                if (keyboard.f1Key.isPressed == true)
+                {
+                    SceneFunctions.ToggleMainCamera();
+                }
+
+                if (smallShip.secondaryCamera == null)
+                {
+                    Scene scene = SceneFunctions.GetScene();
+
+                    if (scene.secondaryMainCamera != null)
+                    {
+                        smallShip.secondaryCamera = scene.secondaryMainCamera.gameObject;
+                        smallShip.secondaryCamera.transform.SetParent(scene.transform);
+                    }
+                }
+
+                Transform target = smallShip.transform; // The target to follow (the ship itself);
+                Vector3 offset = new Vector3(0, 5, (smallShip.shipLength + smallShip.shipLength / 2) * -1);
+                float followSpeed = 8f;   // How quickly the camera moves
+                float rotationSpeed = 6f; // How quickly the camera rotates
+                GameObject secondaryCamera = smallShip.secondaryCamera;
+
+                // Smoothly move the camera to the target position + offset
+                Vector3 desiredPosition = target.TransformPoint(offset);
+                secondaryCamera.transform.position = Vector3.Lerp(secondaryCamera.transform.position, desiredPosition, followSpeed * Time.deltaTime);
+
+                // Optionally, smoothly rotate the camera to look at the target
+                Quaternion desiredRotation = target.rotation;
+                secondaryCamera.transform.rotation = Quaternion.Slerp(secondaryCamera.transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+            }
         }
     }
 

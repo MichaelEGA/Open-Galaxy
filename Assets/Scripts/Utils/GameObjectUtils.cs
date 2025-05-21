@@ -15,6 +15,7 @@ public static class GameObjectUtils
         rigibody.linearDamping = drag;
         rigibody.angularDamping = angularDrag;
         rigibody.useGravity = false;
+        rigibody.interpolation = RigidbodyInterpolation.Interpolate;
         return rigibody;
     }
 

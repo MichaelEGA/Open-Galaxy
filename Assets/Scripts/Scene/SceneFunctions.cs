@@ -160,6 +160,24 @@ public static class SceneFunctions
             mainCameraData.renderPostProcessing = true;
         }
 
+        GameObject secondaryMainCameraGO = GameObject.Find("Secondary Main Camera");
+        Camera secondaryMainCamera = null;
+
+        if (secondaryMainCameraGO == null)
+        {
+            secondaryMainCameraGO = new GameObject();
+            secondaryMainCameraGO.name = "Secondary Main Camera";
+            secondaryMainCameraGO.tag = "SecondaryMainCamera";
+            secondaryMainCameraGO.AddComponent<AudioListener>();
+            secondaryMainCamera = secondaryMainCameraGO.AddComponent<Camera>();
+            secondaryMainCamera.cullingMask = LayerMask.GetMask("Default", "collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
+            secondaryMainCamera.nearClipPlane = 0.01f;
+            secondaryMainCamera.farClipPlane = 90000;
+            var secondaryMainCameraData = secondaryMainCamera.GetUniversalAdditionalCameraData();
+            secondaryMainCameraData.renderType = CameraRenderType.Overlay;
+            secondaryMainCameraData.renderPostProcessing = true;
+        }
+
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
         Camera cockpitCamera = null;
 
@@ -180,6 +198,7 @@ public static class SceneFunctions
             var starfieldCameraData = starfieldCamera.GetUniversalAdditionalCameraData();
             starfieldCameraData.cameraStack.Add(planetCamera);
             starfieldCameraData.cameraStack.Add(mainCamera);
+            starfieldCameraData.cameraStack.Add(secondaryMainCamera);
             starfieldCameraData.cameraStack.Add(cockpitCamera);
         }
     }
@@ -192,11 +211,13 @@ public static class SceneFunctions
         GameObject starfieldCamera = GameObject.Find("Starfield Camera");
         GameObject planetCamera = GameObject.Find("Planet Camera");
         GameObject mainCamera = GameObject.Find("Main Camera");
+        GameObject secondaryMainCamera = GameObject.Find("Secondary Main Camera");
         GameObject cockpitCamera = GameObject.Find("Cockpit Camera");
 
         scene.starfieldCamera = starfieldCamera;
         scene.planetCamera = planetCamera;
         scene.mainCamera = mainCamera;
+        scene.secondaryMainCamera = secondaryMainCamera;
         scene.cockpitCamera = cockpitCamera;
     }
 
@@ -248,6 +269,56 @@ public static class SceneFunctions
             }
         }
 
+    }
+
+    public static void ToggleMainCamera()
+    {
+        Scene scene = GetScene();
+
+        GameObject mainCameraGO = GameObject.Find("Main Camera");
+        GameObject secondaryMainCameraGO = GameObject.Find("Secondary Main Camera");
+        GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
+
+        if (mainCameraGO != null & secondaryMainCameraGO != null)
+        {
+            Camera mainCamera = mainCameraGO.GetComponent<Camera>();
+            Camera secondaryMainCamera = secondaryMainCameraGO.GetComponent<Camera>();
+            Camera cockpitCamera = null;
+
+            if (cockpitCameraGO != null)
+            {
+                cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
+            }
+
+            if (mainCamera != null & secondaryMainCamera != null)
+            {
+                if (mainCamera.enabled == true)
+                {
+                    mainCamera.enabled = false;
+                    secondaryMainCamera.enabled = true;
+
+                    if (cockpitCamera != null)
+                    {
+                        cockpitCamera.enabled = false;
+                    }
+
+                    scene.secondaryCameraIsActive = true;
+                }
+                else
+                {
+                    mainCamera.enabled = true;
+                    secondaryMainCamera.enabled = false;
+
+                    if (cockpitCamera != null)
+                    {
+                        cockpitCamera.enabled = true;
+                    }
+
+                    scene.secondaryCameraIsActive = false;
+                }
+            }
+
+        }
     }
 
     #endregion
@@ -2201,8 +2272,16 @@ public static class SceneFunctions
     {
         if (scene.starfieldCamera != null & scene.planetCamera != null & scene.mainShip != null)
         {
-            scene.starfieldCamera.transform.rotation = scene.mainShip.transform.rotation;
-            scene.planetCamera.transform.rotation = scene.mainShip.transform.rotation;
+            if (scene.secondaryCameraIsActive == false)
+            {
+                scene.starfieldCamera.transform.rotation = scene.mainShip.transform.rotation;
+                scene.planetCamera.transform.rotation = scene.mainShip.transform.rotation;
+            }
+            else
+            {
+                scene.starfieldCamera.transform.rotation = scene.secondaryMainCamera.transform.rotation;
+                scene.planetCamera.transform.rotation = scene.secondaryMainCamera.transform.rotation;
+            }
         }
     }
 

@@ -2313,6 +2313,13 @@ public static class SceneFunctions
             Camera.transform.parent = null;
         }
 
+        GameObject SecondaryCamera = GameObject.Find("Secondary Main Camera");
+
+        if (SecondaryCamera != null)
+        {
+            SecondaryCamera.transform.parent = null;
+        }
+
         if (scene.objectPool != null)
         {
             foreach (GameObject gameobject in scene.objectPool)

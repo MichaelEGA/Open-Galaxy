@@ -99,7 +99,7 @@ public static class CockpitFunctions
                 }
 
                 Transform target = smallShip.transform; // The target to follow (the ship itself);
-                Vector3 offset = new Vector3(0, 5, (smallShip.shipLength + smallShip.shipLength / 2) * -1);
+                Vector3 offset = new Vector3(0, 5, (smallShip.shipLength * 2) * -1);
                 float followSpeed = 8f;   // How quickly the camera moves
                 float rotationSpeed = 6f; // How quickly the camera rotates
                 GameObject secondaryCamera = smallShip.secondaryCamera;

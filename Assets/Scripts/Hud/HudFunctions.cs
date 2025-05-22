@@ -1074,6 +1074,17 @@ public static class HudFunctions
                 }
             }
 
+            if (hud.secondaryCamera == null)
+            {
+                if (hud.smallShip != null)
+                {
+                    if (hud.smallShip.secondaryCamera != null)
+                    {
+                        hud.secondaryCamera = hud.smallShip.secondaryCamera.GetComponent<Camera>();
+                    }
+                }
+            }
+
             if (hud.mainCamera != null)
             {
                 if (hud.smallShip != null & selectionBrace != null & directionArrow != null)
@@ -1087,6 +1098,11 @@ public static class HudFunctions
 
                             //This gets the targets position on the camera
                             Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(target.transform.position);
+
+                            if (hud.scene.secondaryCameraIsActive == true)
+                            {
+                                screenPosition = hud.secondaryCamera.WorldToScreenPoint(target.transform.position);
+                            }
 
                             //This sets key values
                             Vector3 targetPosition = target.transform.position - mainShip.transform.position;
@@ -1276,6 +1292,17 @@ public static class HudFunctions
                 }
             }
 
+            if (hud.secondaryCamera == null)
+            {
+                if (hud.smallShip != null)
+                {
+                    if (hud.smallShip.secondaryCamera != null)
+                    {
+                        hud.secondaryCamera = hud.smallShip.secondaryCamera.GetComponent<Camera>();
+                    }
+                }
+            }
+
             if (hud.mainCamera != null)
             {
                 if (hud.smallShip != null & interceptPoint != null)
@@ -1292,6 +1319,11 @@ public static class HudFunctions
 
                             //This gets the targets position on the camera
                             Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(interceptPosition);
+
+                            if (hud.scene.secondaryCameraIsActive == true)
+                            {
+                                screenPosition = hud.secondaryCamera.WorldToScreenPoint(interceptPosition);
+                            }
 
                             //This sets key values
                             Vector3 targetPosition = target.transform.position - mainShip.transform.position;
@@ -1373,6 +1405,17 @@ public static class HudFunctions
                 }
             }
 
+            if (hud.secondaryCamera == null)
+            {
+                if (hud.smallShip != null)
+                {
+                    if (hud.smallShip.secondaryCamera != null)
+                    {
+                        hud.secondaryCamera = hud.smallShip.secondaryCamera.GetComponent<Camera>();
+                    }
+                }
+            }
+
             if (hud.waypointIsActive == true & hud.mainCamera != null & waypointObject != null & waypointMarker != null & waypointArrow != null & hud.waypointText != null & hud.waypointTitle != null)
             {
                 GameObject waypointGO = waypointObject;
@@ -1380,6 +1423,11 @@ public static class HudFunctions
 
                 //This gets the targets position on the camera
                 Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(waypointGO.transform.position);
+
+                if (hud.scene.secondaryCameraIsActive == true)
+                {
+                    screenPosition = hud.secondaryCamera.WorldToScreenPoint(waypointGO.transform.position);
+                }
 
                 //This gets the distance to the waypoint
                 float distance = Vector3.Distance(waypointGO.transform.position, shipGO.transform.position);

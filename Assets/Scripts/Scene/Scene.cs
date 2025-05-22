@@ -88,7 +88,7 @@ public class Scene : MonoBehaviour
 
     [Header("Cameras")]
     [HideInInspector] public GameObject mainCamera;
-    [HideInInspector] public GameObject secondaryMainCamera;
+    [HideInInspector] public GameObject secondaryCamera;
     [HideInInspector] public GameObject planetCamera;
     [HideInInspector] public GameObject starfieldCamera;
     [HideInInspector] public GameObject cockpitCamera;

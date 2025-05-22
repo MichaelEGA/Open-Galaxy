@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -91,21 +92,27 @@ public static class CockpitFunctions
                 {
                     Scene scene = SceneFunctions.GetScene();
 
-                    if (scene.secondaryMainCamera != null)
+                    if (scene.secondaryCamera != null)
                     {
-                        smallShip.secondaryCamera = scene.secondaryMainCamera.gameObject;
+                        smallShip.secondaryCamera = scene.secondaryCamera;
                         smallShip.secondaryCamera.transform.SetParent(scene.transform);
                     }
                 }
 
                 Transform target = smallShip.transform; // The target to follow (the ship itself);
-                Vector3 offset = new Vector3(0, 5, (smallShip.shipLength * 2) * -1);
-                float followSpeed = 8f;   // How quickly the camera moves
-                float rotationSpeed = 6f; // How quickly the camera rotates
+                Vector3 offset = new Vector3(0, smallShip.shipLength / 2f, smallShip.shipLength * -1);
+                float followSpeed = 8f;   // How quickly the camera moves default 8
+                float rotationSpeed = 6; // How quickly the camera rotates default 6         
                 GameObject secondaryCamera = smallShip.secondaryCamera;
 
                 // Smoothly move the camera to the target position + offset
                 Vector3 desiredPosition = target.TransformPoint(offset);
+
+                if (smallShip.secondaryCameraPosition != null)
+                {
+                    desiredPosition = smallShip.secondaryCameraPosition.transform.position;
+                }
+
                 secondaryCamera.transform.position = Vector3.Lerp(secondaryCamera.transform.position, desiredPosition, followSpeed * Time.deltaTime);
 
                 // Optionally, smoothly rotate the camera to look at the target

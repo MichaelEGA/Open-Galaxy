@@ -160,15 +160,13 @@ public static class SceneFunctions
             mainCameraData.renderPostProcessing = true;
         }
 
-        GameObject secondaryMainCameraGO = GameObject.Find("Secondary Main Camera");
+        GameObject secondaryMainCameraGO = GameObject.Find("Secondary Camera");
         Camera secondaryMainCamera = null;
 
         if (secondaryMainCameraGO == null)
         {
             secondaryMainCameraGO = new GameObject();
-            secondaryMainCameraGO.name = "Secondary Main Camera";
-            secondaryMainCameraGO.tag = "SecondaryMainCamera";
-            secondaryMainCameraGO.AddComponent<AudioListener>();
+            secondaryMainCameraGO.name = "Secondary Camera";
             secondaryMainCamera = secondaryMainCameraGO.AddComponent<Camera>();
             secondaryMainCamera.cullingMask = LayerMask.GetMask("Default", "collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
             secondaryMainCamera.nearClipPlane = 0.01f;
@@ -211,22 +209,25 @@ public static class SceneFunctions
         GameObject starfieldCamera = GameObject.Find("Starfield Camera");
         GameObject planetCamera = GameObject.Find("Planet Camera");
         GameObject mainCamera = GameObject.Find("Main Camera");
-        GameObject secondaryMainCamera = GameObject.Find("Secondary Main Camera");
+        GameObject secondaryCamera = GameObject.Find("Secondary Camera");
         GameObject cockpitCamera = GameObject.Find("Cockpit Camera");
 
         scene.starfieldCamera = starfieldCamera;
         scene.planetCamera = planetCamera;
         scene.mainCamera = mainCamera;
-        scene.secondaryMainCamera = secondaryMainCamera;
+        scene.secondaryCamera = secondaryCamera;
         scene.cockpitCamera = cockpitCamera;
     }
 
     //This activates or deactivates the game cameras
     public static void ActivateCameras(bool active)
     {
+        Scene scene = SceneFunctions.GetScene();
+
         GameObject starfieldCameraGO = GameObject.Find("Starfield Camera");
         GameObject planetCameraGO = GameObject.Find("Planet Camera");
         GameObject mainCameraGO = GameObject.Find("Main Camera");
+        GameObject secondaryCameraGO = GameObject.Find("Secondary Camera");
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
 
         if (starfieldCameraGO != null)
@@ -249,15 +250,73 @@ public static class SceneFunctions
             }
         }
 
-        if (mainCameraGO != null)
+        if (scene.secondaryCameraIsActive == false & active == true)
         {
-            Camera mainCamera = mainCameraGO.GetComponent<Camera>();
-
-            if (mainCamera != null)
+            if (mainCameraGO != null)
             {
-                mainCamera.enabled = active;
+                Camera mainCamera = mainCameraGO.GetComponent<Camera>();
+
+                if (mainCamera != null)
+                {
+                    mainCamera.enabled = true;
+                }
+            }
+
+            if (secondaryCameraGO != null)
+            {
+                Camera secondaryCamera = secondaryCameraGO.GetComponent<Camera>();
+
+                if (secondaryCamera != null)
+                {
+                    secondaryCamera.enabled = false;
+                }
             }
         }
+        else if (scene.secondaryCameraIsActive == true & active == true)
+        {
+            if (secondaryCameraGO != null)
+            {
+                Camera secondaryCamera = secondaryCameraGO.GetComponent<Camera>();
+
+                if (secondaryCamera != null)
+                {
+                    secondaryCamera.enabled = true;
+                }
+            }
+
+            if (mainCameraGO != null)
+            {
+                Camera mainCamera = mainCameraGO.GetComponent<Camera>();
+
+                if (mainCamera != null)
+                {
+                    mainCamera.enabled = false;
+                }
+            }
+        }
+        else
+        {
+            if (secondaryCameraGO != null)
+            {
+                Camera secondaryCamera = secondaryCameraGO.GetComponent<Camera>();
+
+                if (secondaryCamera != null)
+                {
+                    secondaryCamera.enabled = false;
+                }
+            }
+
+            if (mainCameraGO != null)
+            {
+                Camera mainCamera = mainCameraGO.GetComponent<Camera>();
+
+                if (mainCamera != null)
+                {
+                    mainCamera.enabled = false;
+                }
+            }
+        }
+
 
         if (cockpitCameraGO != null)
         {
@@ -276,13 +335,13 @@ public static class SceneFunctions
         Scene scene = GetScene();
 
         GameObject mainCameraGO = GameObject.Find("Main Camera");
-        GameObject secondaryMainCameraGO = GameObject.Find("Secondary Main Camera");
+        GameObject secondaryCameraGO = GameObject.Find("Secondary Camera");
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
 
-        if (mainCameraGO != null & secondaryMainCameraGO != null)
+        if (mainCameraGO != null & secondaryCameraGO != null)
         {
             Camera mainCamera = mainCameraGO.GetComponent<Camera>();
-            Camera secondaryMainCamera = secondaryMainCameraGO.GetComponent<Camera>();
+            Camera secondaryCamera = secondaryCameraGO.GetComponent<Camera>();
             Camera cockpitCamera = null;
 
             if (cockpitCameraGO != null)
@@ -290,12 +349,12 @@ public static class SceneFunctions
                 cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
             }
 
-            if (mainCamera != null & secondaryMainCamera != null)
+            if (mainCamera != null & secondaryCamera != null)
             {
                 if (mainCamera.enabled == true)
                 {
                     mainCamera.enabled = false;
-                    secondaryMainCamera.enabled = true;
+                    secondaryCamera.enabled = true;
 
                     if (cockpitCamera != null)
                     {
@@ -307,7 +366,7 @@ public static class SceneFunctions
                 else
                 {
                     mainCamera.enabled = true;
-                    secondaryMainCamera.enabled = false;
+                    secondaryCamera.enabled = false;
 
                     if (cockpitCamera != null)
                     {
@@ -2279,8 +2338,8 @@ public static class SceneFunctions
             }
             else
             {
-                scene.starfieldCamera.transform.rotation = scene.secondaryMainCamera.transform.rotation;
-                scene.planetCamera.transform.rotation = scene.secondaryMainCamera.transform.rotation;
+                scene.starfieldCamera.transform.rotation = scene.secondaryCamera.transform.rotation;
+                scene.planetCamera.transform.rotation = scene.secondaryCamera.transform.rotation;
             }
         }
     }
@@ -2313,7 +2372,7 @@ public static class SceneFunctions
             Camera.transform.parent = null;
         }
 
-        GameObject SecondaryCamera = GameObject.Find("Secondary Main Camera");
+        GameObject SecondaryCamera = GameObject.Find("Secondary Camera");
 
         if (SecondaryCamera != null)
         {
@@ -2581,7 +2640,14 @@ public static class SceneFunctions
         // Apply the scale factor proportionally to all axes
         gameObject.transform.localScale = originalScale * scaleFactor;
 
-        Debug.Log($"GameObject '{gameObject.name}' scaled to fit Z-axis length {targetZLengthInMeters} meters. But actual length is " + gameObjectBounds.size.z);
+        //Bounds newGameObjectBounds = new Bounds(renderers[0].bounds.center, Vector3.zero);
+
+        //foreach (Renderer renderer in renderers)
+        //{
+        //    newGameObjectBounds.Encapsulate(renderer.bounds);
+        //}
+
+        //Debug.Log($"GameObject '{gameObject.name}' scaled to fit Z-axis length {targetZLengthInMeters} meters. But actual length is " + newGameObjectBounds.size.z + " from a size of " + currentZLength);
     }
 
     #endregion

@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 7354364270646903677}
   - component: {fileID: 2382747966284074088}
   - component: {fileID: 4515226452473135626}
-  m_Layer: 28
+  m_Layer: 0
   m_Name: Tunnel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,6 +95,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -247,6 +250,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Tunnel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8773129830002488051, guid: b3aaee74453351c43a0f3b9980a80e94,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

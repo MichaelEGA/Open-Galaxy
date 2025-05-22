@@ -1196,7 +1196,17 @@ public static class MissionFunctions
 
         //This makes the stars stretch out
         scene.planetCamera.GetComponent<Camera>().enabled = true;
-        scene.mainCamera.GetComponent<Camera>().enabled = true;
+        
+        if (scene.secondaryCameraIsActive == false)
+        {
+            scene.mainCamera.GetComponent<Camera>().enabled = true;
+            scene.secondaryCamera.GetComponent<Camera>().enabled = false;
+        }
+        else
+        {
+            scene.secondaryCamera.GetComponent<Camera>().enabled = true;
+            scene.mainCamera.GetComponent<Camera>().enabled = false;
+        }
 
         //This fades the hud back in
         Task fadeIN = new Task(HudFunctions.FadeInHud(1));

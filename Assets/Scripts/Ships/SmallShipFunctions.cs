@@ -37,6 +37,17 @@ public static class SmallShipFunctions
                 }
             }
 
+            //This gets the camera position which is used for targetting as well as placing the cockpit
+            if (smallShip.secondaryCameraPosition == null)
+            {
+                Transform secondaryCameraPos = GameObjectUtils.FindChildTransformCalled(smallShip.gameObject.transform, "secondarycamera");
+
+                if (secondaryCameraPos != null)
+                {
+                    smallShip.secondaryCameraPosition = secondaryCameraPos.gameObject;
+                }
+            }
+
             GameObjectUtils.AddColliders(smallShip.gameObject, true);
             GameObjectUtils.AddRigidbody(smallShip.gameObject, 100f, 9f, 7.5f);
             TorpedoFunctions.GetTorpedoTubes(smallShip);

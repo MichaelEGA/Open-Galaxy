@@ -1200,17 +1200,6 @@ public static class MissionFunctions
         while (c.Running == true) { yield return null; }
 
         scene.planetCamera.GetComponent<Camera>().enabled = true;
-        
-        //if (scene.secondaryCameraIsActive == false)
-        //{
-        //    scene.mainCamera.GetComponent<Camera>().enabled = true;
-        //    scene.secondaryCamera.GetComponent<Camera>().enabled = false;
-        //}
-        //else
-        //{
-        //    scene.secondaryCamera.GetComponent<Camera>().enabled = true;
-        //    scene.mainCamera.GetComponent<Camera>().enabled = false;
-        //}
 
         //This fades the hud back in
         Task fadeIN = new Task(HudFunctions.FadeInHud(1));
@@ -2103,7 +2092,7 @@ public static class MissionFunctions
         string laserColor = "red";
         if (missionEvent.data7 != "none") { laserColor = missionEvent.data7; }
 
-        SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, exitingHyperspace, isAI, false, laserColor);
+        SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, exitingHyperspace, isAI, false, laserColor, true);
     }
 
     //This loads a single ship at a certain distance and angle from the player

@@ -33,6 +33,8 @@ public static class MissionBriefingFunctions
         HudFunctions.SetHudTransparency(1);
 
         SceneFunctions.ActivateCameras(true);
+
+        Task a = new Task(UnlockPlayerControlsAfter(2));
     }
 
     //This activates the mission briefing when called by a mission event
@@ -53,6 +55,8 @@ public static class MissionBriefingFunctions
         //This loads the ready room
         GameObject environmentGO = Resources.Load<GameObject>("objects/readyrooms/readyroom_white");
         GameObject environment = GameObject.Instantiate(environmentGO) as GameObject;
+
+        LockPlayerControls();
 
         //This moves the camera into position
         if (model != "none" & model != "") //This checks to see whether the camera should zoom in or not
@@ -156,6 +160,35 @@ public static class MissionBriefingFunctions
         // Ensure the final position is set
         gameObject.transform.localPosition = endPosition;
     }
+    public static void LockPlayerControls()
+    {
+        Scene scene = SceneFunctions.GetScene();
 
+        if (scene != null)
+        {
+            SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+
+            if (smallShip != null)
+            {
+                smallShip.controlLock = true;
+            }
+        }
+    }
+    public static IEnumerator UnlockPlayerControlsAfter(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+
+            if (smallShip != null)
+            {
+                smallShip.controlLock = false;
+            }
+        }  
+    }
 
 }

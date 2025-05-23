@@ -302,7 +302,7 @@ public static class AudioFunctions
                 smallShip.engineAudioSource.dopplerLevel = 0f;
                 smallShip.engineAudioSource.spread = 45;
                 smallShip.engineAudioSource.maxDistance = 500;
-                smallShip.engineAudioSource.volume = 0.4f;
+                smallShip.engineAudioSource.volume = 0.2f;
                 smallShip.engineAudioSource.rolloffMode = AudioRolloffMode.Linear;
                 smallShip.engineAudioSource.loop = true;
                 smallShip.engineAudioSource.Play();

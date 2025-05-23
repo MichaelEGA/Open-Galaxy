@@ -10,7 +10,6 @@ public class OGSettingData
     public bool invertY;
     public bool invertX;
     public bool autoaim;
-    public string shipAssets;
     public string gameWindowMode;
     public string editorWindowMode;
     public string damage;

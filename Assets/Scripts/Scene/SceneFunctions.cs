@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.UI;
+using UnityEngine.Rendering.Universal;
 
 
 //These functions are used to generate a scene including scenery and ship loading/unloading
@@ -646,7 +648,7 @@ public static class SceneFunctions
         {
             Color newColour;
 
-            if (ColorUtility.TryParseHtmlString(colour, out newColour))
+            if (UnityEngine.ColorUtility.TryParseHtmlString(colour, out newColour))
             {
                 //Do nothing
             }
@@ -693,7 +695,7 @@ public static class SceneFunctions
         //This changes the colour temperature
         if (scene.sceneLight != null)
         {
-            colour = ColorUtility.ToHtmlStringRGB(scene.sceneLight.color);
+            colour = UnityEngine.ColorUtility.ToHtmlStringRGB(scene.sceneLight.color);
         }
 
         //This sets the sun on and off and changes its intensity
@@ -1224,7 +1226,7 @@ public static class SceneFunctions
     {
         Color newColour;
 
-        if (ColorUtility.TryParseHtmlString(fogColor, out newColour))
+        if (UnityEngine.ColorUtility.TryParseHtmlString(fogColor, out newColour))
         {
             //Do nothing
         }
@@ -1292,7 +1294,8 @@ public static class SceneFunctions
         bool exitingHyperspace,
         bool isAI, 
         bool dontModifyPosition,
-        string laserColor)
+        string laserColor,
+        bool singleCall = false)
     {
         //Key reference
         GameObject ship = null;
@@ -1542,6 +1545,11 @@ public static class SceneFunctions
             }
 
         }
+
+        if (singleCall == true & exitingHyperspace != true)
+        {
+            HudFunctions.AddToShipLog(type + " just entered the area");
+        }
     }
     
     //This instanties the designated prefabe from the pool listed in the settings or finds a substitute from another pool if the prefab is not present
@@ -1642,6 +1650,11 @@ public static class SceneFunctions
 
             yield return null;
         }
+
+        if (exitingHyperspace == false)
+        {
+            HudFunctions.AddToShipLog(number + " " + type + " just entered the area");
+        }
     }
 
     //A wrapper functions for load single ships that loads a single ship on the ground
@@ -1700,7 +1713,8 @@ public static class SceneFunctions
             Vector3 newPosition = new Vector3(relativePosition.x, 0, relativePosition.z);
             LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, isAI, true, laserColor);
         }
- 
+
+        HudFunctions.AddToShipLog(type + " just entered the area");
     }
 
     //A wrapper functions for load single ships that loads multiple ships on the ground
@@ -1772,6 +1786,8 @@ public static class SceneFunctions
 
             yield return null;
         }
+
+        HudFunctions.AddToShipLog(number + " " + type + " ships just entered the area");
     }
 
     //A wrapper functions for load single ship that loads multiple ships from another ships hangar
@@ -1873,6 +1889,8 @@ public static class SceneFunctions
         //This loads the ship if the hangar launch is found
         if (hangarLaunch != null)
         {
+            HudFunctions.AddToShipLog(number + " " + type + " ships are exiting the " + launchship + "'s hangar");
+
             for (int i = 0; i < number; i++)
             {
                 int shipNo = i + 1;
@@ -2309,19 +2327,19 @@ public static class SceneFunctions
 
             if (shipPosition.x > 1000 || shipPosition.x < -1000 || shipPosition.y > 1000 || shipPosition.y < -1000 || shipPosition.z > 1000 || shipPosition.z < -1000)
             {
-
                 Scene scene = GameObject.FindFirstObjectByType<Scene>();  //This gets the scene reference
 
-                playerShip.transform.SetParent(null); //This unparents the ship from the scene anchor
+                GameObject tempGO = new GameObject();
 
-                scene.gameObject.transform.SetParent(playerShip.transform); //This parents the scene anchor to the ship
+                tempGO.transform.position = playerShip.transform.position;
 
-                playerShip.transform.position = new Vector3(0, 0, 0); //This moves the ship back to 0,0,0
+                scene.gameObject.transform.SetParent(tempGO.transform); //This parents the scene anchor to the ship
+
+                tempGO.transform.position = new Vector3(0, 0, 0); //This moves the ship back to 0,0,0
 
                 scene.gameObject.transform.SetParent(null); //This unparents the scene anchor from the ship
 
-                playerShip.transform.SetParent(scene.gameObject.transform); //This reparents the ship to the scene anchor
-
+                GameObject.Destroy(tempGO);
             }
         }
     }

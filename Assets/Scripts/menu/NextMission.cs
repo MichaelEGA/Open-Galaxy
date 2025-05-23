@@ -41,10 +41,4 @@ public class NextMission : MonoBehaviour
         MissionFunctions.ReturnToMainMenu();
     }
 
-    //This exits the game
-    public void ExitGame()
-    {
-        MainMenuFunctions.QuitToDesktop();
-    }
-
 }

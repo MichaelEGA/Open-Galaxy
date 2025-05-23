@@ -650,7 +650,7 @@ public static class NodeDescriptions
              "- This function will affect any ship whose name contains the designated string. \n" +
              "- If the location is left as 'none' the node will run regardless of location. \n";
         }
-        else if (name == "setfolowtarget")
+        else if (name == "setfollowtarget")
         {
             description =
             "Set Follow Target \n " +

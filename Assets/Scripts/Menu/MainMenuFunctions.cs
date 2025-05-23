@@ -252,7 +252,7 @@ public static class MainMenuFunctions
         LoadButtons();
 
         //This gets the reference to the main menu (NOTE: if you have more than one main menu you will need to change this line as this line will just grab the first menu reference it can find)
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+        MainMenu mainMenu = GameObject.FindFirstObjectByType<MainMenu>();
 
         //This creates the function dictionary
         CreateFunctionDictionary(mainMenu);
@@ -333,50 +333,45 @@ public static class MainMenuFunctions
         //This loads the mission data
         Object[] mainMissions = Resources.LoadAll(OGGetAddress.missions_internal, typeof(TextAsset));
 
-        //This loads the image data
-        Object[] mainMissionImages = Resources.LoadAll(OGGetAddress.missions_internal, typeof(Texture2D));
-
-        foreach (Object campaignImage in mainMissionImages)
-        {
-            mainMenu.campaignImages.Add((Texture2D)campaignImage);
-        }
-
         //This gets all the main campaigns
-        foreach (Object mission in mainMissions)
+        if (mainMissions.Length > 0)
         {
-            TextAsset missionString = (TextAsset)mission;
-
-            Mission tempMission = JsonUtility.FromJson<Mission>(missionString.text);
-
-            string campaignName = "none";
-
-            foreach (MissionEvent missionEvent in tempMission.missionEventData)
+            foreach (Object mission in mainMissions)
             {
-                if (missionEvent.eventType == "campaigninformation")
+                TextAsset missionString = (TextAsset)mission;
+
+                Mission tempMission = JsonUtility.FromJson<Mission>(missionString.text);
+
+                string campaignName = "none";
+
+                foreach (MissionEvent missionEvent in tempMission.missionEventData)
                 {
-                    bool isPresent = false;
-
-                    campaignName = missionEvent.data1;
-
-                    foreach (string campaign in mainMenu.campaigns)
+                    if (missionEvent.eventType == "campaigninformation")
                     {
-                        if (campaign == missionEvent.data1)
+                        bool isPresent = false;
+
+                        campaignName = missionEvent.data1;
+
+                        foreach (string campaign in mainMenu.campaigns)
                         {
-                            isPresent = true;
+                            if (campaign == missionEvent.data1)
+                            {
+                                isPresent = true;
+                            }
+                        }
+
+                        if (isPresent == false)
+                        {
+                            mainMenu.campaigns.Add(missionEvent.data1);
+                            mainMenu.campaignDescriptions.Add(missionEvent.data2);
                         }
                     }
-
-                    if (isPresent == false)
-                    {
-                        mainMenu.campaigns.Add(missionEvent.data1);
-                        mainMenu.campaignDescriptions.Add(missionEvent.data2);
-                    }
                 }
-            }
 
-            mainMenu.mainMissionNames.Add(mission.name);
-            mainMenu.mainMissionCampaigns.Add(campaignName);
-        }      
+                mainMenu.mainMissionNames.Add(mission.name);
+                mainMenu.mainMissionCampaigns.Add(campaignName);
+            }
+        }
     }
 
     //This loads all the external campaign data
@@ -398,75 +393,63 @@ public static class MainMenuFunctions
         {
             var fileInfo = info.GetFiles("*.json");
 
-            foreach (FileInfo file in fileInfo)
+            if (fileInfo.Length > 0)
             {
-                string path = OGGetAddress.missions_custom + file.Name;
-                string missionDataString = File.ReadAllText(path);
-                TextAsset missionDataTextAsset = new TextAsset(missionDataString);
-                missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
-                customMissionsList.Add(missionDataTextAsset);
+                foreach (FileInfo file in fileInfo)
+                {
+                    string path = OGGetAddress.missions_custom + file.Name;
+                    string missionDataString = File.ReadAllText(path);
+                    TextAsset missionDataTextAsset = new TextAsset(missionDataString);
+                    missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
+                    customMissionsList.Add(missionDataTextAsset);
+                }
             }
         }
 
         Object[] customMissions = customMissionsList.ToArray();
 
-        //This loads the image data
-        if (mainMenu.campaignImages == null)
+        if (customMissions.Length > 0)
         {
-            mainMenu.campaignImages = new List<Texture2D>();
-        }
-
-        if (info.Exists == true)
-        {
-            var fileInfo = info.GetFiles("*.jpg");
-
-            foreach (FileInfo file in fileInfo)
+            foreach (Object mission in customMissions)
             {
-                string path = OGGetAddress.missions_custom + file.Name;
-                byte[] bytes = File.ReadAllBytes(path);
-                Texture2D loadTexture = new Texture2D(1, 1); //mock size 1x1
-                loadTexture.LoadImage(bytes);
-                loadTexture.name = System.IO.Path.GetFileNameWithoutExtension(path);
-                mainMenu.campaignImages.Add(loadTexture);
-            }
-        }
+                TextAsset missionString = (TextAsset)mission;
 
-        foreach (Object mission in customMissions)
-        {
-            TextAsset missionString = (TextAsset)mission;
+                Mission tempMission = JsonUtility.FromJson<Mission>(missionString.text);
 
-            Mission tempMission = JsonUtility.FromJson<Mission>(missionString.text);
+                string campaignName = "none";
 
-            string campaignName = "none";
-
-            foreach (MissionEvent missionEvent in tempMission.missionEventData)
-            {
-                if (missionEvent.eventType == "campaigninformation")
+                foreach (MissionEvent missionEvent in tempMission.missionEventData)
                 {
-                    bool isPresent = false;
-
-                    campaignName = missionEvent.data1;
-
-                    foreach (string campaign in mainMenu.campaigns)
+                    if (missionEvent.eventType == "campaigninformation")
                     {
-                        if (campaign == missionEvent.data1)
+                        bool isPresent = false;
+
+                        campaignName = missionEvent.data1;
+
+                        foreach (string campaign in mainMenu.campaigns)
                         {
-                            isPresent = true;
+                            if (campaign == missionEvent.data1)
+                            {
+                                isPresent = true;
+                            }
+                        }
+
+                        if (isPresent == false)
+                        {
+                            mainMenu.campaigns.Add(missionEvent.data1);
+                            mainMenu.campaignDescriptions.Add(missionEvent.data2);
                         }
                     }
-
-                    if (isPresent == false)
-                    {
-                        mainMenu.campaigns.Add(missionEvent.data1);
-                        mainMenu.campaignDescriptions.Add(missionEvent.data2);
-                    }
                 }
+
+                mainMenu.customMissionNames.Add(mission.name);
+                mainMenu.customMissionCampaigns.Add(campaignName);
             }
-
-            mainMenu.customMissionNames.Add(mission.name);
-            mainMenu.customMissionCampaigns.Add(campaignName);
         }
-
+        else
+        {
+            Debug.LogWarning("Open Galaxy found no external files or was unable to load them.");
+        }
     }
 
     //This creates a dictionary of the all the functions the menu can call
@@ -486,7 +469,6 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("LoadMissionEditor", new System.Action(LoadEditor));
         mainMenu.functions.Add("OpenCustomMissionDirectory", new System.Action(OpenCustomMissionDirectory));
         mainMenu.functions.Add("OpenWebAddressAndQuit", new System.Action<string>(OpenWebAddressAndQuit));
-        mainMenu.functions.Add("SelectShipAssets", new System.Action<string>(SelectShipAssets));
         mainMenu.functions.Add("SetAutoaim", new System.Action<string>(SetAutoaim));
         mainMenu.functions.Add("SetWindowMode", new System.Action<string>(SetWindowMode));
         mainMenu.functions.Add("SetEditorWindowMode", new System.Action<string>(SetEditorWindowMode));
@@ -925,7 +907,7 @@ public static class MainMenuFunctions
         messages[7] = "Check out the credits to see who made Open Galaxy possible.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
         messages[9] = "Post 6.0 plans for Open Galaxy includes controller support, more cockpits, and more missions.";
-        messages[10] = "Finding it hard to hit your target? Try turning on autoaim in the control menu.";
+        messages[10] = "Finding it hard to hit your target? Try turning on autoaim in the controls menu.";
         messages[11] = "Getting blown out of the sky? Try changing the damage level in the settings menu";
         Random.InitState(System.DateTime.Now.Millisecond);
         int randomMessageNo = Random.Range(0, 11);
@@ -1285,16 +1267,6 @@ public static class MainMenuFunctions
         address = address.Replace(@"/", @"\"); //Because explorer doesn't like forward leaning slashes
 
         System.Diagnostics.Process.Start("explorer.exe", "/select," + address);
-    }
-
-    //This selects the cockpit types to be used in the game
-    public static void SelectShipAssets(string type)
-    {
-        OGSettingsFunctions.SelectShipAssets(type);
-
-        ActivateSubMenu("Settings");
-
-        OutputMenuMessage("The ship assets were set to " + type);
     }
 
     //This sets the autoaim preference

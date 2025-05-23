@@ -122,7 +122,6 @@ public static class CockpitFunctions
                 if (smallShip.inHyperspace == false)
                 {
                     secondaryCamera.transform.SetParent(smallShip.scene.transform);
-
                     secondaryCamera.transform.localPosition = Vector3.Lerp(secondaryCamera.transform.localPosition, desiredPosition, followSpeed * Time.deltaTime);
 
                     // Optionally, smoothly rotate the camera to look at the target

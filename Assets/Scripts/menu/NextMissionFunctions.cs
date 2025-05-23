@@ -44,6 +44,9 @@ public class NextMissionFunctions
         {
             modelTransform.gameObject.SetActive(true);
         }
+
+        //This sets the lighting
+        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 60, 0, 0);
     }
 
     //This checks if the mission exists

@@ -1123,7 +1123,6 @@ public static class MissionFunctions
 
         //This makes the stars stretch out
         scene.planetCamera.GetComponent<Camera>().enabled = false;
-        scene.mainCamera.GetComponent<Camera>().enabled = false;
 
         Time.timeScale = 0;
 
@@ -1136,6 +1135,8 @@ public static class MissionFunctions
         //This activates the hyperspace tunnel
         if(scene.hyperspaceTunnel != null)
         {
+            scene.hyperspaceTunnel.transform.SetParent(smallShip.transform);
+            scene.hyperspaceTunnel.transform.localPosition = new Vector3(0, 0, 0);
             scene.hyperspaceTunnel.SetActive(true);
             SceneFunctions.SetStarfieldToInvisible(true);
         }
@@ -1185,28 +1186,30 @@ public static class MissionFunctions
         {
             SceneFunctions.SetStarfieldToInvisible(false);
             scene.hyperspaceTunnel.SetActive(false);
+            scene.hyperspaceTunnel.transform.SetParent(null);
         }
 
         //This plays the hyperspace exit
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
+        scene.starfieldCamera.GetComponent<Camera>().enabled = true;
+
         //This shrinks the starfield
         Task c = new Task(SceneFunctions.ShrinkStarfield());
         while (c.Running == true) { yield return null; }
 
-        //This makes the stars stretch out
         scene.planetCamera.GetComponent<Camera>().enabled = true;
         
-        if (scene.secondaryCameraIsActive == false)
-        {
-            scene.mainCamera.GetComponent<Camera>().enabled = true;
-            scene.secondaryCamera.GetComponent<Camera>().enabled = false;
-        }
-        else
-        {
-            scene.secondaryCamera.GetComponent<Camera>().enabled = true;
-            scene.mainCamera.GetComponent<Camera>().enabled = false;
-        }
+        //if (scene.secondaryCameraIsActive == false)
+        //{
+        //    scene.mainCamera.GetComponent<Camera>().enabled = true;
+        //    scene.secondaryCamera.GetComponent<Camera>().enabled = false;
+        //}
+        //else
+        //{
+        //    scene.secondaryCamera.GetComponent<Camera>().enabled = true;
+        //    scene.mainCamera.GetComponent<Camera>().enabled = false;
+        //}
 
         //This fades the hud back in
         Task fadeIN = new Task(HudFunctions.FadeInHud(1));

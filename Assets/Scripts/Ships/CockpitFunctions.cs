@@ -4,6 +4,8 @@ using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 public static class CockpitFunctions
 {
@@ -113,11 +115,24 @@ public static class CockpitFunctions
                     desiredPosition = smallShip.secondaryCameraPosition.transform.position;
                 }
 
-                secondaryCamera.transform.position = Vector3.Lerp(secondaryCamera.transform.position, desiredPosition, followSpeed * Time.deltaTime);
+                desiredPosition = smallShip.scene.transform.InverseTransformPoint(desiredPosition);
 
-                // Optionally, smoothly rotate the camera to look at the target
-                Quaternion desiredRotation = target.rotation;
-                secondaryCamera.transform.rotation = Quaternion.Slerp(secondaryCamera.transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+                if (smallShip.inHyperspace == false)
+                {
+                    secondaryCamera.transform.localPosition = Vector3.Lerp(secondaryCamera.transform.localPosition, desiredPosition, followSpeed * Time.deltaTime);
+
+                    // Optionally, smoothly rotate the camera to look at the target
+                    Quaternion desiredRotation = target.rotation;
+                    secondaryCamera.transform.rotation = Quaternion.Slerp(secondaryCamera.transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    secondaryCamera.transform.localPosition = Vector3.Lerp(secondaryCamera.transform.localPosition, desiredPosition, followSpeed * Time.unscaledDeltaTime);
+
+                    // Optionally, smoothly rotate the camera to look at the target
+                    Quaternion desiredRotation = target.rotation;
+                    secondaryCamera.transform.rotation = Quaternion.Slerp(secondaryCamera.transform.rotation, desiredRotation, rotationSpeed * Time.unscaledDeltaTime);
+                }
             }
         }
     }

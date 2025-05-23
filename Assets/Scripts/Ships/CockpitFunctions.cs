@@ -81,13 +81,15 @@ public static class CockpitFunctions
     {
         if (smallShip != null)
         {
-            if(smallShip.isAI == false)
+            if (smallShip.isAI == false)
             {
                 var keyboard = Keyboard.current;
 
-                if (keyboard.f1Key.isPressed == true)
+                if (keyboard.f1Key.isPressed == true & Time.time > smallShip.toggleCameraPressTime + 0.5f)
                 {
                     SceneFunctions.ToggleMainCamera();
+
+                    smallShip.toggleCameraPressTime = Time.time;
                 }
 
                 if (smallShip.secondaryCamera == null)
@@ -119,6 +121,8 @@ public static class CockpitFunctions
 
                 if (smallShip.inHyperspace == false)
                 {
+                    secondaryCamera.transform.SetParent(smallShip.scene.transform);
+
                     secondaryCamera.transform.localPosition = Vector3.Lerp(secondaryCamera.transform.localPosition, desiredPosition, followSpeed * Time.deltaTime);
 
                     // Optionally, smoothly rotate the camera to look at the target
@@ -127,11 +131,7 @@ public static class CockpitFunctions
                 }
                 else
                 {
-                    secondaryCamera.transform.localPosition = Vector3.Lerp(secondaryCamera.transform.localPosition, desiredPosition, followSpeed * Time.unscaledDeltaTime);
-
-                    // Optionally, smoothly rotate the camera to look at the target
-                    Quaternion desiredRotation = target.rotation;
-                    secondaryCamera.transform.rotation = Quaternion.Slerp(secondaryCamera.transform.rotation, desiredRotation, rotationSpeed * Time.unscaledDeltaTime);
+                    secondaryCamera.transform.SetParent(smallShip.transform);
                 }
             }
         }

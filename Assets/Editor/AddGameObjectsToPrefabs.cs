@@ -23,6 +23,11 @@ public class AddGameObjectsToPrefabs : EditorWindow
             AddCameraPosition();
         }
 
+        if (GUILayout.Button("One"))
+        {
+            AddSecondaryCameraPosition();
+        }
+
         GUILayout.EndHorizontal();
 
         EditorGUILayout.LabelField("Cast Position", EditorStyles.boldLabel);
@@ -906,6 +911,48 @@ public class AddGameObjectsToPrefabs : EditorWindow
             }
 
             GameObject cameraGO = new GameObject("camera");
+            cameraGO.transform.parent = prefabInstance.transform;
+            cameraGO.transform.localPosition = new Vector3(0, 0, 0);
+
+            PrefabUtility.SaveAsPrefabAsset(prefabInstance, path);
+
+            DestroyImmediate(prefabInstance);
+
+            Debug.Log($"Added smallship gameObjects to prefab: {prefab.name}");
+        }
+
+        AssetDatabase.Refresh();
+    }
+
+    private void AddSecondaryCameraPosition()
+    {
+        Object[] selectedObjects = Selection.objects;
+
+        foreach (Object obj in selectedObjects)
+        {
+            string path = AssetDatabase.GetAssetPath(obj);
+
+            if (string.IsNullOrEmpty(path) || !path.EndsWith(".prefab"))
+            {
+                Debug.LogWarning($"Skipped {obj.name}. Not a valid prefab.");
+                continue;
+            }
+
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefab == null)
+            {
+                Debug.LogWarning($"Could not load prefab at path: {path}");
+                continue;
+            }
+
+            GameObject prefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            if (prefabInstance == null)
+            {
+                Debug.LogWarning($"Could not instantiate prefab: {prefab.name}");
+                continue;
+            }
+
+            GameObject cameraGO = new GameObject("secondarycamera");
             cameraGO.transform.parent = prefabInstance.transform;
             cameraGO.transform.localPosition = new Vector3(0, 0, 0);
 

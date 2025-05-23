@@ -123,6 +123,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool lookLeft;
     [HideInInspector] public bool matchSpeed;
     [HideInInspector] public bool contextButton;
+    [HideInInspector] public float toggleCameraPressTime;
 
     [Header("Ship Weapons")]
     public bool weaponsLock = false;

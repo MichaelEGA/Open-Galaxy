@@ -2310,7 +2310,7 @@ public static class SceneFunctions
             if (shipPosition.x > 1000 || shipPosition.x < -1000 || shipPosition.y > 1000 || shipPosition.y < -1000 || shipPosition.z > 1000 || shipPosition.z < -1000)
             {
 
-                Scene scene = GameObject.FindObjectOfType<Scene>();  //This gets the scene reference
+                Scene scene = GameObject.FindFirstObjectByType<Scene>();  //This gets the scene reference
 
                 playerShip.transform.SetParent(null); //This unparents the ship from the scene anchor
 

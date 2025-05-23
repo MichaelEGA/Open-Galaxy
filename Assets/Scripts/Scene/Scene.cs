@@ -106,8 +106,7 @@ public class Scene : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        SceneFunctions.RecenterScene(mainShip);
+    {        
         SceneFunctions.RotateStarfieldAndPlanetCamera(this);
         AvoidCollisionsFunctions.AvoidCollision(this);
 
@@ -117,6 +116,11 @@ public class Scene : MonoBehaviour
         }
 
         Shader.SetGlobalFloat("_unscaledTime", Time.unscaledTime);
+    }
+
+    void FixedUpdate()
+    {
+        SceneFunctions.RecenterScene(mainShip);
     }
 
 }

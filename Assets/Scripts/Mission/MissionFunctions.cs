@@ -1124,19 +1124,20 @@ public static class MissionFunctions
         //This makes the stars stretch out
         scene.planetCamera.GetComponent<Camera>().enabled = false;
 
+        smallShip.inHyperspace = true;
+
         Time.timeScale = 0;
 
         //This makes the stars stretch out
         Task a = new Task(SceneFunctions.StretchStarfield());
         while(a.Running == true) { yield return null; }
 
-        smallShip.inHyperspace = true;
-
         //This activates the hyperspace tunnel
         if(scene.hyperspaceTunnel != null)
         {
             scene.hyperspaceTunnel.transform.SetParent(smallShip.transform);
             scene.hyperspaceTunnel.transform.localPosition = new Vector3(0, 0, 0);
+            scene.hyperspaceTunnel.transform.localRotation = Quaternion.identity;
             scene.hyperspaceTunnel.SetActive(true);
             SceneFunctions.SetStarfieldToInvisible(true);
         }

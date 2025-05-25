@@ -3626,9 +3626,6 @@ public static class MissionFunctions
         //This resets the skybox to black
         SceneFunctions.SetSkybox("space_black", true);
 
-        //This resets the lighting to default
-        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 0, 0);
-
         //This destroys the mission manager
         if (missionManager != null) { GameObject.Destroy(missionManager.gameObject); }
     }

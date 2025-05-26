@@ -49,7 +49,16 @@ public static class SmallShipFunctions
             }
 
             GameObjectUtils.AddColliders(smallShip.gameObject, true);
-            GameObjectUtils.AddRigidbody(smallShip.gameObject, 100f, 9f, 7.5f);
+
+            if (smallShip.isAI == false)
+            {
+                GameObjectUtils.AddRigidbody(smallShip.gameObject, 100f, 9f, 7.5f);
+            }
+            else
+            {
+                GameObjectUtils.AddRigidbody(smallShip.gameObject, 100f, 9f, 7.5f);
+            }
+
             TorpedoFunctions.GetTorpedoTubes(smallShip);
             smallShip.colliders = smallShip.GetComponentsInChildren<Collider>();
             TargetingFunctions.CreateWaypoint_SmallShipPlayer(smallShip);

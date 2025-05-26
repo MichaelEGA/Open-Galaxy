@@ -8,14 +8,23 @@ public static class GameObjectUtils
     //TRANSFORM AND GAMEOBJECT FUNCTIONS
 
     //This function adds a rigidbody to the gameobject
-    public static Rigidbody AddRigidbody(GameObject gameObject, float mass, float drag, float angularDrag)
+    public static Rigidbody AddRigidbody(GameObject gameObject, float mass, float drag, float angularDrag, bool useInterpolation = false)
     {
         Rigidbody rigibody = gameObject.AddComponent<Rigidbody>();
         rigibody.mass = mass;
         rigibody.linearDamping = drag;
         rigibody.angularDamping = angularDrag;
         rigibody.useGravity = false;
-        rigibody.interpolation = RigidbodyInterpolation.Interpolate;
+
+        if (useInterpolation == true)
+        {
+            rigibody.interpolation = RigidbodyInterpolation.Interpolate;
+        }
+        else
+        {
+            rigibody.interpolation = RigidbodyInterpolation.None;
+        }
+
         return rigibody;
     }
 

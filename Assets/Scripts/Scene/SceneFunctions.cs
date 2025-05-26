@@ -1653,7 +1653,7 @@ public static class SceneFunctions
 
         if (exitingHyperspace == false)
         {
-            HudFunctions.AddToShipLog(number + " " + type + " just entered the area");
+            HudFunctions.AddToShipLog(number + " " + type.ToUpper() + "S just entered the area");
         }
     }
 
@@ -1714,7 +1714,7 @@ public static class SceneFunctions
             LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, false, isAI, true, laserColor);
         }
 
-        HudFunctions.AddToShipLog(type + " just entered the area");
+        HudFunctions.AddToShipLog(type.ToUpper() + " just entered the area");
     }
 
     //A wrapper functions for load single ships that loads multiple ships on the ground
@@ -1787,7 +1787,7 @@ public static class SceneFunctions
             yield return null;
         }
 
-        HudFunctions.AddToShipLog(number + " " + type + " ships just entered the area");
+        HudFunctions.AddToShipLog(number + " " + type.ToUpper() + "S just entered the area");
     }
 
     //A wrapper functions for load single ship that loads multiple ships from another ships hangar
@@ -1889,7 +1889,7 @@ public static class SceneFunctions
         //This loads the ship if the hangar launch is found
         if (hangarLaunch != null)
         {
-            HudFunctions.AddToShipLog(number + " " + type + " ships are exiting the " + launchship + "'s hangar");
+            HudFunctions.AddToShipLog(number + " " + type.ToUpper() + "S are exiting the " + launchship.ToUpper() + "'S hangar");
 
             for (int i = 0; i < number; i++)
             {

@@ -1126,6 +1126,8 @@ public static class MissionFunctions
 
         smallShip.inHyperspace = true;
 
+        yield return new WaitForSecondsRealtime(1);
+
         Time.timeScale = 0;
 
         //This makes the stars stretch out

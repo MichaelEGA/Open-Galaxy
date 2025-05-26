@@ -124,13 +124,14 @@ public static class CockpitFunctions
                     secondaryCamera.transform.SetParent(smallShip.scene.transform);
                     secondaryCamera.transform.localPosition = Vector3.Lerp(secondaryCamera.transform.localPosition, desiredPosition, followSpeed * Time.deltaTime);
 
-                    // Optionally, smoothly rotate the camera to look at the target
+                    //smoothly rotate the camera to look at the target
                     Quaternion desiredRotation = target.rotation;
                     secondaryCamera.transform.rotation = Quaternion.Slerp(secondaryCamera.transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
                 }
                 else
                 {
                     secondaryCamera.transform.SetParent(smallShip.transform);
+                    Debug.Log("was run");
                 }
             }
         }

@@ -157,6 +157,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3337140102031816376}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3698849108522110617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8384345870001383993}
+  m_Layer: 0
+  m_Name: focuscamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8384345870001383993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3698849108522110617}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.25, z: 1.07}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8367718758287023044}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4381911210665348851
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,6 +600,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8343169058633268554}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6f87c0adee76d8478b7fb053b8ffd0e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8384345870001383993}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6f87c0adee76d8478b7fb053b8ffd0e, type: 3}
 --- !u!4 &8367718758287023044 stripped

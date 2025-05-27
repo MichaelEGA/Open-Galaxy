@@ -43,6 +43,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public GameObject cockpitCamera;
     [HideInInspector] public GameObject cameraPosition;
     [HideInInspector] public GameObject secondaryCameraPosition;
+    [HideInInspector] public GameObject focusCameraPosition;
 
     [Header("Ship Ratings")]
     public float accelerationRating = 50; //Value set in inspector or by loading script
@@ -122,6 +123,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool lookRight;
     [HideInInspector] public bool lookLeft;
     [HideInInspector] public bool matchSpeed;
+    [HideInInspector] public bool focusCamera;
     [HideInInspector] public bool contextButton;
     [HideInInspector] public float toggleCameraPressTime;
 

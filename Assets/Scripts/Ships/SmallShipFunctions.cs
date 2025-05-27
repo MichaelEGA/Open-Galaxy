@@ -48,6 +48,17 @@ public static class SmallShipFunctions
                 }
             }
 
+            if (smallShip.focusCameraPosition == null)
+            {
+                Transform focusCameraPos
+                    = GameObjectUtils.FindChildTransformCalled(smallShip.gameObject.transform, "secondarycamera");
+
+                if (focusCameraPos != null)
+                {
+                    smallShip.focusCameraPosition = focusCameraPos.gameObject;
+                }
+            }
+
             GameObjectUtils.AddColliders(smallShip.gameObject, true);
 
             if (smallShip.isAI == false)
@@ -146,9 +157,8 @@ public static class SmallShipFunctions
             smallShip.fireWeapon = mouse.leftButton.isPressed;
             smallShip.toggleWeapons = keyboard.tabKey.isPressed;
             smallShip.toggleWeaponNumber = keyboard.capsLockKey.isPressed;
-            smallShip.lookRight = keyboard.eKey.isPressed;
-            smallShip.lookLeft = keyboard.qKey.isPressed;
-            smallShip.matchSpeed = mouse.rightButton.isPressed;           
+            smallShip.matchSpeed = keyboard.eKey.isPressed;  
+            smallShip.focusCamera = mouse.rightButton.isPressed;
         }
     }
 

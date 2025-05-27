@@ -1745,22 +1745,25 @@ public static class HudFunctions
             {
                 if (hud.smallShip != null & hud.reticule != null)
                 {
-                    GameObject target = hud.smallShip.target;
-                    GameObject mainShip = hud.smallShip.gameObject;
-
-                    //This gets the intercept point
-                    Vector3 reticulePosition = hud.smallShip.cameraPosition.transform.position + (hud.smallShip.cameraPosition.transform.forward * hud.smallShip.interceptDistance);
-
-                    //This gets the targets position on the camera
-                    Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(reticulePosition);
-
-                    if (hud.scene.secondaryCameraIsActive == true)
+                    if (hud.smallShip.cameraPosition != null)
                     {
-                        screenPosition = hud.secondaryCamera.WorldToScreenPoint(reticulePosition);
-                    }
+                        GameObject target = hud.smallShip.target;
+                        GameObject mainShip = hud.smallShip.gameObject;
 
-                    //This translates that position to the intercept point
-                    hud.reticule.gameObject.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+                        //This gets the intercept point
+                        Vector3 reticulePosition = hud.smallShip.cameraPosition.transform.position + (hud.smallShip.cameraPosition.transform.forward * hud.smallShip.interceptDistance);
+
+                        //This gets the targets position on the camera
+                        Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(reticulePosition);
+
+                        if (hud.scene.secondaryCameraIsActive == true)
+                        {
+                            screenPosition = hud.secondaryCamera.WorldToScreenPoint(reticulePosition);
+                        }
+
+                        //This translates that position to the intercept point
+                        hud.reticule.gameObject.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+                    }
                 }
             }
             else

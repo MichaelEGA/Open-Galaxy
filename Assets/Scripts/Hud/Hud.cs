@@ -135,6 +135,7 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplayTargetShield(this);
         HudFunctions.DisplayTargetSystems(this);
         HudFunctions.DisplayTargetHull(this);
+        HudFunctions.DisplayReticule(this);
 
         HudFunctions.MoveReticule(this);
 

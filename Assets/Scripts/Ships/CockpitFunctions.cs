@@ -105,8 +105,8 @@ public static class CockpitFunctions
 
                 Transform target = smallShip.transform; // The target to follow (the ship itself);
                 Vector3 offset = new Vector3(0, smallShip.shipLength / 2f, smallShip.shipLength * -1);
-                float followSpeed = 8f;   // How quickly the camera moves default 8
-                float rotationSpeed = 6; // How quickly the camera rotates default 6         
+                float followSpeed = 16f;   // How quickly the camera moves default 8
+                float rotationSpeed = 6; // How quickly the camera rotates default 6
                 GameObject secondaryCamera = smallShip.secondaryCamera;
 
                 // Smoothly move the camera to the target position + offset
@@ -123,7 +123,7 @@ public static class CockpitFunctions
                 {
                     secondaryCamera.transform.SetParent(smallShip.scene.transform);
                     secondaryCamera.transform.localPosition = Vector3.Lerp(secondaryCamera.transform.localPosition, desiredPosition, followSpeed * Time.deltaTime);
-
+                    
                     //smoothly rotate the camera to look at the target
                     Quaternion desiredRotation = target.rotation;
                     secondaryCamera.transform.rotation = Quaternion.Slerp(secondaryCamera.transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);

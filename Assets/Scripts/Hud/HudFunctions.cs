@@ -1707,6 +1707,72 @@ public static class HudFunctions
         hud.reticuleFlashing = false;
     }
 
+    //This displays a target where the intercept point for the target ship is
+    public static void DisplayReticule(Hud hud)
+    {
+        if (hud.reticule == null)
+        {
+            GameObject reticule = GameObject.Find("Reticule");
+            if (reticule != null) { hud.reticule = reticule.GetComponent<RawImage>(); }
+        }
+
+        if (Time.timeScale != 0)
+        {
+
+            if (hud.mainCamera == null)
+            {
+                if (hud.smallShip != null)
+                {
+                    if (hud.smallShip.mainCamera != null)
+                    {
+                        hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
+                    }
+                }
+            }
+
+            if (hud.secondaryCamera == null)
+            {
+                if (hud.smallShip != null)
+                {
+                    if (hud.smallShip.secondaryCamera != null)
+                    {
+                        hud.secondaryCamera = hud.smallShip.secondaryCamera.GetComponent<Camera>();
+                    }
+                }
+            }
+
+            if (hud.secondaryCamera != null)
+            {
+                if (hud.smallShip != null & hud.reticule != null)
+                {
+                    GameObject target = hud.smallShip.target;
+                    GameObject mainShip = hud.smallShip.gameObject;
+
+                    //This gets the intercept point
+                    Vector3 reticulePosition = hud.smallShip.cameraPosition.transform.position + (hud.smallShip.cameraPosition.transform.forward * hud.smallShip.interceptDistance);
+
+                    //This gets the targets position on the camera
+                    Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(reticulePosition);
+
+                    if (hud.scene.secondaryCameraIsActive == true)
+                    {
+                        screenPosition = hud.secondaryCamera.WorldToScreenPoint(reticulePosition);
+                    }
+
+                    //This translates that position to the intercept point
+                    hud.reticule.gameObject.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+                }
+            }
+            else
+            {
+                if (hud.reticule != null)
+                {
+                    hud.reticule.gameObject.transform.position = new Vector2(0, 0);
+                }
+            }
+        }
+    }
+
     #endregion
 
     #region ship log

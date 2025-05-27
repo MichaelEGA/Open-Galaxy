@@ -87,7 +87,14 @@ public static class CockpitFunctions
 
                 if (keyboard.f1Key.isPressed == true & Time.time > smallShip.toggleCameraPressTime + 0.5f)
                 {
-                    SceneFunctions.ToggleMainCamera();
+                    if (smallShip.scene.followCameraIsActive == false)
+                    {
+                        SceneFunctions.ActivateFollowCamera(true);
+                    }
+                    else
+                    {
+                        SceneFunctions.ActivateFollowCamera(false);
+                    }
 
                     smallShip.toggleCameraPressTime = Time.time;
                 }
@@ -96,9 +103,9 @@ public static class CockpitFunctions
                 {
                     Scene scene = SceneFunctions.GetScene();
 
-                    if (scene.secondaryCamera != null)
+                    if (scene.followCamera != null)
                     {
-                        smallShip.secondaryCamera = scene.secondaryCamera;
+                        smallShip.secondaryCamera = scene.followCamera;
                         smallShip.secondaryCamera.transform.SetParent(scene.transform);
                     }
                 }
@@ -115,9 +122,9 @@ public static class CockpitFunctions
 
                 Vector3 primaryPosition = target.TransformPoint(primaryPositionOffset);
 
-                if (smallShip.secondaryCameraPosition != null)
+                if (smallShip.followCameraPosition != null)
                 {
-                    primaryPosition = smallShip.secondaryCameraPosition.transform.position;
+                    primaryPosition = smallShip.followCameraPosition.transform.position;
                 }
 
                 primaryPosition = smallShip.scene.transform.InverseTransformPoint(primaryPosition);

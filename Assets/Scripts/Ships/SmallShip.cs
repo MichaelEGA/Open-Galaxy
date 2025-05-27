@@ -42,7 +42,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public Vector3 cameraLocalPosition;
     [HideInInspector] public GameObject cockpitCamera;
     [HideInInspector] public GameObject cameraPosition;
-    [HideInInspector] public GameObject secondaryCameraPosition;
+    [HideInInspector] public GameObject followCameraPosition;
     [HideInInspector] public GameObject focusCameraPosition;
 
     [Header("Ship Ratings")]

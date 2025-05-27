@@ -38,20 +38,19 @@ public static class SmallShipFunctions
             }
 
             //This gets the camera position which is used for targetting as well as placing the cockpit
-            if (smallShip.secondaryCameraPosition == null)
+            if (smallShip.followCameraPosition == null)
             {
-                Transform secondaryCameraPos = GameObjectUtils.FindChildTransformCalled(smallShip.gameObject.transform, "secondarycamera");
+                Transform followCameraPos = GameObjectUtils.FindChildTransformCalled(smallShip.gameObject.transform, "followcamera");
 
-                if (secondaryCameraPos != null)
+                if (followCameraPos != null)
                 {
-                    smallShip.secondaryCameraPosition = secondaryCameraPos.gameObject;
+                    smallShip.followCameraPosition = followCameraPos.gameObject;
                 }
             }
 
             if (smallShip.focusCameraPosition == null)
             {
-                Transform focusCameraPos
-                    = GameObjectUtils.FindChildTransformCalled(smallShip.gameObject.transform, "secondarycamera");
+                Transform focusCameraPos = GameObjectUtils.FindChildTransformCalled(smallShip.gameObject.transform, "focuscamera");
 
                 if (focusCameraPos != null)
                 {

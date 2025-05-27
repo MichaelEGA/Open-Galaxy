@@ -1099,7 +1099,7 @@ public static class HudFunctions
                             //This gets the targets position on the camera
                             Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(target.transform.position);
 
-                            if (hud.scene.secondaryCameraIsActive == true)
+                            if (hud.scene.followCameraIsActive == true)
                             {
                                 screenPosition = hud.secondaryCamera.WorldToScreenPoint(target.transform.position);
                             }
@@ -1320,7 +1320,7 @@ public static class HudFunctions
                             //This gets the targets position on the camera
                             Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(interceptPosition);
 
-                            if (hud.scene.secondaryCameraIsActive == true)
+                            if (hud.scene.followCameraIsActive == true)
                             {
                                 screenPosition = hud.secondaryCamera.WorldToScreenPoint(interceptPosition);
                             }
@@ -1424,7 +1424,7 @@ public static class HudFunctions
                 //This gets the targets position on the camera
                 Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(waypointGO.transform.position);
 
-                if (hud.scene.secondaryCameraIsActive == true)
+                if (hud.scene.followCameraIsActive == true)
                 {
                     screenPosition = hud.secondaryCamera.WorldToScreenPoint(waypointGO.transform.position);
                 }
@@ -1756,7 +1756,7 @@ public static class HudFunctions
                         //This gets the targets position on the camera
                         Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(reticulePosition);
 
-                        if (hud.scene.secondaryCameraIsActive == true)
+                        if (hud.scene.followCameraIsActive == true)
                         {
                             screenPosition = hud.secondaryCamera.WorldToScreenPoint(reticulePosition);
                         }

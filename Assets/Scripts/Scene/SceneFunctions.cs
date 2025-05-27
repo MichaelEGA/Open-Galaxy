@@ -217,7 +217,7 @@ public static class SceneFunctions
         scene.starfieldCamera = starfieldCamera;
         scene.planetCamera = planetCamera;
         scene.mainCamera = mainCamera;
-        scene.secondaryCamera = secondaryCamera;
+        scene.followCamera = secondaryCamera;
         scene.cockpitCamera = cockpitCamera;
     }
 
@@ -229,7 +229,7 @@ public static class SceneFunctions
         GameObject starfieldCameraGO = GameObject.Find("Starfield Camera");
         GameObject planetCameraGO = GameObject.Find("Planet Camera");
         GameObject mainCameraGO = GameObject.Find("Main Camera");
-        GameObject secondaryCameraGO = GameObject.Find("Secondary Camera");
+        GameObject followCameraGO = GameObject.Find("Secondary Camera");
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
 
         if (starfieldCameraGO != null)
@@ -252,7 +252,7 @@ public static class SceneFunctions
             }
         }
 
-        if (scene.secondaryCameraIsActive == false & active == true)
+        if (scene.followCameraIsActive == false & active == true)
         {
             if (mainCameraGO != null)
             {
@@ -264,25 +264,25 @@ public static class SceneFunctions
                 }
             }
 
-            if (secondaryCameraGO != null)
+            if (followCameraGO != null)
             {
-                Camera secondaryCamera = secondaryCameraGO.GetComponent<Camera>();
+                Camera followCamera = followCameraGO.GetComponent<Camera>();
 
-                if (secondaryCamera != null)
+                if (followCamera != null)
                 {
-                    secondaryCamera.enabled = false;
+                    followCamera.enabled = false;
                 }
             }
         }
-        else if (scene.secondaryCameraIsActive == true & active == true)
+        else if (scene.followCameraIsActive == true & active == true)
         {
-            if (secondaryCameraGO != null)
+            if (followCameraGO != null)
             {
-                Camera secondaryCamera = secondaryCameraGO.GetComponent<Camera>();
+                Camera followCamera = followCameraGO.GetComponent<Camera>();
 
-                if (secondaryCamera != null)
+                if (followCamera != null)
                 {
-                    secondaryCamera.enabled = true;
+                    followCamera.enabled = true;
                 }
             }
 
@@ -293,14 +293,24 @@ public static class SceneFunctions
                 if (mainCamera != null)
                 {
                     mainCamera.enabled = false;
+                }
+            }
+
+            if (cockpitCameraGO != null)
+            {
+                Camera cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
+
+                if (cockpitCamera != null)
+                {
+                    cockpitCamera.enabled = false;
                 }
             }
         }
         else
         {
-            if (secondaryCameraGO != null)
+            if (followCameraGO != null)
             {
-                Camera secondaryCamera = secondaryCameraGO.GetComponent<Camera>();
+                Camera secondaryCamera = followCameraGO.GetComponent<Camera>();
 
                 if (secondaryCamera != null)
                 {
@@ -314,36 +324,35 @@ public static class SceneFunctions
 
                 if (mainCamera != null)
                 {
-                    mainCamera.enabled = false;
+                    mainCamera.enabled = true;
+                }
+            }
+
+            if (cockpitCameraGO != null)
+            {
+                Camera cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
+
+                if (cockpitCamera != null)
+                {
+                    cockpitCamera.enabled = true;
                 }
             }
         }
-
-
-        if (cockpitCameraGO != null)
-        {
-            Camera cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
-
-            if (cockpitCamera != null)
-            {
-                cockpitCamera.enabled = active;
-            }
-        }
-
     }
 
-    public static void ToggleMainCamera()
+    //This activates and deactivates the follow camera
+    public static void ActivateFollowCamera(bool activate)
     {
         Scene scene = GetScene();
 
         GameObject mainCameraGO = GameObject.Find("Main Camera");
-        GameObject secondaryCameraGO = GameObject.Find("Secondary Camera");
+        GameObject followCameraGO = GameObject.Find("Secondary Camera");
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
 
-        if (mainCameraGO != null & secondaryCameraGO != null)
+        if (mainCameraGO != null & followCameraGO != null)
         {
             Camera mainCamera = mainCameraGO.GetComponent<Camera>();
-            Camera secondaryCamera = secondaryCameraGO.GetComponent<Camera>();
+            Camera followCamera = followCameraGO.GetComponent<Camera>();
             Camera cockpitCamera = null;
 
             if (cockpitCameraGO != null)
@@ -351,31 +360,31 @@ public static class SceneFunctions
                 cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
             }
 
-            if (mainCamera != null & secondaryCamera != null)
+            if (mainCamera != null & followCamera != null)
             {
-                if (mainCamera.enabled == true)
+                if (activate == true)
                 {
                     mainCamera.enabled = false;
-                    secondaryCamera.enabled = true;
+                    followCamera.enabled = true;
 
                     if (cockpitCamera != null)
                     {
                         cockpitCamera.enabled = false;
                     }
 
-                    scene.secondaryCameraIsActive = true;
+                    scene.followCameraIsActive = true;
                 }
                 else
                 {
                     mainCamera.enabled = true;
-                    secondaryCamera.enabled = false;
+                    followCamera.enabled = false;
 
                     if (cockpitCamera != null)
                     {
                         cockpitCamera.enabled = true;
                     }
 
-                    scene.secondaryCameraIsActive = false;
+                    scene.followCameraIsActive = false;
                 }
             }
 
@@ -2349,15 +2358,15 @@ public static class SceneFunctions
     {
         if (scene.starfieldCamera != null & scene.planetCamera != null & scene.mainShip != null)
         {
-            if (scene.secondaryCameraIsActive == false)
+            if (scene.followCameraIsActive == false)
             {
                 scene.starfieldCamera.transform.rotation = scene.mainShip.transform.rotation;
                 scene.planetCamera.transform.rotation = scene.mainShip.transform.rotation;
             }
             else
             {
-                scene.starfieldCamera.transform.rotation = scene.secondaryCamera.transform.rotation;
-                scene.planetCamera.transform.rotation = scene.secondaryCamera.transform.rotation;
+                scene.starfieldCamera.transform.rotation = scene.followCamera.transform.rotation;
+                scene.planetCamera.transform.rotation = scene.followCamera.transform.rotation;
             }
         }
     }

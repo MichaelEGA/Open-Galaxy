@@ -266,7 +266,6 @@ public static class TorpedoFunctions
 
         //This grabs the torpedo from the torpedo pool if availible
         GameObject torpedo = null;
-        //GameObject torpedo = PoolUtils.FindInactiveGameObjectInPool(scene.torpedosPool, smallShip.torpedoType);
 
         if (torpedo != null)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEditor;
 
 public static class HudFunctions
 {
@@ -22,8 +23,6 @@ public static class HudFunctions
         GameObject fadeGO = GameObject.Instantiate(fadePrefab);
         fadeGO.name = "Fade";
 
-        LoadRadarPrefabs(hudScript);
-        InstantiateRadarShips(hudScript);
         LoadRadarCamera();     
     }
 
@@ -52,33 +51,6 @@ public static class HudFunctions
             }
         }
 
-    }
-
-    //This loads all the models prefabs ready to instantiate
-    public static void LoadRadarPrefabs(Hud hud)
-    {
-        Object[] radarPrefabs = Resources.LoadAll(OGGetAddress.radar, typeof(GameObject));
-        hud.radarPrefabPool = new GameObject[radarPrefabs.Length];
-        hud.radarPrefabPool = radarPrefabs;
-    }
-
-    //This prepares all the ships to display on radar
-    public static void InstantiateRadarShips(Hud hud)
-    {
-        if (hud.radarPool == null)
-        {
-            hud.radarPool = new List<GameObject>();
-        }
-
-        foreach (GameObject radarPrefab in hud.radarPrefabPool)
-        {
-            GameObject radarObject = GameObject.Instantiate(radarPrefab);
-            hud.radarPool.Add(radarObject);
-            radarObject.transform.position = new Vector3(0, 0, 0);
-            radarObject.layer = LayerMask.NameToLayer("radar");
-            GameObjectUtils.SetLayerAllChildren(radarObject.transform, 24);
-            radarObject.SetActive(false);
-        }
     }
 
     //This loads the radar camera
@@ -127,36 +99,30 @@ public static class HudFunctions
     //Display preview of ship
     public static void DisplayShipPreview(Hud hud)
     {
+        if (hud.radarPool == null)
+        {
+            hud.radarPool = new List<GameObject>();
+        }
+
         if (hud.radarPool != null & hud.smallShip != null & Time.timeScale != 0)
         {
             if (hud.smallShip.target != null)
             {
                 if (hud.smallShip.target.activeSelf != false)
                 {
-                    if (hud.radarObject == null || hud.radarObject.activeSelf == false)
+                    if (hud.radarObject == null || hud.radarObject.activeSelf == false || !hud.radarObject.name.Contains(hud.smallShip.targetPrefabName))
                     {
+                        bool foundShip = false;
+
                         foreach (GameObject radarObject in hud.radarPool)
                         {
-                            if (radarObject.name == hud.smallShip.targetPrefabName + "(Clone)")
-                            {
-                                radarObject.SetActive(true);
-                                hud.radarObject = radarObject;
-                            }
-                            else
-                            {
-                                radarObject.SetActive(false);
-                            }
-                        }
-                    }
-                    else if (hud.radarObject.name != hud.smallShip.targetPrefabName + "(Clone)")
-                    {
-                        foreach (GameObject radarObject in hud.radarPool)
-                        {
+                            Debug.Log(radarObject.name + " == " + hud.smallShip.targetPrefabName + "(Clone)");
 
                             if (radarObject.name == hud.smallShip.targetPrefabName + "(Clone)")
                             {
                                 radarObject.SetActive(true);
                                 hud.radarObject = radarObject;
+                                foundShip = true;
                             }
                             else
                             {
@@ -164,6 +130,24 @@ public static class HudFunctions
                             }
                         }
 
+                        if (foundShip == false)
+                        {
+                            foreach (Object ship in hud.scene.shipsPrefabPool)
+                            {
+                                if (ship.name == hud.smallShip.targetPrefabName)
+                                {
+                                    GameObject radarObject = GameObject.Instantiate(ship) as GameObject;
+                                    hud.radarPool.Add(radarObject);
+                                    radarObject.transform.position = new Vector3(0, 0, 0);
+                                    radarObject.layer = LayerMask.NameToLayer("radar");
+                                    GameObjectUtils.SetLayerAllChildren(radarObject.transform, 24);
+                                    radarObject.SetActive(true);
+                                    SceneFunctions.ScaleGameObjectByZAxis(radarObject, 10);
+
+                                    hud.radarObject = radarObject;
+                                }
+                            }
+                        }
                     }
                     else
                     {

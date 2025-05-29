@@ -99,7 +99,6 @@ public class Hud : MonoBehaviour
     [HideInInspector] public float waypointArrowLerpTime;
 
     [Header("Hud Object Pools")]
-    [HideInInspector] public Object[] radarPrefabPool;
     [HideInInspector] public List<GameObject> radarPool;
     [HideInInspector] public List<GameObject> frontRadarDotsPool;
     [HideInInspector] public List<GameObject> rearRadarDotsPool;

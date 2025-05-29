@@ -547,7 +547,7 @@ public static class TorpedoFunctions
             {
                 CauseTorpedoDamage(torpedo.firingShip, torpedo.target, torpedo, torpedo.transform.position);
 
-                ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion06", 6f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
+                ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion_torpedo", 6f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
                 DeactivateTorpedo(torpedo);
             }
         }

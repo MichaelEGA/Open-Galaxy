@@ -977,7 +977,9 @@ public static class SmallShipFunctions
                 smallShip.shipRigidbody.linearDamping = 0; //Prevents the movements from stopping
 
                 //This creates an explosion where the ship is
-                ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion_ion01", 12);
+                float explosionsScale = smallShip.shipLength / 10;
+
+                ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion_ion_smallship", explosionsScale);
 
                 //This makes an explosion sound
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact01_laserhitshield", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
@@ -1191,7 +1193,9 @@ public static class SmallShipFunctions
             }
 
             //This creates an explosion where the ship is
-            ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion03", 12);
+            float explosionsScale = smallShip.shipLength / 10;
+
+            ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion_smallship", explosionsScale);
 
             //This makes an explosion sound
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
@@ -1213,7 +1217,9 @@ public static class SmallShipFunctions
         }
 
         //This creates an explosion where the ship is
-        ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion03", 12);
+        float explosionsScale = smallShip.shipLength / 10;
+
+        ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion_smallship", explosionsScale);
 
         //This makes an explosion sound
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);

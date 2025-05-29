@@ -80,6 +80,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public GameObject rearRadarBrace;
     [HideInInspector] public GameObject directionArrow;
     [HideInInspector] public GameObject selectionBrace;
+    [HideInInspector] public Material wireframeMaterial;
     [HideInInspector] public float previousArrowRotation;
     [HideInInspector] public float arrowTargetRotation;
     [HideInInspector] public float arrowLerpTime;

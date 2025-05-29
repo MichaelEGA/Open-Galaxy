@@ -116,8 +116,6 @@ public static class HudFunctions
 
                         foreach (GameObject radarObject in hud.radarPool)
                         {
-                            Debug.Log(radarObject.name + " == " + hud.smallShip.targetPrefabName + "(Clone)");
-
                             if (radarObject.name == hud.smallShip.targetPrefabName + "(Clone)")
                             {
                                 radarObject.SetActive(true);
@@ -143,6 +141,17 @@ public static class HudFunctions
                                     GameObjectUtils.SetLayerAllChildren(radarObject.transform, 24);
                                     radarObject.SetActive(true);
                                     SceneFunctions.ScaleGameObjectByZAxis(radarObject, 10);
+
+                                    if (hud.wireframeMaterial == null)
+                                    {
+                                        Material wireframeMaterial = Resources.Load(OGGetAddress.hud + "wireframe_material") as Material;
+                                        hud.wireframeMaterial = wireframeMaterial;
+                                    }
+
+                                    if (hud.wireframeMaterial != null)
+                                    {
+                                        GameObjectUtils.ApplyMaterialToAllMeshes(radarObject, hud.wireframeMaterial);
+                                    }
 
                                     hud.radarObject = radarObject;
                                 }

@@ -4,6 +4,23 @@ using UnityEngine;
 
 public static class GameObjectUtils
 {
+    //This applys a certain material to all meshes under a given gameobject
+    public static void ApplyMaterialToAllMeshes(GameObject gameObject, Material material)
+    {
+        if (gameObject == null || material == null)
+        {
+            Debug.LogWarning("Root GameObject or Material is null. Aborting material application.");
+            return;
+        }
+
+        // Get all MeshRenderer components in the hierarchy (including inactive ones)
+        MeshRenderer[] renderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
+
+        foreach (MeshRenderer renderer in renderers)
+        {
+            renderer.material = material;
+        }
+    }
 
     //TRANSFORM AND GAMEOBJECT FUNCTIONS
 

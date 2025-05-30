@@ -23,15 +23,9 @@ public class Scene : MonoBehaviour
 
     [Header("Prefab Pools")]
     [HideInInspector] public Object[] shipsPrefabPool;
-
     [HideInInspector] public Object[] ogCockpitPrefabPool;
-
-    [HideInInspector] public Object[] asteroidPrefabPool;
-    [HideInInspector] public Object[] debrisPrefabPool;
     [HideInInspector] public Object[] environmentsPrefabPool;
-
     [HideInInspector] public Object[] particlePrefabPool;
-
     [HideInInspector] public GameObject hyperspaceTunnelPrefab;
 
     [Header("GameObject Pools")]

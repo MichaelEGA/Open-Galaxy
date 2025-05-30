@@ -134,6 +134,7 @@ public static class HudFunctions
                             {
                                 if (ship.name == hud.smallShip.targetPrefabName)
                                 {
+                                    //This instantiates the radar object,sets it to the correct position, sets its layer, scales the object and removes any colliders on the object
                                     GameObject radarObject = GameObject.Instantiate(ship) as GameObject;
                                     hud.radarPool.Add(radarObject);
                                     radarObject.transform.position = new Vector3(0, 0, 0);
@@ -141,13 +142,18 @@ public static class HudFunctions
                                     GameObjectUtils.SetLayerAllChildren(radarObject.transform, 24);
                                     radarObject.SetActive(true);
                                     SceneFunctions.ScaleGameObjectByZAxis(radarObject, 10);
+                                    GameObjectUtils.RemoveColliders(radarObject);
 
+                                    Debug.Log("run 1");
+
+                                    //This checks the wireframe material is loaded
                                     if (hud.wireframeMaterial == null)
                                     {
                                         Material wireframeMaterial = Resources.Load(OGGetAddress.hud + "wireframe_material") as Material;
                                         hud.wireframeMaterial = wireframeMaterial;
                                     }
 
+                                    //This applies the wireframe material to all objects
                                     if (hud.wireframeMaterial != null)
                                     {
                                         GameObjectUtils.ApplyMaterialToAllMeshes(radarObject, hud.wireframeMaterial);

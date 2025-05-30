@@ -13,10 +13,34 @@ public static class GameObjectUtils
             return;
         }
 
-        // Get all MeshRenderer components in the hierarchy (including inactive ones)
-        MeshRenderer[] renderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
+        // Get all MeshRenderer components on the object itself
+        MeshRenderer[] renderers = gameObject.GetComponents<MeshRenderer>();
 
         foreach (MeshRenderer renderer in renderers)
+        {
+            renderer.material = material;
+        }
+
+        // Get all MeshRenderer components in the hierarchy (including inactive ones)
+        renderers = gameObject.GetComponentsInChildren<MeshRenderer>(true);
+
+        foreach (MeshRenderer renderer in renderers)
+        {
+            renderer.material = material;
+        }
+
+        // Get all SkinnedMeshRenderer components on the object itself
+        SkinnedMeshRenderer[] skinnedRenderers = gameObject.GetComponents<SkinnedMeshRenderer>();
+
+        foreach (SkinnedMeshRenderer renderer in skinnedRenderers)
+        {
+            renderer.material = material;
+        }
+
+        // Get all SkinnedMeshRenderer components in the hierarchy (including inactive ones)
+        skinnedRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>(true);
+
+        foreach (SkinnedMeshRenderer renderer in skinnedRenderers)
         {
             renderer.material = material;
         }
@@ -64,6 +88,26 @@ public static class GameObjectUtils
             MeshCollider meshCollider = skinnedMeshRenderer.gameObject.AddComponent<MeshCollider>();
             meshCollider.convex = convex;
             meshCollider.sharedMesh = skinnedMeshRenderer.sharedMesh;
+        }
+    }
+
+    //This deletes colliders from a game object
+    public static void RemoveColliders(GameObject gameObject)
+    {
+        //delete all colliders on the root gameobject
+        Collider[] colliders = gameObject.GetComponents<Collider>();
+
+        foreach (var col in colliders)
+        {
+            GameObject.DestroyImmediate(col);
+        }
+
+        //delete all colliders under the root gameobject
+        colliders = gameObject.GetComponentsInChildren<Collider>(includeInactive: true);
+        
+        foreach (var col in colliders)
+        {
+            GameObject.DestroyImmediate(col);
         }
     }
 

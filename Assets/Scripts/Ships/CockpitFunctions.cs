@@ -157,7 +157,6 @@ public static class CockpitFunctions
                 else
                 {
                     secondaryCamera.transform.SetParent(smallShip.transform);
-                    Debug.Log("was run");
                 }
             }
         }
@@ -209,14 +208,6 @@ public static class CockpitFunctions
                     if (smallShip.cockpitAnchor != null)
                     {
                         smallShip.cockpit.transform.SetParent(smallShip.cockpitAnchor.transform);
-
-                        if (smallShip.scene.hyperspaceTunnel == null)
-                        {
-                            smallShip.scene.hyperspaceTunnel = GameObject.Instantiate(smallShip.scene.hyperspaceTunnelPrefab);
-                        }
-
-                        smallShip.scene.hyperspaceTunnel.transform.SetParent(smallShip.cockpitAnchor.transform);
-                        smallShip.scene.hyperspaceTunnel.SetActive(false);
                     }
                 }
             }

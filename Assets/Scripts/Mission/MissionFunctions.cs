@@ -1100,6 +1100,7 @@ public static class MissionFunctions
 
         bool controlLock = smallShip.controlLock; //This preserves the current lock position
 
+        smallShip.focusCamera = false; //This prevents the ship jumping with the camera in the focus position
         smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
         smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
 
@@ -1113,6 +1114,8 @@ public static class MissionFunctions
         //This plays the hyperspace entry sound
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace01_entry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
+        smallShip.inHyperspace = true;
+
         yield return new WaitForSecondsRealtime(2); //This gives the audio clip time to play
 
         //This marks the jump time
@@ -1124,10 +1127,6 @@ public static class MissionFunctions
         //This makes the stars stretch out
         scene.planetCamera.GetComponent<Camera>().enabled = false;
 
-        smallShip.inHyperspace = true;
-
-        yield return new WaitForSecondsRealtime(1);
-
         Time.timeScale = 0;
 
         //This makes the stars stretch out
@@ -1135,7 +1134,12 @@ public static class MissionFunctions
         while(a.Running == true) { yield return null; }
 
         //This activates the hyperspace tunnel
-        if(scene.hyperspaceTunnel != null)
+        if (scene.hyperspaceTunnel == null)
+        {
+            scene.hyperspaceTunnel = GameObject.Instantiate(scene.hyperspaceTunnelPrefab);
+        }
+
+        if (scene.hyperspaceTunnel != null)
         {
             scene.hyperspaceTunnel.transform.SetParent(smallShip.transform);
             scene.hyperspaceTunnel.transform.localPosition = new Vector3(0, 0, 0);

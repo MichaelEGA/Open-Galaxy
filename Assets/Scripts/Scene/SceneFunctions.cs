@@ -53,15 +53,6 @@ public static class SceneFunctions
             scene.ogCockpitPrefabPool = ogCockpitPrefabs;
         }
 
-        //This loads the asteroids
-        Object[] asteroidPrefabs = Resources.LoadAll(OGGetAddress.asteroids, typeof(GameObject));
-
-        if (asteroidPrefabs != null)
-        {
-            scene.asteroidPrefabPool = new GameObject[asteroidPrefabs.Length];
-            scene.asteroidPrefabPool = asteroidPrefabs;
-        }
-
         //This loads the environments
         Object[] environmentsPrefabs = Resources.LoadAll(OGGetAddress.environments, typeof(GameObject));
 
@@ -346,7 +337,7 @@ public static class SceneFunctions
         Scene scene = GetScene();
 
         GameObject mainCameraGO = GameObject.Find("Main Camera");
-        GameObject followCameraGO = GameObject.Find("Secondary Camera");
+        GameObject followCameraGO = GameObject.Find("Follow Camera");
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
 
         if (mainCameraGO != null & followCameraGO != null)
@@ -1037,7 +1028,7 @@ public static class SceneFunctions
 
         for(int i =0; i < positions.Length; i++)
         {
-            GameObject asteroid = GameObject.Instantiate((GameObject)scene.asteroidPrefabPool[asteroidTypes[i]]);
+            GameObject asteroid = GameObject.Instantiate((GameObject)scene.shipsPrefabPool[asteroidTypes[i]]);
             asteroid.transform.SetParent(asteroidAnchor.transform);
             asteroid.transform.localPosition = positions[i] - centerPosition;
             asteroid.transform.localScale = new Vector3(sizes[i], sizes[i], sizes[i]);
@@ -1085,27 +1076,26 @@ public static class SceneFunctions
         //This selects all the asteroid of a certain type
         List<int> asteroidTypes = new List<int>();
 
-        foreach (Object asteroid in scene.asteroidPrefabPool)
+        foreach (Object asteroid in scene.shipsPrefabPool)
         {
-            Debug.Log("Asteroid name is " + asteroid.name);
-
             if (asteroid.name.Contains(type))
             {
                 asteroidTypes.Add(asteroidNo);
-
-                Debug.Log("Asteroid added " + asteroid.name);
             }
 
             asteroidNo++;
         }
 
-        //This selects asteroids at randome from the given type
-        int asteroidCount = asteroidTypes.Count - 1;
-
-        for (int i = 0; i < number; i++)
+        //This selects asteroids at random from the given type
+        if (asteroidTypes.Count > 0)
         {
-            int asteroid = Random.Range(0, asteroidCount);
-            asteroidSelection.Add(asteroidTypes[asteroid]);
+            int asteroidCount = asteroidTypes.Count - 1;
+
+            for (int i = 0; i < number; i++)
+            {
+                int asteroid = Random.Range(0, asteroidCount);
+                asteroidSelection.Add(asteroidTypes[asteroid]);
+            }
         }
 
         return asteroidSelection.ToArray();

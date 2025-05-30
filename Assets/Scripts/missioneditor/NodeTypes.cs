@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
+using System.Linq;
+using UnityEngine;
 
 public static class NodeTypes
 {
@@ -199,12 +200,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options1 = new List<string>();
-        options1.Add("asteroid01");
-        options1.Add("asteroid02");
-        options1.Add("asteroid03");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "type", "asteroid01", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetAsteroidList(), "type", "asteroid01", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -4023,6 +4019,51 @@ public static class NodeTypes
 
         return shipList;
     }
+
+    public static List<string> GetAsteroidList()
+    {
+        //This gets the Json ship data
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
+        ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
+
+        List<string> asteroidList = new List<string>();
+
+        foreach (ShipType shipType in shipTypes.shipTypeData)
+        {
+            if (shipType.prefab.Contains("asteroid") || shipType.prefab.Contains("debris"))
+            {
+                string asteroidSetName = GetNameBeforeUnderscore(shipType.prefab);
+
+                bool add = true;
+
+                foreach(string name in asteroidList)
+                {
+                    if (name == asteroidSetName)
+                    {
+                        add = false;
+                        break;
+                    }
+                }
+
+                if (add == true)
+                {
+                    asteroidList.Add(asteroidSetName);
+                }
+            }
+        }
+
+        return asteroidList;
+    }
+
+    public static string GetNameBeforeUnderscore(string name)
+    {
+        int underscoreIndex = name.IndexOf('_');
+        if (underscoreIndex > 0)
+            return name.Substring(0, underscoreIndex);
+        else
+            return name;
+    }
+
 
     public static List<string> GetTorpedoList()
     {

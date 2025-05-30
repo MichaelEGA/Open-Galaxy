@@ -1791,7 +1791,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7791602130587453502}
   m_Layer: 0
-  m_Name: secondarycamera
+  m_Name: followcamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1806,7 +1806,7 @@ Transform:
   m_GameObject: {fileID: 7745095936353582559}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 12.9, z: -25.7}
+  m_LocalPosition: {x: 0, y: 6.8, z: -31.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1885,6 +1885,7 @@ Transform:
   - {fileID: 7435716853176004886}
   - {fileID: 6438858844690888246}
   - {fileID: 7791602130587453502}
+  - {fileID: 2401405714385681053}
   - {fileID: 4987235460215435047}
   - {fileID: 1527903403901025409}
   - {fileID: 9002748754095175240}
@@ -1977,3 +1978,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &9151981356670499702
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2401405714385681053}
+  m_Layer: 0
+  m_Name: focuscamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2401405714385681053
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151981356670499702}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.4, z: -9.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7282944978952959269}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

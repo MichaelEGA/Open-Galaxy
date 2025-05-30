@@ -115,7 +115,6 @@ public static class CockpitFunctions
                 float followSpeed = 16f;   // How quickly the camera moves default 8
                 float rotationSpeed = 6; // How quickly the camera rotates default 6
                 GameObject secondaryCamera = smallShip.secondaryCamera;
-                GameObject focusCamera = smallShip.focusCameraPosition;
 
                 //This sets the cameras primary position
                 Vector3 primaryPositionOffset = new Vector3(0, smallShip.shipLength / 2f, smallShip.shipLength * -1);
@@ -133,6 +132,11 @@ public static class CockpitFunctions
                 Vector3 secondaryPositionOffset = new Vector3(0, smallShip.shipLength / 4f, 0);
 
                 Vector3 secondaryPosition = target.TransformPoint(secondaryPositionOffset);
+
+                if (smallShip.focusCameraPosition != null)
+                {
+                    secondaryPosition = smallShip.focusCameraPosition.transform.position;
+                }
 
                 secondaryPosition = smallShip.scene.transform.InverseTransformPoint(secondaryPosition);
 

@@ -150,6 +150,7 @@ public static class CockpitFunctions
                     }
                     else
                     {
+                        followSpeed = 32f;
                         rotationSpeed = 12;
                         secondaryCamera.transform.localPosition = Vector3.Lerp(secondaryCamera.transform.localPosition, secondaryPosition, followSpeed * Time.deltaTime);
                     }

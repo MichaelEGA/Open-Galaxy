@@ -19,6 +19,7 @@ public class MissionEditor : MonoBehaviour
     public RectTransform selectionRectTransform;
     public ScrollRect scrollRect;
     public Text AddNodeTextBox;
+    public Text DisplayShipInformationTextBox;
     public Text scaleIndicator;
     public Text messageTextbox;
     public Text missionName;

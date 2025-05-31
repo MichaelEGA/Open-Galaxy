@@ -834,8 +834,6 @@ public static class MainMenuFunctions
         }
     }
 
-
-
     #endregion
 
     #region navigation functions

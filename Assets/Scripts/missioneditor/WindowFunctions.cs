@@ -1,8 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Windows.Forms;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
 
 public static class WindowFunctions
 {
@@ -18,6 +23,10 @@ public static class WindowFunctions
         else if (window.windowType == "displaylocation")
         {
             WindowFunctions.Draw_DisplayLocation(window);
+        }
+        else if (window.windowType == "displayshipinformation")
+        {
+            WindowFunctions.Draw_ShipInformation(window);
         }
         else if (window.windowType == "abouteditor")
         {
@@ -126,6 +135,44 @@ public static class WindowFunctions
         DrawTextButton(window, 127.5f, -182.5f, 10, 117.5f, "none", "Add Node", 7, "AddNode", TextAnchor.MiddleCenter);
     }
 
+    //This draws the display ship information window
+    public static void Draw_ShipInformation(Window window)
+    {
+        window.transform.name = "window_shipinformation";
+
+        DrawWindowBase(window, 250, 200);
+
+        DrawText(window, "Ship Information", 8, 5, -5, 12.5f, 90);
+
+        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
+
+        List<string> buttonList = new List<string>();
+
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
+        ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
+
+        foreach (ShipType shipType in shipTypes.shipTypeData)
+        {
+            buttonList.Add(shipType.type);
+        }
+
+        List<string> functionList = new List<string>();
+
+        foreach (string button in buttonList)
+        {
+            functionList.Add("DisplayShipInformation");
+        }
+
+        string[] buttons = buttonList.ToArray();
+        string[] functions = functionList.ToArray();
+
+        DrawScrollableButtons(window, 5, -29, 146f, 115, 10, 7, buttons, functions);
+
+        DrawScrollableText(window, 127.5f, -29, 146f, 115, 7, "No Event Selected", 200f, "ShipInformationTextBox");
+    }
+
     //This draws a window that displays the location of all relevant nodes on the map
     public static void Draw_DisplayLocation(Window window)
     {
@@ -183,57 +230,6 @@ public static class WindowFunctions
         UpdateDisplay();
     }
 
-    //This draws the load mission window
-    public static void Draw_MergeMissions(Window window)
-    {
-        window.transform.name = "window_mergemission";
-
-        DrawWindowBase(window, 250, 100);
-
-        DrawText(window, "Merge Missions", 8, 5, -5, 12.5f, 90);
-
-        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
-
-        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
-
-        string[] buttons = GetMissionList();
-
-        List<string> functionList = new List<string>();
-
-        foreach (string button in buttons)
-        {
-            functionList.Add("SelectMissionToLoad");
-        }
-
-        string[] functions = functionList.ToArray();
-
-        DrawScrollableButtons(window, 5, -29, 50, 240, 10, 7, buttons, functions);
-
-        DrawTextButton(window, 80, -84, 10, 90, "none", "Merge Mission", 7, "MergeMission", TextAnchor.MiddleCenter);
-    }
-
-    //This draws the save mission window
-    public static void Draw_ExportSelectionAs(Window window)
-    {
-        window.transform.name = "window_exportselectionas";
-
-        DrawWindowBase(window, 250, 100);
-
-        DrawText(window, "Export Selection As", 8, 5, -5, 12.5f, 90);
-
-        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
-
-        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
-
-        float drop = -35f;
-
-        DrawInputFieldLarge(window, "File Name", "none", 7, 5, drop, 25, 240f, "FileNameField");
-
-        drop -= 15;
-
-        DrawTextButton(window, 80, -80, 10, 90, "none", "Export Selection As", 7, "ExportSelectionAs", TextAnchor.MiddleCenter);
-    }
-
     //This draws the mission editor about window
     public static void Draw_AboutWindow(Window window)
     {
@@ -247,7 +243,7 @@ public static class WindowFunctions
 
         DrawLineBreak(window, "#808080", 0, -20, 1, 250);
 
-        DrawText(window, "Version " + Application.version + " made with Unity " + Application.unityVersion, 8, 5, -25, 12.5f, 240);
+        DrawText(window, "Version " + UnityEngine.Application.version + " made with Unity " + UnityEngine.Application.unityVersion, 8, 5, -25, 12.5f, 240);
     }
 
     #endregion
@@ -444,7 +440,7 @@ public static class WindowFunctions
         Image buttonImage = buttonGO.AddComponent<Image>();
         buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + imageName);
 
-        Button button = buttonGO.AddComponent<Button>();
+        UnityEngine.UI.Button button = buttonGO.AddComponent<UnityEngine.UI.Button>();
         button.image = buttonImage;
 
         if (functionType == "ExitMissionEditor")
@@ -511,7 +507,7 @@ public static class WindowFunctions
             }
         }
 
-        Button button = buttonGO.AddComponent<Button>();
+        UnityEngine.UI.Button button = buttonGO.AddComponent<UnityEngine.UI.Button>();
         button.image = buttonImage;
 
         Text text = buttonTextGO.AddComponent<Text>();
@@ -547,6 +543,10 @@ public static class WindowFunctions
         else if (functionType == "DeleteWindow")
         {
             button.onClick.AddListener(() => { DeleteWindow(window); });
+        }
+        else if (functionType == "DisplayShipInformation")
+        {
+            button.onClick.AddListener(() => { DisplayShipInformation(buttonText); });
         }
     }
 
@@ -1539,6 +1539,78 @@ public static class WindowFunctions
                 }
             }
         }
+    }
+
+    public static void DisplayShipInformation(string ship)
+    {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor.DisplayShipInformationTextBox == null)
+        {
+            GameObject DisplayShipInformationTextBoxGO = GameObject.Find("ShipInformationTextBox");
+
+            if (DisplayShipInformationTextBoxGO != null)
+            {
+                missionEditor.DisplayShipInformationTextBox = DisplayShipInformationTextBoxGO.GetComponentInChildren<Text>();
+            } 
+        }
+
+        if (missionEditor.DisplayShipInformationTextBox != null)
+        {
+            TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
+            ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
+
+            foreach (ShipType shipType in shipTypes.shipTypeData)
+            {
+                if (shipType.type == ship)
+                {
+                    missionEditor.DisplayShipInformationTextBox.text = GetClassInfo(shipType);                       
+                    break;
+                }
+            }
+        }
+    }
+
+    public static string GetClassInfo(object obj)
+    {
+        if (obj == null) return "Object is null.";
+
+        Type type = obj.GetType();
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"Class: {type.FullName}");
+
+        // Fields
+        sb.AppendLine("Fields:");
+        FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        foreach (var field in fields)
+        {
+            object value;
+            try { value = field.GetValue(obj); }
+            catch { value = "N/A"; }
+            sb.AppendLine($"  {field.FieldType.Name} {field.Name} = {value}");
+        }
+
+        // Properties
+        sb.AppendLine("Properties:");
+        PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        foreach (var prop in properties)
+        {
+            object value;
+            try { value = prop.GetValue(obj, null); }
+            catch { value = "N/A"; }
+            sb.AppendLine($"  {prop.PropertyType.Name} {prop.Name} = {value}");
+        }
+
+        // Methods
+        sb.AppendLine("Methods:");
+        MethodInfo[] methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly);
+        foreach (var method in methods)
+        {
+            string parameters = string.Join(", ", Array.ConvertAll(method.GetParameters(), p => $"{p.ParameterType.Name} {p.Name}"));
+            sb.AppendLine($"  {method.ReturnType.Name} {method.Name}({parameters})");
+        }
+
+        return sb.ToString();
     }
 
     #endregion

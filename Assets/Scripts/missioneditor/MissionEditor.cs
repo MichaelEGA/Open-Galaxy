@@ -41,6 +41,10 @@ public class MissionEditor : MonoBehaviour
     public bool ignoreLeftCLickRelease;
     public bool hasRun;
 
+    public Camera previewCamera;
+    public RenderTexture previewRenderTexture;
+    public GameObject previewModel;
+
     void Start()
     {
         GameObject editorContentGo = GameObject.Find("EditorContent");

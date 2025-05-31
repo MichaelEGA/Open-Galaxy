@@ -168,9 +168,11 @@ public static class WindowFunctions
         string[] buttons = buttonList.ToArray();
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(window, 5, -29, 146f, 115, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -29, 166f, 115, 10, 7, buttons, functions);
 
-        DrawScrollableText(window, 127.5f, -29, 146f, 115, 7, "No Event Selected", 200f, "ShipInformationTextBox");
+        DrawRawImage(window, 147.5f, -29, 73f, 73f, "assetpreview");
+
+        DrawScrollableText(window, 127.5f, -107, 88f, 115, 7, "No Event Selected", 225f, "ShipInformationTextBox");
     }
 
     //This draws a window that displays the location of all relevant nodes on the map
@@ -611,7 +613,7 @@ public static class WindowFunctions
         scrollRect.horizontal = false;
         scrollRect.inertia = false;
         scrollRect.elasticity = 0;
-        scrollRect.scrollSensitivity = 100;
+        scrollRect.scrollSensitivity = 10;
 
         float buttonDrop = 0;
         int i = 0;
@@ -1565,53 +1567,142 @@ public static class WindowFunctions
                 if (shipType.type == ship)
                 {
                     missionEditor.DisplayShipInformationTextBox.text = GetClassInfo(shipType);                       
+  
+                    GameObject shipPreviewGO = GameObject.Find("Button_assetpreview");
+
+                    Debug.Log("was run 1");
+
+                    if (shipPreviewGO != null)
+                    {
+
+                        Debug.Log("was run 2");
+
+                        RawImage shipPreview = shipPreviewGO.GetComponentInChildren<RawImage>();
+
+                        if (missionEditor.previewCamera != null)
+                        {
+                            GameObject.Destroy(missionEditor.previewCamera.gameObject);
+                        }
+
+                        if (missionEditor.previewRenderTexture != null)
+                        {
+                            GameObject.Destroy(missionEditor.previewRenderTexture);
+                        }
+
+                        if (missionEditor.previewModel != null)
+                        {
+                            GameObject.Destroy(missionEditor.previewModel.gameObject);
+                        }
+
+                        LoadModelAndRenderStatic("objects/ships/" + shipType.prefab, new Vector3(0, 0, 0), new Vector3(0, 0, 0), 256, 256, shipPreview, out missionEditor.previewModel, out missionEditor.previewCamera, out missionEditor.previewRenderTexture);
+
+                        if (missionEditor.previewRenderTexture != null)
+                        {
+                            Debug.Log("was run 3");
+                            shipPreview.texture = missionEditor.previewRenderTexture;
+                        }
+                    }
+                        
                     break;
                 }
             }
         }
     }
 
+    //This converts the class information to text
     public static string GetClassInfo(object obj)
     {
         if (obj == null) return "Object is null.";
 
         Type type = obj.GetType();
         StringBuilder sb = new StringBuilder();
-        sb.AppendLine($"Class: {type.FullName}");
 
         // Fields
-        sb.AppendLine("Fields:");
         FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
         foreach (var field in fields)
         {
             object value;
             try { value = field.GetValue(obj); }
             catch { value = "N/A"; }
-            sb.AppendLine($"  {field.FieldType.Name} {field.Name} = {value}");
-        }
-
-        // Properties
-        sb.AppendLine("Properties:");
-        PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-        foreach (var prop in properties)
-        {
-            object value;
-            try { value = prop.GetValue(obj, null); }
-            catch { value = "N/A"; }
-            sb.AppendLine($"  {prop.PropertyType.Name} {prop.Name} = {value}");
-        }
-
-        // Methods
-        sb.AppendLine("Methods:");
-        MethodInfo[] methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly);
-        foreach (var method in methods)
-        {
-            string parameters = string.Join(", ", Array.ConvertAll(method.GetParameters(), p => $"{p.ParameterType.Name} {p.Name}"));
-            sb.AppendLine($"  {method.ReturnType.Name} {method.Name}({parameters})");
+            sb.AppendLine($" {field.Name}: {value}");
         }
 
         return sb.ToString();
     }
 
+    //This loads a preview model
+    public static void LoadModelAndRenderStatic(
+        string modelPath,
+        Vector3 modelPosition,
+        Vector3 modelRotation,
+        int textureWidth,
+        int textureHeight,
+        RawImage targetRawImage,
+        out GameObject loadedModel,
+        out Camera renderCamera,
+        out RenderTexture renderTexture)
+    {
+        loadedModel = null;
+        renderCamera = null;
+        renderTexture = null;
+
+        // Load the model prefab from Resources
+        GameObject modelPrefab = Resources.Load<GameObject>(modelPath);
+        if (modelPrefab == null)
+        {
+            Debug.LogError($"Model at '{modelPath}' could not be found in Resources.");
+            return;
+        }
+
+        // Instantiate the model
+        loadedModel = GameObject.Instantiate(modelPrefab, modelPosition, Quaternion.Euler(modelRotation));
+
+        //This scales the model
+        SceneFunctions.ScaleGameObjectByZAxis(loadedModel, 10);
+
+        // This slowly rotates the model
+        loadedModel.AddComponent<SlowRotate>();
+
+        // Create a new camera to render the model
+        GameObject camObj = new GameObject("ModelRenderCamera_Static");
+        renderCamera = camObj.AddComponent<Camera>();
+        renderCamera.clearFlags = CameraClearFlags.Color;
+        renderCamera.backgroundColor = Color.clear;
+        renderCamera.cullingMask = LayerMask.GetMask("Default"); // Adjust if your models are on a custom layer
+
+        // Position camera to look at the model
+        Bounds bounds = GetBoundsRecursive(loadedModel);
+        Vector3 camPos = bounds.center + new Vector3(0, 0, -bounds.size.magnitude);
+        renderCamera.transform.position = camPos;
+        renderCamera.transform.LookAt(bounds.center);
+
+        // Create and assign the render texture
+        renderTexture = new RenderTexture(textureWidth, textureHeight, 16);
+        renderCamera.targetTexture = renderTexture;
+
+        // Assign to RawImage
+        if (targetRawImage != null)
+        {
+            targetRawImage.texture = renderTexture;
+        }
+        else
+        {
+            Debug.LogWarning("No RawImage assigned to display the RenderTexture.");
+        }
+    }
+
+    private static Bounds GetBoundsRecursive(GameObject go)
+    {
+        Renderer[] renderers = go.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0)
+            return new Bounds(go.transform.position, Vector3.one);
+
+        Bounds bounds = renderers[0].bounds;
+        foreach (Renderer r in renderers)
+        {
+            bounds.Encapsulate(r.bounds);
+        }
+        return bounds;
+    }
     #endregion
 }

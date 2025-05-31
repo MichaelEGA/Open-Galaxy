@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
-using System.Globalization;
-using System.Text;
 
 public static class MainMenuFunctions
 {
@@ -275,6 +276,9 @@ public static class MainMenuFunctions
         CreateCampaignMenuButtons(mainMenu);
         CreateCampaignSubMenuButtons(mainMenu);
 
+        //This creates buttons for the model credit data
+        CreateModelCreditButtons(mainMenu);
+
         //This deactivates all menus and activates only the start menu
         ActivateStartGameMenu();
     }
@@ -298,11 +302,6 @@ public static class MainMenuFunctions
         if (mainMenu.campaignDescriptions == null)
         {
             mainMenu.campaignDescriptions = new List<string>();
-        }
-
-        if (mainMenu.campaignImages == null)
-        {
-            mainMenu.campaignImages = new List<Texture2D>();
         }
 
         if (mainMenu.mainMissionCampaigns == null)
@@ -508,6 +507,7 @@ public static class MainMenuFunctions
 
         //This manually creates the blank start game menu
         subMenus.Add("Start Game");
+        subMenus.Add("Model Credits");
 
         //This creates a list of submenus from the campaign data
         foreach (string campaign in mainMenu.campaigns)
@@ -629,6 +629,36 @@ public static class MainMenuFunctions
 
             CreateMissionButtons(mainMenu, missions.ToArray(), campaign + "_Settings", functions.ToArray(), campaign, mainMenu.campaignDescriptions[i2]);
             i2++;
+        }
+    }
+
+    //This creates all the mission menu buttons from campaign data
+    public static void CreateModelCreditButtons(MainMenu mainMenu)
+    {
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
+        ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
+
+        foreach (GameObject subMenu in mainMenu.SubMenus)
+        {
+            if (subMenu.name == "Model Credits_Settings")
+            {
+                float buttonDrop = 20;
+
+                buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, "Back to Main Credits", "ContentButton02", "ActivateSubMenu", "", "Credits");
+
+                foreach (ShipType shipType in shipTypes.shipTypeData)
+                {
+                    string prefabName = shipType.type;
+                    string modelAuthor = shipType.modelauthor;
+                    string textureAuthor = shipType.textureauthor;
+
+                    buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, prefabName, "ContentButton03", "none", "Model Author: " + modelAuthor + " Texture Author: " + textureAuthor, "none"); 
+                }
+
+                //This sets the size of the sub menu according to the how many buttons have been generated
+                RectTransform rt = subMenu.GetComponent<RectTransform>();
+                rt.sizeDelta = new Vector2(0, buttonDrop);
+            }
         }
     }
 
@@ -803,6 +833,8 @@ public static class MainMenuFunctions
             }
         }
     }
+
+
 
     #endregion
 

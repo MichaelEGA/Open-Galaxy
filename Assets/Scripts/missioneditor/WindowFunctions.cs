@@ -149,13 +149,58 @@ public static class WindowFunctions
         DrawLineBreak(window, "#808080", 0, -20, 1, 250);
 
         List<string> buttonList = new List<string>();
+        List<string> options = new List<string>();
+
+        options.Add("all");
 
         TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
         ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
 
+        string firstShip = "xwing";
+        bool firstShipCaptured = false;
+
         foreach (ShipType shipType in shipTypes.shipTypeData)
         {
+            //This adds the ship to the list
             buttonList.Add(shipType.type);
+
+            //This captures the name of the first ship to display
+            if (firstShipCaptured == false)
+            {
+                firstShip = shipType.type;
+                firstShipCaptured = true;
+            }
+
+            //This creates the list to sort the ships
+            bool addString = true;
+
+            foreach (string sortString in options)
+            {
+                if (sortString == shipType.allegiance)
+                {
+                    addString = false;
+                }
+            }
+
+            if (addString == true)
+            {
+                options.Add(shipType.allegiance);
+            }
+
+            addString = true;
+
+            foreach (string sortString in options)
+            {
+                if (sortString == shipType.scriptType)
+                {
+                    addString = false;
+                }
+            }
+
+            if (addString == true)
+            {
+                options.Add(shipType.scriptType);
+            }
         }
 
         List<string> functionList = new List<string>();
@@ -168,11 +213,15 @@ public static class WindowFunctions
         string[] buttons = buttonList.ToArray();
         string[] functions = functionList.ToArray();
 
-        DrawScrollableButtons(window, 5, -29, 166f, 115, 10, 7, buttons, functions);
+        DrawScrollableButtons(window, 5, -29, 161f, 115, 10, 7, buttons, functions, "scollableshiplist");
 
         DrawRawImage(window, 147.5f, -29, 73f, 73f, "assetpreview");
 
-        DrawScrollableText(window, 127.5f, -107, 88f, 115, 7, "No Event Selected", 225f, "ShipInformationTextBox");
+        DrawScrollableText(window, 127.5f, -102, 88f, 115, 7, "No Event Selected", 225f, "ShipInformationTextBox");
+
+        DrawDropDownMenuSansLabel(window, options, "ships", "all", 7, 151f, -7.4f, 10, 65);
+
+        DisplayShipInformation(firstShip);
     }
 
     //This draws a window that displays the location of all relevant nodes on the map
@@ -553,7 +602,7 @@ public static class WindowFunctions
     }
 
     //This draws a field with scrollable buttons
-    public static void DrawScrollableButtons(Window window, float xPos, float yPos, float height, float width, float buttonHeight, int fontSize, string[] buttons, string[] functions)
+    public static void DrawScrollableButtons(Window window, float xPos, float yPos, float height, float width, float buttonHeight, int fontSize, string[] buttons, string[] functions, string name = "scrollablebuttons")
     {
         GameObject baseGO = new GameObject();
         GameObject viewportGO = new GameObject();
@@ -567,7 +616,7 @@ public static class WindowFunctions
         RectTransform viewportRectTransform = viewportGO.AddComponent<RectTransform>();
         RectTransform contentRectTransform = contentGO.AddComponent<RectTransform>();
 
-        baseRectTransform.name = "ScrollableButtons";
+        baseRectTransform.name = name;
         viewportRectTransform.name = "Viewport";
         contentRectTransform.name = "ContentRect";
 
@@ -1224,6 +1273,10 @@ public static class WindowFunctions
         {
             ChangeNodesToDisplay(dropdown.captionText.text);
         }
+        else if (dropdown.name == "ships")
+        {
+            SortShipList(dropdown.captionText.text);
+        }
     }
 
     //This sets the rect transform
@@ -1485,62 +1538,59 @@ public static class WindowFunctions
         GameObject.Destroy(window.gameObject);
     }
 
-    //This gets the current mission list
-    public static string[] GetMissionList()
+    //This sorts the ships and remakes the window
+    public static void SortShipList(string value)
     {
+        GameObject shipPreviewGO = GameObject.Find("scollableshiplist");
+
+        Window window = shipPreviewGO.GetComponentInParent<Window>();
+
+        if (shipPreviewGO != null)
+        {
+            GameObject.Destroy(shipPreviewGO);
+        }
+
         List<string> buttonList = new List<string>();
 
-        var info = new DirectoryInfo(OGGetAddress.missions_custom);
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
+        ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
 
-        if (info.Exists == false)
+        if (value != "all")
         {
-            Directory.CreateDirectory(OGGetAddress.missions_custom);
-            info = new DirectoryInfo(OGGetAddress.missions_custom);
-        }
-
-        List<TextAsset> customMissionsList = new List<TextAsset>();
-
-        if (info.Exists == true)
-        {
-            var fileInfo = info.GetFiles("*.json");
-
-            foreach (FileInfo file in fileInfo)
+            foreach (ShipType shipType in shipTypes.shipTypeData)
             {
-                string missionName = file.Name;
-                buttonList.Add(missionName);
-            }
-        }
-
-        return buttonList.ToArray();
-    }
-
-    //This modifies the caret position
-    public static IEnumerator ModifyCaretPositionTimed(float delay)
-    {
-        yield return new WaitForSecondsRealtime(delay);
-
-        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
-
-        if (missionEditor != null)
-        {
-            if (missionEditor.windows != null)
-            {
-                foreach (Window window in missionEditor.windows)
+                //This adds the ship to the list
+                if (shipType.allegiance == value)
                 {
-                    if (window != null)
-                    {
-                        Transform[] carets = GameObjectUtils.FindAllChildTransformsContaining(window.transform, "Caret");
+                    buttonList.Add(shipType.type);
+                }
 
-                        int childNumber = window.transform.childCount;
-
-                        foreach (Transform caret in carets)
-                        {
-                            caret.SetAsLastSibling();
-                        }
-                    }
+                if (shipType.scriptType == value)
+                {
+                    buttonList.Add(shipType.type);
                 }
             }
         }
+        else
+        {
+            foreach (ShipType shipType in shipTypes.shipTypeData)
+            {
+                buttonList.Add(shipType.type);
+            }
+        }
+
+        List<string> functionList = new List<string>();
+
+        foreach (string button in buttonList)
+        {
+            functionList.Add("DisplayShipInformation");
+        }
+
+        string[] buttons = buttonList.ToArray();
+        string[] functions = functionList.ToArray();
+
+        DrawScrollableButtons(window, 5, -29, 161f, 115, 10, 7, buttons, functions, "scollableshiplist");
+
     }
 
     public static void DisplayShipInformation(string ship)
@@ -1570,13 +1620,8 @@ public static class WindowFunctions
   
                     GameObject shipPreviewGO = GameObject.Find("Button_assetpreview");
 
-                    Debug.Log("was run 1");
-
                     if (shipPreviewGO != null)
                     {
-
-                        Debug.Log("was run 2");
-
                         RawImage shipPreview = shipPreviewGO.GetComponentInChildren<RawImage>();
 
                         if (missionEditor.previewCamera != null)
@@ -1598,7 +1643,6 @@ public static class WindowFunctions
 
                         if (missionEditor.previewRenderTexture != null)
                         {
-                            Debug.Log("was run 3");
                             shipPreview.texture = missionEditor.previewRenderTexture;
                         }
                     }

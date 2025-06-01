@@ -77,7 +77,7 @@ public static class CockpitFunctions
     }
 
     //This runs the movement of the third person camera
-    public static void ThirdPersonCameraMovement(SmallShip smallShip)
+    public static void FollowCamera(SmallShip smallShip)
     {
         if (smallShip != null)
         {

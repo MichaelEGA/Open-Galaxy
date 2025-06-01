@@ -333,12 +333,7 @@ public class SmallShip : MonoBehaviour
     void FixedUpdate()
     {
         SmallShipFunctions.MoveShip(this);
-        CockpitFunctions.ThirdPersonCameraMovement(this);
-    }
-
-    void LateUpdate()
-    {
-        
+        CockpitFunctions.FollowCamera(this);
     }
 
     void OnCollisionEnter(Collision collision)

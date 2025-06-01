@@ -428,6 +428,18 @@ public static class SmallShipFunctions
                 if (smallShip.wepLevel > 0) { smallShip.wepLevel -= smallShip.wepDischarge; }
             }
         }
+        else if (smallShip.powerMode == "reset")
+        {
+            if (smallShip.wep == false & smallShip.thrustInput <= 0)
+            {
+                if (smallShip.wepLevel > 50) { smallShip.wepLevel -= smallShip.wepDischarge; }
+                else if (smallShip.wepLevel < 50) { smallShip.wepLevel += smallShip.wepRecharge; }
+            }
+            else
+            {
+                if (smallShip.wepLevel > 0) { smallShip.wepLevel -= smallShip.wepDischarge; }
+            }
+        }
         else
         {
             if (smallShip.wepLevel > 0) { smallShip.wepLevel -= smallShip.wepDischarge; }
@@ -485,21 +497,16 @@ public static class SmallShipFunctions
         float actualSpeedRating = smallShip.speedRating;
 
         //This calculates the accleration and speedrating according to different power modes
-        if (smallShip.powerMode == "reset")
+        if (smallShip.powerMode == "reset" & smallShip.thrustInput > 0 & smallShip.wepLevel > 1 || smallShip.powerMode == "engines" & smallShip.thrustInput > 0 & smallShip.wepLevel > 1)
         {
-            actualSpeedRating = (smallShip.speedRating / 100f) * 80f;
+            actualSpeedRating = smallShip.speedRating + smallShip.wepRating;
+            acclerationAmount = acclerationAmount * 2;
+            smallShip.wep = true;
         }
         else if (smallShip.powerMode == "lasers" || smallShip.powerMode == "shields")
         {
             actualSpeedRating = (smallShip.speedRating / 100f) * 75f;
-        }
-
-        //This calculates the WEP "War Emergency Power" i.e. WWII word for boost
-        if (smallShip.powerMode == "engines" & smallShip.thrustInput > 0 & smallShip.wepLevel > 1)
-        {
-            smallShip.wep = true;
-            actualSpeedRating = smallShip.speedRating + smallShip.wepRating;
-            acclerationAmount = acclerationAmount * 2;
+            smallShip.wep = false;
         }
         else
         {

@@ -1219,6 +1219,7 @@ public static class NodeTypes
 
         List<string> options1 = new List<string>();
         options1.Add("nochange");
+        options1.Add("fullspeedwithboost");
         options1.Add("fullspeed");
         options1.Add("threequarterspeed");
         options1.Add("halfspeed");

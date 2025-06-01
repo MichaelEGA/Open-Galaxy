@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 //These functions are called by the small ship functions script
@@ -51,8 +52,9 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (tag == "matchspeed" || tag == "fullspeed" || tag == "threequarterspeed" || tag == "halfspeed" || tag == "quarterspeed" || tag == "dynamicspeed" || tag == "nospeed")
+            if (tag == "matchspeed" || tag == "fullspeedwithboost" || tag == "fullspeed" || tag == "threequarterspeed" || tag == "halfspeed" || tag == "quarterspeed" || tag == "dynamicspeed" || tag == "nospeed")
             {
+                RemoveSingleTag(smallShip, "fullspeedwithboost");
                 RemoveSingleTag(smallShip, "fullspeed");
                 RemoveSingleTag(smallShip, "threequarterspeed");
                 RemoveSingleTag(smallShip, "halfspeed");
@@ -179,7 +181,11 @@ public static class SmallShipAIFunctions
             {
                 foreach (string tag in smallShip.aiTags.ToArray())
                 {
-                    if (tag == "fullspeed") //Speed control
+                    if (tag == "fullspeedwithboost") //Speed control
+                    {
+                        FullSpeedWithBoost(smallShip);
+                    }
+                    else if (tag == "fullspeed") //Speed control
                     {
                         FullSpeed(smallShip);
                     }
@@ -368,14 +374,45 @@ public static class SmallShipAIFunctions
 
     #region AI Speed Functions
 
-    //This sets the ship to half speed (typically used when no enemies are detected)
-    public static void FullSpeed(SmallShip smallShip)
+    //This sets the ship at full speed
+    public static void FullSpeedWithBoost(SmallShip smallShip)
     {
         if (smallShip != null)
         {
             if (smallShip.aiMatchSpeed == false)
             {
-                smallShip.thrustInput = 1;
+                if (smallShip.boostIsActive == true)
+                {
+                    smallShip.thrustInput = 1;
+                }
+                else if (smallShip.boostIsActive == false)
+                {
+                    if (smallShip.thrustSpeed > smallShip.speedRating)
+                    {
+                        smallShip.thrustInput = -1;
+                    }
+                    else
+                    {
+                        smallShip.thrustInput = 1;
+                    }
+                }
+
+                //This prevents the ship using the boost until it reaches full
+                float weplimit = 50;
+                
+                if (smallShip.powerMode == "engines")
+                {
+                    weplimit = 100;
+                }
+
+                if (smallShip.wepLevel >= weplimit)
+                {
+                    smallShip.boostIsActive = true;
+                }
+                else if (smallShip.wepLevel <= 0)
+                {
+                    smallShip.boostIsActive = false;
+                }
             }
             else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
             {
@@ -388,7 +425,34 @@ public static class SmallShipAIFunctions
         }
     }
 
-    //This sets the ship to half speed (typically used when no enemies are detected)
+    //This sets the ship at full speed
+    public static void FullSpeed(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            if (smallShip.aiMatchSpeed == false)
+            {
+                if (smallShip.thrustSpeed > smallShip.speedRating)
+                {
+                    smallShip.thrustInput = -1;
+                }
+                else
+                {
+                    smallShip.thrustInput = 1;
+                }
+            }
+            else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
+            {
+                MatchSpeed(smallShip);
+            }
+            else
+            {
+                HalfSpeed(smallShip);
+            }
+        }
+    }
+
+    //This sets the ship to three quarter speed
     public static void ThreeQuarterSpeed(SmallShip smallShip)
     {
         if (smallShip != null)
@@ -417,7 +481,7 @@ public static class SmallShipAIFunctions
         }
     }
 
-    //This sets the ship to half speed (typically used when no enemies are detected)
+    //This sets the ship to half speed 
     public static void HalfSpeed(SmallShip smallShip)
     {
         if (smallShip != null)
@@ -455,7 +519,7 @@ public static class SmallShipAIFunctions
         }
     }
 
-    //This sets the ship to half speed (typically used when no enemies are detected)
+    //This sets the ship to quarter speed
     public static void QuarterSpeed(SmallShip smallShip)
     {
         if (smallShip != null)

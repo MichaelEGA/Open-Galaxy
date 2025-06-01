@@ -213,6 +213,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool aiMatchSpeed;
     [HideInInspector] public bool aiStarted;
     [HideInInspector] public bool aiEvade;
+    [HideInInspector] public bool boostIsActive;
 
     [Header("Formation Flying")]
     public SmallShip followTarget;

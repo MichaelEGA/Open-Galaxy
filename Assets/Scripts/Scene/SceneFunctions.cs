@@ -153,18 +153,18 @@ public static class SceneFunctions
             mainCameraData.renderPostProcessing = true;
         }
 
-        GameObject secondaryMainCameraGO = GameObject.Find("Secondary Camera");
-        Camera secondaryMainCamera = null;
+        GameObject followCameraGO = GameObject.Find("Follow Camera");
+        Camera followCamera = null;
 
-        if (secondaryMainCameraGO == null)
+        if (followCameraGO == null)
         {
-            secondaryMainCameraGO = new GameObject();
-            secondaryMainCameraGO.name = "Secondary Camera";
-            secondaryMainCamera = secondaryMainCameraGO.AddComponent<Camera>();
-            secondaryMainCamera.cullingMask = LayerMask.GetMask("Default", "collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
-            secondaryMainCamera.nearClipPlane = 0.01f;
-            secondaryMainCamera.farClipPlane = 90000;
-            var secondaryMainCameraData = secondaryMainCamera.GetUniversalAdditionalCameraData();
+            followCameraGO = new GameObject();
+            followCameraGO.name = "Follow Camera";
+            followCamera = followCameraGO.AddComponent<Camera>();
+            followCamera.cullingMask = LayerMask.GetMask("Default", "collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
+            followCamera.nearClipPlane = 0.01f;
+            followCamera.farClipPlane = 90000;
+            var secondaryMainCameraData = followCamera.GetUniversalAdditionalCameraData();
             secondaryMainCameraData.renderType = CameraRenderType.Overlay;
             secondaryMainCameraData.renderPostProcessing = true;
         }
@@ -189,7 +189,7 @@ public static class SceneFunctions
             var starfieldCameraData = starfieldCamera.GetUniversalAdditionalCameraData();
             starfieldCameraData.cameraStack.Add(planetCamera);
             starfieldCameraData.cameraStack.Add(mainCamera);
-            starfieldCameraData.cameraStack.Add(secondaryMainCamera);
+            starfieldCameraData.cameraStack.Add(followCamera);
             starfieldCameraData.cameraStack.Add(cockpitCamera);
         }
     }
@@ -202,13 +202,13 @@ public static class SceneFunctions
         GameObject starfieldCamera = GameObject.Find("Starfield Camera");
         GameObject planetCamera = GameObject.Find("Planet Camera");
         GameObject mainCamera = GameObject.Find("Main Camera");
-        GameObject secondaryCamera = GameObject.Find("Secondary Camera");
+        GameObject followCamera = GameObject.Find("Follow Camera");
         GameObject cockpitCamera = GameObject.Find("Cockpit Camera");
 
         scene.starfieldCamera = starfieldCamera;
         scene.planetCamera = planetCamera;
         scene.mainCamera = mainCamera;
-        scene.followCamera = secondaryCamera;
+        scene.followCamera = followCamera;
         scene.cockpitCamera = cockpitCamera;
     }
 
@@ -220,7 +220,7 @@ public static class SceneFunctions
         GameObject starfieldCameraGO = GameObject.Find("Starfield Camera");
         GameObject planetCameraGO = GameObject.Find("Planet Camera");
         GameObject mainCameraGO = GameObject.Find("Main Camera");
-        GameObject followCameraGO = GameObject.Find("Secondary Camera");
+        GameObject followCameraGO = GameObject.Find("Follow Camera");
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
 
         if (starfieldCameraGO != null)
@@ -378,7 +378,6 @@ public static class SceneFunctions
                     scene.followCameraIsActive = false;
                 }
             }
-
         }
     }
 

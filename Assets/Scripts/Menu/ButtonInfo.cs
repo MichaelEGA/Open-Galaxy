@@ -16,7 +16,7 @@ public class ButtonInfo : MonoBehaviour, ISelectHandler, IPointerEnterHandler
 
     void Start()
     {
-        mainMenu = GameObject.FindObjectOfType<MainMenu>();
+        mainMenu = GameObject.FindFirstObjectByType<MainMenu>();
     }
 
     // When highlighted with mouse.

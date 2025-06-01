@@ -144,8 +144,6 @@ public static class HudFunctions
                                     SceneFunctions.ScaleGameObjectByZAxis(radarObject, 10);
                                     GameObjectUtils.RemoveColliders(radarObject);
 
-                                    Debug.Log("run 1");
-
                                     //This checks the wireframe material is loaded
                                     if (hud.wireframeMaterial == null)
                                     {
@@ -1077,9 +1075,9 @@ public static class HudFunctions
             {
                 if (hud.smallShip != null)
                 {
-                    if (hud.smallShip.secondaryCamera != null)
+                    if (hud.smallShip.followCamera != null)
                     {
-                        hud.secondaryCamera = hud.smallShip.secondaryCamera.GetComponent<Camera>();
+                        hud.secondaryCamera = hud.smallShip.followCamera.GetComponent<Camera>();
                     }
                 }
             }
@@ -1295,9 +1293,9 @@ public static class HudFunctions
             {
                 if (hud.smallShip != null)
                 {
-                    if (hud.smallShip.secondaryCamera != null)
+                    if (hud.smallShip.followCamera != null)
                     {
-                        hud.secondaryCamera = hud.smallShip.secondaryCamera.GetComponent<Camera>();
+                        hud.secondaryCamera = hud.smallShip.followCamera.GetComponent<Camera>();
                     }
                 }
             }
@@ -1408,9 +1406,9 @@ public static class HudFunctions
             {
                 if (hud.smallShip != null)
                 {
-                    if (hud.smallShip.secondaryCamera != null)
+                    if (hud.smallShip.followCamera != null)
                     {
-                        hud.secondaryCamera = hud.smallShip.secondaryCamera.GetComponent<Camera>();
+                        hud.secondaryCamera = hud.smallShip.followCamera.GetComponent<Camera>();
                     }
                 }
             }
@@ -1733,9 +1731,9 @@ public static class HudFunctions
             {
                 if (hud.smallShip != null)
                 {
-                    if (hud.smallShip.secondaryCamera != null)
+                    if (hud.smallShip.followCamera != null)
                     {
-                        hud.secondaryCamera = hud.smallShip.secondaryCamera.GetComponent<Camera>();
+                        hud.secondaryCamera = hud.smallShip.followCamera.GetComponent<Camera>();
                     }
                 }
             }

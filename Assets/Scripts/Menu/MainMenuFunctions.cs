@@ -286,7 +286,7 @@ public static class MainMenuFunctions
     //This grabs all the button prefabs ready to instantiate
     public static void LoadButtons()
     {
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+        MainMenu mainMenu = GameObject.FindFirstObjectByType<MainMenu>();
 
         mainMenu.buttons = Resources.LoadAll<GameObject>(OGGetAddress.menubuttons);
     }
@@ -1420,7 +1420,7 @@ public static class MainMenuFunctions
     //This outputs a message to the menu
     public static void OutputMenuMessage(string message)
     {
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>();
+        MainMenu mainMenu = GameObject.FindFirstObjectByType<MainMenu>();
 
         if (mainMenu.menuMessage != null)
         {

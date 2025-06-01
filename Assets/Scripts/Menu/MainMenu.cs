@@ -40,8 +40,8 @@ public class MainMenu: MonoBehaviour
     void Start()
     {
         //This adds the event system if it can't already find one in the game
-        eventSystem = GameObject.FindObjectOfType<EventSystem>();
-        InputSystemUIInputModule inputSystem = GameObject.FindObjectOfType<InputSystemUIInputModule>();
+        eventSystem = GameObject.FindFirstObjectByType<EventSystem>();
+        InputSystemUIInputModule inputSystem = GameObject.FindFirstObjectByType<InputSystemUIInputModule>();
 
         if (eventSystem == null)
         {

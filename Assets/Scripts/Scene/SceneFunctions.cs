@@ -2388,11 +2388,11 @@ public static class SceneFunctions
             Camera.transform.parent = null;
         }
 
-        GameObject SecondaryCamera = GameObject.Find("Secondary Camera");
+        GameObject FollowCamera = GameObject.Find("Follow Camera");
 
-        if (SecondaryCamera != null)
+        if (FollowCamera != null)
         {
-            SecondaryCamera.transform.parent = null;
+            FollowCamera.transform.parent = null;
         }
 
         if (scene.objectPool != null)

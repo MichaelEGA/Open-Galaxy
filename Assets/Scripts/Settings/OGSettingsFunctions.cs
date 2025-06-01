@@ -213,7 +213,7 @@ public static class OGSettingsFunctions
     {
         OGSettings settings = null;
 
-        settings = GameObject.FindObjectOfType<OGSettings>();
+        settings = GameObject.FindFirstObjectByType<OGSettings>();
 
         if (settings == null)
         {

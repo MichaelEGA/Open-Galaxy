@@ -2222,7 +2222,7 @@ public static class MissionEditorFunctions
     //This function returns the active mission editor script when called
     public static MissionEditor GetMissionEditor()
     {
-        MissionEditor missionEditor = GameObject.FindObjectOfType<MissionEditor>();
+        MissionEditor missionEditor = GameObject.FindFirstObjectByType<MissionEditor>();
 
         return missionEditor;
     }

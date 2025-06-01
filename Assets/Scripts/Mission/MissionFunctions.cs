@@ -12,7 +12,7 @@ public static class MissionFunctions
     public static IEnumerator RunMission(string missionName, string missionAddress, bool addressIsExternal = false)
     {
         //This looks for the mission manager and if it doesn't find one creates one
-        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();      
+        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();      
 
         if (missionManager == null)
         {
@@ -287,7 +287,7 @@ public static class MissionFunctions
     //This runs a series of events
     public static IEnumerator RunEventSeries(Mission mission, int eventSeries)
     {
-        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();
 
         while (missionManager.running == true)
         {
@@ -335,7 +335,7 @@ public static class MissionFunctions
     //This looks for the next event to run
     public static void FindNextEvent(string nextEvent, int eventSeries)
     {
-        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();
 
         if (nextEvent != "none" & missionManager != null)
         {
@@ -3643,7 +3643,7 @@ public static class MissionFunctions
     //This returns the mission manager when requested
     public static MissionManager GetMissionManager()
     {
-        MissionManager missionManager = GameObject.FindObjectOfType<MissionManager>();
+        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();
 
         return missionManager;
     }

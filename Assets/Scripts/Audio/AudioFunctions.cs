@@ -558,7 +558,7 @@ public static class AudioFunctions
     {
         if (audioManager.scene == null)
         {
-            audioManager.scene = GameObject.FindObjectOfType<Scene>();
+            audioManager.scene = GameObject.FindFirstObjectByType<Scene>();
         }
     }
 
@@ -567,7 +567,7 @@ public static class AudioFunctions
     {
         Audio audio;
 
-        audio = GameObject.FindObjectOfType<Audio>();
+        audio = GameObject.FindFirstObjectByType<Audio>();
 
         return audio;
     }

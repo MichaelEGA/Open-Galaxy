@@ -99,14 +99,14 @@ public static class CockpitFunctions
                     smallShip.toggleCameraPressTime = Time.time;
                 }
 
-                if (smallShip.secondaryCamera == null)
+                if (smallShip.followCamera == null)
                 {
                     Scene scene = SceneFunctions.GetScene();
 
                     if (scene.followCamera != null)
                     {
-                        smallShip.secondaryCamera = scene.followCamera;
-                        smallShip.secondaryCamera.transform.SetParent(scene.transform);
+                        smallShip.followCamera = scene.followCamera;
+                        smallShip.followCamera.transform.SetParent(scene.transform);
                     }
                 }
 
@@ -114,7 +114,7 @@ public static class CockpitFunctions
                 
                 float followSpeed = 16f;   // How quickly the camera moves default 8
                 float rotationSpeed = 6; // How quickly the camera rotates default 6
-                GameObject secondaryCamera = smallShip.secondaryCamera;
+                GameObject followCamera = smallShip.followCamera;
 
                 //This sets the cameras primary position
                 Vector3 primaryPositionOffset = new Vector3(0, smallShip.shipLength / 2f, smallShip.shipLength * -1);
@@ -142,26 +142,26 @@ public static class CockpitFunctions
 
                 if (smallShip.inHyperspace == false)
                 {
-                    secondaryCamera.transform.SetParent(smallShip.scene.transform);
+                    followCamera.transform.SetParent(smallShip.scene.transform);
 
                     if (smallShip.focusCamera == false)
                     {
-                        secondaryCamera.transform.localPosition = Vector3.Lerp(secondaryCamera.transform.localPosition, primaryPosition, followSpeed * Time.deltaTime);
+                        followCamera.transform.localPosition = Vector3.Lerp(followCamera.transform.localPosition, primaryPosition, followSpeed * Time.deltaTime);
                     }
                     else
                     {
                         followSpeed = 32f;
                         rotationSpeed = 12;
-                        secondaryCamera.transform.localPosition = Vector3.Lerp(secondaryCamera.transform.localPosition, secondaryPosition, followSpeed * Time.deltaTime);
+                        followCamera.transform.localPosition = Vector3.Lerp(followCamera.transform.localPosition, secondaryPosition, followSpeed * Time.deltaTime);
                     }
 
                     //smoothly rotate the camera to look at the target
                     Quaternion desiredRotation = target.rotation;
-                    secondaryCamera.transform.rotation = Quaternion.Slerp(secondaryCamera.transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+                    followCamera.transform.rotation = Quaternion.Slerp(followCamera.transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
                 }
                 else
                 {
-                    secondaryCamera.transform.SetParent(smallShip.transform);
+                    followCamera.transform.SetParent(smallShip.transform);
                 }
             }
         }

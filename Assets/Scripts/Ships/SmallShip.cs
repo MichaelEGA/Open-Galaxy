@@ -36,7 +36,7 @@ public class SmallShip : MonoBehaviour
 
     [Header("Ship Cameras")]
     [HideInInspector] public GameObject mainCamera;
-    [HideInInspector] public GameObject secondaryCamera;
+    [HideInInspector] public GameObject followCamera;
     [HideInInspector] public bool cameraAttached;
     [HideInInspector] public bool attachCameraToAI;
     [HideInInspector] public Vector3 cameraLocalPosition;

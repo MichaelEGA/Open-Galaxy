@@ -50,7 +50,7 @@ public static class DockingFunctions
             DockingPoint dockPoint = dockingPointTransform.gameObject.AddComponent<DockingPoint>();
             dockingPointGameObjects.Add(dockPoint);
 
-            if (dockingPointTransform.name.Contains("down"));
+            if (dockingPointTransform.name.Contains("down"))
             {
                 dockPoint.releaseDown = true;
             }

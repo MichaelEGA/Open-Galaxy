@@ -84,7 +84,7 @@ public class OnLaserHit : MonoBehaviour
 
                 if (audioManager == null)
                 {
-                    audioManager = GameObject.FindObjectOfType<Audio>();
+                    audioManager = GameObject.FindFirstObjectByType<Audio>();
                 }
 
                 if (type == "laser")

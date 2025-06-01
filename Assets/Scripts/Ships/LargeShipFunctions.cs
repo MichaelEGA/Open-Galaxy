@@ -429,6 +429,8 @@ public static class LargeShipFunctions
 
                     HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
 
+                    yield return new WaitForSeconds(0.25f);
+
                     DeactivateShip(largeShip);
                 }
             }
@@ -444,6 +446,8 @@ public static class LargeShipFunctions
                     ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
 
                     HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
+
+                    yield return new WaitForSeconds(0.25f);
 
                     DeactivateShip(largeShip);
                 }

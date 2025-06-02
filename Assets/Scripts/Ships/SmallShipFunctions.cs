@@ -1162,21 +1162,17 @@ public static class SmallShipFunctions
     {
         if (smallShip.hullLevel <= 0 & smallShip.exploded == false || smallShip.hullLevel <= 0 & smallShip.exploded == false & smallShip.isCurrentlyColliding == true)
         {
-            if (smallShip.explosionType == "type1")
+            int explosion = Random.Range(0, 3);
+
+            if (explosion == 0)
             {
                 Task a = new Task(ExplosionType1(smallShip));
                 AddTaskToPool(smallShip, a);
-                smallShip.exploded = true;
-            }
-            else if (smallShip.explosionType == "type2")
-            {
-                ExplosionType2(smallShip);
                 smallShip.exploded = true;
             }
             else
             {
-                Task a = new Task(ExplosionType1(smallShip));
-                AddTaskToPool(smallShip, a);
+                ExplosionType2(smallShip);
                 smallShip.exploded = true;
             }
         }
@@ -1200,7 +1196,7 @@ public static class SmallShipFunctions
             }
 
             //This creates an explosion where the ship is
-            float explosionsScale = smallShip.shipLength / 10;
+            float explosionsScale = smallShip.shipLength / 5;
 
             ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion_smallship", explosionsScale);
 
@@ -1224,7 +1220,7 @@ public static class SmallShipFunctions
         }
 
         //This creates an explosion where the ship is
-        float explosionsScale = smallShip.shipLength / 10;
+        float explosionsScale = smallShip.shipLength / 5;
 
         ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion_smallship", explosionsScale);
 

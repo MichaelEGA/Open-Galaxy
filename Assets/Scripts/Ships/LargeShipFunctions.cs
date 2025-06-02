@@ -423,7 +423,7 @@ public static class LargeShipFunctions
             {
                 if (largeShip.scene != null)
                 {
-                    float explosionsScale = largeShip.shipLength / 100;
+                    float explosionsScale = largeShip.shipLength / 50;
 
                     ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
 
@@ -441,7 +441,7 @@ public static class LargeShipFunctions
             {
                 if (largeShip.scene != null)
                 {
-                    float explosionsScale = largeShip.shipLength / 100;
+                    float explosionsScale = largeShip.shipLength / 50;
 
                     ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
 

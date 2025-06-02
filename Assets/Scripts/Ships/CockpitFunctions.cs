@@ -140,19 +140,25 @@ public static class CockpitFunctions
 
                 secondaryPosition = smallShip.scene.transform.InverseTransformPoint(secondaryPosition);
 
+                //This caluclates the dynamic position of the camera
                 if (smallShip.inHyperspace == false)
                 {
-                    followCamera.transform.SetParent(smallShip.scene.transform);
-
                     if (smallShip.focusCamera == false)
                     {
+                        followCamera.transform.SetParent(smallShip.scene.transform);
                         followCamera.transform.localPosition = Vector3.Lerp(followCamera.transform.localPosition, primaryPosition, followSpeed * Time.deltaTime);
+
+                        //This should prevent the camera passing its designated position
+                        if (Vector3.Dot((primaryPosition - followCamera.transform.localPosition), (followCamera.transform.localPosition - followCamera.transform.localPosition)) < 0)
+                        {
+                            followCamera.transform.localPosition = primaryPosition;
+                        }
                     }
                     else
                     {
-                        followSpeed = 32f;
                         rotationSpeed = 12;
-                        followCamera.transform.localPosition = Vector3.Lerp(followCamera.transform.localPosition, secondaryPosition, followSpeed * Time.deltaTime);
+                        followCamera.transform.SetParent(smallShip.transform);
+                        followCamera.transform.position = smallShip.focusCameraPosition.transform.position;
                     }
 
                     //smoothly rotate the camera to look at the target
@@ -165,6 +171,10 @@ public static class CockpitFunctions
                 }
             }
         }
+    }
+    public static bool IsCloseEnough(Vector3 a, Vector3 b, float epsilon)
+    {
+        return Vector3.Distance(a, b) < epsilon;
     }
 
     #endregion

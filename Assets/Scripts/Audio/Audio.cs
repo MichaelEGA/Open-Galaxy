@@ -11,4 +11,10 @@ public class Audio : MonoBehaviour
     public List<AudioSource> audioSources;
     public List<AudioSource> independentAudioSources;
     public AudioMixer audioMixer;
+
+    public float voiceSavedVolume;
+    public float cockpitSavedVolume;
+    public float externalSavedVolume;
+    public float engineSavedVolume;
+    public float explosionsSavedVolume;
 }

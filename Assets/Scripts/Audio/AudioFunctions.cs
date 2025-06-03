@@ -306,6 +306,10 @@ public static class AudioFunctions
                 smallShip.engineAudioSource.rolloffMode = AudioRolloffMode.Linear;
                 smallShip.engineAudioSource.loop = true;
                 smallShip.engineAudioSource.Play();
+
+                Audio audioManager = GetAudioManager();
+
+                ConnectAudioMixerGroup(audioManager, smallShip.engineAudioSource, "Engine");
             }
 
             smallShip.engineAudioSource.gameObject.transform.position = smallShip.transform.position;
@@ -491,11 +495,27 @@ public static class AudioFunctions
     }
 
     //This returns an audio source connected to the designated mixer group
-    public static void ConnectAudioMixerGroup(Audio audioManager, AudioSource audioSource, string mixer)
+    public static void ConnectAudioMixerGroup(Audio audioManager, AudioSource audioSource, string audioGroup)
     {
         if (audioManager.audioMixer != null)
         {
-            audioSource.outputAudioMixerGroup = audioManager.audioMixer.FindMatchingGroups(mixer)[0];
+            AudioMixerGroup[] groups = audioManager.audioMixer.FindMatchingGroups(audioGroup);
+
+            if (groups.Length > 0)
+            {
+                audioSource.outputAudioMixerGroup = groups[0];
+            }
+            else
+            {
+                Debug.Log("audio group was not found " + audioGroup);
+
+                groups = audioManager.audioMixer.FindMatchingGroups(string.Empty);
+
+                foreach (AudioMixerGroup audioMixerGroup in groups)
+                {
+                    Debug.Log(audioMixerGroup.name + " exists");
+                }
+            }
         }
     }
 
@@ -540,6 +560,67 @@ public static class AudioFunctions
     #endregion
 
     #region audio utilities
+
+    //This mutes the selected audio source
+    public static void MuteSelectedAudio(string groupName)
+    {
+        Audio audioManager = GetAudioManager();
+
+        //This saves the volume value of the selected group and then sets it to -80
+        if (groupName == "voicevolume")
+        {
+            audioManager.audioMixer.GetFloat(groupName, out audioManager.voiceSavedVolume);
+            audioManager.audioMixer.SetFloat(groupName, -80);
+        }
+        else if(groupName == "cockpitvolume")
+        {
+            audioManager.audioMixer.GetFloat(groupName, out audioManager.cockpitSavedVolume);
+            audioManager.audioMixer.SetFloat(groupName, -80);
+        }
+        else if (groupName == "externalvolume")
+        {
+            audioManager.audioMixer.GetFloat(groupName, out audioManager.externalSavedVolume);
+            audioManager.audioMixer.SetFloat(groupName, -80);
+        }
+        else if (groupName == "enginevolume")
+        {
+            audioManager.audioMixer.GetFloat(groupName, out audioManager.engineSavedVolume);
+            audioManager.audioMixer.SetFloat(groupName, -80);
+        }
+        else if (groupName == "explosionsvolume")
+        {
+            audioManager.audioMixer.GetFloat(groupName, out audioManager.explosionsSavedVolume);
+            audioManager.audioMixer.SetFloat(groupName, -80);
+        }
+    }
+
+    //This unmutes selected audio
+    public static void UnmuteSelectedAudio(string groupName)
+    {
+        Audio audioManager = GetAudioManager();
+
+        //This saves the volume value of the selected group and then sets it to -80
+        if (groupName == "voicevolume")
+        {
+            audioManager.audioMixer.SetFloat(groupName, audioManager.voiceSavedVolume);
+        }
+        else if (groupName == "cockpitvolume")
+        {
+            audioManager.audioMixer.SetFloat(groupName, audioManager.cockpitSavedVolume);
+        }
+        else if (groupName == "externalvolume")
+        {
+            audioManager.audioMixer.SetFloat(groupName, audioManager.externalSavedVolume);
+        }
+        else if (groupName == "enginevolume")
+        {
+            audioManager.audioMixer.SetFloat(groupName, audioManager.engineSavedVolume);
+        }
+        else if (groupName == "explosionsvolume")
+        {
+            audioManager.audioMixer.SetFloat(groupName, audioManager.explosionsSavedVolume);
+        }
+    }
 
     //This stops all audio sources from playing
     public static void StopAudioSources(Audio audioManager)

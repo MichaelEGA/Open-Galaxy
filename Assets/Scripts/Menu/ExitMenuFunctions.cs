@@ -32,6 +32,14 @@ public static class ExitMenuFunctions
                 //This selects the button for when players are using the controller
                 exitMenu.GetComponentInChildren<Button>().Select();
             }
+
+            //This mutes game sounds
+            AudioFunctions.MuteSelectedAudio("voicevolume");
+            AudioFunctions.MuteSelectedAudio("externalvolume");
+            AudioFunctions.MuteSelectedAudio("enginevolume");
+            AudioFunctions.MuteSelectedAudio("explosionsvolume");
+            AudioFunctions.MuteSelectedAudio("cockpitvolume");
+
         }
         else
         {
@@ -44,6 +52,13 @@ public static class ExitMenuFunctions
 
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
+
+            //This mutes game sounds
+            AudioFunctions.UnmuteSelectedAudio("voicevolume");
+            AudioFunctions.UnmuteSelectedAudio("externalvolume");
+            AudioFunctions.UnmuteSelectedAudio("enginevolume");
+            AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
+            AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
         }
     }
 }

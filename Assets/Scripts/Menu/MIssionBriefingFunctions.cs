@@ -12,6 +12,12 @@ public static class MissionBriefingFunctions
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
 
+        //This unmutes game sounds
+        AudioFunctions.UnmuteSelectedAudio("externalvolume");
+        AudioFunctions.UnmuteSelectedAudio("enginevolume");
+        AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
+        AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
+
         //This restores the scenes lighting
         SceneFunctions.SetLighting("#" + missionBriefing.colour, missionBriefing.sunIsEnabled, missionBriefing.sunIntensity, missionBriefing.sunScale, missionBriefing.x, missionBriefing.y, missionBriefing.z, missionBriefing.xRot, missionBriefing.yRot, missionBriefing.zRot);
 
@@ -56,6 +62,13 @@ public static class MissionBriefingFunctions
         GameObject environmentGO = Resources.Load<GameObject>("objects/readyrooms/readyroom_white");
         GameObject environment = GameObject.Instantiate(environmentGO) as GameObject;
 
+        //This mutes game sounds
+        AudioFunctions.MuteSelectedAudio("externalvolume");
+        AudioFunctions.MuteSelectedAudio("enginevolume");
+        AudioFunctions.MuteSelectedAudio("explosionsvolume");
+        AudioFunctions.MuteSelectedAudio("cockpitvolume");
+
+        //This locks the player controls
         LockPlayerControls();
 
         //This moves the camera into position

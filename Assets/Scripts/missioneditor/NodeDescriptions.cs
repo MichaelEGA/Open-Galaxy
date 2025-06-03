@@ -358,7 +358,20 @@ public static class NodeDescriptions
             description =
             "Display Message \n " +
             "\n " +
-            "This node sends an in game message i.e. 'Rouge 01: I'm starting my attack run now.' \n" +
+            "This node sends an in game message to the message queue, it will play when the messages in front of the message in the queue have played i.e. there will be a delay \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- You can link an audio file (.wav) to run at the same time the message is sent. Simply make a folder in the custom missions folder. Name the folder 'YOURMISSIONNAME_audio'. Paste your audio file in the folder, type the name of the audio file (without the .wav extension) in the designated area on the node, and select the 'External Audio' option. \n" +
+            "- You can also access several inbuilt audio files. Use the names listed below and select the option 'Internal Audio'. \n" +
+            "- Internal Audio Files: beep01_toggle, beep02_targetlock, beep03_weaponchange,  r2d2, r5" +
+           "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
+        else if (name == "displayimmediate")
+        {
+            description =
+            "Display Message Immediate \n " +
+            "\n " +
+            "This node sends an in game message immediately regardless of whether a message is currently playing or not i.e. there will be no delay \n" +
             "\n " +
             "Extra Information \n" +
             "- You can link an audio file (.wav) to run at the same time the message is sent. Simply make a folder in the custom missions folder. Name the folder 'YOURMISSIONNAME_audio'. Paste your audio file in the folder, type the name of the audio file (without the .wav extension) in the designated area on the node, and select the 'External Audio' option. \n" +

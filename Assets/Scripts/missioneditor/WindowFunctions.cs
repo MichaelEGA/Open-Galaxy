@@ -66,6 +66,7 @@ public static class WindowFunctions
         buttonList.Add("displayhint");
         buttonList.Add("displaytitle");
         buttonList.Add("displaymessage");
+        buttonList.Add("displaymessageimmediate");
         buttonList.Add("displaymissionbriefing");
         buttonList.Add("exitmission");
         buttonList.Add("exitanddisplaynextmissionmenu");

@@ -69,6 +69,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DisplayMessage(node);
         }
+        else if (node.nodeType == "displaymessageimmediate")
+        {
+            NodeTypes.Draw_DisplayMessageImmediate(node);
+        }
         else if (node.nodeType == "displaymissionbriefing")
         {
             NodeTypes.Draw_DisplayMissionBriefing(node);

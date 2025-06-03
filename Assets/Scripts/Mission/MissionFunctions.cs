@@ -1,6 +1,7 @@
-using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -442,6 +443,11 @@ public static class MissionFunctions
             DisplayMessage(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "displaymessageimmediate")
+        {
+            DisplayMessageImmediate(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "displaymissionbriefing")
         {
             DisplayMissionBriefing(missionEvent);
@@ -760,6 +766,42 @@ public static class MissionFunctions
         {
             LoadScreenFunctions.LoadingScreen(false);
         }
+    }
+
+    //This plays audio in a queue which prevents audio from overlapping
+    public static IEnumerator PlayMessageFromQueue(MissionManager missionManager)
+    {
+        string message = missionManager.messageStringQueue.Dequeue();
+        string audio = missionManager.messageAudioQueue.Dequeue();
+        bool distortion = missionManager.messageDistortionQueue.Dequeue();
+        float distortionLevel = missionManager.messageDistortionLevelQueue.Dequeue();
+        string internalAudioFile = missionManager.messageInternalQueue.Dequeue();
+
+        AudioSource messageAudioSource = null;
+
+        if (message != "none")
+        {
+            HudFunctions.AddToShipLog(message);
+        }
+
+        if (audio != "none" & internalAudioFile != "true")
+        {
+            messageAudioSource = AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
+        }
+        else if (audio != "none" & internalAudioFile == "true")
+        {
+            messageAudioSource = AudioFunctions.PlayMissionAudioClip(null, audio, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, false);
+        }
+
+        if (messageAudioSource != null)
+        {
+            while (messageAudioSource.isPlaying == true)
+            {
+                yield return null;
+            }
+        }
+
+        missionManager.messagePlaying = false;        
     }
 
     #endregion
@@ -1412,8 +1454,41 @@ public static class MissionFunctions
         HudFunctions.DisplayTitle(title, fontsize, colour);
     }
 
-    //This adds a message to the log and can also play an audio file
+    //This adds a message to the log and plays an audio file, it will wait for other messages to play before playing
     public static void DisplayMessage(MissionEvent missionEvent)
+    {
+        string audio = missionEvent.data2;
+        string message = missionEvent.data1;
+        string internalAudioFile = missionEvent.data3;
+
+        bool distortion = false;
+
+        if (bool.TryParse(missionEvent.data4, out _))
+        {
+            distortion = bool.Parse(missionEvent.data4);
+        }
+
+        float distortionLevel = 0.5f;
+
+        if (float.TryParse(missionEvent.data5, out _))
+        {
+            distortionLevel = float.Parse(missionEvent.data5);
+        }
+
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+
+        if (missionManager != null)
+        {
+            missionManager.messageStringQueue.Enqueue(message);
+            missionManager.messageAudioQueue.Enqueue(audio);
+            missionManager.messageInternalQueue.Enqueue(internalAudioFile);
+            missionManager.messageDistortionQueue.Enqueue(distortion);
+            missionManager.messageDistortionLevelQueue.Enqueue(distortionLevel);
+        }
+    }
+
+    //This adds a message to the log and can also play an audio file, it will not wait for other messages to finish playing
+    public static void DisplayMessageImmediate(MissionEvent missionEvent)
     {
         string audio = missionEvent.data2;
         string message = missionEvent.data1;

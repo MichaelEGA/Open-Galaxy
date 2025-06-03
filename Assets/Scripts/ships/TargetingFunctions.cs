@@ -1271,7 +1271,7 @@ public static class TargetingFunctions
                 {
                     bool isHostile = false;
 
-    isHostile = GetHostility_LargeShipAI(turret.largeShip, tempSmallShip.allegiance);
+                    isHostile = GetHostility_LargeShipAI(turret.largeShip, tempSmallShip.allegiance);
 
                     if (tempSmallShip.gameObject.activeSelf != false & isHostile == true)
                     {
@@ -1294,7 +1294,7 @@ public static class TargetingFunctions
                     {
                         bool isHostile = false;
 
-isHostile = GetHostility_LargeShipAI(turret.largeShip, tempLargeShip.allegiance);
+                        isHostile = GetHostility_LargeShipAI(turret.largeShip, tempLargeShip.allegiance);
 
                         if (tempLargeShip.gameObject.activeSelf != false & isHostile == true)
                         {

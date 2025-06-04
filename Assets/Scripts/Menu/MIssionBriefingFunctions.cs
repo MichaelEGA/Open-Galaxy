@@ -120,10 +120,6 @@ public static class MissionBriefingFunctions
         missionBriefing.yRot = lightingData.yRot;
         missionBriefing.zRot = lightingData.zRot;
 
-        //This adds the mission briefing text
-        GameObject missionBriefingTextGO = GameObject.Find("MissionInfo");
-        Text missionBriefingText = missionBriefingTextGO.GetComponent<Text>();
-
         //This starts the audio playing
         AudioSource missionBriefingAudio = null;
 
@@ -138,13 +134,17 @@ public static class MissionBriefingFunctions
 
         missionBriefing.missionBriefingAudio = missionBriefingAudio;
 
-        //This selects the button for when players are using the controller
-        missionBriefing.gameObject.GetComponentInChildren<Button>().Select();
+        //This adds the mission briefing text
+        GameObject missionBriefingTextGO = GameObject.Find("MissionInfo");
+        Text missionBriefingText = missionBriefingTextGO.GetComponent<Text>();
 
         if (missionBriefingText != null)
         {
             missionBriefingText.text = briefingText;
         }
+
+        //This selects the button for when players are using the controller
+        missionBriefing.gameObject.GetComponentInChildren<Button>().Select();
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;

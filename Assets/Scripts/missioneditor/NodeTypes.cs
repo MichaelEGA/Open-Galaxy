@@ -1585,6 +1585,44 @@ public static class NodeTypes
 
         node.data2 = NodeFunctions.DrawDropDownMenu(node, options01, "model", "none", 7, 5, drop, 12.5f, 90, 5f);
 
+        drop -= 15;
+
+        float multiplySize = 5;
+
+        node.data3 = NodeFunctions.DrawInputFieldLarge(node, "debriefing", "", 7, 5, drop, 12.5f * multiplySize, 90);
+
+        drop -= 15 * multiplySize;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "audio file", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options02 = new List<string>();
+        options02.Add("true");
+        options02.Add("false");
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options02, "internal file", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options03 = new List<string>();
+        options03.Add("true");
+        options03.Add("false");
+
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options03, "distortion", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data7 = NodeFunctions.DrawInputField(node, "level", "0.5", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options04 = new List<string>();
+        options04.Add("true");
+        options04.Add("false");
+
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, options04, "nextMissionButton", "true", 7, 5, drop, 12.5f, 90, 5f);
+
         drop -= 30;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));

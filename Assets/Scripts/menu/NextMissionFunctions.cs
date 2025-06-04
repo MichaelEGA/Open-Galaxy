@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
 
 public class NextMissionFunctions 
 {
     //This activates the mission briefing when called by a mission event
-    public static void ActivateNextMissionMenu(string nextMissionName, string model = "none")
+    public static void ActivateNextMissionMenu(string nextMissionName, string model = "none", bool displayNextMissionButton = true, string debriefingText = "", string audioName = "", string internalAudioFile = "false", float distortionLevel = 0, bool distortion = false)
     {
         NextMission nextMission = GameObject.FindFirstObjectByType<NextMission>();
 
@@ -47,6 +48,46 @@ public class NextMissionFunctions
 
         //This sets the lighting
         SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 60, 0, 0);
+
+        //This adds the mission briefing text
+        GameObject missionDebriefingTextGO = GameObject.Find("MissionInfo");
+        Text missionDebriefingText = missionDebriefingTextGO.GetComponent<Text>();
+
+        if (missionDebriefingText != null)
+        {
+            missionDebriefingText.text = debriefingText;
+        }
+
+        if (displayNextMissionButton == false)
+        {
+            GameObject nextMissionButton = GameObject.Find("NextMissionButton");
+
+            if (nextMissionButton != null)
+            {
+                nextMissionButton.SetActive(false);
+            }
+        }
+
+        //This starts the audio playing
+        AudioSource missionBriefingAudio = null;
+
+        if (audioName != "none" & internalAudioFile != "true")
+        {
+            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audioName, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
+        }
+        else if (audioName != "none" & internalAudioFile == "true")
+        {
+            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audioName, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
+        }
+
+        if (missionBriefingAudio != null)
+        {
+            missionBriefingAudio.name = "NextMissionMenu"; //This gives the audio a name that prevents it being deleted when the mission is unloaded
+        }
+
+        nextMission.missionDebriefingAudio = missionBriefingAudio;
+
+       
     }
 
     //This checks if the mission exists
@@ -113,6 +154,12 @@ public class NextMissionFunctions
     public static void UnloadNextMissionMenu()
     {
         NextMission nextMission = GameObject.FindFirstObjectByType<NextMission>();
+
+        //This stopes the audio briefing if it is still playing
+        if (nextMission.missionDebriefingAudio != null)
+        {
+            GameObject.Destroy(nextMission.missionDebriefingAudio.gameObject);
+        }
 
         if (nextMission.environment != null)
         {

@@ -1385,11 +1385,34 @@ public static class MissionFunctions
     {
         string nextMissionName = missionEvent.data1;
         string model = missionEvent.data2;
+        string debriefing = missionEvent.data3;
+        string audioFile = missionEvent.data4;
+        string internalFile = missionEvent.data5;
+
+        bool distortion = false;
+
+        if (bool.TryParse(missionEvent.data6, out _))
+        {
+            distortion = bool.Parse(missionEvent.data6);
+        }
+
+        float distortionLevel = 0.5f;
+
+        if (float.TryParse(missionEvent.data7, out _))
+        {
+            distortionLevel = float.Parse(missionEvent.data7);
+        }
+
+        bool nextMissionButton = false;
+
+        if (bool.TryParse(missionEvent.data8, out _))
+        {
+            nextMissionButton = bool.Parse(missionEvent.data8);
+        }
 
         //Load next mission screen
-        NextMissionFunctions.ActivateNextMissionMenu(nextMissionName, model);
+        NextMissionFunctions.ActivateNextMissionMenu(nextMissionName, model, nextMissionButton, debriefing, audioFile, internalFile, distortionLevel, distortion);
 
-        //Unload mission
         UnloadMission();
     }
 

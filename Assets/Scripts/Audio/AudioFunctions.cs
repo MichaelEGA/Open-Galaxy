@@ -550,7 +550,7 @@ public static class AudioFunctions
 
         foreach (AudioSource audioSource in audioSources)
         {
-            if (audioSource.gameObject.name != "Menu")
+            if (audioSource.gameObject.name != "Menu" & audioSource.gameObject.name != "NextMissionMenu")
             {
                 GameObject.Destroy(audioSource.gameObject);
             }

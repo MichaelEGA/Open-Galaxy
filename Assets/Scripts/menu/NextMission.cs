@@ -9,6 +9,7 @@ public class NextMission : MonoBehaviour
     public bool externalMissionExists;
     public string nextMissionName;
     public GameObject environment;
+    public AudioSource missionDebriefingAudio;
 
     //This runs the next selected mission
     public void RunNextMission()

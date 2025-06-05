@@ -3997,6 +3997,69 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
+    public static void Draw_SetWeaponSelectionOnPlayerShip(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "setweaponselectiononplayership", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "setweaponselectiononplayership", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options01 = new List<string>();
+        options01.Add("lasers");
+        options01.Add("ions");
+        options01.Add("torpedos");
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options01, "weapon", "lasers", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options02 = new List<string>();
+        options02.Add("single");
+        options02.Add("dual");
+        options02.Add("all");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options02, "mode", "single", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options03 = new List<string>();
+        options03.Add("true");
+        options03.Add("false");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options03, "prevent change", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
     public static void Draw_SplitEventSeries(Node node)
     {
         NodeFunctions.DrawNodeBase(node);

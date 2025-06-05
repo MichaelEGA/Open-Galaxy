@@ -713,6 +713,11 @@ public static class MissionFunctions
             SetWaypointToShip(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "setweaponselectiononplayership")
+        {
+            SetWeaponSelectionOnPlayerShip(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
     }
 
     #endregion
@@ -3575,6 +3580,42 @@ public static class MissionFunctions
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    //This manually sets the weapon selection of a ship
+    public static void SetWeaponSelectionOnPlayerShip(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string weapon = missionEvent.data1;
+        string mode = missionEvent.data2;
+        bool preventWeaponChange = false; ;
+
+        if (bool.TryParse(missionEvent.data3, out _))
+        {
+            preventWeaponChange = bool.Parse(missionEvent.data3);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {              
+                    SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                    if (smallShip != null)
+                    {
+                        if (smallShip.isAI == false)
+                        {
+                            SmallShipFunctions.SetWeapons(smallShip, weapon, mode);
+                            smallShip.preventWeaponChange = preventWeaponChange;
+                            break;
+                        }
+                    }  
                 }
             }
         }

@@ -822,6 +822,16 @@ public static class NodeDescriptions
             "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "setweaponselectiononplayership")
+        {
+            description =
+            "Set Weapon Selection On Player Ship \n " +
+            "\n " +
+            "This sets the weapon selection on the player ship and controls whether the player can change their weapons or not \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- If you want to set the weapons on a non-player smallship use the AddSmallShipAITag node \n";
+        }
 
         return description;
     }

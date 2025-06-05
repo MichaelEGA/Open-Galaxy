@@ -116,6 +116,7 @@ public static class WindowFunctions
         buttonList.Add("settorpedoes");
         buttonList.Add("setwaypoint");
         buttonList.Add("setwaypointtoship");
+        buttonList.Add("setweaponselectiononplayership");
         buttonList.Add("spliteventseries");
         buttonList.Add("starteventseries");
 

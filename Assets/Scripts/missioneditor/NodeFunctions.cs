@@ -269,6 +269,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_SetWayPointToShip(node);
         }
+        else if (node.nodeType == "setweaponselectiononplayership")
+        {
+            NodeTypes.Draw_SetWeaponSelectionOnPlayerShip(node);
+        }
         else if (node.nodeType == "spliteventseries")
         {
             NodeTypes.Draw_SplitEventSeries(node);

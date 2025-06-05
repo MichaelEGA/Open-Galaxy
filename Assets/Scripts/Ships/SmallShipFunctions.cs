@@ -711,7 +711,7 @@ public static class SmallShipFunctions
     //This toggles between different types of weapons
     public static void ToggleWeapons(SmallShip smallShip)
     {
-        if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.isDisabled == false)
+        if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.isDisabled == false & smallShip.preventWeaponChange == false)
         {
             if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.hasIon == true)
             {
@@ -741,9 +741,6 @@ public static class SmallShipFunctions
                 {
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                 }
-
-                smallShip.toggleWeapons = false;
-
             }
             else if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.hasIon == false)
             {
@@ -768,9 +765,6 @@ public static class SmallShipFunctions
                 {
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                 }
-
-                smallShip.toggleWeapons = false;
-
             }
             else if (smallShip.hasTorpedos == false & smallShip.hasIon == true || smallShip.hasTorpedos == true & smallShip.torpedoNumber <= 0 & smallShip.hasIon == true)
             {
@@ -795,9 +789,6 @@ public static class SmallShipFunctions
                 {
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                 }
-
-                smallShip.toggleWeapons = false;
-
             }
             else
             {
@@ -816,6 +807,20 @@ public static class SmallShipFunctions
         {
             smallShip.activeWeapon = "lasers";
             smallShip.weaponMode = "single";
+        }
+
+        smallShip.toggleWeapons = false;
+    }
+
+    //This manually sets the weapon on a smallship
+    public static void SetWeapons(SmallShip smallShip, string weapon, string mode = "single")
+    {
+        smallShip.activeWeapon = weapon;
+        smallShip.weaponMode = mode;
+
+        if (smallShip.isAI == false)
+        {
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
         }
     }
 

@@ -1291,6 +1291,12 @@ public static class SmallShipFunctions
             smallShip.cockpit.SetActive(false);
         }
 
+        //This disconnects the follow camera
+        if (smallShip.followCamera != null)
+        {
+            smallShip.followCamera.transform.SetParent(null);
+        }
+
         //This resets the ship for the next load if needed
         smallShip.exploded = false;
 

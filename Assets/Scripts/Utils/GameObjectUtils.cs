@@ -18,7 +18,12 @@ public static class GameObjectUtils
 
         foreach (MeshRenderer renderer in renderers)
         {
-            renderer.material = material;
+            var mats = renderer.sharedMaterials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                mats[i] = material;
+            }
+            renderer.sharedMaterials = mats;
         }
 
         // Get all MeshRenderer components in the hierarchy (including inactive ones)
@@ -26,7 +31,12 @@ public static class GameObjectUtils
 
         foreach (MeshRenderer renderer in renderers)
         {
-            renderer.material = material;
+            var mats = renderer.sharedMaterials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                mats[i] = material;
+            }
+            renderer.sharedMaterials = mats;
         }
 
         // Get all SkinnedMeshRenderer components on the object itself
@@ -34,7 +44,12 @@ public static class GameObjectUtils
 
         foreach (SkinnedMeshRenderer renderer in skinnedRenderers)
         {
-            renderer.material = material;
+            var mats = renderer.sharedMaterials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                mats[i] = material;
+            }
+            renderer.sharedMaterials = mats;
         }
 
         // Get all SkinnedMeshRenderer components in the hierarchy (including inactive ones)
@@ -42,7 +57,12 @@ public static class GameObjectUtils
 
         foreach (SkinnedMeshRenderer renderer in skinnedRenderers)
         {
-            renderer.material = material;
+            var mats = renderer.sharedMaterials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                mats[i] = material;
+            }
+            renderer.sharedMaterials = mats;
         }
     }
 

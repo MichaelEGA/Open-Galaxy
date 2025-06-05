@@ -458,6 +458,7 @@ public static class MainMenuFunctions
 
         //Add your functions here
         mainMenu.functions.Add("ActivateSubMenu", new System.Action<string>(ActivateSubMenu));
+        mainMenu.functions.Add("ChangeDefaultCameraPosition", new System.Action<string>(ChangeDefaultCameraPosition));
         mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
         mainMenu.functions.Add("ChangeDamageLevel", new System.Action<string>(ChangeDamageLevel));
         mainMenu.functions.Add("ChangeQuality", new System.Action<string>(ChangeQuality));
@@ -1007,6 +1008,16 @@ public static class MainMenuFunctions
         missionEditor.SetActive(true);
 
         PlayBackgroundMusic(false);
+    }
+
+    //This sets the screen resolution
+    public static void ChangeDefaultCameraPosition(string cameraPosition)
+    {
+        OutputMenuMessage("The default camera was set to " + cameraPosition);
+
+        OGSettingsFunctions.SetCameraPosition(cameraPosition);
+
+        ActivateSubMenu("Settings");
     }
 
     //This sets the screen resolution

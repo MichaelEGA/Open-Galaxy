@@ -1164,22 +1164,22 @@ public static class SmallShipFunctions
         {
             int explosion = Random.Range(0, 3);
 
-            if (explosion == 0)
+            if (explosion == 0 & smallShip.isAI == false)
             {
-                Task a = new Task(ExplosionType1(smallShip));
+                Task a = new Task(ExplosionType_Spin(smallShip));
                 AddTaskToPool(smallShip, a);
                 smallShip.exploded = true;
             }
             else
             {
-                ExplosionType2(smallShip);
+                ExplosionType_Immediate(smallShip);
                 smallShip.exploded = true;
             }
         }
     }
 
     //Explode after spinning
-    public static IEnumerator ExplosionType1(SmallShip smallShip)
+    public static IEnumerator ExplosionType_Spin(SmallShip smallShip)
     {
         if (smallShip.isCurrentlyColliding == false)
         {
@@ -1212,7 +1212,7 @@ public static class SmallShipFunctions
     }
 
     //Explode straight away
-    public static void ExplosionType2(SmallShip smallShip)
+    public static void ExplosionType_Immediate(SmallShip smallShip)
     {
         if (smallShip.scene == null)
         {

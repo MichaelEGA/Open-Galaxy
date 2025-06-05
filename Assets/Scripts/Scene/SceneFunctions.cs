@@ -215,14 +215,29 @@ public static class SceneFunctions
     //This activates or deactivates the game cameras
     public static void ActivateCameras(bool active)
     {
+        //This gets the scene reference
         Scene scene = SceneFunctions.GetScene();
 
+        //This gets the camera references
         GameObject starfieldCameraGO = GameObject.Find("Starfield Camera");
         GameObject planetCameraGO = GameObject.Find("Planet Camera");
         GameObject mainCameraGO = GameObject.Find("Main Camera");
         GameObject followCameraGO = GameObject.Find("Follow Camera");
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
 
+        //This gets the default camera position
+        OGSettings oGSettings = OGSettingsFunctions.GetSettings();
+
+        if (oGSettings.cameraPosition == "follow")
+        {
+            scene.followCameraIsActive = true;
+        }
+        else
+        {
+            scene.followCameraIsActive = false;
+        }
+
+        //This activates the required cameras
         if (starfieldCameraGO != null)
         {
             Camera starfieldCamera = starfieldCameraGO.GetComponent<Camera>();
@@ -242,6 +257,7 @@ public static class SceneFunctions
                 planetCamera.enabled = active;
             }
         }
+
 
         if (scene.followCameraIsActive == false & active == true)
         {
@@ -2345,7 +2361,7 @@ public static class SceneFunctions
     //This rotates the starfield camera to follow the players rotation
     public static void RotateStarfieldAndPlanetCamera(Scene scene)
     {
-        if (scene.starfieldCamera != null & scene.planetCamera != null & scene.mainShip != null)
+        if (scene.starfieldCamera != null & scene.planetCamera != null & scene.mainShip != null & scene.followCamera != null)
         {
             if (scene.followCameraIsActive == false)
             {

@@ -41,26 +41,29 @@ public static class CockpitFunctions
                 smallShip.mainCamera = mainCamera;
             }
 
-            if (smallShip.cameraPosition == null)
+            if (mainCamera != null & smallShip != null)
             {
-                Transform cameraPos = GameObjectUtils.FindChildTransformCalled(smallShip.gameObject.transform, "camera");
+                if (smallShip.cameraPosition == null)
+                {
+                    Transform cameraPos = GameObjectUtils.FindChildTransformCalled(smallShip.gameObject.transform, "camera");
 
-                if (cameraPos != null)
-                {
-                    smallShip.cameraPosition = cameraPos.gameObject;
+                    if (cameraPos != null)
+                    {
+                        smallShip.cameraPosition = cameraPos.gameObject;
+                    }
+                    else
+                    {
+                        smallShip.cameraPosition = smallShip.gameObject;
+                    }
                 }
-                else
+                else if (mainCamera.transform.parent != smallShip.cameraPosition.transform)
                 {
-                    smallShip.cameraPosition = smallShip.gameObject;
+                    mainCamera.transform.position = smallShip.cameraPosition.transform.position;
+                    mainCamera.transform.rotation = smallShip.cameraPosition.transform.rotation;
+                    mainCamera.transform.SetParent(smallShip.cameraPosition.transform);
+                    smallShip.cameraAttached = true;
+                    smallShip.cameraLocalPosition = smallShip.cameraPosition.transform.localPosition;
                 }
-            }
-            else if (mainCamera.transform.parent != smallShip.cameraPosition.transform)
-            {
-                mainCamera.transform.position = smallShip.cameraPosition.transform.position;
-                mainCamera.transform.rotation = smallShip.cameraPosition.transform.rotation;
-                mainCamera.transform.SetParent(smallShip.cameraPosition.transform);
-                smallShip.cameraAttached = true;
-                smallShip.cameraLocalPosition = smallShip.cameraPosition.transform.localPosition;
             }
         }
     }

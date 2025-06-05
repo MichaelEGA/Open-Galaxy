@@ -14,4 +14,5 @@ public class OGSettings : MonoBehaviour
     public string editorWindowMode = "fullscreen";
     public string damage = "default";
     public string quality = "performant";
+    public string cameraPosition = "follow";
 }

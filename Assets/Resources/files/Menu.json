@@ -354,6 +354,30 @@
     },
     {
       "ParentMenu": "Settings",
+      "Name": "Change Default Camera",
+      "Description": "Change the default position of the camera when starting a mission",
+      "Function": "ActivateSubMenu",
+      "Type": "ContentButton01",
+      "Variable": "Change Default Camera"
+    },
+    {
+      "ParentMenu": "Change Default Camera",
+      "Name": "Follow Camera",
+      "Description": "Make the follow camera default",
+      "Function": "ChangeDefaultCameraPosition",
+      "Type": "ContentButton02",
+      "Variable": "follow"
+    },
+    {
+      "ParentMenu": "Change Default Camera",
+      "Name": "First Person Camera [No Cockpit]",
+      "Description": "Make the first person camera default",
+      "Function": "ChangeDefaultCameraPosition",
+      "Type": "ContentButton02",
+      "Variable": "firstperson"
+    },
+    {
+      "ParentMenu": "Settings",
       "Name": "Change Quality",
       "Description": "Change the game's graphics quality",
       "Function": "ActivateSubMenu",

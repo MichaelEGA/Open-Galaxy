@@ -14,6 +14,7 @@ public class OGSettingData
     public string editorWindowMode;
     public string damage;
     public string quality;
+    public string cameraPosition;
 }
 
 [System.Serializable]

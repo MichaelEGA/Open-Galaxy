@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class NextMissionFunctions 
 {
     //This activates the mission briefing when called by a mission event
-    public static void ActivateNextMissionMenu(string nextMissionName, string model = "none", bool displayNextMissionButton = true, string debriefingText = "", string audioName = "", string internalAudioFile = "false", float distortionLevel = 0, bool distortion = false)
+    public static IEnumerator ActivateNextMissionMenu(string nextMissionName, string model = "none", bool displayNextMissionButton = true, string debriefingText = "", string audioName = "", string internalAudioFile = "false", float distortionLevel = 0, bool distortion = false)
     {
         NextMission nextMission = GameObject.FindFirstObjectByType<NextMission>();
 
@@ -29,6 +29,18 @@ public class NextMissionFunctions
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0;
 
+        //This mutes game sounds
+        AudioFunctions.MuteSelectedAudio("externalvolume");
+        AudioFunctions.MuteSelectedAudio("enginevolume");
+        AudioFunctions.MuteSelectedAudio("explosionsvolume");
+        AudioFunctions.MuteSelectedAudio("cockpitvolume");
+
+        //This turns off all the other cameras not used for the mission briefing scene
+        SceneFunctions.ActivateCameras(false);
+
+        //This makes the hud invisible
+        HudFunctions.SetHudTransparency(0);
+
         //This resets the lighting to default
         SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 60, 0, 0);
 
@@ -45,9 +57,6 @@ public class NextMissionFunctions
         {
             modelTransform.gameObject.SetActive(true);
         }
-
-        //This sets the lighting
-        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 60, 0, 0);
 
         //This adds the mission briefing text
         GameObject missionDebriefingTextGO = GameObject.Find("MissionInfo");
@@ -68,6 +77,8 @@ public class NextMissionFunctions
             }
         }
 
+        yield return new WaitForSecondsRealtime(2);
+
         //This starts the audio playing
         AudioSource missionBriefingAudio = null;
 
@@ -86,8 +97,6 @@ public class NextMissionFunctions
         }
 
         nextMission.missionDebriefingAudio = missionBriefingAudio;
-
-       
     }
 
     //This checks if the mission exists
@@ -153,7 +162,21 @@ public class NextMissionFunctions
     //This unloads the next mission menu
     public static void UnloadNextMissionMenu()
     {
+        //This reactivates the time scale
+        Time.timeScale = 1;
+
+        //This unmutes game sounds
+        AudioFunctions.UnmuteSelectedAudio("externalvolume");
+        AudioFunctions.UnmuteSelectedAudio("enginevolume");
+        AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
+        AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
+
         NextMission nextMission = GameObject.FindFirstObjectByType<NextMission>();
+
+        //This makes the hud visible again
+        HudFunctions.SetHudTransparency(1);
+
+        SceneFunctions.ActivateCameras(true);
 
         //This stopes the audio briefing if it is still playing
         if (nextMission.missionDebriefingAudio != null)
@@ -166,9 +189,7 @@ public class NextMissionFunctions
             GameObject.Destroy(nextMission.environment);
         }
 
-        if (nextMission != null)
-        {
-            GameObject.Destroy(nextMission.gameObject);
-        }
+        //This unloads the mission
+        MissionFunctions.UnloadMission();
     }
 }

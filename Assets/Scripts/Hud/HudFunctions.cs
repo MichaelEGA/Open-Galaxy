@@ -1738,7 +1738,7 @@ public static class HudFunctions
                 }
             }
 
-            if (hud.secondaryCamera != null)
+            if (hud.secondaryCamera != null & hud.mainCamera != null)
             {
                 if (hud.smallShip != null & hud.reticule != null)
                 {

@@ -65,7 +65,7 @@ public static class MissionFunctions
         }
 
         //This sets the skybox to the default space and view distance
-        SceneFunctions.SetSkybox("space_black", true);
+        SceneFunctions.SetSkybox("space_black01", true);
 
         //This sets the fog and distance color to their default settings
         SceneFunctions.SetFogDistanceAndColor(30000, 40000, "#000000");
@@ -1411,9 +1411,7 @@ public static class MissionFunctions
         }
 
         //Load next mission screen
-        NextMissionFunctions.ActivateNextMissionMenu(nextMissionName, model, nextMissionButton, debriefing, audioFile, internalFile, distortionLevel, distortion);
-
-        UnloadMission();
+        Task a = new Task(NextMissionFunctions.ActivateNextMissionMenu(nextMissionName, model, nextMissionButton, debriefing, audioFile, internalFile, distortionLevel, distortion));
     }
 
     //This deactivates a ship so that it is no longer part of the scene
@@ -3699,10 +3697,12 @@ public static class MissionFunctions
         ExitMenu exitMenu = GameObject.FindFirstObjectByType<ExitMenu>();
         GameObject loadingScreen = GameObject.Find("LoadingScreen");
         GameObject missionBriefing = GameObject.Find("MissionBriefing");
+        GameObject nextMissionScreen = GameObject.Find("MissionBriefing");
 
         if (exitMenu != null) { GameObject.Destroy(exitMenu.gameObject); }
         if (loadingScreen != null) { GameObject.Destroy(loadingScreen); }
         if (missionBriefing != null) { GameObject.Destroy(missionBriefing); }
+        if (nextMissionScreen != null) { GameObject.Destroy(nextMissionScreen); }
 
         MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();
 
@@ -3728,8 +3728,8 @@ public static class MissionFunctions
         SceneFunctions.ResetHyperSpaceTunnel();
 
         //This resets the skybox to black
-        SceneFunctions.SetSkybox("space_black", true);
-
+        SceneFunctions.SetSkybox("space_black01", true);
+        
         //This destroys the mission manager
         if (missionManager != null) { GameObject.Destroy(missionManager.gameObject); }
     }

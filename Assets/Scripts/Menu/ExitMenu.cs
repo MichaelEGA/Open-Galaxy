@@ -11,6 +11,12 @@ public class ExitMenu : MonoBehaviour
 
     public void ExitGame()
     {
+        AudioFunctions.UnmuteSelectedAudio("voicevolume");
+        AudioFunctions.UnmuteSelectedAudio("externalvolume");
+        AudioFunctions.UnmuteSelectedAudio("enginevolume");
+        AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
+        AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
+
         MissionFunctions.ReturnToMainMenu();
         MissionFunctions.UnloadMission();
     }

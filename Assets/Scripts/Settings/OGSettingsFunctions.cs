@@ -162,6 +162,7 @@ public static class OGSettingsFunctions
             settings.editorWindowMode = ogSettingsClass.ogSettingsData[0].editorWindowMode;
             settings.damage = ogSettingsClass.ogSettingsData[0].damage;
             settings.quality = ogSettingsClass.ogSettingsData[0].quality;
+            settings.cameraPosition = ogSettingsClass.ogSettingsData[0].cameraPosition;
             CheckSettingsData();
         }
     }
@@ -202,6 +203,7 @@ public static class OGSettingsFunctions
         ogSettingsClass.ogSettingsData[0].editorWindowMode = settings.editorWindowMode;
         ogSettingsClass.ogSettingsData[0].damage = settings.damage;
         ogSettingsClass.ogSettingsData[0].quality = settings.quality;
+        ogSettingsClass.ogSettingsData[0].cameraPosition = settings.cameraPosition;
 
         // Write JSON to file.
         string stringOFSettingsData = JsonUtility.ToJson(ogSettingsClass, true);
@@ -263,6 +265,17 @@ public static class OGSettingsFunctions
     #endregion
 
     #region change settings functions
+    //This function changes the default camera position
+    public static void SetCameraPosition(string cameraPosition)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.cameraPosition = cameraPosition;
+
+        CheckSettingsData();
+
+        SaveSettingsData();
+    }
 
     //This function selects the level of difficultly
     public static void SetDamageLevel(string level)

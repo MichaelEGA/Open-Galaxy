@@ -73,7 +73,7 @@ public static class CockpitFunctions
     {
         if (smallShip.mainCamera != null)
         {
-            smallShip.mainCamera.transform.SetParent(null);
+            smallShip.mainCamera.transform.parent = null;
             smallShip.mainCamera = null;
             smallShip.cameraAttached = false;
         }

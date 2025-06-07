@@ -4233,7 +4233,6 @@ public static class NodeTypes
             return name;
     }
 
-
     public static List<string> GetTorpedoList()
     {
         //This gets the Json ship data

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class LargeShipFunctions
@@ -427,9 +428,11 @@ public static class LargeShipFunctions
 
                     ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
 
-                    HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
-
                     yield return new WaitForSeconds(0.25f);
+
+                    TriggerDebrisExplosion(largeShip.gameObject.transform.position, 50);
+
+                    HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
 
                     DeactivateShip(largeShip);
                 }
@@ -445,9 +448,13 @@ public static class LargeShipFunctions
 
                     ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
 
-                    HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
-
                     yield return new WaitForSeconds(0.25f);
+
+                    int scaleNumber = (int)Mathf.Abs(largeShip.shipLength / 100f);
+
+                    TriggerDebrisExplosion(largeShip.gameObject.transform.position, 50 * scaleNumber);
+
+                    HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
 
                     DeactivateShip(largeShip);
                 }
@@ -465,6 +472,56 @@ public static class LargeShipFunctions
         largeShip.explode = false;
 
         largeShip.gameObject.SetActive(false);
+    }
+
+    //This creates a debris exxplosions
+    public static void TriggerDebrisExplosion(Vector3 position, int debrisCount = 10)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        List<GameObject> debrisPrefabs = new List<GameObject>();
+
+        foreach (GameObject objectPrefab in scene.shipsPrefabPool)
+        {
+            if (objectPrefab.name.Contains("debris02"))
+            {
+                debrisPrefabs.Add(objectPrefab);
+            }
+        }
+
+        float spawnRadius = 1;
+        float explosionForce = 100f;
+        float explosionRadius = 5f;
+        float upwardsModifier = 0.5f;
+        float debrisLifetime = 5f;
+        float scale = 0.005f;
+
+        for (int i = 0; i < debrisCount; i++)
+        {
+            // Pick a random prefab
+            GameObject prefab = debrisPrefabs[Random.Range(0, debrisPrefabs.Count)];
+            Vector3 spawnPos = position + Random.insideUnitSphere * spawnRadius;
+            GameObject debris = GameObject.Instantiate(prefab) as GameObject;
+
+            debris.transform.position = spawnPos;
+            debris.transform.rotation = Random.rotation;
+            debris.transform.localScale = new Vector3(scale, scale, scale);
+            debris.transform.parent = scene.transform;
+
+            // Ensure debris has Rigidbody
+            Rigidbody rb = debris.GetComponent<Rigidbody>();
+
+            if (rb == null)
+            {
+                rb = debris.AddComponent<Rigidbody>();
+            }
+
+            // Apply explosion force
+            rb.AddExplosionForce(explosionForce, position, explosionRadius, upwardsModifier, ForceMode.Impulse);
+
+            // Destroy debris after some time
+            GameObject.Destroy(debris, debrisLifetime);
+        }
     }
 
     #endregion

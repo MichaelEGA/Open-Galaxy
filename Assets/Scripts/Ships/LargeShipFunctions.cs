@@ -430,7 +430,9 @@ public static class LargeShipFunctions
 
                     yield return new WaitForSeconds(0.25f);
 
-                    TriggerDebrisExplosion(largeShip.gameObject.transform.position, 50);
+                    int scaleNumber = (int)Mathf.Abs(largeShip.shipLength / 100f);
+
+                    TriggerDebrisExplosion(largeShip.gameObject.transform.position, 50 * scaleNumber);
 
                     HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
 

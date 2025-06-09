@@ -35,7 +35,7 @@ public static class CockpitFunctions
         {
             GameObject mainCamera = smallShip.mainCamera;
 
-            if (mainCamera == null)
+            if (mainCamera == null & smallShip.hullLevel > 0)
             {
                 mainCamera = GameObject.Find("Main Camera");
                 smallShip.mainCamera = mainCamera;

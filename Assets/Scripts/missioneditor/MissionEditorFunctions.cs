@@ -2152,6 +2152,7 @@ public static class MissionEditorFunctions
     //This exits the mission editor back to open galaxy
     public static void ExitMissionEditor()
     {
+        //This resets all the settings for the main menu
         MissionEditor missionEditor = GetMissionEditor();
 
         OGSettings settings = OGSettingsFunctions.GetSettings();
@@ -2160,6 +2161,23 @@ public static class MissionEditorFunctions
 
         OGSettingsFunctions.SetOGCursor();
 
+        //This destroys everyting associated with the ship preview
+        if (missionEditor.previewCamera != null)
+        {
+            GameObject.Destroy(missionEditor.previewCamera.gameObject);
+        }
+
+        if (missionEditor.previewRenderTexture != null)
+        {
+            GameObject.Destroy(missionEditor.previewRenderTexture);
+        }
+
+        if (missionEditor.previewModel != null)
+        {
+            GameObject.Destroy(missionEditor.previewModel.gameObject);
+        }
+
+        //This destroys and then remakes the main menu before destroying the mission editor
         MainMenu mainMenu = MainMenuFunctions.GetMainMenu();
 
         if (mainMenu != null)

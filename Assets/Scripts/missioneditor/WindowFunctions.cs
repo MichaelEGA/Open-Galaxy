@@ -1694,6 +1694,7 @@ public static class WindowFunctions
 
         // Load the model prefab from Resources
         GameObject modelPrefab = Resources.Load<GameObject>(modelPath);
+
         if (modelPrefab == null)
         {
             Debug.LogError($"Model at '{modelPath}' could not be found in Resources.");

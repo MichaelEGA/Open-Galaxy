@@ -3592,7 +3592,7 @@ public static class MissionFunctions
 
         string weapon = missionEvent.data1;
         string mode = missionEvent.data2;
-        bool preventWeaponChange = false; ;
+        bool preventWeaponChange = false;
 
         if (bool.TryParse(missionEvent.data3, out _))
         {
@@ -3738,7 +3738,7 @@ public static class MissionFunctions
         ExitMenu exitMenu = GameObject.FindFirstObjectByType<ExitMenu>();
         GameObject loadingScreen = GameObject.Find("LoadingScreen");
         GameObject missionBriefing = GameObject.Find("MissionBriefing");
-        GameObject nextMissionScreen = GameObject.Find("MissionBriefing");
+        GameObject nextMissionScreen = GameObject.Find("NextMission");
 
         if (exitMenu != null) { GameObject.Destroy(exitMenu.gameObject); }
         if (loadingScreen != null) { GameObject.Destroy(loadingScreen); }

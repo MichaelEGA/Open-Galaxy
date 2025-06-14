@@ -77,7 +77,7 @@ public class NextMissionFunctions
             }
         }
 
-        yield return new WaitForSecondsRealtime(2);
+        yield return new WaitForSecondsRealtime(1);
 
         //This starts the audio playing
         AudioSource missionBriefingAudio = null;

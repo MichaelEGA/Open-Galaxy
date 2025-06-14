@@ -4029,7 +4029,7 @@ public static class NodeTypes
 
         List<string> options01 = new List<string>();
         options01.Add("lasers");
-        options01.Add("ions");
+        options01.Add("ion");
         options01.Add("torpedos");
 
         node.data1 = NodeFunctions.DrawDropDownMenu(node, options01, "weapon", "lasers", 7, 5, drop, 12.5f, 90, 5f);

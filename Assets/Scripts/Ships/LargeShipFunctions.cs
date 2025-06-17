@@ -390,15 +390,19 @@ public static class LargeShipFunctions
     {
         largeShip.spinShip = true;
 
-        Mesh mainShipMesh = GameObjectUtils.FindBiggestMesh(largeShip.GameObject());
+        Component rendererComp;
+
+        Mesh mainShipMesh = GameObjectUtils.FindBiggestMesh(largeShip.GameObject(), out rendererComp);
 
         if (mainShipMesh != null)
         {
-            List<Vector3> explosionPoints = GameObjectUtils.GetRandomPointsOnMesh(mainShipMesh, 12);
+            int explosionsNumber = (int)Mathf.Abs((largeShip.shipLength / 100f) * 10f);
+
+            List<Vector3> explosionPoints = GameObjectUtils.GetRandomPointsOnMesh(mainShipMesh, rendererComp.transform, explosionsNumber);
 
             yield return new WaitForSeconds(2);
 
-            foreach (Transform explosionPoint in largeShip.explosionPoints)
+            foreach (Vector3 explosionPoint in explosionPoints)
             {
                 if (explosionPoint != null)
                 {
@@ -406,19 +410,11 @@ public static class LargeShipFunctions
                     {
                         if (largeShip.scene != null)
                         {
-                            float explosionsScaleLarge = (largeShip.shipLength / 100f) * Random.Range(0.15f, 0.30f);
-                            float explosionsScaleSmall = (largeShip.shipLength / 100f) * Random.Range(0.05f, 0.10f);
+                            float explosionsScale = (largeShip.shipLength / 100f) * Random.Range(0.15f, 0.30f);
 
-                            if (explosionPoint.name.Contains("large"))
-                            {
-                                ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, explosionPoint.position, "explosion_largeship", explosionsScaleLarge, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
-                            }
-                            else
-                            {
-                                ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, explosionPoint.position, "explosion_largeship", explosionsScaleSmall, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
-                            }
-
-                            yield return new WaitForSeconds(2);
+                            ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, explosionPoint, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+                            
+                            yield return new WaitForSeconds(0.25f);
                         }
                     }
                 }

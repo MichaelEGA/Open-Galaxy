@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR;
 
 public static class GameObjectUtils
 {
     //This finds the biggest mesh on the give gameobject
-    public static Mesh FindBiggestMesh(GameObject root)
+    public static Mesh FindBiggestMesh(GameObject root, out Component rendererComponent)
     {
+        rendererComponent = null;
         Mesh biggestMesh = null;
         int maxVertices = -1;
 
@@ -16,6 +19,7 @@ public static class GameObjectUtils
             if (mf.sharedMesh != null && mf.sharedMesh.vertexCount > maxVertices)
             {
                 biggestMesh = mf.sharedMesh;
+                rendererComponent = mf;
                 maxVertices = mf.sharedMesh.vertexCount;
             }
         }
@@ -26,6 +30,7 @@ public static class GameObjectUtils
             if (smr.sharedMesh != null && smr.sharedMesh.vertexCount > maxVertices)
             {
                 biggestMesh = smr.sharedMesh;
+                rendererComponent = smr;
                 maxVertices = smr.sharedMesh.vertexCount;
             }
         }
@@ -34,7 +39,7 @@ public static class GameObjectUtils
     }
 
     //This gets a group of random points on the mesh of the object
-    public static List<Vector3> GetRandomPointsOnMesh(Mesh mesh, int count)
+    public static List<Vector3> GetRandomPointsOnMesh(Mesh mesh, Transform meshTransform, int count)
     {
         List<Vector3> points = new List<Vector3>(count);
         if (mesh == null || mesh.triangles.Length < 3 || count <= 0)
@@ -93,8 +98,9 @@ public static class GameObjectUtils
             }
             float w = 1f - u - v;
 
-            Vector3 point = a * u + b * v + c * w;
-            points.Add(point);
+            Vector3 localPoint = a * u + b * v + c * w;
+            Vector3 worldPoint = meshTransform.TransformPoint(localPoint);
+            points.Add(worldPoint);
         }
 
         return points;

@@ -4,6 +4,102 @@ using UnityEngine;
 
 public static class GameObjectUtils
 {
+    //This finds the biggest mesh on the give gameobject
+    public static Mesh FindBiggestMesh(GameObject root)
+    {
+        Mesh biggestMesh = null;
+        int maxVertices = -1;
+
+        // Check MeshFilters
+        foreach (var mf in root.GetComponentsInChildren<MeshFilter>(true))
+        {
+            if (mf.sharedMesh != null && mf.sharedMesh.vertexCount > maxVertices)
+            {
+                biggestMesh = mf.sharedMesh;
+                maxVertices = mf.sharedMesh.vertexCount;
+            }
+        }
+
+        // Check SkinnedMeshRenderers
+        foreach (var smr in root.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+        {
+            if (smr.sharedMesh != null && smr.sharedMesh.vertexCount > maxVertices)
+            {
+                biggestMesh = smr.sharedMesh;
+                maxVertices = smr.sharedMesh.vertexCount;
+            }
+        }
+
+        return biggestMesh;
+    }
+
+    //This gets a group of random points on the mesh of the object
+    public static List<Vector3> GetRandomPointsOnMesh(Mesh mesh, int count)
+    {
+        List<Vector3> points = new List<Vector3>(count);
+        if (mesh == null || mesh.triangles.Length < 3 || count <= 0)
+            return points;
+
+        Vector3[] vertices = mesh.vertices;
+        int[] triangles = mesh.triangles;
+
+        // Step 1: Compute areas of all triangles
+        float[] triangleAreas = new float[triangles.Length / 3];
+        float totalArea = 0f;
+
+        for (int i = 0; i < triangleAreas.Length; i++)
+        {
+            Vector3 a = vertices[triangles[i * 3 + 0]];
+            Vector3 b = vertices[triangles[i * 3 + 1]];
+            Vector3 c = vertices[triangles[i * 3 + 2]];
+            float area = Vector3.Cross(b - a, c - a).magnitude * 0.5f;
+            triangleAreas[i] = area;
+            totalArea += area;
+        }
+
+        // Step 2: Build cumulative area array for sampling
+        float[] cumulativeAreas = new float[triangleAreas.Length];
+        float cumArea = 0;
+        for (int i = 0; i < triangleAreas.Length; i++)
+        {
+            cumArea += triangleAreas[i];
+            cumulativeAreas[i] = cumArea;
+        }
+
+        // Step 3: Sample random points
+        for (int i = 0; i < count; i++)
+        {
+            // Pick a triangle with weighted probability
+            float r = Random.value * totalArea;
+
+            int triIndex = System.Array.BinarySearch(cumulativeAreas, r);
+            if (triIndex < 0)
+            {
+                triIndex = ~triIndex;
+            }
+
+            // Get triangle vertices
+            Vector3 a = vertices[triangles[triIndex * 3 + 0]];
+            Vector3 b = vertices[triangles[triIndex * 3 + 1]];
+            Vector3 c = vertices[triangles[triIndex * 3 + 2]];
+
+            // Barycentric coordinates for random point on triangle
+            float u = Random.value;
+            float v = Random.value;
+            if (u + v > 1f)
+            {
+                u = 1f - u;
+                v = 1f - v;
+            }
+            float w = 1f - u - v;
+
+            Vector3 point = a * u + b * v + c * w;
+            points.Add(point);
+        }
+
+        return points;
+    }
+
     //This applys a certain material to all meshes under a given gameobject
     public static void ApplyMaterialToAllMeshes(GameObject gameObject, Material material)
     {

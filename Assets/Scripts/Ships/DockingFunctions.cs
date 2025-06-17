@@ -36,11 +36,11 @@ public static class DockingFunctions
     //This finds and adds the docking points to the large ship
     public static void AddDockingPointsLargeShip(LargeShip largeShip)
     {
-        Transform[] dockingPointTransforms = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockingoint");
+        Transform[] dockingPointTransforms = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockingpoint");
 
         if (dockingPointTransforms.Length < 1)
         {
-            GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockinPoint");
+            GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockingPoint");
         }
 
         List<DockingPoint> dockingPointGameObjects = new List<DockingPoint>();

@@ -390,8 +390,12 @@ public static class LargeShipFunctions
     {
         largeShip.spinShip = true;
 
-        if (largeShip.explosionPoints != null & largeShip.explosionType == "default")
+        Mesh mainShipMesh = GameObjectUtils.FindBiggestMesh(largeShip.GameObject());
+
+        if (mainShipMesh != null)
         {
+            List<Vector3> explosionPoints = GameObjectUtils.GetRandomPointsOnMesh(mainShipMesh, 12);
+
             yield return new WaitForSeconds(2);
 
             foreach (Transform explosionPoint in largeShip.explosionPoints)
@@ -495,7 +499,7 @@ public static class LargeShipFunctions
         float explosionForce = 100f;
         float explosionRadius = 5f;
         float upwardsModifier = 0.5f;
-        float debrisLifetime = 5f;
+        float debrisLifetime = 15f;
         float scale = 0.005f;
 
         for (int i = 0; i < debrisCount; i++)

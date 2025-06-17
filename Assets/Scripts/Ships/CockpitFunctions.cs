@@ -144,7 +144,7 @@ public static class CockpitFunctions
                 secondaryPosition = smallShip.scene.transform.InverseTransformPoint(secondaryPosition);
 
                 //This caluclates the dynamic position of the camera
-                if (smallShip.inHyperspace == false)
+                if (smallShip.inHyperspace == false & smallShip.docking == false)
                 {
                     if (smallShip.focusCamera == false)
                     {

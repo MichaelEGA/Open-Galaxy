@@ -6,36 +6,41 @@ using UnityEngine.XR;
 
 public static class GameObjectUtils
 {
+
     //This finds the biggest mesh on the give gameobject
-    public static Mesh FindBiggestMesh(GameObject root, out Component rendererComponent)
+    public static Object FindLargestMeshByLength(GameObject root)
     {
-        rendererComponent = null;
-        Mesh biggestMesh = null;
-        int maxVertices = -1;
+        MeshFilter[] meshFilters = root.GetComponentsInChildren<MeshFilter>();
+        SkinnedMeshRenderer[] skinnedMeshRenderers = root.GetComponentsInChildren<SkinnedMeshRenderer>();
 
-        // Check MeshFilters
-        foreach (var mf in root.GetComponentsInChildren<MeshFilter>(true))
+        Object largest = null;
+        float maxLength = 0f;
+
+        foreach (var mf in meshFilters)
         {
-            if (mf.sharedMesh != null && mf.sharedMesh.vertexCount > maxVertices)
+            if (mf.sharedMesh == null) continue;
+            Bounds bounds = mf.sharedMesh.bounds;
+            float length = bounds.size.magnitude;
+            if (length > maxLength)
             {
-                biggestMesh = mf.sharedMesh;
-                rendererComponent = mf;
-                maxVertices = mf.sharedMesh.vertexCount;
+                maxLength = length;
+                largest = mf;
             }
         }
 
-        // Check SkinnedMeshRenderers
-        foreach (var smr in root.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+        foreach (var smr in skinnedMeshRenderers)
         {
-            if (smr.sharedMesh != null && smr.sharedMesh.vertexCount > maxVertices)
+            if (smr.sharedMesh == null) continue;
+            Bounds bounds = smr.sharedMesh.bounds;
+            float length = bounds.size.magnitude;
+            if (length > maxLength)
             {
-                biggestMesh = smr.sharedMesh;
-                rendererComponent = smr;
-                maxVertices = smr.sharedMesh.vertexCount;
+                maxLength = length;
+                largest = smr;
             }
         }
 
-        return biggestMesh;
+        return largest;
     }
 
     //This gets a group of random points on the mesh of the object

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class LargeShipFunctions
 {
@@ -392,13 +393,33 @@ public static class LargeShipFunctions
 
         Component rendererComp;
 
-        Mesh mainShipMesh = GameObjectUtils.FindBiggestMesh(largeShip.GameObject(), out rendererComp);
+        var largest = GameObjectUtils.FindLargestMeshByLength(largeShip.GameObject());
+
+        MeshFilter largestMeshFilter = null;
+        SkinnedMeshRenderer largestSkinnedMeshRenderer = null;
+        Mesh mainShipMesh = null;
+        Transform meshTransform = null;
+
+        if (largest is MeshFilter meshFilter)
+        {
+            largestMeshFilter = largest as MeshFilter;
+
+            mainShipMesh = largestMeshFilter.sharedMesh;
+            meshTransform = largestMeshFilter.transform;
+        }
+        else if (largest is SkinnedMeshRenderer skinnedMeshRenderer)
+        {
+            largestSkinnedMeshRenderer = largest as SkinnedMeshRenderer;
+
+            mainShipMesh = largestSkinnedMeshRenderer.sharedMesh;
+            meshTransform = largestSkinnedMeshRenderer.transform;
+        }
 
         if (mainShipMesh != null)
         {
             int explosionsNumber = (int)Mathf.Abs((largeShip.shipLength / 100f) * 10f);
 
-            List<Vector3> explosionPoints = GameObjectUtils.GetRandomPointsOnMesh(mainShipMesh, rendererComp.transform, explosionsNumber);
+            List<Vector3> explosionPoints = GameObjectUtils.GetRandomPointsOnMesh(mainShipMesh, meshTransform, explosionsNumber);
 
             yield return new WaitForSeconds(2);
 
@@ -410,10 +431,12 @@ public static class LargeShipFunctions
                     {
                         if (largeShip.scene != null)
                         {
-                            float explosionsScale = (largeShip.shipLength / 100f) * Random.Range(0.15f, 0.30f);
+                            float explosionsScale = (largeShip.shipLength / 100f) * Random.Range(0.10f, 0.15f); ///15-30 
 
                             ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, explosionPoint, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
-                            
+
+                            float waitTime = Random.Range(0.10f, 0.45f);
+
                             yield return new WaitForSeconds(0.25f);
                         }
                     }

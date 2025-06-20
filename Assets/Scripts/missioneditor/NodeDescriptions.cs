@@ -390,6 +390,22 @@ public static class NodeDescriptions
             "- At the moment you can only add a message to the briefing screen. \n" +
             "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "fadeinfromcolour")
+        {
+            description =
+            "Fade in from colour \n " +
+            "\n " +
+            "This node fades the screen in from a block colour \n" +
+            "\n ";
+        }
+        else if (name == "fadetocolour")
+        {
+            description =
+            "Fade to colour \n " +
+            "\n " +
+            "This node fades the screen to a block colour \n" +
+            "\n ";
+        }
         else if (name == "ifobjectiveisactive")
         {
             description =

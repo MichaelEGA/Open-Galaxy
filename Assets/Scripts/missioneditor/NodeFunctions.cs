@@ -77,6 +77,14 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DisplayMissionBriefing(node);
         }
+        else if (node.nodeType == "fadeinfromcolour")
+        {
+            NodeTypes.Draw_FadeInFromColour(node);
+        }
+        else if (node.nodeType == "fadetocolour")
+        {
+            NodeTypes.Draw_FadeToColour(node);
+        }
         else if (node.nodeType == "exitmission")
         {
             NodeTypes.Draw_ExitMission(node);

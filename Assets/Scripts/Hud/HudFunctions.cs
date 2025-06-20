@@ -1881,7 +1881,7 @@ public static class HudFunctions
                     hud.title.fontSize = fontsize;
                     Task a = new Task(FadeTextInAndOut(hud.title, 0.5f, 3, 0.5f)); //This fades the title in and out
                     AddTaskToPool(hud, a);
-                    Task b = new Task(FadeImageOutAndIn(hud.reticule, 0.25f, 4, 0.5f)); //This briefly fades the hud reticule to avoid a clash with the title
+                    Task b = new Task(FadeRawImageOutAndIn(hud.reticule, 0.25f, 4, 0.5f)); //This briefly fades the hud reticule to avoid a clash with the title
                     AddTaskToPool(hud, b);
                 }
             }
@@ -1895,11 +1895,6 @@ public static class HudFunctions
         {
             Hud hud = GetHud();
 
-            if (fontsize <= 0)
-            {
-                fontsize = 25;
-            }
-
             if (hud != null)
             {
                 if (hud.hintTextGO == null)
@@ -1911,7 +1906,6 @@ public static class HudFunctions
                 if (hud.hintTextGO != null)
                 {
                     hud.hintTextGO.text = hintText;
-                    hud.hintTextGO.fontSize = fontsize;
                     Task a = new Task(FadeTextInAndOut(hud.hintTextGO, 0.5f, 10, 0.5f)); //This fades the text in and out
                     AddTaskToPool(hud, a);
                 }
@@ -1919,7 +1913,7 @@ public static class HudFunctions
                 if (hud.hintImage == null)
                 {
                     GameObject hintImage = GameObject.Find("Hint");
-                    if (hintImage != null) { hud.hintImage = hintImage.GetComponent<RawImage>(); }
+                    if (hintImage != null) { hud.hintImage = hintImage.GetComponent<Image>(); }
                 }
 
                 if (hud.hintImage != null)
@@ -2208,8 +2202,8 @@ public static class HudFunctions
         while (b.Running == true) { yield return null; }
     }
 
-    //This fades out an image
-    public static IEnumerator FadeOutImage(RawImage rawimage, float duration)
+    //This fades out a raw image
+    public static IEnumerator FadeOutRawImage(RawImage rawimage, float duration)
     {
         float alpha = 1;
 
@@ -2228,8 +2222,8 @@ public static class HudFunctions
         }
     }
 
-    //This fades in an image
-    public static IEnumerator FadeInImage(RawImage rawimage, float duration)
+    //This fades in a raw image
+    public static IEnumerator FadeInRawImage(RawImage rawimage, float duration)
     {
         float alpha = 0;
 
@@ -2249,28 +2243,82 @@ public static class HudFunctions
 
     }
 
-    //This fades an image in and out
-    public static IEnumerator FadeImageInAndOut(RawImage rawimage, float fadeintime = 0.5f, float holdtime = 1, float fadeOuttime = 0.5f)
+    //This fades out an image
+    public static IEnumerator FadeOutImage(Image image, float duration)
+    {
+        float alpha = 1;
+
+        while (alpha > 0)
+        {
+            alpha = alpha - (1f / (60f * duration));
+
+            if (image != null)
+            {
+                Color newColor = image.color;
+                newColor.a = alpha;
+                image.color = newColor;
+            }
+
+            yield return new WaitForSecondsRealtime(0.016f);
+        }
+    }
+
+    //This fades in an image
+    public static IEnumerator FadeInImage(Image image, float duration)
+    {
+        float alpha = 0;
+
+        while (alpha < 1)
+        {
+            alpha = alpha + (1f / (60f * duration));
+
+            if (image != null)
+            {
+                Color newColor = image.color;
+                newColor.a = alpha;
+                image.color = newColor;
+            }
+
+            yield return new WaitForSecondsRealtime(0.016f);
+        }
+
+    }
+
+    //This fades a raw image in and out
+    public static IEnumerator FadeRawImageInAndOut(RawImage rawimage, float fadeintime = 0.5f, float holdtime = 1, float fadeOuttime = 0.5f)
     {
         Hud hud = GetHud();
-        Task a = new Task(FadeInImage(rawimage, fadeintime));
+        Task a = new Task(FadeInRawImage(rawimage, fadeintime));
         AddTaskToPool(hud, a);
         while (a.Running == true) { yield return null; }
         yield return new WaitForSeconds(holdtime);
-        Task b = new Task(FadeOutImage(rawimage, fadeOuttime));
+        Task b = new Task(FadeOutRawImage(rawimage, fadeOuttime));
+        AddTaskToPool(hud, b);
+        while (b.Running == true) { yield return null; }
+    }
+
+    //This fades an image in out
+    public static IEnumerator FadeImageInAndOut(Image image, float fadeintime = 0.5f, float holdtime = 1, float fadeOuttime = 0.5f)
+    {
+        Hud hud = GetHud();
+        Task a = new Task(FadeInImage(image, fadeintime));
+        AddTaskToPool(hud, a);
+        while (a.Running == true) { yield return null; }
+        yield return new WaitForSeconds(holdtime);
+        Task b = new Task(FadeOutImage(image, fadeOuttime));
         AddTaskToPool(hud, b);
         while (b.Running == true) { yield return null; }
     }
 
     //This fades an image in and out
-    public static IEnumerator FadeImageOutAndIn(RawImage rawimage, float fadeintime = 0.5f, float holdtime = 1, float fadeOuttime = 0.5f)
+    public static IEnumerator FadeRawImageOutAndIn(RawImage rawimage, float fadeintime = 0.5f, float holdtime = 1, float fadeOuttime = 0.5f)
     {
         Hud hud = GetHud();
-        Task a = new Task(FadeOutImage(rawimage, fadeOuttime));
+        Task a = new Task(FadeOutRawImage(rawimage, fadeOuttime));
         AddTaskToPool(hud, a);
         while (a.Running == true) { yield return null; }
         yield return new WaitForSeconds(holdtime);
-        Task b = new Task(FadeInImage(rawimage, fadeintime));
+        Task b = new Task(FadeInRawImage(rawimage, fadeintime));
         AddTaskToPool(hud, b);
         while (b.Running == true) { yield return null; }
     }

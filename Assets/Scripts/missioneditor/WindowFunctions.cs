@@ -68,6 +68,8 @@ public static class WindowFunctions
         buttonList.Add("displaymessage");
         buttonList.Add("displaymessageimmediate");
         buttonList.Add("displaymissionbriefing");
+        buttonList.Add("fadeinfromcolour");
+        buttonList.Add("fadetocolour");
         buttonList.Add("exitmission");
         buttonList.Add("exitanddisplaynextmissionmenu");
         buttonList.Add("ifobjectiveisactive");

@@ -8833,7 +8833,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3763528808071533328}
   - component: {fileID: 4495641968676627476}
-  - component: {fileID: 4635835854962383428}
+  - component: {fileID: 544714472012288432}
   m_Layer: 5
   m_Name: Hint
   m_TagString: Untagged
@@ -8858,8 +8858,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 241.40004, y: 102}
-  m_SizeDelta: {x: 454.03, y: 40}
+  m_AnchoredPosition: {x: 32.4715, y: 31.20282}
+  m_SizeDelta: {x: 226.3767, y: 53.7972}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &4495641968676627476
 CanvasRenderer:
@@ -8869,7 +8869,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9007501997239576107}
   m_CullTransparentMesh: 1
---- !u!114 &4635835854962383428
+--- !u!114 &544714472012288432
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8878,24 +8878,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 9007501997239576107}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.84313726, g: 0.2, b: 0.1254902, a: 0}
+  m_Color: {r: 0.92156863, g: 0.7058824, b: 0.14901961, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &9012803439383252810
 GameObject:
   m_ObjectHideFlags: 0
@@ -9231,8 +9234,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.00048828125, y: 39.999992}
-  m_SizeDelta: {x: 454.03, y: 40}
+  m_AnchoredPosition: {x: -0.4933014, y: 47.884117}
+  m_SizeDelta: {x: 210.6085, y: 40}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7001059424726778004
 CanvasRenderer:
@@ -9264,8 +9267,8 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: c483c514f8cb77f4b96ce901918a84eb, type: 3}
-    m_FontSize: 15
-    m_FontStyle: 1
+    m_FontSize: 10
+    m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40

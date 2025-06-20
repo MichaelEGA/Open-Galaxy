@@ -564,33 +564,36 @@ public static class TurretFunctions
     {
         turret.turretFiring = true;
 
-        ParticleSystem particleSystem = turret.turretParticleSystem.GetComponent<ParticleSystem>();
-
-        if (particleSystem != null)
+        if (turret != null)
         {
-            foreach (Transform turretTransform in turret.firepoints)
-            {
-                if (turretTransform != null)
-                {
-                    particleSystem.transform.position = turretTransform.position;
-                    particleSystem.transform.rotation = turretTransform.transform.rotation;
-                    particleSystem.Play();
+            ParticleSystem particleSystem = turret.turretParticleSystem.GetComponent<ParticleSystem>();
 
-                    if (turret.audioManager == null)
+            if (particleSystem != null)
+            {
+                foreach (Transform turretTransform in turret.firepoints)
+                {
+                    if (turretTransform != null)
                     {
-                        turret.audioManager = AudioFunctions.GetAudioManager();
+                        particleSystem.transform.position = turretTransform.position;
+                        particleSystem.transform.rotation = turretTransform.transform.rotation;
+                        particleSystem.Play();
+
+                        if (turret.audioManager == null)
+                        {
+                            turret.audioManager = AudioFunctions.GetAudioManager();
+                        }
+                        else
+                        {
+                            AudioFunctions.PlayAudioClip(turret.audioManager, turret.audioFile, "External", turret.transform.position, 1, 1, 500, 0.6f);
+                        }
+
+                        yield return null;
                     }
-                    else
-                    {
-                        AudioFunctions.PlayAudioClip(turret.audioManager, turret.audioFile, "External", turret.transform.position, 1, 1, 500, 0.6f);
-                    }
-                    
-                    yield return null;
                 }
             }
-        }     
 
-        turret.turretFiring = false;
+            turret.turretFiring = false;
+        }
     }
 
     #endregion

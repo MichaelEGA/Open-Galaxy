@@ -17,7 +17,6 @@ public class ExitMenu : MonoBehaviour
         AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
         AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
 
-        MissionFunctions.ReturnToMainMenu();
         MissionFunctions.UnloadMission();
     }
 }

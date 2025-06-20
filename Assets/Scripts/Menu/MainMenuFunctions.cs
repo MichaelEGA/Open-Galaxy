@@ -1547,7 +1547,13 @@ public static class MainMenuFunctions
     //This returns the main menu
     public static MainMenu GetMainMenu()
     {
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>(true);
+        MainMenu mainMenu = GameObject.FindFirstObjectByType<MainMenu>(FindObjectsInactive.Include);
+
+        if (mainMenu== null)
+        {
+            Debug.Log("Main Menu is null");
+        }
+
         return mainMenu;
     }
 

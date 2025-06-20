@@ -100,9 +100,8 @@ public class NextMissionFunctions
     }
 
     //This checks if the mission exists
-    public static void CheckIfMissionExists(NextMission nextMission)
+    public static (bool externalMision, bool internalMission) CheckIfMissionExists(string missionName)
     {
-        string missionName = nextMission.nextMissionName;
         bool internalMissionExists = false;
         bool externalMissionExists = false;
 
@@ -154,13 +153,11 @@ public class NextMissionFunctions
             }
         }
 
-        //This return the information
-        nextMission.externalMissionExists = externalMissionExists;
-        nextMission.internalMissionExists = internalMissionExists;
+        return (externalMissionExists, internalMissionExists);
     }
 
     //This unloads the next mission menu
-    public static void UnloadNextMissionMenu()
+    public static void UnloadNextMissionMenu(bool loadNextMission = false, string missionName = "none")
     {
         //This reactivates the time scale
         Time.timeScale = 1;
@@ -190,6 +187,6 @@ public class NextMissionFunctions
         }
 
         //This unloads the mission
-        MissionFunctions.UnloadMission();
+        MissionFunctions.UnloadMission(loadNextMission, missionName);
     }
 }

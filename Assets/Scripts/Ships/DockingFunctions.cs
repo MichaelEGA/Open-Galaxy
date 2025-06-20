@@ -7,13 +7,8 @@ public static class DockingFunctions
     //This finds and adds the docking points to the smallship
     public static void AddDockingPointsSmallShip(SmallShip smallShip)
     {
-        Transform dockingPoint = smallShip.gameObject.transform.Find("dockingpoint");
-
-        if (dockingPoint == null)
-        {
-            dockingPoint = smallShip.gameObject.transform.Find("dockingPoint");
-        }
-
+        Transform dockingPoint = GameObjectUtils.FindFirstChildTransformContaining(smallShip.transform, "docking");
+            
         if (dockingPoint != null)
         {
             smallShip.dockingPoint = dockingPoint.gameObject.AddComponent<DockingPoint>();
@@ -36,12 +31,7 @@ public static class DockingFunctions
     //This finds and adds the docking points to the large ship
     public static void AddDockingPointsLargeShip(LargeShip largeShip)
     {
-        Transform[] dockingPointTransforms = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockingpoint");
-
-        if (dockingPointTransforms.Length < 1)
-        {
-            GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "dockingPoint");
-        }
+        Transform[] dockingPointTransforms = GameObjectUtils.FindAllChildTransformsContaining(largeShip.transform, "docking");
 
         List<DockingPoint> dockingPointGameObjects = new List<DockingPoint>();
 

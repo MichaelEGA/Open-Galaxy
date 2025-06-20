@@ -14,15 +14,17 @@ public static class MissionFunctions
     public static IEnumerator RunMission(string missionName, string missionAddress, bool addressIsExternal = false)
     {
         //This looks for the mission manager and if it doesn't find one creates one
-        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();      
-
-        if (missionManager == null)
+        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>(FindObjectsInactive.Include); 
+        
+        if(missionManager != null )
         {
-            GameObject missionManagerGO = new GameObject();
-            missionManagerGO.name = "MissionManager";
-            missionManager = missionManagerGO.AddComponent<MissionManager>();
+            GameObject.Destroy(missionManager);
         }
 
+        GameObject missionManagerGO = new GameObject();
+        missionManagerGO.name = "MissionManager";
+        missionManager = missionManagerGO.AddComponent<MissionManager>();
+        
         missionManager.missionAddress = missionAddress;
 
         //This marks the start time of the script
@@ -43,7 +45,7 @@ public static class MissionFunctions
 
         missionManager.missionData = missionDataFile.text;
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
-        Scene scene = SceneFunctions.GetScene();
+        missionManager.scene = SceneFunctions.GetScene();
 
         //This pauses the game to prevent action starting before everything is loaded 
         Time.timeScale = 0;
@@ -84,7 +86,7 @@ public static class MissionFunctions
         FindAllLocations(mission);
 
         //This sets the current location
-        scene.currentLocation = firstLocationNode.conditionLocation;
+        missionManager.scene.currentLocation = firstLocationNode.conditionLocation;
 
         //This runs all the preload events like loading the planet and asteroids and objects already in scene
         Task a = new Task(FindAndRunPreLoadEvents(mission, firstLocationNode.conditionLocation, time, true));
@@ -122,10 +124,7 @@ public static class MissionFunctions
         //This starts running the event series
         int eventSeriesNo = 0;
 
-        if (missionManager.missionTasks == null)
-        {
-            missionManager.missionTasks = new List<Task>();
-        }
+        missionManager.missionTasks = new List<Task>();
 
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
@@ -145,12 +144,15 @@ public static class MissionFunctions
     {
         MissionEvent missionEvent = null;
 
+        Debug.Log("run 1");
+
         foreach (MissionEvent tempMissionEvent in mission.missionEventData)
         {
             if (tempMissionEvent.eventType == "createlocation")
             {
                 if (tempMissionEvent.data1 == "true")
                 {
+                    Debug.Log("run 2 " + tempMissionEvent.conditionLocation);
                     missionEvent = tempMissionEvent;
                     LoadScreenFunctions.AddLogToLoadingScreen("Starting location node found", 0);
                     break;
@@ -162,10 +164,13 @@ public static class MissionFunctions
         {
             LoadScreenFunctions.AddLogToLoadingScreen("No starting location node found searching for another location node.", 0);
 
+            Debug.Log("run 3");
+
             foreach (MissionEvent tempMissionEvent in mission.missionEventData)
             {
                 if (tempMissionEvent.eventType == "createlocation")
                 {
+                    Debug.Log("run 4");
                     missionEvent = tempMissionEvent;
                     LoadScreenFunctions.AddLogToLoadingScreen("Secondary location node found.", 0);
                     break;
@@ -175,6 +180,7 @@ public static class MissionFunctions
 
         if (missionEvent == null)
         {
+            Debug.Log("run 5");
             LoadScreenFunctions.AddLogToLoadingScreen("No starting location found aborting load", 0);
         }
 
@@ -816,6 +822,11 @@ public static class MissionFunctions
             while (messageAudioSource.isPlaying == true)
             {
                 yield return null;
+
+                if (messageAudioSource == null)
+                {
+                    break;
+                }
             }
         }
 
@@ -1394,7 +1405,6 @@ public static class MissionFunctions
             missionManager.running = false;
         }
 
-        ReturnToMainMenu();
         UnloadMission();
     }
     
@@ -3149,8 +3159,6 @@ public static class MissionFunctions
 
         float hullLevel = 0;
         float shieldLevel = 0;
-        float forwardshield = 0;
-        float rearshields = 0;
         float systemsLevel = 0;
         float wepLevel = 0;
 
@@ -3706,7 +3714,6 @@ public static class MissionFunctions
         yield return new WaitForSeconds(time);
 
         UnloadMission();
-        ReturnToMainMenu();
     }
 
     //This activates the exit menu
@@ -3772,7 +3779,7 @@ public static class MissionFunctions
     }
 
     //This unloads the mission
-    public static void UnloadMission()
+    public static void UnloadMission(bool loadFollowingMision = false, string missionName = "none")
     {
         HudFunctions.UnloadHud();
         MusicFunctions.UnloadMusicManager();
@@ -3789,14 +3796,15 @@ public static class MissionFunctions
         if (missionBriefing != null) { GameObject.Destroy(missionBriefing); }
         if (nextMissionScreen != null) { GameObject.Destroy(nextMissionScreen); }
 
-        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();
+        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>(FindObjectsInactive.Include);
+        GameObject missionManagerGO = missionManager.gameObject;
 
         //This tells the main menu that the mission is no longer running
         MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>(true);
 
         if (mainMenu != null)
         {
-            mainMenu.missionRunning = false;          
+            mainMenu.missionRunning = false;
         }
 
         //This stops any active event series coroutines so they don't continue running when a new mission is loaded
@@ -3814,9 +3822,36 @@ public static class MissionFunctions
 
         //This resets the skybox to black
         SceneFunctions.SetSkybox("space_black01", true);
-        
+
         //This destroys the mission manager
-        if (missionManager != null) { GameObject.Destroy(missionManager.gameObject); }
+        if (missionManager != null) { GameObject.Destroy(missionManager); }
+        if (missionManagerGO != null) { GameObject.Destroy(missionManagerGO); }
+
+        //This loads the next mission if requested
+        if (loadFollowingMision == true)
+        {
+            var missionCheck =  NextMissionFunctions.CheckIfMissionExists(missionName);
+
+            if (missionCheck.externalMision == true)
+            {
+                MainMenuFunctions.LoadCustomMission(missionName);
+                Debug.Log("Loading external mision");
+            }
+            else if (missionCheck.externalMision == true)
+            {
+                MainMenuFunctions.LoadMission(missionName);
+                Debug.Log("Loading internal mision");
+            }
+            else
+            {
+                ReturnToMainMenu();
+                MainMenuFunctions.OutputMenuMessage("The requested mission was not found");
+            }
+        }
+        else
+        {
+            ReturnToMainMenu();
+        }
     }
 
     #endregion

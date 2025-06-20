@@ -14,32 +14,13 @@ public class NextMission : MonoBehaviour
     //This runs the next selected mission
     public void RunNextMission()
     {
-        NextMissionFunctions.CheckIfMissionExists(this);
-
-        if (externalMissionExists == true)
-        {
-            MainMenuFunctions.LoadCustomMission(nextMissionName);
-            Debug.Log("Loading external mision");
-        }
-        else if (internalMissionExists == true)
-        {
-            MainMenuFunctions.LoadMission(nextMissionName);
-            Debug.Log("Loading internal mision");
-        }
-        else
-        {
-            MissionFunctions.ReturnToMainMenu();
-            MainMenuFunctions.OutputMenuMessage("The requested mission was not found");
-        }
-
-        NextMissionFunctions.UnloadNextMissionMenu();
+        NextMissionFunctions.UnloadNextMissionMenu(true, nextMissionName);
     }
 
     //This returns to the main menu
     public void ReturnToMainMenu()
     {
         NextMissionFunctions.UnloadNextMissionMenu();
-        MissionFunctions.ReturnToMainMenu();
     }
 
 }

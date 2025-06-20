@@ -2590,13 +2590,16 @@ public static class SceneFunctions
     {
         Scene scene;
 
-        scene = GameObject.FindObjectOfType<Scene>();//This gets the scene reference
+        scene = GameObject.FindFirstObjectByType<Scene>(FindObjectsInactive.Include);//This gets the scene reference
 
         if (scene == null)
         {
             CreateScene();
-            scene = GameObject.FindObjectOfType<Scene>();
+            scene = GameObject.FindFirstObjectByType<Scene>();
+            Debug.Log("A scene was created");
         }
+
+        Scene[] sceneScripts = Object.FindObjectsOfType<Scene>(true);
 
         return scene;
     }

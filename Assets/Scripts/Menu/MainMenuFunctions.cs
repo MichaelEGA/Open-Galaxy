@@ -203,7 +203,7 @@ public static class MainMenuFunctions
             mainMenu.backgroundPictures.Add((Texture2D)backgroundImage);
         }
 
-        int numberOfPictures = mainMenu.backgroundPictures.Count - 1;
+        int numberOfPictures = mainMenu.backgroundPictures.Count;
 
         int pictureSelection = Random.Range(0, numberOfPictures);
 

@@ -888,113 +888,6 @@ public static class SceneFunctions
         scene.centerPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
     }
 
-    //This return the name of a random location
-    public static (string planet, string type, Vector3 location, int seed, string allegiance, string region, string sector) GetRandomLocation()
-    {
-        LoadScreenFunctions.AddLogToLoadingScreen("Searching for a random planet.", 0, false);
-
-        string planet = null;
-        string type = null;
-        Vector3 location = new Vector3(0, 0, 0);
-        int seed = 0;
-        string allegiance = "none";
-        string region = "none";
-        string sector = "none";
-
-        //This loads the Json file
-        TextAsset starSystemFile = Resources.Load(OGGetAddress.files + "StarSystems") as TextAsset;
-        StarSystems starSystems = JsonUtility.FromJson<StarSystems>(starSystemFile.text);
-
-        int numberOfStarSystems = starSystems.starSystemsData.Length;
-        int randomLocation = Random.Range(0, numberOfStarSystems - 1);
-
-        StarSystem starSystem = starSystems.starSystemsData[randomLocation];
-
-        float xCoord = (starSystem.X / 15000f) * 50f;
-        float yCoord = (starSystem.Z / 15000f) * 25f; //The y coord is actaully the z coord and vice versa b/c original data was vector 2 
-        float zCoord = (starSystem.Y / 15000f) * 50f;
-
-        planet = starSystem.Planet;
-        type = starSystem.planetType;
-        location = new Vector3(xCoord, yCoord, zCoord);
-        seed = starSystem.seed;
-        allegiance = starSystem.faction;
-        region = starSystem.Region;
-        sector = starSystem.Sector;
-
-        LoadScreenFunctions.AddLogToLoadingScreen("Random Planet found.", 0, false);
-
-        return (planet, type, location, seed, allegiance, region, sector);
-    }
-
-    //This returns the data of a specific location
-    public static (string planet, string type, Vector3 location, int seed, string allegiance, string region, string sector, bool wasFound) FindLocation(string name)
-    {
-        LoadScreenFunctions.AddLogToLoadingScreen("Searching for planet data.", 0, false);
-
-        string planet = null;
-        string type = null;
-        Vector3 location = new Vector3(0, 0, 0);
-        int seed = 0;
-        string allegiance = "none";
-        string region = "none";
-        string sector = "none";
-        bool wasFound = false;
-
-        //This loads the Json file
-        TextAsset starSystemFile = Resources.Load(OGGetAddress.files + "StarSystems") as TextAsset;
-        StarSystems starSystems = JsonUtility.FromJson<StarSystems>(starSystemFile.text);
-
-        //This finds specific data on the location
-        foreach (StarSystem starSystem in starSystems.starSystemsData)
-        {
-
-            if (starSystem.Planet == name)
-            {
-                float xCoord = (starSystem.X / 15000f) * 50f;
-                float yCoord = (starSystem.Z / 15000f) * 25f; //The y coord is actaully the z coord and vice versa b/c original data was vector 2 
-                float zCoord = (starSystem.Y / 15000f) * 50f;
-
-                planet = starSystem.Planet;
-                type = starSystem.planetType;
-                location = new Vector3(xCoord, yCoord, zCoord);
-                seed = starSystem.seed;
-                allegiance = starSystem.faction;
-                region = starSystem.Region;
-                sector = starSystem.Sector;
-                wasFound = true;
-                LoadScreenFunctions.AddLogToLoadingScreen("Planet Data Found.", 0, false);
-                break;
-            }
-        }
-
-        //This provides a random location if the specific planet couldn't be find
-        if (planet == null)
-        {
-            LoadScreenFunctions.AddLogToLoadingScreen("Warning planet data not found. Planet location and data will be randomised.", 0, false);
-
-            int numberOfStarSystems = starSystems.starSystemsData.Length;
-            int randomLocation = Random.Range(0, numberOfStarSystems - 1);
-
-            StarSystem starSystem = starSystems.starSystemsData[randomLocation];
-
-            float xCoord = (starSystem.X / 15000f) * 50f;
-            float yCoord = (starSystem.Z / 15000f) * 25f; //The y coord is actaully the z coord and vice versa b/c original data was vector 2 
-            float zCoord = (starSystem.Y / 15000f) * 50f;
-
-            planet = name;
-            type = starSystem.planetType;
-            location = new Vector3(xCoord, yCoord, zCoord);
-            seed = starSystem.seed;
-            allegiance = starSystem.faction;
-            region = starSystem.Region;
-            sector = starSystem.Sector;
-            wasFound = false;
-        }
-
-        return (planet, type, location, seed, allegiance, region, sector, wasFound);
-    }
-
     //This ensures the planet does not hit any actual in scene objects
     public static void IgnoreCollisionWithPlanet()
     {
@@ -1016,6 +909,43 @@ public static class SceneFunctions
         Physics.IgnoreLayerCollision(27, 21, true);
         Physics.IgnoreLayerCollision(27, 22, true);
         Physics.IgnoreLayerCollision(27, 23, true);
+    }
+
+    //These functions make the planets fly in and out when exiting hyperspace
+    public static IEnumerator PlanetFlyIn()
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene.mainShip != null & scene.centerPivot != null)
+        {
+            Vector3 startPosition = scene.mainShip.gameObject.transform.position + scene.mainShip.gameObject.transform.forward * 500;
+            Vector3 endPosition = scene.centerPivot.transform.position;
+
+            Task a = new Task(GameObjectUtils.LerpBetweenTwoPoints(scene.centerPivot, endPosition, startPosition, 2));
+
+            while (a.Running == true)
+            {
+                yield return null;
+            }
+        }
+    }
+
+    public static IEnumerator PlanetFlyOut()
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene.mainShip != null & scene.centerPivot != null)
+        {
+            Vector3 startPosition = scene.centerPivot.transform.position;
+            Vector3 endPosition = scene.mainShip.gameObject.transform.position + scene.mainShip.gameObject.transform.forward * -500;
+
+            Task a = new Task(GameObjectUtils.LerpBetweenTwoPoints(scene.centerPivot, endPosition, startPosition, 2));
+
+            while (a.Running == true)
+            {
+                yield return null;
+            }
+        }
     }
 
     #endregion

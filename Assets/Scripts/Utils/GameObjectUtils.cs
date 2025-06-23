@@ -441,4 +441,18 @@ public static class GameObjectUtils
         return targetPosition + t * targetVelocity;
     }
 
+    //This lerps a gameobject between two points
+    public static IEnumerator LerpBetweenTwoPoints(GameObject gameObject, Vector3 endPosition, Vector3 startPosition, float lerpDuration)
+    {
+        float timeElapsed = 0;
+
+        while (timeElapsed < lerpDuration)
+        {
+            gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        gameObject.transform.localPosition = endPosition;
+    }
 }

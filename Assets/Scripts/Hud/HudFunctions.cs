@@ -1889,7 +1889,7 @@ public static class HudFunctions
     }
 
     //This briefly displays a message in large text in the middle of the screen
-    public static void DisplayHint(string hintText, int fontsize)
+    public static void DisplayHint(string hintText)
     {
         if (Time.timeScale != 0)
         {

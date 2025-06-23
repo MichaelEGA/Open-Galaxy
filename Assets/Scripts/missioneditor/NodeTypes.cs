@@ -423,7 +423,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "2", 7, 5, drop, 12.5f, 90, 5f);
+        node.data10 = NodeFunctions.DrawInputField(node, "number of lines", "2", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -535,7 +535,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+        node.data10 = NodeFunctions.DrawInputField(node, "number of lines", "1", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1705,10 +1705,6 @@ public static class NodeTypes
 
         drop -= 15 * multiplySize;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "Fontsize", "15", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
@@ -2691,7 +2687,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "2", 7, 5, drop, 12.5f, 90, 5f);
+        node.data10 = NodeFunctions.DrawInputField(node, "number of lines", "2", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -2895,7 +2891,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data10 = NodeFunctions.DrawInputField(node, "ships per line", "1", 7, 5, drop, 12.5f, 90, 5f);
+        node.data10 = NodeFunctions.DrawInputField(node, "number of lines", "1", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

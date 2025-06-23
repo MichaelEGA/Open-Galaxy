@@ -937,7 +937,7 @@ public static class MainMenuFunctions
         messages[6] = "Open Galaxy is designed for keyboard and mouse.";
         messages[7] = "Check out the credits to see who made Open Galaxy possible.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
-        messages[9] = "Post 6.0 plans for Open Galaxy includes controller support, more cockpits, and more missions.";
+        messages[9] = "Post 7.0 plans for Open Galaxy includes controller support and more missions.";
         messages[10] = "Finding it hard to hit your target? Try turning on autoaim in the controls menu.";
         messages[11] = "Getting blown out of the sky? Try changing the damage level in the settings menu";
         Random.InitState(System.DateTime.Now.Millisecond);

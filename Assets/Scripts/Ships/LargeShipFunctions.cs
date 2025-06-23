@@ -421,8 +421,6 @@ public static class LargeShipFunctions
 
             List<Vector3> explosionPoints = GameObjectUtils.GetRandomPointsOnMesh(mainShipMesh, meshTransform, explosionsNumber);
 
-            yield return new WaitForSeconds(2);
-
             foreach (Vector3 explosionPoint in explosionPoints)
             {
                 if (explosionPoint != null)

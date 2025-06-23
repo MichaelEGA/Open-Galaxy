@@ -1195,14 +1195,17 @@ public static class MissionFunctions
         //This clears the current location
         SceneFunctions.ClearLocation();
 
+        Task a = new Task(SceneFunctions.PlanetFlyOut());
+        while (a.Running == true) { yield return null; }
+
         //This makes the stars stretch out
         scene.planetCamera.GetComponent<Camera>().enabled = false;
 
         Time.timeScale = 0;
 
         //This makes the stars stretch out
-        Task a = new Task(SceneFunctions.StretchStarfield());
-        while(a.Running == true) { yield return null; }
+        Task b = new Task(SceneFunctions.StretchStarfield());
+        while(b.Running == true) { yield return null; }
 
         //This activates the hyperspace tunnel
         if (scene.hyperspaceTunnel == null)
@@ -1241,8 +1244,8 @@ public static class MissionFunctions
         scene.currentLocation = jumpLocation;
 
         //This finds and loads all 'preload' nodes for the new location
-        Task b = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time, false));
-        while(b.Running == true) { yield return null; }
+        Task c = new Task(MissionFunctions.FindAndRunPreLoadEvents(mission, jumpLocation, time, false));
+        while(c.Running == true) { yield return null; }
 
         yield return new WaitForSecondsRealtime(1);
 
@@ -1273,10 +1276,22 @@ public static class MissionFunctions
         scene.starfieldCamera.GetComponent<Camera>().enabled = true;
 
         //This shrinks the starfield
-        Task c = new Task(SceneFunctions.ShrinkStarfield());
-        while (c.Running == true) { yield return null; }
+        Task d = new Task(SceneFunctions.ShrinkStarfield());
+        while (d.Running == true) { yield return null; }
 
-        scene.planetCamera.GetComponent<Camera>().enabled = true;
+        Task e = new Task(SceneFunctions.PlanetFlyIn());
+        
+        while (e.Running == true) 
+        {
+            if (scene.planetCamera.GetComponent<Camera>().enabled == false)
+            {
+                yield return new WaitForSeconds(1);
+
+                scene.planetCamera.GetComponent<Camera>().enabled = true;
+            }
+
+            yield return null;
+        }
 
         //This fades the hud back in
         Task fadeIN = new Task(HudFunctions.FadeInHud(1));
@@ -1478,14 +1493,8 @@ public static class MissionFunctions
     public static void DisplayHint(MissionEvent missionEvent)
     {
         string hint = missionEvent.data1;
-        int fontsize = 12;
 
-        if (int.TryParse(missionEvent.data2, out _))
-        {
-            fontsize = int.Parse(missionEvent.data2);
-        }
-
-        HudFunctions.DisplayHint(hint, fontsize);
+        HudFunctions.DisplayHint(hint);
     }
 
     //This temporary displays a large message in the center of the screen

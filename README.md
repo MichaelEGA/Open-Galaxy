@@ -1,12 +1,12 @@
 # Open-Galaxy
 
 Gameplay
-![image](https://github.com/user-attachments/assets/8fa7cd2a-11ca-4173-b212-b6ba33e470f4)
+![Screenshot 2025-06-24 142244](https://github.com/user-attachments/assets/ad3659ed-9a61-4899-a929-e6827ff35d59)
 
-![image](https://github.com/user-attachments/assets/9ac17e2b-1115-48e9-9509-04408d9a96ca)
+![Screenshot 2025-06-24 142541](https://github.com/user-attachments/assets/482729b3-fdd5-4fcd-8f80-5b0a160e024b)
 
 Mission Editor
-![Screenshot (668)](https://github.com/user-attachments/assets/82905984-8da3-47fb-b885-5ab8783ffb1c)
+![Screenshot 2025-06-24 142933](https://github.com/user-attachments/assets/3fc87dc7-f60d-46ec-8716-fe9d89b9d4b0)
 
 Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platform for custom missions made by the community. 
 
@@ -36,9 +36,9 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - Right Mouse matches speed
   - Scan a target by selecting it and then flying close
 
-**Latest Development Release:** 5.7.1
+**Latest Development Release:** 7.1.38
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.5.7.1/Open.Galaxy.5.7.1.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.7.1.38/Open.Galaxy.7.1.38.zip
     
 **Latest Milestone Release:** 5.0.89
 

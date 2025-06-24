@@ -1195,8 +1195,8 @@ public static class MissionFunctions
         //This clears the current location
         SceneFunctions.ClearLocation();
 
-        Task a = new Task(SceneFunctions.PlanetFlyOut());
-        while (a.Running == true) { yield return null; }
+        //Task a = new Task(SceneFunctions.PlanetFlyOut());
+        //while (a.Running == true) { yield return null; }
 
         //This makes the stars stretch out
         scene.planetCamera.GetComponent<Camera>().enabled = false;
@@ -1279,19 +1279,21 @@ public static class MissionFunctions
         Task d = new Task(SceneFunctions.ShrinkStarfield());
         while (d.Running == true) { yield return null; }
 
-        Task e = new Task(SceneFunctions.PlanetFlyIn());
+        //Task e = new Task(SceneFunctions.PlanetFlyIn());
         
-        while (e.Running == true) 
-        {
-            if (scene.planetCamera.GetComponent<Camera>().enabled == false)
-            {
-                yield return new WaitForSeconds(1);
+        //while (e.Running == true) 
+        //{
+        //    if (scene.planetCamera.GetComponent<Camera>().enabled == false)
+        //    {
+        //        yield return new WaitForSeconds(1);
 
-                scene.planetCamera.GetComponent<Camera>().enabled = true;
-            }
+        //        scene.planetCamera.GetComponent<Camera>().enabled = true;
+        //    }
 
-            yield return null;
-        }
+        //    yield return null;
+        //}
+
+        scene.planetCamera.GetComponent<Camera>().enabled = true;
 
         //This fades the hud back in
         Task fadeIN = new Task(HudFunctions.FadeInHud(1));

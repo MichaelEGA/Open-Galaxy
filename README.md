@@ -1,24 +1,23 @@
 # Open-Galaxy
 
 Gameplay
-![image](https://github.com/user-attachments/assets/8fa7cd2a-11ca-4173-b212-b6ba33e470f4)
+![Screenshot 2025-06-24 142244](https://github.com/user-attachments/assets/ad3659ed-9a61-4899-a929-e6827ff35d59)
 
-![image](https://github.com/user-attachments/assets/9ac17e2b-1115-48e9-9509-04408d9a96ca)
+![Screenshot 2025-06-24 142541](https://github.com/user-attachments/assets/482729b3-fdd5-4fcd-8f80-5b0a160e024b)
 
 Mission Editor
-![Screenshot (668)](https://github.com/user-attachments/assets/82905984-8da3-47fb-b885-5ab8783ffb1c)
+![Screenshot 2025-06-24 142933](https://github.com/user-attachments/assets/3fc87dc7-f60d-46ec-8716-fe9d89b9d4b0)
 
-Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platform for custom missions made by the community. 
+Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a platform for custom missions. 
 
 **Main Features**
 
   - X-Wing and Tie Fighter style ship combat
   - Missions Events
   - AI Tagging
-  - Dynamic Cockpits
   - Easy to use mission editor
   - External mission loading
-  - 18 Inbuilt Missions
+  - 21 Inbuilt Missions
   - Keyboard and Mouse Controls
 
 **Controls**  
@@ -33,12 +32,13 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
   - G selects the target directly ahead of the player
   - Up, down, left, and right control energy management
   - Left Mouse fires weapons
-  - Right Mouse matches speed
+  - Right Mouse focues the camera
+  - E matches speed
   - Scan a target by selecting it and then flying close
 
-**Latest Development Release:** 5.7.1
+**Latest Development Release:** 7.1.38
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.5.7.1/Open.Galaxy.5.7.1.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.7.1.38/Open.Galaxy.7.1.38.zip
     
 **Latest Milestone Release:** 5.0.89
 
@@ -62,6 +62,68 @@ Open Galaxy is a X-Wing and Tie Fighter style space sim designed to be a platfor
 The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
 
 **Changelog**
+
+24/06/25 - 7.1.38 
+  - Added: firing reticule on hud
+  - Added: auto aim function
+  - Added: new briefing and continue screen
+  - Added: fade in and fade out screen
+  - Added: change scene transition just with fade
+  - Added: import new all ships
+  - Added: basic ship types filled in and loading
+  - Added: third person camera system
+  - Added: new radar system
+  - Added: automatically generate a credit list of models
+  - Added: new view ship information window in editor
+  - Added: make audio message anti-overlay system
+  - Added: debris loading
+  - Updated: complete script rewrite
+  - Added: display ready room on continue screen
+  - Updated: change and then restore scene lighting when opening and closing briefing screen
+  - Updated: change all missions to use the new mission briefing and next mission screens 
+  - Updated: redo tab sprites
+  - Updated: clean up particles folder
+  - Updated: remove cockpits
+  - Added: add save and load windows dialog to editor
+  - Added: button to open OG save folder in menu and editor
+  - Updated: update all x-wing missions to use waypoints
+  - Added: x-wing mission 10
+  - Added: x-wing mission 11
+  - Added: x-wing mission 12
+  - Added: automatically scale ships to given size when loading
+  - Added: new invisible default turret
+  - Updated: blacksun ships set up
+  - Updated: cis ships set up
+  - Updated: remove change ship asset group from menu and settings functions
+  - Added: editor function to automatically add key components to ship prefabs
+  - Updated: laser pivots should be at end
+  - Added: dynamic third person targeting reticule
+  - Updated: make third person default
+  - Updated: load asteroids from ship database
+  - Updated: mission critical models set up: cloakshape, dx9 transport, bff1freighter, nebulonbtransport, corelliancorvette, stardestroyer, mc80a
+  - Updated: 50% wep thrust when engines are at 50%
+  - Added: make new tag for aifullspeedwithboost
+  - Updated: update all missions to use new references
+  - Added: generic explosions
+  - Updated: ships should alternate between spin explosion and immediate explosion
+  - Added: add more than just a spinning death
+  - Updated: no sound behind mission briefing
+  - Added: add dialogue to next mission menu
+  - Added: add option for next mission screen to display next mission button or not
+  - Updated: make next mission screen load over top of game and only unload the game after the player presses a buttton
+  - Added: toggle camera default in menu
+  - Added: node function set weapon selection
+  - Added: node function: lock weapon selection
+  - Updated: rewrite x-wing briefs, debriefs
+  - Updated: rewrite tie fighter briefs, debriefs
+  - Updated: rewrite imperial assault briefs, debriefs
+  - Updated: make hint box more aesthetic
+  - Added: fade to black node
+  - Added: rerecorded x-wing mission dialogue
+  - Added: x-wing mission 13
+  - Added: rerecorded tie fighter mission dialogue
+  - Added: rerecorded imperial assault dialogue
+  - Updated: remove buoys from all missions
 
 23/03/25 - 5.7.1 (Unity  6.035f1)
   - Added: new a-wing cockpit

@@ -360,6 +360,68 @@ Transform:
   - {fileID: 8824204414224563692}
   m_Father: {fileID: 6432396928018726115}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7725200194978051646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3165289544568941679}
+  m_Layer: 0
+  m_Name: focuscamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3165289544568941679
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7725200194978051646}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 45.2, z: -51.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6432396928018726115}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8056295775789600901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3173049706075404536}
+  m_Layer: 0
+  m_Name: followcamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3173049706075404536
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8056295775789600901}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 65.9, z: -170.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6432396928018726115}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8148848173516478063
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,17 +497,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 775de51bdb6ab0748a8ec674a23cd8c5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2215.552
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 775de51bdb6ab0748a8ec674a23cd8c5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 777.1488
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 775de51bdb6ab0748a8ec674a23cd8c5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3791.4048
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 775de51bdb6ab0748a8ec674a23cd8c5,
         type: 3}
@@ -460,12 +522,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 775de51bdb6ab0748a8ec674a23cd8c5,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 775de51bdb6ab0748a8ec674a23cd8c5,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 775de51bdb6ab0748a8ec674a23cd8c5,
         type: 3}
@@ -490,6 +552,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 775de51bdb6ab0748a8ec674a23cd8c5,
+        type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 3173049706075404536}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 775de51bdb6ab0748a8ec674a23cd8c5,
+        type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 3165289544568941679}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 775de51bdb6ab0748a8ec674a23cd8c5,
         type: 3}
       insertIndex: -1

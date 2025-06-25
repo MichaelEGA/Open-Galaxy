@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 904786718860443203}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1106504934691772274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6159684389114721799}
+  m_Layer: 0
+  m_Name: focuscamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6159684389114721799
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106504934691772274}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 31.5, z: -60.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 904786718860443203}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1135962299363126957
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,6 +186,37 @@ Transform:
   m_Children:
   - {fileID: 3448905179702142148}
   - {fileID: 3235971318746315545}
+  m_Father: {fileID: 904786718860443203}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5321097880499120528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2808749687127577669}
+  m_Layer: 0
+  m_Name: followcamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2808749687127577669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5321097880499120528}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 105.3, z: -149.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 904786718860443203}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5790290970133917318
@@ -435,17 +497,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d9956573093db8b4eabd361b527d8933,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -29422.098
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9956573093db8b4eabd361b527d8933,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6607.976
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9956573093db8b4eabd361b527d8933,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 39465.18
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9956573093db8b4eabd361b527d8933,
         type: 3}
@@ -460,12 +522,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d9956573093db8b4eabd361b527d8933,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9956573093db8b4eabd361b527d8933,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d9956573093db8b4eabd361b527d8933,
         type: 3}
@@ -500,6 +562,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d9956573093db8b4eabd361b527d8933,
+        type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 2808749687127577669}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d9956573093db8b4eabd361b527d8933,
+        type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 6159684389114721799}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d9956573093db8b4eabd361b527d8933,
         type: 3}
       insertIndex: -1

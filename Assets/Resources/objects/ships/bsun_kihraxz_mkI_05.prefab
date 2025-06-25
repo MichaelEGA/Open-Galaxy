@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1848214622522104068
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7892544069440746083}
+  m_Layer: 0
+  m_Name: followcamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7892544069440746083
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848214622522104068}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 42.2, z: -170.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 971600032001837517}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2667396660829707335
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,6 +276,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3360382927157211787}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7585198953723472535
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8149204239028702463}
+  m_Layer: 0
+  m_Name: focuscamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8149204239028702463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7585198953723472535}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 33.2, z: -51.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 971600032001837517}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7700998070393625777
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,12 +522,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
         type: 3}
@@ -513,26 +575,34 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
         type: 3}
       insertIndex: 0
-      addedObject: {fileID: 316654188675408417}
+      addedObject: {fileID: 7892544069440746083}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
         type: 3}
       insertIndex: 1
-      addedObject: {fileID: 5245678683401217514}
+      addedObject: {fileID: 8149204239028702463}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
         type: 3}
       insertIndex: 2
-      addedObject: {fileID: 981331479251914539}
+      addedObject: {fileID: 316654188675408417}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
         type: 3}
       insertIndex: 3
-      addedObject: {fileID: 3360382927157211787}
+      addedObject: {fileID: 5245678683401217514}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
         type: 3}
       insertIndex: 4
-      addedObject: {fileID: 2172603121146359108}
+      addedObject: {fileID: 981331479251914539}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
         type: 3}
       insertIndex: 5
+      addedObject: {fileID: 3360382927157211787}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
+        type: 3}
+      insertIndex: 6
+      addedObject: {fileID: 2172603121146359108}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: fcf288c43ee1d0e43bf2943dd3623994,
+        type: 3}
+      insertIndex: 7
       addedObject: {fileID: 7819319960593700741}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcf288c43ee1d0e43bf2943dd3623994, type: 3}

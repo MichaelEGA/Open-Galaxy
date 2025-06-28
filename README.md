@@ -65,6 +65,8 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - doclusifer2: https://sketchfab.com/doclusifer2
   - FS2MediaVPs: https://scp.indiegames.us/bnr_mediavp.php
 
+For a full list of models and their authors see the in game credits.
+
 **Licence**  
 
 The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.

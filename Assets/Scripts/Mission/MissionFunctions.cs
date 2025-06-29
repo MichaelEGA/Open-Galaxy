@@ -144,15 +144,12 @@ public static class MissionFunctions
     {
         MissionEvent missionEvent = null;
 
-        Debug.Log("run 1");
-
         foreach (MissionEvent tempMissionEvent in mission.missionEventData)
         {
             if (tempMissionEvent.eventType == "createlocation")
             {
                 if (tempMissionEvent.data1 == "true")
                 {
-                    Debug.Log("run 2 " + tempMissionEvent.conditionLocation);
                     missionEvent = tempMissionEvent;
                     LoadScreenFunctions.AddLogToLoadingScreen("Starting location node found", 0);
                     break;
@@ -170,7 +167,6 @@ public static class MissionFunctions
             {
                 if (tempMissionEvent.eventType == "createlocation")
                 {
-                    Debug.Log("run 4");
                     missionEvent = tempMissionEvent;
                     LoadScreenFunctions.AddLogToLoadingScreen("Secondary location node found.", 0);
                     break;
@@ -180,7 +176,6 @@ public static class MissionFunctions
 
         if (missionEvent == null)
         {
-            Debug.Log("run 5");
             LoadScreenFunctions.AddLogToLoadingScreen("No starting location found aborting load", 0);
         }
 

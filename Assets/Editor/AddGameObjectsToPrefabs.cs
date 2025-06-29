@@ -14,21 +14,7 @@ public class AddGameObjectsToPrefabs : EditorWindow
     {
         GUILayout.Label("Add GameObject to Selected Prefabs", EditorStyles.boldLabel);
 
-        EditorGUILayout.LabelField("Camera Position", EditorStyles.boldLabel);
-
-        GUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("One"))
-        {
-            AddCameraPosition();
-        }
-
-        if (GUILayout.Button("One"))
-        {
-            AddSecondaryCameraPosition();
-        }
-
-        GUILayout.EndHorizontal();
+        EditorGUILayout.LabelField("Large Ships", EditorStyles.boldLabel);
 
         EditorGUILayout.LabelField("Cast Position", EditorStyles.boldLabel);
 
@@ -145,6 +131,56 @@ public class AddGameObjectsToPrefabs : EditorWindow
 
         GUILayout.EndHorizontal();
 
+        EditorGUILayout.LabelField("Hangar Launch", EditorStyles.boldLabel);
+
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("One"))
+        {
+            AddHangarLaunchToPrefab(1);
+        }
+
+        if (GUILayout.Button("Two"))
+        {
+            AddHangarLaunchToPrefab(2);
+        }
+
+        if (GUILayout.Button("Three"))
+        {
+            AddHangarLaunchToPrefab(3);
+        }
+
+        if (GUILayout.Button("Four"))
+        {
+            AddHangarLaunchToPrefab(4);
+        }
+
+        GUILayout.EndHorizontal();
+
+        EditorGUILayout.LabelField("Small Ships", EditorStyles.boldLabel);
+
+        EditorGUILayout.LabelField("Smallship Docking Points", EditorStyles.boldLabel);
+
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("One"))
+        {
+            AddSmallShipDockingPointsToPrefabs(1);
+        }
+
+        GUILayout.EndHorizontal();
+
+        EditorGUILayout.LabelField("Camera Positions", EditorStyles.boldLabel);
+
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("One"))
+        {
+            AddCameraPosition();
+        }
+
+        GUILayout.EndHorizontal();
+
         EditorGUILayout.LabelField("Gun Points", EditorStyles.boldLabel);
 
         GUILayout.BeginHorizontal();
@@ -219,32 +255,6 @@ public class AddGameObjectsToPrefabs : EditorWindow
         if (GUILayout.Button("Four"))
         {
             AddMissilesToPrefabs(4);
-        }
-
-        GUILayout.EndHorizontal();
-
-        EditorGUILayout.LabelField("Hangar Launch", EditorStyles.boldLabel);
-
-        GUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("One"))
-        {
-            AddHangarLaunchToPrefab(1);
-        }
-
-        if (GUILayout.Button("Two"))
-        {
-            AddHangarLaunchToPrefab(2);
-        }
-
-        if (GUILayout.Button("Three"))
-        {
-            AddHangarLaunchToPrefab(3);
-        }
-
-        if (GUILayout.Button("Four"))
-        {
-            AddHangarLaunchToPrefab(4);
         }
 
         GUILayout.EndHorizontal();
@@ -913,6 +923,14 @@ public class AddGameObjectsToPrefabs : EditorWindow
             GameObject cameraGO = new GameObject("camera");
             cameraGO.transform.parent = prefabInstance.transform;
             cameraGO.transform.localPosition = new Vector3(0, 0, 0);
+
+            GameObject followcameraGO = new GameObject("followcamera");
+            followcameraGO.transform.parent = prefabInstance.transform;
+            followcameraGO.transform.localPosition = new Vector3(0, 0, 0);
+
+            GameObject focuscameraGO = new GameObject("focuscamera");
+            focuscameraGO.transform.parent = prefabInstance.transform;
+            focuscameraGO.transform.localPosition = new Vector3(0, 0, 0);
 
             PrefabUtility.SaveAsPrefabAsset(prefabInstance, path);
 

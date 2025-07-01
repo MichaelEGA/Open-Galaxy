@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Windows.Forms;
+using TMPro;
 using UnityEngine;
 
 public static class LargeShipAIFunctions
@@ -529,27 +531,33 @@ public static class LargeShipAIFunctions
     //This angles the ship towards the target vector
     public static void AngleTowardsTarget(LargeShip largeShip)
     {
-        if (largeShip.targetForward < 0.99)
-        {
-            largeShip.reducemaneuvarability = false;
-        }
-        else
+        if (largeShip.targetForward > 0.99)
         {
             largeShip.reducemaneuvarability = true;
         }
-
-        if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
-        {
-            //Right way up
-            LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight);
-            LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
-        }
         else
         {
-            //Upside down
-            LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetRight);
-            LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
-        }  
+            largeShip.reducemaneuvarability = false;
+        }
+
+        AvoidGimbalLock(largeShip);
+
+        if (largeShip.avoidGimbalLock == false)
+        {
+
+            if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+            }
+            else
+            {
+                //Upside down
+                LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+            }
+        }
     }
 
     //This angles the ship away from the target vector
@@ -564,44 +572,54 @@ public static class LargeShipAIFunctions
             largeShip.reducemaneuvarability = true;
         }
 
-        if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+        AvoidGimbalLock(largeShip, true);
+
+        if (largeShip.avoidGimbalLock == false)
         {
-            //Right way up
-            LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetRight);
-            LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.targetUp);
-        }
-        else
-        {
-            //Upside down
-            LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight);
-            LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+            if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+            {
+                //Right way up
+                LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.targetRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.targetUp);
+            }
+            else
+            {
+                //Upside down
+                LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.targetRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.targetUp);
+            }
         }
     }
 
     //This angles the ship towards the target vector
     public static void AngleTowardsWaypoint(LargeShip largeShip)
     {
-        if (largeShip.waypointForward < 0.99)
-        {
-            largeShip.reducemaneuvarability = false;
-        }
-        else
+        if (largeShip.waypointForward > 0.99)
         {
             largeShip.reducemaneuvarability = true;
         }
-
-        if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
-        {
-            //Steering when ship is the right way up
-            LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.waypointRight);
-            LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.waypointUp);
-        }
         else
         {
-            //Steering when the ship is upside down
-            LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.waypointRight);
-            LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.waypointUp);
-        }       
+            largeShip.reducemaneuvarability = false;
+        }
+
+        AvoidGimbalLock(largeShip);
+
+        if (largeShip.avoidGimbalLock == false)
+        {
+            if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+            {
+                //Steering when ship is the right way up
+                LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.waypointRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.waypointUp);
+            }
+            else
+            {
+                //Steering when the ship is upside down
+                LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.waypointRight);
+                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.waypointUp);
+            }
+        }
     }
 
     //This angles the ship away from the target vector
@@ -616,24 +634,29 @@ public static class LargeShipAIFunctions
             largeShip.reducemaneuvarability = true;
         }
 
-        if (largeShip.waypointForward > -0.95)
+        AvoidGimbalLock(largeShip, true);
+
+        if (largeShip.avoidGimbalLock == false)
         {
-            if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+            if (largeShip.waypointForward > -0.95)
             {
-                //Right way up
-                LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.waypointRight);
-                LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.waypointUp);
+                if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    LargeShipFunctions.SmoothTurnInput(largeShip, -largeShip.waypointRight);
+                    LargeShipFunctions.SmoothPitchInput(largeShip, largeShip.waypointUp);
+                }
+                else
+                {
+                    //upside down
+                    LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.waypointRight);
+                    LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.waypointUp);
+                }
             }
             else
             {
-                //upside down
-                LargeShipFunctions.SmoothTurnInput(largeShip, largeShip.waypointRight);
-                LargeShipFunctions.SmoothPitchInput(largeShip, -largeShip.waypointUp);
+                LargeShipFunctions.NoInput(largeShip);
             }
-        }
-        else
-        {
-            LargeShipFunctions.NoInput(largeShip);
         }
     }
 
@@ -704,6 +727,62 @@ public static class LargeShipAIFunctions
     {
         LargeShipFunctions.SmoothPitchInput(largeShip, 0);
         LargeShipFunctions.SmoothTurnInput(largeShip, 0);
+    }
+
+    //This prevents gimbal lock when the ships turn
+    public static void AvoidGimbalLock(LargeShip largeShip, bool reverse = false)
+    {
+      
+        if (reverse == false)
+        {
+            if (largeShip.waypointForward < -0.9)
+            {
+                largeShip.avoidGimbalLock = true;
+
+                if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+                {
+                    //Steering when ship is the right way up
+                    LargeShipFunctions.SmoothTurnInput(largeShip, 1);
+                    LargeShipFunctions.SmoothPitchInput(largeShip, -0);
+                }
+                else
+                {
+                    //Steering when the ship is upside down
+                    LargeShipFunctions.SmoothTurnInput(largeShip, -1);
+                    LargeShipFunctions.SmoothPitchInput(largeShip, -0);
+                }
+            }
+            else
+            {
+                largeShip.avoidGimbalLock = false;
+            }
+        }
+        else
+        {
+            if (largeShip.waypointForward > 0.9)
+            {
+                largeShip.avoidGimbalLock = true;
+
+                if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    LargeShipFunctions.SmoothTurnInput(largeShip, -1);
+                    LargeShipFunctions.SmoothPitchInput(largeShip, 0);
+                }
+                else
+                {
+                    //upside down
+                    LargeShipFunctions.SmoothTurnInput(largeShip, 1);
+                    LargeShipFunctions.SmoothPitchInput(largeShip, -0);
+                }
+            }
+            else
+            {
+                largeShip.avoidGimbalLock = false;
+            }
+        }
+
+
     }
 
     //This resets all the inputs

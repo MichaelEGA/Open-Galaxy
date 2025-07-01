@@ -49,6 +49,9 @@ public class LargeShip : MonoBehaviour
 
     [Header("Ship Rotation")]
     public bool reducemaneuvarability;
+    public bool avoidGimbalLock = false;
+    public float avoidGimbalLockRight = 1;
+    public float avoidGimbalLockUp = 1;
     [HideInInspector] public float pitchSpeed;
     [HideInInspector] public float pitchInput;
     [HideInInspector] public float pitchInputActual;

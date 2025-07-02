@@ -77,6 +77,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool automaticRotationSpin;
     [HideInInspector] public bool messageSent;
     [HideInInspector] public bool spinShip;
+    [HideInInspector] public bool avoidGimbalLock;
 
     [Header("Docking")]
     public GameObject targetDockingPoint;

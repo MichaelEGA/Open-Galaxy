@@ -1562,7 +1562,9 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            AvoidGimbalLock(smallShip, smallShip.interceptForward);
+
+            if (smallShip.target != null & smallShip.avoidGimbalLock == false)
             {
                 if (smallShip.interceptForward < 0.8)
                 {
@@ -1603,7 +1605,9 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            AvoidGimbalLock(smallShip, smallShip.interceptForward, true);
+
+            if (smallShip.target != null & smallShip.avoidGimbalLock == false)
             {
                 if (-smallShip.interceptForward < 1)
                 {
@@ -1629,7 +1633,9 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.waypoint != null)
+            AvoidGimbalLock(smallShip, smallShip.waypointForward);
+
+            if (smallShip.waypoint != null & smallShip.avoidGimbalLock == false)
             {
                 if (smallShip.waypointForward < 0.8)
                 {
@@ -1670,7 +1676,9 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.waypoint != null)
+            AvoidGimbalLock(smallShip, smallShip.waypointForward, true);
+
+            if (smallShip.waypoint != null & smallShip.avoidGimbalLock == false)
             {
                 if (smallShip.waypointForward > -0.95)
                 {
@@ -1710,36 +1718,41 @@ public static class SmallShipAIFunctions
             float targetRight = Vector3.Dot(smallShip.transform.right, targetRelativePosition.normalized);
             float targetUp = Vector3.Dot(smallShip.transform.up, targetRelativePosition.normalized);
 
-            if (targetForward < 0.8)
+            AvoidGimbalLock(smallShip, targetForward);
+
+            if (smallShip.avoidGimbalLock == false)
             {
-                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                if (targetForward < 0.8)
                 {
-                    //Right way up
-                    SmallShipFunctions.SmoothTurnInput(smallShip, targetRight);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp);
+                    if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                    {
+                        //Right way up
+                        SmallShipFunctions.SmoothTurnInput(smallShip, targetRight);
+                        SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp);
+                    }
+                    else
+                    {
+                        //Upside down
+                        SmallShipFunctions.SmoothTurnInput(smallShip, -targetRight);
+                        SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp);
+                    }
                 }
                 else
                 {
-                    //Upside down
-                    SmallShipFunctions.SmoothTurnInput(smallShip, -targetRight);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp);
+                    if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                    {
+                        //Right way up
+                        SmallShipFunctions.SmoothTurnInput(smallShip, targetRight * 5);
+                        SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp * 5);
+                    }
+                    else
+                    {
+                        //Upside down
+                        SmallShipFunctions.SmoothTurnInput(smallShip, -targetRight * 5);
+                        SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp * 5);
+                    }
                 }
-            }
-            else
-            {
-                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                {
-                    //Right way up
-                    SmallShipFunctions.SmoothTurnInput(smallShip, targetRight * 5);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp * 5);
-                }
-                else
-                {
-                    //Upside down
-                    SmallShipFunctions.SmoothTurnInput(smallShip, -targetRight * 5);
-                    SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp * 5);
-                }
-            }
+            } 
         }
     }
 
@@ -1805,6 +1818,62 @@ public static class SmallShipAIFunctions
             SmallShipFunctions.SmoothPitchInput(smallShip, 0);
             SmallShipFunctions.SmoothTurnInput(smallShip, 0);
         }
+    }
+
+    //This prevents gimbal lock when the ships turn
+    public static void AvoidGimbalLock(SmallShip smallShip, float forward, bool reverse = false)
+    {
+
+        if (reverse == false)
+        {
+            if (forward < -0.9)
+            {
+                smallShip.avoidGimbalLock = true;
+
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Steering when ship is the right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, 1);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -0);
+                }
+                else
+                {
+                    //Steering when the ship is upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -1);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -0);
+                }
+            }
+            else
+            {
+                smallShip.avoidGimbalLock = false;
+            }
+        }
+        else
+        {
+            if (forward > 0.9)
+            {
+                smallShip.avoidGimbalLock = true;
+
+                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    SmallShipFunctions.SmoothTurnInput(smallShip, -1);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, 0);
+                }
+                else
+                {
+                    //upside down
+                    SmallShipFunctions.SmoothTurnInput(smallShip, 1);
+                    SmallShipFunctions.SmoothPitchInput(smallShip, -0);
+                }
+            }
+            else
+            {
+                smallShip.avoidGimbalLock = false;
+            }
+        }
+
+
     }
 
     //This resets all the inputs

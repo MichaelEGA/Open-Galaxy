@@ -540,7 +540,7 @@ public static class LargeShipAIFunctions
             largeShip.reducemaneuvarability = false;
         }
 
-        AvoidGimbalLock(largeShip);
+        AvoidGimbalLock(largeShip, largeShip.targetForward);
 
         if (largeShip.avoidGimbalLock == false)
         {
@@ -572,7 +572,7 @@ public static class LargeShipAIFunctions
             largeShip.reducemaneuvarability = true;
         }
 
-        AvoidGimbalLock(largeShip, true);
+        AvoidGimbalLock(largeShip, largeShip.targetForward, true);
 
         if (largeShip.avoidGimbalLock == false)
         {
@@ -603,7 +603,7 @@ public static class LargeShipAIFunctions
             largeShip.reducemaneuvarability = false;
         }
 
-        AvoidGimbalLock(largeShip);
+        AvoidGimbalLock(largeShip, largeShip.waypointForward);
 
         if (largeShip.avoidGimbalLock == false)
         {
@@ -634,7 +634,7 @@ public static class LargeShipAIFunctions
             largeShip.reducemaneuvarability = true;
         }
 
-        AvoidGimbalLock(largeShip, true);
+        AvoidGimbalLock(largeShip, largeShip.waypointForward, true);
 
         if (largeShip.avoidGimbalLock == false)
         {
@@ -730,12 +730,12 @@ public static class LargeShipAIFunctions
     }
 
     //This prevents gimbal lock when the ships turn
-    public static void AvoidGimbalLock(LargeShip largeShip, bool reverse = false)
+    public static void AvoidGimbalLock(LargeShip largeShip, float forward, bool reverse = false)
     {
       
         if (reverse == false)
         {
-            if (largeShip.waypointForward < -0.9)
+            if (forward < -0.9)
             {
                 largeShip.avoidGimbalLock = true;
 
@@ -759,7 +759,7 @@ public static class LargeShipAIFunctions
         }
         else
         {
-            if (largeShip.waypointForward > 0.9)
+            if (forward > 0.9)
             {
                 largeShip.avoidGimbalLock = true;
 

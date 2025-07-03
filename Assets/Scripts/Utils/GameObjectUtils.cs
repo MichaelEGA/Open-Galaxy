@@ -104,8 +104,8 @@ public static class GameObjectUtils
             float w = 1f - u - v;
 
             Vector3 localPoint = a * u + b * v + c * w;
-            Vector3 worldPoint = meshTransform.TransformPoint(localPoint);
-            points.Add(worldPoint);
+
+            points.Add(localPoint);
         }
 
         return points;

@@ -431,7 +431,10 @@ public static class LargeShipFunctions
                         {
                             float explosionsScale = (largeShip.shipLength / 100f) * Random.Range(0.10f, 0.15f); ///15-30 
 
-                            ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, explosionPoint, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+                            Vector3 worldPoint = meshTransform.TransformPoint(explosionPoint);
+                            //Vector3 scenePoint = largeShip.scene.transform.InverseTransformPoint(worldPoint);
+
+                            ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, worldPoint, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
 
                             float waitTime = Random.Range(0.10f, 0.45f);
 

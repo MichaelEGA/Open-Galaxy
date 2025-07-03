@@ -547,6 +547,8 @@ public static class TorpedoFunctions
             {
                 CauseTorpedoDamage(torpedo.firingShip, torpedo.target, torpedo, torpedo.transform.position);
 
+                Scene scene = SceneFunctions.GetScene();
+
                 ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
                 DeactivateTorpedo(torpedo);
             }

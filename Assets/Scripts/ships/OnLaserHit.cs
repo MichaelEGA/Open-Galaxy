@@ -13,6 +13,7 @@ public class OnLaserHit : MonoBehaviour
     private SmallShip thisSmallShip;
     private Turret thisTurret;
     public string type = "laser";
+    public Scene scene;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,7 @@ public class OnLaserHit : MonoBehaviour
         ps = GetComponent<ParticleSystem>();
         thisSmallShip = relatedGameObject.GetComponent<SmallShip>();
         thisTurret = relatedGameObject.GetComponent<Turret>();
+        scene = SceneFunctions.GetScene();
     }
 
     private void OnParticleCollision(GameObject objectHit)
@@ -121,6 +123,8 @@ public class OnLaserHit : MonoBehaviour
                     {
                         if (thisTurret.turretType == "large")
                         {
+                            
+
                             ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, laserChoice, 100, audioManager);
                         }
                         else

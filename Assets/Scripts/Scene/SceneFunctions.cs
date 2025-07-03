@@ -2526,7 +2526,6 @@ public static class SceneFunctions
         {
             CreateScene();
             scene = GameObject.FindFirstObjectByType<Scene>();
-            Debug.Log("A scene was created");
         }
 
         Scene[] sceneScripts = Object.FindObjectsOfType<Scene>(true);

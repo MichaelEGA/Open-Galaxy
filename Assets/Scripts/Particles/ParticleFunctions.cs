@@ -31,11 +31,20 @@ public static class ParticleFunctions
         //This sets the position of the explosion and also sets it's deactivation time
         if (explosion != null)
         {
-            explosion.transform.position = hitPosition;
-            explosion.transform.rotation = Quaternion.LookRotation(hitPosition);
+            //This sets the simulation space of the explosion to the scene
+            ParticleSystem particleSystem = explosion.GetComponent<ParticleSystem>();
+            var main = particleSystem.main;
+            main.simulationSpace = ParticleSystemSimulationSpace.Custom;
+            main.customSimulationSpace = scene.transform;
+
+            Vector3 scenePoint = scene.transform.InverseTransformPoint(hitPosition);
+
+            explosion.transform.SetParent(scene.transform);
+            explosion.transform.localPosition = scenePoint;
+            explosion.transform.rotation = Quaternion.LookRotation(scenePoint);
             Vector3 scale = new Vector3(explosionSize, explosionSize, explosionSize); //This sets the explosion size
-            explosion.transform.SetParent(parentObject.transform);
             explosion.transform.localScale = scale; //This reapplies the object scale after parenting
+
             explosion.SetActive(true);
             Task a = new Task(GameObjectUtils.DeactivateObjectAfterDelay(5, explosion));
 

@@ -718,6 +718,9 @@ public static class TurretFunctions
         if (turret.hullLevel <= 0)
         {
             turret.hullLevel = 0;
+
+            Scene scene = SceneFunctions.GetScene();
+
             ParticleFunctions.InstantiateExplosion(turret.largeShip.gameObject, turret.gameObject.transform.position, "explosion02", 12);
             turret.gameObject.SetActive(false);
         }

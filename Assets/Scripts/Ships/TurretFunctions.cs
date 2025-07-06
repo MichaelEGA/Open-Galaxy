@@ -110,7 +110,7 @@ public static class TurretFunctions
 
                         LoadLaserParticleSystem(tempTurret);
 
-                        GameObjectUtils.AddColliders(turretGameObject, false);
+                        GameObjectUtils.AddMeshColliders(turretGameObject, false);
 
                         GameObjectUtils.SetLayerAllChildren(turretTransform, turretTransform.gameObject.layer);
 

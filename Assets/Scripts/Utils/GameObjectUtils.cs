@@ -196,8 +196,8 @@ public static class GameObjectUtils
         return rigibody;
     }
 
-    //This functions adds a collider to all the mesh gameobjects
-    public static void AddColliders(GameObject gameObject, bool convex)
+    //This functions adds a mesh collider to all the mesh gameobjects
+    public static void AddMeshColliders(GameObject gameObject, bool convex)
     {
         MeshFilter[] meshFilters = gameObject.GetComponentsInChildren<MeshFilter>();
 
@@ -215,6 +215,24 @@ public static class GameObjectUtils
             MeshCollider meshCollider = skinnedMeshRenderer.gameObject.AddComponent<MeshCollider>();
             meshCollider.convex = convex;
             meshCollider.sharedMesh = skinnedMeshRenderer.sharedMesh;
+        }
+    }
+
+    //This functions adds a sphere collider to all the mesh gameobjects
+    public static void AddSphereColliders(GameObject gameObject)
+    {
+        MeshFilter[] meshFilters = gameObject.GetComponentsInChildren<MeshFilter>();
+
+        foreach (MeshFilter meshFilter in meshFilters)
+        {
+            SphereCollider sphereCollider = meshFilter.gameObject.AddComponent<SphereCollider>();
+        }
+
+        SkinnedMeshRenderer[] skinnedMeshRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
+        {
+            SphereCollider sphereCollider = skinnedMeshRenderer.gameObject.AddComponent<SphereCollider>();
         }
     }
 

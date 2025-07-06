@@ -330,7 +330,7 @@ public static class TorpedoFunctions
                 torpedoScript.firingShip = smallShip;
                 torpedoScript.destroyAfter = Time.time + 30;
 
-                GameObjectUtils.AddColliders(torpedo, true);
+                GameObjectUtils.AddMeshColliders(torpedo, true);
                 torpedoScript.torpedoRigidbody = GameObjectUtils.AddRigidbody(torpedo, 100f, 9f, 7.5f);
                 torpedoScript.torpedoRigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 

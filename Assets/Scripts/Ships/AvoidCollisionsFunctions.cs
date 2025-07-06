@@ -225,10 +225,6 @@ public static class AvoidCollisionsFunctions
                                     Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 2, "avoidCollision", direction));
                                 }
                             }
-                            else if (largeShip != null)
-                            {
-                                Task a = new Task(LargeShipAIFunctions.Evade(largeShip, 2, "avoidCollision", direction));
-                            }
                         }
                     }
                     else if (Physics.SphereCast(backwardRaycast, 50, ship.transform.TransformDirection(Vector3.back), out hit, 500) & smallShip != null)

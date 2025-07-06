@@ -16,7 +16,7 @@ public static class LargeShipFunctions
         {
             largeShip.shipRigidbody = GameObjectUtils.AddRigidbody(largeShip.gameObject, 100f, 9f, 7.5f);
             largeShip.shipRigidbody.isKinematic = true;
-            GameObjectUtils.AddColliders(largeShip.gameObject, false);
+            GameObjectUtils.AddMeshColliders(largeShip.gameObject, false);
             largeShip.colliders = largeShip.GetComponentsInChildren<MeshCollider>();
             largeShip.castPoint = largeShip.gameObject.transform.Find("castPoint");
 
@@ -109,22 +109,17 @@ public static class LargeShipFunctions
     {
         //This calculates the normal accleration and speed rating
         float acclerationAmount = (0.5f / 100f) * largeShip.accelerationRating;
-        float actualSpeedRating = largeShip.speedRating;
 
         //This controls the throttle of the ship, and prevents it going above the speed rating or below zero
-        if (actualSpeedRating != 0)
+        if (largeShip.speedRating != 0)
         {
-            if (largeShip.thrustSpeed > actualSpeedRating)
-            {
-                largeShip.thrustSpeed = largeShip.thrustSpeed - acclerationAmount * 4;
-            }
-            else if (largeShip.thrustInput < 0)
-            {
-                largeShip.thrustSpeed = largeShip.thrustSpeed - acclerationAmount;
-            }
-            else if (largeShip.thrustInput > 0)
+            if (largeShip.thrustInput > 0 & largeShip.thrustSpeed < largeShip.speedRating)
             {
                 largeShip.thrustSpeed = largeShip.thrustSpeed + acclerationAmount;
+            }
+            if (largeShip.thrustInput < 0 & largeShip.thrustSpeed > 0)
+            {
+                largeShip.thrustSpeed = largeShip.thrustSpeed - acclerationAmount;
             }
 
             if (largeShip.thrustSpeed < 0)

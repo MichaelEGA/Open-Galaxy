@@ -463,69 +463,6 @@ public static class LargeShipAIFunctions
 
     #endregion
 
-    #region AI Evasion and Collision Avoidance
-
-    //This allows the ship to evade attacks and avoid collisions with other objects and ships
-    public static IEnumerator Evade(LargeShip largeShip, float time, string mode, int direction)
-    {
-        if (TagExists(largeShip, "nospeed") == true & TagExists(largeShip, "norotation") == true)
-        {
-            //Do nothing
-        }
-        else
-        {
-            if (largeShip != null)
-            {
-                largeShip.aiEvade = true;
-
-                time = time + Time.time;
-
-                while (time > Time.time)
-                {
-                    NoSpeed(largeShip);
-
-                    if (direction == 0)
-                    {
-                        TurnRight(largeShip);
-                    }
-                    else if (direction == 1)
-                    {
-                        TurnLeft(largeShip);
-                    }
-                    else if (direction == 2)
-                    {
-                        PitchUp(largeShip);
-                    }
-                    else if (direction == 3)
-                    {
-                        PitchDown(largeShip);
-                    }
-                    else if (direction == 4)
-                    {
-                        RollRight(largeShip);
-                    }
-                    else if (direction == 5)
-                    {
-                        RollLeft(largeShip);
-                    }
-                    else if (direction == 6)
-                    {
-                        FlyFoward(largeShip);
-                    }
-
-                    yield return null;
-
-                }
-
-                ResetSteeringInputs(largeShip);
-
-                largeShip.aiEvade = false;
-            }
-        }
-    }
-
-    #endregion
-
     #region AI Steering Control
 
     //This angles the ship towards the target vector

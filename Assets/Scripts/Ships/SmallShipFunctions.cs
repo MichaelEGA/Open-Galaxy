@@ -58,7 +58,7 @@ public static class SmallShipFunctions
                 }
             }
 
-            GameObjectUtils.AddColliders(smallShip.gameObject, true);
+            GameObjectUtils.AddMeshColliders(smallShip.gameObject, true);
 
             if (smallShip.isAI == false)
             {

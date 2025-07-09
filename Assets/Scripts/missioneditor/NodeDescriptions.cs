@@ -443,6 +443,18 @@ public static class NodeDescriptions
              "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
              "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "ifshipislessthandistancetopointinspace")
+        {
+            description =
+             "If Ship Is Less Than Distance to Point in Space \n " +
+             "\n " +
+             "This function checks the distance between the designated ship and a point in space, it then returns true or false according to whether the ship's distance is less or more than the designated amount. \n" +
+             "\n " +
+             "Extra Information \n" +
+             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+             "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
+             "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
         else if (name == "ifshipislessthandistancetowaypoint")
         {
             description =

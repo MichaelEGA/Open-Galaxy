@@ -506,6 +506,19 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
+        else if (missionEvent.eventType == "ifshipislessthandistancetopointinspace")
+        {
+            bool isLessThanDistance = IfShipIsLessThanDistanceToPointInSpace(missionEvent);
+
+            if (isLessThanDistance == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
         else if (missionEvent.eventType == "ifshipislessthandistancetowaypoint")
         {
             bool isLessThanDistance = IfShipIsLessThanDistanceToWaypoint(missionEvent);
@@ -1798,6 +1811,73 @@ public static class MissionFunctions
                             if (largeShip.waypoint != null)
                             {
                                 float tempDistance = Vector3.Distance(largeShip.transform.position, largeShip.waypoint.transform.position);
+
+                                if (tempDistance < distance)
+                                {
+                                    isLessThanDistance = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return isLessThanDistance;
+    }
+
+    //This checks the ship distance to its waypoint
+    public static bool IfShipIsLessThanDistanceToPointInSpace(MissionEvent missionEvent)
+    {
+        bool isLessThanDistance = false;
+
+        Scene scene = SceneFunctions.GetScene();
+
+        float distance = Mathf.Infinity;
+        
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        Vector3 locationInSpace = scene.transform.TransformPoint(new Vector3(x, y, z));
+
+        if (missionEvent.data2 != "none")
+        {
+            distance = float.Parse(missionEvent.data2);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(missionEvent.data1))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            if (smallShip.waypoint != null)
+                            {
+                                float tempDistance = Vector3.Distance(smallShip.transform.position, locationInSpace);
+
+                                if (tempDistance < distance)
+                                {
+                                    isLessThanDistance = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                        if (largeShip != null)
+                        {
+                            if (largeShip.waypoint != null)
+                            {
+                                float tempDistance = Vector3.Distance(largeShip.transform.position, locationInSpace);
 
                                 if (tempDistance < distance)
                                 {

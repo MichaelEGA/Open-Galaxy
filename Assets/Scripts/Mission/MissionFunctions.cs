@@ -623,6 +623,19 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
+        else if (missionEvent.eventType == "ifshipsshieldislessthan")
+        {
+            bool ifshipshieldislessthan = IfShipsShieldIsLessThan(missionEvent);
+
+            if (ifshipshieldislessthan == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
         else if (missionEvent.eventType == "loadsingleship")
         {
             LoadSingleShip(missionEvent);
@@ -1669,6 +1682,186 @@ public static class MissionFunctions
         return objectiveIsActive;
     }
 
+    //This checks whether the requested ship has been disabled or not
+    public static bool IfShipHasBeenDisabled(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipHasBeenDisabled = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                            if (smallShip != null)
+                            {
+                                if (smallShip.isDisabled == true)
+                                {
+                                    shipHasBeenDisabled = true;
+                                    break;
+                                }
+                            }
+                            else if (largeShip != null)
+                            {
+                                if (largeShip.isDisabled == true)
+                                {
+                                    shipHasBeenDisabled = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return shipHasBeenDisabled;
+    }
+
+    //This checks a group of ships to check if one has not been scanned
+    public static bool IfShipHasntBeenDisabled(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipHasntBeenDisabled = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                            if (smallShip != null)
+                            {
+                                if (smallShip.isDisabled == false)
+                                {
+                                    shipHasntBeenDisabled = true;
+                                    break;
+                                }
+                            }
+                            else if (largeShip != null)
+                            {
+                                if (largeShip.isDisabled == false)
+                                {
+                                    shipHasntBeenDisabled = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return shipHasntBeenDisabled;
+    }
+
+    //This checks a single ship as to whether it has been scanned
+    public static bool IfShipHasBeenScanned(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipHasBeenScanned = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                            if (smallShip != null)
+                            {
+                                if (smallShip.scanned == true)
+                                {
+                                    shipHasBeenScanned = true;
+                                    break;
+                                }
+                            }
+                            else if (largeShip != null)
+                            {
+                                if (largeShip.scanned == true)
+                                {
+                                    shipHasBeenScanned = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return shipHasBeenScanned;
+    }
+
+    //This checks a group of ships to check if one has not been scanned
+    public static bool IfShipHasntBeenScanned(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipHasntBeenScanned = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                            if (smallShip != null)
+                            {
+                                if (smallShip.scanned == false)
+                                {
+                                    shipHasntBeenScanned = true;
+                                    break;
+                                }
+                            }
+                            else if (largeShip != null)
+                            {
+                                if (largeShip.scanned == false)
+                                {
+                                    shipHasntBeenScanned = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return shipHasntBeenScanned;
+    }
+
     //This checks the ship distance to its waypoint
     public static bool IfShipsHullIsLessThan(MissionEvent missionEvent)
     {
@@ -1925,186 +2118,6 @@ public static class MissionFunctions
         return shipIsActive;
     }
 
-    //This checks whether the requested ship has been disabled or not
-    public static bool IfShipHasBeenDisabled(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        bool shipHasBeenDisabled = false;
-
-        if (scene != null)
-        {
-            if (scene.objectPool != null)
-            {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship != null)
-                    {
-                        if (ship.name.Contains(missionEvent.data1))
-                        {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
-                            LargeShip largeShip = ship.GetComponent<LargeShip>();
-
-                            if (smallShip != null)
-                            {
-                                if (smallShip.isDisabled == true)
-                                {
-                                    shipHasBeenDisabled = true;
-                                    break;
-                                }
-                            }
-                            else if (largeShip != null)
-                            {
-                                if (largeShip.isDisabled == true)
-                                {
-                                    shipHasBeenDisabled = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return shipHasBeenDisabled;
-    }
-
-    //This checks a group of ships to check if one has not been scanned
-    public static bool IfShipHasntBeenDisabled(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        bool shipHasntBeenDisabled = false;
-
-        if (scene != null)
-        {
-            if (scene.objectPool != null)
-            {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship != null)
-                    {
-                        if (ship.name.Contains(missionEvent.data1))
-                        {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
-                            LargeShip largeShip = ship.GetComponent<LargeShip>();
-
-                            if (smallShip != null)
-                            {
-                                if (smallShip.isDisabled == false)
-                                {
-                                    shipHasntBeenDisabled = true;
-                                    break;
-                                }
-                            }
-                            else if (largeShip != null)
-                            {
-                                if (largeShip.isDisabled == false)
-                                {
-                                    shipHasntBeenDisabled = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return shipHasntBeenDisabled;
-    }
-
-    //This checks a single ship as to whether it has been scanned
-    public static bool IfShipHasBeenScanned(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        bool shipHasBeenScanned = false;
-
-        if (scene != null)
-        {
-            if (scene.objectPool != null)
-            {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship != null)
-                    {
-                        if (ship.name.Contains(missionEvent.data1))
-                        {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
-                            LargeShip largeShip = ship.GetComponent<LargeShip>();
-
-                            if (smallShip != null)
-                            {
-                                if (smallShip.scanned == true)
-                                {
-                                    shipHasBeenScanned = true;
-                                    break;
-                                }
-                            }
-                            else if (largeShip != null)
-                            {
-                                if (largeShip.scanned == true)
-                                {
-                                    shipHasBeenScanned = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return shipHasBeenScanned;
-    }
-
-    //This checks a group of ships to check if one has not been scanned
-    public static bool IfShipHasntBeenScanned(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        bool shipHasntBeenScanned = false;
-
-        if (scene != null)
-        {
-            if (scene.objectPool != null)
-            {
-                foreach (GameObject ship in scene.objectPool)
-                {
-                    if (ship != null)
-                    {
-                        if (ship.name.Contains(missionEvent.data1))
-                        {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
-                            LargeShip largeShip = ship.GetComponent<LargeShip>();
-
-                            if (smallShip != null)
-                            {
-                                if (smallShip.scanned == false)
-                                {
-                                    shipHasntBeenScanned = true;
-                                    break;
-                                }
-                            }
-                            else if (largeShip != null)
-                            {
-                                if (largeShip.scanned == false)
-                                {
-                                    shipHasntBeenScanned = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return shipHasntBeenScanned;
-    }
-
     //This checks whether there are any active ships of a certain allegiance, i.e. are there any imperial ships left
     public static bool IfShipOfAllegianceIsActive(MissionEvent missionEvent)
     {
@@ -2152,6 +2165,59 @@ public static class MissionFunctions
         }
 
         return shipTypeIsActive;
+    }
+
+    //This checks whether a ship's shields are less than the given amount
+    public static bool IfShipsShieldIsLessThan(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool isLessThan = false;
+
+        string shipName = missionEvent.data1;
+        float shieldLevel = 100;
+
+        if (float.TryParse(missionEvent.data2, out _))
+        {
+            shieldLevel = float.Parse(missionEvent.data2);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(missionEvent.data1))
+                        {
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                            if (smallShip != null)
+                            {
+                                if (smallShip.shieldLevel < shieldLevel)
+                                {
+                                    isLessThan = true;
+                                    break;
+                                }
+                            }
+                            else if (largeShip != null)
+                            {
+                                if (largeShip.shieldLevel < shieldLevel)
+                                {
+                                    isLessThan = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return isLessThan;
     }
 
     //This checks the ship distance to its waypoint

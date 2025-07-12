@@ -1456,6 +1456,12 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
+            if (smallShip.aiTargetingMode != "targetallprefsmall") //This ensures the previous target is cleared
+            {
+                smallShip.target = null;
+                smallShip.requestingTarget = true;
+            }
+
             smallShip.aiTargetingMode = "targetallprefsmall";
         }
     }
@@ -1465,6 +1471,12 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
+            if (smallShip.aiTargetingMode != "targetallpreflarge") //This ensures the previous target is cleared
+            {
+                smallShip.target = null;
+                smallShip.requestingTarget = true;
+            }
+
             smallShip.aiTargetingMode = "targetallpreflarge";
         }
     }
@@ -1474,6 +1486,12 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
+            if (smallShip.aiTargetingMode != "targetsmallshipsonly") //This ensures the previous target is cleared
+            {
+                smallShip.target = null;
+                smallShip.requestingTarget = true;
+            }
+
             smallShip.aiTargetingMode = "targetsmallshipsonly";
         }
     }
@@ -1483,6 +1501,12 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
+            if (smallShip.aiTargetingMode != "targetlargeshipsonly") //This ensures the previous target is cleared
+            {
+                smallShip.target = null;
+                smallShip.requestingTarget = true;
+            }
+
             smallShip.aiTargetingMode = "targetlargeshipsonly";
         }
     }

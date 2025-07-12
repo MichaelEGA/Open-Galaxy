@@ -83,6 +83,7 @@ public static class WindowFunctions
         buttonList.Add("ifshipislessthandistancetopointinspace");
         buttonList.Add("ifshipislessthandistancetowaypoint");
         buttonList.Add("ifshipofallegianceisactive");
+        buttonList.Add("ifshipsshieldsarelessthan");
         buttonList.Add("ifshipssystemsarelessthan");
         buttonList.Add("loadmultipleships");
         buttonList.Add("loadmultipleshipsfromhangar");

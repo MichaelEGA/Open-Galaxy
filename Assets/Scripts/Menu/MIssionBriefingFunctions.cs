@@ -46,6 +46,11 @@ public static class MissionBriefingFunctions
     //This activates the mission briefing when called by a mission event
     public static IEnumerator ActivateMissionBriefing(string briefingText, string audioName, string internalAudioFile, bool distortion, float distortionLevel, string model)
     {
+        Debug.Log("This was run 1");
+        
+        //This pauses the game
+        Time.timeScale = 0;
+
         //This gets the current settings for the scene lighting and changes
         var lightingData = SceneFunctions.GetLightingData();
 
@@ -148,7 +153,6 @@ public static class MissionBriefingFunctions
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        Time.timeScale = 0;
 
         yield return null;
     }

@@ -137,6 +137,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfShipOfAllegianceIsActive(node);
         }
+        else if (node.nodeType == "ifshipsshieldsarelessthan")
+        {
+            NodeTypes.Draw_IfShipsShieldsAreLessThan(node);
+        }
         else if (node.nodeType == "ifshipssystemsarelessthan")
         {
             NodeTypes.Draw_IfShipsSystemsAreLessThan(node);

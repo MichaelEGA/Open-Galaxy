@@ -100,6 +100,7 @@ public static class WindowFunctions
         buttonList.Add("preload_loadmultipleshipsonground");
         buttonList.Add("preload_loadsingleship");
         buttonList.Add("preload_loadsingleshiponground");
+        buttonList.Add("preload_loadterrain");
         buttonList.Add("preload_setfogdistanceandcolor");
         buttonList.Add("preload_sethudcolour");
         buttonList.Add("preload_setlighting");

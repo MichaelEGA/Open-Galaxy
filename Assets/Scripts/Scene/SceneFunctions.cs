@@ -96,6 +96,14 @@ public static class SceneFunctions
             scene.atmosphereMaterialPool = atmosphereMaterials;
         }
 
+        Object[] terrainMaterials = Resources.LoadAll(OGGetAddress.terrainmaterials, typeof(Material));
+
+        if (terrainMaterials != null)
+        {
+            scene.terrainTexturesMaterialPool = new Material[terrainMaterials.Length];
+            scene.terrainTexturesMaterialPool = terrainMaterials;
+        }
+
         scene.hyperspaceTunnelPrefab = Resources.Load(OGGetAddress.hyperspace + "HyperspaceTunnel") as GameObject;
 
         scene.skyboxes = Resources.LoadAll<Material>(OGGetAddress.skyboxes);

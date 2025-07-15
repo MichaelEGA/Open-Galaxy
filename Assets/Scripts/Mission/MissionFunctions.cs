@@ -213,6 +213,14 @@ public static class MissionFunctions
                 LoadPlanet(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", savedTime);
             }
+            else if (missionEvent.eventType == "preload_loadterrain" & missionEvent.conditionLocation == location)
+            {
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain", Time.unscaledTime - savedTime);
+
+                Task a = new Task(LoadTerrain(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", savedTime);
+            }
             else if (missionEvent.eventType == "preload_loadenvironment" & missionEvent.conditionLocation == location)
             {
                 LoadScreenFunctions.AddLogToLoadingScreen("Loading environment", Time.unscaledTime - savedTime);
@@ -668,7 +676,7 @@ public static class MissionFunctions
             Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
             missionManager.missionTasks.Add(a);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }      
+        }
         else if (missionEvent.eventType == "pausesequence")
         {
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
@@ -2319,6 +2327,25 @@ public static class MissionFunctions
         while (a.Running == true) { yield return null; }
 
         yield return null;
+    }
+
+    //This loads a dynamic terrain
+    public static IEnumerator LoadTerrain(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        TileManager tileManager = scene.AddComponent<TileManager>();
+
+        tileManager.player = scene.mainCamera.transform;
+
+        Task a = new Task(tileManager.GenerateTerain());
+
+        while (a.Running == true)
+        {
+            yield return null;
+        }
+
+
     }
 
     //This loads an environment

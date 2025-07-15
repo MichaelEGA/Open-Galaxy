@@ -205,6 +205,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadSingleShipOnGround(node);
         }
+        else if (node.nodeType == "preload_loadterrain")
+        {
+            NodeTypes.Draw_PreLoad_LoadTerrain(node);
+        }
         else if (node.nodeType == "preload_setfogdistanceandcolor")
         {
             NodeTypes.Draw_PreLoad_SetFogDistanceAndColor(node);

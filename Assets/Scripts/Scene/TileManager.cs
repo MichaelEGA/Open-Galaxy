@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,15 +12,29 @@ public class TileManager : MonoBehaviour
     public GameObject tilePrefab; // Assign a tile prefab with a mesh
     public int tileSize = 1000;   // 1km per tile
     public int initialAreaSize = 30; // 30km x 30km
-    public float tileNoiseScale = 0.005f; // adjust for desired terrain roughness
+    public float tileNoiseScale = 0.2f; // adjust for desired terrain roughness
     public Transform player;
     public int tilesPerFrame = 2; // Number of tiles to generate per frame
+    public string terrainTextureType = "forest-mixed";
 
     private Dictionary<Vector2Int, GameObject> tiles = new Dictionary<Vector2Int, GameObject>();
     private int edgeBuffer = 10; // 10km from edge to trigger generation
     private HashSet<Vector2Int> tilesToGenerate = new HashSet<Vector2Int>();
     private Coroutine tileGenCoroutine;
     private bool initialGenerationComplete = false;
+    private FastNoiseLite fastNoiseLite;
+
+    void Start()
+    {
+        fastNoiseLite = new FastNoiseLite();
+        fastNoiseLite.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+
+        fastNoiseLite.SetFrequency(0.01f);
+        fastNoiseLite.SetFractalLacunarity(2f);
+        fastNoiseLite.SetFractalGain(0.5f);
+        fastNoiseLite.SetFractalType(FastNoiseLite.FractalType.FBm);
+        // You can further configure frequency, seed, etc.
+    }
 
     void Update()
     {
@@ -131,13 +146,9 @@ public class TileManager : MonoBehaviour
 
                         foreach(Object obj in scene.terrainTexturesMaterialPool)
                         {
-                            Debug.Log("was run " + obj.name);
-
-                            if (obj.name.Contains("grand-canyon"))
+                            if (obj.name.Contains(terrainTextureType))
                             {
                                 selectedMaterials.Add((Material)obj);
-
-                                Debug.Log("Texture was found " + obj.name);
                             }
                         }
 
@@ -145,7 +156,7 @@ public class TileManager : MonoBehaviour
                         {
                             if (meshRenderer != null)
                             {
-                                int selection = Random.Range(0, selectedMaterials.Count);
+                                int selection = UnityEngine.Random.Range(0, selectedMaterials.Count);
 
                                 meshRenderer.sharedMaterial = selectedMaterials[selection];
                             }
@@ -167,13 +178,15 @@ public class TileManager : MonoBehaviour
     {
         // Procedurally generate mesh using Perlin noise
         Mesh mesh = new Mesh();
-        int resolution = 100; // 100 x 100 vertices
+        int resolution = 50; // 100 x 100 vertices
 
         Vector3[] vertices = new Vector3[resolution * resolution];
         int[] triangles = new int[(resolution - 1) * (resolution - 1) * 6];
         Vector2[] uv = new Vector2[vertices.Length];
 
         int count = 0;
+
+        float noiseCheck = 0;
 
         for (int z = 0; z < resolution; z++)
         {
@@ -184,10 +197,14 @@ public class TileManager : MonoBehaviour
                 float worldX = position.x + ((float)x / (resolution - 1)) * tileSize;
                 float worldZ = position.z + ((float)z / (resolution - 1)) * tileSize;
 
-                float height = Mathf.PerlinNoise(
-                    worldX * tileNoiseScale,
-                    worldZ * tileNoiseScale
-                ) * 50;
+                //float height = Mathf.PerlinNoise(
+                //    worldX * tileNoiseScale,
+                //    worldZ * tileNoiseScale
+                //) * 50;
+
+                float height = (fastNoiseLite.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * 25f;
+
+                noiseCheck = height;
 
                 vertices[i] = new Vector3(
                     (float)x / (resolution - 1) * tileSize,
@@ -198,13 +215,14 @@ public class TileManager : MonoBehaviour
                 uv[i] = new Vector2((float)x / (resolution - 1), (float)z / (resolution - 1));
             }
 
-            count = +1;
+            count += 1;
 
-            if (count > 100)
-            {
-                yield return null;
-                count = 0;
-            }
+            //if (count > 25)
+            //{
+            //    yield return null;
+            //    count = 0;
+            //    Debug.Log("this was run B: " + noiseCheck.ToString());
+            //}
         }
 
         int t = 0;
@@ -221,13 +239,13 @@ public class TileManager : MonoBehaviour
                 triangles[t++] = i + resolution + 1;
             }
 
-            count = +1;
+            count += 1;
 
-            if (count > 100)
-            {
-                yield return null;
-                count = 0;
-            }
+            //if (count > 25)
+            //{
+            //    yield return null;
+            //    count = 0;
+            //}
         }
 
         mesh.vertices = vertices;
@@ -241,5 +259,7 @@ public class TileManager : MonoBehaviour
 
         MeshRenderer mr = tileObj.GetComponent<MeshRenderer>();
         if (mr == null) mr = tileObj.AddComponent<MeshRenderer>();
+
+        yield return null;
     }
 }

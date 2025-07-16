@@ -781,6 +781,10 @@ public static class NodeTypes
 
         node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
 
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetTerrainList(), "terrain", "forest-mixed", 7, 5, drop, 12.5f, 90, 5f);
+
         drop -= 30;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
@@ -4537,6 +4541,52 @@ public static class NodeTypes
         }
 
         return skyboxList;
+    }
+
+    public static List<string> GetTerrainList()
+    {
+        List<string> terrainList = new List<string>();
+
+        terrainList.Add("Asian-city");
+        terrainList.Add("Austr-city");
+        terrainList.Add("bare-ground");
+        terrainList.Add("barren-land");
+        terrainList.Add("Euro-city");
+        terrainList.Add("European-city");
+        terrainList.Add("european-farm");
+        terrainList.Add("farm-mixed");
+        terrainList.Add("forest-dark");
+        terrainList.Add("forest-decidious");
+        terrainList.Add("forest-evergreen");
+        terrainList.Add("forest-mixed");
+        terrainList.Add("forest-spruce");
+        terrainList.Add("fresh-coast");
+        terrainList.Add("grand-canyon");
+        terrainList.Add("grass-green");
+        terrainList.Add("grass-yellow");
+        terrainList.Add("medium-urban");
+        terrainList.Add("mixed-forest");
+        terrainList.Add("mixed-wilderness");
+        terrainList.Add("mntn-snow");
+        terrainList.Add("new-road");
+        terrainList.Add("patchy-farm");
+        terrainList.Add("range-herbacious");
+        terrainList.Add("range-mixed");
+        terrainList.Add("range-shrub");
+        terrainList.Add("red-desert");
+        terrainList.Add("road-base");
+        terrainList.Add("road-top");
+        terrainList.Add("road-top2");
+        terrainList.Add("salt-coast");
+        terrainList.Add("strip-mines");
+        terrainList.Add("suburb-grass");
+        terrainList.Add("suburb-mixed");
+        terrainList.Add("transportation-2");
+        terrainList.Add("transportation-3");
+        terrainList.Add("transportation-4");
+        terrainList.Add("western-barren");
+
+        return terrainList;
     }
 
     #endregion

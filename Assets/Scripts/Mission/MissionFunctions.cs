@@ -2334,9 +2334,12 @@ public static class MissionFunctions
     {
         Scene scene = SceneFunctions.GetScene();
 
+        string terrainTextureType = missionEvent.data1;
+
         TileManager tileManager = scene.AddComponent<TileManager>();
 
         tileManager.player = scene.mainCamera.transform;
+        tileManager.terrainTextureType = terrainTextureType;
 
         Task a = new Task(tileManager.GenerateTerain());
 
@@ -2344,8 +2347,6 @@ public static class MissionFunctions
         {
             yield return null;
         }
-
-
     }
 
     //This loads an environment

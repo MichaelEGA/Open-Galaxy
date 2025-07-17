@@ -24,12 +24,6 @@ public enum BlendType
     None
 }
 
-public enum TerraceType
-{
-    Terrace,
-    None
-}
-
 public enum MaskType
 {
     Canyons,
@@ -47,6 +41,7 @@ public class TileManager : MonoBehaviour
     public int tilesPerFrame = 3; // Number of tiles to generate per frame
     public int tilesBeingGenerated;
     public string terrainTextureType = "forest-mixed";
+    public string terrainCliffTextureType = "grand-canyon";
     public float terrainHeight = 50;
 
     private Dictionary<Vector2Int, GameObject> tiles = new Dictionary<Vector2Int, GameObject>();
@@ -63,14 +58,12 @@ public class TileManager : MonoBehaviour
 
     private FastNoiseLite canyonNoise = new FastNoiseLite();
 
-    public TerrainType terrainType = TerrainType.Plains;
-    public MaskType maskType = MaskType.Canyons;
-    public TerraceType terraceType = TerraceType.None;
+    public TerrainType terrainType = TerrainType.Mountains;
+    public MaskType maskType = MaskType.None;
     public BlendType blendType = BlendType.None;
 
     public float blendFactor = 0.5f;
     public float canyonDepth = 50f;
-    public int terraceNumber = 10;
     public int seed = 1337;
 
     void Start()
@@ -92,9 +85,11 @@ public class TileManager : MonoBehaviour
         }
     }
 
+
     void SetTerrainType()
     {
         //Terrain Noise Types
+        mountainNoise.SetSeed(seed);
         mountainNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         mountainNoise.SetFrequency(0.01f);
         mountainNoise.SetFractalType(FastNoiseLite.FractalType.Ridged);
@@ -102,6 +97,7 @@ public class TileManager : MonoBehaviour
         mountainNoise.SetFractalLacunarity(2.2f);
         mountainNoise.SetFractalGain(0.6f);
 
+        hillNoise.SetSeed(seed);
         hillNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         hillNoise.SetFrequency(0.02f);
         hillNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
@@ -109,10 +105,12 @@ public class TileManager : MonoBehaviour
         hillNoise.SetFractalLacunarity(2f);
         hillNoise.SetFractalGain(0.4f);
 
+        desertNoise.SetSeed(seed);
         desertNoise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
         desertNoise.SetFrequency(0.01f);
         desertNoise.SetFractalType(FastNoiseLite.FractalType.None);
 
+        cliffsideNoise.SetSeed(seed);
         cliffsideNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         cliffsideNoise.SetFrequency(0.015f);
         cliffsideNoise.SetFractalType(FastNoiseLite.FractalType.Ridged);
@@ -120,6 +118,7 @@ public class TileManager : MonoBehaviour
         cliffsideNoise.SetFractalLacunarity(2.5f);
         cliffsideNoise.SetFractalGain(0.7f);
 
+        plainsNoise.SetSeed(seed);
         plainsNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         plainsNoise.SetFrequency(0.005f);
         plainsNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
@@ -128,6 +127,7 @@ public class TileManager : MonoBehaviour
         plainsNoise.SetFractalGain(0.3f);
 
         //Terrain Mask Noise
+        canyonNoise.SetSeed(seed);
         canyonNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
         canyonNoise.SetFrequency(0.005f);
         canyonNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
@@ -270,29 +270,59 @@ public class TileManager : MonoBehaviour
 
                 MeshRenderer meshRenderer = tileObj.GetComponent<MeshRenderer>();
 
-                if (scene.terrainTexturesMaterialPool != null)
+                if (scene.terrainTexturesPool != null)
                 {
-                    if (scene.terrainTexturesMaterialPool.Length > 0)
+                    if (scene.terrainTexturesPool.Length > 0)
                     {
-                        List<Material> selectedMaterials = new List<Material>();
+                        Shader myShader = Shader.Find("Shader Graphs/Terrain");
 
-                        foreach(Object obj in scene.terrainTexturesMaterialPool)
+                        Material terrainMaterial = new Material(myShader);
+
+                        //Apply base terrain texture
+                        List<Texture2D> selectedTextures = new List<Texture2D>();
+
+                        foreach(Object obj in scene.terrainTexturesPool)
                         {
                             if (obj.name.Contains(terrainTextureType))
                             {
-                                selectedMaterials.Add((Material)obj);
+                                selectedTextures.Add((Texture2D)obj);
                             }
                         }
 
-                        if (selectedMaterials.Count > 0)
+                        if (selectedTextures.Count > 0)
                         {
                             if (meshRenderer != null)
                             {
-                                int selection = UnityEngine.Random.Range(0, selectedMaterials.Count);
+                                int selection = UnityEngine.Random.Range(0, selectedTextures.Count);
 
-                                meshRenderer.sharedMaterial = selectedMaterials[selection];
+                                terrainMaterial.SetTexture("_Main_Texture", selectedTextures[selection]);
                             }
                         }
+
+                        //Apply cliff terrain texture
+                        selectedTextures = new List<Texture2D>();
+
+                        foreach (Object obj in scene.terrainCliffTexturesPool)
+                        {
+                            if (obj.name.Contains(terrainCliffTextureType))
+                            {
+                                selectedTextures.Add((Texture2D)obj);
+                            }
+                        }
+
+                        if (selectedTextures.Count > 0)
+                        {
+                            if (meshRenderer != null)
+                            {
+                                int selection = UnityEngine.Random.Range(0, selectedTextures.Count);
+
+                                terrainMaterial.SetTexture("_Cliff_Texture", selectedTextures[selection]);
+                            }
+                        }
+
+                        //This applies the new material
+                        meshRenderer.sharedMaterial = terrainMaterial;
+
                     }
                 }
                
@@ -362,12 +392,6 @@ public class TileManager : MonoBehaviour
                     {
                         height -= canyonDepth;
                     }
-                }
-
-                //Add Terraces
-                if (terraceType == TerraceType.Terrace)
-                {
-                    height = Mathf.Round(height * (terraceNumber - 1)) / (terraceNumber - 1);
                 }
 
                 //Add blend noise
@@ -447,5 +471,4 @@ public class TileManager : MonoBehaviour
 
         tilesBeingGenerated -= 1;
     }
-
 }

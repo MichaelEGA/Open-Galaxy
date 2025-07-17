@@ -783,7 +783,39 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetTerrainList(), "terrain", "forest-mixed", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture", "forest-mixed", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureCliffList(), "cliff texture", "grand-canyon", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetBaseNoiseTypes(), "base noise", "Plain", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, GetMaskNoiseTypes(), "mask noise", "None", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, GetBlendNoiseTypes(), "blend noise", "None", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data6 = NodeFunctions.DrawInputField(node, "seed", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data7 = NodeFunctions.DrawInputField(node, "terrain height", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data8 = NodeFunctions.DrawInputField(node, "canyon depth", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawInputField(node, "blend factor", "0.5", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -4543,7 +4575,7 @@ public static class NodeTypes
         return skyboxList;
     }
 
-    public static List<string> GetTerrainList()
+    public static List<string> GetTerrainTextureList()
     {
         List<string> terrainList = new List<string>();
 
@@ -4587,6 +4619,68 @@ public static class NodeTypes
         terrainList.Add("western-barren");
 
         return terrainList;
+    }
+
+    public static List<string> GetTerrainTextureCliffList()
+    {
+        List<string> terrainCliffList = new List<string>();
+
+        terrainCliffList.Add("fresh-coast-land");
+        terrainCliffList.Add("grand-canyon");
+        terrainCliffList.Add("grand-canyon-red");
+        terrainCliffList.Add("grand-canyon-red-2");
+        terrainCliffList.Add("grand-canyon-red-3");
+        terrainCliffList.Add("mntn-red-desert");
+        terrainCliffList.Add("mountain-tundra");
+        terrainCliffList.Add("new-road-top");
+        terrainCliffList.Add("new-road-top-light");
+        terrainCliffList.Add("road-top");
+        terrainCliffList.Add("road-top 1");
+        terrainCliffList.Add("road-top-light");
+        terrainCliffList.Add("road-top2");
+        terrainCliffList.Add("road-top2-white");
+        terrainCliffList.Add("Western-barren");
+        terrainCliffList.Add("Western-barren-canyon-dirt");
+        terrainCliffList.Add("Western-barren2");
+
+        return terrainCliffList;
+    }
+
+    public static List<string> GetBaseNoiseTypes()
+    {
+        List<string> noiseTypes = new List<string>();
+
+        noiseTypes.Add("Mountains");
+        noiseTypes.Add("Hills");
+        noiseTypes.Add("Desert");
+        noiseTypes.Add("Cliffside");
+        noiseTypes.Add("Plains");
+
+        return noiseTypes;
+    }
+
+    public static List<string> GetMaskNoiseTypes()
+    {
+        List<string> noiseTypes = new List<string>();
+
+        noiseTypes.Add("Canyons");
+        noiseTypes.Add("None");
+
+        return noiseTypes;
+    }
+
+    public static List<string> GetBlendNoiseTypes()
+    {
+        List<string> noiseTypes = new List<string>();
+
+        noiseTypes.Add("Mountains");
+        noiseTypes.Add("Hills");
+        noiseTypes.Add("Desert");
+        noiseTypes.Add("Cliffside");
+        noiseTypes.Add("Plains");
+        noiseTypes.Add("None");
+
+        return noiseTypes;
     }
 
     #endregion

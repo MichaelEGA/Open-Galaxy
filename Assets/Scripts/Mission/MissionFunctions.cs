@@ -1,8 +1,10 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -2335,11 +2337,104 @@ public static class MissionFunctions
         Scene scene = SceneFunctions.GetScene();
 
         string terrainTextureType = missionEvent.data1;
+        string terrainCliffType = missionEvent.data2;
+        string baseNoise = missionEvent.data3;
+        string maskNoise = missionEvent.data4;
+        string blendNoise = missionEvent.data5;
+        
+        int seed = 0;
+        
+        if(int.TryParse(missionEvent.data6, out _))
+        {
+            seed = int.Parse(missionEvent.data6);
+        }
+
+        float terrainHeight = 50;
+
+        if (float.TryParse(missionEvent.data7, out _))
+        {
+            terrainHeight = float.Parse(missionEvent.data7);
+        }
+
+        float canyonDepth = 50;
+
+        if (float.TryParse(missionEvent.data8, out _))
+        {
+            canyonDepth = float.Parse(missionEvent.data8);
+        }
+
+        float blendFactor = 0.5f;
+
+        if (float.TryParse(missionEvent.data9, out _))
+        {
+            blendFactor = float.Parse(missionEvent.data9);
+        }
 
         TileManager tileManager = scene.AddComponent<TileManager>();
 
         tileManager.player = scene.mainCamera.transform;
         tileManager.terrainTextureType = terrainTextureType;
+        tileManager.terrainCliffTextureType = terrainCliffType;
+        
+        if (baseNoise == "Mountains")
+        {
+            tileManager.terrainType = TerrainType.Mountains;
+        }
+        else if (baseNoise == "Hills")
+        {
+            tileManager.terrainType = TerrainType.Hills;
+        }
+        else if (baseNoise == "Desert")
+        {
+            tileManager.terrainType = TerrainType.Desert;
+        }
+        else if (baseNoise == "Cliffside")
+        {
+            tileManager.terrainType = TerrainType.Cliffside;
+        }
+        else if (baseNoise == "Plains")
+        {
+            tileManager.terrainType = TerrainType.Plains;
+        }
+
+        if (maskNoise== "Canyons")
+        {
+            tileManager.maskType = MaskType.Canyons;
+        }
+        else
+        {
+            tileManager.maskType = MaskType.None;
+        }
+
+        if (baseNoise == "Mountains")
+        {
+            tileManager.blendType = BlendType.Mountains;
+        }
+        else if (baseNoise == "Hills")
+        {
+            tileManager.blendType = BlendType.Hills;
+        }
+        else if (baseNoise == "Desert")
+        {
+            tileManager.blendType = BlendType.Desert;
+        }
+        else if (baseNoise == "Cliffside")
+        {
+            tileManager.blendType = BlendType.Cliffside;
+        }
+        else if (baseNoise == "Plains")
+        {
+            tileManager.blendType = BlendType.Plains;
+        }
+        else if (baseNoise == "None")
+        {
+            tileManager.blendType = BlendType.None;
+        }
+
+        tileManager.seed = seed;
+        tileManager.terrainHeight = terrainHeight;
+        tileManager.canyonDepth = canyonDepth;
+        tileManager.blendFactor = blendFactor;
 
         Task a = new Task(tileManager.GenerateTerain());
 

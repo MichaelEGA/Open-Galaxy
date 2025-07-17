@@ -96,12 +96,20 @@ public static class SceneFunctions
             scene.atmosphereMaterialPool = atmosphereMaterials;
         }
 
-        Object[] terrainMaterials = Resources.LoadAll(OGGetAddress.terrainmaterials, typeof(Material));
+        Object[] terrainTextures = Resources.LoadAll(OGGetAddress.terraintextures, typeof(Texture2D));
 
-        if (terrainMaterials != null)
+        if (terrainTextures != null)
         {
-            scene.terrainTexturesMaterialPool = new Material[terrainMaterials.Length];
-            scene.terrainTexturesMaterialPool = terrainMaterials;
+            scene.terrainTexturesPool = new Texture2D[terrainTextures.Length];
+            scene.terrainTexturesPool = terrainTextures;
+        }
+
+        Object[] terrainCliffTextures = Resources.LoadAll(OGGetAddress.terrainclifftextures, typeof(Texture2D));
+
+        if (terrainCliffTextures != null)
+        {
+            scene.terrainCliffTexturesPool = new Texture2D[terrainCliffTextures.Length];
+            scene.terrainCliffTexturesPool = terrainCliffTextures;
         }
 
         scene.hyperspaceTunnelPrefab = Resources.Load(OGGetAddress.hyperspace + "HyperspaceTunnel") as GameObject;

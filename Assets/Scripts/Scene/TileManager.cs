@@ -5,6 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Defines the different types of terrain that can be generated.
+/// </summary>
 public enum TerrainType
 {
     Mountains,
@@ -14,6 +17,10 @@ public enum TerrainType
     Plains
 }
 
+/// <summary>
+/// Defines the types of terrain that can be blended together.
+/// 'None' indicates no blending is applied.
+/// </summary>
 public enum BlendType
 {
     Mountains,
@@ -24,451 +31,67 @@ public enum BlendType
     None
 }
 
+/// <summary>
+/// Defines the types of masks that can be applied to the terrain.
+/// 'None' indicates no mask is applied.
+/// </summary>
 public enum MaskType
 {
     Canyons,
     None
 }
+
+/// <summary>
+/// Manages the generation and updating of terrain tiles in the scene.
+/// </summary>
 public class TileManager : MonoBehaviour
 {
-    Scene scene;
-
-    public GameObject tilePrefab; // Assign a tile prefab with a mesh
-    public int tileSize = 1000;   // 1km per tile
-    public int initialAreaSize = 30; // 30km x 30km
-    public float tileNoiseScale = 0.2f; // adjust for desired terrain roughness
+    [Header("Scene References")]
+    public Scene scene;
     public Transform player;
-    public int tilesPerFrame = 3; // Number of tiles to generate per frame
-    public int tilesBeingGenerated;
-    public string terrainTextureType = "forest-mixed";
-    public string terrainCliffTextureType = "grand-canyon";
-    public float terrainHeight = 50;
 
-    private Dictionary<Vector2Int, GameObject> tiles = new Dictionary<Vector2Int, GameObject>();
-    private int edgeBuffer = 10; // 10km from edge to trigger generation
-    private HashSet<Vector2Int> tilesToGenerate = new HashSet<Vector2Int>();
-    private Coroutine tileGenCoroutine;
-    private bool initialGenerationComplete = false;
-   
-    private FastNoiseLite mountainNoise = new FastNoiseLite();
-    private FastNoiseLite hillNoise = new FastNoiseLite();
-    private FastNoiseLite desertNoise = new FastNoiseLite();
-    private FastNoiseLite cliffsideNoise = new FastNoiseLite();
-    private FastNoiseLite plainsNoise = new FastNoiseLite();
+    [Header("Tile Settings")]
+    public int tileSize = 1000;         // Size of each tile in meters (e.g., 1km per tile)
+    public int initialAreaSize = 30;    // Initial generation area in tiles (e.g., 30x30 km)
+    public float tileNoiseScale = 0.2f; // Adjust for desired terrain roughness
 
-    private FastNoiseLite canyonNoise = new FastNoiseLite();
+    [Header("Terrain Textures")]
+    public string terrainTextureType = "forest-mixed";      // Main terrain texture type
+    public string terrainCliffTextureType = "grand-canyon"; // Cliff-specific terrain texture type
 
-    public TerrainType terrainType = TerrainType.Mountains;
-    public MaskType maskType = MaskType.None;
-    public BlendType blendType = BlendType.None;
+    [Header("Generation State")]
+    public Dictionary<Vector2Int, GameObject> tiles = new Dictionary<Vector2Int, GameObject>(); // Stores references to active tiles
+    public HashSet<Vector2Int> tilesToGenerate = new HashSet<Vector2Int>();                     // Queue of tiles awaiting generation
+    public int tilesBeingGenerated;                                                             // Counter for currently generating tiles
+    public Task tileGeneration;                                                                  // Reference to the terrain generation task
+    public bool initialGenerationComplete = false;                                              // Flag to indicate initial terrain generation is done
+    public int edgeBuffer = 10; // Distance from the player to the edge of the generated area to trigger new generation (in tiles/km)
 
-    public float blendFactor = 0.5f;
-    public float canyonDepth = 50f;
-    public int seed = 1337;
+    [Header("Noise Generators")]
+    // FastNoiseLite instances for different terrain types
+    public FastNoiseLite mountainNoise = new FastNoiseLite();
+    public FastNoiseLite hillNoise = new FastNoiseLite();
+    public FastNoiseLite desertNoise = new FastNoiseLite();
+    public FastNoiseLite cliffsideNoise = new FastNoiseLite();
+    public FastNoiseLite plainsNoise = new FastNoiseLite();
+    public FastNoiseLite canyonNoise = new FastNoiseLite(); // Noise for canyon masking
 
-    void Start()
-    {
-        SetTerrainType();
-    }
+    [Header("Terrain Generation Parameters")]
+    public TerrainType terrainType = TerrainType.Mountains; // The primary terrain type to generate
+    public MaskType maskType = MaskType.None;              // The type of mask to apply (e.g., canyons)
+    public BlendType blendType = BlendType.None;            // The type of terrain to blend with
+    public float terrainHeight = 50;                        // Maximum height of the terrain
+    public float blendFactor = 0.5f;                       // Factor for blending between terrain types
+    public float canyonDepth = 50f;                        // Depth of generated canyons
+    public int seed = 1337;                                // Seed for noise generation to ensure reproducible terrains
 
+    /// <summary>
+    /// Called once per frame.
+    /// Continues the terrain generation process.
+    /// </summary>
     void Update()
     {
-        if (initialGenerationComplete == true)
-        {
-            QueueEdgeTiles();
-            CleanupDistantTiles();
-
-            if (tileGenCoroutine == null)
-            {
-                tileGenCoroutine = StartCoroutine(GenerateTiles());
-            }
-        }
-    }
-
-
-    void SetTerrainType()
-    {
-        //Terrain Noise Types
-        mountainNoise.SetSeed(seed);
-        mountainNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        mountainNoise.SetFrequency(0.01f);
-        mountainNoise.SetFractalType(FastNoiseLite.FractalType.Ridged);
-        mountainNoise.SetFractalOctaves(5);
-        mountainNoise.SetFractalLacunarity(2.2f);
-        mountainNoise.SetFractalGain(0.6f);
-
-        hillNoise.SetSeed(seed);
-        hillNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        hillNoise.SetFrequency(0.02f);
-        hillNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
-        hillNoise.SetFractalOctaves(4);
-        hillNoise.SetFractalLacunarity(2f);
-        hillNoise.SetFractalGain(0.4f);
-
-        desertNoise.SetSeed(seed);
-        desertNoise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
-        desertNoise.SetFrequency(0.01f);
-        desertNoise.SetFractalType(FastNoiseLite.FractalType.None);
-
-        cliffsideNoise.SetSeed(seed);
-        cliffsideNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        cliffsideNoise.SetFrequency(0.015f);
-        cliffsideNoise.SetFractalType(FastNoiseLite.FractalType.Ridged);
-        cliffsideNoise.SetFractalOctaves(6);
-        cliffsideNoise.SetFractalLacunarity(2.5f);
-        cliffsideNoise.SetFractalGain(0.7f);
-
-        plainsNoise.SetSeed(seed);
-        plainsNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        plainsNoise.SetFrequency(0.005f);
-        plainsNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
-        plainsNoise.SetFractalOctaves(3);
-        plainsNoise.SetFractalLacunarity(2f);
-        plainsNoise.SetFractalGain(0.3f);
-
-        //Terrain Mask Noise
-        canyonNoise.SetSeed(seed);
-        canyonNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        canyonNoise.SetFrequency(0.005f);
-        canyonNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
-        canyonNoise.SetFractalOctaves(3);
-        canyonNoise.SetFractalLacunarity(2f);
-        canyonNoise.SetFractalGain(0.3f);
-    }
-
-    public IEnumerator GenerateTerain()
-    {
-        scene = SceneFunctions.GetScene();
-
-        GameObject newTile = new GameObject();
-        newTile.AddComponent<MeshFilter>();
-        newTile.AddComponent<MeshRenderer>();
-        newTile.AddComponent<MeshCollider>();
-        newTile.layer = 7;
-
-        tilePrefab = newTile;
-
-        QueueInitialTiles();
-
-        Task a = new Task(GenerateTiles());
-
-        while (a.Running == true)
-        {
-            yield return null;
-        }
-
-        initialGenerationComplete = true;
-    }
-
-    void QueueInitialTiles()
-    {
-        int halfArea = initialAreaSize / 2;
-        for (int x = -halfArea; x < halfArea; x++)
-        {
-            for (int z = -halfArea; z < halfArea; z++)
-            {
-                Vector2Int key = new Vector2Int(x, z);
-                if (!tiles.ContainsKey(key))
-                    tilesToGenerate.Add(key);
-            }
-        }
-    }
-
-    void QueueEdgeTiles()
-    {
-        Vector3 playerPos = player.position;
-        Vector2Int playerTile = new Vector2Int(
-            Mathf.FloorToInt(playerPos.x / tileSize),
-            Mathf.FloorToInt(playerPos.z / tileSize)
-        );
-
-        int minX = playerTile.x - (initialAreaSize / 2 + edgeBuffer);
-        int maxX = playerTile.x + (initialAreaSize / 2 + edgeBuffer);
-        int minZ = playerTile.y - (initialAreaSize / 2 + edgeBuffer);
-        int maxZ = playerTile.y + (initialAreaSize / 2 + edgeBuffer);
-
-        for (int x = minX; x < maxX; x++)
-        {
-            for (int z = minZ; z < maxZ; z++)
-            {
-                Vector2Int key = new Vector2Int(x, z);
-                if (!tiles.ContainsKey(key))
-                    tilesToGenerate.Add(key);
-            }
-        }
-    }
-
-    void CleanupDistantTiles()
-    {
-        Vector3 playerPos = player.position;
-        Vector2Int playerTile = new Vector2Int(
-            Mathf.FloorToInt(playerPos.x / tileSize),
-            Mathf.FloorToInt(playerPos.z / tileSize)
-        );
-
-        int halfArea = initialAreaSize / 2 + edgeBuffer;
-
-        int minX = playerTile.x - halfArea;
-        int maxX = playerTile.x + halfArea;
-        int minZ = playerTile.y - halfArea;
-        int maxZ = playerTile.y + halfArea;
-
-        List<Vector2Int> keysToRemove = new List<Vector2Int>();
-
-        foreach (var kvp in tiles)
-        {
-            Vector2Int key = kvp.Key;
-
-            // Check if tile is outside the square bounds
-            if (key.x < minX || key.x >= maxX || key.y < minZ || key.y >= maxZ)
-            {
-                GameObject tile = kvp.Value;
-                if (tile != null)
-                {
-                    Destroy(tile);
-                }
-                keysToRemove.Add(key);
-            }
-        }
-
-        // Clean up dictionary
-        foreach (var key in keysToRemove)
-        {
-            tiles.Remove(key);
-        }
-    }
-
-    IEnumerator GenerateTiles()
-    {
-        while (tilesToGenerate.Count > 0)
-        {
-            var keys = new List<Vector2Int>(tilesToGenerate);
-
-            foreach (var key in keys)
-            {
-                while (tilesBeingGenerated > tilesPerFrame)
-                {
-                    if (gameObject == null){break;}
-
-                    yield return null;
-                }
-
-                if (gameObject == null) { break; }
-
-                int x = key.x;
-                int z = key.y;
-
-                Vector3 tilePosition = new Vector3(x * tileSize, 0, z * tileSize);
-
-                GameObject tileObj = Instantiate(tilePrefab, tilePosition, Quaternion.identity);
-
-                tileObj.transform.parent = transform;
-
-                tileObj.transform.localPosition = tilePosition;
-
-                Task a = new Task(GenerateTileMesh(tileObj, tilePosition, x, z));
-
-                MeshRenderer meshRenderer = tileObj.GetComponent<MeshRenderer>();
-
-                if (scene.terrainTexturesPool != null)
-                {
-                    if (scene.terrainTexturesPool.Length > 0)
-                    {
-                        Shader myShader = Shader.Find("Shader Graphs/Terrain");
-
-                        Material terrainMaterial = new Material(myShader);
-
-                        //Apply base terrain texture
-                        List<Texture2D> selectedTextures = new List<Texture2D>();
-
-                        foreach(Object obj in scene.terrainTexturesPool)
-                        {
-                            if (obj.name.Contains(terrainTextureType))
-                            {
-                                selectedTextures.Add((Texture2D)obj);
-                            }
-                        }
-
-                        if (selectedTextures.Count > 0)
-                        {
-                            if (meshRenderer != null)
-                            {
-                                int selection = UnityEngine.Random.Range(0, selectedTextures.Count);
-
-                                terrainMaterial.SetTexture("_Main_Texture", selectedTextures[selection]);
-                            }
-                        }
-
-                        //Apply cliff terrain texture
-                        selectedTextures = new List<Texture2D>();
-
-                        foreach (Object obj in scene.terrainCliffTexturesPool)
-                        {
-                            if (obj.name.Contains(terrainCliffTextureType))
-                            {
-                                selectedTextures.Add((Texture2D)obj);
-                            }
-                        }
-
-                        if (selectedTextures.Count > 0)
-                        {
-                            if (meshRenderer != null)
-                            {
-                                int selection = UnityEngine.Random.Range(0, selectedTextures.Count);
-
-                                terrainMaterial.SetTexture("_Cliff_Texture", selectedTextures[selection]);
-                            }
-                        }
-
-                        //This applies the new material
-                        meshRenderer.sharedMaterial = terrainMaterial;
-
-                    }
-                }
-               
-                tiles[new Vector2Int(x, z)] = tileObj;
-
-                tilesToGenerate.Remove(key);
-            }
-
-            if (gameObject == null) { break; }
-        }
-
-        tileGenCoroutine = null;
-    }
-
-    IEnumerator GenerateTileMesh(GameObject tileObj, Vector3 position, int xIndex, int zIndex)
-    {
-        tilesBeingGenerated += 1;
-
-        // Procedurally generate mesh using Perlin noise
-        Mesh mesh = new Mesh();
-        int resolution = 50;
-
-        Vector3[] vertices = new Vector3[resolution * resolution];
-        int[] triangles = new int[(resolution - 1) * (resolution - 1) * 6];
-        Vector2[] uv = new Vector2[vertices.Length];
-
-        for (int z = 0; z < resolution; z++)
-        {
-            for (int x = 0; x < resolution; x++)
-            {
-                int i = z * resolution + x;
-
-                float worldX = position.x + ((float)x / (resolution - 1)) * tileSize;
-                float worldZ = position.z + ((float)z / (resolution - 1)) * tileSize;
-
-                float height = 0;
-
-                //Add terrain noise
-                if (terrainType == TerrainType.Mountains)
-                {
-                    height = (mountainNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1) * terrainHeight;
-                }
-                else if (terrainType == TerrainType.Hills)
-                {
-                    height = (hillNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                }
-                else if (terrainType == TerrainType.Desert)
-                {
-                    height = (desertNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                }
-                else if (terrainType == TerrainType.Cliffside)
-                {
-                    height = (cliffsideNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                }
-                else if (terrainType == TerrainType.Plains)
-                {
-                    height = (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                }
-
-                //Add mask noise
-                if (maskType == MaskType.Canyons)
-                {
-                    float canyonNoise = this.canyonNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale);
-
-                    // Carve if the noise is below a certain negative threshold
-                    if (canyonNoise < 0.3f) // Adjust -0.5f to control river width/occurrence
-                    {
-                        height -= canyonDepth;
-                    }
-                }
-
-                //Add blend noise
-                if (blendType == BlendType.Mountains)
-                {
-                    float blendHeight = (mountainNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                    height = Mathf.Lerp(height, blendHeight, blendFactor);
-
-                }
-                else if (blendType == BlendType.Hills)
-                {
-                    float blendHeight = (hillNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                    height = Mathf.Lerp(height, blendHeight, blendFactor);
-                }
-                else if (blendType == BlendType.Desert)
-                {
-                    float blendHeight = (desertNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                    height = Mathf.Lerp(height, blendHeight, blendFactor);
-                }
-                else if (blendType == BlendType.Cliffside)
-                {
-                    float blendHeight = (cliffsideNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                    height = Mathf.Lerp(height, blendHeight, blendFactor);
-                }
-                else if (blendType == BlendType.Plains)
-                {
-                    float blendHeight = (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                    height = Mathf.Lerp(height, blendHeight, blendFactor);
-                }
-
-                vertices[i] = new Vector3(
-                    (float)x / (resolution - 1) * tileSize,
-                    height,
-                    (float)z / (resolution - 1) * tileSize
-                );
-
-                uv[i] = new Vector2((float)x / (resolution - 1), (float)z / (resolution - 1));
-            }
-        }
-
-        int t = 0;
-
-        for (int z = 0; z < resolution - 1; z++)
-        {
-            for (int x = 0; x < resolution - 1; x++)
-            {
-                int i = z * resolution + x;
-                triangles[t++] = i;
-                triangles[t++] = i + resolution;
-                triangles[t++] = i + 1;
-                triangles[t++] = i + 1;
-                triangles[t++] = i + resolution;
-                triangles[t++] = i + resolution + 1;
-            }
-        }
-
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.uv = uv;
-        mesh.RecalculateNormals();
-
-        if (tileObj != null)
-        {
-            MeshFilter mf = tileObj.GetComponent<MeshFilter>();
-            if (mf == null) { mf = tileObj.AddComponent<MeshFilter>(); }
-            mf.mesh = mesh;
-
-            MeshRenderer mr = tileObj.GetComponent<MeshRenderer>();
-            if (mr == null) { mr = tileObj.AddComponent<MeshRenderer>(); }
-
-            MeshCollider mc = tileObj.GetComponent<MeshCollider>();
-            if (mc == null) { mc = tileObj.AddComponent<MeshCollider>(); }
-            mc.sharedMesh = mesh;
-        }
-
-        yield return null;
-
-        tilesBeingGenerated -= 1;
+        // This function handles the continuous generation of terrain tiles based on player position
+        TileManagerFunctions.ContinueTerrainGeneration(this);
     }
 }

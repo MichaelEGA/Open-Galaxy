@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.UI;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UIElements;
 
 
 //These functions are used to generate a scene including scenery and ship loading/unloading
@@ -1243,18 +1244,7 @@ public static class SceneFunctions
     #region ship loading
 
     //This loads an individual ship in the scene
-    public static void LoadSingleShip(       
-        Vector3 position,
-        Quaternion rotation,
-        string type,
-        string name,
-        string allegiance,
-        string cargo,
-        bool exitingHyperspace,
-        bool isAI, 
-        bool dontModifyPosition,
-        string laserColor,
-        bool singleCall = false)
+    public static void LoadSingleShip(Vector3 position, Quaternion rotation, string type, string name, string allegiance, string cargo, bool exitingHyperspace, bool isAI, bool dontModifyPosition, string laserColor, bool singleCall = false)
     {
         //Key reference
         GameObject ship = null;
@@ -1541,24 +1531,7 @@ public static class SceneFunctions
     }
 
     //A wrapper function for load single ships that loads multiple ships
-    public static IEnumerator LoadMultipleShips( 
-        Vector3 position,
-        Quaternion rotation,
-        string type,
-        string name,
-        string allegiance,
-        string cargo,
-        int number, 
-        string pattern, 
-        float width, 
-        float length, 
-        float height, 
-        int shipsPerLine, 
-        float positionVariance,
-        bool exitingHyperspace,
-        bool includePlayer, 
-        int playerNo,
-        string laserColor)
+    public static IEnumerator LoadMultipleShips(Vector3 position, Quaternion rotation, string type, string name, string allegiance, string cargo, int number, string pattern, float width, float length, float height, int shipsPerLine, float positionVariance,bool exitingHyperspace,bool includePlayer, int playerNo,string laserColor)
     {
 
         //This gets the scene reference
@@ -1617,19 +1590,7 @@ public static class SceneFunctions
     }
 
     //A wrapper functions for load single ships that loads a single ship on the ground
-    public static void LoadSingleShipOnGround(
-        Vector3 position,
-        Quaternion rotation,
-        string type,
-        string name,
-        string allegiance,
-        string cargo,
-        bool isAI,
-        float distanceAboveGround,
-        float positionVariance,
-        bool ifRaycastFailsStillLoad,
-        string laserColor
-        )
+    public static void LoadSingleShipOnGround(Vector3 position, Quaternion rotation, string type, string name, string allegiance, string cargo, bool isAI, float distanceAboveGround, float positionVariance, bool ifRaycastFailsStillLoad, string laserColor)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1677,21 +1638,7 @@ public static class SceneFunctions
     }
 
     //A wrapper functions for load single ships that loads multiple ships on the ground
-    public static IEnumerator LoadMultipleShipsOnGround(
-        Vector3 position,
-        Quaternion rotation,
-        string type,
-        string name, 
-        string allegiance,
-        string cargo,
-        int number,  
-        float length, 
-        float width,
-        float distanceAboveGround,
-        int shipsPerLine,
-        float positionVariance,
-        bool ifRaycastFailsStillLoad,
-        string laserColor)
+    public static IEnumerator LoadMultipleShipsOnGround(Vector3 position, Quaternion rotation, string type, string name, string allegiance, string cargo, int number, float length, float width, float distanceAboveGround, int shipsPerLine, float positionVariance, bool ifRaycastFailsStillLoad, string laserColor)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -1750,16 +1697,7 @@ public static class SceneFunctions
     }
 
     //A wrapper functions for load single ship that loads multiple ships from another ships hangar
-    public static IEnumerator LoadMultipleShipsFromHangar(
-        string type,
-        string name,
-        string allegiance,
-        string cargo,
-        int number,
-        string launchship,
-        int hangarNo,
-        float delay,
-        string laserColor)
+    public static IEnumerator LoadMultipleShipsFromHangar(string type, string name, string allegiance, string cargo, int number, string launchship, int hangarNo, float delay, string laserColor)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -2282,6 +2220,170 @@ public static class SceneFunctions
             newObject.transform.position = newPosition;
             Debug.Log("Raycast for prop " + propPrefab.name + " was unsuccesful instantiating at 0 on the y-axis");
         }
+    }
+
+    //This instantiates a group of props on the ground
+    public static IEnumerator LoadMultiplePropsOnGround(Vector3 position, Quaternion rotation, string type, string pattern, float width, float length, int number, float separation = 10, int seed = 1, bool ifRaycastFailsStillLoad = true)
+    {
+        //This gets the scene reference
+        Scene scene = GetScene();
+
+        //This sets the seed to ensure consistent results
+        Random.InitState(seed);
+
+        //This finds the ship type to load 
+        List<Object> propPrefabs = new List<Object>();
+
+        foreach (Object tempProp in scene.propPrefabPool)
+        {
+            if (tempProp.name.Contains(type))
+            {
+                propPrefabs.Add(tempProp);
+            }
+        }
+
+        Vector3[] positions = GetPropPositions(pattern, position, width, length, number, separation);
+
+        if (propPrefabs.Count > 0 & positions.Length > 0)
+        {
+            foreach (Vector3 tempPosition in positions)
+            {
+                Vector3 relativePosition = scene.transform.TransformPoint(tempPosition);
+
+                Vector3 raycastPos = new Vector3(relativePosition.x, 15000, relativePosition.z);
+
+                RaycastHit hit;
+
+                LayerMask mask = LayerMask.GetMask("collision_asteroid");
+
+                int selection = Random.Range(0, propPrefabs.Count - 1);
+
+                if (Physics.Raycast(raycastPos, Vector3.down, out hit, 30000, mask))
+                {
+                    Vector3 newPosition = hit.point;
+                    GameObject newObject = GameObject.Instantiate(propPrefabs[selection], scene.transform) as GameObject;
+                    newObject.transform.position = newPosition;
+                }
+                else if (ifRaycastFailsStillLoad == true)
+                {
+                    Vector3 newPosition = new Vector3(relativePosition.x, 0, relativePosition.z);
+                    GameObject newObject = GameObject.Instantiate(propPrefabs[selection], scene.transform) as GameObject;
+                    newObject.transform.position = newPosition;
+                    Debug.Log("Raycast for prop " + propPrefabs[selection].name + " was unsuccesful instantiating at 0 on the y-axis");
+                }
+
+                yield return null;
+            }
+        }
+    }
+
+    public static Vector3[] GetPropPositions(string pattern, Vector3 position, float width, float length, int number, float separation = 10)
+    {
+        if (number < 1)
+        {
+            number = 1;
+        }
+
+        Vector3[] propPositions = null;
+
+        if (pattern == "treepositions")
+        {
+            propPositions = GenerateTreePositions(length, width, position, number);
+        }
+        else if (pattern == "buildingpositions")
+        {
+            propPositions = GenerateBuildingPositions(length, width, position, number, separation);
+        }
+
+        return propPositions;
+    }
+
+    public static Vector3[] GenerateTreePositions(float length, float width, Vector3 position, int number)
+    {
+        Vector3[] positions = new Vector3[number];
+
+        float halfLength = length / 2f;
+        float halfWidth = width / 2f;
+
+        for (int i = 0; i < number; i++)
+        {
+            // Generate random X and Z coordinates within the defined bounds
+            float randomX = Random.Range(position.x - halfLength, position.x + halfLength);
+            float randomZ = Random.Range(position.z - halfWidth, position.z + halfWidth);
+
+            // Use the Y-coordinate from the centerPosition, assuming it's the desired ground level.
+            // You might want to adjust this based on actual terrain later (e.g., using Physics.Raycast for height).
+            positions[i] = new Vector3(randomX, position.y, randomZ);
+        }
+
+        return positions;
+    }
+
+    public static Vector3[] GenerateBuildingPositions(float length, float width, Vector3 position, int number, float minBuildingSeparation)
+    {
+        if (number <= 0)
+        {
+            Debug.LogWarning("Number of buildings must be greater than 0.");
+            return new Vector3[0]; // Return an empty array
+        }
+
+        if (minBuildingSeparation < 0)
+        {
+            Debug.LogWarning("Minimum building separation cannot be negative. Setting to 0.");
+            minBuildingSeparation = 0;
+        }
+
+        List<Vector3> buildingPositions = new List<Vector3>();
+
+        float halfLength = length / 2f;
+        float halfWidth = width / 2f;
+
+        int maxAttemptsPerBuilding = 50; // Max tries to find a spot for a single building
+        int currentBuildingsGenerated = 0;
+
+        for (int i = 0; i < number; i++)
+        {
+            int attempts = 0;
+            bool positionFound = false;
+
+            while (attempts < maxAttemptsPerBuilding && !positionFound)
+            {
+                float randomX = Random.Range(position.x - halfLength, position.x + halfLength);
+                float randomZ = Random.Range(position.z - halfWidth, position.z + halfWidth);
+
+                // Use the Y-coordinate from the centerPosition, assuming it's the desired ground level.
+                // Similar to trees, you might want to adjust this based on actual terrain later (e.g., using Physics.Raycast).
+                Vector3 newBuildingPos = new Vector3(randomX, position.y, randomZ);
+
+                bool tooClose = false;
+                foreach (Vector3 existingPos in buildingPositions)
+                {
+                    if (Vector3.Distance(newBuildingPos, existingPos) < minBuildingSeparation)
+                    {
+                        tooClose = true;
+                        break;
+                    }
+                }
+
+                if (!tooClose)
+                {
+                    buildingPositions.Add(newBuildingPos);
+                    currentBuildingsGenerated++;
+                    positionFound = true;
+                }
+                attempts++;
+            }
+
+            if (!positionFound)
+            {
+                // If we couldn't find a spot after maxAttemptsPerBuilding, we'll just stop trying for this building.
+                // This prevents infinite loops if the area is too small or separation too large.
+                Debug.LogWarning($"Could not find a suitable position for building {i + 1} after {maxAttemptsPerBuilding} attempts. Consider increasing city area or decreasing number of buildings/separation.");
+            }
+        }
+
+        Debug.Log($"Attempted to generate {number} buildings, successfully placed {currentBuildingsGenerated}.");
+        return buildingPositions.ToArray();
     }
 
     #endregion

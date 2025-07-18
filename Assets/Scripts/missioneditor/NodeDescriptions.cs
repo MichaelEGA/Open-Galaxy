@@ -71,6 +71,20 @@ public static class NodeDescriptions
            "- No data is need for this event. OG simply looks to see if it is there or not. \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
+        else if (name == "preload_loadmultiplepropsonground")
+        {
+            description =
+            "Pre-Load Multiple Props on Ground \n " +
+            "\n " +
+            "This node loads multiple props on the ground \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
+            "- For pattern rectanglehorizontal or retangleVertical the shipsPerLine value must be atleast two. If it is less than this the game will automatically change it to 2. \n" +
+            "- Pattern: treepositions places the props in the arrangement of a forest. \n" +
+            "- Pattern: buildingpositions places the props in the arrangement of a town or city. \n";
+        }
         else if (name == "preload_loadmultipleships")
         {
             description =

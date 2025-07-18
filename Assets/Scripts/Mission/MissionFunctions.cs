@@ -261,6 +261,12 @@ public static class MissionFunctions
                 LoadSinglePropOnGround(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Prop loaded", Time.unscaledTime - startTime);
             }
+            else if (missionEvent.eventType == "preload_loadmultiplepropsonground" & missionEvent.conditionLocation == location)
+            {
+                Task a = new Task(LoadMultiplePropsOnGround(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Multiple props loaded on the ground", Time.unscaledTime - startTime);
+            }
             else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
@@ -2320,16 +2326,79 @@ public static class MissionFunctions
         yield return null;
     }
 
-    //This loads an environment
-    public static void LoadEnvironment(MissionEvent missionEvent)
+    //This loads props multiple props on the ground
+    public static IEnumerator LoadMultiplePropsOnGround(MissionEvent missionEvent)
     {
         float x = missionEvent.x;
         float y = missionEvent.y;
         float z = missionEvent.z;
 
-        string type = missionEvent.data1;
+        Vector3 position = new Vector3(x, y, z);
 
-        SceneFunctions.LoadEnvironment(type, x, y, z);
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "redwood";
+
+        if (missionEvent.data1 != "none") 
+        { 
+            type = missionEvent.data1; 
+        }
+
+        string pattern = "treepositions";
+
+        if (missionEvent.data2 != "none")
+        {
+            pattern = missionEvent.data2;
+        }
+
+        float width = 1000;
+
+        if (float.TryParse(missionEvent.data3, out _))
+        {
+            width = float.Parse(missionEvent.data3);
+        }
+
+        float length = 1000;
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            length = float.Parse(missionEvent.data4);
+        }
+
+        int number = 1;
+
+        if (int.TryParse(missionEvent.data5, out _))
+        {
+            number = int.Parse(missionEvent.data5);
+        }
+
+        float separation = 0;
+
+        if (float.TryParse(missionEvent.data6, out _))
+        {
+            separation = float.Parse(missionEvent.data6);
+        }
+
+        int seed = 1;
+
+        if (int.TryParse(missionEvent.data7, out _))
+        {
+            seed = int.Parse(missionEvent.data7);
+        }
+
+        bool ifRaycastFailsStillLoad = false;
+
+        if (bool.TryParse(missionEvent.data8, out _))
+        {
+            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data8);
+        }
+
+        Task a = new Task(SceneFunctions.LoadMultiplePropsOnGround(position, rotation, type, pattern, width, length, number, separation, seed, ifRaycastFailsStillLoad));
+        while (a.Running == true) { yield return null; }
     }
 
     //This loads multiple ships by name
@@ -2610,7 +2679,11 @@ public static class MissionFunctions
         Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
         string type = "redwood01";
-        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        if (missionEvent.data1 != "none") 
+        { 
+            type = missionEvent.data1; 
+        }
 
         bool ifRaycastFailsStillLoad = false;
 

@@ -185,6 +185,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadPlanet(node);
         }
+        else if (node.nodeType == "preload_loadmultiplepropsonground")
+        {
+            NodeTypes.Draw_PreLoad_LoadMultiplePropsOnGround(node);
+        }
         else if (node.nodeType == "preload_loadmultipleships")
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShips(node);

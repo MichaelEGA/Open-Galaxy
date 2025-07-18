@@ -17,14 +17,10 @@ public class Scene : MonoBehaviour
     [Header("The Main Ship")]
     [HideInInspector] public GameObject mainShip;
 
-    [Header("Old Prefab and Material Pools")]
-    [HideInInspector] public Object[] objectPrefabPool;
-    [HideInInspector] public Object[] cockpitPrefabPool;
-
     [Header("Prefab Pools")]
     [HideInInspector] public Object[] shipsPrefabPool;
-    [HideInInspector] public Object[] ogCockpitPrefabPool;
-    [HideInInspector] public Object[] environmentsPrefabPool;
+    [HideInInspector] public Object[] cockpitPrefabPool;
+    [HideInInspector] public Object[] propPrefabPool;
     [HideInInspector] public Object[] particlePrefabPool;
     [HideInInspector] public Object[] terrainTexturesPool;
     [HideInInspector] public Object[] terrainCliffTexturesPool;

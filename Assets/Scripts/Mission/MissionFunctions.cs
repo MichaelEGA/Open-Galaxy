@@ -219,12 +219,6 @@ public static class MissionFunctions
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", Time.unscaledTime - startTime);
             }
-            else if (missionEvent.eventType == "preload_loadenvironment" & missionEvent.conditionLocation == location)
-            {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading environment", Time.unscaledTime - startTime);
-                LoadEnvironment(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Environment loaded", Time.unscaledTime - startTime);
-            }
             else if (missionEvent.eventType == "preload_sethudcolour" & missionEvent.conditionLocation == location)
             {
                 SetHudColour(missionEvent);
@@ -261,7 +255,13 @@ public static class MissionFunctions
         //Then this preloads all the objects in the scene
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-            if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
+            if (missionEvent.eventType == "preload_loadsingleproponground" & missionEvent.conditionLocation == location)
+            {
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading prop", Time.unscaledTime - startTime);
+                LoadSinglePropOnGround(missionEvent);
+                LoadScreenFunctions.AddLogToLoadingScreen("Prop loaded", Time.unscaledTime - startTime);
+            }
+            else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
                 while (a.Running == true) { yield return null; }
@@ -2320,119 +2320,6 @@ public static class MissionFunctions
         yield return null;
     }
 
-    //This loads a dynamic terrain
-    public static IEnumerator LoadTerrain(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        string terrainTextureType = missionEvent.data1;
-        string terrainCliffType = missionEvent.data2;
-        string baseNoise = missionEvent.data3;
-        string maskNoise = missionEvent.data4;
-        string blendNoise = missionEvent.data5;
-        
-        int seed = 0;
-        
-        if(int.TryParse(missionEvent.data6, out _))
-        {
-            seed = int.Parse(missionEvent.data6);
-        }
-
-        float terrainHeight = 50;
-
-        if (float.TryParse(missionEvent.data7, out _))
-        {
-            terrainHeight = float.Parse(missionEvent.data7);
-        }
-
-        float canyonDepth = 50;
-
-        if (float.TryParse(missionEvent.data8, out _))
-        {
-            canyonDepth = float.Parse(missionEvent.data8);
-        }
-
-        float blendFactor = 0.5f;
-
-        if (float.TryParse(missionEvent.data9, out _))
-        {
-            blendFactor = float.Parse(missionEvent.data9);
-        }
-
-        TileManager tileManager = scene.AddComponent<TileManager>();
-
-        tileManager.player = scene.mainCamera.transform;
-        tileManager.terrainTextureType = terrainTextureType;
-        tileManager.terrainCliffTextureType = terrainCliffType;
-        
-        if (baseNoise == "Mountains")
-        {
-            tileManager.terrainType = TerrainType.Mountains;
-        }
-        else if (baseNoise == "Hills")
-        {
-            tileManager.terrainType = TerrainType.Hills;
-        }
-        else if (baseNoise == "Desert")
-        {
-            tileManager.terrainType = TerrainType.Desert;
-        }
-        else if (baseNoise == "Cliffside")
-        {
-            tileManager.terrainType = TerrainType.Cliffside;
-        }
-        else if (baseNoise == "Plains")
-        {
-            tileManager.terrainType = TerrainType.Plains;
-        }
-
-        if (maskNoise== "Canyons")
-        {
-            tileManager.maskType = MaskType.Canyons;
-        }
-        else
-        {
-            tileManager.maskType = MaskType.None;
-        }
-
-        if (baseNoise == "Mountains")
-        {
-            tileManager.blendType = BlendType.Mountains;
-        }
-        else if (baseNoise == "Hills")
-        {
-            tileManager.blendType = BlendType.Hills;
-        }
-        else if (baseNoise == "Desert")
-        {
-            tileManager.blendType = BlendType.Desert;
-        }
-        else if (baseNoise == "Cliffside")
-        {
-            tileManager.blendType = BlendType.Cliffside;
-        }
-        else if (baseNoise == "Plains")
-        {
-            tileManager.blendType = BlendType.Plains;
-        }
-        else if (baseNoise == "None")
-        {
-            tileManager.blendType = BlendType.None;
-        }
-
-        tileManager.seed = seed;
-        tileManager.terrainHeight = terrainHeight;
-        tileManager.canyonDepth = canyonDepth;
-        tileManager.blendFactor = blendFactor;
-
-        Task a = new Task(TileManagerFunctions.CommenceTerrainGeneration(tileManager));
-
-        while (a.Running == true)
-        {
-            yield return null;
-        }
-    }
-
     //This loads an environment
     public static void LoadEnvironment(MissionEvent missionEvent)
     {
@@ -2443,201 +2330,6 @@ public static class MissionFunctions
         string type = missionEvent.data1;
 
         SceneFunctions.LoadEnvironment(type, x, y, z);
-    }
-
-    //This loads a planet in the scene
-    public static void LoadPlanet(MissionEvent missionEvent)
-    {
-        float planetRotationX = missionEvent.x;
-        float planetRotationY = missionEvent.y;
-        float planetRotationZ = missionEvent.z;
-
-        float pivotRotationX = missionEvent.xRotation;
-        float pivotRotationY = missionEvent.yRotation;
-        float pivotRotationZ = missionEvent.zRotation;
-
-        string planetType = missionEvent.data2;
-        string cloudsType = missionEvent.data3;
-        string atmosphereType = missionEvent.data4;
-        string ringsType = missionEvent.data5;
-
-        float distance = 50;
-
-        if (float.TryParse(missionEvent.data1, out _))
-        {
-            distance = float.Parse(missionEvent.data1);
-        }
-
-        Scene scene = SceneFunctions.GetScene();
-
-        SceneFunctions.GeneratePlanet(planetType, cloudsType, atmosphereType, ringsType, distance, planetRotationX, planetRotationY, planetRotationZ, pivotRotationX, pivotRotationY, pivotRotationZ);
-    }
-
-    //This loads a single ship by name
-    public static void LoadSingleShip(MissionEvent missionEvent)
-    {
-        float x = missionEvent.x;
-        float y = missionEvent.y;
-        float z = missionEvent.z;
-
-        Vector3 position = new Vector3(x, y, z);
-
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        string type = "tiefighter";
-        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
-
-        string name = "alpha";
-        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
-
-        string allegiance = "imperial";
-        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
-
-        string cargo = "no cargo";
-        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
-
-        bool exitingHyperspace = false;
-
-        if (bool.TryParse(missionEvent.data5, out _))
-        {
-            exitingHyperspace = bool.Parse(missionEvent.data5);
-        }
-
-        bool isAI = false;
-
-        if (bool.TryParse(missionEvent.data6, out _))
-        {
-            isAI = bool.Parse(missionEvent.data6);
-        }
-
-        string laserColor = "red";
-        if (missionEvent.data7 != "none") { laserColor = missionEvent.data7; }
-
-        SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, exitingHyperspace, isAI, false, laserColor, true);
-    }
-
-    //This loads a single ship at a certain distance and angle from the player
-    public static void LoadSingleShipAtDistanceAndAngleFromPlayer(MissionEvent missionEvent)
-    {
-        float xEulerAngle = missionEvent.x;
-        float yEulerAngle = missionEvent.y;
-        float zEulerAngle = missionEvent.z;
-
-        Quaternion angle = Quaternion.Euler(xEulerAngle, yEulerAngle, zEulerAngle);
-
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        string type = "tiefighter";
-        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
-
-        string name = "alpha";
-        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
-
-        string allegiance = "imperial";
-        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
-
-        string cargo = "no cargo";
-        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
-
-        float distance = 1000;
-
-        if (float.TryParse(missionEvent.data5, out _))
-        {
-            distance = float.Parse(missionEvent.data5);
-        }
-
-        bool exitingHyperspace = false;
-
-        if (bool.TryParse(missionEvent.data6, out _))
-        {
-            exitingHyperspace = bool.Parse(missionEvent.data6);
-        }
-
-        string laserColor = "red";
-        if (missionEvent.data7 != "none") { laserColor = missionEvent.data7; }
-
-        Scene scene = SceneFunctions.GetScene();
-
-        Vector3 newPosition = new Vector3(0, 0, 0);
-
-        if (scene != null)
-        {
-            if (scene.mainShip != null)
-            {
-                newPosition = (angle * scene.mainShip.transform.forward).normalized * distance;
-            }
-        }
-
-        SceneFunctions.LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, exitingHyperspace, true, false, laserColor);
-    }
-
-    //This loads a single ship on the ground
-    public static void LoadSingleShipOnGround(MissionEvent missionEvent)
-    {
-        float x = missionEvent.x;
-        float y = missionEvent.y;
-        float z = missionEvent.z;
-
-        Vector3 position = new Vector3(x, y, z);
-
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        string type = "tiefighter";
-        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
-
-        string name = "alpha";
-        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
-
-        string allegiance = "imperial";
-        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
-
-        string cargo = "no cargo";
-        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
-
-        bool isAI = false;
-
-        if (bool.TryParse(missionEvent.data5, out _))
-        {
-            isAI = bool.Parse(missionEvent.data5);
-        }
-
-        float distanceAboveGround = 0;
-
-        if (float.TryParse(missionEvent.data6, out _))
-        {
-            distanceAboveGround = float.Parse(missionEvent.data6);
-        }
-
-        float positionVariance = 10;
-
-        if (float.TryParse(missionEvent.data7, out _))
-        {
-            positionVariance = float.Parse(missionEvent.data7);
-        }
-
-        bool ifRaycastFailsStillLoad = false;
-
-        if (bool.TryParse(missionEvent.data8, out _))
-        {
-            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data8);
-        }
-
-        string laserColor = "red";
-        if (missionEvent.data9 != "none") { laserColor = missionEvent.data9; }
-
-        SceneFunctions.LoadSingleShipOnGround(position, rotation, type, name, allegiance, cargo, isAI, distanceAboveGround, positionVariance, ifRaycastFailsStillLoad, laserColor);
     }
 
     //This loads multiple ships by name
@@ -2872,6 +2564,343 @@ public static class MissionFunctions
 
         Task a = new Task(SceneFunctions.LoadMultipleShipsOnGround(position, rotation, type, name, allegiance, cargo, number, length, width, distanceAboveGround, shipsPerLine, positionVariance, ifRaycastFailsStillLoad, laserColor));
         while (a.Running == true) { yield return null; }
+    }
+
+    //This loads a planet in the scene
+    public static void LoadPlanet(MissionEvent missionEvent)
+    {
+        float planetRotationX = missionEvent.x;
+        float planetRotationY = missionEvent.y;
+        float planetRotationZ = missionEvent.z;
+
+        float pivotRotationX = missionEvent.xRotation;
+        float pivotRotationY = missionEvent.yRotation;
+        float pivotRotationZ = missionEvent.zRotation;
+
+        string planetType = missionEvent.data2;
+        string cloudsType = missionEvent.data3;
+        string atmosphereType = missionEvent.data4;
+        string ringsType = missionEvent.data5;
+
+        float distance = 50;
+
+        if (float.TryParse(missionEvent.data1, out _))
+        {
+            distance = float.Parse(missionEvent.data1);
+        }
+
+        Scene scene = SceneFunctions.GetScene();
+
+        SceneFunctions.GeneratePlanet(planetType, cloudsType, atmosphereType, ringsType, distance, planetRotationX, planetRotationY, planetRotationZ, pivotRotationX, pivotRotationY, pivotRotationZ);
+    }
+
+    //This loads a single prop on the ground
+    public static void LoadSinglePropOnGround(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        Vector3 position = new Vector3(x, y, z);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "redwood01";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        bool ifRaycastFailsStillLoad = false;
+
+        if (bool.TryParse(missionEvent.data2, out _))
+        {
+            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data2);
+        }
+
+        SceneFunctions.LoadSinglePropOnGround(position, rotation, type, ifRaycastFailsStillLoad);
+    }
+
+    //This loads a single ship by name
+    public static void LoadSingleShip(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        Vector3 position = new Vector3(x, y, z);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "tiefighter";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        string name = "alpha";
+        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
+
+        string allegiance = "imperial";
+        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
+
+        string cargo = "no cargo";
+        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
+
+        bool exitingHyperspace = false;
+
+        if (bool.TryParse(missionEvent.data5, out _))
+        {
+            exitingHyperspace = bool.Parse(missionEvent.data5);
+        }
+
+        bool isAI = false;
+
+        if (bool.TryParse(missionEvent.data6, out _))
+        {
+            isAI = bool.Parse(missionEvent.data6);
+        }
+
+        string laserColor = "red";
+        if (missionEvent.data7 != "none") { laserColor = missionEvent.data7; }
+
+        SceneFunctions.LoadSingleShip(position, rotation, type, name, allegiance, cargo, exitingHyperspace, isAI, false, laserColor, true);
+    }
+
+    //This loads a single ship at a certain distance and angle from the player
+    public static void LoadSingleShipAtDistanceAndAngleFromPlayer(MissionEvent missionEvent)
+    {
+        float xEulerAngle = missionEvent.x;
+        float yEulerAngle = missionEvent.y;
+        float zEulerAngle = missionEvent.z;
+
+        Quaternion angle = Quaternion.Euler(xEulerAngle, yEulerAngle, zEulerAngle);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "tiefighter";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        string name = "alpha";
+        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
+
+        string allegiance = "imperial";
+        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
+
+        string cargo = "no cargo";
+        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
+
+        float distance = 1000;
+
+        if (float.TryParse(missionEvent.data5, out _))
+        {
+            distance = float.Parse(missionEvent.data5);
+        }
+
+        bool exitingHyperspace = false;
+
+        if (bool.TryParse(missionEvent.data6, out _))
+        {
+            exitingHyperspace = bool.Parse(missionEvent.data6);
+        }
+
+        string laserColor = "red";
+        if (missionEvent.data7 != "none") { laserColor = missionEvent.data7; }
+
+        Scene scene = SceneFunctions.GetScene();
+
+        Vector3 newPosition = new Vector3(0, 0, 0);
+
+        if (scene != null)
+        {
+            if (scene.mainShip != null)
+            {
+                newPosition = (angle * scene.mainShip.transform.forward).normalized * distance;
+            }
+        }
+
+        SceneFunctions.LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, exitingHyperspace, true, false, laserColor);
+    }
+
+    //This loads a single ship on the ground
+    public static void LoadSingleShipOnGround(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        Vector3 position = new Vector3(x, y, z);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "tiefighter";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        string name = "alpha";
+        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
+
+        string allegiance = "imperial";
+        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
+
+        string cargo = "no cargo";
+        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
+
+        bool isAI = false;
+
+        if (bool.TryParse(missionEvent.data5, out _))
+        {
+            isAI = bool.Parse(missionEvent.data5);
+        }
+
+        float distanceAboveGround = 0;
+
+        if (float.TryParse(missionEvent.data6, out _))
+        {
+            distanceAboveGround = float.Parse(missionEvent.data6);
+        }
+
+        float positionVariance = 10;
+
+        if (float.TryParse(missionEvent.data7, out _))
+        {
+            positionVariance = float.Parse(missionEvent.data7);
+        }
+
+        bool ifRaycastFailsStillLoad = false;
+
+        if (bool.TryParse(missionEvent.data8, out _))
+        {
+            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data8);
+        }
+
+        string laserColor = "red";
+        if (missionEvent.data9 != "none") { laserColor = missionEvent.data9; }
+
+        SceneFunctions.LoadSingleShipOnGround(position, rotation, type, name, allegiance, cargo, isAI, distanceAboveGround, positionVariance, ifRaycastFailsStillLoad, laserColor);
+    }
+
+    //This loads a dynamic terrain
+    public static IEnumerator LoadTerrain(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string terrainTextureType = missionEvent.data1;
+        string terrainCliffType = missionEvent.data2;
+        string baseNoise = missionEvent.data3;
+        string maskNoise = missionEvent.data4;
+        string blendNoise = missionEvent.data5;
+
+        int seed = 0;
+
+        if (int.TryParse(missionEvent.data6, out _))
+        {
+            seed = int.Parse(missionEvent.data6);
+        }
+
+        float terrainHeight = 50;
+
+        if (float.TryParse(missionEvent.data7, out _))
+        {
+            terrainHeight = float.Parse(missionEvent.data7);
+        }
+
+        float canyonDepth = 50;
+
+        if (float.TryParse(missionEvent.data8, out _))
+        {
+            canyonDepth = float.Parse(missionEvent.data8);
+        }
+
+        float blendFactor = 0.5f;
+
+        if (float.TryParse(missionEvent.data9, out _))
+        {
+            blendFactor = float.Parse(missionEvent.data9);
+        }
+
+        TerrainManager terrainManager = scene.AddComponent<TerrainManager>();
+
+        terrainManager.player = scene.mainCamera.transform;
+        terrainManager.terrainTextureType = terrainTextureType;
+        terrainManager.terrainCliffTextureType = terrainCliffType;
+
+        if (baseNoise == "Mountains")
+        {
+            terrainManager.terrainType = TerrainType.Mountains;
+        }
+        else if (baseNoise == "Hills")
+        {
+            terrainManager.terrainType = TerrainType.Hills;
+        }
+        else if (baseNoise == "Desert")
+        {
+            terrainManager.terrainType = TerrainType.Desert;
+        }
+        else if (baseNoise == "Cliffside")
+        {
+            terrainManager.terrainType = TerrainType.Cliffside;
+        }
+        else if (baseNoise == "Plains")
+        {
+            terrainManager.terrainType = TerrainType.Plains;
+        }
+
+        if (maskNoise == "Canyons")
+        {
+            terrainManager.maskType = MaskType.Canyons;
+        }
+        else
+        {
+            terrainManager.maskType = MaskType.None;
+        }
+
+        if (baseNoise == "Mountains")
+        {
+            terrainManager.blendType = BlendType.Mountains;
+        }
+        else if (baseNoise == "Hills")
+        {
+            terrainManager.blendType = BlendType.Hills;
+        }
+        else if (baseNoise == "Desert")
+        {
+            terrainManager.blendType = BlendType.Desert;
+        }
+        else if (baseNoise == "Cliffside")
+        {
+            terrainManager.blendType = BlendType.Cliffside;
+        }
+        else if (baseNoise == "Plains")
+        {
+            terrainManager.blendType = BlendType.Plains;
+        }
+        else if (baseNoise == "None")
+        {
+            terrainManager.blendType = BlendType.None;
+        }
+
+        terrainManager.seed = seed;
+        terrainManager.terrainHeight = terrainHeight;
+        terrainManager.canyonDepth = canyonDepth;
+        terrainManager.blendFactor = blendFactor;
+
+        Task a = new Task(TerrainManagerFunctions.CommenceTerrainGeneration(terrainManager));
+        terrainManager.terrainTasks.Add(a);
+
+        while (a.Running == true)
+        {
+            yield return null;
+        }
     }
 
     //This changes the type of music that is playing

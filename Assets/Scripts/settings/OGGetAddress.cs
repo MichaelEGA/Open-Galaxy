@@ -25,12 +25,12 @@ public static class OGGetAddress
     public static string planets_atmospherematerials = "objects/planets/atmospherematerials/";
     public static string planets_cloudmaterials = "objects/planets/cloudmaterials/";
     public static string planets_planetmaterials = "objects/planets/planetmaterials/";
+    public static string props = "objects/props/";
     public static string terrainmaterials = "objects/terrain/terrainmaterials/";
     public static string terraintextures = "objects/terrain/terraintextures/";
     public static string terrainclifftextures = "objects/terrain/terrainclifftextures/";
     public static string radar = "objects/radar/";
     public static string ships = "objects/ships/";
     public static string skyboxes = "skyboxes/";
-    public static string environments = "objects/environments/";
     public static string turrets = "objects/turrets/";
 }

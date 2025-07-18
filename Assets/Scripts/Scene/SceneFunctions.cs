@@ -45,21 +45,21 @@ public static class SceneFunctions
             scene.shipsPrefabPool = shipPrefabs;
         }
 
-        Object[] ogCockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits, typeof(GameObject));
+        Object[] cockpitPrefabs = Resources.LoadAll(OGGetAddress.cockpits, typeof(GameObject));
 
-        if (ogCockpitPrefabs != null)
+        if (cockpitPrefabs != null)
         {
-            scene.ogCockpitPrefabPool = new GameObject[ogCockpitPrefabs.Length];
-            scene.ogCockpitPrefabPool = ogCockpitPrefabs;
+            scene.cockpitPrefabPool = new GameObject[cockpitPrefabs.Length];
+            scene.cockpitPrefabPool = cockpitPrefabs;
         }
 
         //This loads the environments
-        Object[] environmentsPrefabs = Resources.LoadAll(OGGetAddress.environments, typeof(GameObject));
+        Object[] propPrefabs = Resources.LoadAll(OGGetAddress.props, typeof(GameObject));
 
-        if (environmentsPrefabs != null)
+        if (propPrefabs != null)
         {
-            scene.environmentsPrefabPool = new GameObject[environmentsPrefabs.Length];
-            scene.environmentsPrefabPool = environmentsPrefabs;
+            scene.propPrefabPool = new GameObject[propPrefabs.Length];
+            scene.propPrefabPool = propPrefabs;
         }
 
         //This loads the particle prefabs
@@ -1215,7 +1215,7 @@ public static class SceneFunctions
     {
         Scene scene = GetScene();
 
-        foreach (GameObject environmentsPrefab in scene.environmentsPrefabPool)
+        foreach (GameObject environmentsPrefab in scene.propPrefabPool)
         {
             if (environmentsPrefab.name == type)
             {
@@ -2241,6 +2241,51 @@ public static class SceneFunctions
 
     #endregion
 
+    #region prop loading
+
+    //This instantiates a single prop at the given point
+    public static void LoadSinglePropOnGround(Vector3 position, Quaternion rotation, string type, bool ifRaycastFailsStillLoad = true)
+    {
+        //This gets the scene reference
+        Scene scene = GetScene();
+
+        //This finds the ship type to load 
+        Object propPrefab = null;
+
+        foreach (Object tempPropPrefab in scene.propPrefabPool)
+        {
+            if (tempPropPrefab.name == type)
+            {
+                propPrefab = tempPropPrefab;
+                break;
+            }
+        }
+
+        Vector3 relativePosition = scene.transform.TransformPoint(position);
+
+        Vector3 raycastPos = new Vector3(relativePosition.x, 15000, relativePosition.z);
+
+        RaycastHit hit;
+
+        LayerMask mask = LayerMask.GetMask("collision_asteroid");
+
+        if (Physics.Raycast(raycastPos, Vector3.down, out hit, 30000, mask))
+        {
+            Vector3 newPosition = hit.point;
+            GameObject newObject = GameObject.Instantiate(propPrefab, scene.transform) as GameObject;
+            newObject.transform.position = newPosition;
+        }
+        else if (ifRaycastFailsStillLoad == true)
+        {
+            Vector3 newPosition = new Vector3(relativePosition.x, 0, relativePosition.z);
+            GameObject newObject = GameObject.Instantiate(propPrefab, scene.transform) as GameObject;
+            newObject.transform.position = newPosition;
+            Debug.Log("Raycast for prop " + propPrefab.name + " was unsuccesful instantiating at 0 on the y-axis");
+        }
+    }
+
+    #endregion
+
     #region cockpit loading
 
     //This instanties the designated prefabe from the pool listed in the settings or finds a substitute from another pool if the prefab is not present
@@ -2252,7 +2297,7 @@ public static class SceneFunctions
         GameObject tempPrefab = null;
 
         //This gets the prefab from the designated pool
-        foreach (GameObject objectPrefab in scene.ogCockpitPrefabPool)
+        foreach (GameObject objectPrefab in scene.cockpitPrefabPool)
         {
             if (objectPrefab.name == name)
             {
@@ -2356,6 +2401,15 @@ public static class SceneFunctions
             FollowCamera.transform.parent = null;
         }
 
+        TerrainManager terrainManager = GameObject.FindAnyObjectByType<TerrainManager>();
+
+        if (terrainManager != null)
+        {
+            TerrainManagerFunctions.StopTerrainCoroutines();
+            TerrainManagerFunctions.DestroyAllTiles();
+            GameObject.Destroy(terrainManager);
+        }
+
         if (scene.objectPool != null)
         {
             foreach (GameObject gameobject in scene.objectPool)
@@ -2431,6 +2485,15 @@ public static class SceneFunctions
     public static void ClearLocation()
     {
         Scene scene = GetScene();
+
+        TerrainManager terrainManager = GameObject.FindAnyObjectByType<TerrainManager>();
+
+        if (terrainManager != null)
+        {
+            TerrainManagerFunctions.StopTerrainCoroutines();
+            TerrainManagerFunctions.DestroyAllTiles();
+            GameObject.Destroy(terrainManager);
+        }
 
         if (scene.objectPool != null)
         {

@@ -181,10 +181,6 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadAsteroids(node);
         }
-        else if (node.nodeType == "preload_loadenvironment")
-        {
-            NodeTypes.Draw_PreLoad_LoadEnvironment(node);
-        }
         else if (node.nodeType == "preload_loadplanet")
         {
             NodeTypes.Draw_PreLoad_LoadPlanet(node);
@@ -196,6 +192,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "preload_loadmultipleshipsonground")
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShipsOnGround(node);
+        }
+        else if (node.nodeType == "preload_loadsingleproponground")
+        {
+            NodeTypes.Draw_PreLoad_LoadSinglePropOnGround(node);
         }
         else if (node.nodeType == "preload_loadsingleship")
         {

@@ -56,8 +56,12 @@ public class TerrainManager : MonoBehaviour
     public float tileNoiseScale = 0.2f; // Adjust for desired terrain roughness
 
     [Header("Terrain Textures")]
-    public string terrainTextureType = "forest-mixed";      // Main terrain texture type
-    public string terrainCliffTextureType = "grand-canyon"; // Cliff-specific terrain texture type
+    public string textureType1; // Main terrain texture type
+    public string textureType2;
+    public string textureType3;
+    public string textureType4;
+    public string textureType5; 
+    public string cliffTextureType; // Cliff-specific terrain texture type
 
     [Header("Generation State")]
     public Dictionary<Vector2Int, GameObject> tiles = new Dictionary<Vector2Int, GameObject>(); // Stores references to active tiles

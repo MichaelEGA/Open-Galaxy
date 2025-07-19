@@ -2223,7 +2223,7 @@ public static class SceneFunctions
     }
 
     //This instantiates a group of props on the ground
-    public static IEnumerator LoadMultiplePropsOnGround(Vector3 position, Quaternion rotation, string type, string pattern, float width, float length, int number, float separation = 10, int seed = 1, bool ifRaycastFailsStillLoad = true)
+    public static IEnumerator LoadMultiplePropsOnGround(Vector3 position, Quaternion rotation, string type1, string type2, string type3, string type4, string type5, string pattern, float width, float length, int number, float separation = 10, int seed = 1, bool ifRaycastFailsStillLoad = true)
     {
         //This gets the scene reference
         Scene scene = GetScene();
@@ -2236,7 +2236,7 @@ public static class SceneFunctions
 
         foreach (Object tempProp in scene.propPrefabPool)
         {
-            if (tempProp.name.Contains(type))
+            if (tempProp.name == type1 || tempProp.name == type2 || tempProp.name == type3 || tempProp.name == type4 || tempProp.name == type5)
             {
                 propPrefabs.Add(tempProp);
             }
@@ -2256,7 +2256,7 @@ public static class SceneFunctions
 
                 LayerMask mask = LayerMask.GetMask("collision_asteroid");
 
-                int selection = Random.Range(0, propPrefabs.Count - 1);
+                int selection = Random.Range(0, propPrefabs.Count);
 
                 if (Physics.Raycast(raycastPos, Vector3.down, out hit, 30000, mask))
                 {
@@ -2382,7 +2382,6 @@ public static class SceneFunctions
             }
         }
 
-        Debug.Log($"Attempted to generate {number} buildings, successfully placed {currentBuildingsGenerated}.");
         return buildingPositions.ToArray();
     }
 

@@ -55,7 +55,7 @@ public static class MissionFunctions
         DisplayLoadingScreen(missionName, true);
 
         //This tells the player that the mission is being loaded
-        LoadScreenFunctions.AddLogToLoadingScreen("Start loading " + missionName + ".", Time.unscaledTime - startTime);
+        LoadScreenFunctions.AddLogToLoadingScreen("Start loading " + missionName + ".", startTime);
 
         //This loads the base game scene
         LoadScene(missionName, missionAddress, addressIsExternal, startTime);
@@ -91,7 +91,7 @@ public static class MissionFunctions
         while (a.Running == true) { yield return null; }
 
         //This tells the player to get ready, starts the game, locks the cursor and gets rid of the loading screen
-        LoadScreenFunctions.AddLogToLoadingScreen(missionName + " loaded.", Time.unscaledTime - startTime);
+        LoadScreenFunctions.AddLogToLoadingScreen(missionName + " loaded.", startTime);
 
         //This unpause the game 
         Time.timeScale = 1;
@@ -149,7 +149,7 @@ public static class MissionFunctions
                 if (tempMissionEvent.data1 == "true")
                 {
                     missionEvent = tempMissionEvent;
-                    LoadScreenFunctions.AddLogToLoadingScreen("Starting location node found", Time.unscaledTime - startTime);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Starting location node found", startTime);
                     break;
                 }
             }
@@ -157,7 +157,7 @@ public static class MissionFunctions
 
         if (missionEvent == null)
         {
-            LoadScreenFunctions.AddLogToLoadingScreen("No starting location node found searching for another location node.", Time.unscaledTime - startTime);
+            LoadScreenFunctions.AddLogToLoadingScreen("No starting location node found searching for another location node.", startTime);
 
             Debug.Log("run 3");
 
@@ -166,7 +166,7 @@ public static class MissionFunctions
                 if (tempMissionEvent.eventType == "createlocation")
                 {
                     missionEvent = tempMissionEvent;
-                    LoadScreenFunctions.AddLogToLoadingScreen("Secondary location node found.", Time.unscaledTime - startTime);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Secondary location node found.", startTime);
                     break;
                 }
             }
@@ -174,7 +174,7 @@ public static class MissionFunctions
 
         if (missionEvent == null)
         {
-            LoadScreenFunctions.AddLogToLoadingScreen("No starting location found aborting load", Time.unscaledTime - startTime);
+            LoadScreenFunctions.AddLogToLoadingScreen("No starting location found aborting load", startTime);
         }
 
         return missionEvent;
@@ -207,48 +207,48 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
             {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading planet", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading planet", startTime);
                 LoadPlanet(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", startTime);
             }
             else if (missionEvent.eventType == "preload_loadterrain" & missionEvent.conditionLocation == location)
             {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain", startTime);
 
                 Task a = new Task(LoadTerrain(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", startTime);
             }
             else if (missionEvent.eventType == "preload_sethudcolour" & missionEvent.conditionLocation == location)
             {
                 SetHudColour(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Hud Colour Set", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Hud Colour Set", startTime);
             }
             else if (missionEvent.eventType == "preload_setsceneradius" & missionEvent.conditionLocation == location)
             {
                 SetSceneRadius(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", startTime);
             }
             else if (missionEvent.eventType == "preload_setskybox" & missionEvent.conditionLocation == location)
             {
                 SetSkyBox(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", startTime);
             }
             else if (missionEvent.eventType == "preload_setlighting" & missionEvent.conditionLocation == location)
             {
                 SetLighting(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Lighting set", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Lighting set", startTime);
             }
             else if (missionEvent.eventType == "preload_setfogdistanceandcolor" & missionEvent.conditionLocation == location)
             {
                 SetFogDistanceAndColor(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Fog settings set", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Fog settings set", startTime);
             }
             else if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadAsteroids(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", startTime);
             }
         }
 
@@ -257,28 +257,28 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "preload_loadsingleproponground" & missionEvent.conditionLocation == location)
             {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading prop", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading prop", startTime);
                 LoadSinglePropOnGround(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Prop loaded", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Prop loaded", startTime);
             }
             else if (missionEvent.eventType == "preload_loadmultiplepropsonground" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultiplePropsOnGround(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Multiple props loaded on the ground", Time.unscaledTime - startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Multiple props loaded on the ground", startTime);
             }
             else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", Time.unscaledTime - startTime);  
+                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", startTime);  
             }
             else if (missionEvent.eventType == "preload_loadsingleshipsonground" & missionEvent.conditionLocation == location)
             {
                 if (firstRun == false & missionEvent.data10 == "false" || firstRun == false & missionEvent.data10 == "none" || firstRun == true)
                 {
                     LoadSingleShipOnGround(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded on the ground", Time.unscaledTime - startTime);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded on the ground", startTime);
                 }   
             }
             else if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
@@ -287,14 +287,14 @@ public static class MissionFunctions
                 if (firstRun == false & missionEvent.data8 == "false" || firstRun == false & missionEvent.data8 == "none" || firstRun == true)
                 {
                     LoadSingleShip(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", Time.unscaledTime - startTime);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", startTime);
                 } 
             }
             else if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", Time.unscaledTime - startTime);                 
+                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", startTime);                 
             }        
         }
     }
@@ -779,18 +779,18 @@ public static class MissionFunctions
 
         //This creates the hud
         HudFunctions.CreateHud();
-        LoadScreenFunctions.AddLogToLoadingScreen("Hud created.", Time.unscaledTime - startTime);
+        LoadScreenFunctions.AddLogToLoadingScreen("Hud created.", startTime);
 
         //This creates the scene and gets the cameras
         SceneFunctions.CreateScene();
         SceneFunctions.GetCameras();
-        LoadScreenFunctions.AddLogToLoadingScreen("Scene created.", Time.unscaledTime - startTime);
+        LoadScreenFunctions.AddLogToLoadingScreen("Scene created.", startTime);
 
         //THis loads the audio and music manager
         AudioFunctions.CreateAudioManager(missionAddress + missionName + "_audio/", addressIsExternal);
-        LoadScreenFunctions.AddLogToLoadingScreen("Audio Manager created", Time.unscaledTime - startTime);
+        LoadScreenFunctions.AddLogToLoadingScreen("Audio Manager created", startTime);
         MusicFunctions.CreateMusicManager();
-        LoadScreenFunctions.AddLogToLoadingScreen("Music Manager created", Time.unscaledTime - startTime);
+        LoadScreenFunctions.AddLogToLoadingScreen("Music Manager created", startTime);
     }
 
     //This displays the loading screen
@@ -2341,63 +2341,62 @@ public static class MissionFunctions
 
         Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
-        string type = "redwood";
-
-        if (missionEvent.data1 != "none") 
-        { 
-            type = missionEvent.data1; 
-        }
+        string type1 = missionEvent.data1;
+        string type2 = missionEvent.data2;
+        string type3 = missionEvent.data3;
+        string type4 = missionEvent.data4;
+        string type5 = missionEvent.data5;
 
         string pattern = "treepositions";
 
-        if (missionEvent.data2 != "none")
+        if (missionEvent.data6 != "none")
         {
-            pattern = missionEvent.data2;
+            pattern = missionEvent.data6;
         }
 
         float width = 1000;
 
-        if (float.TryParse(missionEvent.data3, out _))
+        if (float.TryParse(missionEvent.data7, out _))
         {
-            width = float.Parse(missionEvent.data3);
+            width = float.Parse(missionEvent.data7);
         }
 
         float length = 1000;
 
-        if (float.TryParse(missionEvent.data4, out _))
+        if (float.TryParse(missionEvent.data8, out _))
         {
-            length = float.Parse(missionEvent.data4);
+            length = float.Parse(missionEvent.data8);
         }
 
         int number = 1;
 
-        if (int.TryParse(missionEvent.data5, out _))
+        if (int.TryParse(missionEvent.data9, out _))
         {
-            number = int.Parse(missionEvent.data5);
+            number = int.Parse(missionEvent.data9);
         }
 
         float separation = 0;
 
-        if (float.TryParse(missionEvent.data6, out _))
+        if (float.TryParse(missionEvent.data10, out _))
         {
-            separation = float.Parse(missionEvent.data6);
+            separation = float.Parse(missionEvent.data10);
         }
 
         int seed = 1;
 
-        if (int.TryParse(missionEvent.data7, out _))
+        if (int.TryParse(missionEvent.data11, out _))
         {
-            seed = int.Parse(missionEvent.data7);
+            seed = int.Parse(missionEvent.data11);
         }
 
         bool ifRaycastFailsStillLoad = false;
 
-        if (bool.TryParse(missionEvent.data8, out _))
+        if (bool.TryParse(missionEvent.data12, out _))
         {
-            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data8);
+            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data12);
         }
 
-        Task a = new Task(SceneFunctions.LoadMultiplePropsOnGround(position, rotation, type, pattern, width, length, number, separation, seed, ifRaycastFailsStillLoad));
+        Task a = new Task(SceneFunctions.LoadMultiplePropsOnGround(position, rotation, type1, type2, type3, type4, type5, pattern, width, length, number, separation, seed, ifRaycastFailsStillLoad));
         while (a.Running == true) { yield return null; }
     }
 
@@ -2867,45 +2866,53 @@ public static class MissionFunctions
     {
         Scene scene = SceneFunctions.GetScene();
 
-        string terrainTextureType = missionEvent.data1;
-        string terrainCliffType = missionEvent.data2;
-        string baseNoise = missionEvent.data3;
-        string maskNoise = missionEvent.data4;
-        string blendNoise = missionEvent.data5;
+        string textureType1 = missionEvent.data1;
+        string textureType2 = missionEvent.data2;
+        string textureType3 = missionEvent.data3;
+        string textureType4 = missionEvent.data4;
+        string textureType5 = missionEvent.data5;
+        string clifftextureType = missionEvent.data6;
+        string baseNoise = missionEvent.data7;
+        string maskNoise = missionEvent.data8;
+        string blendNoise = missionEvent.data9;
 
         int seed = 0;
 
-        if (int.TryParse(missionEvent.data6, out _))
+        if (int.TryParse(missionEvent.data10, out _))
         {
-            seed = int.Parse(missionEvent.data6);
+            seed = int.Parse(missionEvent.data10);
         }
 
         float terrainHeight = 50;
 
-        if (float.TryParse(missionEvent.data7, out _))
+        if (float.TryParse(missionEvent.data11, out _))
         {
-            terrainHeight = float.Parse(missionEvent.data7);
+            terrainHeight = float.Parse(missionEvent.data11);
         }
 
         float canyonDepth = 50;
 
-        if (float.TryParse(missionEvent.data8, out _))
+        if (float.TryParse(missionEvent.data12, out _))
         {
-            canyonDepth = float.Parse(missionEvent.data8);
+            canyonDepth = float.Parse(missionEvent.data12);
         }
 
         float blendFactor = 0.5f;
 
-        if (float.TryParse(missionEvent.data9, out _))
+        if (float.TryParse(missionEvent.data13, out _))
         {
-            blendFactor = float.Parse(missionEvent.data9);
+            blendFactor = float.Parse(missionEvent.data13);
         }
 
         TerrainManager terrainManager = scene.AddComponent<TerrainManager>();
 
         terrainManager.player = scene.mainCamera.transform;
-        terrainManager.terrainTextureType = terrainTextureType;
-        terrainManager.terrainCliffTextureType = terrainCliffType;
+        terrainManager.textureType1 = textureType1;
+        terrainManager.textureType2 = textureType2;
+        terrainManager.textureType3 = textureType2;
+        terrainManager.textureType4 = textureType2;
+        terrainManager.textureType5 = textureType2;
+        terrainManager.cliffTextureType = clifftextureType;
 
         if (baseNoise == "Mountains")
         {

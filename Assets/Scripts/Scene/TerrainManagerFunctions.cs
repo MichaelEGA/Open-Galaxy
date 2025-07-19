@@ -263,7 +263,7 @@ public static class TerrainManagerFunctions
 
                         foreach (Object obj in tileManager.scene.terrainTexturesPool)
                         {
-                            if (obj.name.Contains(tileManager.terrainTextureType))
+                            if (obj.name == tileManager.textureType1 || obj.name == tileManager.textureType2 || obj.name == tileManager.textureType3 || obj.name == tileManager.textureType4 || obj.name == tileManager.textureType5)
                             {
                                 selectedTextures.Add((Texture2D)obj);
                             }
@@ -284,7 +284,7 @@ public static class TerrainManagerFunctions
 
                         foreach (Object obj in tileManager.scene.terrainCliffTexturesPool)
                         {
-                            if (obj.name.Contains(tileManager.terrainCliffTextureType))
+                            if (obj.name == tileManager.cliffTextureType)
                             {
                                 selectedTextures.Add((Texture2D)obj);
                             }

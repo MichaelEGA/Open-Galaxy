@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 public static class NodeTypes
 {
@@ -334,7 +335,23 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetPropListExpanded(), "type", "redwood", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetPropList(), "type1", "building01", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetPropList(), "type2", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetPropList(), "type3", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, GetPropList(), "type4", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, GetPropList(), "type5", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -342,27 +359,27 @@ public static class NodeTypes
         options1.Add("treepositions");
         options1.Add("buildingpositions");
 
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options1, "pattern", "treepositions", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options1, "pattern", "treepositions", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
+        node.data7 = NodeFunctions.DrawInputField(node, "width", "1000", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data4 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
+        node.data8 = NodeFunctions.DrawInputField(node, "length", "1000", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data5 = NodeFunctions.DrawInputField(node, "number", "5", 7, 5, drop, 12.5f, 90, 5f);
+        node.data9 = NodeFunctions.DrawInputField(node, "number", "5", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data6 = NodeFunctions.DrawInputField(node, "separation", "10", 7, 5, drop, 12.5f, 90, 5f);
+        node.data10 = NodeFunctions.DrawInputField(node, "separation", "10", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data7 = NodeFunctions.DrawInputField(node, "seed", "1", 7, 5, drop, 12.5f, 90, 5f);
+        node.data11 = NodeFunctions.DrawInputField(node, "seed", "1", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -370,7 +387,7 @@ public static class NodeTypes
         options2.Add("false");
         options2.Add("true");
 
-        node.data8 = NodeFunctions.DrawDropDownMenu(node, options2, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
+        node.data12 = NodeFunctions.DrawDropDownMenu(node, options2, "always load", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -886,39 +903,55 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture", "forest-mixed", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture 1", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureCliffList(), "cliff texture", "grand-canyon", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture 2", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetBaseNoiseTypes(), "base noise", "Plain", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture 3", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data4 = NodeFunctions.DrawDropDownMenu(node, GetMaskNoiseTypes(), "mask noise", "None", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture 4", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data5 = NodeFunctions.DrawDropDownMenu(node, GetBlendNoiseTypes(), "blend noise", "None", 7, 5, drop, 12.5f, 90, 5f);
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture 5", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data6 = NodeFunctions.DrawInputField(node, "seed", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureCliffList(), "cliff texture", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data7 = NodeFunctions.DrawInputField(node, "terrain height", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, GetBaseNoiseTypes(), "base noise", "Plain", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data8 = NodeFunctions.DrawInputField(node, "canyon depth", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, GetMaskNoiseTypes(), "mask noise", "None", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data9 = NodeFunctions.DrawInputField(node, "blend factor", "0.5", 7, 5, drop, 12.5f, 90, 5f);
+        node.data9 = NodeFunctions.DrawDropDownMenu(node, GetBlendNoiseTypes(), "blend noise", "None", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data10 = NodeFunctions.DrawInputField(node, "seed", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawInputField(node, "terrain height", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data12 = NodeFunctions.DrawInputField(node, "canyon depth", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data13 = NodeFunctions.DrawInputField(node, "blend factor", "0.5", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -4536,22 +4569,6 @@ public static class NodeTypes
         return propList;
     }
 
-    public static List<string> GetPropListExpanded()
-    {
-        List<string> propList = new List<string>();
-
-        Object[] props = Resources.LoadAll(OGGetAddress.props, typeof(GameObject));
-
-        propList.Add("redwood");
-
-        foreach (Object prop in props)
-        {
-            propList.Add(prop.name);
-        }
-
-        return propList;
-    }
-
     public static List<string> GetAsteroidList()
     {
         //This gets the Json ship data
@@ -4693,73 +4710,30 @@ public static class NodeTypes
 
     public static List<string> GetTerrainTextureList()
     {
-        List<string> terrainList = new List<string>();
+        List<string> textureList = new List<string>();
 
-        terrainList.Add("Asian-city");
-        terrainList.Add("Austr-city");
-        terrainList.Add("bare-ground");
-        terrainList.Add("barren-land");
-        terrainList.Add("Euro-city");
-        terrainList.Add("European-city");
-        terrainList.Add("european-farm");
-        terrainList.Add("farm-mixed");
-        terrainList.Add("forest-dark");
-        terrainList.Add("forest-decidious");
-        terrainList.Add("forest-evergreen");
-        terrainList.Add("forest-mixed");
-        terrainList.Add("forest-spruce");
-        terrainList.Add("fresh-coast");
-        terrainList.Add("grand-canyon");
-        terrainList.Add("grass-green");
-        terrainList.Add("grass-yellow");
-        terrainList.Add("medium-urban");
-        terrainList.Add("mixed-forest");
-        terrainList.Add("mixed-wilderness");
-        terrainList.Add("mntn-snow");
-        terrainList.Add("new-road");
-        terrainList.Add("patchy-farm");
-        terrainList.Add("range-herbacious");
-        terrainList.Add("range-mixed");
-        terrainList.Add("range-shrub");
-        terrainList.Add("red-desert");
-        terrainList.Add("road-base");
-        terrainList.Add("road-top");
-        terrainList.Add("road-top2");
-        terrainList.Add("salt-coast");
-        terrainList.Add("strip-mines");
-        terrainList.Add("suburb-grass");
-        terrainList.Add("suburb-mixed");
-        terrainList.Add("transportation-2");
-        terrainList.Add("transportation-3");
-        terrainList.Add("transportation-4");
-        terrainList.Add("western-barren");
+        Object[] textures = Resources.LoadAll(OGGetAddress.terraintextures, typeof(Texture2D));
 
-        return terrainList;
+        foreach (Object texture in textures)
+        {
+            textureList.Add(texture.name);
+        }
+
+        return textureList;
     }
 
     public static List<string> GetTerrainTextureCliffList()
     {
-        List<string> terrainCliffList = new List<string>();
+        List<string> textureList = new List<string>();
 
-        terrainCliffList.Add("fresh-coast-land");
-        terrainCliffList.Add("grand-canyon");
-        terrainCliffList.Add("grand-canyon-red");
-        terrainCliffList.Add("grand-canyon-red-2");
-        terrainCliffList.Add("grand-canyon-red-3");
-        terrainCliffList.Add("mntn-red-desert");
-        terrainCliffList.Add("mountain-tundra");
-        terrainCliffList.Add("new-road-top");
-        terrainCliffList.Add("new-road-top-light");
-        terrainCliffList.Add("road-top");
-        terrainCliffList.Add("road-top 1");
-        terrainCliffList.Add("road-top-light");
-        terrainCliffList.Add("road-top2");
-        terrainCliffList.Add("road-top2-white");
-        terrainCliffList.Add("Western-barren");
-        terrainCliffList.Add("Western-barren-canyon-dirt");
-        terrainCliffList.Add("Western-barren2");
+        Object[] textures = Resources.LoadAll(OGGetAddress.terrainclifftextures, typeof(Texture2D));
 
-        return terrainCliffList;
+        foreach (Object texture in textures)
+        {
+            textureList.Add(texture.name);
+        }
+
+        return textureList;
     }
 
     public static List<string> GetBaseNoiseTypes()

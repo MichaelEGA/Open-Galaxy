@@ -2561,6 +2561,16 @@ public static class SceneFunctions
             scene.lasersPool.Clear();
         }
 
+        if (scene.ionPool != null)
+        {
+            foreach (GameObject gameobject in scene.ionPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.ionPool.Clear();
+        }
+
         if (scene.torpedosPool != null)
         {
             foreach (GameObject gameobject in scene.torpedosPool)
@@ -2654,6 +2664,16 @@ public static class SceneFunctions
             scene.lasersPool.Clear();
         }
 
+        if (scene.ionPool != null)
+        {
+            foreach (GameObject gameobject in scene.ionPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.ionPool.Clear();
+        }
+
         if (scene.asteroidPool != null)
         {
             foreach (GameObject gameobject in scene.asteroidPool)
@@ -2695,13 +2715,13 @@ public static class SceneFunctions
     }
 
     //Allows other scripts to easily grab the scene script so they can access commonly held values
-    public static Scene GetScene()
+    public static Scene GetScene(bool createScene = false)
     {
         Scene scene;
 
         scene = GameObject.FindFirstObjectByType<Scene>(FindObjectsInactive.Include);//This gets the scene reference
 
-        if (scene == null)
+        if (scene == null & createScene == true)
         {
             CreateScene();
             scene = GameObject.FindFirstObjectByType<Scene>();

@@ -10,6 +10,8 @@ public class NextMissionFunctions
     //This activates the mission briefing when called by a mission event
     public static IEnumerator ActivateNextMissionMenu(string nextMissionName, string model = "none", bool displayNextMissionButton = true, string debriefingText = "", string audioName = "", string internalAudioFile = "false", float distortionLevel = 0, bool distortion = false)
     {
+        Scene scene = SceneFunctions.GetScene();
+
         NextMission nextMission = GameObject.FindFirstObjectByType<NextMission>();
 
         if (nextMission == null)
@@ -18,6 +20,7 @@ public class NextMissionFunctions
             GameObject nextMissionGO = GameObject.Instantiate(nextMissionPrefab);
             nextMissionGO.name = "NextMission";
             nextMission = nextMissionGO.GetComponent<NextMission>();
+            scene.nextMissionMenu = nextMissionGO;
         }
 
         CanvasGroup canvasGroup = nextMission.GetComponent<CanvasGroup>();

@@ -119,6 +119,20 @@ public static class MainMenuFunctions
         //This instantiates the menu
         GameObject menu = LoadMenuPrefab();
 
+        //This loads the background image
+        Texture2D texture = LoadBackgroundImage();
+
+        RawImage menuBackgroundImage = menu.GetComponentInChildren<RawImage>();
+        menuBackgroundImage.texture = texture;
+
+        GameObject artCredit = GameObject.Find("ArtCredit");
+        Text creditText = artCredit.GetComponent<Text>();
+        string artworkName = CapitalizeFirstLetters(texture.name);
+        creditText.text = artworkName + " by Tegnemaskin";
+
+        MainMenu mainMenu = GetMainMenu();
+        mainMenu.background = texture;
+
         //This starts the menu background music
         PlayBackgroundMusic(true);
 

@@ -17,6 +17,9 @@ public static class MissionFunctions
         //This marks the start time of the script
         float startTime = Time.unscaledTime;
 
+        //This creastes the scene
+        Scene scene = SceneFunctions.GetScene(true);
+
         //This looks for the mission manager and if it doesn't find one creates one
         MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>(FindObjectsInactive.Include); 
         
@@ -4154,20 +4157,23 @@ public static class MissionFunctions
     //This unloads the mission
     public static void UnloadMission(bool loadFollowingMision = false, string missionName = "none")
     {
-        HudFunctions.UnloadHud();
-        MusicFunctions.UnloadMusicManager();
-        AudioFunctions.UnloadAudioManager();
-        Task a = new Task(SceneFunctions.UnloadScene());
+        Scene scene = SceneFunctions.GetScene();
 
         ExitMenu exitMenu = GameObject.FindFirstObjectByType<ExitMenu>();
-        GameObject loadingScreen = GameObject.Find("LoadingScreen");
-        GameObject missionBriefing = GameObject.Find("MissionBriefing");
+        GameObject loadingScreen = scene.loadingScreen;
+        GameObject fade = scene.fade;
+        GameObject cockpitAnchor = scene.cockpitAnchor;
+        GameObject missionBriefing = scene.missionBriefing;
         GameObject nextMissionScreen = GameObject.Find("NextMission");
 
         if (exitMenu != null) { GameObject.Destroy(exitMenu.gameObject); }
         if (loadingScreen != null) { GameObject.Destroy(loadingScreen); }
+        if (fade != null) { GameObject.Destroy(fade); }
+        if (cockpitAnchor != null) { GameObject.Destroy(cockpitAnchor); }
         if (missionBriefing != null) { GameObject.Destroy(missionBriefing); }
         if (nextMissionScreen != null) { GameObject.Destroy(nextMissionScreen); }
+
+        Task a = new Task(SceneFunctions.UnloadScene());
 
         MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>(FindObjectsInactive.Include);
         GameObject missionManagerGO = missionManager.gameObject;
@@ -4199,6 +4205,11 @@ public static class MissionFunctions
         //This destroys the mission manager
         if (missionManager != null) { GameObject.Destroy(missionManager); }
         if (missionManagerGO != null) { GameObject.Destroy(missionManagerGO); }
+        
+        //This unloads the other systems
+        AudioFunctions.UnloadAudioManager();
+        HudFunctions.UnloadHud();
+        MusicFunctions.UnloadMusicManager();
 
         //This loads the next mission if requested
         if (loadFollowingMision == true)

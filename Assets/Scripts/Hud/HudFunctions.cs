@@ -23,6 +23,9 @@ public static class HudFunctions
         GameObject fadeGO = GameObject.Instantiate(fadePrefab);
         fadeGO.name = "Fade";
 
+        Scene scene = SceneFunctions.GetScene();
+        scene.fade = fadeGO;
+
         LoadRadarCamera();     
     }
 
@@ -2019,9 +2022,6 @@ public static class HudFunctions
         RawImage fadeImage = null;
 
         //This gets the references
-        GameObject fadeGO = GameObject.Find("Fade");
-        if (fadeGO != null) { fadeGroup = fadeGO.GetComponent<CanvasGroup>(); }
-
         GameObject fadeImageGO = GameObject.Find("FadeImage");
         if (fadeImageGO != null) { fadeImage = fadeImageGO.GetComponent<RawImage>(); }
 
@@ -2049,9 +2049,6 @@ public static class HudFunctions
         RawImage fadeImage = null;
 
         //This gets the references
-        GameObject fadeGO = GameObject.Find("Fade");
-        if (fadeGO != null) { fadeGroup = fadeGO.GetComponent<CanvasGroup>(); }
-
         GameObject fadeImageGO = GameObject.Find("FadeImage");
         if (fadeImageGO != null) { fadeImage = fadeImageGO.GetComponent<RawImage>(); }
 

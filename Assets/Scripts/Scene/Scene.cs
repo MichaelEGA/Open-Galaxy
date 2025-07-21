@@ -84,7 +84,9 @@ public class Scene : MonoBehaviour
     [HideInInspector] public GameObject planetCamera;
     [HideInInspector] public GameObject starfieldCamera;
     [HideInInspector] public GameObject cockpitCamera;
+    [HideInInspector] public GameObject cockpitAnchor;
     [HideInInspector] public bool followCameraIsActive = true;
+
 
     [Header("Starfield")]
     [HideInInspector] public GameObject waypointObject;
@@ -92,6 +94,13 @@ public class Scene : MonoBehaviour
     [Header("Avoid Collison")]
     [HideInInspector] public float loadTime;
     [HideInInspector] public bool runAvoidCollision = true;
+
+    [Header("Menus")]
+    [HideInInspector] public GameObject missionBriefing;
+    [HideInInspector] public GameObject exitMenu;
+    [HideInInspector] public GameObject loadingScreen;
+    [HideInInspector] public GameObject nextMissionMenu;
+    [HideInInspector] public GameObject fade;
 
     [Header("Screen Capture")]
     [HideInInspector] public float pressTime;

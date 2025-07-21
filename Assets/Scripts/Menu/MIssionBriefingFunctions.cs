@@ -46,8 +46,9 @@ public static class MissionBriefingFunctions
     //This activates the mission briefing when called by a mission event
     public static IEnumerator ActivateMissionBriefing(string briefingText, string audioName, string internalAudioFile, bool distortion, float distortionLevel, string model)
     {
-        Debug.Log("This was run 1");
-        
+        //This gets the scene reference
+        Scene scene = SceneFunctions.GetScene();
+
         //This pauses the game
         Time.timeScale = 0;
 
@@ -108,6 +109,7 @@ public static class MissionBriefingFunctions
             GameObject missionBriefingGO = GameObject.Instantiate(missionBriefingPrefab);
             missionBriefingGO.name = "MissionBriefing";
             missionBriefing = missionBriefingGO.GetComponent<MissionBriefing>();
+            scene.missionBriefing = missionBriefingGO;
         }
 
         //This adds the enviroment to mission briefing so it can access it later to destroy it

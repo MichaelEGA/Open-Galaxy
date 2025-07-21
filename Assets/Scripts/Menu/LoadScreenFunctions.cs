@@ -8,7 +8,8 @@ public static class LoadScreenFunctions
     //This displays the loading screen
     public static void LoadingScreen(bool display, string loadingScreenTitle = "", string message = "")
     {
-        GameObject loadingScreen = GameObject.Find("LoadingScreen");
+        Scene scene = SceneFunctions.GetScene(); //This gets the reference
+        GameObject loadingScreen = scene.loadingScreen;
 
         if (display == true)
         {
@@ -17,6 +18,7 @@ public static class LoadScreenFunctions
                 GameObject loadingScreenPrefab = Resources.Load(OGGetAddress.menus + "LoadingScreen") as GameObject;
                 loadingScreen = GameObject.Instantiate(loadingScreenPrefab);
                 loadingScreen.name = "LoadingScreen";
+                scene.loadingScreen = loadingScreen; //This preserves the reference
             }
 
             GameObject gameType = GameObject.Find("Gametype");
@@ -66,10 +68,13 @@ public static class LoadScreenFunctions
 
         //This sets the background of the load screen to the same as the menu
         MainMenu mainMenu = MainMenuFunctions.GetMainMenu();
+        
+        if (loadingScreen != null & mainMenu != null)
+        {
+            RawImage background = loadingScreen.GetComponentInChildren<RawImage>();
 
-        RawImage background = loadingScreen.GetComponentInChildren<RawImage>();
-
-        background.texture = mainMenu.background;
+            background.texture = mainMenu.background;
+        }
     }
 
     //This adds a message to the ship log

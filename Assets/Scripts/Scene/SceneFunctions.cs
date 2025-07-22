@@ -986,7 +986,7 @@ public static class SceneFunctions
 
         Vector3 centerPosition = new Vector3(width/2f, height/2f, length/2f);
 
-        int yieldCount = 0;
+        int generationCount = 0;
 
         for(int i =0; i < positions.Length; i++)
         {
@@ -1013,12 +1013,12 @@ public static class SceneFunctions
 
             scene.asteroidPool.Add(asteroid);
 
-            yieldCount++;
+            generationCount++;
 
-            if (yieldCount > 100)
+            if (generationCount > 100)
             {
                 yield return null;
-                yieldCount = 0;
+                generationCount = 0;
             }
         }
     }
@@ -2246,6 +2246,8 @@ public static class SceneFunctions
 
         if (propPrefabs.Count > 0 & positions.Length > 0)
         {
+            int generationCount = 0;
+
             foreach (Vector3 tempPosition in positions)
             {
                 Vector3 relativePosition = scene.transform.TransformPoint(tempPosition);
@@ -2272,7 +2274,13 @@ public static class SceneFunctions
                     Debug.Log("Raycast for prop " + propPrefabs[selection].name + " was unsuccesful instantiating at 0 on the y-axis");
                 }
 
-                yield return null;
+                generationCount++;
+
+                if (generationCount > 100)
+                {
+                    yield return null;
+                    generationCount = 0;
+                }
             }
         }
     }

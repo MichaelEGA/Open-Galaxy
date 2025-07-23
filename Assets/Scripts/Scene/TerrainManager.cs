@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.SpeedTree.Importer;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -65,8 +66,11 @@ public class TerrainManager : MonoBehaviour
     public string cliffTextureType; // Cliff-specific terrain texture type
     public string seaTextureType;
 
+    [Header("Terrain Materials")]
+    public Material[] terrainMaterials;
+    public Material seaMaterial;
+
     [Header("Generation State")]
-    public GameObject seaPlane;
     public GameObject distantPlane;
     public Dictionary<Vector2Int, GameObject> tiles = new Dictionary<Vector2Int, GameObject>(); // Stores references to active tiles
     public HashSet<Vector2Int> tilesToGenerate = new HashSet<Vector2Int>();                     // Queue of tiles awaiting generation

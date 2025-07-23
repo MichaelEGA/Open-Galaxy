@@ -7,26 +7,30 @@ using UnityEngine.UIElements;
 public static class TerrainManagerFunctions
 {
     //This starts the terrain generation
-    public static IEnumerator CommenceTerrainGeneration(TerrainManager tileManager)
+    public static IEnumerator CommenceTerrainGeneration(TerrainManager terrainManager)
     {
         //This gets the scene reference for the Tile Manager
-        tileManager.scene = SceneFunctions.GetScene();
+        terrainManager.scene = SceneFunctions.GetScene();
 
         //This creates the plane under the terrain
         CreateDistantPlane();
 
         //This sets the terrain type for the Tile Manager
-        SetTerrainNoiseSettings(tileManager);
+        SetTerrainNoiseSettings(terrainManager);
 
         //This queues the base tiles to generate
-        QueueInitialTiles(tileManager);
+        QueueInitialTiles(terrainManager);
 
         //This sets the seed
-        Random.InitState(tileManager.seed);
+        Random.InitState(terrainManager.seed);
+
+        //This generates the terrain materials
+        GenerateTerrainMaterials(terrainManager);
+        GenerateSeaMaterial(terrainManager);
 
         //This generates the base tiles
-        Task a = new Task(GenerateTiles(tileManager));
-        tileManager.terrainTasks.Add(a); //This adds the task to the list
+        Task a = new Task(GenerateTiles(terrainManager));
+        terrainManager.terrainTasks.Add(a); //This adds the task to the list
 
         while (a.Running == true)
         {
@@ -34,7 +38,127 @@ public static class TerrainManagerFunctions
         }
 
         //This marks the initial terrain generation as complete and communicates to the tile manager that it can commence generating new tiles as necessary
-        tileManager.initialGenerationComplete = true;
+        terrainManager.initialGenerationComplete = true;
+    }
+
+    //This generates the sea material
+    public static void GenerateSeaMaterial(TerrainManager terrainManager)
+    {
+        //4. Apply a new material
+        Shader shader = Shader.Find("Universal Render Pipeline/Lit");
+
+        Material seaMaterial = new Material(shader);
+
+        //5.Apply texture to material
+        Texture2D selectedTexture = null;
+
+        foreach (Object texture in terrainManager.scene.seaTexturesPool)
+        {
+            if (texture.name == terrainManager.seaTextureType)
+            {
+                selectedTexture = (Texture2D)texture;
+                break;
+            }
+        }
+
+        if (seaMaterial != null)
+        {
+            seaMaterial.SetFloat("_Metallic", 0f);
+            seaMaterial.SetTexture("_BaseMap", selectedTexture);
+
+            // Set Surface Type to Transparent
+            seaMaterial.SetFloat("_Surface", 1f);
+
+            // Set Blending Mode to Alpha Blending (Fade)
+            seaMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            seaMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            seaMaterial.SetInt("_ZWrite", 0); // Disable depth writing
+
+            // Enable/Disable relevant keywords
+            seaMaterial.DisableKeyword("_ALPHATEST_ON");
+            seaMaterial.EnableKeyword("_ALPHABLEND_ON");
+            seaMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+
+            Color currentColor = seaMaterial.color; // Get the current base color
+            currentColor.a = 0.9f;          // Set the alpha component
+            seaMaterial.color = currentColor;
+
+            // Set Render Queue for transparent objects
+            seaMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        }
+
+        //6. Apply normal to material
+        Texture2D normalTexture = null;
+
+        foreach (Object texture in terrainManager.scene.seaTexturesPool)
+        {
+            if (texture.name == "sea_normal")
+            {
+                normalTexture = (Texture2D)texture;
+                break;
+            }
+        }
+
+        if (seaMaterial != null)
+        {
+            seaMaterial.SetFloat("_BumpScale", 3.0f);
+            seaMaterial.SetTexture("_BumpMap", normalTexture);
+        }
+
+        terrainManager.seaMaterial = seaMaterial;
+    }
+
+    //This generates the chosen terrain materials
+    public static void GenerateTerrainMaterials(TerrainManager terrainManager)
+    {
+        List<string> terrainTextureNames = new List<string>();
+
+        terrainTextureNames.Add(terrainManager.textureType1);
+        terrainTextureNames.Add(terrainManager.textureType2);
+        terrainTextureNames.Add(terrainManager.textureType3);
+        terrainTextureNames.Add(terrainManager.textureType4);
+        terrainTextureNames.Add(terrainManager.textureType5);
+
+        List<Material> terrainMaterials =  new List<Material>();
+
+        foreach (string textureName in terrainTextureNames)
+        {
+            Shader myShader = Shader.Find("Shader Graphs/Terrain");
+
+            Material terrainMaterial = new Material(myShader);
+
+            //Apply base terrain texture
+            Texture2D selectedTexture = null;
+
+            foreach (Object tempTexture in terrainManager.scene.terrainTexturesPool)
+            {
+                if (tempTexture.name == textureName)
+                {
+                    selectedTexture = (Texture2D)tempTexture;
+                    break;
+                }
+            }
+
+            terrainMaterial.SetTexture("_Main_Texture", selectedTexture);
+
+            //Apply cliff terrain texture
+            Texture2D selectedCliffTexture = null;
+
+            foreach (Object tempTexture in terrainManager.scene.terrainCliffTexturesPool)
+            {
+                if (tempTexture.name == terrainManager.cliffTextureType)
+                {
+                    selectedCliffTexture = (Texture2D)tempTexture;
+                    break;
+                }
+            }
+
+            terrainMaterial.SetTexture("_Cliff_Texture", selectedCliffTexture);
+
+            terrainMaterials.Add(terrainMaterial);
+        }
+
+        terrainManager.terrainMaterials = terrainMaterials.ToArray();
     }
 
     //This functions is called in update and continues to generate tiles as needed
@@ -253,63 +377,15 @@ public static class TerrainManagerFunctions
                     count++;
                 }
 
+                //This applies the material
                 MeshRenderer meshRenderer = tileObj.GetComponent<MeshRenderer>();
 
-                if (terrainManager.scene.terrainTexturesPool != null)
-                {
-                    if (terrainManager.scene.terrainTexturesPool.Length > 0)
-                    {
-                        Shader myShader = Shader.Find("Shader Graphs/Terrain");
+                int selection = UnityEngine.Random.Range(0, terrainManager.terrainMaterials.Length);
 
-                        Material terrainMaterial = new Material(myShader);
+                meshRenderer.sharedMaterial = terrainManager.terrainMaterials[selection];
 
-                        //Apply base terrain texture
-                        List<Texture2D> selectedTextures = new List<Texture2D>();
-
-                        foreach (Object obj in terrainManager.scene.terrainTexturesPool)
-                        {
-                            if (obj.name == terrainManager.textureType1 || obj.name == terrainManager.textureType2 || obj.name == terrainManager.textureType3 || obj.name == terrainManager.textureType4 || obj.name == terrainManager.textureType5)
-                            {
-                                selectedTextures.Add((Texture2D)obj);
-                            }
-                        }
-
-                        if (selectedTextures.Count > 0)
-                        {
-                            if (meshRenderer != null)
-                            {
-                                int selection = UnityEngine.Random.Range(0, selectedTextures.Count);
-
-                                terrainMaterial.SetTexture("_Main_Texture", selectedTextures[selection]);
-                            }
-                        }
-
-                        //Apply cliff terrain texture
-                        selectedTextures = new List<Texture2D>();
-
-                        foreach (Object obj in terrainManager.scene.terrainCliffTexturesPool)
-                        {
-                            if (obj.name == terrainManager.cliffTextureType)
-                            {
-                                selectedTextures.Add((Texture2D)obj);
-                            }
-                        }
-
-                        if (selectedTextures.Count > 0)
-                        {
-                            if (meshRenderer != null)
-                            {
-                                int selection = UnityEngine.Random.Range(0, selectedTextures.Count);
-
-                                terrainMaterial.SetTexture("_Cliff_Texture", selectedTextures[selection]);
-                            }
-                        }
-
-                        //This applies the new material
-                        meshRenderer.sharedMaterial = terrainMaterial;
-
-                    }
-                }
+                //This creates the sea tile
+                GenerateSeaTile(terrainManager, tileObj);
 
                 terrainManager.tiles[new Vector2Int(x, z)] = tileObj;
 
@@ -477,6 +553,31 @@ public static class TerrainManagerFunctions
         yield return null;
     }
 
+    //This generates the sea tile under the terrain tile
+    public static void GenerateSeaTile(TerrainManager terrainManager, GameObject tile)
+    {
+        // 1. Create a primitive plane GameObject
+        GameObject seatile = GameObject.CreatePrimitive(PrimitiveType.Plane);
+
+        seatile.transform.SetParent(tile.transform);
+
+        // 2. Set the Y position
+        seatile.transform.localPosition = new Vector3(500, terrainManager.seaLevel, 500);
+
+        // 3. Scale the plane to the desired dimensions
+        float scaleX = 100f;
+        float scaleZ = 100f;
+        seatile.transform.localScale = new Vector3(scaleX, 1 , scaleZ); // Y-scale is typically 1 for a flat plane
+
+        // 3. Give it a name
+        seatile.name = "seatile";
+
+        //4. Apply material
+        MeshRenderer meshRenderer = seatile.GetComponent<MeshRenderer>();
+
+        meshRenderer.sharedMaterial = terrainManager.seaMaterial;
+    }
+
     //This generates the distant plane which sits under the terrain and fills out the horizon
     public static void CreateDistantPlane()
     {
@@ -501,6 +602,15 @@ public static class TerrainManagerFunctions
 
         // 3. Give it a name
         distantPlane.name = "distantplane";
+
+        //4. Apply a new material
+        Shader shader = Shader.Find("Universal Render Pipeline/Lit");
+
+        Material terrainMaterial = new Material(shader);
+
+        MeshRenderer meshRenderer = distantPlane.GetComponent<MeshRenderer>();
+
+        meshRenderer.sharedMaterial = terrainMaterial;
     }
 
     //This keeps the distance plane always centered but always below the terrain

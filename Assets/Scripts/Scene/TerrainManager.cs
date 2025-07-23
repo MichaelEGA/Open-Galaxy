@@ -54,6 +54,7 @@ public class TerrainManager : MonoBehaviour
     public int tileSize = 1000;         // Size of each tile in meters (e.g., 1km per tile)
     public int initialAreaSize = 30;    // Initial generation area in tiles (e.g., 30x30 km)
     public float tileNoiseScale = 0.2f; // Adjust for desired terrain roughness
+    public float seaLevel = -100;
 
     [Header("Terrain Textures")]
     public string textureType1; // Main terrain texture type
@@ -62,8 +63,11 @@ public class TerrainManager : MonoBehaviour
     public string textureType4;
     public string textureType5; 
     public string cliffTextureType; // Cliff-specific terrain texture type
+    public string seaTextureType;
 
     [Header("Generation State")]
+    public GameObject seaPlane;
+    public GameObject distantPlane;
     public Dictionary<Vector2Int, GameObject> tiles = new Dictionary<Vector2Int, GameObject>(); // Stores references to active tiles
     public HashSet<Vector2Int> tilesToGenerate = new HashSet<Vector2Int>();                     // Queue of tiles awaiting generation
     public int tilesBeingGenerated;                                                             // Counter for currently generating tiles
@@ -98,5 +102,8 @@ public class TerrainManager : MonoBehaviour
     {
         // This function handles the continuous generation of terrain tiles based on player position
         TerrainManagerFunctions.ContinueTerrainGeneration(this);
+
+        //This function keeps the distant plane constantly centered
+        TerrainManagerFunctions.KeepDistantPlaneCentered(this);
     }
 }

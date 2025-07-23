@@ -2875,36 +2875,44 @@ public static class MissionFunctions
         string textureType4 = missionEvent.data4;
         string textureType5 = missionEvent.data5;
         string clifftextureType = missionEvent.data6;
-        string baseNoise = missionEvent.data7;
-        string maskNoise = missionEvent.data8;
-        string blendNoise = missionEvent.data9;
+        string seaTextureType = missionEvent.data7;
+        string baseNoise = missionEvent.data8;
+        string maskNoise = missionEvent.data9;
+        string blendNoise = missionEvent.data10;
 
         int seed = 0;
 
-        if (int.TryParse(missionEvent.data10, out _))
+        if (int.TryParse(missionEvent.data11, out _))
         {
-            seed = int.Parse(missionEvent.data10);
+            seed = int.Parse(missionEvent.data11);
         }
 
         float terrainHeight = 50;
 
-        if (float.TryParse(missionEvent.data11, out _))
+        if (float.TryParse(missionEvent.data12, out _))
         {
-            terrainHeight = float.Parse(missionEvent.data11);
+            terrainHeight = float.Parse(missionEvent.data12);
         }
 
         float canyonDepth = 50;
 
-        if (float.TryParse(missionEvent.data12, out _))
+        if (float.TryParse(missionEvent.data13, out _))
         {
-            canyonDepth = float.Parse(missionEvent.data12);
+            canyonDepth = float.Parse(missionEvent.data13);
         }
 
         float blendFactor = 0.5f;
 
-        if (float.TryParse(missionEvent.data13, out _))
+        if (float.TryParse(missionEvent.data14, out _))
         {
-            blendFactor = float.Parse(missionEvent.data13);
+            blendFactor = float.Parse(missionEvent.data14);
+        }
+
+        float seaLevel =-100f;
+
+        if (float.TryParse(missionEvent.data15, out _))
+        {
+            seaLevel = float.Parse(missionEvent.data15);
         }
 
         TerrainManager terrainManager = scene.AddComponent<TerrainManager>();
@@ -2916,6 +2924,7 @@ public static class MissionFunctions
         terrainManager.textureType4 = textureType2;
         terrainManager.textureType5 = textureType2;
         terrainManager.cliffTextureType = clifftextureType;
+        terrainManager.seaTextureType = seaTextureType;
 
         if (baseNoise == "Mountains")
         {
@@ -2976,6 +2985,7 @@ public static class MissionFunctions
         terrainManager.terrainHeight = terrainHeight;
         terrainManager.canyonDepth = canyonDepth;
         terrainManager.blendFactor = blendFactor;
+        terrainManager.seaLevel = seaLevel;
 
         Task a = new Task(TerrainManagerFunctions.CommenceTerrainGeneration(terrainManager));
         terrainManager.terrainTasks.Add(a);

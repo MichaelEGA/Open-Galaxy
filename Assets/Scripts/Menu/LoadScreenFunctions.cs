@@ -100,7 +100,6 @@ public static class LoadScreenFunctions
         }
     }
 
-
     //This caculates the time in 60 second increments
     public static string GetTimeAsString(float startTime)
     {

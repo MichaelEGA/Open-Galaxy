@@ -927,31 +927,39 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data7 = NodeFunctions.DrawDropDownMenu(node, GetBaseNoiseTypes(), "base noise", "Plain", 7, 5, drop, 12.5f, 90, 5f);
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureSeaList(), "sea texture", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data8 = NodeFunctions.DrawDropDownMenu(node, GetMaskNoiseTypes(), "mask noise", "None", 7, 5, drop, 12.5f, 90, 5f);
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, GetBaseNoiseTypes(), "base noise", "Plain", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data9 = NodeFunctions.DrawDropDownMenu(node, GetBlendNoiseTypes(), "blend noise", "None", 7, 5, drop, 12.5f, 90, 5f);
+        node.data9 = NodeFunctions.DrawDropDownMenu(node, GetMaskNoiseTypes(), "mask noise", "None", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data10 = NodeFunctions.DrawInputField(node, "seed", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data10 = NodeFunctions.DrawDropDownMenu(node, GetBlendNoiseTypes(), "blend noise", "None", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data11 = NodeFunctions.DrawInputField(node, "terrain height", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data11 = NodeFunctions.DrawInputField(node, "seed", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data12 = NodeFunctions.DrawInputField(node, "canyon depth", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data12 = NodeFunctions.DrawInputField(node, "terrain height", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data13 = NodeFunctions.DrawInputField(node, "blend factor", "0.5", 7, 5, drop, 12.5f, 90, 5f);
+        node.data13 = NodeFunctions.DrawInputField(node, "canyon depth", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data14 = NodeFunctions.DrawInputField(node, "blend factor", "0.5", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data15 = NodeFunctions.DrawInputField(node, "sea level", "-100", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -4727,6 +4735,20 @@ public static class NodeTypes
         List<string> textureList = new List<string>();
 
         Object[] textures = Resources.LoadAll(OGGetAddress.terrainclifftextures, typeof(Texture2D));
+
+        foreach (Object texture in textures)
+        {
+            textureList.Add(texture.name);
+        }
+
+        return textureList;
+    }
+
+    public static List<string> GetTerrainTextureSeaList()
+    {
+        List<string> textureList = new List<string>();
+
+        Object[] textures = Resources.LoadAll(OGGetAddress.seatextures, typeof(Texture2D));
 
         foreach (Object texture in textures)
         {

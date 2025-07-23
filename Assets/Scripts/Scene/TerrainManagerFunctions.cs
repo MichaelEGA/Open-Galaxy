@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public static class TerrainManagerFunctions
 {
@@ -9,6 +11,9 @@ public static class TerrainManagerFunctions
     {
         //This gets the scene reference for the Tile Manager
         tileManager.scene = SceneFunctions.GetScene();
+
+        //This creates the plane under the terrain
+        CreateDistantPlane();
 
         //This sets the terrain type for the Tile Manager
         SetTerrainNoiseSettings(tileManager);
@@ -200,11 +205,11 @@ public static class TerrainManagerFunctions
     }
 
     //This starts the generation of all the requested tiles
-    public static IEnumerator GenerateTiles(TerrainManager tileManager)
+    public static IEnumerator GenerateTiles(TerrainManager terrainManager)
     {
-        while (tileManager.tilesToGenerate.Count > 0)
+        while (terrainManager.tilesToGenerate.Count > 0)
         {
-            var keys = new List<Vector2Int>(tileManager.tilesToGenerate);
+            var keys = new List<Vector2Int>(terrainManager.tilesToGenerate);
 
             int count = 0;
 
@@ -213,11 +218,11 @@ public static class TerrainManagerFunctions
                 int x = key.x;
                 int z = key.y;
 
-                Vector3 tilePosition = new Vector3(x * tileManager.tileSize, 0, z * tileManager.tileSize);
+                Vector3 tilePosition = new Vector3(x * terrainManager.tileSize, 0, z * terrainManager.tileSize);
 
                 GameObject tileObj = new GameObject();
                 tileObj.name = "terrain_tile";
-                tileObj.transform.parent = tileManager.transform;
+                tileObj.transform.parent = terrainManager.transform;
                 tileObj.transform.localPosition = tilePosition;
                 tileObj.transform.rotation = Quaternion.identity;
                 tileObj.AddComponent<MeshFilter>();
@@ -225,10 +230,10 @@ public static class TerrainManagerFunctions
                 tileObj.AddComponent<MeshCollider>();
                 tileObj.layer = 7;
 
-                if (tileManager.initialGenerationComplete == true)
+                if (terrainManager.initialGenerationComplete == true)
                 {
-                    Task a = new Task(GenerateTileMesh(tileManager, tileObj, tilePosition, x, z));
-                    tileManager.terrainTasks.Add(a); //This adds the task to the list
+                    Task a = new Task(GenerateTileMesh(terrainManager, tileObj, tilePosition, x, z));
+                    terrainManager.terrainTasks.Add(a); //This adds the task to the list
 
                     while (a.Running == true)
                     {
@@ -237,8 +242,8 @@ public static class TerrainManagerFunctions
                 }
                 else
                 {
-                    Task a = new Task(GenerateTileMesh(tileManager, tileObj, tilePosition, x, z));
-                    tileManager.terrainTasks.Add(a); //This adds the task to the list
+                    Task a = new Task(GenerateTileMesh(terrainManager, tileObj, tilePosition, x, z));
+                    terrainManager.terrainTasks.Add(a); //This adds the task to the list
 
                     if (count > 5)
                     {
@@ -250,9 +255,9 @@ public static class TerrainManagerFunctions
 
                 MeshRenderer meshRenderer = tileObj.GetComponent<MeshRenderer>();
 
-                if (tileManager.scene.terrainTexturesPool != null)
+                if (terrainManager.scene.terrainTexturesPool != null)
                 {
-                    if (tileManager.scene.terrainTexturesPool.Length > 0)
+                    if (terrainManager.scene.terrainTexturesPool.Length > 0)
                     {
                         Shader myShader = Shader.Find("Shader Graphs/Terrain");
 
@@ -261,9 +266,9 @@ public static class TerrainManagerFunctions
                         //Apply base terrain texture
                         List<Texture2D> selectedTextures = new List<Texture2D>();
 
-                        foreach (Object obj in tileManager.scene.terrainTexturesPool)
+                        foreach (Object obj in terrainManager.scene.terrainTexturesPool)
                         {
-                            if (obj.name == tileManager.textureType1 || obj.name == tileManager.textureType2 || obj.name == tileManager.textureType3 || obj.name == tileManager.textureType4 || obj.name == tileManager.textureType5)
+                            if (obj.name == terrainManager.textureType1 || obj.name == terrainManager.textureType2 || obj.name == terrainManager.textureType3 || obj.name == terrainManager.textureType4 || obj.name == terrainManager.textureType5)
                             {
                                 selectedTextures.Add((Texture2D)obj);
                             }
@@ -282,9 +287,9 @@ public static class TerrainManagerFunctions
                         //Apply cliff terrain texture
                         selectedTextures = new List<Texture2D>();
 
-                        foreach (Object obj in tileManager.scene.terrainCliffTexturesPool)
+                        foreach (Object obj in terrainManager.scene.terrainCliffTexturesPool)
                         {
-                            if (obj.name == tileManager.cliffTextureType)
+                            if (obj.name == terrainManager.cliffTextureType)
                             {
                                 selectedTextures.Add((Texture2D)obj);
                             }
@@ -306,29 +311,29 @@ public static class TerrainManagerFunctions
                     }
                 }
 
-                tileManager.tiles[new Vector2Int(x, z)] = tileObj;
+                terrainManager.tiles[new Vector2Int(x, z)] = tileObj;
 
-                tileManager.tilesToGenerate.Remove(key);
+                terrainManager.tilesToGenerate.Remove(key);
             }
         }
     }
 
     //This generates the actual mesh from the noise
-    public static IEnumerator GenerateTileMesh(TerrainManager tileManager, GameObject tileObj, Vector3 position, int xIndex, int zIndex)
+    public static IEnumerator GenerateTileMesh(TerrainManager terrainManager, GameObject tileObj, Vector3 position, int xIndex, int zIndex)
     {
-        float tileNoiseScale = tileManager.tileNoiseScale;
-        float terrainHeight = tileManager.terrainHeight;
-        float canyonDepth = tileManager.canyonDepth;
-        float blendFactor = tileManager.blendFactor;
-        int tileSize = tileManager.tileSize;
-        TerrainType terrainType = tileManager.terrainType;
-        MaskType maskType = tileManager.maskType;
-        BlendType blendType = tileManager.blendType;
-        FastNoiseLite mountainNoise = tileManager.mountainNoise;
-        FastNoiseLite hillNoise = tileManager.hillNoise;
-        FastNoiseLite desertNoise = tileManager.desertNoise;
-        FastNoiseLite cliffsideNoise = tileManager.cliffsideNoise;
-        FastNoiseLite plainsNoise = tileManager.plainsNoise;
+        float tileNoiseScale = terrainManager.tileNoiseScale;
+        float terrainHeight = terrainManager.terrainHeight;
+        float canyonDepth = terrainManager.canyonDepth;
+        float blendFactor = terrainManager.blendFactor;
+        int tileSize = terrainManager.tileSize;
+        TerrainType terrainType = terrainManager.terrainType;
+        MaskType maskType = terrainManager.maskType;
+        BlendType blendType = terrainManager.blendType;
+        FastNoiseLite mountainNoise = terrainManager.mountainNoise;
+        FastNoiseLite hillNoise = terrainManager.hillNoise;
+        FastNoiseLite desertNoise = terrainManager.desertNoise;
+        FastNoiseLite cliffsideNoise = terrainManager.cliffsideNoise;
+        FastNoiseLite plainsNoise = terrainManager.plainsNoise;
 
         // Procedurally generate mesh using Perlin noise
         Mesh mesh = new Mesh();
@@ -346,8 +351,8 @@ public static class TerrainManagerFunctions
             {
                 int i = z * resolution + x;
 
-                float worldX = position.x + ((float)x / (resolution - 1)) * tileManager.tileSize;
-                float worldZ = position.z + ((float)z / (resolution - 1)) * tileManager.tileSize;
+                float worldX = position.x + ((float)x / (resolution - 1)) * terrainManager.tileSize;
+                float worldZ = position.z + ((float)z / (resolution - 1)) * terrainManager.tileSize;
 
                 float height = 0;
 
@@ -376,7 +381,7 @@ public static class TerrainManagerFunctions
                 //Add mask noise
                 if (maskType == MaskType.Canyons)
                 {
-                    float canyonNoise = tileManager.canyonNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale);
+                    float canyonNoise = terrainManager.canyonNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale);
 
                     // Carve if the noise is below a certain negative threshold
                     if (canyonNoise < 0.3f) // Adjust -0.5f to control river width/occurrence
@@ -422,7 +427,7 @@ public static class TerrainManagerFunctions
                 uv[i] = new Vector2((float)x / (resolution - 1), (float)z / (resolution - 1));
             }
 
-            if (tileManager.initialGenerationComplete == true) //This slows down the terrain generation during gameplay
+            if (terrainManager.initialGenerationComplete == true) //This slows down the terrain generation during gameplay
             {
                 if (count > 25)
                 {
@@ -472,6 +477,43 @@ public static class TerrainManagerFunctions
         yield return null;
     }
 
+    //This generates the distant plane which sits under the terrain and fills out the horizon
+    public static void CreateDistantPlane()
+    {
+        //This gets the scene and terrain references
+        Scene scene = SceneFunctions.GetScene();
+        TerrainManager terrainManager = GetTerrainManager();
+
+        // 1. Create a primitive plane GameObject
+        GameObject distantPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+
+        terrainManager.distantPlane = distantPlane;
+
+        distantPlane.transform.SetParent(scene.transform);
+
+        // 2. Set the Y position
+        distantPlane.transform.localPosition = new Vector3(distantPlane.transform.localPosition.x, -500, distantPlane.transform.localPosition.z);
+
+        // 3. Scale the plane to the desired dimensions
+        float scaleX = 90000f;
+        float scaleZ = 90000f;
+        distantPlane.transform.localScale = new Vector3(scaleX, 1, scaleZ); // Y-scale is typically 1 for a flat plane
+
+        // 3. Give it a name
+        distantPlane.name = "distantplane";
+    }
+
+    //This keeps the distance plane always centered but always below the terrain
+    public static void KeepDistantPlaneCentered(TerrainManager terrainManager)
+    {
+       GameObject distantPlane = terrainManager.distantPlane;
+
+        if  (distantPlane != null)
+        {
+            distantPlane.transform.position = new Vector3(0, terrainManager.scene.transform.position.y - 500, 0);
+        }
+    }
+
     //This stops all terrain coroutins
     public static void StopTerrainCoroutines()
     {
@@ -491,9 +533,14 @@ public static class TerrainManagerFunctions
     //This destroys all the terrain tiles
     public static void DestroyAllTiles()
     {
-        TerrainManager tileManager = GetTerrainManager();
+        TerrainManager terrainManager = GetTerrainManager();
 
-        foreach (var kvp in tileManager.tiles)
+        if (terrainManager.distantPlane != null)
+        {
+            GameObject.Destroy(terrainManager.distantPlane);
+        }
+
+        foreach (var kvp in terrainManager.tiles)
         {
             GameObject tile = kvp.Value;
                 

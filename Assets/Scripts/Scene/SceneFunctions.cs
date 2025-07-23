@@ -113,6 +113,14 @@ public static class SceneFunctions
             scene.terrainCliffTexturesPool = terrainCliffTextures;
         }
 
+        Object[] seaTextures = Resources.LoadAll(OGGetAddress.seatextures, typeof(Texture2D));
+
+        if (seaTextures != null)
+        {
+            scene.seaTexturesPool = new Texture2D[seaTextures.Length];
+            scene.seaTexturesPool = seaTextures;
+        }
+
         scene.hyperspaceTunnelPrefab = Resources.Load(OGGetAddress.hyperspace + "HyperspaceTunnel") as GameObject;
 
         scene.skyboxes = Resources.LoadAll<Material>(OGGetAddress.skyboxes);

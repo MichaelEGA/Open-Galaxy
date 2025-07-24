@@ -99,6 +99,11 @@ public class Hud : MonoBehaviour
     [HideInInspector] public float waypointArrowTargetRotation;
     [HideInInspector] public float waypointArrowLerpTime;
 
+    [Header("Tabs")]
+    [HideInInspector] public Transform[] keyboardTags;
+    [HideInInspector] public Transform[] controllerTags;
+    [HideInInspector] public bool keyboardActive = false;
+
     [Header("Hud Object Pools")]
     [HideInInspector] public List<GameObject> radarPool;
     [HideInInspector] public List<GameObject> frontRadarDotsPool;
@@ -149,6 +154,8 @@ public class Hud : MonoBehaviour
 
         HudFunctions.DisplayWaypointMarker(this);
 
-        HudFunctions.DisplayShipPreview(this);             
+        HudFunctions.DisplayShipPreview(this);
+
+        HudFunctions.ToggleTabs(this);
     }
 }

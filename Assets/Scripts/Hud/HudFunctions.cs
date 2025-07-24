@@ -2026,6 +2026,56 @@ public static class HudFunctions
 
     #endregion
 
+    #region keyboard and controller tabs
+
+    public static void ToggleTabs(Hud hud)
+    {
+        if (hud.keyboardTags == null)
+        {
+            hud.keyboardTags = GameObjectUtils.FindAllChildTransformsContaining(hud.transform, "Tab_Keyboard");
+        }
+
+        if (hud.controllerTags == null)
+        {
+            hud.controllerTags = GameObjectUtils.FindAllChildTransformsContaining(hud.transform, "Tab_Controller");
+        }
+
+        if (hud.smallShip != null)
+        {
+            if (hud.smallShip.keyboardAndMouse == true & hud.keyboardActive == false)
+            {
+                foreach (Transform tag in hud.keyboardTags)
+                {
+                    tag.gameObject.SetActive(true);
+                }
+
+                foreach (Transform tag in hud.controllerTags)
+                {
+                    tag.gameObject.SetActive(false);
+                }
+
+                hud.keyboardActive = true;
+            }
+            else if (hud.smallShip.keyboardAndMouse == false & hud.keyboardActive == true)
+            {
+                foreach (Transform tag in hud.keyboardTags)
+                {
+                    tag.gameObject.SetActive(false);
+                }
+
+                foreach (Transform tag in hud.controllerTags)
+                {
+                    tag.gameObject.SetActive(true);
+                }
+
+                hud.keyboardActive = false;
+            }
+        }
+
+    }
+
+    #endregion
+
     #region fade and flashes
 
     //Fades in from designated colour

@@ -1950,65 +1950,78 @@ public static class HudFunctions
             hud.centerReticule = GameObject.Find("Reticule");
         }
 
-        if (hud.movingReticule != null & hud.centerReticule != null & hud.smallShip != null & Time.timeScale != 0)
+        if (hud.smallShip != null)
         {
-            hud.movingReticule.SetActive(true);
-
-            var mouse = Mouse.current;
-            float x = mouse.position.x.ReadValue();
-            float y = mouse.position.y.ReadValue();
-            float radiusWidth = Screen.width / 2;
-            float radiusHeight = Screen.height / 2;
-            float x2 = 0;
-            float y2 = 0;
-
-            hud.movingReticule.transform.position = new Vector2(x, y);
-
-            if (hud.smallShip.invertUpDown == true)
+            if (hud.movingReticule != null & hud.centerReticule != null & hud.smallShip != null & Time.timeScale != 0 & hud.smallShip.keyboardAndMouse == true)
             {
-                y2 = Screen.height - y;
+                hud.movingReticule.SetActive(true);
+
+                var mouse = Mouse.current;
+                float x = mouse.position.x.ReadValue();
+                float y = mouse.position.y.ReadValue();
+                float radiusWidth = Screen.width / 2;
+                float radiusHeight = Screen.height / 2;
+                float x2 = 0;
+                float y2 = 0;
+
+                hud.movingReticule.transform.position = new Vector2(x, y);
+
+                if (hud.smallShip.invertUpDown == true)
+                {
+                    y2 = Screen.height - y;
+                }
+                else
+                {
+                    y2 = y;
+                }
+
+                if (hud.smallShip.invertLeftRight == true)
+                {
+                    x2 = Screen.width - x;
+                }
+                else
+                {
+                    x2 = x;
+                }
+
+                Vector2 rotationTarget = new Vector2(x2, y2);
+
+                float angle = Mathf.Atan2(hud.centerReticule.transform.position.y - rotationTarget.y, hud.centerReticule.transform.position.x - rotationTarget.x) * Mathf.Rad2Deg;
+                Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+                hud.movingReticule.transform.rotation = Quaternion.RotateTowards(hud.movingReticule.transform.rotation, targetRotation, 1000 * Time.deltaTime);
+
+                //This fades the mouse reticle as it gets closer to the center of the scene
+                if (hud.movingReticleImage != null)
+                {
+                    float distance = Vector2.Distance(hud.movingReticule.transform.position, hud.centerReticule.transform.position);
+
+                    if (distance < 200 & distance > 10)
+                    {
+                        float alpha = (1f / 190f) * distance;
+
+                        Color newColor = hud.movingReticleImage.color;
+                        newColor.a = alpha;
+                        hud.movingReticleImage.color = newColor;
+                    }
+                    else if (distance < 10)
+                    {
+                        Color newColor = hud.movingReticleImage.color;
+                        newColor.a = 0;
+                        hud.movingReticleImage.color = newColor;
+                    }
+                }
             }
             else
             {
-                y2 = y;
+                hud.movingReticule.SetActive(false);
             }
-
-            if (hud.smallShip.invertLeftRight == true)
-            {
-                x2 = Screen.width - x;
-            }
-            else
-            {
-                x2 = x;
-            }
-
-            Vector2 rotationTarget = new Vector2(x2, y2);
-
-            float angle = Mathf.Atan2(hud.centerReticule.transform.position.y - rotationTarget.y, hud.centerReticule.transform.position.x - rotationTarget.x) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-            hud.movingReticule.transform.rotation = Quaternion.RotateTowards(hud.movingReticule.transform.rotation, targetRotation, 1000 * Time.deltaTime);
         }
-
-        //This fades the mouse reticle as it gets closer to the center of the scene
-        if (hud.movingReticule != null & hud.centerReticule != null & hud.movingReticleImage != null)
+        else
         {
-            float distance = Vector2.Distance(hud.movingReticule.transform.position, hud.centerReticule.transform.position);
-
-            if (distance < 200 & distance > 10)
-            {
-                float alpha = (1f /190f) * distance;
-
-                Color newColor = hud.movingReticleImage.color;
-                newColor.a = alpha;
-                hud.movingReticleImage.color = newColor;
-            }
-            else if (distance < 10)
-            {
-                Color newColor = hud.movingReticleImage.color;
-                newColor.a = 0;
-                hud.movingReticleImage.color = newColor;
-            }
+            hud.movingReticule.SetActive(false);
         }
+
+
     }
 
     #endregion

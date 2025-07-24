@@ -161,6 +161,129 @@ public static class SmallShipFunctions
         }
     }
 
+    //This gets the input from the controller
+    public static void GetControllerInput(SmallShip smallShip)
+    {
+        if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false & smallShip.controlLock == false)
+        {
+            if (smallShip.keyboardAndMouse == false)
+            {
+                var gamepad = Gamepad.current;
+
+                smallShip.controllerPitch = Mathf.MoveTowards(gamepad.rightStick.y.ReadValue(), smallShip.controllerPitch, smallShip.controllerSenstivity * Time.deltaTime);
+                smallShip.controllerRoll = Mathf.MoveTowards(-gamepad.leftStick.x.ReadValue(), smallShip.controllerRoll, smallShip.controllerSenstivity * Time.deltaTime);
+                smallShip.controllerTurn = Mathf.MoveTowards(gamepad.rightStick.x.ReadValue(), smallShip.controllerTurn, smallShip.controllerSenstivity * Time.deltaTime);
+
+                //Thrust input and smoothing
+                if (gamepad.leftStick.y.ReadValue() > 0.1f & smallShip.controllerThrust < 1)
+                {
+                    smallShip.controllerThrust = Mathf.MoveTowards(gamepad.leftStick.y.ReadValue(), smallShip.controllerThrust, smallShip.controllerSenstivity * Time.deltaTime);
+                }
+                else if (gamepad.leftStick.y.ReadValue() < -0.1f & smallShip.controllerThrust > -1)
+                {
+                    smallShip.controllerThrust = Mathf.MoveTowards(gamepad.leftStick.y.ReadValue(), smallShip.controllerThrust, smallShip.controllerSenstivity * Time.deltaTime);
+                }
+                else if (gamepad.leftStick.y.ReadValue() > -0.1f & gamepad.leftStick.y.ReadValue() < 0.1f)
+                {
+                    smallShip.controllerThrust = Mathf.MoveTowards(gamepad.leftStick.y.ReadValue(), 0, smallShip.controllerSenstivity * Time.deltaTime);
+                }
+
+                //Actual ship inputs
+                if (smallShip.invertUpDown == true)
+                {
+                    smallShip.pitchInput = smallShip.controllerPitch;
+                }
+                else
+                {
+                    smallShip.pitchInput = -smallShip.controllerPitch;
+                }
+
+                if (smallShip.invertLeftRight == true)
+                {
+                    smallShip.turnInput = -smallShip.controllerTurn;
+                }
+                else
+                {
+                    smallShip.turnInput = smallShip.controllerTurn;
+                }
+
+                smallShip.thrustInput = smallShip.controllerThrust;
+                smallShip.rollInput = smallShip.controllerRoll;
+
+                //Button inputs
+                smallShip.powerToShields = gamepad.dpad.left.isPressed;
+                smallShip.powerToEngine = gamepad.dpad.up.isPressed;
+                smallShip.powerToLasers = gamepad.dpad.right.isPressed;
+                smallShip.resetPowerLevels = gamepad.dpad.down.isPressed;
+                smallShip.getNextTarget = gamepad.leftShoulder.isPressed;
+                smallShip.getNextEnemy = gamepad.yButton.isPressed;
+                smallShip.getClosestEnemy = gamepad.rightShoulder.isPressed;
+                smallShip.selectTargetInFront = gamepad.xButton.isPressed;
+                smallShip.fireWeapon = gamepad.rightTrigger.isPressed;
+                smallShip.toggleWeapons = gamepad.bButton.isPressed;
+                smallShip.toggleWeaponNumber = gamepad.aButton.isPressed;
+                smallShip.matchSpeed = gamepad.leftStickButton.isPressed;
+                smallShip.focusCamera = gamepad.leftTrigger.isPressed;
+            }
+        }
+    }
+
+    //This swaps the input depending on what the player is using
+    public static void DetectInputType(SmallShip smallShip)
+    {
+        if (smallShip.isAI == false)
+        {
+            bool swap = false;
+
+            if (smallShip.keyboardAndMouse == true)
+            {
+                var gamepad = Gamepad.current;
+
+                if (gamepad != null)
+                {
+                    if (gamepad.dpad.left.isPressed == true) { swap = true; }
+                    else if (gamepad.dpad.left.isPressed) { swap = true; }
+                    else if (gamepad.dpad.up.isPressed) { swap = true; }
+                    else if (gamepad.dpad.right.isPressed) { swap = true; }
+                    else if (gamepad.dpad.down.isPressed) { swap = true; }
+                    else if (gamepad.leftShoulder.isPressed) { swap = true; }
+                    else if (gamepad.rightShoulder.isPressed) { swap = true; }
+                    else if (gamepad.rightTrigger.isPressed) { swap = true; }
+                    else if (gamepad.bButton.isPressed) { swap = true; }
+                    else if (gamepad.aButton.isPressed) { swap = true; }
+                    else if (gamepad.xButton.isPressed) { swap = true; }
+                    else if (gamepad.yButton.isPressed) { swap = true; }
+                    else if (gamepad.startButton.isPressed) { swap = true; }
+                    else if (gamepad.selectButton.isPressed) { swap = true; }
+                    else if (gamepad.rightStickButton.isPressed) { swap = true; }
+                    else if (gamepad.leftStickButton.isPressed) { swap = true; }
+                    else if (gamepad.leftTrigger.isPressed) { swap = true; }
+                }
+            }
+            else
+            {
+                var keyboard = Keyboard.current;
+                var mouse = Mouse.current;
+
+                if (keyboard != null)
+                {
+                    if (keyboard.anyKey.wasPressedThisFrame == true) { swap = true; }
+                }
+
+                if (mouse != null)
+                {
+                    if (mouse.leftButton.isPressed == true) { swap = true; }
+                    else if (mouse.rightButton.isPressed == true) { swap = true; }
+                }
+            }
+
+            if (swap == true)
+            {
+                smallShip.keyboardAndMouse = !smallShip.keyboardAndMouse;
+            }
+        }
+    }
+
     //This gets the AI input
     public static void GetAIInput(SmallShip smallShip)
     {

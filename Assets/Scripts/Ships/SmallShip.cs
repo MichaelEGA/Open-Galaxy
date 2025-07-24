@@ -63,6 +63,14 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float thrustTimeStamp;
     [HideInInspector] public bool wep;
 
+    [Header("Controller Inputs")]
+    [HideInInspector] public float controllerSenstivity = 0.05f;
+    [HideInInspector] public float controllerPitch;
+    [HideInInspector] public float controllerRoll;
+    [HideInInspector] public float controllerTurn;
+    [HideInInspector] public float controllerThrust;
+    [HideInInspector] public bool keyboardAndMouse;
+
     [Header("Ship Rotation")]
     [HideInInspector] public float pitchSpeed;
     [HideInInspector] public float pitchInput;
@@ -280,7 +288,9 @@ public class SmallShip : MonoBehaviour
     {
         //Input functions
         SmallShipFunctions.GetAIInput(this);
+        SmallShipFunctions.DetectInputType(this);
         SmallShipFunctions.GetKeyboardAndMouseInput(this);
+        SmallShipFunctions.GetControllerInput(this);
         SmallShipFunctions.TurnShipAround(this);
         SmallShipFunctions.SpinShip(this);
         SmallShipFunctions.ControlLock(this);

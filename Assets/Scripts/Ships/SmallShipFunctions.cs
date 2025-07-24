@@ -104,60 +104,63 @@ public static class SmallShipFunctions
     {
         if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false & smallShip.controlLock == false)
         {
-            //Mouse and Keyboard Input
-            var mouse = Mouse.current;
-            float x = 0;
-            float y = 0;
-            float radiusWidth = Screen.width / 2;
-            float radiusHeight = Screen.height / 2;
-
-            if (mouse != null)
+            if (smallShip.keyboardAndMouse == true)
             {
-                x = mouse.position.x.ReadValue() - radiusWidth;
-                y = mouse.position.y.ReadValue() - radiusHeight;
+                //Mouse and Keyboard Input
+                var mouse = Mouse.current;
+                float x = 0;
+                float y = 0;
+                float radiusWidth = Screen.width / 2;
+                float radiusHeight = Screen.height / 2;
+
+                if (mouse != null)
+                {
+                    x = mouse.position.x.ReadValue() - radiusWidth;
+                    y = mouse.position.y.ReadValue() - radiusHeight;
+                }
+
+                x = x / radiusWidth;
+                y = y / radiusHeight;
+
+                var keyboard = Keyboard.current;
+
+                float pitchInput = -Mathf.Clamp(y, -1.0f, 1.0f);
+                smallShip.rollInput = -Input.GetAxis("LeftHorizontal");
+                float turnInput = Mathf.Clamp(x, -1.0f, 1.0f);
+                smallShip.thrustInput = Input.GetAxis("LeftVertical");
+
+                if (smallShip.invertUpDown == true)
+                {
+                    smallShip.pitchInput = -pitchInput;
+                }
+                else
+                {
+                    smallShip.pitchInput = pitchInput;
+                }
+
+                if (smallShip.invertLeftRight == true)
+                {
+                    smallShip.turnInput = -turnInput;
+                }
+                else
+                {
+                    smallShip.turnInput = turnInput;
+                }
+
+                smallShip.powerToShields = keyboard.leftArrowKey.isPressed;
+                smallShip.powerToEngine = keyboard.upArrowKey.isPressed;
+                smallShip.powerToLasers = keyboard.rightArrowKey.isPressed;
+                smallShip.resetPowerLevels = keyboard.downArrowKey.isPressed;
+                smallShip.getNextTarget = keyboard.rKey.isPressed;
+                smallShip.getNextEnemy = keyboard.tKey.isPressed;
+                smallShip.getClosestEnemy = keyboard.fKey.isPressed;
+                smallShip.selectTargetInFront = keyboard.gKey.isPressed;
+                smallShip.fireWeapon = mouse.leftButton.isPressed;
+                smallShip.toggleWeapons = keyboard.tabKey.isPressed;
+                smallShip.toggleWeaponNumber = keyboard.capsLockKey.isPressed;
+                smallShip.matchSpeed = keyboard.eKey.isPressed;
+                smallShip.focusCamera = mouse.rightButton.isPressed;
             }
-
-            x = x / radiusWidth;
-            y = y / radiusHeight;
-
-            var keyboard = Keyboard.current;
-
-            float pitchInput = -Mathf.Clamp(y, -1.0f, 1.0f);
-            smallShip.rollInput = -Input.GetAxis("LeftHorizontal");
-            float turnInput = Mathf.Clamp(x, -1.0f, 1.0f);
-            smallShip.thrustInput = Input.GetAxis("LeftVertical");
-
-            if (smallShip.invertUpDown == true)
-            {
-                smallShip.pitchInput = -pitchInput;
-            }
-            else
-            {
-                smallShip.pitchInput = pitchInput;
-            }
-
-            if (smallShip.invertLeftRight == true)
-            {
-                smallShip.turnInput = -turnInput;
-            }
-            else
-            {
-                smallShip.turnInput = turnInput;
-            }
-
-            smallShip.powerToShields = keyboard.leftArrowKey.isPressed;
-            smallShip.powerToEngine = keyboard.upArrowKey.isPressed;
-            smallShip.powerToLasers = keyboard.rightArrowKey.isPressed;
-            smallShip.resetPowerLevels = keyboard.downArrowKey.isPressed;
-            smallShip.getNextTarget = keyboard.rKey.isPressed;
-            smallShip.getNextEnemy = keyboard.tKey.isPressed;
-            smallShip.getClosestEnemy = keyboard.fKey.isPressed;
-            smallShip.selectTargetInFront = keyboard.gKey.isPressed;
-            smallShip.fireWeapon = mouse.leftButton.isPressed;
-            smallShip.toggleWeapons = keyboard.tabKey.isPressed;
-            smallShip.toggleWeaponNumber = keyboard.capsLockKey.isPressed;
-            smallShip.matchSpeed = keyboard.eKey.isPressed;  
-            smallShip.focusCamera = mouse.rightButton.isPressed;
         }
     }
 

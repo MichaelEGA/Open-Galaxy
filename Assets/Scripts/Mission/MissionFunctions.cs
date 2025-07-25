@@ -495,6 +495,58 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
+        else if (missionEvent.eventType == "ifkeyboardisactive")
+        {
+            bool ifKeyboardIsActive = IfKeyboardIsActive(missionEvent);
+
+            if (ifKeyboardIsActive == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
+        else if (missionEvent.eventType == "ifnumberofshipsislessthan")
+        {
+            bool ifNumberOfShipIsLessThan = IfNumberOfShipsIsLessThan(missionEvent);
+
+            if (ifNumberOfShipIsLessThan == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
+        else if (missionEvent.eventType == "ifnumberofshipsofallegianceislessthan")
+        {
+            bool ifNumberOfShipIsLessThan = IfNumberOfShipsOfAllegianceIsLessThan(missionEvent);
+
+            if (ifNumberOfShipIsLessThan == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
+        else if (missionEvent.eventType == "ifnumberofshipswithnameislessthan")
+        {
+            bool ifNumberOfShipIsLessThan = IfNumberOfShipsWithNameIsLessThan(missionEvent);
+
+            if (ifNumberOfShipIsLessThan == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
         else if (missionEvent.eventType == "ifshipshullislessthan")
         {
             bool isLessThan = IfShipsHullIsLessThan(missionEvent);
@@ -654,6 +706,11 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "loadsingleship")
         {
             LoadSingleShip(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "loadsingleshipfromhangar")
+        {
+            LoadSingleShipFromHangar(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "loadsingleshipatdistanceandanglefromplayer")
@@ -1690,6 +1747,208 @@ public static class MissionFunctions
         return objectiveIsActive;
     }
 
+    //This checks whether the player is playing with the keyboard and mouse or not
+    public static bool IfKeyboardIsActive(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool keyboardIsActive = false;
+
+        if (scene != null)
+        {
+            if(scene.mainShip != null)
+            {
+                SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+
+                if (smallShip != null)
+                {
+                    keyboardIsActive = smallShip.keyboardAndMouse; 
+                }
+            }
+        }
+
+        return keyboardIsActive;
+    }
+
+    //This compares the number of ships in the scene is less than a certain number
+    public static bool IfNumberOfShipsIsLessThan(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipNumberIsLessThan = false;
+        int number = 0;
+        int shipCount = 0;
+
+        if (int.TryParse(missionEvent.data1, out _))
+        {
+            number = int.Parse(missionEvent.data1);
+        }
+
+        string mode = missionEvent.data2;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (mode == "none" || mode == "smallships" || mode == "allships")
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            if (ship.activeSelf == true)
+                            {
+                                shipCount++;
+                            }
+                        }
+                    }
+
+                    if (mode == "none" || mode == "largeships" || mode == "allships")
+                    {
+                        LargeShip largeship = ship.GetComponent<LargeShip>();
+
+                        if (largeship != null)
+                        {
+                            if (ship.activeSelf == true)
+                            {
+                                shipCount++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (shipCount < number)
+        {
+            shipNumberIsLessThan = true;   
+        }
+
+        return shipNumberIsLessThan;
+    }
+
+    //This compares the number of ships in the scene of a certain allegiance is less than a certain number
+    public static bool IfNumberOfShipsOfAllegianceIsLessThan(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipNumberIsLessThan = false;
+        int number = 0;
+        int shipCount = 0;
+        string allegiance = missionEvent.data1;
+
+        if (int.TryParse(missionEvent.data2, out _))
+        {
+            number = int.Parse(missionEvent.data2);
+        }
+
+        string mode = missionEvent.data3;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (mode == "none" || mode == "smallships" || mode == "allships")
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            if (ship.activeSelf == true & smallShip.allegiance == allegiance)
+                            {
+                                shipCount++;
+                            }
+                        }
+                    }
+
+                    if (mode == "none" || mode == "largeships" || mode == "allships")
+                    {
+                        LargeShip largeship = ship.GetComponent<LargeShip>();
+
+                        if (largeship != null)
+                        {
+                            if (ship.activeSelf == true & largeship.allegiance == allegiance)
+                            {
+                                shipCount++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (shipCount < number)
+        {
+            shipNumberIsLessThan = true;
+        }
+
+        return shipNumberIsLessThan;
+    }
+
+    //This compares the number of ships of a certain name in the scene is less than a certain number
+    public static bool IfNumberOfShipsWithNameIsLessThan(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        bool shipNumberIsLessThan = false;
+        int number = 0;
+        int shipCount = 0;
+        string name = missionEvent.data1;
+
+        if (int.TryParse(missionEvent.data1, out _))
+        {
+            number = int.Parse(missionEvent.data2);
+        }
+
+        string mode = missionEvent.data3;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (mode == "none" || mode == "smallships" || mode == "allships")
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            if (ship.activeSelf == true & smallShip.name.Contains(name))
+                            {
+                                shipCount++;
+                            }
+                        }
+                    }
+
+                    if (mode == "none" || mode == "largeships" || mode == "allships")
+                    {
+                        LargeShip largeship = ship.GetComponent<LargeShip>();
+
+                        if (largeship != null)
+                        {
+                            if (ship.activeSelf == true & largeship.name.Contains(name))
+                            {
+                                shipCount++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (shipCount < number)
+        {
+            shipNumberIsLessThan = true;
+        }
+
+        return shipNumberIsLessThan;
+    }
+
     //This checks whether the requested ship has been disabled or not
     public static bool IfShipHasBeenDisabled(MissionEvent missionEvent)
     {
@@ -2554,6 +2813,7 @@ public static class MissionFunctions
         while (c.Running == true) { yield return null; }
     }
 
+
     //This loads multiple ships by name
     public static IEnumerator LoadMultipleShipsOnGround(MissionEvent missionEvent)
     {
@@ -2801,6 +3061,43 @@ public static class MissionFunctions
         }
 
         SceneFunctions.LoadSingleShip(newPosition, rotation, type, name, allegiance, cargo, exitingHyperspace, true, false, laserColor);
+    }
+
+    //This loads multiple ships from another ships hangar
+    public static void LoadSingleShipFromHangar(MissionEvent missionEvent)
+    {
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "tiefighter";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        string name = "alpha";
+        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
+
+        string allegiance = "imperial";
+        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
+
+        string launchShip = "none";
+        if (missionEvent.data4 != "none") { type = missionEvent.data4; }
+
+        string cargo = "no cargo";
+        if (missionEvent.data5 != "none") { cargo = missionEvent.data5; }
+
+        bool isAI = false;
+
+        if (bool.TryParse(missionEvent.data6, out _))
+        {
+            isAI = bool.Parse(missionEvent.data6);
+        }
+
+        string laserColor = "red";
+        if (missionEvent.data7 != "none") { laserColor = missionEvent.data7; }
+
+        SceneFunctions.LoadSingleShipFromHangar(type, name, allegiance, cargo, launchShip, 0, laserColor);
     }
 
     //This loads a single ship on the ground

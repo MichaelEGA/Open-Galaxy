@@ -73,6 +73,10 @@ public static class WindowFunctions
         buttonList.Add("exitmission");
         buttonList.Add("exitanddisplaynextmissionmenu");
         buttonList.Add("ifobjectiveisactive");
+        buttonList.Add("ifkeyboardisactive");
+        buttonList.Add("ifnumberofshipsislessthan");
+        buttonList.Add("ifnumberofshipsofallegianceislessthan");
+        buttonList.Add("ifnumberofshipswithnameislessthan");
         buttonList.Add("ifshipisactive");
         buttonList.Add("ifshiphasbeendisabled");
         buttonList.Add("ifshiphasntbeendisabled");
@@ -89,6 +93,7 @@ public static class WindowFunctions
         buttonList.Add("loadmultipleshipsfromhangar");
         buttonList.Add("loadmultipleshipsonground");
         buttonList.Add("loadsingleship");
+        buttonList.Add("loadsingleshipfromhangar");
         buttonList.Add("loadsingleshipatdistanceandanglefromplayer");
         buttonList.Add("loadsingleshiponground");
         buttonList.Add("pausesequence");

@@ -97,6 +97,22 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfObjectiveIsActive(node);
         }
+        else if (node.nodeType == "ifkeyboardisactive")
+        {
+            NodeTypes.Draw_IfKeyboardIsActive(node);
+        }
+        else if (node.nodeType == "ifnumberofshipsislessthan")
+        {
+            NodeTypes.Draw_IfNumberOfShipsIsLessThan(node);
+        }
+        else if (node.nodeType == "ifnumberofshipsofallegianceislessthan")
+        {
+            NodeTypes.Draw_IfNumberOfShipsOfAllegianceIsLessThan(node);
+        }
+        else if (node.nodeType == "ifnumberofshipswithnameislessthan")
+        {
+            NodeTypes.Draw_IfNumberOfShipsWithNameIsLessThan(node);
+        }
         else if (node.nodeType == "ifshipshullislessthan")
         {
             NodeTypes.Draw_IfShipsHullIsLessThan(node);
@@ -148,6 +164,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "loadsingleship")
         {
             NodeTypes.Draw_LoadSingleShip(node);
+        }
+        else if (node.nodeType == "loadsingleshipfromhangar")
+        {
+            NodeTypes.Draw_LoadSingleShipFromHangar(node);
         }
         else if (node.nodeType == "loadsingleshipatdistanceandanglefromplayer")
         {

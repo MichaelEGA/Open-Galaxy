@@ -1807,6 +1807,102 @@ public static class SceneFunctions
         }
     }
 
+    //A wrapper functions for load single ship that loads multiple ships from another ships hangar
+    public static void LoadSingleShipFromHangar(string type, string name, string allegiance, string cargo, string launchship, int hangarNo, string laserColor)
+    {
+        //This gets the scene reference
+        Scene scene = GetScene();
+
+        //This gets the Json ship data
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
+        ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
+
+        //This finds the ship type to load 
+        ShipType shipType = null;
+
+        foreach (ShipType tempShipType in shipTypes.shipTypeData)
+        {
+            if (tempShipType.type == type)
+            {
+                shipType = tempShipType;
+                break;
+            }
+        }
+
+        if (name == "none")
+        {
+            string[] names = new string[] { "alpha", "beta", "gamma", "delta", "epislon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron" };
+            int nameNo = names.Length;
+            int selectName = Random.Range(0, names.Length - 1);
+            name = names[selectName];
+        }
+
+        GameObject launchShipGO = FindShip(launchship);
+        Transform[] hangars = null;
+        Transform hangarLaunch = null;
+
+        //This gets all availible hangars on the ship
+        if (launchShipGO != null)
+        {
+            hangars = GameObjectUtils.FindAllChildTransformsContaining(launchShipGO.transform, "hangarlaunch");
+
+            if (hangars.Length < 1)
+            {
+                hangars = GameObjectUtils.FindAllChildTransformsContaining(launchShipGO.transform, "hangarLaunch");
+            }
+        }
+
+        if (hangars == null || hangars.Length < 1)
+        {
+            LargeShip largeShip = launchShipGO.GetComponent<LargeShip>();
+            SmallShip smallShip = launchShipGO.GetComponent<SmallShip>();
+
+            GameObject hangarLaunchGO = new GameObject();
+            hangarLaunchGO.name = "hangarlaunch";
+            hangarLaunchGO.transform.SetParent(launchShipGO.transform);
+
+            float shipLength = 0;
+
+            if (largeShip != null)
+            {
+                shipLength = largeShip.shipLength;
+            }
+
+            if (smallShip != null)
+            {
+                shipLength = smallShip.shipLength;
+            }
+
+            hangarLaunchGO.transform.localPosition = new Vector3(0, -shipLength, 0);
+
+            hangars = new Transform[] { hangarLaunchGO.transform };
+        }
+
+        //This selects the chosen hangar
+        if (hangars != null)
+        {
+            //This ensures the hangar number is within the range of availible hangars
+            if (hangarNo > hangars.Length)
+            {
+                hangarNo = hangars.Length;
+            }
+            else if (hangarNo < 0)
+            {
+                hangarNo = 0;
+            }
+
+            hangarLaunch = hangars[hangarNo];
+        }
+
+        //This loads the ship if the hangar launch is found
+        if (hangarLaunch != null)
+        {
+            HudFunctions.AddToShipLog(type.ToUpper() + "is exiting the " + launchship.ToUpper() + "'S hangar");
+
+            LoadSingleShip(hangarLaunch.position, hangarLaunch.rotation, type, name, allegiance, cargo, false, true, true, laserColor);
+        }
+    }
+
     //This grabs the locations using the chosen pattern
     public static Vector3[] GetPositions(string pattern, Vector3 position, float width, float length, float height, int shipNumber, int shipsPerLine, float positionVariance)
     {

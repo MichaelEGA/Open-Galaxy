@@ -441,6 +441,45 @@ public static class NodeDescriptions
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
             "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "ifkeyboardisactive")
+        {
+            description =
+            "If Keyboard is Active \n " +
+            "\n " +
+            "This node checks to see whether the player is using the keyboard or not. \n" +
+            "\n " +
+            "Extra Information \n";
+        }
+        else if (name == "ifnumberofshipsislessthan")
+        {
+            description =
+            "If Number of Ships is Less Than \n " +
+            "\n " +
+            "This node checks to see the number of ships in the scene is less than the given amount. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- You can choose whether the node counts only smallships or only largeships or everyship in the scene. \n";
+        }
+        else if (name == "ifnumberofshipsofallegianceislessthan")
+        {
+            description =
+            "If Number of Ships of Allegiance is Less Than \n " +
+            "\n " +
+            "This node checks to see the number of ships of a particular allegiance in the scene is less than the given amount. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- You can choose whether the node counts only smallships or only largeships or everyship in the scene. \n";
+        }
+        else if (name == "ifnumberofshipswithnameislessthan")
+        {
+            description =
+            "If Number of Ships With Name is Less Than \n " +
+            "\n " +
+            "This node checks to see the number of ships which contain a given name in the scene is less than the given amount. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- You can choose whether the node counts only smallships or only largeships or everyship in the scene. \n";
+        }
         else if (name == "ifshipshullislessthan")
         {
             description =
@@ -648,6 +687,17 @@ public static class NodeDescriptions
             "Load Single Ship \n " +
             "\n " +
             "This node loads a single ship \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
+            "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
+        else if (name == "loadsingleshipfromhangar")
+        {
+            description =
+            "Load Single Ship From Hangar \n " +
+            "\n " +
+            "This node loads a single ship from a hangar \n" +
             "\n " +
             "Extra Information \n" +
             "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +

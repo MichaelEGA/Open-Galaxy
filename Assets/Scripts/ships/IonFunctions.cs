@@ -215,24 +215,51 @@ public static class IonFunctions
     //This sets the rotation of the ions to angle at the correct distance for the targetted ship
     public static void SetCannons(SmallShip smallShip)
     {
-        if (smallShip.ionCannon1 != null)
+        if (smallShip.autoaim == true & smallShip.target != null & smallShip.targetRigidbody != null & smallShip.targetForward > 0.99f)
         {
-            smallShip.ionCannon1.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
-        }
+            Vector3 interceptPoint = GameObjectUtils.CalculateInterceptPoint(smallShip.transform.position, smallShip.target.transform.position, smallShip.targetRigidbody.linearVelocity, 750);
 
-        if (smallShip.ionCannon2 != null)
-        {
-            smallShip.ionCannon2.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
-        }
+            if (smallShip.ionCannon1 != null)
+            {
+                smallShip.ionCannon1.transform.LookAt(interceptPoint);
+            }
 
-        if (smallShip.ionCannon3 != null)
-        {
-            smallShip.ionCannon3.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
-        }
+            if (smallShip.ionCannon2 != null)
+            {
+                smallShip.ionCannon2.transform.LookAt(interceptPoint);
+            }
 
-        if (smallShip.ionCannon4 != null)
+            if (smallShip.ionCannon3 != null)
+            {
+                smallShip.ionCannon3.transform.LookAt(interceptPoint);
+            }
+
+            if (smallShip.ionCannon4 != null)
+            {
+                smallShip.ionCannon4.transform.LookAt(interceptPoint);
+            }
+        }
+        else
         {
-            smallShip.ionCannon4.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+            if (smallShip.ionCannon1 != null)
+            {
+                smallShip.ionCannon1.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+            }
+
+            if (smallShip.ionCannon2 != null)
+            {
+                smallShip.ionCannon2.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+            }
+
+            if (smallShip.ionCannon3 != null)
+            {
+                smallShip.ionCannon3.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+            }
+
+            if (smallShip.ionCannon4 != null)
+            {
+                smallShip.ionCannon4.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+            }
         }
     }
 

@@ -238,14 +238,20 @@ public static class MissionEditorFunctions
         List<string> event_Buttons = new List<string>();
         event_Buttons.Add(spaces + "Add New Event");
         event_Buttons.Add(spaces + "Display Ship Information");
+        event_Buttons.Add(spaces + "Display Prop Information");
+        event_Buttons.Add(spaces + "Display Terrain Texture Information");
         event_Buttons.Add(spaces + "Display Location");
 
         List<string> event_Functions = new List<string>();
         event_Functions.Add("OpenAddNewEvent");
         event_Functions.Add("OpenDisplayShipInformation");
+        event_Functions.Add("OpenDisplayPropInformation");
+        event_Functions.Add("OpenDisplayTextureInformation");
         event_Functions.Add("OpenDisplayLocation");
 
         List<string> event_Shortcuts = new List<string>();
+        event_Shortcuts.Add("");
+        event_Shortcuts.Add("");
         event_Shortcuts.Add("");
         event_Shortcuts.Add("");
         event_Shortcuts.Add("");
@@ -453,6 +459,14 @@ public static class MissionEditorFunctions
         {
             button.onClick.AddListener(() => { OpenWindow("displayshipinformation"); });
         }
+        else if (functionType == "OpenDisplayPropInformation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaypropinformation"); });
+        }
+        else if (functionType == "OpenDisplayTextureInformation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaytextureinformation"); });
+        }
         else if (functionType == "MakeFullscreen")
         {
             button.onClick.AddListener(() => { SetWindowMode("fullscreen"); });
@@ -617,6 +631,14 @@ public static class MissionEditorFunctions
         else if (functionType == "OpenDisplayShipInformation")
         {
             button.onClick.AddListener(() => { OpenWindow("displayshipinformation"); });
+        }
+        else if (functionType == "OpenDisplayPropInformation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaypropinformation"); });
+        }
+        else if (functionType == "OpenDisplayTextureInformation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaytextureinformation"); });
         }
         else if (functionType == "MakeFullscreen")
         {

@@ -13,8 +13,7 @@ public enum TerrainType
     Mountains,
     Hills,
     Desert,
-    Cliffside,
-    Plains
+    Plains,
 }
 
 /// <summary>
@@ -26,7 +25,6 @@ public enum BlendType
     Mountains,
     Hills,
     Desert,
-    Cliffside,
     Plains,
     None
 }
@@ -38,6 +36,7 @@ public enum BlendType
 public enum MaskType
 {
     Canyons,
+    Terraces,
     None
 }
 
@@ -84,7 +83,6 @@ public class TerrainManager : MonoBehaviour
     public FastNoiseLite mountainNoise = new FastNoiseLite();
     public FastNoiseLite hillNoise = new FastNoiseLite();
     public FastNoiseLite desertNoise = new FastNoiseLite();
-    public FastNoiseLite cliffsideNoise = new FastNoiseLite();
     public FastNoiseLite plainsNoise = new FastNoiseLite();
     public FastNoiseLite canyonNoise = new FastNoiseLite(); // Noise for canyon masking
 
@@ -95,6 +93,7 @@ public class TerrainManager : MonoBehaviour
     public float terrainHeight = 50;                        // Maximum height of the terrain
     public float blendFactor = 0.5f;                       // Factor for blending between terrain types
     public float canyonDepth = 50f;                        // Depth of generated canyons
+    public int terraceNumber = 4;
     public int seed = 1337;                                // Seed for noise generation to ensure reproducible terrains
 
     /// <summary>

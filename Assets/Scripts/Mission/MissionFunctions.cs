@@ -3191,25 +3191,32 @@ public static class MissionFunctions
             terrainHeight = float.Parse(missionEvent.data12);
         }
 
+        int terraceNumber = 50;
+
+        if (int.TryParse(missionEvent.data13, out _))
+        {
+            terraceNumber = int.Parse(missionEvent.data13);
+        }
+
         float canyonDepth = 50;
 
-        if (float.TryParse(missionEvent.data13, out _))
+        if (float.TryParse(missionEvent.data14, out _))
         {
-            canyonDepth = float.Parse(missionEvent.data13);
+            canyonDepth = float.Parse(missionEvent.data14);
         }
 
         float blendFactor = 0.5f;
 
-        if (float.TryParse(missionEvent.data14, out _))
+        if (float.TryParse(missionEvent.data15, out _))
         {
-            blendFactor = float.Parse(missionEvent.data14);
+            blendFactor = float.Parse(missionEvent.data15);
         }
 
         float seaLevel =-100f;
 
-        if (float.TryParse(missionEvent.data15, out _))
+        if (float.TryParse(missionEvent.data16, out _))
         {
-            seaLevel = float.Parse(missionEvent.data15);
+            seaLevel = float.Parse(missionEvent.data16);
         }
 
         TerrainManager terrainManager = scene.AddComponent<TerrainManager>();
@@ -3235,16 +3242,16 @@ public static class MissionFunctions
         {
             terrainManager.terrainType = TerrainType.Desert;
         }
-        else if (baseNoise == "Cliffside")
-        {
-            terrainManager.terrainType = TerrainType.Cliffside;
-        }
         else if (baseNoise == "Plains")
         {
             terrainManager.terrainType = TerrainType.Plains;
         }
 
-        if (maskNoise == "Canyons")
+        if (maskNoise == "Terraces")
+        {
+            terrainManager.maskType = MaskType.Terraces;
+        }
+        else if (maskNoise == "Canyons")
         {
             terrainManager.maskType = MaskType.Canyons;
         }
@@ -3253,27 +3260,23 @@ public static class MissionFunctions
             terrainManager.maskType = MaskType.None;
         }
 
-        if (baseNoise == "Mountains")
+        if (blendNoise == "Mountains")
         {
             terrainManager.blendType = BlendType.Mountains;
         }
-        else if (baseNoise == "Hills")
+        else if (blendNoise == "Hills")
         {
             terrainManager.blendType = BlendType.Hills;
         }
-        else if (baseNoise == "Desert")
+        else if (blendNoise == "Desert")
         {
             terrainManager.blendType = BlendType.Desert;
         }
-        else if (baseNoise == "Cliffside")
-        {
-            terrainManager.blendType = BlendType.Cliffside;
-        }
-        else if (baseNoise == "Plains")
+        else if (blendNoise == "Plains")
         {
             terrainManager.blendType = BlendType.Plains;
         }
-        else if (baseNoise == "None")
+        else if (blendNoise == "None")
         {
             terrainManager.blendType = BlendType.None;
         }

@@ -20,6 +20,8 @@ public class MissionEditor : MonoBehaviour
     public ScrollRect scrollRect;
     public Text AddNodeTextBox;
     public Text DisplayShipInformationTextBox;
+    public Text DisplayPropInformationTextBox;
+    public Text DisplayTextureInformationTextBox;
     public Text scaleIndicator;
     public Text messageTextbox;
     public Text missionName;

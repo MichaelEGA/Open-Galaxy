@@ -52,7 +52,7 @@ public static class TerrainManagerFunctions
         //5.Apply texture to material
         Texture2D selectedTexture = null;
 
-        foreach (Object texture in terrainManager.scene.seaTexturesPool)
+        foreach (Object texture in terrainManager.scene.terrainTexturesPool)
         {
             if (texture.name == terrainManager.seaTextureType)
             {
@@ -90,7 +90,7 @@ public static class TerrainManagerFunctions
         //6. Apply normal to material
         Texture2D normalTexture = null;
 
-        foreach (Object texture in terrainManager.scene.seaTexturesPool)
+        foreach (Object texture in terrainManager.scene.terrainTexturesPool)
         {
             if (texture.name == "sea_normal")
             {
@@ -144,7 +144,7 @@ public static class TerrainManagerFunctions
             //Apply cliff terrain texture
             Texture2D selectedCliffTexture = null;
 
-            foreach (Object tempTexture in terrainManager.scene.terrainCliffTexturesPool)
+            foreach (Object tempTexture in terrainManager.scene.terrainTexturesPool)
             {
                 if (tempTexture.name == terrainManager.cliffTextureType)
                 {
@@ -186,56 +186,48 @@ public static class TerrainManagerFunctions
     }
 
     //This sets the default settings for the terrain noise
-    public static void SetTerrainNoiseSettings(TerrainManager tileManager)
+    public static void SetTerrainNoiseSettings(TerrainManager terrainManager)
     {
-        int seed = tileManager.seed;
+        int seed = terrainManager.seed;
 
         //Terrain Noise Types
-        tileManager.mountainNoise.SetSeed(seed);
-        tileManager.mountainNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        tileManager.mountainNoise.SetFrequency(0.01f);
-        tileManager.mountainNoise.SetFractalType(FastNoiseLite.FractalType.Ridged);
-        tileManager.mountainNoise.SetFractalOctaves(5);
-        tileManager.mountainNoise.SetFractalLacunarity(2.2f);
-        tileManager.mountainNoise.SetFractalGain(0.6f);
+        terrainManager.mountainNoise.SetSeed(seed);
+        terrainManager.mountainNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        terrainManager.mountainNoise.SetFrequency(0.002f);
+        terrainManager.mountainNoise.SetFractalType(FastNoiseLite.FractalType.Ridged);
+        terrainManager.mountainNoise.SetFractalOctaves(5);
+        terrainManager.mountainNoise.SetFractalLacunarity(2.2f);
+        terrainManager.mountainNoise.SetFractalGain(0.6f);
 
-        tileManager.hillNoise.SetSeed(seed);
-        tileManager.hillNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        tileManager.hillNoise.SetFrequency(0.02f);
-        tileManager.hillNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
-        tileManager.hillNoise.SetFractalOctaves(4);
-        tileManager.hillNoise.SetFractalLacunarity(2f);
-        tileManager.hillNoise.SetFractalGain(0.4f);
+        terrainManager.hillNoise.SetSeed(seed);
+        terrainManager.hillNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        terrainManager.hillNoise.SetFrequency(0.005f);
+        terrainManager.hillNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
+        terrainManager.hillNoise.SetFractalOctaves(3);
+        terrainManager.hillNoise.SetFractalLacunarity(2f);
+        terrainManager.hillNoise.SetFractalGain(0.3f);
 
-        tileManager.desertNoise.SetSeed(seed);
-        tileManager.desertNoise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
-        tileManager.desertNoise.SetFrequency(0.01f);
-        tileManager.desertNoise.SetFractalType(FastNoiseLite.FractalType.None);
+        terrainManager.desertNoise.SetSeed(seed);
+        terrainManager.desertNoise.SetNoiseType(FastNoiseLite.NoiseType.Cellular);
+        terrainManager.desertNoise.SetFrequency(0.01f);
+        terrainManager.desertNoise.SetFractalType(FastNoiseLite.FractalType.None);
 
-        tileManager.cliffsideNoise.SetSeed(seed);
-        tileManager.cliffsideNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        tileManager.cliffsideNoise.SetFrequency(0.015f);
-        tileManager.cliffsideNoise.SetFractalType(FastNoiseLite.FractalType.Ridged);
-        tileManager.cliffsideNoise.SetFractalOctaves(6);
-        tileManager.cliffsideNoise.SetFractalLacunarity(2.5f);
-        tileManager.cliffsideNoise.SetFractalGain(0.7f);
-
-        tileManager.plainsNoise.SetSeed(seed);
-        tileManager.plainsNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        tileManager.plainsNoise.SetFrequency(0.005f);
-        tileManager.plainsNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
-        tileManager.plainsNoise.SetFractalOctaves(3);
-        tileManager.plainsNoise.SetFractalLacunarity(2f);
-        tileManager.plainsNoise.SetFractalGain(0.3f);
+        terrainManager.plainsNoise.SetSeed(seed);
+        terrainManager.plainsNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        terrainManager.plainsNoise.SetFrequency(0.0005f);
+        terrainManager.plainsNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
+        terrainManager.plainsNoise.SetFractalOctaves(3);
+        terrainManager.plainsNoise.SetFractalLacunarity(2f);
+        terrainManager.plainsNoise.SetFractalGain(0.3f);
 
         //Terrain Mask Noise
-        tileManager.canyonNoise.SetSeed(seed);
-        tileManager.canyonNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        tileManager.canyonNoise.SetFrequency(0.005f);
-        tileManager.canyonNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
-        tileManager.canyonNoise.SetFractalOctaves(3);
-        tileManager.canyonNoise.SetFractalLacunarity(2f);
-        tileManager.canyonNoise.SetFractalGain(0.3f);
+        terrainManager.canyonNoise.SetSeed(seed);
+        terrainManager.canyonNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        terrainManager.canyonNoise.SetFrequency(0.005f);
+        terrainManager.canyonNoise.SetFractalType(FastNoiseLite.FractalType.FBm);
+        terrainManager.canyonNoise.SetFractalOctaves(3);
+        terrainManager.canyonNoise.SetFractalLacunarity(2f);
+        terrainManager.canyonNoise.SetFractalGain(0.3f);
     }
 
     //This queues the tiles that need to be made before the mission is started
@@ -408,7 +400,6 @@ public static class TerrainManagerFunctions
         FastNoiseLite mountainNoise = terrainManager.mountainNoise;
         FastNoiseLite hillNoise = terrainManager.hillNoise;
         FastNoiseLite desertNoise = terrainManager.desertNoise;
-        FastNoiseLite cliffsideNoise = terrainManager.cliffsideNoise;
         FastNoiseLite plainsNoise = terrainManager.plainsNoise;
 
         // Procedurally generate mesh using Perlin noise
@@ -435,26 +426,40 @@ public static class TerrainManagerFunctions
                 //Add terrain noise
                 if (terrainType == TerrainType.Mountains)
                 {
-                    height = (mountainNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1) * terrainHeight;
+                    height = (mountainNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1);
                 }
                 else if (terrainType == TerrainType.Hills)
                 {
-                    height = (hillNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
+                    height = (hillNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f);
                 }
                 else if (terrainType == TerrainType.Desert)
                 {
-                    height = (desertNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                }
-                else if (terrainType == TerrainType.Cliffside)
-                {
-                    height = (cliffsideNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
+                    height = (desertNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f);
                 }
                 else if (terrainType == TerrainType.Plains)
                 {
-                    height = (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
+                    height = (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f);
+                }
+              
+                //Add mask noise
+                if (maskType == MaskType.Terraces)
+                {
+                    float numTerraces = terrainManager.terraceNumber;
+
+                    float normalized01Noise = (height + 1f) / 2f; // Maps -1 to 0, 0 to 0.5, 1 to 1
+
+                    // 2. Scale this 0-1 range to allow for integer stepping based on numTerraces
+                    float scaledNoise = normalized01Noise * numTerraces;
+
+                    // 3. Floor the scaled noise to get discrete steps (0, 1, 2, ..., numTerraces-1)
+                    float steppedNoise = Mathf.Floor(scaledNoise);
+
+                    height = steppedNoise;
                 }
 
-                //Add mask noise
+                //This applies the height only after the terracing has been applied
+                height = height * terrainHeight;
+               
                 if (maskType == MaskType.Canyons)
                 {
                     float canyonNoise = terrainManager.canyonNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale);
@@ -471,7 +476,6 @@ public static class TerrainManagerFunctions
                 {
                     float blendHeight = (mountainNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
                     height = Mathf.Lerp(height, blendHeight, blendFactor);
-
                 }
                 else if (blendType == BlendType.Hills)
                 {
@@ -481,11 +485,6 @@ public static class TerrainManagerFunctions
                 else if (blendType == BlendType.Desert)
                 {
                     float blendHeight = (desertNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
-                    height = Mathf.Lerp(height, blendHeight, blendFactor);
-                }
-                else if (blendType == BlendType.Cliffside)
-                {
-                    float blendHeight = (cliffsideNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
                     height = Mathf.Lerp(height, blendHeight, blendFactor);
                 }
                 else if (blendType == BlendType.Plains)

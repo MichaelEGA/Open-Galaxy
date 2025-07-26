@@ -23,8 +23,6 @@ public class Scene : MonoBehaviour
     [HideInInspector] public Object[] propPrefabPool;
     [HideInInspector] public Object[] particlePrefabPool;
     [HideInInspector] public Object[] terrainTexturesPool;
-    [HideInInspector] public Object[] terrainCliffTexturesPool;
-    [HideInInspector] public Object[] seaTexturesPool;
     [HideInInspector] public GameObject hyperspaceTunnelPrefab;
 
     [Header("GameObject Pools")]

@@ -33,6 +33,11 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     public Text data13;
     public Text data14;
     public Text data15;
+    public Text data16;
+    public Text data17;
+    public Text data18;
+    public Text data19;
+    public Text data20;
     public Text nextEvent1;
     public Text nextEvent2;
     public Text nextEvent3;

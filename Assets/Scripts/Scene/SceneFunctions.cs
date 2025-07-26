@@ -97,28 +97,12 @@ public static class SceneFunctions
             scene.atmosphereMaterialPool = atmosphereMaterials;
         }
 
-        Object[] terrainTextures = Resources.LoadAll(OGGetAddress.terraintextures, typeof(Texture2D));
+        Object[] terrainTextures = Resources.LoadAll(OGGetAddress.terrain, typeof(Texture2D));
 
         if (terrainTextures != null)
         {
             scene.terrainTexturesPool = new Texture2D[terrainTextures.Length];
             scene.terrainTexturesPool = terrainTextures;
-        }
-
-        Object[] terrainCliffTextures = Resources.LoadAll(OGGetAddress.terrainclifftextures, typeof(Texture2D));
-
-        if (terrainCliffTextures != null)
-        {
-            scene.terrainCliffTexturesPool = new Texture2D[terrainCliffTextures.Length];
-            scene.terrainCliffTexturesPool = terrainCliffTextures;
-        }
-
-        Object[] seaTextures = Resources.LoadAll(OGGetAddress.seatextures, typeof(Texture2D));
-
-        if (seaTextures != null)
-        {
-            scene.seaTexturesPool = new Texture2D[seaTextures.Length];
-            scene.seaTexturesPool = seaTextures;
         }
 
         scene.hyperspaceTunnelPrefab = Resources.Load(OGGetAddress.hyperspace + "HyperspaceTunnel") as GameObject;
@@ -2924,6 +2908,7 @@ public static class SceneFunctions
 
         //Debug.Log($"GameObject '{gameObject.name}' scaled to fit Z-axis length {targetZLengthInMeters} meters. But actual length is " + newGameObjectBounds.size.z + " from a size of " + currentZLength);
     }
+
 
     #endregion
 

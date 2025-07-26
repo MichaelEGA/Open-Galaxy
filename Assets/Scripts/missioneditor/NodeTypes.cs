@@ -927,7 +927,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data7 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureSeaList(), "sea texture", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureWaterList(), "sea texture", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -951,15 +951,19 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data13 = NodeFunctions.DrawInputField(node, "canyon depth", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.data13 = NodeFunctions.DrawInputField(node, "terraces", "4", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data14 = NodeFunctions.DrawInputField(node, "blend factor", "0.5", 7, 5, drop, 12.5f, 90, 5f);
+        node.data14 = NodeFunctions.DrawInputField(node, "canyon depth", "0", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data15 = NodeFunctions.DrawInputField(node, "sea level", "-100", 7, 5, drop, 12.5f, 90, 5f);
+        node.data15 = NodeFunctions.DrawInputField(node, "blend factor", "0.5", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data16 = NodeFunctions.DrawInputField(node, "sea level", "-100", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -5018,7 +5022,7 @@ public static class NodeTypes
     {
         List<string> textureList = new List<string>();
 
-        Object[] textures = Resources.LoadAll(OGGetAddress.terraintextures, typeof(Texture2D));
+        Object[] textures = Resources.LoadAll(OGGetAddress.terrain, typeof(Texture2D));
 
         foreach (Object texture in textures)
         {
@@ -5032,25 +5036,31 @@ public static class NodeTypes
     {
         List<string> textureList = new List<string>();
 
-        Object[] textures = Resources.LoadAll(OGGetAddress.terrainclifftextures, typeof(Texture2D));
+        Object[] textures = Resources.LoadAll(OGGetAddress.terrain, typeof(Texture2D));
 
         foreach (Object texture in textures)
         {
-            textureList.Add(texture.name);
+            if (texture.name.Contains("cliff"))
+            {
+                textureList.Add(texture.name);
+            }
         }
 
         return textureList;
     }
 
-    public static List<string> GetTerrainTextureSeaList()
+    public static List<string> GetTerrainTextureWaterList()
     {
         List<string> textureList = new List<string>();
 
-        Object[] textures = Resources.LoadAll(OGGetAddress.seatextures, typeof(Texture2D));
+        Object[] textures = Resources.LoadAll(OGGetAddress.terrain, typeof(Texture2D));
 
         foreach (Object texture in textures)
         {
-            textureList.Add(texture.name);
+            if (texture.name.Contains("water"))
+            {
+                textureList.Add(texture.name);
+            }
         }
 
         return textureList;
@@ -5063,7 +5073,6 @@ public static class NodeTypes
         noiseTypes.Add("Mountains");
         noiseTypes.Add("Hills");
         noiseTypes.Add("Desert");
-        noiseTypes.Add("Cliffside");
         noiseTypes.Add("Plains");
 
         return noiseTypes;
@@ -5074,6 +5083,7 @@ public static class NodeTypes
         List<string> noiseTypes = new List<string>();
 
         noiseTypes.Add("Canyons");
+        noiseTypes.Add("Terraces");
         noiseTypes.Add("None");
 
         return noiseTypes;
@@ -5086,7 +5096,6 @@ public static class NodeTypes
         noiseTypes.Add("Mountains");
         noiseTypes.Add("Hills");
         noiseTypes.Add("Desert");
-        noiseTypes.Add("Cliffside");
         noiseTypes.Add("Plains");
         noiseTypes.Add("None");
 

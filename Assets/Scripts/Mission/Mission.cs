@@ -29,6 +29,11 @@ public class MissionEvent
     public string data13;
     public string data14;
     public string data15;
+    public string data16;
+    public string data17;
+    public string data18;
+    public string data19;
+    public string data20;
     public string nextEvent1;
     public string nextEvent2;
     public string nextEvent3;

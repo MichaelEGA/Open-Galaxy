@@ -1051,94 +1051,6 @@ public static class MainMenuFunctions
             settings.screenResX = width;
             settings.screenResY = height;
         }
-        else if (resolution == "1920 x 540 (32:9)")
-        {
-            int width = 1920;
-            int height = 540;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
-        else if (resolution == "3840 x 1080 (32:9)")
-        {
-            int width = 3840;
-            int height = 1080;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
-        else if (resolution == "5120 x 1440 (32:9)")
-        {
-            int width = 5120;
-            int height = 1440;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
-        else if (resolution == "7680 x 2160 (32:9)")
-        {
-            int width = 7680;
-            int height = 2160;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
-        else if (resolution == "1280 x 540 (21:9)")
-        {
-            int width = 1280;
-            int height = 540;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
-        else if (resolution == "2560 x 1080 (21:9)")
-        {
-            int width = 2560;
-            int height = 1080;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
-        else if (resolution == "2880 x 1200 (21:9)")
-        {
-            int width = 2800;
-            int height = 1200;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
-        else if (resolution == "3440 x 1440 (21:9)")
-        {
-            int width = 3440;
-            int height = 1440;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
-        else if (resolution == "3840 x 1600 (21:9)")
-        {
-            int width = 3840;
-            int height = 1600;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
-        else if (resolution == "4320 x 1800 (21:9)")
-        {
-            int width = 4320;
-            int height = 1800;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
-        else if (resolution == "5120 x 2160 (21:9)")
-        {
-            int width = 5120;
-            int height = 2160;
-            Screen.SetResolution(width, height, screenMode);
-            settings.screenResX = width;
-            settings.screenResY = height;
-        }
         else if (resolution == "My Aspect Ratio - 640 Resolution")
         {
             int width = 640;
@@ -1217,34 +1129,10 @@ public static class MainMenuFunctions
             settings.screenResX = 640;
             settings.screenResY = 480;
         }
-        else if (resolution == "640 x 360 (16:9)")
-        {
-            Screen.SetResolution(640, 360, screenMode);
-            settings.screenResX = 640;
-            settings.screenResY = 360;
-        }
-        else if (resolution == "640 x 400 (16:10)")
-        {
-            Screen.SetResolution(640, 400, screenMode);
-            settings.screenResX = 640;
-            settings.screenResY = 400;
-        }
         else if (resolution == "800 x 600 (4:3)")
         {
             Screen.SetResolution(800, 600, screenMode);
             settings.screenResX = 800;
-            settings.screenResY = 600;
-        }
-        else if (resolution == "848 x 450 (16:9)")
-        {
-            Screen.SetResolution(848, 450, screenMode);
-            settings.screenResX = 848;
-            settings.screenResY = 450;
-        }
-        else if (resolution == "960 x 600 (16:10)")
-        {
-            Screen.SetResolution(960, 600, screenMode);
-            settings.screenResX = 960;
             settings.screenResY = 600;
         }
         else if (resolution == "1024 x 768 (4:3)")
@@ -1253,35 +1141,11 @@ public static class MainMenuFunctions
             settings.screenResX = 1024;
             settings.screenResY = 768;
         }
-        else if (resolution == "1024 x 576 (16:9)")
-        {
-            Screen.SetResolution(1024, 576, screenMode);
-            settings.screenResX = 1024;
-            settings.screenResY = 576;
-        }
-        else if (resolution == "1024 x 640 (16:10)")
-        {
-            Screen.SetResolution(1024, 640, screenMode);
-            settings.screenResX = 1024;
-            settings.screenResY = 640;
-        }
         else if (resolution == "1220 x 915 (4:3)")
         {
             Screen.SetResolution(1220, 915, screenMode);
             settings.screenResX = 1220;
             settings.screenResY = 915;
-        }
-        else if (resolution == "1220 x 720 (16:9)")
-        {
-            Screen.SetResolution(1220, 720, screenMode);
-            settings.screenResX = 1220;
-            settings.screenResY = 620;
-        }
-        else if (resolution == "1280 x 800 (16:10)")
-        {
-            Screen.SetResolution(1280, 800, screenMode);
-            settings.screenResX = 1280;
-            settings.screenResY = 800;
         }
         else if (resolution == "1680 × 1260 (4:3)")
         {
@@ -1289,35 +1153,11 @@ public static class MainMenuFunctions
             settings.screenResX = 1680;
             settings.screenResY = 1260;
         }
-        else if (resolution == "1680 × 945 (16:9)")
-        {
-            Screen.SetResolution(1680, 945, screenMode);
-            settings.screenResX = 1680;
-            settings.screenResY = 945;
-        }
-        else if (resolution == "1680 × 1050 (16:10)")
-        {
-            Screen.SetResolution(1680, 1050, screenMode);
-            settings.screenResX = 1680;
-            settings.screenResY = 1050;
-        }
         else if (resolution == "1920 x 1440 (4:3)")
         {
             Screen.SetResolution(1920, 1440, screenMode);
             settings.screenResX = 1920;
             settings.screenResY = 1440;
-        }
-        else if (resolution == "1920 x 1080 (16:9)")
-        {
-            Screen.SetResolution(1920, 1080, screenMode);
-            settings.screenResX = 1920;
-            settings.screenResY = 1080;
-        }
-        else if (resolution == "1920 x 1200 (16:10)")
-        {
-            Screen.SetResolution(1920, 1200, screenMode);
-            settings.screenResX = 1920;
-            settings.screenResY = 1200;
         }
         else if (resolution == "2560 x 1920 (4:3)")
         {
@@ -1325,35 +1165,11 @@ public static class MainMenuFunctions
             settings.screenResX = 2560;
             settings.screenResY = 1920;
         }
-        else if (resolution == "2560 x 1440 (16:9)")
-        {
-            Screen.SetResolution(2560, 1440, screenMode);
-            settings.screenResX = 2560;
-            settings.screenResY = 1440;
-        }
-        else if (resolution == "2560 x 1600 (16:10)")
-        {
-            Screen.SetResolution(2560, 1600, screenMode);
-            settings.screenResX = 2560;
-            settings.screenResY = 1600;
-        }
         else if (resolution == "3840 x 2880 (4:3)")
         {
             Screen.SetResolution(3840, 2880, screenMode);
             settings.screenResX = 3840;
             settings.screenResY = 2880;
-        }
-        else if (resolution == "3840 x 2160 (16:9)")
-        {
-            Screen.SetResolution(3840, 2160, screenMode);
-            settings.screenResX = 3840;
-            settings.screenResY = 2160;
-        }
-        else if (resolution == "3840 x 2400 (16:10)")
-        {
-            Screen.SetResolution(3840, 2400, screenMode);
-            settings.screenResX = 3840;
-            settings.screenResY = 2400;
         }
         else if (resolution == "7680 x 5760 (4:3)")
         {
@@ -1361,17 +1177,201 @@ public static class MainMenuFunctions
             settings.screenResX = 7680;
             settings.screenResY = 5760;
         }
+        else if (resolution == "640 x 360 (16:9)")
+        {
+            Screen.SetResolution(640, 360, screenMode);
+            settings.screenResX = 640;
+            settings.screenResY = 360;
+        }
+        else if (resolution == "848 x 450 (16:9)")
+        {
+            Screen.SetResolution(848, 450, screenMode);
+            settings.screenResX = 848;
+            settings.screenResY = 450;
+        }
+        else if (resolution == "1024 x 576 (16:9)")
+        {
+            Screen.SetResolution(1024, 576, screenMode);
+            settings.screenResX = 1024;
+            settings.screenResY = 576;
+        }
+        else if (resolution == "1220 x 720 (16:9)")
+        {
+            Screen.SetResolution(1220, 720, screenMode);
+            settings.screenResX = 1220;
+            settings.screenResY = 620;
+        }
+        else if (resolution == "1680 × 945 (16:9)")
+        {
+            Screen.SetResolution(1680, 945, screenMode);
+            settings.screenResX = 1680;
+            settings.screenResY = 945;
+        }
+        else if (resolution == "1920 x 1080 (16:9)")
+        {
+            Screen.SetResolution(1920, 1080, screenMode);
+            settings.screenResX = 1920;
+            settings.screenResY = 1080;
+        }
+        else if (resolution == "2560 x 1440 (16:9)")
+        {
+            Screen.SetResolution(2560, 1440, screenMode);
+            settings.screenResX = 2560;
+            settings.screenResY = 1440;
+        }
+        else if (resolution == "3840 x 2160 (16:9)")
+        {
+            Screen.SetResolution(3840, 2160, screenMode);
+            settings.screenResX = 3840;
+            settings.screenResY = 2160;
+        }
         else if (resolution == "7680 x 4320 (16:9)")
         {
             Screen.SetResolution(7680, 4320, screenMode);
             settings.screenResX = 7680;
             settings.screenResY = 4320;
         }
+        else if (resolution == "640 x 400 (16:10)")
+        {
+            Screen.SetResolution(640, 400, screenMode);
+            settings.screenResX = 640;
+            settings.screenResY = 400;
+        }
+        else if (resolution == "960 x 600 (16:10)")
+        {
+            Screen.SetResolution(960, 600, screenMode);
+            settings.screenResX = 960;
+            settings.screenResY = 600;
+        }
+        else if (resolution == "1024 x 640 (16:10)")
+        {
+            Screen.SetResolution(1024, 640, screenMode);
+            settings.screenResX = 1024;
+            settings.screenResY = 640;
+        }
+        else if (resolution == "1280 x 800 (16:10)")
+        {
+            Screen.SetResolution(1280, 800, screenMode);
+            settings.screenResX = 1280;
+            settings.screenResY = 800;
+        }
+        else if (resolution == "1680 × 1050 (16:10)")
+        {
+            Screen.SetResolution(1680, 1050, screenMode);
+            settings.screenResX = 1680;
+            settings.screenResY = 1050;
+        }
+        else if (resolution == "1920 x 1200 (16:10)")
+        {
+            Screen.SetResolution(1920, 1200, screenMode);
+            settings.screenResX = 1920;
+            settings.screenResY = 1200;
+        }
+        else if (resolution == "2560 x 1600 (16:10)")
+        {
+            Screen.SetResolution(2560, 1600, screenMode);
+            settings.screenResX = 2560;
+            settings.screenResY = 1600;
+        }
+        else if (resolution == "3840 x 2400 (16:10)")
+        {
+            Screen.SetResolution(3840, 2400, screenMode);
+            settings.screenResX = 3840;
+            settings.screenResY = 2400;
+        }
         else if (resolution == "7680 x 4800 (16:10)")
         {
             Screen.SetResolution(7680, 4800, screenMode);
             settings.screenResX = 7680;
             settings.screenResY = 4800;
+        }
+        else if (resolution == "1280 x 540 (21:9)")
+        {
+            int width = 1280;
+            int height = 540;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "2560 x 1080 (21:9)")
+        {
+            int width = 2560;
+            int height = 1080;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "2880 x 1200 (21:9)")
+        {
+            int width = 2800;
+            int height = 1200;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "3440 x 1440 (21:9)")
+        {
+            int width = 3440;
+            int height = 1440;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "3840 x 1600 (21:9)")
+        {
+            int width = 3840;
+            int height = 1600;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "4320 x 1800 (21:9)")
+        {
+            int width = 4320;
+            int height = 1800;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "5120 x 2160 (21:9)")
+        {
+            int width = 5120;
+            int height = 2160;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "1920 x 540 (32:9)")
+        {
+            int width = 1920;
+            int height = 540;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "3840 x 1080 (32:9)")
+        {
+            int width = 3840;
+            int height = 1080;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "5120 x 1440 (32:9)")
+        {
+            int width = 5120;
+            int height = 1440;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
+        }
+        else if (resolution == "7680 x 2160 (32:9)")
+        {
+            int width = 7680;
+            int height = 2160;
+            Screen.SetResolution(width, height, screenMode);
+            settings.screenResX = width;
+            settings.screenResY = height;
         }
 
         OGSettingsFunctions.SaveSettingsData();

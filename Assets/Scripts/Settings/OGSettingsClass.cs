@@ -7,6 +7,7 @@ public class OGSettingData
     public int heightMapResolution;
     public int screenResX;
     public int screenResY;
+    public float controllersensitivity;
     public bool invertY;
     public bool invertX;
     public bool autoaim;

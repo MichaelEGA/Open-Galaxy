@@ -155,6 +155,7 @@ public static class OGSettingsFunctions
             settings.heightMapResolution = ogSettingsClass.ogSettingsData[0].heightMapResolution;
             settings.invertX = ogSettingsClass.ogSettingsData[0].invertX;
             settings.invertY = ogSettingsClass.ogSettingsData[0].invertY;
+            settings.controllersensitivity = ogSettingsClass.ogSettingsData[0].controllersensitivity;
             settings.autoaim = ogSettingsClass.ogSettingsData[0].autoaim;
             settings.screenResX = ogSettingsClass.ogSettingsData[0].screenResX;
             settings.screenResY = ogSettingsClass.ogSettingsData[0].screenResY;
@@ -196,6 +197,7 @@ public static class OGSettingsFunctions
         ogSettingsClass.ogSettingsData[0].heightMapResolution = settings.heightMapResolution;
         ogSettingsClass.ogSettingsData[0].invertX = settings.invertX;
         ogSettingsClass.ogSettingsData[0].invertY = settings.invertY;
+        ogSettingsClass.ogSettingsData[0].controllersensitivity = settings.controllersensitivity;
         ogSettingsClass.ogSettingsData[0].autoaim = settings.autoaim;
         ogSettingsClass.ogSettingsData[0].screenResX = settings.screenResX;
         ogSettingsClass.ogSettingsData[0].screenResY = settings.screenResY;
@@ -359,6 +361,18 @@ public static class OGSettingsFunctions
         settings.editorWindowMode = windowMode;
 
         OGSettingsFunctions.SaveSettingsData();
+    }
+
+    //This function changes the default camera position
+    public static void SetControllerSensitivity(float sensitvity)
+    {
+        OGSettings settings = OGSettingsFunctions.GetSettings();
+
+        settings.controllersensitivity = sensitvity;
+
+        CheckSettingsData();
+
+        SaveSettingsData();
     }
 
     //Set Open Galaxy cursor

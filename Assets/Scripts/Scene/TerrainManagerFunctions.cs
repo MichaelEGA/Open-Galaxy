@@ -423,6 +423,10 @@ public static class TerrainManagerFunctions
 
                 float height = 0;
 
+                //This slightly adjusts the height of the terrain to prevent an unrealistic uniformity
+                float dynamicTerrainHeight = ((terrainHeight / 5f) * 3.5f);
+                dynamicTerrainHeight = dynamicTerrainHeight + ((terrainHeight / 5f) * (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale))) + ((terrainHeight / 10f) * (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale))); 
+
                 //Add terrain noise
                 if (terrainType == TerrainType.Mountains)
                 {
@@ -458,7 +462,7 @@ public static class TerrainManagerFunctions
                 }
 
                 //This applies the height only after the terracing has been applied
-                height = height * terrainHeight;
+                height = height * dynamicTerrainHeight;
                
                 if (maskType == MaskType.Canyons)
                 {
@@ -474,22 +478,22 @@ public static class TerrainManagerFunctions
                 //Add blend noise
                 if (blendType == BlendType.Mountains)
                 {
-                    float blendHeight = (mountainNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
+                    float blendHeight = (mountainNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * dynamicTerrainHeight;
                     height = Mathf.Lerp(height, blendHeight, blendFactor);
                 }
                 else if (blendType == BlendType.Hills)
                 {
-                    float blendHeight = (hillNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
+                    float blendHeight = (hillNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * dynamicTerrainHeight;
                     height = Mathf.Lerp(height, blendHeight, blendFactor);
                 }
                 else if (blendType == BlendType.Desert)
                 {
-                    float blendHeight = (desertNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
+                    float blendHeight = (desertNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * dynamicTerrainHeight;
                     height = Mathf.Lerp(height, blendHeight, blendFactor);
                 }
                 else if (blendType == BlendType.Plains)
                 {
-                    float blendHeight = (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * terrainHeight;
+                    float blendHeight = (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * dynamicTerrainHeight;
                     height = Mathf.Lerp(height, blendHeight, blendFactor);
                 }
 

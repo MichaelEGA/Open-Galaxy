@@ -173,9 +173,13 @@ public static class SmallShipFunctions
             {
                 var gamepad = Gamepad.current;
 
-                smallShip.controllerPitch = Mathf.MoveTowards(gamepad.rightStick.y.ReadValue(), smallShip.controllerPitch, smallShip.controllerSenstivity * Time.deltaTime);
-                smallShip.controllerRoll = Mathf.MoveTowards(-gamepad.leftStick.x.ReadValue(), smallShip.controllerRoll, smallShip.controllerSenstivity * Time.deltaTime);
-                smallShip.controllerTurn = Mathf.MoveTowards(gamepad.rightStick.x.ReadValue(), smallShip.controllerTurn, smallShip.controllerSenstivity * Time.deltaTime);
+                float pitchInput = gamepad.rightStick.y.ReadValue();
+                float rollInput = -gamepad.leftStick.x.ReadValue();
+                float turnInput = gamepad.rightStick.x.ReadValue();
+
+                smallShip.controllerPitch = pitchInput * smallShip.controllerSenstivity;
+                smallShip.controllerRoll = rollInput * smallShip.controllerSenstivity;
+                smallShip.controllerTurn = turnInput * smallShip.controllerSenstivity;
 
                 //Thrust input and smoothing
                 if (gamepad.leftStick.y.ReadValue() > 0.95f & smallShip.controllerThrust < 1)
@@ -1249,7 +1253,7 @@ public static class SmallShipFunctions
     //This causes a smoke trail to appear behind the damaged ship
     public static void SmokeTrail(SmallShip smallShip)
     {
-        if (smallShip.hullLevel < 10 & smallShip.smokeTrail == null & smallShip.scene != null)
+        if (smallShip.hullLevel < 10 & smallShip.smokeTrail == null & smallShip.scene != null & smallShip.isAI == true)
         {
             Object tempSmokeTrail = PoolUtils.FindPrefabObjectInPool(smallShip.scene.particlePrefabPool, "SmokeTrail");
 
@@ -1295,7 +1299,7 @@ public static class SmallShipFunctions
         {
             int explosion = Random.Range(0, 3);
 
-            if (explosion == 0 & smallShip.isAI == false)
+            if (explosion == 0 & smallShip.isAI == true)
             {
                 Task a = new Task(ExplosionType_Spin(smallShip));
                 AddTaskToPool(smallShip, a);

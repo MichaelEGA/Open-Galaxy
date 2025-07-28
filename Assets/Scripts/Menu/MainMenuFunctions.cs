@@ -475,6 +475,7 @@ public static class MainMenuFunctions
         mainMenu.functions.Add("ChangeDefaultCameraPosition", new System.Action<string>(ChangeDefaultCameraPosition));
         mainMenu.functions.Add("ChangeResolution", new System.Action<string>(ChangeResolution));
         mainMenu.functions.Add("ChangeDamageLevel", new System.Action<string>(ChangeDamageLevel));
+        mainMenu.functions.Add("ChangeSensitivity", new System.Action<string>(ChangeSensitivity));
         mainMenu.functions.Add("ChangeQuality", new System.Action<string>(ChangeQuality));
         mainMenu.functions.Add("InvertHorizontal", new System.Action<string>(InvertHorizontal));
         mainMenu.functions.Add("InvertVertical", new System.Action<string>(InvertVertical));
@@ -653,6 +654,8 @@ public static class MainMenuFunctions
         TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
         ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
 
+        UnityEngine.Object[] props = Resources.LoadAll(OGGetAddress.props, typeof(GameObject));
+
         foreach (GameObject subMenu in mainMenu.SubMenus)
         {
             if (subMenu.name == "Model Credits_Settings")
@@ -668,6 +671,15 @@ public static class MainMenuFunctions
                     string textureAuthor = shipType.textureauthor;
 
                     buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, prefabName, "ContentButton03", "none", "Model Author: " + modelAuthor + " Texture Author: " + textureAuthor, "none"); 
+                }
+
+                foreach (Object prop in props)
+                {
+                    string prefabName = prop.name;
+                    string modelAuthor = "Galactic Conquest Mod";
+                    string textureAuthor = "Galactic Conquest Mod";
+
+                    buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, prefabName, "ContentButton03", "none", "Model Author: " + modelAuthor + " Texture Author: " + textureAuthor, "none");
                 }
 
                 //This sets the size of the sub menu according to the how many buttons have been generated
@@ -1389,6 +1401,18 @@ public static class MainMenuFunctions
         OGSettingsFunctions.SetDamageLevel(level);
 
         ActivateSubMenu("Settings");
+    }
+    
+    //This sets the controller senstivity
+    public static void ChangeSensitivity(string sensitivity)
+    {
+        float sensitvityFloat = float.Parse(sensitivity);
+        sensitvityFloat = sensitvityFloat / 100f;
+        OGSettingsFunctions.SetControllerSensitivity(sensitvityFloat);
+
+        OutputMenuMessage("The controller senstivity was set to " + sensitivity + "%");
+
+        ActivateSubMenu("Controls");
     }
 
     //This sets the screen resolution

@@ -15,20 +15,17 @@ public static class SceneFunctions
     #region start functions
 
     //This loads the scene script and object
-    public static void CreateScene()
+    public static Scene CreateScene()
     {
-        GameObject sceneGO = GameObject.Find("scene");
+        GameObject sceneGO = new GameObject();
+        Scene scene = sceneGO.AddComponent<Scene>();
+        scene.loadTime = Time.time;
+        sceneGO.name = "scene";
 
-        if (sceneGO == null)
-        {
-            sceneGO = new GameObject();
-            Scene scene = sceneGO.AddComponent<Scene>();
-            scene.loadTime = Time.time;
-            sceneGO.name = "scene";
+        LoadScenePrefabs();
+        GetCameras();
 
-            LoadScenePrefabs();
-            GetCameras();
-        }
+        return scene;
     }
 
     //This loads all the all the scene objects
@@ -1163,12 +1160,18 @@ public static class SceneFunctions
         }
 
         //This sets the skybox
-        foreach (Material skybox in scene.skyboxes)
+        if (scene != null)
         {
-            if (skybox.name == name)
+            if (scene.skyboxes != null)
             {
-                RenderSettings.skybox = skybox;
-                break;
+                foreach (Material skybox in scene.skyboxes)
+                {
+                    if (skybox.name == name)
+                    {
+                        RenderSettings.skybox = skybox;
+                        break;
+                    }
+                }
             }
         }
     }
@@ -1244,6 +1247,9 @@ public static class SceneFunctions
         //Get scene script reference
         Scene scene = GetScene();
         Audio audioManager = AudioFunctions.GetAudioManager();
+
+        //This gets the OG Settings
+        OGSettings ogSettings = OGSettingsFunctions.GetSettings(); 
 
         //This gets the Json ship data
         TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
@@ -1335,6 +1341,7 @@ public static class SceneFunctions
                 smallShip.cargo = cargo;
                 smallShip.explosionType = shipType.explosionType;
                 smallShip.shipLength = shipType.shipLength;
+                smallShip.controllerSenstivity = ogSettings.controllersensitivity;
                 ship.name = smallShip.name;
 
                 if (smallShip.torpedoNumber == 0)
@@ -2577,6 +2584,7 @@ public static class SceneFunctions
             AvoidCollisionsFunctions.StopAvoidCollision();
             yield return null;
             ClearScene(scene);
+            GameObject.Destroy(scene);
             GameObject.Destroy(scene.gameObject);
         }
     }
@@ -2811,19 +2819,11 @@ public static class SceneFunctions
     }
 
     //Allows other scripts to easily grab the scene script so they can access commonly held values
-    public static Scene GetScene(bool createScene = false)
+    public static Scene GetScene()
     {
         Scene scene;
 
         scene = GameObject.FindFirstObjectByType<Scene>(FindObjectsInactive.Include);//This gets the scene reference
-
-        if (scene == null & createScene == true)
-        {
-            CreateScene();
-            scene = GameObject.FindFirstObjectByType<Scene>();
-        }
-
-        Scene[] sceneScripts = Object.FindObjectsOfType<Scene>(true);
 
         return scene;
     }

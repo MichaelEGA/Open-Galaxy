@@ -87,20 +87,42 @@ public static class CockpitFunctions
             if (smallShip.isAI == false)
             {
                 var keyboard = Keyboard.current;
+                var controller = Gamepad.current;
 
-                if (keyboard.f1Key.isPressed == true & Time.time > smallShip.toggleCameraPressTime + 0.5f)
+                if (keyboard != null)
                 {
-                    if (smallShip.scene.followCameraIsActive == false)
+                    if (keyboard.f1Key.isPressed == true & Time.time > smallShip.toggleCameraPressTime + 0.5f)
                     {
-                        SceneFunctions.ActivateFollowCamera(true);
-                    }
-                    else
-                    {
-                        SceneFunctions.ActivateFollowCamera(false);
-                    }
+                        if (smallShip.scene.followCameraIsActive == false)
+                        {
+                            SceneFunctions.ActivateFollowCamera(true);
+                        }
+                        else
+                        {
+                            SceneFunctions.ActivateFollowCamera(false);
+                        }
 
-                    smallShip.toggleCameraPressTime = Time.time;
+                        smallShip.toggleCameraPressTime = Time.time;
+                    }
                 }
+
+                if (controller != null)
+                {
+                    if (controller.rightStickButton.isPressed == true & Time.time > smallShip.toggleCameraPressTime + 0.5f)
+                    {
+                        if (smallShip.scene.followCameraIsActive == false)
+                        {
+                            SceneFunctions.ActivateFollowCamera(true);
+                        }
+                        else
+                        {
+                            SceneFunctions.ActivateFollowCamera(false);
+                        }
+
+                        smallShip.toggleCameraPressTime = Time.time;
+                    }
+                }
+
 
                 if (smallShip.followCamera == null)
                 {

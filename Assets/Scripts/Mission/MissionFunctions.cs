@@ -18,7 +18,9 @@ public static class MissionFunctions
         float startTime = Time.unscaledTime;
 
         //This creastes the scene
-        Scene scene = SceneFunctions.GetScene(true);
+        Scene scene = SceneFunctions.CreateScene();
+
+        SceneFunctions.LoadScenePrefabs();
 
         //This looks for the mission manager and if it doesn't find one creates one
         MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>(FindObjectsInactive.Include); 
@@ -205,7 +207,7 @@ public static class MissionFunctions
     //This looks for and runs preload events
     public static IEnumerator FindAndRunPreLoadEvents(Mission mission, string location, float startTime, bool firstRun = false)
     {
-        //This preloads all scene objects first
+        //This preloads all scene and the terrain first
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
             if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
@@ -247,18 +249,19 @@ public static class MissionFunctions
                 SetFogDistanceAndColor(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Fog settings set", startTime);
             }
-            else if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
+           
+        }
+
+        //Then this preloads all the none-ship objects in the scene
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+             if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadAsteroids(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", startTime);
             }
-        }
-
-        //Then this preloads all the objects in the scene
-        foreach (MissionEvent missionEvent in mission.missionEventData)
-        {
-            if (missionEvent.eventType == "preload_loadsingleproponground" & missionEvent.conditionLocation == location)
+            else if (missionEvent.eventType == "preload_loadsingleproponground" & missionEvent.conditionLocation == location)
             {
                 LoadScreenFunctions.AddLogToLoadingScreen("Loading prop", startTime);
                 LoadSinglePropOnGround(missionEvent);
@@ -274,7 +277,24 @@ public static class MissionFunctions
             {
                 Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
                 while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", startTime);
+            }
+        }
+
+        //Then this preloads all the ships in the scene
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+            if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
+            {
+                Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
+                while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", startTime);  
+            }
+            else if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
+            {
+                Task a = new Task(LoadMultipleShips(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", startTime);
             }
             else if (missionEvent.eventType == "preload_loadsingleshipsonground" & missionEvent.conditionLocation == location)
             {
@@ -292,13 +312,7 @@ public static class MissionFunctions
                     LoadSingleShip(missionEvent);
                     LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", startTime);
                 } 
-            }
-            else if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
-            {
-                Task a = new Task(LoadMultipleShips(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", startTime);                 
-            }        
+            }    
         }
     }
 
@@ -307,7 +321,7 @@ public static class MissionFunctions
     {
         MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>();
 
-        while (missionManager.running == true)
+        while (missionManager.running == true & missionManager.eventNo[eventSeries] != 11111)
         {
             MissionEvent missionEvent = mission.missionEventData[missionManager.eventNo[eventSeries]];
 
@@ -842,8 +856,8 @@ public static class MissionFunctions
         LoadScreenFunctions.AddLogToLoadingScreen("Hud created.", startTime);
 
         //This creates the scene and gets the cameras
-        SceneFunctions.CreateScene();
         SceneFunctions.GetCameras();
+        SceneFunctions.ActivateCameras(true);
         LoadScreenFunctions.AddLogToLoadingScreen("Scene created.", startTime);
 
         //THis loads the audio and music manager

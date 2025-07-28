@@ -415,6 +415,7 @@ public static class LargeShipFunctions
             int explosionsNumber = (int)Mathf.Abs((largeShip.shipLength / 100f) * 10f);
 
             List<Vector3> explosionPoints = GameObjectUtils.GetRandomPointsOnMesh(mainShipMesh, meshTransform, explosionsNumber);
+            List<ParticleSystem> explosions = new List<ParticleSystem>();
 
             foreach (Vector3 explosionPoint in explosionPoints)
             {
@@ -427,14 +428,26 @@ public static class LargeShipFunctions
                             float explosionsScale = (largeShip.shipLength / 100f) * Random.Range(0.10f, 0.15f); ///15-30 
 
                             Vector3 worldPoint = meshTransform.TransformPoint(explosionPoint);
-                            //Vector3 scenePoint = largeShip.scene.transform.InverseTransformPoint(worldPoint);
 
-                            ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, worldPoint, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+                            ParticleSystem explosion = ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, worldPoint, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+
+                            explosions.Add(explosion);
 
                             float waitTime = Random.Range(0.10f, 0.45f);
 
                             yield return new WaitForSeconds(0.25f);
                         }
+                    }
+                }
+            }
+
+            if (explosions != null )
+            {
+                if (explosions.Count > 0)
+                {
+                    foreach(ParticleSystem explosion in explosions)
+                    {
+                        GameObject.Destroy(explosion.gameObject);
                     }
                 }
             }

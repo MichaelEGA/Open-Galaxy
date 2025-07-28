@@ -5,9 +5,10 @@ using UnityEngine;
 public static class ParticleFunctions
 {
     //This instantiates an explosion at the laser point of impact
-    public static void InstantiateExplosion(GameObject parentObject, Vector3 hitPosition, string explosionName = "explosion01", float explosionSize = 25, Audio audioManager = null, string explosionSound = "impact01_laserhitshield", float audioDistance = 500, string mixer = "External")
+    public static ParticleSystem InstantiateExplosion(GameObject parentObject, Vector3 hitPosition, string explosionName = "explosion01", float explosionSize = 25, Audio audioManager = null, string explosionSound = "impact01_laserhitshield", float audioDistance = 500, string mixer = "External")
     {
         Scene scene = SceneFunctions.GetScene();
+        ParticleSystem particleSystem = null;
         GameObject explosion = null;
 
         //This searches for any deactivated explosions and reuses them
@@ -32,7 +33,7 @@ public static class ParticleFunctions
         if (explosion != null)
         {
             //This sets the simulation space of the explosion to the scene
-            ParticleSystem particleSystem = explosion.GetComponent<ParticleSystem>();
+            particleSystem = explosion.GetComponent<ParticleSystem>();
             var main = particleSystem.main;
             main.simulationSpace = ParticleSystemSimulationSpace.Custom;
             main.customSimulationSpace = scene.transform;
@@ -53,5 +54,7 @@ public static class ParticleFunctions
                 AudioFunctions.PlayAudioClip(audioManager, explosionSound, mixer, hitPosition, 1, 1, audioDistance, 0.6f);
             }
         }
+
+        return (particleSystem);
     }
 }

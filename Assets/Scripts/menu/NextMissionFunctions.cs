@@ -70,14 +70,22 @@ public class NextMissionFunctions
             missionDebriefingText.text = debriefingText;
         }
 
+        //This displays the correct buttons and selects them for the controller
+        GameObject nextMissionButton = GameObject.Find("NextMissionButton");
+
         if (displayNextMissionButton == false)
         {
-            GameObject nextMissionButton = GameObject.Find("NextMissionButton");
-
             if (nextMissionButton != null)
             {
                 nextMissionButton.SetActive(false);
             }
+
+            nextMission.gameObject.GetComponentInChildren<Button>().Select(); //This selects the main menu buttton
+        }
+
+        if (nextMissionButton != null)
+        {
+            nextMissionButton.GetComponent<Button>().Select(); //This selects the next mission button
         }
 
         yield return new WaitForSecondsRealtime(1);

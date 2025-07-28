@@ -1,7 +1,7 @@
 # Open-Galaxy
 
 Gameplay
-![Screenshot 2025-06-24 142244](https://github.com/user-attachments/assets/ad3659ed-9a61-4899-a929-e6827ff35d59)
+![Screenshot 2025-06-24 142541](https://github.com/user-attachments/assets/f7e49a8b-7d56-4fd7-903b-628711062195)
 
 ![Screenshot 2025-06-24 142541](https://github.com/user-attachments/assets/482729b3-fdd5-4fcd-8f80-5b0a160e024b)
 
@@ -18,9 +18,10 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - Easy to use mission editor
   - External mission loading
   - 21 Inbuilt Missions
-  - Keyboard and Mouse Controls
+  - Keyboard and Mouse Support
+  - X-Box Controller Support
 
-**Controls**  
+**Keyboard and Mouse**  
   - Mouse Steers
   - A-D roll left and right
   - W-S speeds up and slows down
@@ -34,11 +35,29 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - Left Mouse fires weapons
   - Right Mouse focues the camera
   - E matches speed
+  - F1 changes between first and third person viewpoint
   - Scan a target by selecting it and then flying close
 
-**Latest Development Release:** 7.1.38
+**Controller**  
+  - Right Thumbstick Steers
+  - Left Thumbstick Horizontal roll left and right
+  - Left Thumbstick Vertical speeds up and slows down
+  - B toggles weapons if more than one type is available
+  - A toggles weapon linking (i.e. fire one laser at a time, or two at time, or all at once)
+  - Left Shouder Button selects next target
+  - Right Shoulder Button selects closest enemy target if available
+  - Y selects next enemy target if available
+  - X selects the target directly ahead of the player
+  - D-Pad Up, down, left, and right control energy management
+  - Right Trigger fires weapons
+  - Left Trigger focues the camera
+  - Right Thumbstick Button matches speed
+  - Left Thumbstick Button  changes between first and third person viewpoint
+  - Scan a target by selecting it and then flying close
+    
+**Latest Development Release:** 7.9.61
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.7.1.38/Open.Galaxy.7.1.38.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.7.9.61/Open.Galaxy.7.9.61.zip
     
 **Latest Milestone Release:** 5.0.89
 
@@ -72,6 +91,89 @@ Assets have only been used when permission has been given or implied by the auth
 The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
 
 **Changelog**
+
+28/07/25 - 7.9.61
+  - Setup: 9 Fel Ships
+  - Setup: 7 First Order Ships
+  - Setup: 15 Galactic Alliance Ships
+  - Setup: 5 Krayt Empire Ships
+  - Setup: 37 Old Republic Ships
+  - Setup: 26 Sith Empire Ships
+  - Setup: 10 Mando Ships
+  - Setup: 14 Misc Ships
+  - Added: Escape Pods
+  - Added: New Endless Terrain Node/Function
+  - Added: New Prop Assets from Galactic Conquest Mod
+  - Added: X-Box Controller Support
+  - Added: if ship is distant from point node/function
+  - Added: node/function if ship shields are less than
+  - Added: Jeroenimo kandossi
+  - Added: node/function for loading misc object on terrain
+  - Added: node/function for loading multiple props
+  - Added: distant plane to terrain system
+  - Added: water tile to terrain manager
+  - Added: change hud tabs when using controller
+  - Added: node/function if number of ships is less than
+  - Added: node/function if number of ships of allegiance is less than
+  - Added: node/function if number of ships with name is less than
+  - Added: node/function to detect whether the keyboard or the controller is being used
+  - Added: node/function load single ship from hangar
+  - Added: add view prop window to editor
+  - Added: add view terrain texture window to editor
+  - Added: reorganise resolution options in menu and script
+  - Added: change controller sensitivity in controls menu
+  - Updated: executor material
+  - Fixed: tie predator has the wrong allegiance
+  - Fixed: tie predator is too weak, increase hull value
+  - Fixed: rotating largeships sometimes get stuck
+  - Added: add gimbal lock protection to small ships
+  - Updated: make focus camera higher on X-83
+  - Setup: set up n1 starfighter
+  - Fixed: explosions should move with scene
+  - Removed: collision avoidance system from large ships
+  - Fixed: asteroids are not detecting collisions
+  - Fixed: largeship set to full speed doesn't move at consistent speed
+  - Updated: change focus point on Tie Phantom
+  - Updated: make sith interceptor smaller
+  - Fixed: follow camera is too close on gauntlet
+  - Updated: rename tileManager terrainManager
+  - Fixed: find ways to speed up tileManager
+  - Fixed: terrain load freeze in build
+  - Added: seed to tileManager
+  - Updated: prop loader to allow to select up to 5 props
+  - Updated: prop loader to allow user to select up to 5 textures
+  - Fixed: bug when loading next mission that causes certain mission nodes not to run
+  - Fixed: disable mouse cursor when using controller
+  - Updated: increase dead zone for throttle
+  - Fixed: shrink auto-aim window
+  - Updated: make terrain height never uniform
+  - Updated: make right stick button change camera perspective
+  - Fixed: one of the cloud city buildings is not centered
+  - Fixed: clean up prop name errors
+  - Updated: deactivate small explosions on large explosion
+  - Fixed: button not automatically selected on next mission menu
+  - Fixed: crash on loading next mission
+  - Updated: modify terrain height to include both hills and plains
+  - Fixed: fix camera bug on mission load
+  - Fixed: player ship should never spin when destroyed
+  - Fixed: player ship should never have a smoke trail
+  - Updated: make props load before ships
+  - Removed: load environment node and function
+  - Added: credit terrain textures in credits
+  - Added: credit galactic conquest mod in credits
+  - Updated: change mc cruiser for mc liberty cruiser in imperial assault mission 2
+  - Fixed: x-wing mission 13, new rebel ships try to fire on player shutttle
+  - Fixed: x-wing mission 12 x-wings should jump to hyperspace at beginning
+  - Fixed: x-wing missio 12, dx9 should not attack the lancer
+  - Fixed: ton folk lasers not set up correctly
+  - Fixed: start event series with no events causes null error
+  - Updated: make A9 Interceptor stats stronger
+  - Fixed: not all mando ships are linked to mando allegiance
+  - Updated: x-wing mission 1 to use controller check node
+  - Updated: x-wing mission 2 to use controller check node
+  - Updated: x-wing mission 7 to use controller check node
+  - Updated: place all unfinished missions in 'in development' campaign
+  - Added: copy in latest missions
 
 24/06/25 - 7.1.38 
   - Added: firing reticule on hud

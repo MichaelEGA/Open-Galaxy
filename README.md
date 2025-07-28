@@ -1,7 +1,7 @@
 # Open-Galaxy
 
 Gameplay
-![Screenshot 2025-06-24 142541](https://github.com/user-attachments/assets/f7e49a8b-7d56-4fd7-903b-628711062195)
+<img width="1452" height="809" alt="Screenshot 2025-07-28 212638" src="https://github.com/user-attachments/assets/3a3a3df2-7c51-4338-8003-17d607a27fd5" />
 
 ![Screenshot 2025-06-24 142541](https://github.com/user-attachments/assets/482729b3-fdd5-4fcd-8f80-5b0a160e024b)
 

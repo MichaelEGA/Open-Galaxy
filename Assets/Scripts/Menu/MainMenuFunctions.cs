@@ -1450,7 +1450,7 @@ public static class MainMenuFunctions
 
         ActivateSubMenu("Controls");
 
-        OutputMenuMessage("The autoaim was set to " + autoaim);
+        OutputMenuMessage("Autoaim was set to " + autoaim);
     }
 
     //This sets the window mode

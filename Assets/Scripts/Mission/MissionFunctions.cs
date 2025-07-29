@@ -3443,6 +3443,7 @@ public static class MissionFunctions
     public static void SetFollowTarget(MissionEvent missionEvent)
     {
         Scene scene = SceneFunctions.GetScene();
+        
         float xOffset = 0;
         float yOffset = 0;
         float zOffset = 0;
@@ -3474,6 +3475,13 @@ public static class MissionFunctions
                                             if (missionEvent.data3 == "arrow")
                                             {
                                                 var newPosition = GetNewPosition_Arrow(xOffset, yOffset, zOffset);
+                                                xOffset = newPosition.x;
+                                                yOffset = newPosition.y;
+                                                zOffset = newPosition.z;
+                                            }
+                                            else if (missionEvent.data3 == "arrowinverted")
+                                            {
+                                                var newPosition = GetNewPosition_ArrowInverted(xOffset, yOffset, zOffset);
                                                 xOffset = newPosition.x;
                                                 yOffset = newPosition.y;
                                                 zOffset = newPosition.z;
@@ -3533,6 +3541,27 @@ public static class MissionFunctions
         {
             x = Mathf.Abs(x) + 30;
             z = z - 50;
+        }
+
+        return (x, y, z);
+    }
+
+    //This returns the next position in the formation based on the received values
+    public static (float x, float y, float z) GetNewPosition_ArrowInverted(float x, float y, float z)
+    {
+        if (x == 0)
+        {
+            x = 30;
+            z = +50;
+        }
+        else if (x > 0)
+        {
+            x = -x;
+        }
+        else
+        {
+            x = Mathf.Abs(x) + 30;
+            z = z + 50;
         }
 
         return (x, y, z);

@@ -4068,6 +4068,7 @@ public static class NodeTypes
 
         List<string> options = new List<string>();
         options.Add("arrow");
+        options.Add("arrowinverted");
         options.Add("linesingle");
         options.Add("linedual");
         options.Add("random");

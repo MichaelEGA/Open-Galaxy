@@ -231,7 +231,10 @@ public class SmallShip : MonoBehaviour
     public float xFormationPos;
     public float yFormationPos;
     public float zFormationPos;
-    public float formationSpeed;
+    public float pFactor, iFactor, dFactor;
+    public float integralClamp = 1.0f;
+    public float integral;
+    public float lastError;
 
     [Header("Particle Effcets")]
     [HideInInspector] public GameObject smokeTrail;

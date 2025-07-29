@@ -707,7 +707,7 @@ public static class SmallShipFunctions
             smallShip.shipRigidbody = smallShip.gameObject.GetComponent<Rigidbody>();
         }
 
-        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false & smallShip.isDisabled == false)
+        if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false & smallShip.isDisabled == false & smallShip.flyInFormation == false)
         {
             //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
             float step = +Time.deltaTime / 0.1f;
@@ -727,6 +727,24 @@ public static class SmallShipFunctions
 
             Quaternion deltaRotation = Quaternion.Euler(rotationVector * Time.deltaTime);
             smallShip.shipRigidbody.MoveRotation(smallShip.shipRigidbody.rotation * deltaRotation);
+        }
+        else if (smallShip.flyInFormation == true)
+        {
+            float positionLerpSpeed = 5f;   // Smooth movement
+            float rotationLerpSpeed = 20f;   // Smooth rotation
+
+            // Build a flat rotation from the leader's yaw
+            Quaternion flatLeaderRotation = Quaternion.Euler(0, smallShip.followTarget.transform.eulerAngles.y, 0);
+
+            // Apply offset using only yaw rotation (no pitch/roll)
+            Vector3 desiredPosition = smallShip.followTarget.transform.position + flatLeaderRotation * new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos);
+
+            // Move smoothly to the desired position
+            smallShip.transform.position = Vector3.Lerp(smallShip.transform.position, desiredPosition, Time.deltaTime * positionLerpSpeed);
+
+            // Optionally match rotation (can be adjusted for looser formations)
+            Quaternion desiredRotation = Quaternion.Lerp(smallShip.transform.rotation, smallShip.followTarget.transform.rotation, Time.deltaTime * rotationLerpSpeed);
+            smallShip.transform.rotation = desiredRotation;
         }
     }
 

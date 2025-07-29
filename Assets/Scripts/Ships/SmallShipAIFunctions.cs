@@ -1,5 +1,8 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 //These functions are called by the small ship functions script
@@ -621,14 +624,74 @@ public static class SmallShipAIFunctions
             //This corrects the input for the follow target if necessary
             if (smallShip.followTarget != null & smallShip.flyInFormation == true)
             {
-                if (smallShip.thrustSpeed > smallShip.followTarget.thrustSpeed & smallShip.thrustSpeed > oneThird)
+                float distance = Vector3.Distance(smallShip.transform.position, smallShip.followTarget.transform.position + new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos));
+                //float target = 10;
+                //float deadZone = 0.5f;
+                //float pFactor = 0.005f;
+                //float iFactor = 0f;
+                //float dFactor = 0.15f; //Damper
+
+                if (distance < 25)
                 {
                     smallShip.thrustInput = -1;
                 }
-                else
+                else if (distance < 50)
+                {
+                    if (smallShip.thrustSpeed > smallShip.followTarget.thrustSpeed)
+                    {
+                        smallShip.thrustInput = -1;
+                    }
+                    else
+                    {
+                        smallShip.thrustInput = 1;
+                    }
+                }
+                else if (distance < 500)
+                {
+                    if (smallShip.thrustSpeed > smallShip.followTarget.thrustSpeed + 10)
+                    {
+                        smallShip.thrustInput = -1;
+                    }
+                    else
+                    {
+                        smallShip.thrustInput = 1;
+                    }
+                }
+                else if (distance > 100)
                 {
                     smallShip.thrustInput = 1;
                 }
+
+                //float error = target - distance;
+
+                //smallShip.integral += error * Time.deltaTime;
+
+                //smallShip.integral = Mathf.Clamp(smallShip.integral, -smallShip.integralClamp, smallShip.integralClamp);
+
+                //float derivative = 0;
+
+                //if (Time.deltaTime > 0)
+                //{
+                //    derivative = (error - smallShip.lastError) / Time.deltaTime;
+                //}
+
+                //smallShip.lastError = error;
+
+                //float pidReturn = (pFactor * error) + (iFactor * smallShip.integral) + (dFactor * derivative);
+
+                //Debug.Log("pidReturn " + pidReturn);
+
+                //smallShip.thrustInput = 0f;
+
+                //if (pidReturn < -deadZone)
+                //{
+                //    smallShip.thrustInput = 1;
+                //}
+                //else if (pidReturn > deadZone)
+                //{
+                //    smallShip.thrustInput = -1;
+                //}
+                
             }
         }        
     }
@@ -1229,9 +1292,12 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.aiEvade == false)
             {
-                float x = Random.Range(0, 15000);
-                float y = Random.Range(0, 15000);
-                float z = Random.Range(0, 15000);
+                float min = -smallShip.scene.sceneRadius + 1000;
+                float max = smallShip.scene.sceneRadius - 1000;
+
+                float x = Random.Range(min, max);
+                float y = Random.Range(min, max);
+                float z = Random.Range(min, max);
 
                 if (smallShip.waypoint != null)
                 {
@@ -1254,27 +1320,20 @@ public static class SmallShipAIFunctions
 
                     Transform target = smallShip.followTarget.transform;
 
-                    float xOffset = smallShip.xFormationPos;
-                    float yOffset = smallShip.yFormationPos;
-                    float zOffset = smallShip.zFormationPos;
+                    Vector3 adjustedPosition = target.position + new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos);
 
-                    Pose dummyTransform = new Pose();
-                    dummyTransform.position = target.position;
-                    dummyTransform.rotation = new Quaternion(target.rotation.x, 0, target.rotation.y, 0);
+                    float distance = Vector3.Distance(smallShip.transform.position, adjustedPosition);
 
-                    Vector3 targetPosition = target.position + (target.right * xOffset) + (target.forward * zOffset) + (target.up * yOffset);
+                    smallShip.aiMatchSpeed = true;
 
-                    float distance = Vector3.Distance(smallShip.transform.position, targetPosition);
-
-                    AngleTowardsFormationPoint(smallShip);
-
-                    if (distance < 100)
+                    if (distance > 1)
                     {
-                        smallShip.aiMatchSpeed = true;
+                        AngleTowardsPoint(smallShip, adjustedPosition);
                     }
                 }
                 else
                 {
+                    smallShip.aiMatchSpeed = false;
                     smallShip.flyInFormation = false;
                     ChaseWithdraw(smallShip);
                 }
@@ -1724,17 +1783,11 @@ public static class SmallShipAIFunctions
     }
 
     //This angles the ship towards the target vector
-    public static void AngleTowardsFormationPoint(SmallShip smallShip)
+    public static void AngleTowardsPoint(SmallShip smallShip, Vector3 point)
     {
         if (smallShip != null)
         {
-            Transform target = smallShip.followTarget.transform;
-
-            float xOffset = smallShip.xFormationPos;
-            float yOffset = smallShip.yFormationPos;
-            float zOffset = smallShip.zFormationPos;
-
-            Vector3 targetPosition = target.position + (target.right * xOffset) + (target.forward * zOffset) + (target.up * yOffset);
+            Vector3 targetPosition = point;
 
             Vector3 targetRelativePosition = targetPosition - smallShip.transform.position;
 
@@ -1776,7 +1829,7 @@ public static class SmallShipAIFunctions
                         SmallShipFunctions.SmoothPitchInput(smallShip, -targetUp * 5);
                     }
                 }
-            } 
+            }
         }
     }
 

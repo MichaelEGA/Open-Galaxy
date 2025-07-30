@@ -624,74 +624,14 @@ public static class SmallShipAIFunctions
             //This corrects the input for the follow target if necessary
             if (smallShip.followTarget != null & smallShip.flyInFormation == true)
             {
-                float distance = Vector3.Distance(smallShip.transform.position, smallShip.followTarget.transform.position + new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos));
-                //float target = 10;
-                //float deadZone = 0.5f;
-                //float pFactor = 0.005f;
-                //float iFactor = 0f;
-                //float dFactor = 0.15f; //Damper
-
-                if (distance < 25)
+                if (smallShip.thrustSpeed > smallShip.speedRating)
                 {
                     smallShip.thrustInput = -1;
                 }
-                else if (distance < 50)
-                {
-                    if (smallShip.thrustSpeed > smallShip.followTarget.thrustSpeed)
-                    {
-                        smallShip.thrustInput = -1;
-                    }
-                    else
-                    {
-                        smallShip.thrustInput = 1;
-                    }
-                }
-                else if (distance < 500)
-                {
-                    if (smallShip.thrustSpeed > smallShip.followTarget.thrustSpeed + 10)
-                    {
-                        smallShip.thrustInput = -1;
-                    }
-                    else
-                    {
-                        smallShip.thrustInput = 1;
-                    }
-                }
-                else if (distance > 100)
+                else
                 {
                     smallShip.thrustInput = 1;
                 }
-
-                //float error = target - distance;
-
-                //smallShip.integral += error * Time.deltaTime;
-
-                //smallShip.integral = Mathf.Clamp(smallShip.integral, -smallShip.integralClamp, smallShip.integralClamp);
-
-                //float derivative = 0;
-
-                //if (Time.deltaTime > 0)
-                //{
-                //    derivative = (error - smallShip.lastError) / Time.deltaTime;
-                //}
-
-                //smallShip.lastError = error;
-
-                //float pidReturn = (pFactor * error) + (iFactor * smallShip.integral) + (dFactor * derivative);
-
-                //Debug.Log("pidReturn " + pidReturn);
-
-                //smallShip.thrustInput = 0f;
-
-                //if (pidReturn < -deadZone)
-                //{
-                //    smallShip.thrustInput = 1;
-                //}
-                //else if (pidReturn > deadZone)
-                //{
-                //    smallShip.thrustInput = -1;
-                //}
-                
             }
         }        
     }
@@ -1145,6 +1085,8 @@ public static class SmallShipAIFunctions
                     PatrolRandom(smallShip);
                 }
             }
+
+            smallShip.flyInFormation = false;
         }
     }
 
@@ -1190,6 +1132,8 @@ public static class SmallShipAIFunctions
                     PatrolRandom(smallShip);
                 }
             }
+
+            smallShip.flyInFormation = false;
         }
     }
 
@@ -1246,6 +1190,8 @@ public static class SmallShipAIFunctions
                     PatrolRandom(smallShip);
                 }
             }
+
+            smallShip.flyInFormation = false;
         }
     }
 
@@ -1282,6 +1228,8 @@ public static class SmallShipAIFunctions
                     AngleTowardsWaypoint(smallShip);
                 }
             }
+
+            smallShip.flyInFormation = false;
         }
     }
 
@@ -1316,7 +1264,10 @@ public static class SmallShipAIFunctions
             {
                 if (smallShip.followTarget != null)
                 {
-                    smallShip.flyInFormation = true;
+                    if (smallShip.isAI == true)
+                    {
+                        smallShip.flyInFormation = true;
+                    }
 
                     Transform target = smallShip.followTarget.transform;
 
@@ -1325,11 +1276,7 @@ public static class SmallShipAIFunctions
                     float distance = Vector3.Distance(smallShip.transform.position, adjustedPosition);
 
                     smallShip.aiMatchSpeed = true;
-
-                    if (distance > 1)
-                    {
-                        AngleTowardsPoint(smallShip, adjustedPosition);
-                    }
+                    AngleTowardsPoint(smallShip, adjustedPosition);
                 }
                 else
                 {
@@ -1348,6 +1295,9 @@ public static class SmallShipAIFunctions
         {
             ResetSteeringInputs(smallShip);
         }
+
+        smallShip.flyInFormation = false;
+        smallShip.positionLocked = false;
     }
 
     #endregion

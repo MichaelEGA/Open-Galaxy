@@ -3486,21 +3486,7 @@ public static class MissionFunctions
                                                 yOffset = newPosition.y;
                                                 zOffset = newPosition.z;
                                             }
-                                            else if (missionEvent.data3 == "linesingle")
-                                            {
-                                                var newPosition = GetNewPosition_LineSingle(xOffset, yOffset, zOffset);
-                                                xOffset = newPosition.x;
-                                                yOffset = newPosition.y;
-                                                zOffset = newPosition.z;
-                                            }
-                                            else if (missionEvent.data3 == "linedual")
-                                            {
-                                                var newPosition = GetNewPosition_LineSingle(xOffset, yOffset, zOffset);
-                                                xOffset = newPosition.x;
-                                                yOffset = newPosition.y;
-                                                zOffset = newPosition.z;
-                                            }
-                                            else
+                                            else if (missionEvent.data3 == "random")
                                             {
                                                 var newPosition = GetNewPosition_Random(xOffset, yOffset, zOffset);
                                                 xOffset = newPosition.x;
@@ -3568,55 +3554,15 @@ public static class MissionFunctions
     }
 
     //This returns the next position in the formation based on the received values
-    public static (float x, float y, float z) GetNewPosition_LineSingle(float x, float y, float z)
-    {
-        if (x == 0)
-        {
-            x = 0;
-            z = -50;
-        }
-        else
-        {
-            z = z - 50;
-        }
-
-        return (x, y, z);
-    }
-
-    //This returns the next position in the formation based on the received values
-    public static (float x, float y, float z) GetNewPosition_LineDual(float x, float y, float z)
-    {
-        if (x == 0)
-        {
-            x = 50;
-            z = -50;
-        }
-        else if (x > 0)
-        {
-            x = -x;
-        }
-        else if (x < 0)
-        {
-            x = Mathf.Abs(x);
-            z = z - 50;
-        }
-
-        return (x, y, z);
-    }
-
-    //This returns the next position in the formation based on the received values
     public static (float x, float y, float z) GetNewPosition_Random(float x, float y, float z)
     {
-        if (x == 0)
-        {
-            x = Random.Range(-200, 200);
-            z = Random.Range(-200, 200);
-            y = Random.Range(-200, 200);
-        }
-
+        x = Random.Range(-50, 50);
+        z = Random.Range(-50, 50);
+        y = Random.Range(-50, 50);
+        
         return (x, y, z);
     }
-
+    
     //This sets the colour and distance of the fog for the scene
     public static void SetFogDistanceAndColor(MissionEvent missionEvent)
     {

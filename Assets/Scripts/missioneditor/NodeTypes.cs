@@ -4069,8 +4069,6 @@ public static class NodeTypes
         List<string> options = new List<string>();
         options.Add("arrow");
         options.Add("arrowinverted");
-        options.Add("linesingle");
-        options.Add("linedual");
         options.Add("random");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options, "formation", "arrow", 7, 5, drop, 12.5f, 90, 5f);

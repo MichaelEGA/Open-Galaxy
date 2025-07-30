@@ -730,21 +730,28 @@ public static class SmallShipFunctions
         }
         else if (smallShip.flyInFormation == true)
         {
-            float positionLerpSpeed = 5f;   // Smooth movement
-            float rotationLerpSpeed = 20f;   // Smooth rotation
-
             // Build a flat rotation from the leader's yaw
             Quaternion flatLeaderRotation = Quaternion.Euler(0, smallShip.followTarget.transform.eulerAngles.y, 0);
 
             // Apply offset using only yaw rotation (no pitch/roll)
             Vector3 desiredPosition = smallShip.followTarget.transform.position + flatLeaderRotation * new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos);
 
+            float distance = Vector3.Distance(smallShip.transform.position, desiredPosition);
+
+            float positionLerpSpeed = 3f;   // Smooth movement
+            float rotationLerpSpeed = 3f;   // Smooth rotation
+
+            if (distance > 500)
+            {
+                positionLerpSpeed = 1f;   // Smooth movement
+                rotationLerpSpeed = 1f;   // Smooth rotation
+            }
+           
             // Move smoothly to the desired position
             smallShip.transform.position = Vector3.Lerp(smallShip.transform.position, desiredPosition, Time.deltaTime * positionLerpSpeed);
 
             // Optionally match rotation (can be adjusted for looser formations)
-            Quaternion desiredRotation = Quaternion.Lerp(smallShip.transform.rotation, smallShip.followTarget.transform.rotation, Time.deltaTime * rotationLerpSpeed);
-            smallShip.transform.rotation = desiredRotation;
+            smallShip.transform.rotation = smallShip.followTarget.transform.rotation;
         }
     }
 

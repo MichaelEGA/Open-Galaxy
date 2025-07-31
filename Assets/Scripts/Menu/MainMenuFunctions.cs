@@ -954,16 +954,16 @@ public static class MainMenuFunctions
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
     {
         string[] messages = new string[12];
-        messages[0] = "Welcome to Open Galaxy. Version " + Application.version + " bring new cockpits, autoaim, and damage control.";
+        messages[0] = "Welcome to Open Galaxy. Version " + Application.version + " bringing new ships, terrrain loading, and controller support.";
         messages[1] = "Open Galaxy's is a platform for X-Wing and Tie Fighter style custom missions.";
         messages[2] = "All Open Galaxy's missions were created using the inbuilt mission editor.";
         messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";
         messages[4] = "Open Galaxy gives complete control to mission creators from events to AI behaviour to ship stats.";
         messages[5] = "Every ship in Open Galaxy handles a little differently. Adapt your tactics accordingly.";
-        messages[6] = "Open Galaxy is designed for keyboard and mouse.";
+        messages[6] = "Open Galaxy supports controllers and keyboard and mouse.";
         messages[7] = "Check out the credits to see who made Open Galaxy possible.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
-        messages[9] = "Post 7.0 plans for Open Galaxy includes controller support and more missions.";
+        messages[9] = "Open Galaxy has ships from all the major star wars timelines and periods.";
         messages[10] = "Finding it hard to hit your target? Try turning on autoaim in the controls menu.";
         messages[11] = "Getting blown out of the sky? Try changing the damage level in the settings menu";
         Random.InitState(System.DateTime.Now.Millisecond);

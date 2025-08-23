@@ -386,8 +386,6 @@ public static class LargeShipFunctions
     {
         largeShip.spinShip = true;
 
-        Component rendererComp;
-
         var largest = GameObjectUtils.FindLargestMeshByLength(largeShip.GameObject());
 
         MeshFilter largestMeshFilter = null;

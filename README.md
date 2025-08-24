@@ -93,6 +93,33 @@ The game is open source and can be forked, modified, or replicated (Apache 2.0) 
 
 **Changelog**
 
+24/08/25 - 8.3.89 (Milestone Release)
+  - Setup: vong ships (10/10)
+  - Setup: rep ships (28/28)
+  - Setup: pirate ships (35/35)
+  - Setup: reb ships (62/62)
+  - Setup: imp ships (142/142)
+  - Updated: Scroll menu with game controller
+  - Added: emperor niko experimental ties
+  - Updated: IA mission 2 in game title to say 'Phantoms of the March'
+  - Fixed: "the autoaim was set to off" should read "autoaim was set to off"
+  - Fixed: out of date messages on main menu
+  - Updated: remove open galaxy assets from credit reference
+  - Added: credit emperor niko for each ship made
+  - Added: new asteroid shader
+  - Fixed: controller controls in menu are incorrect
+  - Added: credit emperor niko in general credits
+  - Added: credit emperor niko in readme
+  - Fixed: fade to black node is broken
+  - Fixed: mc80 ship references in Tie Fighter and Imperial Assault missions
+  - Fixed: IA mission 4 make repulse invincible
+  - Fixed: remove buoy from end of x-wing mission 3
+  - Fixed: Assault Gunboats should strafe freighters with lasers instead of using torpedos
+  - Fixed: x-wing missin 7 waypoint isn't highlighted
+  - Fixed: frigate should not be able to be destroyed in x-wing mission 4
+  - Fixed: IA mission 2, planet should not stay the same in each area
+  - Fixed: when loading radar model game should check height and width as well as length
+
 28/07/25 - 7.9.61
   - Setup: 9 Fel Ships
   - Setup: 7 First Order Ships

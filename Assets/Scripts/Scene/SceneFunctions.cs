@@ -2909,6 +2909,75 @@ public static class SceneFunctions
         //Debug.Log($"GameObject '{gameObject.name}' scaled to fit Z-axis length {targetZLengthInMeters} meters. But actual length is " + newGameObjectBounds.size.z + " from a size of " + currentZLength);
     }
 
+    //This scales the ship to the gameobject / ship to the size given in meteres 
+    public static void ScaleGameObjectByXYZAxis(GameObject gameObject, float sizeLimit)
+    {
+        if (gameObject == null)
+        {
+            Debug.LogError("GameObject is null. Please provide a valid GameObject.");
+            return;
+        }
+
+        if (sizeLimit <= 0)
+        {
+            sizeLimit = 1;
+            Debug.Log("Target Z-axis length was less than zero. Length will be set to 1.");
+            return;
+        }
+
+        // Reset scale to 1 before calculating bounds
+        Vector3 originalScale = gameObject.transform.localScale;
+        gameObject.transform.localScale = Vector3.one;
+
+        // Calculate the bounds of the GameObject
+        Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
+
+        if (renderers.Length == 0)
+        {
+            Debug.LogError("GameObject does not have a Renderer component. Cannot calculate bounds.");
+            gameObject.transform.localScale = originalScale; // Restore original scale
+            return;
+        }
+
+        Bounds gameObjectBounds = new Bounds(renderers[0].bounds.center, Vector3.zero);
+
+        foreach (Renderer renderer in renderers)
+        {
+            gameObjectBounds.Encapsulate(renderer.bounds);
+        }
+
+        // Get the current size along all axis
+        float yLength = gameObjectBounds.size.y;
+        float xLength = gameObjectBounds.size.x;
+        float zLength = gameObjectBounds.size.z;
+
+        //This checks for the longest length and then resizes the object by that length
+        if (xLength > yLength & xLength > zLength)
+        {
+            // Calculate the uniform scale factor based on the Z-axis
+            float scaleFactor = sizeLimit / xLength;
+
+            // Apply the scale factor proportionally to all axes
+            gameObject.transform.localScale = originalScale * scaleFactor;
+        }
+        else if (yLength > xLength & yLength > zLength)
+        {
+            // Calculate the uniform scale factor based on the Z-axis
+            float scaleFactor = sizeLimit / yLength;
+
+            // Apply the scale factor proportionally to all axes
+            gameObject.transform.localScale = originalScale * scaleFactor;
+        }
+        else
+        {
+            // Calculate the uniform scale factor based on the Z-axis
+            float scaleFactor = sizeLimit / zLength;
+
+            // Apply the scale factor proportionally to all axes
+            gameObject.transform.localScale = originalScale * scaleFactor;
+        } 
+    }
+
 
     #endregion
 

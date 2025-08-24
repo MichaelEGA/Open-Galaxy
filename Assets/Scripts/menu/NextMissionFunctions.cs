@@ -80,12 +80,19 @@ public class NextMissionFunctions
                 nextMissionButton.SetActive(false);
             }
 
-            nextMission.gameObject.GetComponentInChildren<Button>().Select(); //This selects the main menu buttton
-        }
+            GameObject mainMenuButtonGO = GameObject.Find("ReturnToMainMenu");
 
-        if (nextMissionButton != null)
+            if (mainMenuButtonGO != null)
+            {
+                mainMenuButtonGO.GetComponent<Button>().Select(); //This selects the main menu buttton
+            }
+        }
+        else
         {
-            nextMissionButton.GetComponent<Button>().Select(); //This selects the next mission button
+            if (nextMissionButton != null)
+            {
+                nextMissionButton.GetComponent<Button>().Select(); //This selects the next mission button
+            }
         }
 
         yield return new WaitForSecondsRealtime(1);

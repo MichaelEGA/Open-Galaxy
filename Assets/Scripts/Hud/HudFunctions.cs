@@ -144,7 +144,7 @@ public static class HudFunctions
                                     radarObject.layer = LayerMask.NameToLayer("radar");
                                     GameObjectUtils.SetLayerAllChildren(radarObject.transform, 24);
                                     radarObject.SetActive(true);
-                                    SceneFunctions.ScaleGameObjectByZAxis(radarObject, 10);
+                                    SceneFunctions.ScaleGameObjectByXYZAxis(radarObject, 10);
                                     GameObjectUtils.RemoveColliders(radarObject);
 
                                     //This checks the wireframe material is loaded

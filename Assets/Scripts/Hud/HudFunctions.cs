@@ -2087,6 +2087,7 @@ public static class HudFunctions
         //This gets the references
         GameObject fadeImageGO = GameObject.Find("FadeImage");
         if (fadeImageGO != null) { fadeImage = fadeImageGO.GetComponent<RawImage>(); }
+        if (fadeImageGO != null) { fadeGroup = fadeImageGO.GetComponentInParent<CanvasGroup>();  }
 
         //This changes the colour
         Color newColour;
@@ -2114,6 +2115,7 @@ public static class HudFunctions
         //This gets the references
         GameObject fadeImageGO = GameObject.Find("FadeImage");
         if (fadeImageGO != null) { fadeImage = fadeImageGO.GetComponent<RawImage>(); }
+        if (fadeImageGO != null) { fadeGroup = fadeImageGO.GetComponentInParent<CanvasGroup>(); }
 
         //This changes the colour of the fade
         Color newColour;

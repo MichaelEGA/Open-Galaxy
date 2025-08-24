@@ -881,7 +881,7 @@ public static class MissionFunctions
             messages[5] = "In less maneuvrable craft you will need to lower your speed manually to perform sharp turns.";
             messages[6] = "Your ship is most maneuverable at half speed, so try slowing down if you can't track a target.";
             messages[7] = "When you push all your energy to engines or lasers your shields will start to lose strength.";
-            messages[8] = "When you push all your energy to engines your WEP system becomes availible.";
+            messages[8] = "When you push all your energy to engines your WEP system increases to full strength.";
             messages[9] = "Remember you can link your torpedoes and lasers for greater impact.";
             int randomMessageNo = Random.Range(0, 9);
             LoadScreenFunctions.LoadingScreen(true, missionName, messages[randomMessageNo]);

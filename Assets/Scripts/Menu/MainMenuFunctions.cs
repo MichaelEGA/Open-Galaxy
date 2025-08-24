@@ -965,7 +965,7 @@ public static class MainMenuFunctions
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
         messages[9] = "Open Galaxy has ships from all the major star wars timelines and periods.";
         messages[10] = "Finding it hard to hit your target? Try turning on autoaim in the controls menu.";
-        messages[11] = "Getting blown out of the sky? Try changing the damage level in the settings menu";
+        messages[11] = "Game to challenging? Try changing the damage level in the settings menu";
         Random.InitState(System.DateTime.Now.Millisecond);
         int randomMessageNo = Random.Range(0, 11);
         titleScreenMessageBox.text = messages[randomMessageNo];

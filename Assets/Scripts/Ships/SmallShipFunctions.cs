@@ -223,9 +223,9 @@ public static class SmallShipFunctions
                 smallShip.powerToLasers = gamepad.dpad.right.isPressed;
                 smallShip.resetPowerLevels = gamepad.dpad.down.isPressed;
                 smallShip.getNextTarget = gamepad.leftShoulder.isPressed;
-                smallShip.getNextEnemy = gamepad.yButton.isPressed;
+                smallShip.getNextEnemy = gamepad.xButton.isPressed;
                 smallShip.getClosestEnemy = gamepad.rightShoulder.isPressed;
-                smallShip.selectTargetInFront = gamepad.xButton.isPressed;
+                smallShip.selectTargetInFront = gamepad.yButton.isPressed;
                 smallShip.fireWeapon = gamepad.rightTrigger.isPressed;
                 smallShip.toggleWeapons = gamepad.bButton.isPressed;
                 smallShip.toggleWeaponNumber = gamepad.aButton.isPressed;

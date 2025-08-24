@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Windows.Forms;
+using UnityEngine.InputSystem.Composites;
 
 public class ButtonInfo : MonoBehaviour, ISelectHandler, IPointerEnterHandler
 { 
@@ -11,12 +13,17 @@ public class ButtonInfo : MonoBehaviour, ISelectHandler, IPointerEnterHandler
     public float buttonShiftDown; //How far to move the button down
     public float buttonShiftRight; //How far to move the button right
     public bool noSound = false;
+    
+    public ScrollRect scrollRect;
+    public RectTransform button;
 
     private MainMenu mainMenu;
 
     void Start()
     {
         mainMenu = GameObject.FindFirstObjectByType<MainMenu>();
+        scrollRect = GetComponentInParent<ScrollRect>();
+        button = GetComponent<RectTransform>();
     }
 
     // When highlighted with mouse.
@@ -41,6 +48,20 @@ public class ButtonInfo : MonoBehaviour, ISelectHandler, IPointerEnterHandler
                 mainMenu.buttonAudioSource.PlayOneShot(mainMenu.buttonHighlight);       
             }
         }
+
+        if (button != null) 
+        {
+            scrollRect.content.localPosition = GetSnapToPositionToBringChildIntoView(scrollRect, button);
+        }
+        
     }
 
+    public Vector2 GetSnapToPositionToBringChildIntoView(ScrollRect instance, RectTransform child)
+    {
+        Canvas.ForceUpdateCanvases();
+        Vector2 viewportLocalPosition = instance.viewport.localPosition;
+        Vector2 childLocalPosition = child.localPosition;
+        Vector2 result = new Vector2(0, 0 - (viewportLocalPosition.y + childLocalPosition.y));
+        return result;
+    }
 }

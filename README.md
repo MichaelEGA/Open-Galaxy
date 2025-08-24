@@ -47,8 +47,8 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - A toggles weapon linking (i.e. fire one laser at a time, or two at time, or all at once)
   - Left Shouder Button selects next target
   - Right Shoulder Button selects closest enemy target if available
-  - Y selects next enemy target if available
-  - X selects the target directly ahead of the player
+  - X selects next enemy target if available
+  - Y selects the target directly ahead of the player
   - D-Pad Up, down, left, and right control energy management
   - Right Trigger fires weapons
   - Left Trigger focues the camera
@@ -81,7 +81,7 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - spylakewalker: https://www.moddb.com/members/spylakewalker/
   - Jeroenimo: https://www.moddb.com/members/jeroenimo
   - ArvisTaljiks: https://www.moddb.com/members/arvistaljik/
-  - darkvisor: https://sketchfab.com/Dark_Visor
+  - EmperorNiko: https://www.moddb.com/members/emperorniko
   - doclusifer2: https://sketchfab.com/doclusifer2
   - FS2MediaVPs: https://scp.indiegames.us/bnr_mediavp.php
 

@@ -163,6 +163,11 @@ public static class TorpedoFunctions
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
+                if (smallShip.isAI == false)
+                {
+                    Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.1f, 0.50f, 0.50f));
+                }
+
                 smallShip.torpedoCycleNumber += 1;
 
                 smallShip.torpedoNumber -= 1;
@@ -186,6 +191,11 @@ public static class TorpedoFunctions
                 if (torpedo02 != null)
                 {
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                }
+
+                if (smallShip.isAI == false)
+                {
+                    Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.1f, 0.55f, 0.55f));
                 }
 
                 smallShip.torpedoCycleNumber += 1;
@@ -233,6 +243,12 @@ public static class TorpedoFunctions
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo04.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
 
                 }
+
+                if (smallShip.isAI == false)
+                {
+                    Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.1f, 0.60f, 0.60f));
+                }
+
                 smallShip.torpedoCycleNumber += 1;
 
                 smallShip.torpedoNumber -= 4;

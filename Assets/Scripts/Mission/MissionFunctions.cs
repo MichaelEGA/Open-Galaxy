@@ -1319,6 +1319,7 @@ public static class MissionFunctions
             scene.hyperspaceTunnel.transform.localPosition = new Vector3(0, 0, 0);
             scene.hyperspaceTunnel.transform.localRotation = Quaternion.identity;
             scene.hyperspaceTunnel.SetActive(true);
+            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.15f, 0.9f, 0.9f));
             SceneFunctions.SetStarfieldToInvisible(true);
         }
 
@@ -1368,6 +1369,7 @@ public static class MissionFunctions
             SceneFunctions.SetStarfieldToInvisible(false);
             scene.hyperspaceTunnel.SetActive(false);
             scene.hyperspaceTunnel.transform.SetParent(null);
+            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.15f, 0.9f, 0.9f));
         }
 
         //This plays the hyperspace exit
@@ -4509,6 +4511,8 @@ public static class MissionFunctions
         AudioFunctions.UnloadAudioManager();
         HudFunctions.UnloadHud();
         MusicFunctions.UnloadMusicManager();
+
+        SmallShipFunctions.StopShakeController();
 
         //This loads the next mission if requested
         if (loadFollowingMision == true)

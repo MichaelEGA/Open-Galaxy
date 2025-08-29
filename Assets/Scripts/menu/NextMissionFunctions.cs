@@ -41,6 +41,9 @@ public class NextMissionFunctions
         //This turns off all the other cameras not used for the mission briefing scene
         SceneFunctions.ActivateCameras(false);
 
+        //This makes sure the controller is not vibrating
+        SmallShipFunctions.StopShakeController();
+
         //This makes the hud invisible
         HudFunctions.SetHudTransparency(0);
 

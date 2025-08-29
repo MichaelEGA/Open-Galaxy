@@ -460,6 +460,12 @@ public static class LaserFunctions
                         particleSystem.transform.rotation = firstCannon.transform.rotation;
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+
+                        if (smallShip.isAI == false)
+                        {
+                            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
+                        }
+
                         yield return null;
                     }  
                 }
@@ -472,6 +478,12 @@ public static class LaserFunctions
                         particleSystem.transform.position = secondCannon.transform.position;
                         particleSystem.transform.rotation = secondCannon.transform.rotation;
                         particleSystem.Play();
+
+                        if (smallShip.isAI == false)
+                        {
+                            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
+                        }
+
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, secondCannon.transform.position, spatialBlend, 1, 500, 0.6f);
                     }
                 }
@@ -484,6 +496,12 @@ public static class LaserFunctions
                         particleSystem.transform.position = thirdCannon.transform.position;
                         particleSystem.transform.rotation = thirdCannon.transform.rotation;
                         particleSystem.Play();
+
+                        if (smallShip.isAI == false)
+                        {
+                            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
+                        }
+
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, 1, 500, 0.6f);
                     }
                 }
@@ -496,6 +514,12 @@ public static class LaserFunctions
                         particleSystem.transform.position = fourthCannon.transform.position;
                         particleSystem.transform.rotation = fourthCannon.transform.rotation;
                         particleSystem.Play();
+
+                        if (smallShip.isAI == false)
+                        {
+                            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
+                        }
+
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, fourthCannon.transform.position, spatialBlend, 1, 500, 0.6f);
                     }
                 }

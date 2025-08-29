@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 //These functions are called by the smallship script
 public static class SmallShipFunctions
@@ -232,6 +233,50 @@ public static class SmallShipFunctions
                 smallShip.matchSpeed = gamepad.leftStickButton.isPressed;
                 smallShip.focusCamera = gamepad.leftTrigger.isPressed;
             }
+        }
+    }
+
+    //This starts shaking the controller
+    public static void StartShakeController(float leftMotorSpeed, float rightMotorSpeed)
+    {
+        var gamepad = Gamepad.current;
+
+        if (gamepad != null)
+        {
+            gamepad.SetMotorSpeeds(leftMotorSpeed, rightMotorSpeed);
+        }
+    }
+
+    //This stops shaking the controller
+    public static void StopShakeController()
+    {
+        var gamepad = Gamepad.current;
+
+        if (gamepad != null)
+        {
+            // Stop the motors after the duration
+            gamepad.SetMotorSpeeds(0f, 0f);
+        }
+    }
+
+    //This shakes the controller
+    public static  IEnumerator ShakeControllerForSetTime(float duration, float leftMotorSpeed, float rightMotorSpeed)
+    {
+        var gamepad = Gamepad.current;
+
+        if (gamepad != null)
+        {
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                gamepad.SetMotorSpeeds(leftMotorSpeed, rightMotorSpeed);
+                elapsed += Time.unscaledDeltaTime;
+                yield return null; // Wait for the next frame
+            }
+
+            // Stop the motors after the duration
+            gamepad.SetMotorSpeeds(0f, 0f);
         }
     }
 
@@ -632,14 +677,26 @@ public static class SmallShipFunctions
             actualSpeedRating = smallShip.speedRating + smallShip.wepRating;
             acclerationAmount = acclerationAmount * 2;
             smallShip.wep = true;
+            StartShakeController(0.20f, 0.20f);
         }
         else if (smallShip.powerMode == "lasers" || smallShip.powerMode == "shields")
         {
             actualSpeedRating = (smallShip.speedRating / 100f) * 75f;
+
+            if (smallShip.wep == true)
+            {
+                StopShakeController();
+            }
+            
             smallShip.wep = false;
         }
         else
         {
+            if (smallShip.wep == true)
+            {
+                StopShakeController();
+            }
+
             smallShip.wep = false;
         }
 
@@ -1043,6 +1100,12 @@ public static class SmallShipFunctions
 
                 //This shakes the cockpit camera
                 Task a = new Task(CockpitFunctions.CockpitDamageShake(smallShip, 1, 0.011f));
+
+                if (smallShip.isAI == false)
+                {
+                    Task b = new Task(ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
+                }
+
                 AddTaskToPool(smallShip, a);
             }
         }
@@ -1113,6 +1176,12 @@ public static class SmallShipFunctions
 
                 //This shakes the cockpit camera
                 Task a = new Task(CockpitFunctions.CockpitDamageShake(smallShip, 1, 0.011f));
+
+                if (smallShip.isAI == false)
+                {
+                    Task b = new Task(ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
+                }
+
                 AddTaskToPool(smallShip, a);
             }
 
@@ -1150,6 +1219,13 @@ public static class SmallShipFunctions
 
                 //This makes an explosion sound
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact01_laserhitshield", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
+
+                if (smallShip.isAI == false)
+                {
+                    Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.5f, 0.90f, 0.90f));
+                }
+
+
             }
         }
     }
@@ -1232,6 +1308,11 @@ public static class SmallShipFunctions
                 if (smallShip.isAI == false & smallShip.invincible == false)
                 {
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+
+                    if (smallShip.isAI == false)
+                    {
+                        Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.5f, 0.90f, 0.90f));
+                    }
                 }
             }
         }

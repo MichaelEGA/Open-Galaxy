@@ -454,12 +454,6 @@ public static class LargeShipFunctions
             {
                 if (largeShip.scene != null)
                 {
-                    float explosionsScale1 = largeShip.shipLength / 100;
-
-                    ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale1, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
-
-                    yield return new WaitForSeconds(1f);
-
                     float explosionsScale2 = largeShip.shipLength / 50;
 
                     ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale2, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
@@ -471,6 +465,8 @@ public static class LargeShipFunctions
                     TriggerDebrisExplosion(largeShip.gameObject.transform.position, 50 * scaleNumber);
 
                     HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
+
+                    yield return new WaitForSeconds(0.75f);
 
                     DeactivateShip(largeShip);
                 }

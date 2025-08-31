@@ -112,6 +112,100 @@ public static class LaserFunctions
         particleSystem.Stop();   
     }
 
+    //This sets all the correct settings on the provided particle system to make a muzzle flash
+    public static void LoadLaserMuzzleFlashParticleSystem(SmallShip smallShip)
+    {
+        //This loads the necessary prefabs
+        GameObject redMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
+        GameObject greenMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
+        GameObject yellowMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
+
+        Material redMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_red") as Material;
+        Material greenMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_green") as Material;
+        Material yellowMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_yellow") as Material;
+
+        //This loads the particle system and the particle collider
+        smallShip.muzzleFlashParticleSystem = new GameObject();
+        smallShip.muzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + smallShip.gameObject.name;
+        ParticleSystem particleSystem = smallShip.muzzleFlashParticleSystem.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = smallShip.muzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
+
+        //This sets the particle system to be subordinate to the smallship
+        particleSystem.transform.SetParent(smallShip.transform);
+
+        //This adds the new particle system to the pool
+        if (smallShip.scene != null)
+        {
+            if (smallShip.scene.lasersPool == null)
+            {
+                smallShip.scene.lasersPool = new List<GameObject>();
+            }
+
+            smallShip.scene.lasersPool.Add(smallShip.laserParticleSystem);
+        }
+
+        //This sets the paticle to operate in scene space (as opposed to local and world)
+        var main = particleSystem.main;
+        main.loop = false;
+        main.playOnAwake = false;
+        main.startSpeed = new ParticleSystem.MinMaxCurve(0, 0);
+        main.simulationSpace = ParticleSystemSimulationSpace.Local;
+        main.customSimulationSpace = smallShip.transform;
+        main.startLifetime = new ParticleSystem.MinMaxCurve(0.1f, 0.2f);
+        main.startSize = 3;
+
+        //This causes the particle emmiter to only emit one particle per play
+        var emission = particleSystem.emission;
+        emission.enabled = true;
+        emission.rateOverTime = 0;
+        emission.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0f, 1), });
+
+        //This makes the particle emitter fire in one direction
+        var shape = particleSystem.shape;
+        shape.enabled = true;
+        shape.scale = new Vector3(1, 1, 1);
+        shape.radius = 0.0001f;
+        shape.radiusThickness = 0.001f;
+        shape.shapeType = ParticleSystemShapeType.Sphere;
+
+        //This makes the particle emitter fire in one direction
+        var textureSheetAnimation = particleSystem.textureSheetAnimation;
+        textureSheetAnimation.enabled = true;
+        textureSheetAnimation.numTilesX = 4;
+        textureSheetAnimation.numTilesY = 1;
+
+        //Values for the renderer
+        particleSystemRenderer.sortingFudge = 10;
+        particleSystemRenderer.minParticleSize = 0;
+        particleSystemRenderer.maxParticleSize = 5;
+        particleSystemRenderer.sortMode = ParticleSystemSortMode.Distance;
+        particleSystemRenderer.flip = new Vector3(0.5f, 0.5f, 0.5f);
+        particleSystemRenderer.sortingOrder = 2;
+
+        //This gets up the light system
+        var lights = particleSystem.lights;
+        lights.enabled = true;
+
+        if (smallShip.laserColor == "red")
+        {
+            particleSystemRenderer.material = redMuzzleFlashMaterial;
+            lights.light = redMuzzleFlashLight.GetComponent<Light>();
+        }
+        else if (smallShip.laserColor == "green")
+        {
+            particleSystemRenderer.material = greenMuzzleFlashMaterial;
+            lights.light = greenMuzzleFlashLight.GetComponent<Light>();
+        }
+        else
+        {
+            particleSystemRenderer.material = yellowMuzzleFlashMaterial;
+            lights.light = yellowMuzzleFlashLight.GetComponent<Light>();
+        }
+
+        //This prevents the particle system playing when loaded
+        particleSystem.Stop();
+    }
+
     //This sets the collision layer for the lasers
     public static LayerMask SetLaserCollisionLayers(SmallShip smallShip)
     {
@@ -172,81 +266,6 @@ public static class LaserFunctions
         }
 
         return layerNumber;
-    }
-
-    //This sets all the correct settings on the provided particle system to make a muzzzle flasg
-    public static void LoadLaserMuzzleFlashParticleSystem(SmallShip smallShip)
-    {
-        //This loads the necessary prefabs
-        GameObject muzzleFlashGO = Resources.Load(OGGetAddress.particles + "muzzleflash_red") as GameObject;
-
-        //This loads the particle system and the particle collider
-        smallShip.muzzleFlashParticleSystem = GameObject.Instantiate(muzzleFlashGO);
-        smallShip.muzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + smallShip.gameObject.name;
-        ParticleSystem particleSystem = smallShip.muzzleFlashParticleSystem.GetComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = smallShip.muzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
-
-        //This sets the particle system to be subordinate to the smallship
-        particleSystem.transform.SetParent(smallShip.transform);
-
-        //This adds the new particle system to the pool
-        if (smallShip.scene != null)
-        {
-            if (smallShip.scene.lasersPool == null)
-            {
-                smallShip.scene.lasersPool = new List<GameObject>();
-            }
-
-            smallShip.scene.lasersPool.Add(smallShip.laserParticleSystem);
-        }
-
-        //This sets the paticle to operate in scene space (as opposed to local and world)
-        var main = particleSystem.main;
-        main.simulationSpace = ParticleSystemSimulationSpace.Local;
-        main.customSimulationSpace = smallShip.transform;
-        ////main.startLifetime = 15;
-        ////main.startSize3D = true;
-        ////main.startSizeX = 0.25f;
-        ////main.startSizeY = 0.25f;
-        ////main.startSizeZ = 5;
-        ////main.startSpeed = 750;
-        main.loop = false;
-        main.playOnAwake = false;
-
-        //This causes the particle emmiter to only emit one particle per play
-        //var emission = particleSystem.emission;
-        //emission.enabled = true;
-        //emission.rateOverTime = 0;
-        //emission.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0f, 1), });
-
-        //This makes the particle emitter fire in one direction
-        //var shape = particleSystem.shape;
-        //shape.enabled = true;
-        //shape.scale = new Vector3(0, 0, 0);
-        //shape.shapeType = ParticleSystemShapeType.Rectangle;
-
-        //This gets up the light system
-        //var lights = particleSystem.lights;
-        //lights.enabled = true;
-
-        if (smallShip.laserColor == "red")
-        {
-            //particleSystemRenderer.material = redLaserMaterial;
-            //lights.light = redLaserLight.GetComponent<Light>();
-        }
-        //else if (smallShip.laserColor == "green")
-        //{
-        //    particleSystemRenderer.material = greenLaserMaterial;
-        //    lights.light = greenLaserLight.GetComponent<Light>();
-        //}
-        //else
-        //{
-        //    particleSystemRenderer.material = yellowLaserMaterial;
-        //    lights.light = yellowLaserLight.GetComponent<Light>();
-        //}
-
-        //This prevents the particle system playing when loaded
-        //particleSystem.Stop();
     }
 
     #endregion

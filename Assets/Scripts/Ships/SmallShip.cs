@@ -178,6 +178,8 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool torpedoLockingOn;
     [HideInInspector] public bool torpedoLockedOn;
 
+    [HideInInspector] public GameObject muzzleFlashParticleSystem;
+
     [Header("Ship Targetting")]
     public GameObject waypoint;
     public GameObject target;

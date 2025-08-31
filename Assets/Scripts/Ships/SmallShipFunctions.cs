@@ -87,6 +87,7 @@ public static class SmallShipFunctions
         {
             LaserFunctions.GetCannons(smallShip);
             LaserFunctions.LoadLaserParticleSystem(smallShip);
+            LaserFunctions.LoadLaserMuzzleFlashParticleSystem(smallShip);
         }
 
         if (smallShip.ionParticleSystem == null)

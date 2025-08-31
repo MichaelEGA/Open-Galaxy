@@ -174,6 +174,81 @@ public static class LaserFunctions
         return layerNumber;
     }
 
+    //This sets all the correct settings on the provided particle system to make a muzzzle flasg
+    public static void LoadLaserMuzzleFlashParticleSystem(SmallShip smallShip)
+    {
+        //This loads the necessary prefabs
+        GameObject muzzleFlashGO = Resources.Load(OGGetAddress.particles + "muzzleflash_red") as GameObject;
+
+        //This loads the particle system and the particle collider
+        smallShip.muzzleFlashParticleSystem = GameObject.Instantiate(muzzleFlashGO);
+        smallShip.muzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + smallShip.gameObject.name;
+        ParticleSystem particleSystem = smallShip.muzzleFlashParticleSystem.GetComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = smallShip.muzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
+
+        //This sets the particle system to be subordinate to the smallship
+        particleSystem.transform.SetParent(smallShip.transform);
+
+        //This adds the new particle system to the pool
+        if (smallShip.scene != null)
+        {
+            if (smallShip.scene.lasersPool == null)
+            {
+                smallShip.scene.lasersPool = new List<GameObject>();
+            }
+
+            smallShip.scene.lasersPool.Add(smallShip.laserParticleSystem);
+        }
+
+        //This sets the paticle to operate in scene space (as opposed to local and world)
+        var main = particleSystem.main;
+        main.simulationSpace = ParticleSystemSimulationSpace.Local;
+        main.customSimulationSpace = smallShip.transform;
+        ////main.startLifetime = 15;
+        ////main.startSize3D = true;
+        ////main.startSizeX = 0.25f;
+        ////main.startSizeY = 0.25f;
+        ////main.startSizeZ = 5;
+        ////main.startSpeed = 750;
+        main.loop = false;
+        main.playOnAwake = false;
+
+        //This causes the particle emmiter to only emit one particle per play
+        //var emission = particleSystem.emission;
+        //emission.enabled = true;
+        //emission.rateOverTime = 0;
+        //emission.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0f, 1), });
+
+        //This makes the particle emitter fire in one direction
+        //var shape = particleSystem.shape;
+        //shape.enabled = true;
+        //shape.scale = new Vector3(0, 0, 0);
+        //shape.shapeType = ParticleSystemShapeType.Rectangle;
+
+        //This gets up the light system
+        //var lights = particleSystem.lights;
+        //lights.enabled = true;
+
+        if (smallShip.laserColor == "red")
+        {
+            //particleSystemRenderer.material = redLaserMaterial;
+            //lights.light = redLaserLight.GetComponent<Light>();
+        }
+        //else if (smallShip.laserColor == "green")
+        //{
+        //    particleSystemRenderer.material = greenLaserMaterial;
+        //    lights.light = greenLaserLight.GetComponent<Light>();
+        //}
+        //else
+        //{
+        //    particleSystemRenderer.material = yellowLaserMaterial;
+        //    lights.light = yellowLaserLight.GetComponent<Light>();
+        //}
+
+        //This prevents the particle system playing when loaded
+        //particleSystem.Stop();
+    }
+
     #endregion
 
     #region ship cannons
@@ -437,9 +512,10 @@ public static class LaserFunctions
 
         if (smallShip != null)
         {
-            if (smallShip.ionParticleSystem != null)
+            if (smallShip.laserParticleSystem != null)
             {
                 ParticleSystem particleSystem = smallShip.laserParticleSystem.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystemMuzzleFlash = smallShip.muzzleFlashParticleSystem.GetComponent<ParticleSystem>();
 
                 float spatialBlend = 1f;
                 string mixer = "External";
@@ -456,6 +532,10 @@ public static class LaserFunctions
                 {
                     if (particleSystem != null & firstCannon != null & smallShip != null)
                     {
+                        particleSystemMuzzleFlash.transform.position = firstCannon.transform.position;
+                        particleSystemMuzzleFlash.transform.rotation = firstCannon.transform.rotation;
+                        particleSystemMuzzleFlash.Play();
+
                         particleSystem.transform.position = firstCannon.transform.position;
                         particleSystem.transform.rotation = firstCannon.transform.rotation;
                         particleSystem.Play();
@@ -475,6 +555,10 @@ public static class LaserFunctions
                     if (particleSystem != null & secondCannon != null & smallShip != null)
                     {
                         yield return null;
+                        particleSystemMuzzleFlash.transform.position = secondCannon.transform.position;
+                        particleSystemMuzzleFlash.transform.rotation = secondCannon.transform.rotation;
+                        particleSystemMuzzleFlash.Play();
+
                         particleSystem.transform.position = secondCannon.transform.position;
                         particleSystem.transform.rotation = secondCannon.transform.rotation;
                         particleSystem.Play();
@@ -493,6 +577,10 @@ public static class LaserFunctions
                     if (particleSystem != null & thirdCannon != null)
                     {
                         yield return null;
+                        particleSystemMuzzleFlash.transform.position = thirdCannon.transform.position;
+                        particleSystemMuzzleFlash.transform.rotation = thirdCannon.transform.rotation;
+                        particleSystemMuzzleFlash.Play();
+
                         particleSystem.transform.position = thirdCannon.transform.position;
                         particleSystem.transform.rotation = thirdCannon.transform.rotation;
                         particleSystem.Play();
@@ -511,6 +599,10 @@ public static class LaserFunctions
                     if (particleSystem != null & fourthCannon != null & smallShip != null)
                     {
                         yield return null;
+                        particleSystemMuzzleFlash.transform.position = fourthCannon.transform.position;
+                        particleSystemMuzzleFlash.transform.rotation = fourthCannon.transform.rotation;
+                        particleSystemMuzzleFlash.Play();
+
                         particleSystem.transform.position = fourthCannon.transform.position;
                         particleSystem.transform.rotation = fourthCannon.transform.rotation;
                         particleSystem.Play();

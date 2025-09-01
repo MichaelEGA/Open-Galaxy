@@ -125,10 +125,10 @@ public static class LaserFunctions
         Material yellowMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_yellow") as Material;
 
         //This loads the particle system and the particle collider
-        smallShip.muzzleFlashParticleSystem = new GameObject();
-        smallShip.muzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + smallShip.gameObject.name;
-        ParticleSystem particleSystem = smallShip.muzzleFlashParticleSystem.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = smallShip.muzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
+        smallShip.laserMuzzleFlashParticleSystem = new GameObject();
+        smallShip.laserMuzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + smallShip.gameObject.name;
+        ParticleSystem particleSystem = smallShip.laserMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = smallShip.laserMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
 
         //This sets the particle system to be subordinate to the smallship
         particleSystem.transform.SetParent(smallShip.transform);
@@ -534,7 +534,7 @@ public static class LaserFunctions
             if (smallShip.laserParticleSystem != null)
             {
                 ParticleSystem particleSystem = smallShip.laserParticleSystem.GetComponent<ParticleSystem>();
-                ParticleSystem particleSystemMuzzleFlash = smallShip.muzzleFlashParticleSystem.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystemMuzzleFlash = smallShip.laserMuzzleFlashParticleSystem.GetComponent<ParticleSystem>();
 
                 float spatialBlend = 1f;
                 string mixer = "External";

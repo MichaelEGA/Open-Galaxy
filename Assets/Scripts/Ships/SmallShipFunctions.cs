@@ -93,6 +93,7 @@ public static class SmallShipFunctions
         if (smallShip.ionParticleSystem == null)
         {
             IonFunctions.GetCannons(smallShip);
+            IonFunctions.LoadIonMuzzleFlashParticleSystem(smallShip);
             IonFunctions.LoadIonParticleSystem(smallShip);
         }
     }

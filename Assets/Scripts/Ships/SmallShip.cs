@@ -144,6 +144,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float toggleWeaponPressedTime;
 
     [HideInInspector] public GameObject laserParticleSystem;
+    [HideInInspector] public GameObject laserMuzzleFlashParticleSystem;
     [HideInInspector] public GameObject laserCannon1;
     [HideInInspector] public GameObject laserCannon2;
     [HideInInspector] public GameObject laserCannon3;
@@ -155,6 +156,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool laserfiring;
 
     [HideInInspector] public GameObject ionParticleSystem;
+    [HideInInspector] public GameObject ionMuzzleFlashParticleSystem;
     [HideInInspector] public GameObject ionCannon1;
     [HideInInspector] public GameObject ionCannon2;
     [HideInInspector] public GameObject ionCannon3;
@@ -178,7 +180,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool torpedoLockingOn;
     [HideInInspector] public bool torpedoLockedOn;
 
-    [HideInInspector] public GameObject muzzleFlashParticleSystem;
+
 
     [Header("Ship Targetting")]
     public GameObject waypoint;

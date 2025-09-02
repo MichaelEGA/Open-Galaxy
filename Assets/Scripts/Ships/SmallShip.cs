@@ -29,6 +29,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public AudioSource engineAudioSource;
     [HideInInspector] public string laserAudio;
     [HideInInspector] public string ionAudio = "weapon_ioncannon";
+    [HideInInspector] public string plasmaAudio = "weapon_plasma";
     [HideInInspector] public string engineAudio;
 
     [Header("Scene Reference")]
@@ -166,6 +167,18 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float ionModePressedTime;
     [HideInInspector] public bool ionfiring;
     [HideInInspector] public bool hasIon;
+
+    [HideInInspector] public GameObject plasmaParticleSystem;
+    [HideInInspector] public GameObject plasmaMuzzleFlashParticleSystem;
+    [HideInInspector] public GameObject plasmaCannon1;
+    [HideInInspector] public GameObject plasmaCannon2;
+    [HideInInspector] public GameObject plasmaCannon3;
+    [HideInInspector] public GameObject plasmaCannon4;
+    [HideInInspector] public float plasmaCycleNumber;
+    [HideInInspector] public float plasmaPressedTime;
+    [HideInInspector] public float plasmaModePressedTime;
+    [HideInInspector] public bool plasmafiring;
+    [HideInInspector] public bool hasPlasma;
 
     [HideInInspector] public GameObject torpedoTube1;
     [HideInInspector] public GameObject torpedoTube2;
@@ -328,6 +341,10 @@ public class SmallShip : MonoBehaviour
         //Ion Cannon functions
         IonFunctions.ToggleWeaponMode(this);
         IonFunctions.InitiateFiringPlayer(this);
+
+        //Ion Cannon functions
+        PlasmaFunctions.ToggleWeaponMode(this);
+        PlasmaFunctions.InitiateFiringPlayer(this);
 
         //Torpedo functions
         TorpedoFunctions.EstablishLockOn(this);

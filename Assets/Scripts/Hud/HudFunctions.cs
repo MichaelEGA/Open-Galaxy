@@ -382,6 +382,10 @@ public static class HudFunctions
             {
                 hud.activeWeaponText.text = "TRP";
             }
+            else if (hud.smallShip.activeWeapon == "plasma")
+            {
+                hud.activeWeaponText.text = "PLS";
+            }
             else
             {
                 hud.activeWeaponText.text = " ";

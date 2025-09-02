@@ -96,6 +96,13 @@ public static class SmallShipFunctions
             IonFunctions.LoadIonMuzzleFlashParticleSystem(smallShip);
             IonFunctions.LoadIonParticleSystem(smallShip);
         }
+
+        if (smallShip.plasmaParticleSystem == null)
+        {
+            PlasmaFunctions.GetCannons(smallShip);
+            PlasmaFunctions.LoadPlasmaMuzzleFlashParticleSystem(smallShip);
+            PlasmaFunctions.LoadPlasmaParticleSystem(smallShip);
+        }
     }
 
     #endregion
@@ -925,105 +932,167 @@ public static class SmallShipFunctions
     //This toggles between different types of weapons
     public static void ToggleWeapons(SmallShip smallShip)
     {
-        if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.isDisabled == false & smallShip.preventWeaponChange == false)
+        if (smallShip.hasPlasma == false)
         {
-            if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.hasIon == true)
+            if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.isDisabled == false & smallShip.preventWeaponChange == false)
             {
-                if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---")
+                if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.hasIon == true)
+                {
+                    if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---" || smallShip.activeWeapon == "plasma")
+                    {
+                        smallShip.activeWeapon = "lasers";
+                        smallShip.weaponMode = "single";
+                    }
+
+                    if (smallShip.activeWeapon == "lasers")
+                    {
+                        smallShip.activeWeapon = "ion";
+                        smallShip.weaponMode = "single";
+                    }
+                    else if (smallShip.activeWeapon == "ion")
+                    {
+                        smallShip.activeWeapon = "torpedos";
+                        smallShip.weaponMode = "single";
+                    }
+                    else if (smallShip.activeWeapon == "torpedos")
+                    {
+                        smallShip.activeWeapon = "lasers";
+                        smallShip.weaponMode = "single";
+                    }
+
+                    if (smallShip.isAI == false)
+                    {
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    }
+                }
+                else if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.hasIon == false)
+                {
+                    if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---" || smallShip.activeWeapon == "ion" || smallShip.activeWeapon == "plasma")
+                    {
+                        smallShip.activeWeapon = "lasers";
+                        smallShip.weaponMode = "single";
+                    }
+
+                    if (smallShip.activeWeapon == "lasers")
+                    {
+                        smallShip.activeWeapon = "torpedos";
+                        smallShip.weaponMode = "single";
+                    }
+                    else if (smallShip.activeWeapon == "torpedos")
+                    {
+                        smallShip.activeWeapon = "lasers";
+                        smallShip.weaponMode = "single";
+                    }
+
+                    if (smallShip.isAI == false)
+                    {
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    }
+                }
+                else if (smallShip.hasTorpedos == false & smallShip.hasIon == true || smallShip.hasTorpedos == true & smallShip.torpedoNumber <= 0 & smallShip.hasIon == true)
+                {
+                    if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---" || smallShip.activeWeapon == "torpedos" || smallShip.activeWeapon == "plasma")
+                    {
+                        smallShip.activeWeapon = "lasers";
+                        smallShip.weaponMode = "single";
+                    }
+
+                    if (smallShip.activeWeapon == "lasers")
+                    {
+                        smallShip.activeWeapon = "ion";
+                        smallShip.weaponMode = "single";
+                    }
+                    else if (smallShip.activeWeapon == "ion")
+                    {
+                        smallShip.activeWeapon = "lasers";
+                        smallShip.weaponMode = "single";
+                    }
+
+                    if (smallShip.isAI == false)
+                    {
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    }
+                }
+                else
                 {
                     smallShip.activeWeapon = "lasers";
-                    smallShip.weaponMode = "single";
                 }
 
-                if (smallShip.activeWeapon == "lasers")
-                {
-                    smallShip.activeWeapon = "ion";
-                    smallShip.weaponMode = "single";
-                }
-                else if (smallShip.activeWeapon == "ion")
-                {
-                    smallShip.activeWeapon = "torpedos";
-                    smallShip.weaponMode = "single";
-                }
-                else if (smallShip.activeWeapon == "torpedos")
-                {
-                    smallShip.activeWeapon = "lasers";
-                    smallShip.weaponMode = "single";
-                }
-
-                if (smallShip.isAI == false)
-                {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
-                }
+                smallShip.toggleWeaponPressedTime = Time.time + 0.25f;
             }
-            else if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.hasIon == false)
+            else if (smallShip.isDisabled == true)
             {
-                if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---" || smallShip.activeWeapon == "ion")
-                {
-                    smallShip.activeWeapon = "lasers";
-                    smallShip.weaponMode = "single";
-                }
-
-                if (smallShip.activeWeapon == "lasers")
-                {
-                    smallShip.activeWeapon = "torpedos";
-                    smallShip.weaponMode = "single";
-                }
-                else if (smallShip.activeWeapon == "torpedos")
-                {
-                    smallShip.activeWeapon = "lasers";
-                    smallShip.weaponMode = "single";
-                }
-
-                if (smallShip.isAI == false)
-                {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
-                }
+                smallShip.activeWeapon = "---";
+                smallShip.weaponMode = "---";
             }
-            else if (smallShip.hasTorpedos == false & smallShip.hasIon == true || smallShip.hasTorpedos == true & smallShip.torpedoNumber <= 0 & smallShip.hasIon == true)
-            {
-                if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---" || smallShip.activeWeapon == "torpedos")
-                {
-                    smallShip.activeWeapon = "lasers";
-                    smallShip.weaponMode = "single";
-                }
 
-                if (smallShip.activeWeapon == "lasers")
-                {
-                    smallShip.activeWeapon = "ion";
-                    smallShip.weaponMode = "single";
-                }
-                else if (smallShip.activeWeapon == "ion")
-                {
-                    smallShip.activeWeapon = "lasers";
-                    smallShip.weaponMode = "single";
-                }
-
-                if (smallShip.isAI == false)
-                {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
-                }
-            }
-            else
+            if (smallShip.hasTorpedos == true & smallShip.torpedoNumber <= 0 & smallShip.activeWeapon == "torpedos")
             {
                 smallShip.activeWeapon = "lasers";
+                smallShip.weaponMode = "single";
             }
 
-            smallShip.toggleWeaponPressedTime = Time.time + 0.25f;
+            smallShip.toggleWeapons = false;
         }
-        else if (smallShip.isDisabled == true)
+        else
         {
-            smallShip.activeWeapon = "---";
-            smallShip.weaponMode = "---";
-        }
+            if (smallShip.toggleWeapons == true & smallShip.toggleWeaponPressedTime < Time.time & smallShip.isDisabled == false & smallShip.preventWeaponChange == false)
+            {
+                if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0)
+                {
+                    if (smallShip.activeWeapon == "" || smallShip.activeWeapon == "---" || smallShip.activeWeapon == "ion" || smallShip.activeWeapon == "lasers")
+                    {
+                        smallShip.activeWeapon = "plasma";
+                        smallShip.weaponMode = "single";
+                    }
 
-        if (smallShip.hasTorpedos == true & smallShip.torpedoNumber <= 0 & smallShip.activeWeapon == "torpedos")
-        {
-            smallShip.activeWeapon = "lasers";
-            smallShip.weaponMode = "single";
-        }
+                    if (smallShip.activeWeapon == "plasma")
+                    {
+                        smallShip.activeWeapon = "torpedos";
+                        smallShip.weaponMode = "single";
+                    }
+                    else if (smallShip.activeWeapon == "torpedos")
+                    {
+                        smallShip.activeWeapon = "plasma";
+                        smallShip.weaponMode = "single";
+                    }
 
-        smallShip.toggleWeapons = false;
+                    if (smallShip.isAI == false)
+                    {
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    }
+                }
+                else if (smallShip.hasTorpedos == true & smallShip.torpedoNumber <= 0)
+                {
+                    smallShip.activeWeapon = "plasma";
+                    smallShip.weaponMode = "single";
+
+                    if (smallShip.isAI == false)
+                    {
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep03_weaponchange", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    }
+                }
+                else
+                {
+                    smallShip.activeWeapon = "plasma";
+                }
+
+                smallShip.toggleWeaponPressedTime = Time.time + 0.25f;
+            }
+            else if (smallShip.isDisabled == true)
+            {
+                smallShip.activeWeapon = "---";
+                smallShip.weaponMode = "---";
+            }
+
+            if (smallShip.hasTorpedos == true & smallShip.torpedoNumber <= 0 & smallShip.activeWeapon == "torpedos")
+            {
+                smallShip.activeWeapon = "plasma";
+                smallShip.weaponMode = "single";
+            }
+
+            smallShip.toggleWeapons = false;
+        }
     }
 
     //This manually sets the weapon on a smallship

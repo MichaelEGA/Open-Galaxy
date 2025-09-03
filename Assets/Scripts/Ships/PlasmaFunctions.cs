@@ -287,6 +287,7 @@ public static class PlasmaFunctions
         {
             smallShip.hasPlasma = true;
             smallShip.activeWeapon = "plasma";
+            SmallShipAIFunctions.AddTag(smallShip, "singleplasma");
         }
 
     }

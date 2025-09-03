@@ -1443,6 +1443,9 @@ public static class NodeTypes
         options2.Add("singlelaser");
         options2.Add("duallasers");
         options2.Add("alllasers");
+        options2.Add("singleplasma");
+        options2.Add("dualplasma");
+        options2.Add("allplasma");
         options2.Add("singleion");
         options2.Add("dualion");
         options2.Add("allion");

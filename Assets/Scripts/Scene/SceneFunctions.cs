@@ -7,6 +7,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.UI;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
+using UnityEngine.XR;
 
 
 //These functions are used to generate a scene including scenery and ship loading/unloading
@@ -1893,7 +1894,7 @@ public static class SceneFunctions
     }
 
     //This loads a single ship as a wreck
-    public static void LoadSingleShipAsWreck(Vector3 position, Quaternion rotation, string type, string name)
+    public static void LoadSingleShipAsWreck(Vector3 position, Quaternion rotation, string type, string name, int fireNumber, float fileScaleMin, float fireScaleMax, int seed)
     {
         //Key reference
         GameObject ship = null;
@@ -1944,9 +1945,58 @@ public static class SceneFunctions
             //Attach mesh collider for ship
 
             //Attach smoke particle systems
+            if (fireNumber > 0)
+            {
+                LoadFires(ship, fireNumber, shipType.shipLength, fileScaleMin, fireScaleMax, seed);
+            }
 
             //Add ship to a pool
             //scene.objectPool = PoolUtils.AddToPool(scene.objectPool, ship);
+        }
+    }
+
+    //This loads the 'fires' on the wreck
+    public static void LoadFires(GameObject ship, int number, float shipLength, float scaleMin, float scaleMax, int seed)
+    {
+        Random.InitState(seed);
+
+        var largest = GameObjectUtils.FindLargestMeshByLength(ship);
+
+        MeshFilter largestMeshFilter = null;
+        SkinnedMeshRenderer largestSkinnedMeshRenderer = null;
+        Mesh mainShipMesh = null;
+        Transform meshTransform = null;
+
+        if (largest is MeshFilter meshFilter)
+        {
+            largestMeshFilter = largest as MeshFilter;
+
+            mainShipMesh = largestMeshFilter.sharedMesh;
+            meshTransform = largestMeshFilter.transform;
+        }
+        else if (largest is SkinnedMeshRenderer skinnedMeshRenderer)
+        {
+            largestSkinnedMeshRenderer = largest as SkinnedMeshRenderer;
+
+            mainShipMesh = largestSkinnedMeshRenderer.sharedMesh;
+            meshTransform = largestSkinnedMeshRenderer.transform;
+        }
+
+        int explosionsNumber = number;
+
+        List<Vector3> explosionPoints = GameObjectUtils.GetRandomPointsOnMesh(mainShipMesh, meshTransform, explosionsNumber);
+        List<ParticleSystem> explosions = new List<ParticleSystem>();
+
+        foreach (Vector3 explosionPoint in explosionPoints)
+        {
+            if (explosionPoint != null)
+            {
+                Vector3 worldPoint = meshTransform.TransformPoint(explosionPoint);
+
+                float scale = Random.Range(scaleMin, scaleMax);
+
+                ParticleFunctions.InstantiatePersistantExplosion(ship, worldPoint, "explosion_wreck", scale);
+            }
         }
     }
 

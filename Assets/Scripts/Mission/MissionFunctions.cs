@@ -3209,7 +3209,35 @@ public static class MissionFunctions
         string name = "alpha";
         if (missionEvent.data2 != "none") { name = missionEvent.data2; }
 
-        SceneFunctions.LoadSingleShipAsWreck(position, rotation, type, name);
+        int fireNumber = 0;
+
+        if (int.TryParse(missionEvent.data3, out _))
+        {
+            fireNumber = int.Parse(missionEvent.data3);
+        }
+
+        float fireScaleMin = 1;
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            fireScaleMin = float.Parse(missionEvent.data4);
+        }
+
+        float fireScaleMax = 1;
+
+        if (float.TryParse(missionEvent.data5, out _))
+        {
+            fireScaleMax = float.Parse(missionEvent.data5);
+        }
+
+        int seed = 0;
+
+        if (int.TryParse(missionEvent.data6, out _))
+        {
+            seed = int.Parse(missionEvent.data6);
+        }
+
+        SceneFunctions.LoadSingleShipAsWreck(position, rotation, type, name, fireNumber, fireScaleMin, fireScaleMax, seed);
     }
 
     //This loads a dynamic terrain

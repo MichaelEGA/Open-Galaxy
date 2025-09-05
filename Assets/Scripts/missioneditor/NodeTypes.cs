@@ -837,6 +837,22 @@ public static class NodeTypes
 
         node.data2 = NodeFunctions.DrawInputField(node, "name", "Alpha", 7, 5, drop, 12.5f, 90, 5f);
 
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawInputField(node, "fire number", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "fire scale min", "2", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "fire scale max", "4", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data6 = NodeFunctions.DrawInputField(node, "seed", "1138", 7, 5, drop, 12.5f, 90, 5f);
+
         drop -= 30;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));

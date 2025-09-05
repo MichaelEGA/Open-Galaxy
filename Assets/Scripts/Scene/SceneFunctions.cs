@@ -959,11 +959,11 @@ public static class SceneFunctions
     #region asteroid loading
 
     //This loads asteroids 
-    public static IEnumerator LoadAsteroids(float number, string type, Vector3 position, float width, float height, float length, int seed)
+    public static IEnumerator LoadAsteroids(float number, string type, Vector3 position, float width, float height, float length, int seed, bool loadLarge)
     {
         Vector3[] positions = GetAsteroidPostions(number, height, width, length, seed);
         Vector3[] rotations = GetAsteroidRotations(number, seed);
-        float[] sizes = GetAsteroidSizes(number, seed);
+        float[] sizes = GetAsteroidSizes(number, seed, loadLarge);
         int[] asteroidTypes = GetAsteroidTypes(number, type, seed);
 
         Scene scene = GetScene();
@@ -1071,7 +1071,7 @@ public static class SceneFunctions
     }
 
     //This gets all the sizes of the asteroids
-    public static float[] GetAsteroidSizes(float number, int seed)
+    public static float[] GetAsteroidSizes(float number, int seed, bool loadLarge)
     {
         List<float> asteroidSizes = new List<float>();
 
@@ -1092,14 +1092,14 @@ public static class SceneFunctions
         {
             float randomNumber = Random.Range(0, 100);
 
-            bool loadLarge = false;
+            bool makeBigObject = false;
 
-            if (randomNumber < percentage)
+            if (randomNumber < percentage & loadLarge == true)
             {
-                loadLarge = true;
+                makeBigObject = true;
             }
 
-            if (loadLarge == true)
+            if (makeBigObject == true)
             {
                 float size = Random.Range(limit, maxSize);
                 asteroidSizes.Add(size);
@@ -1499,7 +1499,7 @@ public static class SceneFunctions
             HudFunctions.AddToShipLog(type + " just entered the area");
         }
     }
-    
+
     //This instanties the designated prefabe from the pool listed in the settings or finds a substitute from another pool if the prefab is not present
     public static GameObject InstantiateShipPrefab(string name)
     {
@@ -1507,8 +1507,6 @@ public static class SceneFunctions
 
         GameObject shipPrefab = null;
         GameObject tempPrefab = null;
-
-        OGSettings settings = OGSettingsFunctions.GetSettings();
 
         //This gets a backup prefab from another pool if the selected pool doesn't have the requested prefab
         foreach (GameObject objectPrefab in scene.shipsPrefabPool)
@@ -1891,6 +1889,64 @@ public static class SceneFunctions
             HudFunctions.AddToShipLog(type.ToUpper() + "is exiting the " + launchship.ToUpper() + "'S hangar");
 
             LoadSingleShip(hangarLaunch.position, hangarLaunch.rotation, type, name, allegiance, cargo, false, true, true, laserColor);
+        }
+    }
+
+    //This loads a single ship as a wreck
+    public static void LoadSingleShipAsWreck(Vector3 position, Quaternion rotation, string type, string name)
+    {
+        //Key reference
+        GameObject ship = null;
+
+        //Get scene script reference
+        Scene scene = GetScene();
+
+        //This gets the Json ship data
+        TextAsset shipTypesFile = Resources.Load(OGGetAddress.files + "ShipTypes") as TextAsset;
+        ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
+
+        //Check for ship type in shipTypeData
+        ShipType shipType = null;
+
+        foreach (ShipType tempShipType in shipTypes.shipTypeData)
+        {
+            if (tempShipType.type == type)
+            {
+                shipType = tempShipType;
+                break;
+            }
+        }
+
+        //Look for ship model in prefabs and load;
+        if (shipType != null)
+        {
+            ship = InstantiateShipPrefab(shipType.prefab);
+            ship.name = shipType.callsign + "_" + name;
+        }
+
+        if (ship != null)
+        {
+            //Set ship position, rotation and scale
+            ScaleGameObjectByZAxis(ship, shipType.shipLength); //The scale must be applied before the ship is position and rotated otherwise the scaling will be inaccurate
+
+            ship.transform.position = scene.transform.position + position;
+            
+            ship.transform.rotation = rotation;
+
+            //parent it to the scene
+            ship.transform.SetParent(scene.transform);
+
+            //This sets the layer of the ship
+            ship.layer = LayerMask.NameToLayer("collision_asteroid");
+
+            GameObjectUtils.SetLayerAllChildren(ship.transform, LayerMask.NameToLayer("collision_asteroid"));
+
+            //Attach mesh collider for ship
+
+            //Attach smoke particle systems
+
+            //Add ship to a pool
+            //scene.objectPool = PoolUtils.AddToPool(scene.objectPool, ship);
         }
     }
 

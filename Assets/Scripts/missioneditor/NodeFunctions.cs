@@ -225,6 +225,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadSingleShip(node);
         }
+        else if (node.nodeType == "preload_loadsingleshipaswreck")
+        {
+            NodeTypes.Draw_PreLoad_LoadSingleShipAsWreck(node);
+        }
         else if (node.nodeType == "preload_loadsingleshiponground")
         {
             NodeTypes.Draw_PreLoad_LoadSingleShipOnGround(node);

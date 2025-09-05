@@ -416,6 +416,10 @@ public static class HudFunctions
             {
                 hud.weaponModeText.text = "ALL";
             }
+            else if (hud.smallShip.weaponMode == "rapid")
+            {
+                hud.weaponModeText.text = "RPD";
+            }
             else
             {
                 hud.weaponModeText.text = "";

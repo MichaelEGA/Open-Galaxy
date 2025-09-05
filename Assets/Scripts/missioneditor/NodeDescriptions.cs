@@ -140,6 +140,19 @@ public static class NodeDescriptions
            "- If you write 'random' or 'randomise' for the cargo the game will automatically randomise the ships cargo using preset list \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
+        else if (name == "preload_loadsingleshipaswreck")
+        {
+            description =
+           "Pre-Load Single Ship As Wreck \n " +
+           "\n " +
+           "This node loads a single ship as a wreck \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- If the collider type is convex the wrecked ship will be given a slight spin like an asteroid but you will be unable to fly through 'gaps' in the ship. It is recommended on for smaller ships or for ships that have a very basic shape. \n" +
+           "- If the collider type is a mesh collider the ship will be static and will not move but you will be able to fly through any gaps, overhangs, or holes in the ship. \n" +
+           "- You cannot select or target a wrecked ship. \n" +
+           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
         else if (name == "preload_loadsingleshiponground")
         {
             description =

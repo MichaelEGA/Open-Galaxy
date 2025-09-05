@@ -265,7 +265,7 @@ public static class MissionFunctions
             {
                 LoadScreenFunctions.AddLogToLoadingScreen("Loading prop", startTime);
                 LoadSinglePropOnGround(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Prop loaded", startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Single prop loaded", startTime);
             }
             else if (missionEvent.eventType == "preload_loadmultiplepropsonground" & missionEvent.conditionLocation == location)
             {
@@ -273,28 +273,26 @@ public static class MissionFunctions
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Multiple props loaded on the ground", startTime);
             }
-            else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
-            {
-                Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", startTime);
-            }
+            
         }
 
         //Then this preloads all the ships in the scene
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-            if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
+            if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
             {
-                Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", startTime);  
+                //This extra check is run to prevent the game loading the player ship twice
+                if (firstRun == false & missionEvent.data8 == "false" || firstRun == false & missionEvent.data8 == "none" || firstRun == true)
+                {
+                    LoadSingleShip(missionEvent);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded", startTime);
+                }
             }
-            else if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
+            if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Batch of ships created by name", startTime);
+                LoadScreenFunctions.AddLogToLoadingScreen("Multiple shis loaded", startTime);
             }
             else if (missionEvent.eventType == "preload_loadsingleshipsonground" & missionEvent.conditionLocation == location)
             {
@@ -302,17 +300,23 @@ public static class MissionFunctions
                 {
                     LoadSingleShipOnGround(missionEvent);
                     LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded on the ground", startTime);
-                }   
+                }
             }
-            else if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
+            else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
+            {
+                Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", startTime);
+            }
+            else if (missionEvent.eventType == "preload_loadsingleshipaswreck" & missionEvent.conditionLocation == location)
             {
                 //This extra check is run to prevent the game loading the player ship twice
                 if (firstRun == false & missionEvent.data8 == "false" || firstRun == false & missionEvent.data8 == "none" || firstRun == true)
                 {
-                    LoadSingleShip(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship created", startTime);
-                } 
-            }    
+                    LoadSingleShipAsWreck(missionEvent);
+                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded as wreck", startTime);
+                }
+            }
         }
     }
 
@@ -2598,7 +2602,14 @@ public static class MissionFunctions
             seed = int.Parse(missionEvent.data6);
         }
 
-        Task a = new Task(SceneFunctions.LoadAsteroids(number, type, position, width, height, length, seed));
+        bool loadLarge = true;
+
+        if (bool.TryParse(missionEvent.data7, out _))
+        {
+            loadLarge = bool.Parse(missionEvent.data7);
+        }
+
+        Task a = new Task(SceneFunctions.LoadAsteroids(number, type, position, width, height, length, seed, loadLarge));
         while (a.Running == true) { yield return null; }
 
         yield return null;
@@ -3175,6 +3186,30 @@ public static class MissionFunctions
         if (missionEvent.data9 != "none") { laserColor = missionEvent.data9; }
 
         SceneFunctions.LoadSingleShipOnGround(position, rotation, type, name, allegiance, cargo, isAI, distanceAboveGround, positionVariance, ifRaycastFailsStillLoad, laserColor);
+    }
+
+    //This loads a single ship as a wreck
+    public static void LoadSingleShipAsWreck(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        Vector3 position = new Vector3(x, y, z);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "tiefighter";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        string name = "alpha";
+        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
+
+        SceneFunctions.LoadSingleShipAsWreck(position, rotation, type, name);
     }
 
     //This loads a dynamic terrain
@@ -3868,7 +3903,7 @@ public static class MissionFunctions
         }
         else
         {
-            noChangeSystemsLevel = false;
+            noChangeSystemsLevel = true;
         }
 
         if (float.TryParse(missionEvent.data5, out _))
@@ -3905,7 +3940,6 @@ public static class MissionFunctions
                             {
                                 shieldLevel = smallShip.shieldLevel;
                             }
-
 
                             smallShip.shieldLevel = shieldLevel;
                             smallShip.frontShieldLevel = shieldLevel / 2f;

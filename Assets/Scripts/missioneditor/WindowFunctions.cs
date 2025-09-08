@@ -62,6 +62,7 @@ public static class WindowFunctions
 
         buttonList.Add("activatedocking");
         buttonList.Add("activatehyperspace");
+        buttonList.Add("activaterapidfire");
         buttonList.Add("activatewaypointmarker");
         buttonList.Add("addaitagtolargeship");
         buttonList.Add("addaitagtosmallship");

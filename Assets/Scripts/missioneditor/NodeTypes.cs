@@ -1305,6 +1305,55 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
+    public static void Draw_ActivateRapidFire(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "activaterapidfire", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "activaterapidfire", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "ship", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options = new List<string>();
+        options.Add("true");
+        options.Add("false");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "activate", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
     public static void Draw_ActivateHyperspace(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -1522,18 +1571,21 @@ public static class NodeTypes
         options2.Add("singlelaser");
         options2.Add("duallasers");
         options2.Add("alllasers");
+        options2.Add("rapidlasers");
         options2.Add("singleplasma");
         options2.Add("dualplasma");
         options2.Add("allplasma");
         options2.Add("singleion");
         options2.Add("dualion");
         options2.Add("allion");
+        options2.Add("rapidion");
         options2.Add("singletorpedo");
         options2.Add("dualtorpedos");
         options2.Add("alltorpedos");
         options2.Add("dynamicweapons_single");
         options2.Add("dynamicweapons_dual");
-        options2.Add("dynamicweapons_quad");
+        options2.Add("dynamicweapons_all");
+        options2.Add("dynamicweapons_rapid");
         options2.Add("noweapons");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "weapons", "nochange", 7, 5, drop, 12.5f, 90, 5f);

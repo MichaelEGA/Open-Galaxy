@@ -21,6 +21,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ActivateHyperspace(node);
         }
+        else if (node.nodeType == "activaterapidfire")
+        {
+            NodeTypes.Draw_ActivateRapidFire(node);
+        }
         else if (node.nodeType == "activatewaypointmarker")
         {
             NodeTypes.Draw_ActivateWaypointMarker(node);

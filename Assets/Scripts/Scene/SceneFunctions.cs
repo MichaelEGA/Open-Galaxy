@@ -1922,16 +1922,14 @@ public static class SceneFunctions
         if (shipType != null)
         {
             ship = InstantiateShipPrefab(shipType.prefab);
-            ship.name = shipType.callsign + "_" + name;
+            ship.name = shipType.callsign + "_wreck";
         }
 
         if (ship != null)
         {
             //Set ship position, rotation and scale
             ScaleGameObjectByZAxis(ship, shipType.shipLength); //The scale must be applied before the ship is position and rotated otherwise the scaling will be inaccurate
-
             ship.transform.position = scene.transform.position + position;
-            
             ship.transform.rotation = rotation;
 
             //parent it to the scene
@@ -1943,6 +1941,14 @@ public static class SceneFunctions
             GameObjectUtils.SetLayerAllChildren(ship.transform, LayerMask.NameToLayer("collision_asteroid"));
 
             //Attach mesh collider for ship
+            if (shipType.scriptType == "largeship")
+            {
+                GameObjectUtils.AddMeshColliders(ship.gameObject, false);
+            }
+            else if (shipType.scriptType == "smallship")
+            {
+                GameObjectUtils.AddMeshColliders(ship.gameObject, true);
+            }
 
             //Attach smoke particle systems
             if (fireNumber > 0)
@@ -1951,7 +1957,7 @@ public static class SceneFunctions
             }
 
             //Add ship to a pool
-            //scene.objectPool = PoolUtils.AddToPool(scene.objectPool, ship);
+            scene.asteroidPool.Add(ship);
         }
     }
 

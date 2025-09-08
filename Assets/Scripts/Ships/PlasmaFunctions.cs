@@ -405,10 +405,14 @@ public static class PlasmaFunctions
             {
                 plasmaWaitTime = plasmaWaitTime * 4;
             }
+            else if (smallShip.weaponMode == "rapid")
+            {
+                plasmaWaitTime = plasmaWaitTime * 0.25f;
+            }
 
             if (Time.time > smallShip.plasmaPressedTime & smallShip.laserfiring != true & smallShip.activeWeapon == "plasma" & smallShip.weaponsLock == false)
             {
-                if (smallShip.weaponMode == "single")
+                if (smallShip.weaponMode == "single" || smallShip.weaponMode == "rapid")
                 {
                     if (smallShip.plasmaCannon3 != null & smallShip.plasmaCannon4 != null)
                     {

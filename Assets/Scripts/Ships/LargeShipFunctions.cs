@@ -445,7 +445,10 @@ public static class LargeShipFunctions
                 {
                     foreach(ParticleSystem explosion in explosions)
                     {
-                        GameObject.Destroy(explosion.gameObject);
+                        if (explosion != null)
+                        {
+                            GameObject.Destroy(explosion.gameObject);
+                        }
                     }
                 }
             }

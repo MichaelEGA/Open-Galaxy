@@ -306,6 +306,16 @@ public static class NodeDescriptions
            "- When docking the while will always rotate BEFORE it moves into position \n" +
            "- When disengaging from docking only there is not rotation and the rotation speed value is not used. \n";
         }
+        else if (name == "activaterapidfire")
+        {
+            description =
+            "Activate Radid Fire \n " +
+            "\n " +
+            "This node activates and deactivates rapid fire on the target ship(s)" +
+            "\n " +
+           "Extra Information \n" +
+           "- This function will affect all ships that contain the given name \n";
+        }
         else if (name == "activatewaypointmarker")
         {
             description =

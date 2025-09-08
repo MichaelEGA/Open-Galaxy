@@ -11,12 +11,6 @@ public static class ParticleFunctions
         ParticleSystem particleSystem = null;
         GameObject explosion = null;
 
-        //This searches for any deactivated explosions and reuses them
-        if (scene.particlesPool != null)
-        {
-            explosion = PoolUtils.FindInactiveGameObjectInPool(scene.particlesPool, explosionName);
-        }
-
         //This instantiates a new explosion if there are none in the list
         if (explosion == null)
         {
@@ -47,7 +41,7 @@ public static class ParticleFunctions
             explosion.transform.localScale = scale; //This reapplies the object scale after parenting
 
             explosion.SetActive(true);
-            Task a = new Task(GameObjectUtils.DeactivateObjectAfterDelay(5, explosion));
+            GameObject.Destroy(explosion, 5);
 
             if (audioManager != null)
             {

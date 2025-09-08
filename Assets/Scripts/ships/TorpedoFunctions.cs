@@ -559,13 +559,30 @@ public static class TorpedoFunctions
         {
             float distance = Vector3.Distance(torpedo.gameObject.transform.position, torpedo.target.transform.position);
 
+            SmallShip targetSmallShip = torpedo.target.GetComponentInParent<SmallShip>();
+
             if (distance < 25)
             {
                 CauseTorpedoDamage(torpedo.firingShip, torpedo.target, torpedo, torpedo.transform.position);
 
                 Scene scene = SceneFunctions.GetScene();
 
-                ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
+                if (targetSmallShip != null)
+                {
+                    if (targetSmallShip.hasPlasma == false)
+                    {
+                        ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
+                    }
+                    else
+                    {
+                        ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "blackhole", 6, torpedo.audioManager);
+                    }
+                }
+                else
+                {
+                    ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
+                }
+
                 DeactivateTorpedo(torpedo);
             }
         }

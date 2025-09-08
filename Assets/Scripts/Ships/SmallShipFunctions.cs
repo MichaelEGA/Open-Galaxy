@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -1112,7 +1113,7 @@ public static class SmallShipFunctions
     #region damage
 
     //This causes the ship to take damage from lasers and torpedoes
-    public static void TakeDamage(SmallShip smallShip, float damage, Vector3 hitPosition)
+    public static void TakeDamage(SmallShip smallShip, float damage, Vector3 hitPosition, bool isRapidFire = false)
     {
         if (smallShip.isAI == false)
         {
@@ -1128,13 +1129,24 @@ public static class SmallShipFunctions
             {
                 if (forward > 0)
                 {
+                    //This calculates the damage
                     if (smallShip.frontShieldLevel > 0)
                     {
+                        if (smallShip.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        {
+                            damage = (damage / 100f) * 10;
+                        }
+
                         smallShip.frontShieldLevel = smallShip.frontShieldLevel - damage;
                         smallShip.shieldLevel = smallShip.shieldLevel - damage;
                     }
                     else
                     {
+                        if (isRapidFire == true) //This minimises the damage when the ship is using rapid fire
+                        {
+                            damage = (damage / 100f) * 2;
+                        }
+
                         if (smallShip.hullLevel - damage < 5 & smallShip.invincible == true)
                         {
                             smallShip.hullLevel = 5;
@@ -1147,13 +1159,24 @@ public static class SmallShipFunctions
                 }
                 else
                 {
+                    //This calculates the damage
                     if (smallShip.rearShieldLevel > 0)
                     {
+                        if (smallShip.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        {
+                            damage = (damage / 100f) * 10;
+                        }
+
                         smallShip.rearShieldLevel = smallShip.rearShieldLevel - damage;
                         smallShip.shieldLevel = smallShip.shieldLevel - damage;
                     }
                     else
                     {
+                        if (isRapidFire == true) //This minimises the damage when the ship is using rapid fire
+                        {
+                            damage = (damage / 100f) * 2;
+                        }
+
                         if (smallShip.hullLevel - damage < 5 & smallShip.invincible == true)
                         {
                             smallShip.hullLevel = 5;
@@ -1183,7 +1206,7 @@ public static class SmallShipFunctions
     }
 
     //This causes the ship to take damage from lasers and torpedoes
-    public static void TakeSystemDamage(SmallShip smallShip, float damage, Vector3 hitPosition)
+    public static void TakeSystemDamage(SmallShip smallShip, float damage, Vector3 hitPosition, bool isRapidFire = false)
     {
         //This sets the time until the ship systems start restoring
         smallShip.restoreDelayTime = Time.time + 15;
@@ -1206,37 +1229,53 @@ public static class SmallShipFunctions
                 {
                     if (smallShip.frontShieldLevel > 0)
                     {
+                        if (smallShip.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        {
+                            damage = (damage / 100f) * 10;
+                        }
+
                         smallShip.frontShieldLevel = smallShip.frontShieldLevel - damage;
                         smallShip.shieldLevel = smallShip.shieldLevel - damage;
                     }
                     else
                     {
-                        if (smallShip.systemsLevel - damage < 5 & smallShip.invincible == true)
+                        if (smallShip.hasPlasma == false) //Vong ships are not harmed by ion cannons 
                         {
-                            smallShip.systemsLevel = 5;
-                        }
-                        else
-                        {
-                            smallShip.systemsLevel = smallShip.systemsLevel - damage;
-                        }
+                            if (smallShip.systemsLevel - damage < 5 & smallShip.invincible == true)
+                            {
+                                smallShip.systemsLevel = 5;
+                            }
+                            else
+                            {
+                                smallShip.systemsLevel = smallShip.systemsLevel - damage;
+                            }
+                        }   
                     }
                 }
                 else
                 {
                     if (smallShip.rearShieldLevel > 0)
                     {
+                        if (smallShip.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        {
+                            damage = (damage / 100f) * 10;
+                        }
+
                         smallShip.rearShieldLevel = smallShip.rearShieldLevel - damage;
                         smallShip.shieldLevel = smallShip.shieldLevel - damage;
                     }
                     else
                     {
-                        if (smallShip.systemsLevel - damage < 5 & smallShip.cannotbedisabled == true)
+                        if (smallShip.hasPlasma == false) //Vong ships are not harmed by ion cannons
                         {
-                            smallShip.systemsLevel = 5;
-                        }
-                        else
-                        {
-                            smallShip.systemsLevel = smallShip.systemsLevel - damage;
+                            if (smallShip.systemsLevel - damage < 5 & smallShip.cannotbedisabled == true)
+                            {
+                                smallShip.systemsLevel = 5;
+                            }
+                            else
+                            {
+                                smallShip.systemsLevel = smallShip.systemsLevel - damage;
+                            }
                         }
                     }
                 }

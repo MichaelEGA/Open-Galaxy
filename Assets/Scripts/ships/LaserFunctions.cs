@@ -390,6 +390,10 @@ public static class LaserFunctions
             {
                 smallShip.weaponMode = "all";
             }
+            else if (smallShip.weaponMode == "dual" & smallShip.hasRadidFire == true || smallShip.weaponMode == "all" & smallShip.hasRadidFire == true)
+            {
+                smallShip.weaponMode = "rapid";
+            }
             else
             {
                 smallShip.weaponMode = "single";
@@ -433,10 +437,14 @@ public static class LaserFunctions
             {
                 laserWaitTime = laserWaitTime * 4;
             }
+            else if (smallShip.weaponMode == "rapid")
+            {
+                laserWaitTime = laserWaitTime * 0.25f;
+            }
 
             if (Time.time > smallShip.laserPressedTime & smallShip.laserfiring != true & smallShip.activeWeapon == "lasers" & smallShip.weaponsLock == false)
             {
-                if (smallShip.weaponMode == "single")
+                if (smallShip.weaponMode == "single" || smallShip.weaponMode == "rapid")
                 {
                     if (smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
                     {
@@ -518,7 +526,7 @@ public static class LaserFunctions
                         Task a = new Task(FireLasers(smallShip, 4, smallShip.laserCannon1, smallShip.laserCannon2, smallShip.laserCannon3, smallShip.laserCannon4));
                     }
                 }
-               
+
                 smallShip.laserPressedTime = Time.time + laserWaitTime;
             }
         }
@@ -528,6 +536,13 @@ public static class LaserFunctions
     public static IEnumerator FireLasers(SmallShip smallShip, float lasersToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
     {
         smallShip.laserfiring = true;
+
+        float volume = 0.6f;
+
+        if (smallShip.weaponMode == "rapid")
+        {
+            volume = 0.3f;
+        }
 
         if (smallShip != null)
         {
@@ -558,7 +573,7 @@ public static class LaserFunctions
                         particleSystem.transform.position = firstCannon.transform.position;
                         particleSystem.transform.rotation = firstCannon.transform.rotation;
                         particleSystem.Play();
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, 1, 500, volume);
 
                         if (smallShip.isAI == false)
                         {
@@ -587,7 +602,7 @@ public static class LaserFunctions
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
 
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, secondCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, secondCannon.transform.position, spatialBlend, 1, 500, volume);
                     }
                 }
 
@@ -609,7 +624,7 @@ public static class LaserFunctions
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
 
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, 1, 500, volume);
                     }
                 }
 
@@ -631,7 +646,7 @@ public static class LaserFunctions
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
 
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, fourthCannon.transform.position, spatialBlend, 1, 500, 0.6f);
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, fourthCannon.transform.position, spatialBlend, 1, 500, volume);
                     }
                 }
 

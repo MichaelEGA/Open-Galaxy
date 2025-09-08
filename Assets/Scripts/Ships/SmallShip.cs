@@ -140,6 +140,7 @@ public class SmallShip : MonoBehaviour
     [Header("Ship Weapons")]
     public bool weaponsLock = false;
     public bool preventWeaponChange = false;
+    public bool hasRadidFire = false;
     public string activeWeapon = "lasers";
     public string weaponMode = "single";
     [HideInInspector] public float toggleWeaponPressedTime;

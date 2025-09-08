@@ -63,23 +63,26 @@ public static class SmallShipAIFunctions
                 RemoveSingleTag(smallShip, "nospeed");
                            
             }
-            else if (tag == "singlelaser" || tag == "duallasers" || tag == "alllasers" || tag == "singleplasma" || tag == "dualplasma" || tag == "allplasma" || tag == "singleion" || tag == "dualion" || tag == "allion" || tag == "singletorpedo" || tag == "dualtorpedos" || tag == "noweapons" || tag == "dynamicweapons_single" || tag == "dynamicweapons_dual" || tag == "dynamicweapons_all")
+            else if (tag == "singlelaser" || tag == "duallasers" || tag == "alllasers" || tag == "rapidlasers" || tag == "singleplasma" || tag == "dualplasma" || tag == "allplasma" || tag == "singleion" || tag == "dualion" || tag == "allion" || tag == "rapidion" || tag == "singletorpedo" || tag == "dualtorpedos" || tag == "noweapons" || tag == "dynamicweapons_single" || tag == "dynamicweapons_dual" || tag == "dynamicweapons_all" || tag == "dynamicweapons_rapid")
             {
                 RemoveSingleTag(smallShip, "singlelaser");
                 RemoveSingleTag(smallShip, "duallasers");
                 RemoveSingleTag(smallShip, "alllasers");
+                RemoveSingleTag(smallShip, "rapidlasers");
                 RemoveSingleTag(smallShip, "singleplasma");
                 RemoveSingleTag(smallShip, "dualplasma");
                 RemoveSingleTag(smallShip, "allplasma");
                 RemoveSingleTag(smallShip, "singleion");
                 RemoveSingleTag(smallShip, "dualion");
                 RemoveSingleTag(smallShip, "allion");
+                RemoveSingleTag(smallShip, "rapidion");
                 RemoveSingleTag(smallShip, "singletorpedo");
                 RemoveSingleTag(smallShip, "dualtorpedos");
                 RemoveSingleTag(smallShip, "alltorpedos");
                 RemoveSingleTag(smallShip, "dynamicweapons_single");
                 RemoveSingleTag(smallShip, "dynamicweapons_dual");
                 RemoveSingleTag(smallShip, "dynamicweapons_all");
+                RemoveSingleTag(smallShip, "dynamicweapons_rapid");
                 RemoveSingleTag(smallShip, "noweapons");
             }
             else if (tag == "lowaccuracy" || tag == "mediumaccuracy" || tag == "highaccuracy")
@@ -224,6 +227,10 @@ public static class SmallShipAIFunctions
                     {
                         AllLasers(smallShip);
                     }
+                    else if (tag == "rapidlasers")
+                    {
+                        RapidLasers(smallShip);
+                    }
                     else if (tag == "singleplasma")
                     {
                         SinglePlasma(smallShip);
@@ -248,6 +255,10 @@ public static class SmallShipAIFunctions
                     {
                         AllIon(smallShip);
                     }
+                    else if (tag == "rapidion")
+                    {
+                        RapidIon(smallShip);
+                    }
                     else if (tag == "singletorpedo")
                     {
                         SingleTorpedo(smallShip);
@@ -271,6 +282,10 @@ public static class SmallShipAIFunctions
                     else if (tag == "dynamicweapons_all")
                     {
                         DynamicWeapons_All(smallShip);
+                    }
+                    else if (tag == "dynamicweapons_rapid")
+                    {
+                        DynamicWeapons_Rapid(smallShip);
                     }
                     else if (tag == "noweapons")
                     {
@@ -724,6 +739,34 @@ public static class SmallShipAIFunctions
     }
 
     //This fires one laser at a time
+    public static void RapidLasers(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            if (smallShip.target != null)
+            {
+                smallShip.activeWeapon = "lasers";
+
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    bool dontFire = CheckFire(smallShip);
+
+                    if (dontFire == false & smallShip.hasRadidFire == true)
+                    {
+                        smallShip.weaponMode = "rapid";
+                        LaserFunctions.InitiateFiring(smallShip);
+                    }
+                    else if (dontFire == false)
+                    {
+                        smallShip.weaponMode = "single";
+                        LaserFunctions.InitiateFiring(smallShip);
+                    }
+                }
+            }
+        }
+    }
+
+    //This fires one laser at a time
     public static void SinglePlasma(SmallShip smallShip)
     {
         if (smallShip != null)
@@ -856,6 +899,34 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "all";
+                        IonFunctions.InitiateFiring(smallShip);
+                    }
+                }
+            }
+        }
+    }
+
+    //This fires one ion at a time
+    public static void RapidIon(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            if (smallShip.target != null)
+            {
+                smallShip.activeWeapon = "ion";
+
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                {
+                    bool dontFire = CheckFire(smallShip);
+
+                    if (dontFire == false & smallShip.hasRadidFire == true)
+                    {
+                        smallShip.weaponMode = "rapid";
+                        IonFunctions.InitiateFiring(smallShip);
+                    }
+                    else if (dontFire == false)
+                    {
+                        smallShip.weaponMode = "single";
                         IonFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -1061,6 +1132,49 @@ public static class SmallShipAIFunctions
         }
     }
 
+    //This switches between rapid lasers and normal lasers
+    public static void DynamicWeapons_Rapid(SmallShip smallShip)
+    {
+        if (smallShip != null)
+        {
+            if (smallShip.hasPlasma == false)
+            {
+                smallShip.activeWeapon = "lasers";
+            }
+            else
+            {
+                smallShip.activeWeapon = "plasma";
+            }
+
+            if (smallShip.target != null)
+            {
+                if (smallShip.interceptForward > 0.95f & smallShip.target.gameObject.activeSelf == true)
+                {
+                    if (smallShip.hasRadidFire == true)
+                    {
+                        if (smallShip.targetSmallShip != null)
+                        {
+                            if (smallShip.targetSmallShip.hasPlasma == true & smallShip.targetSmallShip.shieldLevel > 10)
+                            {
+                                smallShip.weaponMode = "rapid";
+                                LaserFunctions.InitiateFiring(smallShip);
+                            }
+                            else
+                            {
+                                smallShip.weaponMode = "single";
+                                LaserFunctions.InitiateFiring(smallShip);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        smallShip.weaponMode = "single";
+                        LaserFunctions.InitiateFiring(smallShip);
+                    }
+                }
+            }
+        }
+    }
     //This checks whether a non hostile ship is in the firing line or not
     public static bool CheckFire(SmallShip smallShip)
     {

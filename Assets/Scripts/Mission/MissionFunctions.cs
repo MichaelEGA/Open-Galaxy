@@ -423,6 +423,11 @@ public static class MissionFunctions
             ActivateHyperspace(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "activaterapidfire")
+        {
+            ActivateRapidFire(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "activatewaypointmarker")
         {
             ActivateWaypointMarker(missionEvent);
@@ -1103,6 +1108,40 @@ public static class MissionFunctions
                             Task a = new Task(LargeShipFunctions.JumpToHyperspace(largeShip));
                         }
 
+                    }
+                }
+            }
+        }
+    }
+
+    //This allows rapid fire on the target ship
+    public static void ActivateRapidFire(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string shipName = missionEvent.data1;
+
+        bool hasRadidFire = false;
+
+        if (bool.TryParse(missionEvent.data2, out _))
+        {
+            hasRadidFire = bool.Parse(missionEvent.data2);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship.name.Contains(shipName))
+                    {
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
+                        {
+                            smallShip.hasRadidFire = hasRadidFire;
+                        }
                     }
                 }
             }

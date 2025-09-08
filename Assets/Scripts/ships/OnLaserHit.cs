@@ -10,8 +10,8 @@ public class OnLaserHit : MonoBehaviour
     private Vector3 hitPosition;
     private Vector3 hitRotation;
     private Audio audioManager;
-    private SmallShip thisSmallShip;
-    private Turret thisTurret;
+    private SmallShip attackingSmallShip;
+    private Turret attackTurret;
     public string type = "laser";
     public Scene scene;
 
@@ -19,8 +19,8 @@ public class OnLaserHit : MonoBehaviour
     void Start()
     {
         ps = GetComponent<ParticleSystem>();
-        thisSmallShip = relatedGameObject.GetComponent<SmallShip>();
-        thisTurret = relatedGameObject.GetComponent<Turret>();
+        attackingSmallShip = relatedGameObject.GetComponent<SmallShip>();
+        attackTurret = relatedGameObject.GetComponent<Turret>();
         scene = SceneFunctions.GetScene();
     }
 
@@ -40,37 +40,59 @@ public class OnLaserHit : MonoBehaviour
 
             if (objectHitParent != relatedGameObject)
             {
+                //Ship that has been hit values
                 SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
                 LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
                 Turret turret = objectHit.gameObject.GetComponentInParent<Turret>();
                 bool hasPlasma = false;
-                float shieldStrength = 100f;
+                
+                float shieldFront = 0f;
+                float shieldBack = 0f;
+                float forward = 0;
 
                 if (smallShip != null)
                 {
-                    if(smallShip.hasPlasma == true)
-                    {
-                        hasPlasma = true;
-                    }
+                    smallShip.hasPlasma = hasPlasma;
 
-                    shieldStrength = smallShip.shieldLevel;
+                    shieldFront = smallShip.frontShieldLevel;
+                    shieldBack = smallShip.rearShieldLevel;
+
+                    Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
+                    forward = -Vector3.Dot(smallShip.gameObject.transform.position, relativePosition.normalized);
                 }
 
                 if (largeShip != null)
                 {
-                    shieldStrength = largeShip.shieldLevel;
+                    hasPlasma = largeShip.hasPlasma;
+
+                    shieldFront = largeShip.frontShieldLevel;
+                    shieldBack = largeShip.rearShieldLevel;
+
+                    Vector3 relativePosition = largeShip.gameObject.transform.position - hitPosition;
+                    forward = -Vector3.Dot(largeShip.gameObject.transform.position, relativePosition.normalized);
+                }
+
+                //Attacking ship values
+                bool rapidFire = false;
+
+                if (attackingSmallShip != null)
+                {
+                    if (attackingSmallShip.weaponMode == "rapid")
+                    {
+                        rapidFire = true;
+                    }
                 }
 
                 if (objectHitParent != null) //This prevents lasers from causing damage to the firing ship if they accidentally hit the collider
                 {
                     //Acquire damage calculation from attack ship/turret
-                    float damage = CalculateLaserDamage(thisSmallShip, thisTurret);
+                    float damage = CalculateLaserDamage(attackingSmallShip, attackTurret);
 
                     if (smallShip != null)
                     {
                         if (type == "laser")
                         {
-                            SmallShipFunctions.TakeDamage(smallShip, damage, hitPosition);
+                            SmallShipFunctions.TakeDamage(smallShip, damage, hitPosition, rapidFire);
                         }
                         else if (type == "ion")
                         {
@@ -111,19 +133,19 @@ public class OnLaserHit : MonoBehaviour
                     //This selects the correct explosion colour
                     string explosionChoice = "laserblast_red";
 
-                    if (thisSmallShip != null)
+                    if (attackingSmallShip != null)
                     {
-                        if (shieldStrength > 0)
+                        if (forward > 0 & shieldFront > 0 || forward < 0 & shieldBack > 0)
                         {
                             if (hasPlasma == true)
                             {
                                 explosionChoice = "blackhole";
                             }
-                            else if (thisSmallShip.laserColor == "red")
+                            else if (attackingSmallShip.laserColor == "red")
                             {
                                 explosionChoice = "laserblast_red";
                             }
-                            else if (thisSmallShip.laserColor == "green")
+                            else if (attackingSmallShip.laserColor == "green")
                             {
                                 explosionChoice = "laserblast_green";
                             }
@@ -134,19 +156,19 @@ public class OnLaserHit : MonoBehaviour
                         }
                     }
 
-                    if (thisTurret != null)
+                    if (attackTurret != null)
                     {
-                        if (shieldStrength > 0)
+                        if (forward > 0 & shieldFront > 0 || forward < 0 & shieldBack > 0)
                         {
                             if (hasPlasma == true)
                             {
                                 explosionChoice = "blackhole";
                             }
-                            if (thisTurret.laserColor == "red")
+                            if (attackTurret.laserColor == "red")
                             {
                                 explosionChoice = "laserblast_red";
                             }
-                            else if (thisTurret.laserColor == "green")
+                            else if (attackTurret.laserColor == "green")
                             {
                                 explosionChoice = "laserblast_green";
                             }
@@ -158,9 +180,9 @@ public class OnLaserHit : MonoBehaviour
                     }
 
                     //This instantiates an explosion at the point of impact
-                    if (thisTurret != null)
+                    if (attackTurret != null)
                     {
-                        if (thisTurret.turretType == "large")
+                        if (attackTurret.turretType == "large")
                         {
                             ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 100, audioManager);
                         }
@@ -171,25 +193,42 @@ public class OnLaserHit : MonoBehaviour
                     }
                     else
                     {
-                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 6, audioManager);
+                        if (rapidFire == false)
+                        {
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 6, audioManager);
+                        }
+                        else
+                        {
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 2, audioManager);
+                        }
                     }
                 }
                 else if (type == "ion")
                 {
-                    if (thisTurret != null)
+                    string explosionChoice = "laserblast_ion";
+
+                    if (forward > 0 & shieldFront > 0 || forward < 0 & shieldBack > 0)
                     {
-                        if (thisTurret.turretType == "large")
+                        if (hasPlasma == true)
                         {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "laserblast_ion", 100, audioManager);
+                            explosionChoice = "blackhole";
+                        }
+                    }
+
+                    if (attackTurret != null)
+                    {
+                        if (attackTurret.turretType == "large")
+                        {
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 100, audioManager);
                         }
                         else
                         {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "laserblast_ion", 3, audioManager);
+                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 3, audioManager);
                         }
                     }
                     else
                     {
-                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, "laserblast_ion", 3, audioManager);
+                        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 3, audioManager);
                     }
                 }     
             }

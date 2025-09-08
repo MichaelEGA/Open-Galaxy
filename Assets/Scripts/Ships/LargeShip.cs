@@ -117,6 +117,7 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float targetPressedTime;
 
     [Header("Turrets")]
+    public bool hasPlasma;
     public bool turretsLoaded;
     public Turret[] turrets;
     public string largeturret;

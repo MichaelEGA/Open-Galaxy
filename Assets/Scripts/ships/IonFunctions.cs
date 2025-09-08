@@ -353,9 +353,13 @@ public static class IonFunctions
             {
                 smallShip.weaponMode = "dual";
             }
-            else if (smallShip.weaponMode == "dual" & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
+            else if (smallShip.weaponMode == "dual" & smallShip.ionCannon3 != null)
             {
                 smallShip.weaponMode = "all";
+            }
+            else if (smallShip.weaponMode == "dual" & smallShip.hasRadidFire == true || smallShip.weaponMode == "all" & smallShip.hasRadidFire == true)
+            {
+                smallShip.weaponMode = "rapid";
             }
             else
             {
@@ -400,10 +404,14 @@ public static class IonFunctions
             {
                 ionWaitTime = ionWaitTime * 4;
             }
+            else if (smallShip.weaponMode == "rapid")
+            {
+                ionWaitTime = ionWaitTime * 0.25f;
+            }
 
             if (Time.time > smallShip.ionPressedTime & smallShip.ionfiring != true & smallShip.activeWeapon == "ion" & smallShip.weaponsLock == false)
             {
-                if (smallShip.weaponMode == "single")
+                if (smallShip.weaponMode == "single" || smallShip.weaponMode == "rapid")
                 {
                     if (smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
                     {

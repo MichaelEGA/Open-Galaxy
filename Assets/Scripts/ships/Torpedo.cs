@@ -58,7 +58,24 @@ public class Torpedo : MonoBehaviour
         {
             Scene scene = SceneFunctions.GetScene();
 
-            ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion_torpedo", 3f, audioManager, "mid_explosion_02", 1500, "Explosions");
+            SmallShip targetSmallShip = collision.gameObject.GetComponentInParent<SmallShip>();
+
+            if (targetSmallShip != null) 
+            {
+                if (targetSmallShip.hasPlasma == false)
+                {
+                    ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion_torpedo", 3f, audioManager, "mid_explosion_02", 1500, "Explosions");
+                }
+                else
+                {
+                    ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "blackhole", 6, audioManager);
+                }
+            }
+            else
+            {
+                ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion_torpedo", 3f, audioManager, "mid_explosion_02", 1500, "Explosions");
+            }
+
             break;
         }
 

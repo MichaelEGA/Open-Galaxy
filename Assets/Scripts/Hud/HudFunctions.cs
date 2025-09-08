@@ -1849,23 +1849,24 @@ public static class HudFunctions
     #region player information
 
     //This briefly displays a message in large text in the middle of the screen
-    public static void DisplayTitle(string title, int fontsize, string colour = "#FFFFFF")
+    public static void DisplayTitle(string title)
     {
         if (Time.timeScale != 0)
         {
             Hud hud = GetHud();
 
-            if (fontsize <= 0)
-            {
-                fontsize = 25;
-            }
-
             if (hud != null)
             {
                 if (hud.title == null)
                 {
-                    GameObject locationInfo = GameObject.Find("LocationInfo");
-                    if (locationInfo != null) { hud.title = locationInfo.GetComponent<Text>(); }
+                    GameObject titleGO = GameObject.Find("Title");
+                    if (titleGO != null) { hud.title = titleGO.GetComponent<Text>(); }
+                }
+
+                if (hud.subtitle == null)
+                {
+                    GameObject subtitleGO = GameObject.Find("Subtitle");
+                    if (subtitleGO != null) { hud.subtitle = subtitleGO.GetComponent<Text>(); }
                 }
 
                 if (hud.reticule == null)
@@ -1874,26 +1875,16 @@ public static class HudFunctions
                     if (reticule != null) { hud.reticule = reticule.GetComponent<RawImage>(); }
                 }
 
-                if (hud.title != null & hud.reticule != null)
+                if (hud.title != null & hud.reticule != null & hud.subtitle != null)
                 {
-                    if (!colour.Contains("#"))
-                    {
-                        Color newColour = Color.white;
-
-                        if (ColorUtility.TryParseHtmlString(colour, out newColour))
-                        {
-                            //Do nothing
-                        }
-
-                        hud.title.color = newColour;
-                    }
-
                     hud.title.text = title;
-                    hud.title.fontSize = fontsize;
+                    hud.subtitle.text = title;
                     Task a = new Task(FadeTextInAndOut(hud.title, 0.5f, 3, 0.5f)); //This fades the title in and out
                     AddTaskToPool(hud, a);
-                    Task b = new Task(FadeRawImageOutAndIn(hud.reticule, 0.25f, 4, 0.5f)); //This briefly fades the hud reticule to avoid a clash with the title
+                    Task b = new Task(FadeTextInAndOut(hud.subtitle, 0.5f, 3, 0.5f)); //This fades the title in and out
                     AddTaskToPool(hud, b);
+                    Task c = new Task(FadeRawImageOutAndIn(hud.reticule, 0.25f, 4, 0.5f)); //This briefly fades the hud reticule to avoid a clash with the title
+                    AddTaskToPool(hud, c);
                 }
             }
         } 

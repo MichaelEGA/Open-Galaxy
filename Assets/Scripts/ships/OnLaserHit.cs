@@ -52,7 +52,7 @@ public class OnLaserHit : MonoBehaviour
 
                 if (smallShip != null)
                 {
-                    smallShip.hasPlasma = hasPlasma;
+                    hasPlasma = smallShip.hasPlasma;
 
                     shieldFront = smallShip.frontShieldLevel;
                     shieldBack = smallShip.rearShieldLevel;

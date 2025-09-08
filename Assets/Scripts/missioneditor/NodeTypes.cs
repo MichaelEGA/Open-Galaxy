@@ -2089,14 +2089,6 @@ public static class NodeTypes
 
         drop -= 15 * multiplySize;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "Fontsize", "25", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.data3 = NodeFunctions.DrawInputField(node, "Colour", "#FFFFFF", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;

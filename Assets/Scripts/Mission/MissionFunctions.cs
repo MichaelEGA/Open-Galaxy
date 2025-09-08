@@ -1648,15 +1648,7 @@ public static class MissionFunctions
     public static void DisplayTitle(MissionEvent missionEvent)
     {
         string title = missionEvent.data1;
-        int fontsize = 12;
-        string colour = missionEvent.data3;
-
-        if (int.TryParse(missionEvent.data2, out _))
-        {
-            fontsize = int.Parse(missionEvent.data2);
-        }
-
-        HudFunctions.DisplayTitle(title, fontsize, colour);
+        HudFunctions.DisplayTitle(title);
     }
 
     //This adds a message to the log and plays an audio file, it will wait for other messages to play before playing

@@ -67,6 +67,7 @@ public class Hud : MonoBehaviour
 
     [Header("Player Information")]
     public Text title;
+    public Text subtitle;
     public Text hintTextGO;
     public Image hintImage;
 

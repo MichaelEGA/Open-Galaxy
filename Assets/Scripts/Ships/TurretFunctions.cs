@@ -727,4 +727,71 @@ public static class TurretFunctions
     }
 
     #endregion
+
+    #region NEW TURRET CODE
+
+    //This function cycles through avalaible turrets and fire lasers
+
+    //This positions and aims the turret
+    public static void PositionAndAimTurret(GameObject turret, GameObject turretPosition, GameObject target, bool restrictForward)
+    {
+        //This positions the turret
+        turret.transform.position = turretPosition.transform.position;
+
+        //This aims the turret
+        Vector3 direction = target.transform.position - turret.transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        turret.transform.rotation = Quaternion.Slerp(turret.transform.rotation, lookRotation, Time.deltaTime * 2f);
+
+        // This calculates the restricted rotation
+        if (restrictForward == true)
+        {
+            Vector3 restrictedDirection = Quaternion.Euler(0, 90, 0) * turretPosition.transform.forward;
+            Quaternion restrictedRotation = Quaternion.LookRotation(restrictedDirection);
+            turret.transform.rotation = Quaternion.Slerp(turret.transform.rotation, restrictedRotation, Time.deltaTime * 2f);
+        }
+    }
+
+    //This calculates the number of fire points on the turret
+    public static Vector3[] CalculateFirePointPositions(GameObject turret, int firePointsNo, float distanceBetweenFirePoints)
+    {
+        List<Vector3> firePoints = new List<Vector3>();
+
+        //This gets the firepoint positions directly right and left of center
+        float currentPositionRight = distanceBetweenFirePoints / 2f;
+        float currentPositionLeft = -(distanceBetweenFirePoints / 2f);
+
+        Vector3 firePoint01 = turret.transform.right * (currentPositionRight);
+        Vector3 firePoint02 = turret.transform.right * (currentPositionLeft);
+
+        firePoints.Add(firePoint01);
+        firePoints.Add(firePoint02);
+
+        //This gets the rest of the firepoints
+        for (int i = 0; i < firePointsNo; i = i + 2) 
+        {
+            currentPositionRight = currentPositionRight + distanceBetweenFirePoints;
+            currentPositionLeft = currentPositionLeft - distanceBetweenFirePoints;
+
+            Vector3 firePointRight = turret.transform.right * (currentPositionRight);
+            Vector3 firePointLeft = turret.transform.right * (currentPositionLeft);
+
+            firePoints.Add(firePointRight);
+            firePoints.Add(firePointLeft);
+        }
+
+        return firePoints.ToArray();
+    }
+
+    //This fires the turret using a given firepoint
+    public static void FireTurret(ParticleSystem particleSystem, Transform firePoint, Audio audioManager, string audioFile)
+    {
+        particleSystem.transform.position = firePoint.position;
+        particleSystem.transform.rotation = firePoint.rotation;
+        particleSystem.Play();
+
+        AudioFunctions.PlayAudioClip(audioManager, audioFile, "External", firePoint.position, 1, 1, 500, 0.6f);
+    }
+
+    #endregion
 }

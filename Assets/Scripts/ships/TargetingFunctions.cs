@@ -1313,7 +1313,7 @@ public static class TargetingFunctions
 
         if (target != null)
         {
-            turret.target = target;
+            turret.targetGO = target;
         }
         
         yield return null;

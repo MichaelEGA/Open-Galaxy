@@ -4,16 +4,31 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
+    //NEW VARIABLES
+    public SmallShip smallShip;
     public LargeShip largeShip;
+    public GameObject shipGO;
+    public GameObject turretGO;
+    public GameObject targetGO;
+    public Transform[] turretPositions;
+    public ParticleSystem particleSystem;
+    public Audio audioManager;
+    public string audioFile = "Turbolaser";
+    public string allegiance;
+    public string accuracy;
+    public string laserColor = "red";
+
+
+    //OLD VARIABLES
     public GameObject turretBase;
     public GameObject turretArm;
     public GameObject turretParticleSystem;
-    public GameObject target;
+
     public Transform[] firepoints;
-    public Audio audioManager;
-    public string allegiance;
-    public string laserColor = "red";
-    public string audioFile = "Turbolaser";
+
+
+
+
     public string turretType;
     public float turretSpeed = 100; //Percentage
     public float turnInput;

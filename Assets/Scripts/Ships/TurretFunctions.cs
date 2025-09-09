@@ -738,6 +738,8 @@ public static class TurretFunctions
         }
     }
 
+    //CREATE FUNCTION TO GET KEY VALUES FROM SHIP LIKE ALLEGIANCE, TARGET, AND WHATNOT
+
     //This loads the turret particle system
     public static ParticleSystem LoadTurretParticleSystem(Turret turret)
     {

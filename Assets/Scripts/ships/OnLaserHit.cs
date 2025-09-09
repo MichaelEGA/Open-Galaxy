@@ -103,11 +103,11 @@ public class OnLaserHit : MonoBehaviour
                     {
                         if (type == "laser")
                         {
-                            TurretFunctions.TakeDamage(turret, damage, hitPosition);
+                            //TurretFunctions.TakeDamage(turret, damage, hitPosition);
                         }
                         else if (type == "ion")
                         {
-                            TurretFunctions.TakeSystemsDamage(turret, damage, hitPosition);
+                            //TurretFunctions.TakeSystemsDamage(turret, damage, hitPosition);
                         }
                     }
                     else if (largeShip != null)
@@ -182,14 +182,14 @@ public class OnLaserHit : MonoBehaviour
                     //This instantiates an explosion at the point of impact
                     if (attackTurret != null)
                     {
-                        if (attackTurret.turretType == "large")
-                        {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 100, audioManager);
-                        }
-                        else
-                        {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 6, audioManager);
-                        }
+                        //if (attackTurret.turretType == "large")
+                        //{
+                        //    ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 100, audioManager);
+                        //}
+                        //else
+                        //{
+                        //    ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 6, audioManager);
+                        //}
                     }
                     else
                     {
@@ -217,14 +217,14 @@ public class OnLaserHit : MonoBehaviour
 
                     if (attackTurret != null)
                     {
-                        if (attackTurret.turretType == "large")
-                        {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 100, audioManager);
-                        }
-                        else
-                        {
-                            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 3, audioManager);
-                        }
+                        //if (attackTurret.turretType == "large")
+                        //{
+                        //    ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 100, audioManager);
+                        //}
+                        //else
+                        //{
+                        //    ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 3, audioManager);
+                        //}
                     }
                     else
                     {
@@ -255,7 +255,7 @@ public class OnLaserHit : MonoBehaviour
         {
             laserPower = 100;
             laserRating = 100;
-            laserDamage = turret.laserDamage;
+            //laserDamage = turret.laserDamage;
         }
 
         if (laserPower > 50)

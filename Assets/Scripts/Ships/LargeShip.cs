@@ -122,6 +122,7 @@ public class LargeShip : MonoBehaviour
     public Turret[] turrets;
     public string largeturret;
     public string smallturret;
+    public string aiTargetingMode = "low";
 
     [Header("Collisions")]
     public Transform castPoint;
@@ -143,7 +144,6 @@ public class LargeShip : MonoBehaviour
     {
         //Start functions
         LargeShipFunctions.PrepareShip(this);
-        TurretFunctions.LoadTurrets(this);
         
         //Input functions
         LargeShipFunctions.GetAIInput(this);

@@ -4,61 +4,45 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    //NEW VARIABLES
     public SmallShip smallShip;
     public LargeShip largeShip;
     public GameObject shipGO;
     public GameObject turretGO;
     public GameObject targetGO;
+    public GameObject particleSystemGO;
     public Transform[] turretPositions;
     public ParticleSystem particleSystem;
     public Audio audioManager;
+    public float smallTurretDelay;
+    public float largeTurretDelay;
+    public float largeTurretDamage;
+    public float smallTurretDamage;
     public string audioFile = "Turbolaser";
     public string allegiance;
     public string accuracy;
     public string laserColor = "red";
+    public bool turretSetUp = false;
+    public Task turretTask;
 
-
-    //OLD VARIABLES
-    public GameObject turretBase;
-    public GameObject turretArm;
-    public GameObject turretParticleSystem;
-
-    public Transform[] firepoints;
-
-
-
-
-    public string turretType;
-    public float turretSpeed = 100; //Percentage
-    public float turnInput;
-    public float pitchInput;
-    public float turnInputActual;
-    public float pitchInputActual;
-    public float yRotationMax = 30;
-    public float yRotationMin = -30;
-    public float xRotationMax = 90;
-    public float xRotationMin = 0;
-    public float laserDamage = 50;
-    public float hullLevel = 100;
-    public float systemsLevel = 100;
-    public float targetForward;
-    public float targetRight;
-    public float targetUp;
-    public float fireDelay;
-    public float fireDelayCount;
-    public bool turretFiring;
-    public bool isUpsideDown;
-    public bool yRotationIsRestricted = false;
-    public bool requestingTarget;
+    void Start()
+    {
+        TurretFunctions.SetUpTurrets(this);
+    }
 
     void Update()
     {
-        TurretFunctions.GetTarget(this);
-        TurretFunctions.TurretInput(this, largeShip);
-        TurretFunctions.RotateTurret(this);
-        TurretFunctions.FireTurret(this);   
-        TurretFunctions.Explode(this);
+        if (turretTask == null)
+        {
+            turretTask = new Task(TurretFunctions.RunTurrets(this));
+        }
+
+        if(turretTask != null)
+        {
+            if (turretTask.Running == false)
+            {
+                turretTask = new Task(TurretFunctions.RunTurrets(this));
+            }
+        }
     }
 }
 

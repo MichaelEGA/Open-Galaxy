@@ -2,16 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turret : MonoBehaviour
+public class LaserTurret : MonoBehaviour
 {
     public SmallShip smallShip;
     public LargeShip largeShip;
+    public Mesh smallLaserMesh;
+    public Mesh largeLaserMesh;
+    public Transform[] turretPositions;
     public GameObject shipGO;
     public GameObject turretGO;
     public GameObject targetGO;
-    public GameObject particleSystemGO;
-    public Transform[] turretPositions;
-    public ParticleSystem particleSystem;
+    public GameObject largeParticleSystemGO;
+    public ParticleSystem largeParticleSystem;
+    public ParticleSystemRenderer largeParticleSystemRenderer;
+    public GameObject smallParticleSystemGO;
+    public ParticleSystem smallParticleSystem;
+    public ParticleSystemRenderer smallParticleSystemRenderer;
     public Audio audioManager;
     public float smallTurretDelay;
     public float largeTurretDelay;
@@ -22,25 +28,26 @@ public class Turret : MonoBehaviour
     public string accuracy;
     public string laserColor = "red";
     public bool turretSetUp = false;
+    public bool requestingTarget;
     public Task turretTask;
 
     void Start()
     {
-        TurretFunctions.SetUpTurrets(this);
+        LaserTurretFunctions.SetUpTurrets(this);
     }
 
     void Update()
     {
         if (turretTask == null)
         {
-            turretTask = new Task(TurretFunctions.RunTurrets(this));
+            turretTask = new Task(LaserTurretFunctions.RunTurrets(this));
         }
 
         if(turretTask != null)
         {
             if (turretTask.Running == false)
             {
-                turretTask = new Task(TurretFunctions.RunTurrets(this));
+                turretTask = new Task(LaserTurretFunctions.RunTurrets(this));
             }
         }
     }

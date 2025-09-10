@@ -1420,7 +1420,7 @@ public static class SceneFunctions
                 largeShip.shipLength = shipType.shipLength;
                 ship.name = largeShip.name;
 
-                ship.AddComponent<Turret>();
+                ship.AddComponent<LaserTurret>();
             }
 
             //Set ship position, rotation and scale

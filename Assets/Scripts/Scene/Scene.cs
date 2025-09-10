@@ -43,7 +43,7 @@ public class Scene : MonoBehaviour
     public bool allocatingTargets;
     [HideInInspector] public List<SmallShip> smallShips;
     [HideInInspector] public List<LargeShip> largeShips;
-    [HideInInspector] public List<Turret> turrets;
+    [HideInInspector] public List<LaserTurret> turrets;
 
     [Header("Collision Avoidance")]
     [HideInInspector] public bool avoidSmallObjectsRunning;

@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class TurretFunctions
+public static class LaserTurretFunctions
 {
     #region turret set up
 
-    public static void SetUpTurrets(Turret turret)
+    //This sets up the turrets
+    public static void SetUpTurrets(LaserTurret turret)
     {
         if (turret.turretSetUp == false)
         {
@@ -36,12 +37,10 @@ public static class TurretFunctions
                 }
             }
 
-            //This loads the turret particle system
-            if (turret.particleSystem == null)
-            {
-                turret.particleSystem = LoadTurretParticleSystem(turret);
-            }
-
+            //This loads the turret particle system   
+            LoadLargeLaserParticleSystem(turret);
+            LoadSmallLaserParticleSystem(turret);
+            
             //This creates the turret GO for calculating rotation and position
             if (turret.turretGO == null)
             {
@@ -60,21 +59,11 @@ public static class TurretFunctions
     }
 
     //This loads the turret particle system
-    public static ParticleSystem LoadTurretParticleSystem(Turret turret)
+    public static void LoadLargeLaserParticleSystem(LaserTurret turret)
     {
-        GameObject laser = null;
+        GameObject largeLaser = Resources.Load(OGGetAddress.particles + "models/laser_turbo") as GameObject;
 
-        //This loads the necessary prefabs
-        if (turret.name.Contains("small"))
-        {
-            laser = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
-        }
-        else
-        {
-            laser = Resources.Load(OGGetAddress.particles + "models/laser_turbo") as GameObject;
-        }
-
-        Mesh laserMesh = laser.GetComponent<MeshFilter>().sharedMesh;
+        turret.largeLaserMesh = largeLaser.GetComponent<MeshFilter>().sharedMesh;
 
         Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
         Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_green") as Material;
@@ -85,12 +74,12 @@ public static class TurretFunctions
         GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
 
         //This loads the particle system and the particle collider
-        turret.particleSystemGO = new GameObject();
-        turret.particleSystemGO.name = "laserparticlesystem_" + turret.gameObject.name;
-        ParticleSystem particleSystem = turret.particleSystemGO.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = turret.particleSystemGO.GetComponent<ParticleSystemRenderer>();
-        OnLaserHit particleCollision = turret.particleSystemGO.AddComponent<OnLaserHit>();
-        particleCollision.relatedGameObject = turret.gameObject;
+        GameObject particleSystemGO = new GameObject();
+        particleSystemGO.name = "largelaserparticlesystem_" + turret.gameObject.name;
+        ParticleSystem particleSystem = particleSystemGO.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = particleSystemGO.GetComponent<ParticleSystemRenderer>();
+        OnLaserHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserHit>();
+        onLaserTurretHit.relatedGameObject = turret.gameObject;
 
         //This adds the new particle system to the pool
         Scene scene = SceneFunctions.GetScene();
@@ -102,7 +91,7 @@ public static class TurretFunctions
                 scene.lasersPool = new List<GameObject>();
             }
 
-            scene.lasersPool.Add(turret.particleSystemGO);
+            scene.lasersPool.Add(turret.largeParticleSystemGO);
         }
 
         //This sets the paticle to operate in world space (as opposed to local)
@@ -152,7 +141,7 @@ public static class TurretFunctions
         //This makes the particle looks like a laser
         particleSystemRenderer.renderMode = ParticleSystemRenderMode.Mesh;
         particleSystemRenderer.alignment = ParticleSystemRenderSpace.Velocity;
-        particleSystemRenderer.mesh = laserMesh;
+        particleSystemRenderer.mesh = turret.largeLaserMesh;
 
         if (turret.laserColor == "red")
         {
@@ -173,11 +162,122 @@ public static class TurretFunctions
         //This prevents the particle system playing when loaded
         particleSystem.Stop();
 
-        return (particleSystem);
+        turret.largeParticleSystemGO = particleSystemGO;
+        turret.largeParticleSystem = particleSystem;
+        turret.largeParticleSystemRenderer = particleSystemRenderer;
+    }
+
+    //This loads the turret particle system
+    public static void LoadSmallLaserParticleSystem(LaserTurret turret)
+    {
+        GameObject smallLaser = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
+
+        turret.smallLaserMesh = smallLaser.GetComponent<MeshFilter>().sharedMesh;
+
+        Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
+        Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_green") as Material;
+        Material yellowLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_yellow") as Material;
+
+        GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
+        GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
+        GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
+
+        //This loads the particle system and the particle collider
+        GameObject particleSystemGO = new GameObject();
+        particleSystemGO.name = "smalllaserparticlesystem_" + turret.gameObject.name;
+        ParticleSystem particleSystem = particleSystemGO.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = particleSystemGO.GetComponent<ParticleSystemRenderer>();
+        OnLaserHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserHit>();
+        onLaserTurretHit.relatedGameObject = turret.gameObject;
+
+        //This adds the new particle system to the pool
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            if (scene.lasersPool == null)
+            {
+                scene.lasersPool = new List<GameObject>();
+            }
+
+            scene.lasersPool.Add(turret.largeParticleSystemGO);
+        }
+
+        //This sets the paticle to operate in world space (as opposed to local)
+        var main = particleSystem.main;
+        main.simulationSpace = ParticleSystemSimulationSpace.Custom;
+        main.customSimulationSpace = scene.transform;
+        main.startLifetime = 15;
+        main.startSize3D = true;
+        main.startSizeX = 1;
+        main.startSizeY = 1;
+        main.startSizeZ = 1;
+        main.startSpeed = 750;
+        main.loop = false;
+        main.playOnAwake = false;
+
+        //This causes the particle emmiter to only emit one particle per play
+        var emission = particleSystem.emission;
+        emission.enabled = true;
+        emission.rateOverTime = 0;
+        emission.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0f, 1), });
+
+        //This makes the particle emitter fire in one direction
+        var shape = particleSystem.shape;
+        shape.enabled = true;
+        shape.scale = new Vector3(0, 0, 0);
+        shape.shapeType = ParticleSystemShapeType.Rectangle;
+
+        //This gets the particle moving in the right direction
+        var velocity = particleSystem.inheritVelocity;
+        velocity.enabled = true;
+        velocity.mode = ParticleSystemInheritVelocityMode.Initial;
+        velocity.curveMultiplier = 0.0001f;
+
+        //This sets up the light system
+        var lights = particleSystem.lights;
+        lights.enabled = true;
+
+        //This enables the particle to collide
+        var collision = particleSystem.collision;
+        collision.enabled = true;
+        collision.type = ParticleSystemCollisionType.World;
+        collision.bounce = 0;
+        collision.lifetimeLoss = 1;
+        collision.sendCollisionMessages = true;
+        collision.collidesWith = SetLaserCollisionLayers(turret);
+
+        //This makes the particle looks like a laser
+        particleSystemRenderer.renderMode = ParticleSystemRenderMode.Mesh;
+        particleSystemRenderer.alignment = ParticleSystemRenderSpace.Velocity;
+        particleSystemRenderer.mesh = turret.smallLaserMesh;
+
+        if (turret.laserColor == "red")
+        {
+            particleSystemRenderer.material = redLaserMaterial;
+            lights.light = redLaserLight.GetComponent<Light>();
+        }
+        else if (turret.laserColor == "green")
+        {
+            particleSystemRenderer.material = greenLaserMaterial;
+            lights.light = greenLaserLight.GetComponent<Light>();
+        }
+        else if (turret.laserColor == "yellow")
+        {
+            particleSystemRenderer.material = yellowLaserMaterial;
+            lights.light = yellowLaserLight.GetComponent<Light>();
+        }
+
+        //This prevents the particle system playing when loaded
+        particleSystem.Stop();
+
+        turret.smallParticleSystemGO = particleSystemGO;
+        turret.smallParticleSystem = particleSystem;
+        turret.smallParticleSystemRenderer = particleSystemRenderer;
     }
 
     //This sets the collision layer for the lasers
-    public static LayerMask SetLaserCollisionLayers(Turret turret)
+    public static LayerMask SetLaserCollisionLayers(LaserTurret turret)
     {
         LayerMask collisionLayers = new LayerMask();
 
@@ -246,7 +346,7 @@ public static class TurretFunctions
     #region main turret function
 
     //This function cycles through avalaible turrets and fire lasers
-    public static IEnumerator RunTurrets(Turret turret)
+    public static IEnumerator RunTurrets(LaserTurret turret)
     {
         //This cycles through all the turrets and fires them
         if (turret.turretPositions != null & turret.turretGO != null)
@@ -267,10 +367,17 @@ public static class TurretFunctions
                 GameObject turretGO = turret.turretGO;
                 GameObject targetGO = turret.targetGO;
                 GameObject shipGO = turret.shipGO;
-                ParticleSystem particleSystem = turret.particleSystem;
                 Audio audioManager = turret.audioManager;
                 string audioFile = turret.audioFile;
 
+                //This selects the particle system
+                ParticleSystem particleSystem = turret.largeParticleSystem;
+
+                if (turretPosition.name.Contains("small"))
+                {
+                    particleSystem = turret.smallParticleSystem;
+                }
+               
                 if (turret.targetGO != null)
                 {
                     //This positions and aims the turret
@@ -307,7 +414,6 @@ public static class TurretFunctions
                         yield return null;
                     }
 
-                    yield return null;
                 }
             }
         }
@@ -424,27 +530,35 @@ public static class TurretFunctions
     {
         List<Vector3> firePoints = new List<Vector3>();
 
-        //This gets the firepoint positions directly right and left of center
-        float currentPositionRight = distanceBetweenFirePoints / 2f;
-        float currentPositionLeft = -(distanceBetweenFirePoints / 2f);
-
-        Vector3 firePoint01 = turret.transform.right * (currentPositionRight);
-        Vector3 firePoint02 = turret.transform.right * (currentPositionLeft);
-
-        firePoints.Add(firePoint01);
-        firePoints.Add(firePoint02);
-
-        //This gets the rest of the firepoints
-        for (int i = 0; i < firePointsNo; i = i + 2) 
+        if (firePointsNo > 1)
         {
-            currentPositionRight = currentPositionRight + distanceBetweenFirePoints;
-            currentPositionLeft = currentPositionLeft - distanceBetweenFirePoints;
+            //This gets the firepoint positions directly right and left of center
+            float currentPositionRight = distanceBetweenFirePoints / 2f;
+            float currentPositionLeft = -(distanceBetweenFirePoints / 2f);
 
-            Vector3 firePointRight = turret.transform.right * (currentPositionRight);
-            Vector3 firePointLeft = turret.transform.right * (currentPositionLeft);
+            Vector3 firePoint01 = turret.transform.right * (currentPositionRight);
+            Vector3 firePoint02 = turret.transform.right * (currentPositionLeft);
 
-            firePoints.Add(firePointRight);
-            firePoints.Add(firePointLeft);
+            firePoints.Add(firePoint01);
+            firePoints.Add(firePoint02);
+
+            //This gets the rest of the firepoints
+            for (int i = 0; i < firePointsNo; i = i + 2)
+            {
+                currentPositionRight = currentPositionRight + distanceBetweenFirePoints;
+                currentPositionLeft = currentPositionLeft - distanceBetweenFirePoints;
+
+                Vector3 firePointRight = turret.transform.right * (currentPositionRight);
+                Vector3 firePointLeft = turret.transform.right * (currentPositionLeft);
+
+                firePoints.Add(firePointRight);
+                firePoints.Add(firePointLeft);
+            }
+        }
+        else
+        {
+            Vector3 firePoint01 = turret.transform.position;
+            firePoints.Add(firePoint01);
         }
 
         return firePoints.ToArray();

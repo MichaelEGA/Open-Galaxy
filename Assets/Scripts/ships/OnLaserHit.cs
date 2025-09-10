@@ -11,7 +11,7 @@ public class OnLaserHit : MonoBehaviour
     private Vector3 hitRotation;
     private Audio audioManager;
     private SmallShip attackingSmallShip;
-    private Turret attackTurret;
+    private LaserTurret attackTurret;
     public string type = "laser";
     public Scene scene;
 
@@ -20,7 +20,7 @@ public class OnLaserHit : MonoBehaviour
     {
         ps = GetComponent<ParticleSystem>();
         attackingSmallShip = relatedGameObject.GetComponent<SmallShip>();
-        attackTurret = relatedGameObject.GetComponent<Turret>();
+        attackTurret = relatedGameObject.GetComponent<LaserTurret>();
         scene = SceneFunctions.GetScene();
     }
 
@@ -43,7 +43,7 @@ public class OnLaserHit : MonoBehaviour
                 //Ship that has been hit values
                 SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
                 LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
-                Turret turret = objectHit.gameObject.GetComponentInParent<Turret>();
+                LaserTurret turret = objectHit.gameObject.GetComponentInParent<LaserTurret>();
                 bool hasPlasma = false;
                 
                 float shieldFront = 0f;
@@ -238,7 +238,7 @@ public class OnLaserHit : MonoBehaviour
     #region on laser hit utils
 
     //Calculates the damage done by the laser
-    private float CalculateLaserDamage(SmallShip smallShip, Turret turret)
+    private float CalculateLaserDamage(SmallShip smallShip, LaserTurret turret)
     {
         float damage = 0;
         float laserPower = 0;
@@ -280,7 +280,7 @@ public class OnLaserHit : MonoBehaviour
         GameObject parent = null;
 
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
-        Turret turret = objectHit.gameObject.GetComponentInParent<Turret>();
+        LaserTurret turret = objectHit.gameObject.GetComponentInParent<LaserTurret>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
         if (smallShip != null)

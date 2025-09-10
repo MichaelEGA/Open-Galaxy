@@ -1099,225 +1099,88 @@ public static class TargetingFunctions
     //Allocate targets to all the turrets one at a time to save processing power
     public static IEnumerator AllocateTargets_ShipsAI(Scene scene)
     {
-        //scene.allocatingTargets = true;
+        scene.allocatingTargets = true;
 
-        //if (scene.turrets == null)
-        //{
-        //    scene.turrets = new List<Turret>();
-        //}
+        //This selects targets for smallship ai
+        if (scene.smallShips == null)
+        {
+            scene.smallShips = new List<SmallShip>();
+        }
 
-        ////This selects targets for turrets
-        //foreach (Turret turret in scene.turrets.ToArray())
-        //{
-        //    if (turret != null)
-        //    {
-        //        if (turret.requestingTarget == true)
-        //        {
-        //            Task a = new Task(GetClosestEnemy_TurretAI(turret));
-        //            while (a.Running == true) { yield return null; }
-        //        }
-        //    }
-        //}
+        foreach (SmallShip smallShip in scene.smallShips.ToArray())
+        {
+            if (smallShip != null)
+            {
+                if (smallShip.gameObject.activeSelf == true & smallShip.requestingTarget == true)
+                {
+                    if (smallShip.aiTargetingMode == "targetallprefsmall")
+                    {
+                        Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                        while (a.Running == true) { yield return null; }
 
-        //if (scene.smallShips == null)
-        //{
-        //    scene.smallShips = new List<SmallShip>();
-        //}
+                        if (smallShip.target == null)
+                        {
+                            Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                            while (b.Running == true) { yield return null; }
+                        }
+                    }
+                    else if (smallShip.aiTargetingMode == "targetallpreflarge")
+                    {
+                        Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                        while (b.Running == true) { yield return null; }
 
-        ////This selects targets for smallship ai
-        //foreach (SmallShip smallShip in scene.smallShips.ToArray())
-        //{
-        //    if (smallShip != null)
-        //    {
-        //        if (smallShip.gameObject.activeSelf == true & smallShip.requestingTarget == true)
-        //        {
-        //            if (smallShip.aiTargetingMode == "targetallprefsmall")
-        //            {
-        //                Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
-        //                while (a.Running == true) { yield return null; }
+                        if (smallShip.target == null)
+                        {
+                            Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                            while (a.Running == true) { yield return null; }
+                        }
+                    }
+                    else if (smallShip.aiTargetingMode == "targetsmallshipsonly")
+                    {
+                        Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
+                        while (a.Running == true) { yield return null; }
+                    }
+                    else if (smallShip.aiTargetingMode == "targetlargeshipsonly")
+                    {
+                        Task a = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
+                        while (a.Running == true) { yield return null; }
+                    }
+                }
+            }
+        }
 
-        //                if (smallShip.target == null)
-        //                {
-        //                    Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
-        //                    while (b.Running == true) { yield return null; }
-        //                }
-        //            }
-        //            else if (smallShip.aiTargetingMode == "targetallpreflarge")
-        //            {
-        //                Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
-        //                while (b.Running == true) { yield return null; }
+        //This selects targets for largeships
+        if (scene.largeShips == null)
+        {
+            scene.largeShips = new List<LargeShip>();
+        }
 
-        //                if (smallShip.target == null)
-        //                {
-        //                    Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
-        //                    while (a.Running == true) { yield return null; }
-        //                }
-        //            }
-        //            else if (smallShip.aiTargetingMode == "targetsmallshipsonly")
-        //            {
-        //                Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
-        //                while (a.Running == true) { yield return null; }
-        //            }
-        //            else if (smallShip.aiTargetingMode == "targetlargeshipsonly")
-        //            {
-        //                Task a = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
-        //                while (a.Running == true) { yield return null; }
-        //            }                   
-        //        }
-        //    }
-        //}
+        foreach (LargeShip largeShip in scene.largeShips.ToArray())
+        {
+            if (largeShip != null)
+            {
+                if (largeShip.gameObject.activeSelf == true & largeShip.requestingTarget == true)
+                {
+                    if (largeShip.target == null)
+                    {
+                        Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShipAI(largeShip));
+                        while (a.Running == true) { yield return null; }
 
-        //if (scene.largeShips == null)
-        //{
-        //    scene.largeShips = new List<LargeShip>();
-        //}
+                    }
+                    else if (largeShip.target != null)
+                    {
+                        if (largeShip.target.activeSelf == false)
+                        {
+                            Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShipAI(largeShip));
+                            while (a.Running == true) { yield return null; }
+                        }
+                    }
+                }
+            }
+        }
 
-        //foreach (LargeShip largeShip in scene.largeShips.ToArray())
-        //{
-        //    if (largeShip != null)
-        //    {
-        //        if (largeShip.gameObject.activeSelf == true & largeShip.requestingTarget == true)
-        //        {
-        //            if (largeShip.target == null)
-        //            {
-        //                Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShipAI(largeShip));
-        //                while (a.Running == true) { yield return null; }
+        scene.allocatingTargets = false;
 
-        //            }
-        //            else if (largeShip.target != null)
-        //            {
-        //                if (largeShip.target.activeSelf == false)
-        //                {
-        //                    Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShipAI(largeShip));
-        //                    while (a.Running == true) { yield return null; }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //scene.allocatingTargets = false;
-
-        yield return null;
-    }
-
-    #endregion
-
-    #region AI turret targetting
-
-    //This gets the closest enemy for turret
-    public static IEnumerator GetClosestEnemy_TurretAI(Turret turret)
-    {
-    //    Scene scene = turret.largeShip.scene;
-
-    //    GameObject target = null;
-           
-    //    float distance = Mathf.Infinity;
-
-    //    //This priortises capital ships for large turrets
-    //    if (turret.turretType == "large")
-    //    {
-    //        foreach (LargeShip tempLargeShip in scene.largeShips)
-    //        {
-    //            if (tempLargeShip != null)
-    //            {
-    //                bool isHostile = false;
-
-    //                isHostile = GetHostility_LargeShipAI(turret.largeShip, tempLargeShip.allegiance);
-                        
-    //                if (tempLargeShip.gameObject.activeSelf != false & isHostile == true)
-    //                {
-    //                    float tempDistance = Vector3.Distance(turret.transform.position, tempLargeShip.transform.position);
-
-    //                    if (tempDistance < distance)
-    //                    {
-    //                        target = tempLargeShip.gameObject;
-    //                        distance = tempDistance;
-    //                    }
-    //                }
-    //            }
-    //        }
-
-    //        if (target == null)
-    //        {
-    //            distance = Mathf.Infinity;
-
-    //            foreach (SmallShip tempSmallShip in scene.smallShips)
-    //            {
-    //                if (tempSmallShip != null)
-    //                {
-    //                    bool isHostile = false;
-
-    //                    isHostile = GetHostility_LargeShipAI(turret.largeShip, tempSmallShip.allegiance);
-    
-    //                    if (tempSmallShip.gameObject.activeSelf != false & isHostile == true)
-    //                    {
-    //                        float tempDistance = Vector3.Distance(turret.transform.position, tempSmallShip.transform.position);
-
-    //                        if (tempDistance < distance)
-    //                        {
-    //                            target = tempSmallShip.gameObject;
-    //                            distance = tempDistance;
-    //                        }
-    //                    }
-    //                }
-    //            }
-
-    //        }
-    //}
-    //    else
-    //    {
-    //        foreach (SmallShip tempSmallShip in scene.smallShips)
-    //        {
-    //            if (tempSmallShip != null)
-    //            {
-    //                bool isHostile = false;
-
-    //                isHostile = GetHostility_LargeShipAI(turret.largeShip, tempSmallShip.allegiance);
-
-    //                if (tempSmallShip.gameObject.activeSelf != false & isHostile == true)
-    //                {
-    //                    float tempDistance = Vector3.Distance(turret.transform.position, tempSmallShip.transform.position);
-
-    //                    if (tempDistance<distance)
-    //                    {
-    //                        target = tempSmallShip.gameObject;
-    //                        distance = tempDistance;
-    //                    }
-    //                }
-    //            }
-    //        }
-
-    //        if (target == null)
-    //        {
-    //            foreach (LargeShip tempLargeShip in scene.largeShips)
-    //            {
-    //                if (tempLargeShip != null)
-    //                {
-    //                    bool isHostile = false;
-
-    //                    isHostile = GetHostility_LargeShipAI(turret.largeShip, tempLargeShip.allegiance);
-
-    //                    if (tempLargeShip.gameObject.activeSelf != false & isHostile == true)
-    //                    {
-    //                        float tempDistance = Vector3.Distance(turret.transform.position, tempLargeShip.transform.position);
-
-    //                        if (tempDistance<distance)
-    //                        {
-    //                            target = tempLargeShip.gameObject;
-    //                            distance = tempDistance;
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    if (target != null)
-    //    {
-    //        turret.targetGO = target;
-    //    }
-        
         yield return null;
     }
 

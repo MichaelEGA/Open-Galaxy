@@ -119,10 +119,10 @@ public class LargeShip : MonoBehaviour
     [Header("Turrets")]
     public bool hasPlasma;
     public bool turretsLoaded;
-    public Turret[] turrets;
+    public LaserTurret[] turrets;
     public string largeturret;
     public string smallturret;
-    public string aiTargetingMode = "low";
+    public string aiTargetingMode = "high";
 
     [Header("Collisions")]
     public Transform castPoint;

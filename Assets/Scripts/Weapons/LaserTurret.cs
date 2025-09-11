@@ -21,12 +21,13 @@ public class LaserTurret : MonoBehaviour
     public Audio audioManager;
     public float smallTurretDelay;
     public float largeTurretDelay;
-    public float largeTurretDamage;
-    public float smallTurretDamage;
+    public float largeTurretDamage = 50;
+    public float smallTurretDamage = 10;
     public string audioFile = "Turbolaser";
     public string allegiance;
     public string accuracy;
     public string laserColor = "red";
+    public string mode;
     public bool turretSetUp = false;
     public bool requestingTarget;
     public Task turretTask;

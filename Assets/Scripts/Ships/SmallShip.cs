@@ -353,12 +353,12 @@ public class SmallShip : MonoBehaviour
         TorpedoFunctions.ToggleWeaponMode(this);
 
         //Damage functions
-        SmallShipFunctions.TakeCollisionDamage(this);
-        SmallShipFunctions.SmokeTrail(this);
-        SmallShipFunctions.Explode(this);
+        DamageFunctions.TakeCollisionDamage_SmallShip(this);
+        DamageFunctions.SmokeTrail_SmallShip(this);
+        DamageFunctions.Explode_SmallShip(this);
 
         //Systems functions
-        SmallShipFunctions.RestoreShipsSystems(this);
+        DamageFunctions.RestoreShipsSystems_SmallShip(this);
 
         //Cockpit Functions
         CockpitFunctions.RunCockpitFunctions(this);
@@ -373,11 +373,11 @@ public class SmallShip : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        SmallShipFunctions.StartCollision(this, collision.gameObject);
+        DamageFunctions.StartCollision_SmallShip(this, collision.gameObject);
     }
 
     void OnCollisionExit(Collision collision)
     {
-        SmallShipFunctions.EndCollision(this);
+        DamageFunctions.EndCollision_SmallShip(this);
     }
 }

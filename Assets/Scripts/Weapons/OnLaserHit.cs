@@ -92,11 +92,11 @@ public class OnLaserHit : MonoBehaviour
                     {
                         if (type == "laser")
                         {
-                            SmallShipFunctions.TakeDamage(smallShip, damage, hitPosition, rapidFire);
+                            DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, rapidFire);
                         }
                         else if (type == "ion")
                         {
-                            SmallShipFunctions.TakeSystemDamage(smallShip, damage, hitPosition);
+                            DamageFunctions.TakeSystemDamage_SmallShip(smallShip, damage, hitPosition);
                         }
                     }
                     else if (turret != null)
@@ -114,11 +114,11 @@ public class OnLaserHit : MonoBehaviour
                     {
                         if (type == "laser")
                         {
-                            LargeShipFunctions.TakeDamage(largeShip, damage, hitPosition);
+                            DamageFunctions.TakeDamage_LargeShip(largeShip, damage, hitPosition);
                         }
                         else if (type == "ion")
                         {
-                            LargeShipFunctions.TakeSystemsDamage(largeShip, damage, hitPosition);
+                            DamageFunctions.TakeSystemsDamage_LargeShip(largeShip, damage, hitPosition);
                         }
                     }
                 }

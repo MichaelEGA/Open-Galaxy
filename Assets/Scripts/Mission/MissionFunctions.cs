@@ -1621,14 +1621,14 @@ public static class MissionFunctions
 
                         if (smallShip != null)
                         {
-                            SmallShipFunctions.DeactivateShip(smallShip);
+                            DamageFunctions.DeactivateShip_SmallShip(smallShip);
                         }
 
                         LargeShip largeShip = ship.GetComponent<LargeShip>();
 
                         if (largeShip != null)
                         {
-                            LargeShipFunctions.DeactivateShip(largeShip);
+                            DamageFunctions.DeactivateShip_LargeShip(largeShip);
                         }
                     }
                 }

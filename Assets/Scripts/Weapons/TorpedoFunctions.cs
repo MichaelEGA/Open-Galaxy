@@ -541,13 +541,13 @@ public static class TorpedoFunctions
             {
                 if (smallShip.gameObject != firingShip.gameObject)
                 {
-                    SmallShipFunctions.TakeDamage(smallShip, torpedo.damagePower, hitPosition);
-                    Task a = new Task(SmallShipFunctions.ShipSpinSequence(smallShip, 2));
+                    DamageFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition);
+                    Task a = new Task(DamageFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
                 }
             }
             else if (largeShip != null)
             {
-                LargeShipFunctions.TakeDamage(largeShip, torpedo.damagePower * 4, hitPosition);
+                DamageFunctions.TakeDamage_LargeShip(largeShip, torpedo.damagePower * 4, hitPosition);
             }
         }
     }

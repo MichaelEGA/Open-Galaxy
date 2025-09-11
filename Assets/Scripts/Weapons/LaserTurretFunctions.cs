@@ -63,14 +63,17 @@ public static class LaserTurretFunctions
     {
         Scene scene = SceneFunctions.GetScene(); //This gets the scene reference
 
+        //This sets the turret to fire large lasers
         GameObject largeLaser = Resources.Load(OGGetAddress.particles + "models/laser_turbo") as GameObject;
-
         turret.largeLaserMesh = largeLaser.GetComponent<MeshFilter>().sharedMesh;
+        turret.mode = "large";
 
+        //This sets the laser colour material
         Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
         Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_green") as Material;
         Material yellowLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_yellow") as Material;
 
+        //This set the laser colour light
         GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
         GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
         GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
@@ -81,11 +84,9 @@ public static class LaserTurretFunctions
         ParticleSystem particleSystem = particleSystemGO.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = particleSystemGO.GetComponent<ParticleSystemRenderer>();
         OnLaserTurretHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserTurretHit>();
-        onLaserTurretHit.particleSystem = particleSystem;
+        onLaserTurretHit.particleSystemScript = particleSystem;
         onLaserTurretHit.laserTurret = turret;
-        onLaserTurretHit.scene = scene;
-        onLaserTurretHit.mode = "large";
-
+        
         //This adds the new particle system to the pool
         if (scene != null)
         {
@@ -178,11 +179,14 @@ public static class LaserTurretFunctions
         //This loads the laser mesh
         GameObject smallLaser = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
         turret.smallLaserMesh = smallLaser.GetComponent<MeshFilter>().sharedMesh;
+        turret.mode = "large";
 
+        //This sets the laser colour material
         Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
         Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_green") as Material;
         Material yellowLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_yellow") as Material;
 
+        //This set the laser colour light
         GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
         GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
         GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
@@ -193,10 +197,8 @@ public static class LaserTurretFunctions
         ParticleSystem particleSystem = particleSystemGO.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = particleSystemGO.GetComponent<ParticleSystemRenderer>();
         OnLaserTurretHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserTurretHit>();
-        onLaserTurretHit.particleSystem = particleSystem;
+        onLaserTurretHit.particleSystemScript = particleSystem;
         onLaserTurretHit.laserTurret = turret;
-        onLaserTurretHit.scene = scene;
-        onLaserTurretHit.mode = "small";
 
         //This adds the new particle system to the pool
         if (scene != null)
@@ -578,6 +580,165 @@ public static class LaserTurretFunctions
         particleSystem.Play();
 
         AudioFunctions.PlayAudioClip(audioManager, audioFile, "External", firePoint, 1, 1, 500, 0.6f);
+    }
+
+    #endregion
+
+    #region collision functions
+
+    public static void RunCollisionEvent(GameObject objectHit, List<ParticleCollisionEvent> collisionEvents, ParticleSystem particleSystemScript, LaserTurret laserTurret)
+    {
+        //Get collision information
+        List<Vector3> hitPositions = new List<Vector3>();
+
+        int events = particleSystemScript.GetCollisionEvents(objectHit, collisionEvents); //This grabs all the collision events
+
+        for (int i = 0; i < events; i++) //This cycles through all the collision events and deals with one at a time
+        {
+            Vector3 hitPosition = collisionEvents[i].intersection; //This gets the position of the collision event
+
+            GameObject objectHitParent = ReturnParent(objectHit); //This gets the colliders object parent  
+
+            if (objectHitParent != laserTurret.gameObject)
+            {
+                //This gets key information on the object hit
+                var objectHitDetails = LaserTurretFunctions.ObjectHitDetails(objectHit, hitPosition);
+
+                float shieldFront = objectHitDetails.shieldFront;
+                float shieldBack = objectHitDetails.shieldBack;
+                float forward = objectHitDetails.forward;
+                bool hasPlasma = objectHitDetails.hasPlasma;
+
+                Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
+
+                //This instantiates an explosion at the hit position
+                LaserTurretFunctions.InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.mode, laserTurret.laserColor, hasPlasma, audioManager);
+
+                //This applies damage to the target
+                ApplyDamage(laserTurret, objectHit, hitPosition);
+            }
+        }
+    }
+
+    //This function returns the root parent of the prefab by looking for the component that will only be attached to the parent gameobject
+    public static GameObject ReturnParent(GameObject objectHit)
+    {
+        GameObject parent = null;
+
+        SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
+        LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
+
+        if (smallShip != null)
+        {
+            parent = smallShip.gameObject;
+        }
+        else if (largeShip != null)
+        {
+            parent = largeShip.gameObject;
+        }
+
+        return parent;
+    }
+
+    //This gets key information from the object that has been hit by the laser
+    public static (float shieldFront, float shieldBack, float forward, bool hasPlasma) ObjectHitDetails(GameObject objectHit, Vector3 hitPosition)
+    {
+        float shieldFront = 0;
+        float shieldBack = 0;
+        float forward = 0;
+        bool hasPlasma = false;
+
+        SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
+        LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
+
+        if (smallShip != null)
+        {
+            hasPlasma = smallShip.hasPlasma;
+
+            shieldFront = smallShip.frontShieldLevel;
+            shieldBack = smallShip.rearShieldLevel;
+
+            Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
+            forward = -Vector3.Dot(smallShip.gameObject.transform.position, relativePosition.normalized);
+        }
+
+        if (largeShip != null)
+        {
+            hasPlasma = largeShip.hasPlasma;
+
+            shieldFront = largeShip.frontShieldLevel;
+            shieldBack = largeShip.rearShieldLevel;
+
+            Vector3 relativePosition = largeShip.gameObject.transform.position - hitPosition;
+            forward = -Vector3.Dot(largeShip.gameObject.transform.position, relativePosition.normalized);
+        }
+
+        return (shieldFront, shieldBack, forward, hasPlasma);
+    }
+
+    //This instantiates the correct explosion at the hit position
+    public static void InstantiateLaserExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string mode, string laserColor, bool hasPlasma, Audio audioManager)
+    {
+        //This selects the correct explosion colour
+        string explosionChoice = "laserblast_red";
+
+        if (forward > 0 & shieldFront > 0 || forward < 0 & shieldBack > 0)
+        {
+            if (hasPlasma == true)
+            {
+                explosionChoice = "blackhole";
+            }
+            if (laserColor == "red")
+            {
+                explosionChoice = "laserblast_red";
+            }
+            else if (laserColor == "green")
+            {
+                explosionChoice = "laserblast_green";
+            }
+        }
+        else
+        {
+            explosionChoice = "hullstrike";
+        }
+       
+        //This instantiates an explosion at the point of impact
+        if (mode == "large")
+        {
+            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 100, audioManager);
+        }
+        else
+        {
+            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 6, audioManager);
+        }
+    }
+
+    //This calculates and applies damage to the 
+    public static void ApplyDamage(LaserTurret laserTurret, GameObject objectHit, Vector3 hitPosition)
+    {
+        SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
+        LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
+
+        float damage = 0;
+
+        if (laserTurret.mode == "large")
+        {
+            damage = laserTurret.largeTurretDamage;
+        }
+        else
+        {
+            damage = laserTurret.smallTurretDamage;
+        }
+
+        if (smallShip != null)
+        {
+            DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, false);
+        }
+
+        if (largeShip != null)
+        {
+            DamageFunctions.TakeDamage_LargeShip(largeShip, damage, hitPosition);
+        }
     }
 
     #endregion

@@ -61,6 +61,8 @@ public static class LaserTurretFunctions
     //This loads the turret particle system
     public static void LoadLargeLaserParticleSystem(LaserTurret turret)
     {
+        Scene scene = SceneFunctions.GetScene(); //This gets the scene reference
+
         GameObject largeLaser = Resources.Load(OGGetAddress.particles + "models/laser_turbo") as GameObject;
 
         turret.largeLaserMesh = largeLaser.GetComponent<MeshFilter>().sharedMesh;
@@ -73,17 +75,18 @@ public static class LaserTurretFunctions
         GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
         GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
 
-        //This loads the particle system and the particle collider
+        //This loads the particle system, particle system renderer and the particle collider
         GameObject particleSystemGO = new GameObject();
         particleSystemGO.name = "largelaserparticlesystem_" + turret.gameObject.name;
         ParticleSystem particleSystem = particleSystemGO.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = particleSystemGO.GetComponent<ParticleSystemRenderer>();
-        OnLaserHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserHit>();
-        onLaserTurretHit.relatedGameObject = turret.gameObject;
+        OnLaserTurretHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserTurretHit>();
+        onLaserTurretHit.particleSystem = particleSystem;
+        onLaserTurretHit.laserTurret = turret;
+        onLaserTurretHit.scene = scene;
+        onLaserTurretHit.mode = "large";
 
         //This adds the new particle system to the pool
-        Scene scene = SceneFunctions.GetScene();
-
         if (scene != null)
         {
             if (scene.lasersPool == null)
@@ -170,8 +173,10 @@ public static class LaserTurretFunctions
     //This loads the turret particle system
     public static void LoadSmallLaserParticleSystem(LaserTurret turret)
     {
-        GameObject smallLaser = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
+        Scene scene = SceneFunctions.GetScene(); //This gets the scene reference
 
+        //This loads the laser mesh
+        GameObject smallLaser = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
         turret.smallLaserMesh = smallLaser.GetComponent<MeshFilter>().sharedMesh;
 
         Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
@@ -187,12 +192,13 @@ public static class LaserTurretFunctions
         particleSystemGO.name = "smalllaserparticlesystem_" + turret.gameObject.name;
         ParticleSystem particleSystem = particleSystemGO.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = particleSystemGO.GetComponent<ParticleSystemRenderer>();
-        OnLaserHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserHit>();
-        onLaserTurretHit.relatedGameObject = turret.gameObject;
+        OnLaserTurretHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserTurretHit>();
+        onLaserTurretHit.particleSystem = particleSystem;
+        onLaserTurretHit.laserTurret = turret;
+        onLaserTurretHit.scene = scene;
+        onLaserTurretHit.mode = "small";
 
         //This adds the new particle system to the pool
-        Scene scene = SceneFunctions.GetScene();
-
         if (scene != null)
         {
             if (scene.lasersPool == null)

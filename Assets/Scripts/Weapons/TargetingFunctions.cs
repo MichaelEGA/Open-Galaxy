@@ -1094,6 +1094,161 @@ public static class TargetingFunctions
 
     #endregion
 
+    #region turret targetting
+
+    public static GameObject GetClosestEnemyLargeShip_Turret(GameObject turret, string allegiance)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        GameObject target = null;
+        LargeShip tempLargeShip = null;
+
+        float distance = Mathf.Infinity;
+
+        //If the target is still null it looks for the closest large ship
+        if (target == null)
+        {
+            foreach (GameObject ship in scene.objectPool)
+            {
+                if (ship != null)
+                {
+                    tempLargeShip = ship.GetComponent<LargeShip>();
+
+                    if (ship.activeSelf == true & tempLargeShip != null)
+                    {
+                        bool isHostile = GetHostility_Turret(scene, allegiance, tempLargeShip.allegiance);
+
+                        if (isHostile == true)
+                        {
+                            float tempDistance = Vector3.Distance(ship.transform.position, turret.transform.position);
+
+                            if (tempDistance < distance)
+                            {
+                                target = ship;
+                                distance = tempDistance;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return target;
+    }
+
+    public static GameObject GetClosestEnemySmallShip_Turret(GameObject turret, string allegiance)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        GameObject target = null;
+        SmallShip tempSmallShip = null;
+
+        float distance = Mathf.Infinity;
+
+        //If the target is still null it looks for the closest large ship
+        if (target == null)
+        {
+            foreach (GameObject ship in scene.objectPool)
+            {
+                if (ship != null)
+                {
+                    tempSmallShip = ship.GetComponent<SmallShip>();
+
+                    if (ship.activeSelf == true & tempSmallShip != null)
+                    {
+                        bool isHostile = GetHostility_Turret(scene, allegiance, tempSmallShip.allegiance);
+
+                        if (isHostile == true)
+                        {
+                            float tempDistance = Vector3.Distance(ship.transform.position, turret.transform.position);
+
+                            if (tempDistance < distance)
+                            {
+                                target = ship;
+                                distance = tempDistance;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return target;
+    }
+
+    //This checks whether a target is hostile or not
+    public static bool GetHostility_Turret(Scene scene, string turrretAllegiance, string targetAllegiance = "none")
+    {
+        bool isHostile = false;
+
+        if (scene != null)
+        {
+            //This gets the Json ship data
+            if (scene.allegiance == "none")
+            {
+                TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
+                scene.allegiance = allegiancesFile.text;
+            }
+
+            Allegiances allegiances = JsonUtility.FromJson<Allegiances>(scene.allegiance);
+
+            Allegiance allegiance = null;
+
+            foreach (Allegiance tempAllegiance in allegiances.allegianceData)
+            {
+                if (tempAllegiance.allegiance == turrretAllegiance)
+                {
+                    allegiance = tempAllegiance;
+                }
+            }
+
+            if (allegiance.enemy01 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy02 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy03 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy04 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy05 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy06 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy07 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy08 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy09 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+            else if (allegiance.enemy10 == targetAllegiance)
+            {
+                isHostile = true;
+            }
+        }
+
+        return isHostile;
+    }
+
+    #endregion
+
     #region AI target allocation
 
     //Allocate targets to all the turrets one at a time to save processing power

@@ -361,22 +361,23 @@ public static class LaserTurretFunctions
         {
             foreach (Transform turretPosition in  turret.turretPositions)
             {
-                //This gets the target
-                if (turret.largeShip != null)
-                {
-                    turret.largeTargetGO = turret.largeShip.target;
-                }
-                else if (turret.smallShip != null)
-                {
-                    turret.largeTargetGO = turret.smallShip.target;
-                }
-
                 //This gets key references
-                GameObject turretGO = turret.turretGO;
-                GameObject targetGO = turret.largeTargetGO;
+                GameObject turretGO = turret.turretGO;              
                 GameObject shipGO = turret.shipGO;
                 Audio audioManager = turret.audioManager;
                 string audioFile = turret.audioFile;
+
+                //This selects the target
+                GameObject targetGO = null;
+
+                if (turretPosition.name.Contains("small"))
+                {
+                    targetGO = GetTargetForSmallTurret(turret, turretPosition.gameObject);
+                }
+                else
+                {
+                    targetGO = GetTargetForLargeTurret(turret, turretPosition.gameObject);
+                }
 
                 //This selects the particle system
                 ParticleSystem particleSystem = turret.largeParticleSystem;
@@ -434,113 +435,208 @@ public static class LaserTurretFunctions
     #region targetting functions
 
     //This selects a target for the a large turret
-    public static void SelectTargetForLargeTurret(LaserTurret turret)
+    public static GameObject GetTargetForLargeTurret(LaserTurret turret, GameObject turretPosition)
     {
+        GameObject target = null;
+
         if (turret.largeTargetingMode == "singletarget_largeship")
         {
-
+            if (turret.largeTargetGO == null)
+            {
+                target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+                turret.largeTargetGO = target;
+            }
+            else
+            {
+                target = turret.largeTargetGO;
+            }
         }
         else if (turret.largeTargetingMode == "singletarget_smallship")
         {
-
+            if (turret.largeTargetGO == null)
+            {
+                target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+                turret.largeTargetGO = target;
+            }
+            else
+            {
+                target = turret.largeTargetGO;
+            }
         }
         else if (turret.largeTargetingMode == "singletarget_all")
         {
+            if (turret.largeTargetGO == null)
+            {
+                target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+                turret.largeTargetGO = target;
 
+                if (target == null)
+                {
+                    target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+                    turret.largeTargetGO = target;
+                }
+            }
         }
         else if (turret.largeTargetingMode == "multipletargets_largeship")
         {
-
+            target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
         }
         else if (turret.largeTargetingMode == "multipletargets_smallship")
         {
-
+            target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
         }
         else if (turret.largeTargetingMode == "multipletargets_all")
         {
+            target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
 
+            if (target == null)
+            {
+                target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+            }
         }
+        else if (turret.largeTargetingMode == "shiptarget")
+        {
+            if (turret.smallShip != null)
+            {
+                target = turret.smallShip.target;
+                turret.largeTargetGO = target;
+            }
+            else if (turret.largeShip != null)
+            {
+                target = turret.largeShip.target;
+                turret.largeTargetGO = target;
+            }
+        }
+
+        return target;
     }
 
     //This selects a target for a small turret
-    public static void SelectTargetForSmallTurret(LaserTurret turret)
+    public static GameObject GetTargetForSmallTurret(LaserTurret turret, GameObject turretPosition)
     {
+        GameObject target = null;
+
         if (turret.smallTargetingMode == "singletarget_largeship")
         {
-
+            if (turret.smallTargetGO == null)
+            {
+                target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+                turret.smallTargetGO = target;
+            }
+            else
+            {
+                target = turret.smallTargetGO;
+            }
         }
         else if (turret.smallTargetingMode == "singletarget_smallship")
         {
-
+            if (turret.smallTargetGO == null)
+            {
+                target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+                target = turret.smallTargetGO;
+            }
+            else
+            {
+                target = turret.smallTargetGO;
+            }
         }
         else if (turret.smallTargetingMode == "singletarget_all")
         {
+            if (turret.smallTargetGO == null)
+            {
+                target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+                turret.smallTargetGO = target;
 
+                if (target == null)
+                {
+                    target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+                    turret.smallTargetGO = target;
+                }
+            }
         }
         else if (turret.smallTargetingMode == "multipletargets_largeship")
         {
-
+            target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
         }
         else if (turret.smallTargetingMode == "multipletargets_smallship")
         {
-
+            target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
         }
         else if (turret.smallTargetingMode == "multipletargets_all")
         {
+            target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
 
+            if (target == null)
+            {
+                target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+            }
         }
-        else if (turret.smallTargetingMode == "largecannontarget")
+        else if (turret.smallTargetingMode == "shiptarget")
         {
-
+            if (turret.smallShip != null)
+            {
+                target = turret.smallShip.target;
+                turret.smallTargetGO = target;
+            }
+            else if (turret.largeShip != null)
+            {
+                target = turret.largeShip.target;
+                turret.smallTargetGO = target;
+            }
         }
+
+        return target;
     }
 
     //This positions and aims the turret
     public static void PositionAndAimTurret(GameObject turret, GameObject turretPosition, GameObject target, GameObject ship, bool restrictForward = false, string accuracy = "low")
     {
-        //This gets the target rigidbody for the intercept point calculation
-        Rigidbody targetRigidBody = target.GetComponent<Rigidbody>();
-
-        //This gets the intercept point
-        Vector3 interceptPoint = GameObjectUtils.CalculateInterceptPoint(turret.transform.position, target.transform.position, targetRigidBody.linearVelocity, 750);
-
-        //This sets the error margin for the shot
-        Vector3 errorMargin = SetTargetingErrorMargin(accuracy);
-
-        //This positions the turret
-        turret.transform.position = turretPosition.transform.position;
-
-        //This checks whether the turret is upside down or not
-        bool isUpsideDown = false;
-
-        if (Vector3.Dot(turret.transform.up, -ship.transform.up) > 0)
+        if (target != null)
         {
-            isUpsideDown = true;
-        }
+            //This gets the target rigidbody for the intercept point calculation
+            Rigidbody targetRigidBody = target.GetComponent<Rigidbody>();
 
-        //This aims the turret
-        turret.transform.LookAt(interceptPoint + errorMargin);
+            //This gets the intercept point
+            Vector3 interceptPoint = GameObjectUtils.CalculateInterceptPoint(turret.transform.position, target.transform.position, targetRigidBody.linearVelocity, 750);
 
-        // This calculates the restricted rotation
-        if (restrictForward == true)
-        {
-            //Get current rotation as euler
-            Vector3 eulerRotation = turret.transform.eulerAngles;
+            //This sets the error margin for the shot
+            Vector3 errorMargin = SetTargetingErrorMargin(accuracy);
 
-            // Restrict the y rotation between -90 and 90 degrees
-            eulerRotation.y = Mathf.Clamp(eulerRotation.y, -90f, 90f);
+            //This positions the turret
+            turret.transform.position = turretPosition.transform.position;
 
-            // Restrict the x rotation between -90 and 90 degrees
-            eulerRotation.x = Mathf.Clamp(eulerRotation.x, 0, -180f);
+            //This checks whether the turret is upside down or not
+            bool isUpsideDown = false;
 
-            if (isUpsideDown == true)
+            if (Vector3.Dot(turret.transform.up, -ship.transform.up) > 0)
             {
-                // Restrict the x rotation between -90 and 90 degrees
-                eulerRotation.x = Mathf.Clamp(eulerRotation.x, 0, 180f);
+                isUpsideDown = true;
             }
-           
-            // Apply the modified rotation back to the transform
-            turret.transform.eulerAngles = eulerRotation;
+
+            //This aims the turret
+            turret.transform.LookAt(interceptPoint + errorMargin);
+
+            // This calculates the restricted rotation
+            if (restrictForward == true)
+            {
+                //Get current rotation as euler
+                Vector3 eulerRotation = turret.transform.eulerAngles;
+
+                // Restrict the y rotation between -90 and 90 degrees
+                eulerRotation.y = Mathf.Clamp(eulerRotation.y, -90f, 90f);
+
+                // Restrict the x rotation between -90 and 90 degrees
+                eulerRotation.x = Mathf.Clamp(eulerRotation.x, 0, -180f);
+
+                if (isUpsideDown == true)
+                {
+                    // Restrict the x rotation between -90 and 90 degrees
+                    eulerRotation.x = Mathf.Clamp(eulerRotation.x, 0, 180f);
+                }
+
+                // Apply the modified rotation back to the transform
+                turret.transform.eulerAngles = eulerRotation;
+            }
         }
     }
 

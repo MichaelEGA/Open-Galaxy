@@ -9,9 +9,11 @@ public class LaserTurret : MonoBehaviour
     public Mesh smallLaserMesh;
     public Mesh largeLaserMesh;
     public Transform[] turretPositions;
+    public GameObject[] targets;
     public GameObject shipGO;
     public GameObject turretGO;
-    public GameObject targetGO;
+    public GameObject largeTargetGO;
+    public GameObject smallTargetGO;
     public GameObject largeParticleSystemGO;
     public ParticleSystem largeParticleSystem;
     public ParticleSystemRenderer largeParticleSystemRenderer;
@@ -27,7 +29,9 @@ public class LaserTurret : MonoBehaviour
     public string allegiance;
     public string accuracy;
     public string laserColor = "red";
-    public string mode;
+    public string laserSize;
+    public string largeTargetingMode = "singletarget";
+    public string smallTargetingMode = "singletarget";
     public bool turretSetUp = false;
     public bool requestingTarget;
     public Task turretTask;

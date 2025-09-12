@@ -66,7 +66,7 @@ public static class LaserTurretFunctions
         //This sets the turret to fire large lasers
         GameObject largeLaser = Resources.Load(OGGetAddress.particles + "models/laser_turbo") as GameObject;
         turret.largeLaserMesh = largeLaser.GetComponent<MeshFilter>().sharedMesh;
-        turret.mode = "large";
+        turret.laserSize = "large";
 
         //This sets the laser colour material
         Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
@@ -179,7 +179,7 @@ public static class LaserTurretFunctions
         //This loads the laser mesh
         GameObject smallLaser = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
         turret.smallLaserMesh = smallLaser.GetComponent<MeshFilter>().sharedMesh;
-        turret.mode = "large";
+        turret.laserSize = "large";
 
         //This sets the laser colour material
         Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
@@ -364,16 +364,16 @@ public static class LaserTurretFunctions
                 //This gets the target
                 if (turret.largeShip != null)
                 {
-                    turret.targetGO = turret.largeShip.target;
+                    turret.largeTargetGO = turret.largeShip.target;
                 }
                 else if (turret.smallShip != null)
                 {
-                    turret.targetGO = turret.smallShip.target;
+                    turret.largeTargetGO = turret.smallShip.target;
                 }
 
                 //This gets key references
                 GameObject turretGO = turret.turretGO;
-                GameObject targetGO = turret.targetGO;
+                GameObject targetGO = turret.largeTargetGO;
                 GameObject shipGO = turret.shipGO;
                 Audio audioManager = turret.audioManager;
                 string audioFile = turret.audioFile;
@@ -386,7 +386,7 @@ public static class LaserTurretFunctions
                     particleSystem = turret.smallParticleSystem;
                 }
                
-                if (turret.targetGO != null)
+                if (turret.largeTargetGO != null)
                 {
                     //This positions and aims the turret
                     bool restrictForward = false;
@@ -432,6 +432,68 @@ public static class LaserTurretFunctions
     #endregion
 
     #region targetting functions
+
+    //This selects a target for the a large turret
+    public static void SelectTargetForLargeTurret(LaserTurret turret)
+    {
+        if (turret.largeTargetingMode == "singletarget_largeship")
+        {
+
+        }
+        else if (turret.largeTargetingMode == "singletarget_smallship")
+        {
+
+        }
+        else if (turret.largeTargetingMode == "singletarget_all")
+        {
+
+        }
+        else if (turret.largeTargetingMode == "multipletargets_largeship")
+        {
+
+        }
+        else if (turret.largeTargetingMode == "multipletargets_smallship")
+        {
+
+        }
+        else if (turret.largeTargetingMode == "multipletargets_all")
+        {
+
+        }
+    }
+
+    //This selects a target for a small turret
+    public static void SelectTargetForSmallTurret(LaserTurret turret)
+    {
+        if (turret.smallTargetingMode == "singletarget_largeship")
+        {
+
+        }
+        else if (turret.smallTargetingMode == "singletarget_smallship")
+        {
+
+        }
+        else if (turret.smallTargetingMode == "singletarget_all")
+        {
+
+        }
+        else if (turret.smallTargetingMode == "multipletargets_largeship")
+        {
+
+        }
+        else if (turret.smallTargetingMode == "multipletargets_smallship")
+        {
+
+        }
+        else if (turret.smallTargetingMode == "multipletargets_all")
+        {
+
+        }
+        else if (turret.smallTargetingMode == "largecannontarget")
+        {
+
+        }
+    }
 
     //This positions and aims the turret
     public static void PositionAndAimTurret(GameObject turret, GameObject turretPosition, GameObject target, GameObject ship, bool restrictForward = false, string accuracy = "low")
@@ -612,7 +674,7 @@ public static class LaserTurretFunctions
                 Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
 
                 //This instantiates an explosion at the hit position
-                LaserTurretFunctions.InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.mode, laserTurret.laserColor, hasPlasma, audioManager);
+                LaserTurretFunctions.InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.laserSize, laserTurret.laserColor, hasPlasma, audioManager);
 
                 //This applies damage to the target
                 ApplyDamage(laserTurret, objectHit, hitPosition);
@@ -721,7 +783,7 @@ public static class LaserTurretFunctions
 
         float damage = 0;
 
-        if (laserTurret.mode == "large")
+        if (laserTurret.laserSize == "large")
         {
             damage = laserTurret.largeTurretDamage;
         }

@@ -1190,8 +1190,9 @@ public static class MissionFunctions
         Scene scene = SceneFunctions.GetScene();
 
         string speedControlTag = missionEvent.data2;
-        string weaponControlTag = missionEvent.data3;
-        string flightPatternsTag = missionEvent.data4;
+        string largeTurretControlTag = missionEvent.data3;
+        string smallTurretControlTag = missionEvent.data4;
+        string flightPatternsTag = missionEvent.data5;
 
         if (scene != null)
         {
@@ -1210,9 +1211,14 @@ public static class MissionFunctions
                                 LargeShipAIFunctions.AddTag(largeShip, speedControlTag);
                             }
 
-                            if (weaponControlTag != "none" & weaponControlTag != "nochange")
+                            if (largeTurretControlTag != "none" & largeTurretControlTag != "nochange")
                             {
-                                LargeShipAIFunctions.AddTag(largeShip, weaponControlTag);
+                                LargeShipAIFunctions.AddTag(largeShip, largeTurretControlTag);
+                            }
+
+                            if (smallTurretControlTag != "none" & smallTurretControlTag != "nochange")
+                            {
+                                LargeShipAIFunctions.AddTag(largeShip, smallTurretControlTag);
                             }
 
                             if (flightPatternsTag != "none" & flightPatternsTag != "nochange")

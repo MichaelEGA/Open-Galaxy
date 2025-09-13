@@ -31,8 +31,8 @@ public class LaserTurret : MonoBehaviour
     public string accuracy;
     public string laserColor = "red";
     public string laserSize;
-    public string largeTargetingMode = "singletarget_largeship";
-    public string smallTargetingMode = "multipletargets_smallship";
+    public string largeTargetingMode;
+    public string smallTargetingMode;
     public bool turretSetUp = false;
     public bool requestingTarget;
     public Task turretTask;

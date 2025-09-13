@@ -1493,21 +1493,42 @@ public static class NodeTypes
 
         List<string> options2 = new List<string>();
         options2.Add("nochange");
-        options2.Add("fireweapons");
-        options2.Add("noweapons");
+        options2.Add("large_singletarget_largeship");
+        options2.Add("large_singletarget_smallship");
+        options2.Add("large_singletarget_all");
+        options2.Add("large_multipletargets_largeship");
+        options2.Add("large_multipletargets_smallship");
+        options2.Add("large_multipletargets_all");
+        options2.Add("large_shiptarget");
+        options2.Add("large_noweapons");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "weapons", "nochange", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "large turrets", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options3 = new List<string>();
         options3.Add("nochange");
-        options3.Add("movetotargetrange");
-        options3.Add("circletarget");
-        options3.Add("movetowaypoint");
-        options3.Add("norotation");
+        options3.Add("small_singletarget_largeship");
+        options3.Add("small_singletarget_smallship");
+        options3.Add("small_singletarget_all");
+        options3.Add("small_multipletargets_largeship");
+        options3.Add("small_multipletargets_smallship");
+        options3.Add("small_multipletargets_all");
+        options3.Add("small_shiptarget");
+        options3.Add("small_noweapons");
 
-        node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "pattern", "nochange", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "small turrets", "nochange", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("nochange");
+        options4.Add("movetotargetrange");
+        options4.Add("circletarget");
+        options4.Add("movetowaypoint");
+        options4.Add("norotation");
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options4, "pattern", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

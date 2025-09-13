@@ -896,7 +896,6 @@ public static class TargetingFunctions
         LargeShip tempLargeShip = null;
         LargeShip targetLargeShip = null;
 
-
         foreach (GameObject ship in scene.objectPool)
         {
             if (ship != null)

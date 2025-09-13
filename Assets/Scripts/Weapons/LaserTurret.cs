@@ -20,8 +20,10 @@ public class LaserTurret : MonoBehaviour
     public ParticleSystem smallParticleSystem;
     public ParticleSystemRenderer smallParticleSystemRenderer;
     public Audio audioManager;
-    public float smallTurretDelay;
-    public float largeTurretDelay;
+    public float smallTurretDelay = 3;
+    public float largeTurretDelay = 5;
+    public float smallTurretDelayActual;
+    public float largeTurretDelayActual;
     public float largeTurretDamage = 50;
     public float smallTurretDamage = 10;
     public string audioFile = "Turbolaser";

@@ -1491,6 +1491,17 @@ public static class NodeTypes
 
         drop -= 15;
 
+        List<string> options1 = new List<string>();
+        options1.Add("nochange");
+        options1.Add("movetotargetrange");
+        options1.Add("circletarget");
+        options1.Add("movetowaypoint");
+        options1.Add("norotation");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options1, "pattern", "nochange", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         List<string> options2 = new List<string>();
         options2.Add("nochange");
         options2.Add("large_singletarget_largeship");
@@ -1502,7 +1513,7 @@ public static class NodeTypes
         options2.Add("large_shiptarget");
         options2.Add("large_noweapons");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "large turrets", "nochange", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, options2, "large turrets", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1517,18 +1528,29 @@ public static class NodeTypes
         options3.Add("small_shiptarget");
         options3.Add("small_noweapons");
 
-        node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "small turrets", "nochange", 7, 5, drop, 12.5f, 90, 5f);
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options3, "small turrets", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
         List<string> options4 = new List<string>();
         options4.Add("nochange");
-        options4.Add("movetotargetrange");
-        options4.Add("circletarget");
-        options4.Add("movetowaypoint");
-        options4.Add("norotation");
+        options4.Add("large_low");
+        options4.Add("large_medium");
+        options4.Add("large_high");
+        options4.Add("large_veryhigh");
 
-        node.data5 = NodeFunctions.DrawDropDownMenu(node, options4, "pattern", "nochange", 7, 5, drop, 12.5f, 90, 5f);
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, options4, "large accuracy", "nochange", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("small_nochange");
+        options5.Add("small_low");
+        options5.Add("small_medium");
+        options5.Add("small_high");
+        options5.Add("small_veryhigh");
+
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, options5, "small accuracy", "nochange", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

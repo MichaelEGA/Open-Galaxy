@@ -34,9 +34,11 @@ public static class LargeShipAIFunctions
     public static void AddDefaultTags(LargeShip largeShip)
     {
         AddTag(largeShip, "nospeed");
+        AddTag(largeShip, "norotation");
         AddTag(largeShip, "large_singletarget_largeship");
         AddTag(largeShip, "small_multipletargets_smallship");
-        AddTag(largeShip, "norotation");
+        AddTag(largeShip, "large_high");
+        AddTag(largeShip, "small_high");
     }
 
     //This adds an ai tag and removes conflicting tags using the two functions below
@@ -52,6 +54,13 @@ public static class LargeShipAIFunctions
                 RemoveSingleTag(largeShip, "quarterspeed");
                 RemoveSingleTag(largeShip, "dynamicspeed");
                 RemoveSingleTag(largeShip, "nospeed");
+            }
+            else if (tag == "circletarget" || tag == "movetowaypoint" || tag == "stayinrangeoftarget" || tag == "norotation")
+            {
+                RemoveSingleTag(largeShip, "movetowaypoint");
+                RemoveSingleTag(largeShip, "stayinrangeoftarget");
+                RemoveSingleTag(largeShip, "circletarget");
+                RemoveSingleTag(largeShip, "norotation");
             }
             else if (tag == "small_singletarget_largeship" || tag == "small_singletarget_smallship" || tag == "small_singletarget_all" || tag == "small_multipletargets_largeship" || tag == "small_multipletargets_smallship" || tag == "small_multipletargets_all" || tag == "small_shiptarget" || tag == "small_noweapons")
             {
@@ -75,12 +84,19 @@ public static class LargeShipAIFunctions
                 RemoveSingleTag(largeShip, "large_shiptarget");
                 RemoveSingleTag(largeShip, "large_noweapons");
             }
-            else if (tag == "circletarget" || tag == "movetowaypoint" || tag == "stayinrangeoftarget" || tag == "norotation")
+            else if (tag == "small_low" || tag == "small_medium" || tag == "small_high" || tag == "small_veryhigh")
             {
-                RemoveSingleTag(largeShip, "movetowaypoint");
-                RemoveSingleTag(largeShip, "stayinrangeoftarget");
-                RemoveSingleTag(largeShip, "circletarget");
-                RemoveSingleTag(largeShip, "norotation");
+                RemoveSingleTag(largeShip, "small_low");
+                RemoveSingleTag(largeShip, "small_medium");
+                RemoveSingleTag(largeShip, "small_high");
+                RemoveSingleTag(largeShip, "small_veryhigh");
+            }
+            else if (tag == "large_low" || tag == "large_medium" || tag == "large_high" || tag == "large_veryhigh")
+            {
+                RemoveSingleTag(largeShip, "large_low");
+                RemoveSingleTag(largeShip, "large_medium");
+                RemoveSingleTag(largeShip, "large_high");
+                RemoveSingleTag(largeShip, "large_veryhigh");
             }
 
             AddSingleTag(largeShip, tag);
@@ -173,70 +189,6 @@ public static class LargeShipAIFunctions
                     {
                         NoSpeed(largeShip);
                     }
-                    else if (tag == "large_singletarget_largeship") //Turret control
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "large_singletarget_smallship") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "large_singletarget_all") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "large_multipletargets_largeship") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "large_multipletargets_smallship") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "large_multipletargets_all") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "large_shiptarget") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "large_noweapons")
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "small_singletarget_largeship") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "small_singletarget_smallship") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "small_singletarget_all") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "small_multipletargets_largeship") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "small_multipletargets_smallship") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "small_multipletargets_all") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "small_shiptarget") 
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
-                    else if (tag == "small_noweapons")
-                    {
-                        TurretModeSelection(largeShip, tag);
-                    }
                     else if (tag == "movetotargetrange") //Flight patterns
                     {
                         MoveToTargetRange(largeShip);
@@ -252,6 +204,102 @@ public static class LargeShipAIFunctions
                     else if (tag == "norotation")
                     {
                         NoRotation(largeShip);
+                    }
+                    else if (tag == "large_singletarget_largeship") //Turret control
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "large_singletarget_smallship") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "large_singletarget_all") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "large_multipletargets_largeship") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "large_multipletargets_smallship") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "large_multipletargets_all") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "large_shiptarget") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "large_noweapons")
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "small_singletarget_largeship") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "small_singletarget_smallship") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "small_singletarget_all") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "small_multipletargets_largeship") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "small_multipletargets_smallship") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "small_multipletargets_all") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "small_shiptarget") 
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "small_noweapons")
+                    {
+                        TurretTargetModeSelection(largeShip, tag);
+                    }
+                    else if (tag == "small_low") //Turret accuracy
+                    {
+                        TurretAccuracySelection(largeShip, tag);
+                    }
+                    else if (tag == "small_medium")
+                    {
+                        TurretAccuracySelection(largeShip, tag);
+                    }
+                    else if (tag == "small_high")
+                    {
+                        TurretAccuracySelection(largeShip, tag);
+                    }
+                    else if (tag == "small_veryhigh")
+                    {
+                        TurretAccuracySelection(largeShip, tag);
+                    }
+                    else if (tag == "large_low")
+                    {
+                        TurretAccuracySelection(largeShip, tag);
+                    }
+                    else if (tag == "large_medium")
+                    {
+                        TurretAccuracySelection(largeShip, tag);
+                    }
+                    else if (tag == "large_high")
+                    {
+                        TurretAccuracySelection(largeShip, tag);
+                    }
+                    else if (tag == "large_veryhigh")
+                    {
+                        TurretAccuracySelection(largeShip, tag);
                     }
                 }
             }
@@ -423,8 +471,8 @@ public static class LargeShipAIFunctions
 
     #region AI Weapon Control
 
-    //This allows the turrets to fire
-    public static void TurretModeSelection(LargeShip largeShip, string tag)
+    //This sets the targeting mode of the turret
+    public static void TurretTargetModeSelection(LargeShip largeShip, string tag)
     {
         LaserTurret laserTurret = largeShip.gameObject.GetComponent<LaserTurret>();
 
@@ -432,13 +480,37 @@ public static class LargeShipAIFunctions
         {
             if (tag.Contains("large_"))
             {
-                LaserTurretFunctions.NullifyLargeTurretTarget(laserTurret);
-                laserTurret.largeTargetingMode = tag;
+                if (tag != laserTurret.largeTargetingMode)
+                {
+                    LaserTurretFunctions.NullifyLargeTurretTarget(laserTurret);
+                    laserTurret.largeTargetingMode = tag;
+                }
             }
             else if (tag.Contains("small_"))
             {
-                LaserTurretFunctions.NullifySmallTurretTarget(laserTurret);
-                laserTurret.smallTargetingMode = tag;
+                if (tag != laserTurret.smallTargetingMode)
+                {
+                    LaserTurretFunctions.NullifySmallTurretTarget(laserTurret);
+                    laserTurret.smallTargetingMode = tag;
+                }
+            }
+        }
+    }
+
+    //This sets the accuracy of the turrets
+    public static void TurretAccuracySelection(LargeShip largeShip, string tag)
+    {
+        LaserTurret laserTurret = largeShip.gameObject.GetComponent<LaserTurret>();
+
+        if (laserTurret != null)
+        {
+            if (tag.Contains("large_"))
+            {
+                laserTurret.largeTurretAccuracy = tag;
+            }
+            else if (tag.Contains("small_"))
+            {
+                laserTurret.smallTurretAccuracy = tag;
             }
         }
     }

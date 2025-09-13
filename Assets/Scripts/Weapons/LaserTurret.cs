@@ -28,7 +28,8 @@ public class LaserTurret : MonoBehaviour
     public float smallTurretDamage = 10;
     public string audioFile = "Turbolaser";
     public string allegiance;
-    public string accuracy;
+    public string largeTurretAccuracy;
+    public string smallTurretAccuracy;
     public string laserColor = "red";
     public string laserSize;
     public string largeTargetingMode;

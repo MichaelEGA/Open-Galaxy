@@ -26,13 +26,13 @@ public static class LaserTurretFunctions
                 if (turret.largeShip != null)
                 {
                     turret.allegiance = turret.largeShip.allegiance;
-                    turret.accuracy = turret.largeShip.aiTargetingMode;
+                    turret.largeTurretAccuracy = turret.largeShip.aiTargetingMode;
                     turret.laserColor = turret.largeShip.laserColor;
                 }
                 else if (turret.smallShip != null)
                 {
                     turret.allegiance = turret.smallShip.allegiance;
-                    turret.accuracy = turret.smallShip.aiTargetingMode;
+                    turret.largeTurretAccuracy = turret.smallShip.aiTargetingMode;
                     turret.laserColor = turret.smallShip.laserColor;
                 }
             }
@@ -417,7 +417,19 @@ public static class LaserTurretFunctions
                             restrictForward = true;
                         }
 
-                        PositionAndAimTurret(turretGO, turretPosition.gameObject, targetGO, shipGO, restrictForward, turret.accuracy);
+                        //This sets the accuracy of the turrets
+                        string accuracy = "high";
+
+                        if (turretPosition.name.Contains("small"))
+                        {
+                            accuracy = turret.smallTurretAccuracy;
+                        }
+                        else
+                        {
+                            accuracy = turret.largeTurretAccuracy;
+                        }
+
+                        PositionAndAimTurret(turretGO, turretPosition.gameObject, targetGO, shipGO, restrictForward, accuracy);
 
                         //This checks if the turret is clear to fire
                         bool clearToFire = ClearToFire(turretGO, targetGO);
@@ -689,31 +701,41 @@ public static class LaserTurretFunctions
         float low = 100;
         float medium = 50;
         float high = 25;
+        float veryHigh = 5;
 
         float x = 0;
         float y = 0;
         float z = 0;
 
-        if (accuracy == "low")
+        if (accuracy != null)
         {
-            x = Random.Range(-low, low);
-            y = Random.Range(-low, low);
-            z = Random.Range(-low, low);
-        }
-        else if (accuracy == "medium")
-        {
-            x = Random.Range(-medium, medium);
-            y = Random.Range(-medium, medium);
-            z = Random.Range(-medium, medium);
-        }
-        else if (accuracy == "high")
-        {
-            x = Random.Range(-high, high);
-            y = Random.Range(-high, high);
-            z = Random.Range(-high, high);
+            if (accuracy.Contains("low"))
+            {
+                x = Random.Range(-low, low);
+                y = Random.Range(-low, low);
+                z = Random.Range(-low, low);
+            }
+            else if (accuracy.Contains("medium"))
+            {
+                x = Random.Range(-medium, medium);
+                y = Random.Range(-medium, medium);
+                z = Random.Range(-medium, medium);
+            }
+            else if (accuracy.Contains("high"))
+            {
+                x = Random.Range(-high, high);
+                y = Random.Range(-high, high);
+                z = Random.Range(-high, high);
+            }
+            else if (accuracy.Contains("veryhigh"))
+            {
+                x = Random.Range(-veryHigh, veryHigh);
+                y = Random.Range(-veryHigh, veryHigh);
+                z = Random.Range(-veryHigh, veryHigh);
+            }
         }
 
-        return(new Vector3(x, y, z));       
+        return (new Vector3(x, y, z));       
     }
 
     //This checks the target is in sight before firing

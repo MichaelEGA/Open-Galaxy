@@ -1190,9 +1190,11 @@ public static class MissionFunctions
         Scene scene = SceneFunctions.GetScene();
 
         string speedControlTag = missionEvent.data2;
-        string largeTurretControlTag = missionEvent.data3;
-        string smallTurretControlTag = missionEvent.data4;
-        string flightPatternsTag = missionEvent.data5;
+        string flightPatternsTag = missionEvent.data3;
+        string largeTurretControlTag = missionEvent.data4;
+        string smallTurretControlTag = missionEvent.data5;
+        string largeTurretAccuracyControlTag = missionEvent.data6;
+        string smallTurretAccuracyControlTag = missionEvent.data7;
 
         if (scene != null)
         {
@@ -1211,6 +1213,11 @@ public static class MissionFunctions
                                 LargeShipAIFunctions.AddTag(largeShip, speedControlTag);
                             }
 
+                            if (flightPatternsTag != "none" & flightPatternsTag != "nochange")
+                            {
+                                LargeShipAIFunctions.AddTag(largeShip, flightPatternsTag);
+                            }
+
                             if (largeTurretControlTag != "none" & largeTurretControlTag != "nochange")
                             {
                                 LargeShipAIFunctions.AddTag(largeShip, largeTurretControlTag);
@@ -1221,10 +1228,17 @@ public static class MissionFunctions
                                 LargeShipAIFunctions.AddTag(largeShip, smallTurretControlTag);
                             }
 
-                            if (flightPatternsTag != "none" & flightPatternsTag != "nochange")
+                            if (largeTurretAccuracyControlTag != "none" & largeTurretAccuracyControlTag != "nochange")
                             {
-                                LargeShipAIFunctions.AddTag(largeShip, flightPatternsTag);
+                                LargeShipAIFunctions.AddTag(largeShip, largeTurretAccuracyControlTag);
                             }
+
+                            if (smallTurretAccuracyControlTag != "none" & smallTurretAccuracyControlTag != "nochange")
+                            {
+                                LargeShipAIFunctions.AddTag(largeShip, smallTurretAccuracyControlTag);
+                            }
+
+
                         }
                     }
                 }

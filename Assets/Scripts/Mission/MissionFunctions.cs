@@ -2305,18 +2305,21 @@ public static class MissionFunctions
                         {
                             foreach (GameObject tempShipB in scene.objectPool)
                             {
-                                if (tempShipB.name.Contains(shipB))
+                                if (tempShipB != null)
                                 {
-                                    if (tempShipA.activeSelf == true & tempShipB.activeSelf == true)
+                                    if (tempShipB.name.Contains(shipB))
                                     {
-                                        float actualDistance = Vector3.Distance(tempShipA.transform.position, tempShipB.transform.position);
-
-                                        if (actualDistance < distance)
+                                        if (tempShipA.activeSelf == true & tempShipB.activeSelf == true)
                                         {
-                                            isLessThanDistance = true;
+                                            float actualDistance = Vector3.Distance(tempShipA.transform.position, tempShipB.transform.position);
+
+                                            if (actualDistance < distance)
+                                            {
+                                                isLessThanDistance = true;
+                                            }
                                         }
+                                        break;
                                     }
-                                    break;
                                 }
                             }
                         }
@@ -4317,8 +4320,6 @@ public static class MissionFunctions
         }
     }
 
-    //CONTINUE IMPLEMENTING SHIP NULL CHECKS FROM THIS POINT
-
     //This sets the designated ships target to the closest enemy, provided both the ship can be found
     public static void SetShipTargetToClosestEnemy(MissionEvent missionEvent)
     {
@@ -4330,15 +4331,18 @@ public static class MissionFunctions
             {
                 foreach (GameObject ship in scene.objectPool)
                 {
-                    if (ship.name.Contains(missionEvent.data1))
+                    if (ship != null)
                     {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                        if (smallShip != null)
+                        if (ship.name.Contains(missionEvent.data1))
                         {
-                            TargetingFunctions.GetClosestEnemy_SmallShipPlayer(smallShip, true);
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                            if (smallShip != null)
+                            {
+                                TargetingFunctions.GetClosestEnemy_SmallShipPlayer(smallShip, true);
+                            }
                         }
-                    }
+                    } 
                 }
             }
         }
@@ -4382,20 +4386,23 @@ public static class MissionFunctions
             {
                 foreach (GameObject ship in scene.objectPool)
                 {
-                    if (ship.name.Contains(missionEvent.data1))
+                    if (ship != null)
                     {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                        if (smallShip != null)
+                        if (ship.name.Contains(missionEvent.data1))
                         {
-                            smallShip.torpedoType = torpedoType;
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
 
-                            if (noChangeToTorpedoNo == true)
+                            if (smallShip != null)
                             {
-                                torpedoNo = smallShip.torpedoNumber;
-                            }
+                                smallShip.torpedoType = torpedoType;
 
-                            smallShip.torpedoNumber = torpedoNo;
+                                if (noChangeToTorpedoNo == true)
+                                {
+                                    torpedoNo = smallShip.torpedoNumber;
+                                }
+
+                                smallShip.torpedoNumber = torpedoNo;
+                            }
                         }
                     }
                 }
@@ -4414,35 +4421,38 @@ public static class MissionFunctions
             {
                 foreach (GameObject ship in scene.objectPool)
                 {
-                    if (ship.name.Contains(missionEvent.data1))
+                    if (ship != null)
                     {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                        if (smallShip != null)
+                        if (ship.name.Contains(missionEvent.data1))
                         {
-                            if (smallShip.waypoint != null)
-                            {
-                                float x = missionEvent.x;
-                                float y = missionEvent.y;
-                                float z = missionEvent.z;
-                                Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
 
-                                smallShip.waypoint.transform.position = waypoint;
+                            if (smallShip != null)
+                            {
+                                if (smallShip.waypoint != null)
+                                {
+                                    float x = missionEvent.x;
+                                    float y = missionEvent.y;
+                                    float z = missionEvent.z;
+                                    Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
+
+                                    smallShip.waypoint.transform.position = waypoint;
+                                }
                             }
-                        }
 
-                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
 
-                        if (largeShip != null)
-                        {
-                            if (largeShip.waypoint != null)
+                            if (largeShip != null)
                             {
-                                float x = missionEvent.x;
-                                float y = missionEvent.y;
-                                float z = missionEvent.z;
-                                Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
+                                if (largeShip.waypoint != null)
+                                {
+                                    float x = missionEvent.x;
+                                    float y = missionEvent.y;
+                                    float z = missionEvent.z;
+                                    Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
 
-                                largeShip.waypoint.transform.position = waypoint;
+                                    largeShip.waypoint.transform.position = waypoint;
+                                }
                             }
                         }
                     }
@@ -4462,35 +4472,44 @@ public static class MissionFunctions
             {
                 foreach (GameObject ship in scene.objectPool)
                 {
-                    if (ship.name.Contains(missionEvent.data1))
+                    if (ship != null)
                     {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                        if (smallShip != null)
+                        if (ship.name.Contains(missionEvent.data1))
                         {
-                            if (smallShip.waypoint != null)
+                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                            if (smallShip != null)
                             {
-                                foreach (GameObject ship2 in scene.objectPool)
+                                if (smallShip.waypoint != null)
                                 {
-                                    if (ship2.name.Contains(missionEvent.data2))
+                                    foreach (GameObject ship2 in scene.objectPool)
                                     {
-                                        smallShip.waypoint.transform.position = ship2.transform.position;
+                                        if (ship2 == null)
+                                        {
+                                            if (ship2.name.Contains(missionEvent.data2))
+                                            {
+                                                smallShip.waypoint.transform.position = ship2.transform.position;
+                                            }
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        LargeShip largeShip = ship.GetComponent<LargeShip>();
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
 
-                        if (largeShip != null)
-                        {
-                            if (largeShip.waypoint != null)
+                            if (largeShip != null)
                             {
-                                foreach (GameObject ship2 in scene.objectPool)
+                                if (largeShip.waypoint != null)
                                 {
-                                    if (ship2.name.Contains(missionEvent.data2))
+                                    foreach (GameObject ship2 in scene.objectPool)
                                     {
-                                        largeShip.waypoint.transform.position = ship2.transform.position;
+                                        if (ship2 != null)
+                                        {
+                                            if (ship2.name.Contains(missionEvent.data2))
+                                            {
+                                                largeShip.waypoint.transform.position = ship2.transform.position;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -4520,18 +4539,21 @@ public static class MissionFunctions
             if (scene.objectPool != null)
             {
                 foreach (GameObject ship in scene.objectPool)
-                {              
-                    SmallShip smallShip = ship.GetComponent<SmallShip>();
-
-                    if (smallShip != null)
+                {    
+                    if (ship != null)
                     {
-                        if (smallShip.isAI == false)
+                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+
+                        if (smallShip != null)
                         {
-                            SmallShipFunctions.SetWeapons(smallShip, weapon, mode);
-                            smallShip.preventWeaponChange = preventWeaponChange;
-                            break;
+                            if (smallShip.isAI == false)
+                            {
+                                SmallShipFunctions.SetWeapons(smallShip, weapon, mode);
+                                smallShip.preventWeaponChange = preventWeaponChange;
+                                break;
+                            }
                         }
-                    }  
+                    }
                 }
             }
         }

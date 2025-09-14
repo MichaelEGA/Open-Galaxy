@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public static class LaserTurretFunctions
 {
@@ -357,120 +359,123 @@ public static class LaserTurretFunctions
     public static IEnumerator RunTurrets(LaserTurret turret)
     {
         //This cycles through all the turrets and fires them
-        if (turret.turretPositions != null & turret.turretGO != null)
+        if (turret.turretPositions != null & turret.turretGO != null & turret != null)
         {
             foreach (Transform turretPosition in  turret.turretPositions)
             {
-                //The time delay
-                bool activateTurret = false;
-
-                if (turretPosition.name.Contains("small") & !turret.smallTargetingMode.Contains("noweapons"))
+                if (turretPosition != null & turret != null)
                 {
-                    if (turret.smallTurretDelayActual < Time.time)
+                    //The time delay
+                    bool activateTurret = false;
+
+                    if (turretPosition.name.Contains("small") & !turret.smallTargetingMode.Contains("noweapons"))
                     {
-                        activateTurret = true;
-                    }
-                }
-                else if (turretPosition.name.Contains("large") & !turret.smallTargetingMode.Contains("noweapons"))
-                {
-                    if (turret.largeTurretDelayActual < Time.time)
-                    {
-                        activateTurret = true;
-                    }
-                }
-
-                if (activateTurret == true)
-                {
-                    //This gets key references
-                    GameObject turretGO = turret.turretGO;
-                    GameObject shipGO = turret.shipGO;
-                    Audio audioManager = turret.audioManager;
-                    string audioFile = turret.audioFile;
-
-                    //This selects the target
-                    GameObject targetGO = null;
-
-                    if (turretPosition.name.Contains("small"))
-                    {
-                        targetGO = GetTargetForSmallTurret(turret, turretPosition.gameObject);
-                    }
-                    else
-                    {
-                        targetGO = GetTargetForLargeTurret(turret, turretPosition.gameObject);
-                    }
-
-                    //This selects the particle system
-                    ParticleSystem particleSystem = turret.largeParticleSystem;
-
-                    if (turretPosition.name.Contains("small"))
-                    {
-                        particleSystem = turret.smallParticleSystem;
-                    }
-
-                    if (targetGO != null)
-                    {
-                        //This positions and aims the turret
-                        bool restrictForward = false;
-
-                        if (turretPosition.name.Contains("restrictforward"))
+                        if (turret.smallTurretDelayActual < Time.time)
                         {
-                            restrictForward = true;
+                            activateTurret = true;
                         }
+                    }
+                    else if (turretPosition.name.Contains("large") & !turret.smallTargetingMode.Contains("noweapons"))
+                    {
+                        if (turret.largeTurretDelayActual < Time.time)
+                        {
+                            activateTurret = true;
+                        }
+                    }
 
-                        //This sets the accuracy of the turrets
-                        string accuracy = "high";
+                    //Get current rotation as euler
+                    Vector3 eulerRotation = turret.transform.eulerAngles;
+
+                    if (activateTurret == true)
+                    {
+                        //This gets key references
+                        GameObject turretGO = turret.turretGO;
+                        GameObject shipGO = turret.shipGO;
+                        Audio audioManager = turret.audioManager;
+                        string audioFile = turret.audioFile;
+
+                        //This selects the target
+                        GameObject targetGO = null;
 
                         if (turretPosition.name.Contains("small"))
                         {
-                            accuracy = turret.smallTurretAccuracy;
+                            targetGO = GetTargetForSmallTurret(turret, turretPosition.gameObject);
                         }
                         else
                         {
-                            accuracy = turret.largeTurretAccuracy;
+                            targetGO = GetTargetForLargeTurret(turret, turretPosition.gameObject);
                         }
 
-                        PositionAndAimTurret(turretGO, turretPosition.gameObject, targetGO, shipGO, restrictForward, accuracy);
+                        //This selects the particle system
+                        ParticleSystem particleSystem = turret.largeParticleSystem;
 
-                        //This checks if the turret is clear to fire
-                        bool clearToFire = ClearToFire(turretGO, targetGO);
-
-                        //This calculates the fire positions
-                        int firePointsNo = 1;
-
-                        if (turretPosition.name.Contains("2"))
+                        if (turretPosition.name.Contains("small"))
                         {
-                            firePointsNo = 2;
+                            particleSystem = turret.smallParticleSystem;
                         }
-                        else if (turretPosition.name.Contains("4"))
+
+                        if (targetGO != null)
                         {
-                            firePointsNo = 4;
+                            //This sets the accuracy of the turrets
+                            string accuracy = "high";
+
+                            if (turretPosition.name.Contains("small"))
+                            {
+                                accuracy = turret.smallTurretAccuracy;
+                            }
+                            else
+                            {
+                                accuracy = turret.largeTurretAccuracy;
+                            }
+
+                            PositionAndAimTurret(turretGO, turretPosition.gameObject, targetGO, shipGO, accuracy);
+
+                            //This checks if the turret is clear to fire
+                            bool clearToFire = ClearToFire(turretGO, targetGO, shipGO, turretPosition);
+
+                            if (clearToFire == true)
+                            {
+                                //This calculates the fire positions
+                                int firePointsNo = 1;
+
+                                if (turretPosition.name.Contains("2"))
+                                {
+                                    firePointsNo = 2;
+                                }
+                                else if (turretPosition.name.Contains("4"))
+                                {
+                                    firePointsNo = 4;
+                                }
+
+                                Vector3[] firePoints = CalculateFirePointPositions(turretGO, firePointsNo, 5);
+
+                                //This fires the lasers using the fire points
+                                foreach (Vector3 firePoint in firePoints)
+                                {
+                                    FireTurret(turretGO, particleSystem, firePoint, audioManager, audioFile);
+                                    yield return null;
+                                }
+                            }
                         }
-
-                        Vector3[] firePoints = CalculateFirePointPositions(turretGO, firePointsNo, 5);
-
-                        //This fires the lasers using the fire points
-                        foreach (Vector3 firePoint in firePoints)
-                        {
-                            FireTurret(turretGO, particleSystem, firePoint, audioManager, audioFile);
-                            yield return null;
-                        }
-
                     }
                 }
             }
         }
 
-        if (turret.smallTurretDelayActual < Time.time)
+        if (turret != null)
         {
-            turret.smallTurretDelayActual = Time.time + Random.Range(turret.smallTurretDelay, turret.smallTurretDelay + 1);
+            if (turret.smallTurretDelayActual < Time.time)
+            {
+                turret.smallTurretDelayActual = Time.time + Random.Range(turret.smallTurretDelay, turret.smallTurretDelay + 1);
+            }
+
+            if (turret.largeTurretDelayActual < Time.time)
+            {
+                turret.largeTurretDelayActual = Time.time + Random.Range(turret.smallTurretDelay, turret.smallTurretDelay + 1);
+            }
         }
 
-        if (turret.largeTurretDelayActual < Time.time)
-        {
-            turret.largeTurretDelayActual = Time.time + Random.Range(turret.smallTurretDelay, turret.smallTurretDelay + 1);
-        }
-
-        yield return null;
+        yield return new WaitForSeconds(1);
     }
 
     #endregion
@@ -644,7 +649,7 @@ public static class LaserTurretFunctions
     }
 
     //This positions and aims the turret
-    public static void PositionAndAimTurret(GameObject turret, GameObject turretPosition, GameObject target, GameObject ship, bool restrictForward = false, string accuracy = "low")
+    public static void PositionAndAimTurret(GameObject turret, GameObject turretPosition, GameObject target, GameObject ship, string accuracy = "low")
     {
         if (target != null)
         {
@@ -671,26 +676,16 @@ public static class LaserTurretFunctions
             //This aims the turret
             turret.transform.LookAt(interceptPoint + errorMargin);
 
-            // This calculates the restricted rotation
-            if (restrictForward == true)
+            //Get current rotation as euler
+            Vector3 eulerRotation = turret.transform.eulerAngles;
+
+            // Restrict the x rotation between -90 and 90 degrees
+            eulerRotation.x = Mathf.Clamp(eulerRotation.x, 0, -180f);
+
+            if (isUpsideDown == true)
             {
-                //Get current rotation as euler
-                Vector3 eulerRotation = turret.transform.eulerAngles;
-
-                // Restrict the y rotation between -90 and 90 degrees
-                eulerRotation.y = Mathf.Clamp(eulerRotation.y, -90f, 90f);
-
                 // Restrict the x rotation between -90 and 90 degrees
-                eulerRotation.x = Mathf.Clamp(eulerRotation.x, 0, -180f);
-
-                if (isUpsideDown == true)
-                {
-                    // Restrict the x rotation between -90 and 90 degrees
-                    eulerRotation.x = Mathf.Clamp(eulerRotation.x, 0, 180f);
-                }
-
-                // Apply the modified rotation back to the transform
-                turret.transform.eulerAngles = eulerRotation;
+                eulerRotation.x = Mathf.Clamp(eulerRotation.x, 0, 180f);
             }
         }
     }
@@ -739,7 +734,7 @@ public static class LaserTurretFunctions
     }
 
     //This checks the target is in sight before firing
-    public static bool ClearToFire(GameObject turret, GameObject target)
+    public static bool ClearToFire(GameObject turret, GameObject target, GameObject shipGO, Transform turretPosition)
     {
         bool clearToFire = false;
 
@@ -753,6 +748,28 @@ public static class LaserTurretFunctions
             if (targetForward > 0.9)
             {
                 clearToFire = true;
+            }
+
+            //This checks if the rotation of the turret is restricted
+            bool restrict = false;
+
+            if (turretPosition.name.Contains("restrict"))
+            {
+                restrict = true;
+            }
+
+            if (restrict == true)
+            {
+                Vector3 forward1 = turret.transform.forward;
+                Vector3 forward2 = turretPosition.forward;
+
+                // Calculate the dot product.
+                float dotProduct = Vector3.Dot(forward1, forward2);
+
+                if (dotProduct < 0)
+                {
+                    clearToFire = false;
+                }
             }
         }
 
@@ -770,20 +787,20 @@ public static class LaserTurretFunctions
             float currentPositionRight = distanceBetweenFirePoints / 2f;
             float currentPositionLeft = -(distanceBetweenFirePoints / 2f);
 
-            Vector3 firePoint01 = turret.transform.right * (currentPositionRight);
-            Vector3 firePoint02 = turret.transform.right * (currentPositionLeft);
+            Vector3 firePoint01 = turret.transform.position + (turret.transform.right * (currentPositionRight));
+            Vector3 firePoint02 = turret.transform.position + (turret.transform.right * (currentPositionLeft));
 
             firePoints.Add(firePoint01);
             firePoints.Add(firePoint02);
 
             //This gets the rest of the firepoints
-            for (int i = 0; i < firePointsNo; i = i + 2)
+            for (int i = 1; i < firePointsNo; i = i + 2)
             {
                 currentPositionRight = currentPositionRight + distanceBetweenFirePoints;
                 currentPositionLeft = currentPositionLeft - distanceBetweenFirePoints;
 
-                Vector3 firePointRight = turret.transform.right * (currentPositionRight);
-                Vector3 firePointLeft = turret.transform.right * (currentPositionLeft);
+                Vector3 firePointRight = turret.transform.position + (turret.transform.right * (currentPositionRight));
+                Vector3 firePointLeft = turret.transform.position + (turret.transform.right * (currentPositionLeft));
 
                 firePoints.Add(firePointRight);
                 firePoints.Add(firePointLeft);
@@ -812,6 +829,7 @@ public static class LaserTurretFunctions
 
     #region collision functions
 
+    //This handles an event where the laser hits something
     public static void RunCollisionEvent(GameObject objectHit, List<ParticleCollisionEvent> collisionEvents, ParticleSystem particleSystemScript, LaserTurret laserTurret)
     {
         //Get collision information
@@ -825,23 +843,26 @@ public static class LaserTurretFunctions
 
             GameObject objectHitParent = ReturnParent(objectHit); //This gets the colliders object parent  
 
-            if (objectHitParent != laserTurret.gameObject)
+            if (laserTurret != null & objectHitParent != null)
             {
-                //This gets key information on the object hit
-                var objectHitDetails = LaserTurretFunctions.ObjectHitDetails(objectHit, hitPosition);
+                if (objectHitParent != laserTurret.gameObject)
+                {
+                    //This gets key information on the object hit
+                    var objectHitDetails = LaserTurretFunctions.ObjectHitDetails(objectHit, hitPosition);
 
-                float shieldFront = objectHitDetails.shieldFront;
-                float shieldBack = objectHitDetails.shieldBack;
-                float forward = objectHitDetails.forward;
-                bool hasPlasma = objectHitDetails.hasPlasma;
+                    float shieldFront = objectHitDetails.shieldFront;
+                    float shieldBack = objectHitDetails.shieldBack;
+                    float forward = objectHitDetails.forward;
+                    bool hasPlasma = objectHitDetails.hasPlasma;
 
-                Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
+                    Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
 
-                //This instantiates an explosion at the hit position
-                LaserTurretFunctions.InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.laserSize, laserTurret.laserColor, hasPlasma, audioManager);
+                    //This instantiates an explosion at the hit position
+                    LaserTurretFunctions.InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.laserSize, laserTurret.laserColor, hasPlasma, audioManager);
 
-                //This applies damage to the target
-                ApplyDamage(laserTurret, objectHit, hitPosition);
+                    //This applies damage to the target
+                    ApplyDamage(laserTurret, objectHit, hitPosition);
+                }
             }
         }
     }
@@ -968,4 +989,11 @@ public static class LaserTurretFunctions
     }
 
     #endregion
+
+    #region
+
+
+
+    #endregion
+
 }

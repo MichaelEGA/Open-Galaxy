@@ -475,15 +475,18 @@ public static class TargetingFunctions
                 //This checks for the closest small ship first
                 foreach (GameObject tempTarget in scene.objectPool)
                 {
-                    float targetForward = 0;
-                    Vector3 targetPosition = tempTarget.transform.position;
-                    Vector3 targetRelativePosition = targetPosition - smallShip.transform.position;
-                    targetForward = Vector3.Dot(smallShip.transform.forward, targetRelativePosition.normalized);
-
-                    if (targetForward > forward)
+                    if (tempTarget != null)
                     {
-                        forward = targetForward;
-                        target = tempTarget;
+                        float targetForward = 0;
+                        Vector3 targetPosition = tempTarget.transform.position;
+                        Vector3 targetRelativePosition = targetPosition - smallShip.transform.position;
+                        targetForward = Vector3.Dot(smallShip.transform.forward, targetRelativePosition.normalized);
+
+                        if (targetForward > forward)
+                        {
+                            forward = targetForward;
+                            target = tempTarget;
+                        }
                     }
                 }
 

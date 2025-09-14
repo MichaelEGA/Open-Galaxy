@@ -1790,11 +1790,14 @@ public static class SceneFunctions
 
             for (int i = 0; i < number; i++)
             {
-                int shipNo = i + 1;
+                if (hangarLaunch != null)
+                {
+                    int shipNo = i + 1;
 
-                LoadSingleShip(hangarLaunch.position, hangarLaunch.rotation, type, name + shipNo.ToString("00"), allegiance, cargo, false, true, true, laserColor);
+                    LoadSingleShip(hangarLaunch.position, hangarLaunch.rotation, type, name + shipNo.ToString("00"), allegiance, cargo, false, true, true, laserColor);
 
-                yield return new WaitForSeconds(delay);
+                    yield return new WaitForSeconds(delay);
+                }
             }
         }
     }
@@ -2733,7 +2736,10 @@ public static class SceneFunctions
         {
             foreach (GameObject gameobject in scene.objectPool)
             {
-                GameObject.Destroy(gameobject);
+                if (gameobject != null)
+                {
+                    GameObject.Destroy(gameobject);
+                }
             }
 
             scene.objectPool.Clear();
@@ -2828,9 +2834,12 @@ public static class SceneFunctions
         {
             foreach (GameObject gameobject in scene.objectPool)
             {
-                if (scene.mainShip != gameobject)
+                if (gameobject != null)
                 {
-                    GameObject.Destroy(gameobject);
+                    if (scene.mainShip != gameobject)
+                    {
+                        GameObject.Destroy(gameobject);
+                    }
                 }
             }
 

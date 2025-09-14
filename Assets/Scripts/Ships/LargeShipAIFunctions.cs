@@ -37,8 +37,8 @@ public static class LargeShipAIFunctions
         AddTag(largeShip, "norotation");
         AddTag(largeShip, "large_singletarget_largeship");
         AddTag(largeShip, "small_multipletargets_smallship");
-        AddTag(largeShip, "large_high");
-        AddTag(largeShip, "small_high");
+        AddTag(largeShip, "large_low");
+        AddTag(largeShip, "small_low");
     }
 
     //This adds an ai tag and removes conflicting tags using the two functions below

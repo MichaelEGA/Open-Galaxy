@@ -543,7 +543,9 @@ public static class DamageFunctions
         smallShip.exploded = false;
 
         //This deactivates the ship
-        smallShip.gameObject.SetActive(false);
+        //smallShip.gameObject.SetActive(false);
+
+        GameObject.Destroy(smallShip.gameObject);
     }
 
     #endregion
@@ -819,7 +821,9 @@ public static class DamageFunctions
         largeShip.spinShip = false;
         largeShip.explode = false;
 
-        largeShip.gameObject.SetActive(false);
+        //largeShip.gameObject.SetActive(false);
+
+        GameObject.Destroy(largeShip.gameObject);
     }
 
     //This creates a debris exxplosions

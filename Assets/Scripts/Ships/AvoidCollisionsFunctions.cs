@@ -52,96 +52,98 @@ public static class AvoidCollisionsFunctions
                 {
                     foreach (GameObject shipB in scene.objectPool.ToArray())
                     {
-                        if (shipB.activeSelf == true & shipB.GetComponent<SmallShip>() != null & shipB != shipA)
+                        if (shipA != null & shipB != null)
                         {
-
-                            //This checks if two ships need to avoid a collision
-                            SmallShip smallShipA = shipA.GetComponent<SmallShip>();
-                            SmallShip smallShipB = shipB.GetComponent<SmallShip>();
-
-                            Vector3 shipATargetPosition = shipB.transform.position - shipA.transform.position;
-                            float shipAForward = Vector3.Dot(shipA.transform.forward, shipATargetPosition.normalized);
-                            float shipARight = Vector3.Dot(shipA.transform.right, shipATargetPosition.normalized);
-                            float shipAUp = Vector3.Dot(shipA.transform.up, shipATargetPosition.normalized);
-
-                            Vector3 shipBTargetPosition = shipA.transform.position - shipB.transform.position;
-                            float shipBForward = Vector3.Dot(shipB.transform.forward, shipBTargetPosition.normalized);
-                            float shipBRight = Vector3.Dot(shipB.transform.right, shipBTargetPosition.normalized);
-                            float shipBUp = Vector3.Dot(shipB.transform.up, shipBTargetPosition.normalized);
-
-                            float distance = Vector3.Distance(shipB.transform.position, shipA.transform.position);
-
-                            int direction = 0;
-                            bool avoidCollisionA = false;
-                            bool avoidCollisionB = false;
-
-                            if (distance < 500 & shipAForward > 0.8f & shipBForward > 0.8f || distance < 200 & shipAForward > 0.5f & shipBForward > 0.5f || shipAForward > 0.25f & shipBForward > 0.25f & distance < 100)
+                            if (shipB.activeSelf == true & shipB.GetComponent<SmallShip>() != null & shipB != shipA)
                             {
-                                avoidCollisionA = true;
-                                avoidCollisionB = true;
-                            }
+                                //This checks if two ships need to avoid a collision
+                                SmallShip smallShipA = shipA.GetComponent<SmallShip>();
+                                SmallShip smallShipB = shipB.GetComponent<SmallShip>();
 
-                            if (distance < 15 & shipAForward > 0.8f)
-                            {
-                                avoidCollisionA = true;
-                            }
+                                Vector3 shipATargetPosition = shipB.transform.position - shipA.transform.position;
+                                float shipAForward = Vector3.Dot(shipA.transform.forward, shipATargetPosition.normalized);
+                                float shipARight = Vector3.Dot(shipA.transform.right, shipATargetPosition.normalized);
+                                float shipAUp = Vector3.Dot(shipA.transform.up, shipATargetPosition.normalized);
 
-                            if (distance < 15 & shipBForward > 0.8f)
-                            {
-                                avoidCollisionB = true;
-                            }
+                                Vector3 shipBTargetPosition = shipA.transform.position - shipB.transform.position;
+                                float shipBForward = Vector3.Dot(shipB.transform.forward, shipBTargetPosition.normalized);
+                                float shipBRight = Vector3.Dot(shipB.transform.right, shipBTargetPosition.normalized);
+                                float shipBUp = Vector3.Dot(shipB.transform.up, shipBTargetPosition.normalized);
 
-                            if (avoidCollisionA == true & smallShipA.aiEvade == false)
-                            {
-                                direction = 0; //Right = 0, Left = 1, Up = 2, Down, 3, RollRight 4, RollLeft 5, Fly Forward = 6 
-                                if (shipARight > 0) { direction = 1; } else { direction = 0; }
-                                if (shipAUp > 0) { direction = 3; } else { direction = 2; }
+                                float distance = Vector3.Distance(shipB.transform.position, shipA.transform.position);
 
-                                if (smallShipA.isAI == true)
+                                int direction = 0;
+                                bool avoidCollisionA = false;
+                                bool avoidCollisionB = false;
+
+                                if (distance < 500 & shipAForward > 0.8f & shipBForward > 0.8f || distance < 200 & shipAForward > 0.5f & shipBForward > 0.5f || shipAForward > 0.25f & shipBForward > 0.25f & distance < 100)
                                 {
-                                    Task a = new Task(SmallShipAIFunctions.Evade(smallShipA, 2, "avoidCollision", direction));
-                                }
-                            }
-
-                            if (avoidCollisionB == true & smallShipB.aiEvade == false)
-                            {
-                                direction = 0; //Right = 0, Left = 1, Up = 2, Down, 3, RollRight 4, RollLeft 5, Fly Forward = 6 
-                                if (shipBRight > 0) { direction = 1; } else { direction = 0; }
-                                if (shipBUp > 0) { direction = 3; } else { direction = 2; }
-
-                                if (smallShipB.aiEvade == false & smallShipB.isAI == true)
-                                {
-                                    Task b = new Task(SmallShipAIFunctions.Evade(smallShipB, 2, "avoidCollision", direction));
-                                }
-                            }
-
-                            //This checks if the ship needs to evade enemy fire
-                            float healthTotalA = smallShipA.shieldLevel + smallShipA.hullLevel;
-                            float healthTotalB = smallShipB.shieldLevel + smallShipB.hullLevel;
-                            direction = Random.Range(0, 6);
-
-                            if (smallShipA.healthSave > healthTotalA + 10)
-                            {
-                                smallShipA.healthSave = healthTotalA;
-
-                                if (avoidCollisionA == false & smallShipA.isAI == true)
-                                {
-                                    Task a = new Task(SmallShipAIFunctions.Evade(smallShipA, 2, "evadeAttack", direction));
+                                    avoidCollisionA = true;
+                                    avoidCollisionB = true;
                                 }
 
-                            }
-
-                            if (smallShipB.healthSave > healthTotalB + 10)
-                            {
-                                smallShipB.healthSave = healthTotalB;
-
-                                if (avoidCollisionB == false & smallShipB.isAI == true)
+                                if (distance < 15 & shipAForward > 0.8f)
                                 {
-                                    Task a = new Task(SmallShipAIFunctions.Evade(smallShipB, 2, "evadeAttack", direction));
+                                    avoidCollisionA = true;
+                                }
+
+                                if (distance < 15 & shipBForward > 0.8f)
+                                {
+                                    avoidCollisionB = true;
+                                }
+
+                                if (avoidCollisionA == true & smallShipA.aiEvade == false)
+                                {
+                                    direction = 0; //Right = 0, Left = 1, Up = 2, Down, 3, RollRight 4, RollLeft 5, Fly Forward = 6 
+                                    if (shipARight > 0) { direction = 1; } else { direction = 0; }
+                                    if (shipAUp > 0) { direction = 3; } else { direction = 2; }
+
+                                    if (smallShipA.isAI == true)
+                                    {
+                                        Task a = new Task(SmallShipAIFunctions.Evade(smallShipA, 2, "avoidCollision", direction));
+                                    }
+                                }
+
+                                if (avoidCollisionB == true & smallShipB.aiEvade == false)
+                                {
+                                    direction = 0; //Right = 0, Left = 1, Up = 2, Down, 3, RollRight 4, RollLeft 5, Fly Forward = 6 
+                                    if (shipBRight > 0) { direction = 1; } else { direction = 0; }
+                                    if (shipBUp > 0) { direction = 3; } else { direction = 2; }
+
+                                    if (smallShipB.aiEvade == false & smallShipB.isAI == true)
+                                    {
+                                        Task b = new Task(SmallShipAIFunctions.Evade(smallShipB, 2, "avoidCollision", direction));
+                                    }
+                                }
+
+                                //This checks if the ship needs to evade enemy fire
+                                float healthTotalA = smallShipA.shieldLevel + smallShipA.hullLevel;
+                                float healthTotalB = smallShipB.shieldLevel + smallShipB.hullLevel;
+                                direction = Random.Range(0, 6);
+
+                                if (smallShipA.healthSave > healthTotalA + 10)
+                                {
+                                    smallShipA.healthSave = healthTotalA;
+
+                                    if (avoidCollisionA == false & smallShipA.isAI == true)
+                                    {
+                                        Task a = new Task(SmallShipAIFunctions.Evade(smallShipA, 2, "evadeAttack", direction));
+                                    }
+
+                                }
+
+                                if (smallShipB.healthSave > healthTotalB + 10)
+                                {
+                                    smallShipB.healthSave = healthTotalB;
+
+                                    if (avoidCollisionB == false & smallShipB.isAI == true)
+                                    {
+                                        Task a = new Task(SmallShipAIFunctions.Evade(smallShipB, 2, "evadeAttack", direction));
+                                    }
+
                                 }
 
                             }
-
                         }
                     }
                 }

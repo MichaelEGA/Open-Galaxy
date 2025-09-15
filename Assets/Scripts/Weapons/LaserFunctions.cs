@@ -831,7 +831,6 @@ public static class LaserFunctions
         return damage;
     }
 
-
     #endregion
 
 }

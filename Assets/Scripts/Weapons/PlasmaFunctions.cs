@@ -25,8 +25,8 @@ public static class PlasmaFunctions
         ParticleSystem particleSystem = smallShip.plasmaParticleSystem.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = smallShip.plasmaParticleSystem.GetComponent<ParticleSystemRenderer>();
         OnLaserHit particleCollision = smallShip.plasmaParticleSystem.AddComponent<OnLaserHit>();
-        particleCollision.relatedGameObject = smallShip.gameObject;
-        particleCollision.type = "plasma";
+        //particleCollision.relatedGameObject = smallShip.gameObject;
+        //particleCollision.type = "plasma";
 
         //This adds the new particle system to the pool
         if (smallShip.scene != null)

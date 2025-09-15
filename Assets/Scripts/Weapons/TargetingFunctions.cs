@@ -685,9 +685,12 @@ public static class TargetingFunctions
                 {
                     for (int i = 0; i < scene.objectPool.Count; i++)
                     {
-                        if (scene.objectPool[i].name == smallShip.target.name)
+                        if (scene.objectPool[i] != null)
                         {
-                            targetNumber = i + 1;
+                            if (scene.objectPool[i].name == smallShip.target.name)
+                            {
+                                targetNumber = i + 1;
+                            }
                         }
                     }
 

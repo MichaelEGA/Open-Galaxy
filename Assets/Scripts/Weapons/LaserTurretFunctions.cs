@@ -665,28 +665,8 @@ public static class LaserTurretFunctions
             //This positions the turret
             turret.transform.position = turretPosition.transform.position;
 
-            //This checks whether the turret is upside down or not
-            bool isUpsideDown = false;
-
-            if (Vector3.Dot(turret.transform.up, -ship.transform.up) > 0)
-            {
-                isUpsideDown = true;
-            }
-
             //This aims the turret
             turret.transform.LookAt(interceptPoint + errorMargin);
-
-            //Get current rotation as euler
-            Vector3 eulerRotation = turret.transform.eulerAngles;
-
-            // Restrict the x rotation between -90 and 90 degrees
-            eulerRotation.x = Mathf.Clamp(eulerRotation.x, 0, -180f);
-
-            if (isUpsideDown == true)
-            {
-                // Restrict the x rotation between -90 and 90 degrees
-                eulerRotation.x = Mathf.Clamp(eulerRotation.x, 0, 180f);
-            }
         }
     }
 
@@ -750,27 +730,46 @@ public static class LaserTurretFunctions
                 clearToFire = true;
             }
 
-            //This checks if the rotation of the turret is restricted
-            bool restrict = false;
-
-            if (turretPosition.name.Contains("restrict"))
+            //This checks if the laser cannon is upside down and prevents it from firing if it is
+            if (clearToFire == true)
             {
-                restrict = true;
-            }
+                Vector3 up1 = turret.transform.up;
+                Vector3 up2 = turretPosition.up;
 
-            if (restrict == true)
-            {
-                Vector3 forward1 = turret.transform.forward;
-                Vector3 forward2 = turretPosition.forward;
-
-                // Calculate the dot product.
-                float dotProduct = Vector3.Dot(forward1, forward2);
+                float dotProduct = Vector3.Dot(up1, up2);
 
                 if (dotProduct < 0)
                 {
                     clearToFire = false;
                 }
             }
+            
+            //This checks if the laser cannon is restricted to fire only forward and prevents it from firing if it is
+            if (clearToFire == true)
+            {
+                bool restrict = false;
+
+                if (turretPosition.name.Contains("restrict"))
+                {
+                    restrict = true;
+                }
+
+                if (restrict == true)
+                {
+                    Vector3 forward1 = turret.transform.forward;
+                    Vector3 forward2 = turretPosition.forward;
+
+                    // Calculate the dot product.
+                    float dotProduct = Vector3.Dot(forward1, forward2);
+
+                    if (dotProduct < 0)
+                    {
+                        clearToFire = false;
+                    }
+                }
+            }
+            
+           
         }
 
         return clearToFire;

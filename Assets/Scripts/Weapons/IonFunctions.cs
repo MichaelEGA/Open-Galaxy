@@ -24,8 +24,8 @@ public static class IonFunctions
         ParticleSystem particleSystem = smallShip.ionParticleSystem.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = smallShip.ionParticleSystem.GetComponent<ParticleSystemRenderer>();
         OnLaserHit particleCollision = smallShip.ionParticleSystem.AddComponent<OnLaserHit>();
-        particleCollision.relatedGameObject = smallShip.gameObject;
-        particleCollision.type = "ion";
+        //particleCollision.relatedGameObject = smallShip.gameObject;
+        //particleCollision.type = "ion";
 
         //This adds the new particle system to the pool
         if (smallShip.scene != null)

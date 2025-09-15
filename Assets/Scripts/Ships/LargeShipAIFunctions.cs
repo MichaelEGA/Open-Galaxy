@@ -475,7 +475,7 @@ public static class LargeShipAIFunctions
     public static void TurretTargetModeSelection(LargeShip largeShip, string tag)
     {
         LaserTurret laserTurret = largeShip.gameObject.GetComponent<LaserTurret>();
-
+        
         if (laserTurret != null)
         {
             if (tag.Contains("large_"))
@@ -495,6 +495,28 @@ public static class LargeShipAIFunctions
                 }
             }
         }
+
+        PlasmaTurret plasmaTurret = largeShip.gameObject.GetComponent<PlasmaTurret>();
+
+        if (plasmaTurret != null)
+        {
+            if (tag.Contains("large_"))
+            {
+                if (tag != plasmaTurret.largeTargetingMode)
+                {
+                    PlasmaTurretFunctions.NullifyLargeTurretTarget(plasmaTurret);
+                    plasmaTurret.largeTargetingMode = tag;
+                }
+            }
+            else if (tag.Contains("small_"))
+            {
+                if (tag != plasmaTurret.smallTargetingMode)
+                {
+                    PlasmaTurretFunctions.NullifySmallTurretTarget(plasmaTurret);
+                    plasmaTurret.smallTargetingMode = tag;
+                }
+            }
+        }
     }
 
     //This sets the accuracy of the turrets
@@ -511,6 +533,20 @@ public static class LargeShipAIFunctions
             else if (tag.Contains("small_"))
             {
                 laserTurret.smallTurretAccuracy = tag;
+            }
+        }
+
+        PlasmaTurret plasmaTurret = largeShip.gameObject.GetComponent<PlasmaTurret>();
+
+        if (plasmaTurret != null)
+        {
+            if (tag.Contains("large_"))
+            {
+                plasmaTurret.largeTurretAccuracy = tag;
+            }
+            else if (tag.Contains("small_"))
+            {
+                plasmaTurret.smallTurretAccuracy = tag;
             }
         }
     }

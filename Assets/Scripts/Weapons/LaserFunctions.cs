@@ -765,7 +765,7 @@ public static class LaserFunctions
             {
                 explosionChoice = "blackhole";
             }
-            if (laserColor == "red")
+            else if (laserColor == "red")
             {
                 explosionChoice = "laserblast_red";
             }

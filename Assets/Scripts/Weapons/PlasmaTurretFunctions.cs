@@ -4,12 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public static class LaserTurretFunctions
+public static class PlasmaTurretFunctions
 {
     #region turret set up
 
     //This sets up the turrets
-    public static void SetUpTurrets(LaserTurret turret)
+    public static void SetUpTurrets(PlasmaTurret turret)
     {
         if (turret.turretSetUp == false)
         {
@@ -29,31 +29,31 @@ public static class LaserTurretFunctions
                 {
                     turret.allegiance = turret.largeShip.allegiance;
                     turret.largeTurretAccuracy = turret.largeShip.aiTargetingMode;
-                    turret.laserColor = turret.largeShip.laserColor;
+                    turret.largeShip.hasPlasma = true;
                 }
                 else if (turret.smallShip != null)
                 {
                     turret.allegiance = turret.smallShip.allegiance;
                     turret.largeTurretAccuracy = turret.smallShip.aiTargetingMode;
-                    turret.laserColor = turret.smallShip.laserColor;
+                    turret.smallShip.hasPlasma = true;
                 }
             }
 
             //This loads the turret particle system   
-            LoadLargeLaserParticleSystem(turret);
+            LoadLargePlasmaParticleSystem(turret);
             LoadSmallLaserParticleSystem(turret);
             
             //This creates the turret GO for calculating rotation and position
             if (turret.turretGO == null)
             {
                 turret.turretGO = new GameObject();
-                turret.turretGO.name = "turretBase_" + turret.shipGO.name;
+                turret.turretGO.name = "plasmaturretBase_" + turret.shipGO.name;
             }
 
             //This gets all the current turret positions
             if (turret.turretPositions == null)
             {
-                turret.turretPositions = GameObjectUtils.FindAllChildTransformsContaining(turret.shipGO.transform, "turret", "turrettransforms", "turretBase", "plasma");
+                turret.turretPositions = GameObjectUtils.FindAllChildTransformsContaining(turret.shipGO.transform, "plasmaturret", "plasmaturrettransforms", "plasmaturretBase");
             }
 
             turret.turretSetUp = true;
@@ -61,33 +61,29 @@ public static class LaserTurretFunctions
     }
 
     //This loads the turret particle system
-    public static void LoadLargeLaserParticleSystem(LaserTurret turret)
+    public static void LoadLargePlasmaParticleSystem(PlasmaTurret turret)
     {
         Scene scene = SceneFunctions.GetScene(); //This gets the scene reference
 
         //This sets the turret to fire large lasers
-        GameObject largeLaser = Resources.Load(OGGetAddress.particles + "models/laser_turbo") as GameObject;
+        GameObject largeLaser = Resources.Load(OGGetAddress.particles + "models/plasma_turbo") as GameObject;
         turret.largeLaserMesh = largeLaser.GetComponent<MeshFilter>().sharedMesh;
-        turret.laserSize = "large";
+        turret.plasmaSize = "large";
 
         //This sets the laser colour material
-        Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
-        Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_green") as Material;
         Material yellowLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_yellow") as Material;
 
         //This set the laser colour light
-        GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
-        GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
         GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
 
         //This loads the particle system, particle system renderer and the particle collider
         GameObject particleSystemGO = new GameObject();
-        particleSystemGO.name = "largelaserparticlesystem_" + turret.gameObject.name;
+        particleSystemGO.name = "largeplasmaparticlesystem_" + turret.gameObject.name;
         ParticleSystem particleSystem = particleSystemGO.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = particleSystemGO.GetComponent<ParticleSystemRenderer>();
-        OnLaserTurretHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserTurretHit>();
-        onLaserTurretHit.particleSystemScript = particleSystem;
-        onLaserTurretHit.laserTurret = turret;
+        OnPlasmaTurretHit onPlasmaTurretHit = particleSystemGO.AddComponent<OnPlasmaTurretHit>();
+        onPlasmaTurretHit.particleSystemScript = particleSystem;
+        onPlasmaTurretHit.plasmaTurret = turret;
         
         //This adds the new particle system to the pool
         if (scene != null)
@@ -149,22 +145,9 @@ public static class LaserTurretFunctions
         particleSystemRenderer.alignment = ParticleSystemRenderSpace.Velocity;
         particleSystemRenderer.mesh = turret.largeLaserMesh;
 
-        if (turret.laserColor == "red")
-        {
-            particleSystemRenderer.material = redLaserMaterial;
-            lights.light = redLaserLight.GetComponent<Light>();
-        }
-        else if (turret.laserColor == "green")
-        {
-            particleSystemRenderer.material = greenLaserMaterial;
-            lights.light = greenLaserLight.GetComponent<Light>();
-        }
-        else if (turret.laserColor == "yellow")
-        {
-            particleSystemRenderer.material = yellowLaserMaterial;
-            lights.light = yellowLaserLight.GetComponent<Light>();
-        }
-
+        particleSystemRenderer.material = yellowLaserMaterial;
+        lights.light = yellowLaserLight.GetComponent<Light>();
+        
         //This prevents the particle system playing when loaded
         particleSystem.Stop();
 
@@ -174,33 +157,29 @@ public static class LaserTurretFunctions
     }
 
     //This loads the turret particle system
-    public static void LoadSmallLaserParticleSystem(LaserTurret turret)
+    public static void LoadSmallLaserParticleSystem(PlasmaTurret turret)
     {
         Scene scene = SceneFunctions.GetScene(); //This gets the scene reference
 
         //This loads the laser mesh
-        GameObject smallLaser = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
+        GameObject smallLaser = Resources.Load(OGGetAddress.particles + "models/plasma") as GameObject;
         turret.smallLaserMesh = smallLaser.GetComponent<MeshFilter>().sharedMesh;
-        turret.laserSize = "small";
+        turret.plasmaSize = "small";
 
         //This sets the laser colour material
-        Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
-        Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_green") as Material;
         Material yellowLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_yellow") as Material;
 
         //This set the laser colour light
-        GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
-        GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
         GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
 
         //This loads the particle system and the particle collider
         GameObject particleSystemGO = new GameObject();
-        particleSystemGO.name = "smalllaserparticlesystem_" + turret.gameObject.name;
+        particleSystemGO.name = "smallplasmaparticlesystem_" + turret.gameObject.name;
         ParticleSystem particleSystem = particleSystemGO.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = particleSystemGO.GetComponent<ParticleSystemRenderer>();
-        OnLaserTurretHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserTurretHit>();
-        onLaserTurretHit.particleSystemScript = particleSystem;
-        onLaserTurretHit.laserTurret = turret;
+        OnPlasmaTurretHit onPlasmaTurretHit = particleSystemGO.AddComponent<OnPlasmaTurretHit>();
+        onPlasmaTurretHit.particleSystemScript = particleSystem;
+        onPlasmaTurretHit.plasmaTurret = turret;
 
         //This adds the new particle system to the pool
         if (scene != null)
@@ -262,22 +241,9 @@ public static class LaserTurretFunctions
         particleSystemRenderer.alignment = ParticleSystemRenderSpace.Velocity;
         particleSystemRenderer.mesh = turret.smallLaserMesh;
 
-        if (turret.laserColor == "red")
-        {
-            particleSystemRenderer.material = redLaserMaterial;
-            lights.light = redLaserLight.GetComponent<Light>();
-        }
-        else if (turret.laserColor == "green")
-        {
-            particleSystemRenderer.material = greenLaserMaterial;
-            lights.light = greenLaserLight.GetComponent<Light>();
-        }
-        else if (turret.laserColor == "yellow")
-        {
-            particleSystemRenderer.material = yellowLaserMaterial;
-            lights.light = yellowLaserLight.GetComponent<Light>();
-        }
-
+        particleSystemRenderer.material = yellowLaserMaterial;
+        lights.light = yellowLaserLight.GetComponent<Light>();
+        
         //This prevents the particle system playing when loaded
         particleSystem.Stop();
 
@@ -287,7 +253,7 @@ public static class LaserTurretFunctions
     }
 
     //This sets the collision layer for the lasers
-    public static LayerMask SetLaserCollisionLayers(LaserTurret turret)
+    public static LayerMask SetLaserCollisionLayers(PlasmaTurret turret)
     {
         LayerMask collisionLayers = new LayerMask();
 
@@ -356,7 +322,7 @@ public static class LaserTurretFunctions
     #region main turret function
 
     //This function cycles through avalaible turrets and fire lasers
-    public static IEnumerator RunTurrets(LaserTurret turret)
+    public static IEnumerator RunTurrets(PlasmaTurret turret)
     {
         //This cycles through all the turrets and fires them
         if (turret.turretPositions != null & turret.turretGO != null & turret != null)
@@ -483,7 +449,7 @@ public static class LaserTurretFunctions
     #region targetting functions
 
     //This selects a target for the a large turret
-    public static GameObject GetTargetForLargeTurret(LaserTurret turret, GameObject turretPosition)
+    public static GameObject GetTargetForLargeTurret(PlasmaTurret turret, GameObject turretPosition)
     {
         GameObject target = null;
 
@@ -560,7 +526,7 @@ public static class LaserTurretFunctions
     }
 
     //This selects a target for a small turret
-    public static GameObject GetTargetForSmallTurret(LaserTurret turret, GameObject turretPosition)
+    public static GameObject GetTargetForSmallTurret(PlasmaTurret turret, GameObject turretPosition)
     {
         GameObject target = null;
 
@@ -637,13 +603,13 @@ public static class LaserTurretFunctions
     }
 
     //This nullifies a large turret target
-    public static void NullifyLargeTurretTarget(LaserTurret turret)
+    public static void NullifyLargeTurretTarget(PlasmaTurret turret)
     {
         turret.largeTargetGO = null;
     }
 
     //This nullifies a small turret target
-    public static void NullifySmallTurretTarget(LaserTurret turret)
+    public static void NullifySmallTurretTarget(PlasmaTurret turret)
     {
         turret.smallTargetGO = null;
     }
@@ -829,7 +795,7 @@ public static class LaserTurretFunctions
     #region collision functions
 
     //This handles an event where the laser hits something
-    public static void RunCollisionEvent(GameObject objectHit, List<ParticleCollisionEvent> collisionEvents, ParticleSystem particleSystemScript, LaserTurret laserTurret)
+    public static void RunCollisionEvent(GameObject objectHit, List<ParticleCollisionEvent> collisionEvents, ParticleSystem particleSystemScript, PlasmaTurret laserTurret)
     {
         //Get collision information
         List<Vector3> hitPositions = new List<Vector3>();
@@ -847,7 +813,7 @@ public static class LaserTurretFunctions
                 if (objectHitParent != laserTurret.gameObject)
                 {
                     //This gets key information on the object hit
-                    var objectHitDetails = LaserTurretFunctions.ObjectHitDetails(objectHit, hitPosition);
+                    var objectHitDetails = ObjectHitDetails(objectHit, hitPosition);
 
                     float shieldFront = objectHitDetails.shieldFront;
                     float shieldBack = objectHitDetails.shieldBack;
@@ -857,7 +823,7 @@ public static class LaserTurretFunctions
                     Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
 
                     //This instantiates an explosion at the hit position
-                    LaserTurretFunctions.InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.laserSize, laserTurret.laserColor, hasPlasma, audioManager);
+                    InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.plasmaSize, hasPlasma, audioManager);
 
                     //This applies damage to the target
                     ApplyDamage(laserTurret, objectHit, hitPosition);
@@ -923,7 +889,7 @@ public static class LaserTurretFunctions
     }
 
     //This instantiates the correct explosion at the hit position
-    public static void InstantiateLaserExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string mode, string laserColor, bool hasPlasma, Audio audioManager)
+    public static void InstantiateLaserExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string mode, bool hasPlasma, Audio audioManager)
     {
         //This selects the correct explosion colour
         string explosionChoice = "laserblast_red";
@@ -934,13 +900,9 @@ public static class LaserTurretFunctions
             {
                 explosionChoice = "blackhole";
             }
-            else if (laserColor == "red")
+            else
             {
-                explosionChoice = "laserblast_red";
-            }
-            else if (laserColor == "green")
-            {
-                explosionChoice = "laserblast_green";
+                explosionChoice = "laserblast_yellow";
             }
         }
         else
@@ -960,20 +922,20 @@ public static class LaserTurretFunctions
     }
 
     //This calculates and applies damage to the 
-    public static void ApplyDamage(LaserTurret laserTurret, GameObject objectHit, Vector3 hitPosition)
+    public static void ApplyDamage(PlasmaTurret plasmaTurret, GameObject objectHit, Vector3 hitPosition)
     {
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
         float damage = 0;
 
-        if (laserTurret.laserSize == "large")
+        if (plasmaTurret.plasmaSize == "large")
         {
-            damage = laserTurret.largeTurretDamage;
+            damage = plasmaTurret.largeTurretDamage;
         }
         else
         {
-            damage = laserTurret.smallTurretDamage;
+            damage = plasmaTurret.smallTurretDamage;
         }
 
         if (smallShip != null)
@@ -986,12 +948,6 @@ public static class LaserTurretFunctions
             DamageFunctions.TakeDamage_LargeShip(largeShip, damage, hitPosition);
         }
     }
-
-    #endregion
-
-    #region
-
-
 
     #endregion
 

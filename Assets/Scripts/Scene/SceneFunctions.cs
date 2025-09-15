@@ -1420,7 +1420,9 @@ public static class SceneFunctions
                 largeShip.shipLength = shipType.shipLength;
                 ship.name = largeShip.name;
 
+                //THE SCRIPT NEEDS TO VERIFY THAT THE TURRETS ARE PRESENT BEFORE ADDING THE SCRIPT
                 ship.AddComponent<LaserTurret>();
+                ship.AddComponent<PlasmaTurret>();
             }
 
             //Set ship position, rotation and scale

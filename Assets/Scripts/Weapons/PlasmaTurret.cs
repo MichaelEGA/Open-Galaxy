@@ -1,0 +1,62 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlasmaTurret : MonoBehaviour
+{
+    public SmallShip smallShip;
+    public LargeShip largeShip;
+    public Mesh smallLaserMesh;
+    public Mesh largeLaserMesh;
+    public Transform[] turretPositions;
+    public GameObject shipGO;
+    public GameObject turretGO;
+    public GameObject largeTargetGO;
+    public GameObject smallTargetGO;
+    public GameObject largeParticleSystemGO;
+    public ParticleSystem largeParticleSystem;
+    public ParticleSystemRenderer largeParticleSystemRenderer;
+    public GameObject smallParticleSystemGO;
+    public ParticleSystem smallParticleSystem;
+    public ParticleSystemRenderer smallParticleSystemRenderer;
+    public Audio audioManager;
+    public float smallTurretDelay = 3;
+    public float largeTurretDelay = 5;
+    public float smallTurretDelayActual;
+    public float largeTurretDelayActual;
+    public float largeTurretDamage = 50;
+    public float smallTurretDamage = 10;
+    public string audioFile = "Turbolaser";
+    public string allegiance;
+    public string largeTurretAccuracy;
+    public string smallTurretAccuracy;
+    public string plasmaSize;
+    public string largeTargetingMode;
+    public string smallTargetingMode;
+    public bool turretSetUp = false;
+    public bool requestingTarget;
+    public Task turretTask;
+
+    void Start()
+    {
+        PlasmaTurretFunctions.SetUpTurrets(this);
+    }
+
+    void Update()
+    {
+        if (turretTask == null)
+        {
+            turretTask = new Task(PlasmaTurretFunctions.RunTurrets(this));
+        }
+
+        if(turretTask != null)
+        {
+            if (turretTask.Running == false)
+            {
+                turretTask = new Task(PlasmaTurretFunctions.RunTurrets(this));
+            }
+        }
+    }
+}
+
+

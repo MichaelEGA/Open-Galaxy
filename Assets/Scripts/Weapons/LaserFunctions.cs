@@ -678,7 +678,7 @@ public static class LaserFunctions
                 if (objectHitParent != smallShip.gameObject)
                 {
                     //This gets key information on the object hit
-                    var objectHitDetails = LaserFunctions.ObjectHitDetails(objectHit, hitPosition);
+                    var objectHitDetails = ObjectHitDetails(objectHit, hitPosition);
 
                     float shieldFront = objectHitDetails.shieldFront;
                     float shieldBack = objectHitDetails.shieldBack;
@@ -688,7 +688,7 @@ public static class LaserFunctions
                     Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
 
                     //This instantiates an explosion at the hit position
-                    LaserFunctions.InstantiateLaserExplosion(smallShip.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, smallShip.laserColor, hasPlasma, audioManager);
+                    InstantiateLaserExplosion(smallShip.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, smallShip.laserColor, hasPlasma, audioManager);
 
                     //This applies damage to the target
                     ApplyDamage(smallShip, objectHit, hitPosition);

@@ -11,7 +11,7 @@ public static class ParticleFunctions
         ParticleSystem particleSystem = null;
         GameObject explosion = null;
 
-        //This instantiates a new explosion if there are none in the list
+        //This instantiates a new explosion
         if (explosion == null)
         {
             Object explosionObject = PoolUtils.FindPrefabObjectInPool(scene.particlePrefabPool, explosionName);

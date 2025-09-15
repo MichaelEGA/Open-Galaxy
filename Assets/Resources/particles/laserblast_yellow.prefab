@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 6006179345978937605}
   - component: {fileID: 6006807455705116535}
   m_Layer: 10
-  m_Name: hullstrike
+  m_Name: laserblast_yellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,7 +164,7 @@ ParticleSystem:
   m_GameObject: {fileID: 5881406103864158863}
   serializedVersion: 8
   lengthInSec: 1
-  simulationSpeed: 1
+  simulationSpeed: 5
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -1102,7 +1102,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 1
+        scalar: 5
         minScalar: 0
         maxCurve:
           serializedVersion: 2
@@ -1686,13 +1686,13 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     speedRange: {x: 0, y: 1}
-    tilesX: 9
-    tilesY: 1
+    tilesX: 6
+    tilesY: 6
     animationType: 0
     rowIndex: 0
     cycles: 1
     uvChannelMask: -1
-    rowMode: 0
+    rowMode: 1
     sprites:
     - sprite: {fileID: 0}
     flipU: 0
@@ -5008,7 +5008,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0a3adf6f8d0164441b2dbddee4ccd46f, type: 2}
+  - {fileID: 2100000, guid: f9a04959c1716d840a501697d7bb7e15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

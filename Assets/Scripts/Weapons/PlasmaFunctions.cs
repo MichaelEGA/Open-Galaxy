@@ -639,7 +639,7 @@ public static class PlasmaFunctions
                 if (objectHitParent != smallShip.gameObject)
                 {
                     //This gets key information on the object hit
-                    var objectHitDetails = LaserFunctions.ObjectHitDetails(objectHit, hitPosition);
+                    var objectHitDetails = ObjectHitDetails(objectHit, hitPosition);
 
                     float shieldFront = objectHitDetails.shieldFront;
                     float shieldBack = objectHitDetails.shieldBack;
@@ -649,7 +649,7 @@ public static class PlasmaFunctions
                     Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
 
                     //This instantiates an explosion at the hit position
-                    LaserFunctions.InstantiateLaserExplosion(smallShip.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, smallShip.laserColor, hasPlasma, audioManager);
+                    InstantiateLaserExplosion(smallShip.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, smallShip.laserColor, hasPlasma, audioManager);
 
                     //This applies damage to the target
                     ApplyDamage(smallShip, objectHit, hitPosition);
@@ -726,13 +726,9 @@ public static class PlasmaFunctions
             {
                 explosionChoice = "blackhole";
             }
-            if (laserColor == "red")
+            else
             {
-                explosionChoice = "laserblast_red";
-            }
-            else if (laserColor == "green")
-            {
-                explosionChoice = "laserblast_green";
+                explosionChoice = "laserblast_yellow";
             }
         }
         else
@@ -768,25 +764,25 @@ public static class PlasmaFunctions
     public static float CalculateLaserDamage(SmallShip smallShip)
     {
         float damage = 0;
-        float laserPower = 0;
-        float laserRating = 0;
-        float laserDamage = 0;
+        float plasmaPower = 0;
+        float plasmaRating = 0;
+        float plasmaDamage = 0;
 
-        laserPower = smallShip.laserPower;
-        laserRating = smallShip.laserRating;
-        laserDamage = 50;
+        plasmaPower = smallShip.laserPower;
+        plasmaRating = smallShip.laserRating;
+        plasmaDamage = 50;
 
-        if (laserPower > 50)
+        if (plasmaPower > 50)
         {
-            damage = (laserDamage / 100F) * laserRating;
+            damage = (plasmaDamage / 100F) * plasmaRating;
         }
-        else if (laserPower == 50f)
+        else if (plasmaPower == 50f)
         {
-            damage = (laserDamage / 100F) * laserRating;
+            damage = (plasmaDamage / 100F) * plasmaRating;
         }
-        else if (laserPower < 50f)
+        else if (plasmaPower < 50f)
         {
-            damage = (laserDamage / 100F) * laserRating;
+            damage = (plasmaDamage / 100F) * plasmaRating;
         }
 
         return damage;

@@ -610,7 +610,7 @@ public static class DamageFunctions
     }
 
     //This causes the ship to take damage from lasers
-    public static void TakeSystemsDamage_LargeShip(LargeShip largeShip, float damage, Vector3 hitPosition)
+    public static void TakeSystemDamage_LargeShip(LargeShip largeShip, float damage, Vector3 hitPosition)
     {
         if (Time.time - largeShip.loadTime > 10)
         {

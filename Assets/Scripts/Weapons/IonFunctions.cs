@@ -748,42 +748,42 @@ public static class IonFunctions
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
-        float damage = CalculateLaserDamage(playerShip);
+        float damage = CalculateIonDamage(playerShip);
 
         if (smallShip != null)
         {
-            DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, false);
+            DamageFunctions.TakeSystemDamage_SmallShip(smallShip, damage, hitPosition, false);
         }
 
         if (largeShip != null)
         {
-            DamageFunctions.TakeDamage_LargeShip(largeShip, damage, hitPosition);
+            DamageFunctions.TakeSystemDamage_LargeShip(largeShip, damage, hitPosition);
         }
     }
 
     //This calculates the laser damage
-    public static float CalculateLaserDamage(SmallShip smallShip)
+    public static float CalculateIonDamage(SmallShip smallShip)
     {
         float damage = 0;
-        float laserPower = 0;
-        float laserRating = 0;
-        float laserDamage = 0;
+        float ionPower = 0;
+        float ionRating = 0;
+        float ionDamage = 0;
 
-        laserPower = smallShip.laserPower;
-        laserRating = smallShip.laserRating;
-        laserDamage = 50;
+        ionPower = smallShip.laserPower;
+        ionRating = smallShip.laserRating;
+        ionDamage = 50;
 
-        if (laserPower > 50)
+        if (ionPower > 50)
         {
-            damage = (laserDamage / 100F) * laserRating;
+            damage = (ionDamage / 100F) * ionRating;
         }
-        else if (laserPower == 50f)
+        else if (ionPower == 50f)
         {
-            damage = (laserDamage / 100F) * laserRating;
+            damage = (ionDamage / 100F) * ionRating;
         }
-        else if (laserPower < 50f)
+        else if (ionPower < 50f)
         {
-            damage = (laserDamage / 100F) * laserRating;
+            damage = (ionDamage / 100F) * ionRating;
         }
 
         return damage;

@@ -25,9 +25,10 @@ public class ShipType
     public string thrustType;
     public string shipClass;
     public string explosionType;
-    public string smallturret;
-    public string largeturret;
+    public float smallturret;
+    public float largeturret;
     public float shipLength;
+    public string shieldType;
     public string modelauthor;
     public string textureauthor;
     public string allegiance;

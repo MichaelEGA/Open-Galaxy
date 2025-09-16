@@ -1148,7 +1148,7 @@ public static class MissionFunctions
 
                             if (smallShip != null)
                             {
-                                smallShip.hasRadidFire = hasRadidFire;
+                                smallShip.hasRapidFire = hasRadidFire;
                             }
                         }
                     }

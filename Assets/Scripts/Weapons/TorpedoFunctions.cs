@@ -541,7 +541,7 @@ public static class TorpedoFunctions
             {
                 if (smallShip.gameObject != firingShip.gameObject)
                 {
-                    DamageFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition);
+                    DamageFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
                     Task a = new Task(DamageFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
                 }
             }

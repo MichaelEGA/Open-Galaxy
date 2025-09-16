@@ -135,9 +135,10 @@ public class ShipTypeEditor : ScriptableWizard
             currentShip.thrustType = EditorGUILayout.TextField("Thrust Type:", currentShip.thrustType);
             currentShip.shipClass = EditorGUILayout.TextField("Ship Class:", currentShip.shipClass);
             currentShip.explosionType = EditorGUILayout.TextField("Explosion Type:", currentShip.explosionType);
-            currentShip.smallturret = EditorGUILayout.TextField("Small Turret:", currentShip.smallturret);
-            currentShip.largeturret = EditorGUILayout.TextField("Large Turret:", currentShip.largeturret);
+            currentShip.smallturret = EditorGUILayout.FloatField("Small Turret:", currentShip.smallturret);
+            currentShip.largeturret = EditorGUILayout.FloatField("Large Turret:", currentShip.largeturret);
             currentShip.shipLength = EditorGUILayout.FloatField("Ship Length:", currentShip.shipLength);
+            currentShip.shieldType = EditorGUILayout.TextField("Shield Type:", currentShip.shieldType);
             currentShip.modelauthor = EditorGUILayout.TextField("Model:", currentShip.modelauthor);
             currentShip.textureauthor = EditorGUILayout.TextField("Texture:", currentShip.textureauthor);
             currentShip.allegiance = EditorGUILayout.TextField("Allegiance:", currentShip.allegiance);
@@ -743,9 +744,10 @@ public class ShipTypeEditor : ScriptableWizard
         public string thrustType;
         public string shipClass;
         public string explosionType;
-        public string smallturret;
-        public string largeturret;
+        public float smallturret;
+        public float largeturret;
         public float shipLength;
+        public string shieldType;
         public string modelauthor;
         public string textureauthor;
         public string allegiance;

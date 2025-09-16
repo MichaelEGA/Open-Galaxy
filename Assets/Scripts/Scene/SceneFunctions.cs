@@ -1343,6 +1343,7 @@ public static class SceneFunctions
                 smallShip.explosionType = shipType.explosionType;
                 smallShip.shipLength = shipType.shipLength;
                 smallShip.controllerSenstivity = ogSettings.controllersensitivity;
+                smallShip.shieldType = shipType.shieldType;
                 ship.name = smallShip.name;
 
                 if (smallShip.torpedoNumber == 0)
@@ -1415,14 +1416,18 @@ public static class SceneFunctions
                 largeShip.loadTime = Time.time;
                 largeShip.cargo = cargo;
                 largeShip.explosionType = shipType.explosionType;
-                largeShip.smallturret = shipType.smallturret;
-                largeShip.largeturret = shipType.largeturret;
                 largeShip.shipLength = shipType.shipLength;
+                largeShip.shieldType = shipType.shieldType;
                 ship.name = largeShip.name;
 
                 //THE SCRIPT NEEDS TO VERIFY THAT THE TURRETS ARE PRESENT BEFORE ADDING THE SCRIPT
-                ship.AddComponent<LaserTurret>();
-                ship.AddComponent<PlasmaTurret>();
+                LaserTurret laserTurret = ship.AddComponent<LaserTurret>();
+                laserTurret.largeTurretDamage = shipType.largeturret;
+                laserTurret.smallTurretDamage = shipType.smallturret;
+
+                PlasmaTurret plasmaTurret = ship.AddComponent<PlasmaTurret>();
+                plasmaTurret.largeTurretDamage = shipType.largeturret;
+                plasmaTurret.smallTurretDamage = shipType.smallturret;
             }
 
             //Set ship position, rotation and scale

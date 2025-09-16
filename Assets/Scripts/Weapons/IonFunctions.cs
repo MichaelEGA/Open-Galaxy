@@ -357,7 +357,7 @@ public static class IonFunctions
             {
                 smallShip.weaponMode = "all";
             }
-            else if (smallShip.weaponMode == "dual" & smallShip.hasRadidFire == true || smallShip.weaponMode == "all" & smallShip.hasRadidFire == true)
+            else if (smallShip.weaponMode == "dual" & smallShip.hasRapidFire == true || smallShip.weaponMode == "all" & smallShip.hasRapidFire == true)
             {
                 smallShip.weaponMode = "rapid";
             }
@@ -636,17 +636,17 @@ public static class IonFunctions
                 if (objectHitParent != smallShip.gameObject)
                 {
                     //This gets key information on the object hit
-                    var objectHitDetails = LaserFunctions.ObjectHitDetails(objectHit, hitPosition);
+                    var objectHitDetails = IonFunctions.ObjectHitDetails(objectHit, hitPosition);
 
                     float shieldFront = objectHitDetails.shieldFront;
                     float shieldBack = objectHitDetails.shieldBack;
                     float forward = objectHitDetails.forward;
-                    bool hasPlasma = objectHitDetails.hasPlasma;
+                    string shieldType = objectHitDetails.shieldType;
 
                     Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
 
                     //This instantiates an explosion at the hit position
-                    LaserFunctions.InstantiateLaserExplosion(smallShip.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, smallShip.laserColor, hasPlasma, audioManager);
+                    IonFunctions.InstantiateIonExplosion(smallShip.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, smallShip.laserColor, shieldType, audioManager);
 
                     //This applies damage to the target
                     ApplyDamage(smallShip, objectHit, hitPosition);
@@ -676,19 +676,19 @@ public static class IonFunctions
     }
 
     //This gets key information from the object that has been hit by the laser
-    public static (float shieldFront, float shieldBack, float forward, bool hasPlasma) ObjectHitDetails(GameObject objectHit, Vector3 hitPosition)
+    public static (float shieldFront, float shieldBack, float forward, string shieldType) ObjectHitDetails(GameObject objectHit, Vector3 hitPosition)
     {
         float shieldFront = 0;
         float shieldBack = 0;
         float forward = 0;
-        bool hasPlasma = false;
+        string shieldType = "default";
 
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
         if (smallShip != null)
         {
-            hasPlasma = smallShip.hasPlasma;
+            shieldType = smallShip.shieldType;
 
             shieldFront = smallShip.frontShieldLevel;
             shieldBack = smallShip.rearShieldLevel;
@@ -699,7 +699,7 @@ public static class IonFunctions
 
         if (largeShip != null)
         {
-            hasPlasma = largeShip.hasPlasma;
+            shieldType = largeShip.shieldType;
 
             shieldFront = largeShip.frontShieldLevel;
             shieldBack = largeShip.rearShieldLevel;
@@ -708,18 +708,18 @@ public static class IonFunctions
             forward = -Vector3.Dot(largeShip.gameObject.transform.position, relativePosition.normalized);
         }
 
-        return (shieldFront, shieldBack, forward, hasPlasma);
+        return (shieldFront, shieldBack, forward, shieldType);
     }
 
     //This instantiates the correct explosion at the hit position
-    public static void InstantiateLaserExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string laserColor, bool hasPlasma, Audio audioManager)
+    public static void InstantiateIonExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string laserColor, string shieldType, Audio audioManager)
     {
         //This selects the correct explosion colour
         string explosionChoice = "laserblast_red";
 
         if (forward > 0 & shieldFront > 0 || forward < 0 & shieldBack > 0)
         {
-            if (hasPlasma == true)
+            if (shieldType == "blackhole")
             {
                 explosionChoice = "blackhole";
             }
@@ -743,16 +743,23 @@ public static class IonFunctions
     }
 
     //This calculates and applies damage to the 
-    public static void ApplyDamage(SmallShip playerShip, GameObject objectHit, Vector3 hitPosition)
+    public static void ApplyDamage(SmallShip attackingShip, GameObject objectHit, Vector3 hitPosition)
     {
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
-        float damage = CalculateIonDamage(playerShip);
+        float damage = CalculateIonDamage(attackingShip);
 
         if (smallShip != null)
         {
-            DamageFunctions.TakeSystemDamage_SmallShip(smallShip, damage, hitPosition, false);
+            bool rapidFire = false;
+
+            if (attackingShip.weaponMode == "rapid")
+            {
+                rapidFire = true;
+            }
+
+            DamageFunctions.TakeSystemDamage_SmallShip(smallShip, damage, hitPosition, rapidFire);
         }
 
         if (largeShip != null)

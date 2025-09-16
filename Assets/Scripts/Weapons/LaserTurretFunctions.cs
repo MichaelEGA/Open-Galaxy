@@ -375,7 +375,7 @@ public static class LaserTurretFunctions
                             activateTurret = true;
                         }
                     }
-                    else if (turretPosition.name.Contains("large") & !turret.smallTargetingMode.Contains("noweapons"))
+                    else if (turretPosition.name.Contains("large") & !turret.largeTargetingMode.Contains("noweapons"))
                     {
                         if (turret.largeTurretDelayActual < Time.time)
                         {
@@ -852,12 +852,12 @@ public static class LaserTurretFunctions
                     float shieldFront = objectHitDetails.shieldFront;
                     float shieldBack = objectHitDetails.shieldBack;
                     float forward = objectHitDetails.forward;
-                    bool hasPlasma = objectHitDetails.hasPlasma;
+                    string shieldType = objectHitDetails.shieldType;
 
                     Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
 
                     //This instantiates an explosion at the hit position
-                    LaserTurretFunctions.InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.laserSize, laserTurret.laserColor, hasPlasma, audioManager);
+                    LaserTurretFunctions.InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.laserSize, laserTurret.laserColor, shieldType, audioManager);
 
                     //This applies damage to the target
                     ApplyDamage(laserTurret, objectHit, hitPosition);
@@ -887,19 +887,19 @@ public static class LaserTurretFunctions
     }
 
     //This gets key information from the object that has been hit by the laser
-    public static (float shieldFront, float shieldBack, float forward, bool hasPlasma) ObjectHitDetails(GameObject objectHit, Vector3 hitPosition)
+    public static (float shieldFront, float shieldBack, float forward, string shieldType) ObjectHitDetails(GameObject objectHit, Vector3 hitPosition)
     {
         float shieldFront = 0;
         float shieldBack = 0;
         float forward = 0;
-        bool hasPlasma = false;
+        string shieldType = "default";
 
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
         if (smallShip != null)
         {
-            hasPlasma = smallShip.hasPlasma;
+            shieldType = smallShip.shieldType;
 
             shieldFront = smallShip.frontShieldLevel;
             shieldBack = smallShip.rearShieldLevel;
@@ -910,7 +910,7 @@ public static class LaserTurretFunctions
 
         if (largeShip != null)
         {
-            hasPlasma = largeShip.hasPlasma;
+            shieldType = largeShip.shieldType;
 
             shieldFront = largeShip.frontShieldLevel;
             shieldBack = largeShip.rearShieldLevel;
@@ -919,18 +919,18 @@ public static class LaserTurretFunctions
             forward = -Vector3.Dot(largeShip.gameObject.transform.position, relativePosition.normalized);
         }
 
-        return (shieldFront, shieldBack, forward, hasPlasma);
+        return (shieldFront, shieldBack, forward, shieldType);
     }
 
     //This instantiates the correct explosion at the hit position
-    public static void InstantiateLaserExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string mode, string laserColor, bool hasPlasma, Audio audioManager)
+    public static void InstantiateLaserExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string mode, string laserColor, string shieldType, Audio audioManager)
     {
         //This selects the correct explosion colour
         string explosionChoice = "laserblast_red";
 
         if (forward > 0 & shieldFront > 0 || forward < 0 & shieldBack > 0)
         {
-            if (hasPlasma == true)
+            if (shieldType == "blackhole")
             {
                 explosionChoice = "blackhole";
             }
@@ -978,7 +978,7 @@ public static class LaserTurretFunctions
 
         if (smallShip != null)
         {
-            DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, false);
+            DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, smallShip.hasRapidFire);
         }
 
         if (largeShip != null)
@@ -986,12 +986,6 @@ public static class LaserTurretFunctions
             DamageFunctions.TakeDamage_LargeShip(largeShip, damage, hitPosition);
         }
     }
-
-    #endregion
-
-    #region
-
-
 
     #endregion
 

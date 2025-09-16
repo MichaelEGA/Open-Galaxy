@@ -17,6 +17,7 @@ public class SmallShip : MonoBehaviour
     public bool scanned = false;
     public bool jumpingToHyperspace;
     public bool exitingHyperspace;
+    public string shieldType;
     public string cargo = "no cargo";
     public string explosionType;
 
@@ -140,7 +141,7 @@ public class SmallShip : MonoBehaviour
     [Header("Ship Weapons")]
     public bool weaponsLock = false;
     public bool preventWeaponChange = false;
-    public bool hasRadidFire = false;
+    public bool hasRapidFire = false;
     public string activeWeapon = "lasers";
     public string weaponMode = "single";
     [HideInInspector] public float toggleWeaponPressedTime;

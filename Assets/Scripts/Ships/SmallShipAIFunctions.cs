@@ -751,7 +751,7 @@ public static class SmallShipAIFunctions
                 {
                     bool dontFire = CheckFire(smallShip);
 
-                    if (dontFire == false & smallShip.hasRadidFire == true)
+                    if (dontFire == false & smallShip.hasRapidFire == true)
                     {
                         smallShip.weaponMode = "rapid";
                         LaserFunctions.InitiateFiring(smallShip);
@@ -919,7 +919,7 @@ public static class SmallShipAIFunctions
                 {
                     bool dontFire = CheckFire(smallShip);
 
-                    if (dontFire == false & smallShip.hasRadidFire == true)
+                    if (dontFire == false & smallShip.hasRapidFire == true)
                     {
                         smallShip.weaponMode = "rapid";
                         IonFunctions.InitiateFiring(smallShip);
@@ -1150,7 +1150,7 @@ public static class SmallShipAIFunctions
             {
                 if (smallShip.interceptForward > 0.95f & smallShip.target.gameObject.activeSelf == true)
                 {
-                    if (smallShip.hasRadidFire == true)
+                    if (smallShip.hasRapidFire == true)
                     {
                         if (smallShip.targetSmallShip != null)
                         {

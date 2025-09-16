@@ -16,6 +16,7 @@ public class LargeShip : MonoBehaviour
     public string cargo = "no cargo";
     public string thrustType = "thruster_blue_large";
     public string explosionType;
+    public string shieldType;
     public float shipLength;
     [HideInInspector] public bool explode;
 
@@ -120,8 +121,6 @@ public class LargeShip : MonoBehaviour
     public bool hasPlasma;
     public bool turretsLoaded;
     public LaserTurret[] turrets;
-    public string largeturret;
-    public string smallturret;
     public string aiTargetingMode = "high";
 
     [Header("Collisions")]

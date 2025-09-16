@@ -27,7 +27,7 @@ public static class DamageFunctions
                     //This calculates the damage
                     if (smallShip.frontShieldLevel > 0)
                     {
-                        if (smallShip.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        if (smallShip.shieldType == "blackhole" & isRapidFire == false) //This minimises the damage on ships with black hole shields
                         {
                             damage = (damage / 100f) * 10;
                         }
@@ -57,7 +57,7 @@ public static class DamageFunctions
                     //This calculates the damage
                     if (smallShip.rearShieldLevel > 0)
                     {
-                        if (smallShip.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        if (smallShip.shieldType == "blackhole" & isRapidFire == false) //This minimises the damage on ships with black hole shields
                         {
                             damage = (damage / 100f) * 10;
                         }

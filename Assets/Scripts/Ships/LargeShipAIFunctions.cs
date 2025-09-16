@@ -551,11 +551,6 @@ public static class LargeShipAIFunctions
         }
     }
 
-    //This prevents the turrets from firing
-    public static void NoWeapons(LargeShip largeShip)
-    {
-        largeShip.weaponsLock = true;
-    }
 
     #endregion
 

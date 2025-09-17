@@ -316,6 +316,16 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- This function will affect all ships that contain the given name \n";
         }
+        else if (name == "activatesystemstargeting")
+        {
+            description =
+            "Activate Systems Targeting \n " +
+            "\n " +
+            "This node activates systems targeting on the specified ship" +
+            "\n " +
+           "Extra Information \n" +
+           "- This function will affect all ships that contain the given name \n";
+        }
         else if (name == "activatewaypointmarker")
         {
             description =

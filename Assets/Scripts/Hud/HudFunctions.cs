@@ -1682,6 +1682,126 @@ public static class HudFunctions
         }
     }
 
+    //This displays the system transforms
+    public static void DisplaySystemTransforms(Hud hud)
+    {
+        if (hud.scene != null)
+        {
+            if (hud.scene.systemTransformsPool != null)
+            {
+                if (hud.systemSelectionBrace == null)
+                {
+                    hud.systemSelectionBrace = GameObject.Find("SystemSelectionBrace");
+                }
+
+                if (hud.systemSelectionBracePool == null)
+                {
+                    hud.systemSelectionBracePool = new List<GameObject>();
+                }
+
+                if (Time.timeScale != 0)
+                {
+                    GameObject systemSelectionBrace = hud.systemSelectionBrace;
+
+                    if (systemSelectionBrace != null)
+                    {
+                        systemSelectionBrace.SetActive(false);
+                    }
+
+                    int transformCount = 0;
+
+                    foreach (Transform tempTransform in hud.scene.systemTransformsPool)
+                    {
+                        if (tempTransform.gameObject.activeSelf == true)
+                        {
+                            transformCount++;
+                        }
+                    }
+
+                    if (hud.systemSelectionBracePool.Count < transformCount)
+                    {
+                        var clone = GameObject.Instantiate(hud.systemSelectionBrace) as GameObject;
+                        clone.transform.SetParent(hud.transform);
+                        clone.SetActive(true);
+                        hud.systemSelectionBracePool.Add(clone);
+                    }
+                    else if (hud.systemSelectionBracePool.Count > transformCount)
+                    {
+                        //This destroys all the current selection braces
+                        foreach (GameObject selectionBrace in hud.systemSelectionBracePool)
+                        {
+                            GameObject.Destroy(selectionBrace);
+                        }
+
+                        hud.systemSelectionBracePool.Clear();
+                    }
+
+                    if (hud.systemSelectionBracePool.Count > 0)
+                    {
+                        foreach (GameObject selectionBrace in hud.systemSelectionBracePool)
+                        {
+                            foreach (Transform systemTransform in hud.scene.systemTransformsPool)
+                            {
+                                if (systemTransform.gameObject.activeSelf == true)
+                                {
+                                    if (hud.mainCamera == null)
+                                    {
+                                        if (hud.smallShip != null)
+                                        {
+                                            if (hud.smallShip.mainCamera != null)
+                                            {
+                                                hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
+                                            }
+                                        }
+                                    }
+
+                                    if (hud.secondaryCamera == null)
+                                    {
+                                        if (hud.smallShip != null)
+                                        {
+                                            if (hud.smallShip.followCamera != null)
+                                            {
+                                                hud.secondaryCamera = hud.smallShip.followCamera.GetComponent<Camera>();
+                                            }
+                                        }
+                                    }
+
+                                    if (hud.mainCamera != null)
+                                    {
+                                        if (hud.smallShip != null & systemTransform != null)
+                                        {
+                                            //This gets the targets position on the camera
+                                            Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(systemTransform.position);
+
+                                            if (hud.scene.followCameraIsActive == true)
+                                            {
+                                                screenPosition = hud.secondaryCamera.WorldToScreenPoint(systemTransform.position);
+                                            }
+
+                                            //This checks that the target is on screen
+                                            if (systemTransform.GetComponentInChildren<Renderer>().isVisible == true)
+                                            {
+                                                //This sets the braces to active when the target is on screen
+                                                selectionBrace.SetActive(true);
+
+                                                //This translates that position to the selection brace
+                                                selectionBrace.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+                                            }
+                                            else
+                                            {
+                                                selectionBrace.SetActive(false);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //This makes the reticule flash
     public static IEnumerator TurnReticuleOnAndOff(Hud hud, RawImage reticule)
     {

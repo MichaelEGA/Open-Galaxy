@@ -36,6 +36,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> cockpitPool;
     [HideInInspector] public List<GameObject> tilesPool;
     [HideInInspector] public List<GameObject> tilesSetPool;
+    [HideInInspector] public List<Transform> systemTransformsPool;
     [HideInInspector] public GameObject hyperspaceTunnel;
     [HideInInspector] public GameObject cockpit;
 

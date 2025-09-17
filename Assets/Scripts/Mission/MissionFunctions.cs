@@ -23,9 +23,9 @@ public static class MissionFunctions
         SceneFunctions.LoadScenePrefabs();
 
         //This looks for the mission manager and if it doesn't find one creates one
-        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>(FindObjectsInactive.Include); 
-        
-        if(missionManager != null )
+        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>(FindObjectsInactive.Include);
+
+        if (missionManager != null)
         {
             GameObject.Destroy(missionManager);
         }
@@ -33,12 +33,12 @@ public static class MissionFunctions
         GameObject missionManagerGO = new GameObject();
         missionManagerGO.name = "MissionManager";
         missionManager = missionManagerGO.AddComponent<MissionManager>();
-        
+
         missionManager.missionAddress = missionAddress;
 
         //This loads the Json file
-        TextAsset missionDataFile = new TextAsset(); 
-        
+        TextAsset missionDataFile = new TextAsset();
+
         if (addressIsExternal == false)
         {
             missionDataFile = Resources.Load(missionManager.missionAddress + missionName) as TextAsset;
@@ -249,13 +249,13 @@ public static class MissionFunctions
                 SetFogDistanceAndColor(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Fog settings set", startTime);
             }
-           
+
         }
 
         //Then this preloads all the none-ship objects in the scene
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-             if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
+            if (missionEvent.eventType == "preload_loadasteroids" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadAsteroids(missionEvent));
                 while (a.Running == true) { yield return null; }
@@ -273,7 +273,7 @@ public static class MissionFunctions
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Multiple props loaded on the ground", startTime);
             }
-            
+
         }
 
         //Then this preloads all the ships in the scene
@@ -428,6 +428,11 @@ public static class MissionFunctions
             ActivateRapidFire(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "activatesystemstargeting")
+        {
+            ActivateSystemsTargeting(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "activatewaypointmarker")
         {
             ActivateWaypointMarker(missionEvent);
@@ -492,7 +497,7 @@ public static class MissionFunctions
         {
             DisplayMissionBriefing(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }    
+        }
         else if (missionEvent.eventType == "fadeinfromcolour")
         {
             Task a = new Task(FadeInFromColour(missionEvent));
@@ -621,7 +626,7 @@ public static class MissionFunctions
             {
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
-        }     
+        }
         else if (missionEvent.eventType == "ifshipisactive")
         {
             bool shipTypeIsActive = IfShipIsActive(missionEvent);
@@ -939,7 +944,7 @@ public static class MissionFunctions
             }
         }
 
-        missionManager.messagePlaying = false;        
+        missionManager.messagePlaying = false;
     }
 
     #endregion
@@ -1150,6 +1155,38 @@ public static class MissionFunctions
                             {
                                 smallShip.hasRapidFire = hasRadidFire;
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //This activates systems targetting on the selected ship
+    public static void ActivateSystemsTargeting(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string shipName = missionEvent.data1;
+
+        bool activate = false;
+
+        if (bool.TryParse(missionEvent.data2, out _))
+        {
+            activate = bool.Parse(missionEvent.data2);
+        }
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(shipName))
+                        {
+                            SystemFunctions.ActivateSystemTransforms(ship, activate);
                         }
                     }
                 }
@@ -2571,7 +2608,7 @@ public static class MissionFunctions
                 {
                     if (ship != null)
                     {
-                        if (ship.name.Contains(missionEvent.data1))
+                        if (ship.name.Contains(shipName))
                         {
                             SmallShip smallShip = ship.GetComponent<SmallShip>();
                             LargeShip largeShip = ship.GetComponent<LargeShip>();

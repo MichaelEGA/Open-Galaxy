@@ -25,6 +25,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ActivateRapidFire(node);
         }
+        else if (node.nodeType == "activatesystemstargeting")
+        {
+            NodeTypes.Draw_ActivateSystemsTargeting(node);
+        }
         else if (node.nodeType == "activatewaypointmarker")
         {
             NodeTypes.Draw_ActivateWaypointMarker(node);

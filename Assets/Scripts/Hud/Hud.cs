@@ -39,6 +39,9 @@ public class Hud : MonoBehaviour
 
     [Header("Target Information")]
     public AudioSource lockBeep;
+    [HideInInspector] public GameObject directionArrow;
+    [HideInInspector] public GameObject selectionBrace;
+    [HideInInspector] public GameObject systemSelectionBrace;
     [HideInInspector] public GameObject targetObject;
     [HideInInspector] public Text targetDistanceText;
     [HideInInspector] public Text targetType;
@@ -79,8 +82,6 @@ public class Hud : MonoBehaviour
     [HideInInspector] public GameObject rearRadarCircle;
     [HideInInspector] public GameObject rearRadarDot;
     [HideInInspector] public GameObject rearRadarBrace;
-    [HideInInspector] public GameObject directionArrow;
-    [HideInInspector] public GameObject selectionBrace;
     [HideInInspector] public Material wireframeMaterial;
     [HideInInspector] public float previousArrowRotation;
     [HideInInspector] public float arrowTargetRotation;
@@ -109,6 +110,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public List<GameObject> radarPool;
     [HideInInspector] public List<GameObject> frontRadarDotsPool;
     [HideInInspector] public List<GameObject> rearRadarDotsPool;
+    [HideInInspector] public List<GameObject> systemSelectionBracePool;
 
     [Header("Hud Task Pool")]
     public List<Task> tasks;
@@ -142,6 +144,7 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplayTargetSystems(this);
         HudFunctions.DisplayTargetHull(this);
         HudFunctions.DisplayReticule(this);
+        HudFunctions.DisplaySystemTransforms(this);
 
         HudFunctions.MoveReticule(this);
 

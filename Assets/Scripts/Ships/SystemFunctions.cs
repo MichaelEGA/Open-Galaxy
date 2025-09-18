@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public static class SystemFunctions
 {
@@ -37,7 +38,8 @@ public static class SystemFunctions
             {
                 scene.systemTransformsPool = new List<Transform>();
             }
-            else
+            
+            if (scene.systemTransformsPool != null)
             {
                 foreach (Transform systemTransform in systemTransforms)
                 {
@@ -70,8 +72,16 @@ public static class SystemFunctions
     //This gets all the system transforms on a given ship
     public static Transform[] GetSystemTransforms(GameObject ship)
     {
-        Transform[] systemTranforms = GameObjectUtils.FindAllChildTransformsContaining(ship.transform, "system", "systemtransforms");
+        Transform[] systemTranforms = GameObjectUtils.FindAllChildTransformsContainingIncludingInactive(ship.transform, "system", "systemtransforms");
 
+        if (systemTranforms != null)
+        {
+            foreach (Transform systemTranform in systemTranforms)
+            {
+                systemTranform.gameObject.layer = LayerMask.NameToLayer("invisible");
+            }
+        }
+       
         return (systemTranforms);
     }
 

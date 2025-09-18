@@ -1,8 +1,10 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 public static class GameObjectUtils
 {
@@ -307,7 +309,7 @@ public static class GameObjectUtils
             if (tempTransform.childCount > 0)
             {
                 childTransforms.AddRange(GetAllChildTransforms(tempTransform));
-            }              
+            }
         }
 
         return childTransforms.ToArray();
@@ -426,6 +428,54 @@ public static class GameObjectUtils
 
         return selectedTransform;
     }
+
+    //Gets every child of a give transform
+    public static Transform[] GetAllChildTransformsIncludingInactive(Transform transform)
+    {
+        List<Transform> childTransforms = new List<Transform>();
+        Transform[] allTransforms = transform.GetComponentsInChildren<Transform>(true);
+
+        foreach (Transform t in allTransforms)
+        {
+            if (t != transform)
+            {
+                childTransforms.Add(t);
+            }
+        }
+        return childTransforms.ToArray();
+    }
+
+    public static Transform[] FindAllChildTransformsContainingIncludingInactive(Transform transform, string searchString, string exclusionString1 = "none", string exclusionString2 = "none", string exclusionString3 = "none")
+    {
+        Transform[] allTransforms = GetAllChildTransformsIncludingInactive(transform);
+        List<Transform> selectedTransforms = new List<Transform>();
+
+        foreach (Transform child in allTransforms)
+        {
+            if (child.transform.name.Contains(searchString))
+            {
+                if (exclusionString1 == "none")
+                {
+                    selectedTransforms.Add(child);
+                }
+                else if (!child.name.Contains(exclusionString1) & exclusionString2 == "none" & exclusionString3 == "none")
+                {
+                    selectedTransforms.Add(child);
+                }
+                else if (!child.name.Contains(exclusionString1) & !child.name.Contains(exclusionString2) & exclusionString3 == "none")
+                {
+                    selectedTransforms.Add(child);
+                }
+                else if (!child.name.Contains(exclusionString1) & !child.name.Contains(exclusionString2) & !child.name.Contains(exclusionString3))
+                {
+                    selectedTransforms.Add(child);
+                }
+            }
+        }
+
+        return selectedTransforms.ToArray();
+    }
+
 
     //RIGIDBODY FUNCTIONS
 

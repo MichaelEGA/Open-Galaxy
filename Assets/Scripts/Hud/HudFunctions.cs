@@ -1687,26 +1687,26 @@ public static class HudFunctions
     {
         if (hud.scene != null)
         {
+            if (hud.systemSelectionBrace == null)
+            {
+                hud.systemSelectionBrace = GameObject.Find("SystemSelectionBrace");
+
+                if (hud.systemSelectionBrace != null)
+                {
+                    hud.systemSelectionBrace.SetActive(false);
+                }
+            }
+
+            if (hud.systemSelectionBracePool == null)
+            {
+                hud.systemSelectionBracePool = new List<GameObject>();
+            }
+            
             if (hud.scene.systemTransformsPool != null)
             {
-                if (hud.systemSelectionBrace == null)
-                {
-                    hud.systemSelectionBrace = GameObject.Find("SystemSelectionBrace");
-                }
-
-                if (hud.systemSelectionBracePool == null)
-                {
-                    hud.systemSelectionBracePool = new List<GameObject>();
-                }
-
                 if (Time.timeScale != 0)
                 {
                     GameObject systemSelectionBrace = hud.systemSelectionBrace;
-
-                    if (systemSelectionBrace != null)
-                    {
-                        systemSelectionBrace.SetActive(false);
-                    }
 
                     int transformCount = 0;
 
@@ -1738,9 +1738,13 @@ public static class HudFunctions
 
                     if (hud.systemSelectionBracePool.Count > 0)
                     {
+                        int braceCount = 0;
+
                         foreach (GameObject selectionBrace in hud.systemSelectionBracePool)
                         {
-                            foreach (Transform systemTransform in hud.scene.systemTransformsPool)
+                            Transform systemTransform = FindNextSystemTransform(hud, braceCount);
+
+                            if (systemTransform != null)
                             {
                                 if (systemTransform.gameObject.activeSelf == true)
                                 {
@@ -1778,8 +1782,11 @@ public static class HudFunctions
                                                 screenPosition = hud.secondaryCamera.WorldToScreenPoint(systemTransform.position);
                                             }
 
+                                            Vector3 targetPosition = systemTransform.position - hud.smallShip.transform.position;
+                                            float forward = Vector3.Dot(hud.smallShip.transform.forward, targetPosition.normalized);
+
                                             //This checks that the target is on screen
-                                            if (systemTransform.GetComponentInChildren<Renderer>().isVisible == true)
+                                            if (systemTransform.GetComponentInChildren<Renderer>().isVisible == true & forward > 0)
                                             {
                                                 //This sets the braces to active when the target is on screen
                                                 selectionBrace.SetActive(true);
@@ -1795,11 +1802,38 @@ public static class HudFunctions
                                     }
                                 }
                             }
+
+                            braceCount++;
                         }
                     }
                 }
             }
         }
+    }
+
+    //This finds the next active system transform
+    public static Transform FindNextSystemTransform(Hud hud, int count)
+    {
+        int tempCount = 0;
+        
+        Transform transform = null;
+
+        foreach(Transform systemTransform in hud.scene.systemTransformsPool)
+        {
+            if (systemTransform.gameObject.activeSelf == true)
+            {
+                if (tempCount == count)
+                {
+                    transform = systemTransform;
+
+                    break;
+                }
+
+                tempCount++;
+            }
+        }
+
+        return transform;
     }
 
     //This makes the reticule flash

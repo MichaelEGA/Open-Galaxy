@@ -655,9 +655,21 @@ public static class NodeDescriptions
         else if (name == "ifshipssystemsarelessthan")
         {
             description =
-             "If Ships Systesm are Less Than \n " +
+             "If Ships Systems are Less Than \n " +
              "\n " +
              "This function checks the systems of the designated ship and returns true or false according to whether the ship's sytems are less or more than the designated amount. \n" +
+             "\n " +
+             "Extra Information \n" +
+             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+             "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
+             "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
+        else if (name == "ifsystemisactive")
+        {
+            description =
+             "If System Is Active \n " +
+             "\n " +
+             "This function checks if a particular system on the ship is active or not, i.e. shield, engine, radar, dovinbasal \n" +
              "\n " +
              "Extra Information \n" +
              "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +

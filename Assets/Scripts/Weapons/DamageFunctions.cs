@@ -877,4 +877,19 @@ public static class DamageFunctions
     }
 
     #endregion
+
+    #region system damage functions
+
+    //This applies damage to the system
+    public static void TakeSystemDamage(ShipSystem shipSystem, float damage)
+    {
+        shipSystem.hull = shipSystem.hull - damage;
+
+        if (shipSystem.hull <= 0)
+        {
+            //Intantiate explosion and deactivate ship systemm
+        }
+    }
+
+    #endregion
 }

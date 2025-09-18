@@ -169,6 +169,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfShipsSystemsAreLessThan(node);
         }
+        else if (node.nodeType == "ifsystemisactive")
+        {
+            NodeTypes.Draw_IfSystemIsActive(node);
+        }
         else if (node.nodeType == "loadsingleship")
         {
             NodeTypes.Draw_LoadSingleShip(node);

@@ -99,6 +99,7 @@ public static class WindowFunctions
         buttonList.Add("ifshipofallegianceisactive");
         buttonList.Add("ifshipsshieldsarelessthan");
         buttonList.Add("ifshipssystemsarelessthan");
+        buttonList.Add("ifsystemisactive");
         buttonList.Add("loadmultipleships");
         buttonList.Add("loadmultipleshipsfromhangar");
         buttonList.Add("loadmultipleshipsonground");

@@ -731,6 +731,19 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
+        else if (missionEvent.eventType == "ifsystemisactive")
+        {
+            bool isActive = IfSystemIsActive(missionEvent);
+
+            if (isActive == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
         else if (missionEvent.eventType == "loadsingleship")
         {
             LoadSingleShip(missionEvent);
@@ -1186,7 +1199,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(shipName))
                         {
-                            SystemFunctions.ActivateSystemTransforms(ship, activate);
+                            ShipSystemFunctions.ActivateSystemTransforms(ship, activate);
                         }
                     }
                 }
@@ -2638,7 +2651,7 @@ public static class MissionFunctions
         return isLessThan;
     }
 
-    //This checks the ship distance to its waypoint
+    //This checks if the systems health is less tahn
     public static bool IfShipsSystemsAreLessThan(MissionEvent missionEvent)
     {
         bool islessthanamount = false;
@@ -2688,6 +2701,37 @@ public static class MissionFunctions
         }
 
         return islessthanamount;
+    }
+
+    //This checks whether a particular system on the ship is still active or not i.e. shield, engine, radar, dovin basal
+    public static bool IfSystemIsActive(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string shipName = missionEvent.data1;
+        string system = missionEvent.data2;
+
+        bool isActive = false;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject ship in scene.objectPool)
+                {
+                    if (ship != null)
+                    {
+                        if (ship.name.Contains(shipName))
+                        {
+                            isActive = ShipSystemFunctions.SystemIsActive(ship, system);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return isActive;
     }
 
     //This loads the asteroid field

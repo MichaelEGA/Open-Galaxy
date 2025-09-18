@@ -881,13 +881,14 @@ public static class DamageFunctions
     #region system damage functions
 
     //This applies damage to the system
-    public static void TakeSystemDamage(ShipSystem shipSystem, float damage)
+    public static void TakeShipSystemDamage(ShipSystem shipSystem, float damage)
     {
         shipSystem.hull = shipSystem.hull - damage;
 
         if (shipSystem.hull <= 0)
         {
             //Intantiate explosion and deactivate ship systemm
+            Debug.Log("ship system " + shipSystem.transform.name + " was destroyed");
         }
     }
 

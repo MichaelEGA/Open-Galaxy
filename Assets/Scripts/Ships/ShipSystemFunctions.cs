@@ -18,6 +18,11 @@ public static class ShipSystemFunctions
                 foreach (Transform systemTransform in systemTransforms)
                 {
                     systemTransform.gameObject.SetActive(activate);
+                    
+                    if (systemTransform.GetComponent<ShipSystem>() == null)
+                    {
+                        systemTransform.AddComponent<ShipSystem>();
+                    }
                 }
 
                 AddTransformsToPool(systemTransforms);

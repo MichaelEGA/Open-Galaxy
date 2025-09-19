@@ -275,7 +275,7 @@ public static class PlasmaTurretFunctions
             layerNames.Add(tempAllegiance.allegiance); //This makes a list of collision layers and their corresponding integer
         }
 
-        collisionLayers = LayerMask.GetMask("collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
+        collisionLayers = LayerMask.GetMask("collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "invisible");
 
         if (allegiance == null)
         {
@@ -808,6 +808,9 @@ public static class PlasmaTurretFunctions
 
             GameObject objectHitParent = ReturnParent(objectHit); //This gets the colliders object parent  
 
+            Collider hitCollider = collisionEvents[i].colliderComponent as Collider; // Get the specific collider andd object that was hit in this event
+            GameObject hitChildObject = hitCollider.gameObject;
+
             if (laserTurret != null & objectHitParent != null)
             {
                 if (objectHitParent != laserTurret.gameObject)
@@ -826,7 +829,7 @@ public static class PlasmaTurretFunctions
                     InstantiatePlasmaExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.plasmaSize, shieldType, audioManager);
 
                     //This applies damage to the target
-                    ApplyDamage(laserTurret, objectHit, hitPosition);
+                    ApplyDamage(laserTurret, objectHit, hitPosition, hitChildObject);
                 }
             }
         }
@@ -922,10 +925,16 @@ public static class PlasmaTurretFunctions
     }
 
     //This calculates and applies damage to the 
-    public static void ApplyDamage(PlasmaTurret plasmaTurret, GameObject objectHit, Vector3 hitPosition)
+    public static void ApplyDamage(PlasmaTurret plasmaTurret, GameObject objectHit, Vector3 hitPosition, GameObject childObject = null)
     {
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
+        ShipSystem shipSystem = null;
+
+        if (childObject != null)
+        {
+            shipSystem = childObject.gameObject.GetComponent<ShipSystem>();
+        }
 
         float damage = 0;
 
@@ -946,6 +955,11 @@ public static class PlasmaTurretFunctions
         if (largeShip != null)
         {
             DamageFunctions.TakeDamage_LargeShip(largeShip, damage, hitPosition);
+        }
+
+        if (shipSystem != null)
+        {
+            DamageFunctions.TakeShipSystemDamage(shipSystem, damage);
         }
     }
 

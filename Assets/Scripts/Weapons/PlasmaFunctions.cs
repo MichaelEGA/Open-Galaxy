@@ -198,14 +198,14 @@ public static class PlasmaFunctions
 
             }
 
-            collisionLayers = LayerMask.GetMask("collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
+            collisionLayers = LayerMask.GetMask("collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "invisible");
 
             collisionLayers &= ~(1 << GetLayerInt(allegiance.allegiance, layerNames));
 
         }
         else
         {
-            collisionLayers = LayerMask.GetMask("collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
+            collisionLayers = LayerMask.GetMask("collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "invisible");
         }
 
         return collisionLayers;
@@ -634,6 +634,9 @@ public static class PlasmaFunctions
 
             GameObject objectHitParent = ReturnParent(objectHit); //This gets the colliders object parent  
 
+            Collider hitCollider = collisionEvents[i].colliderComponent as Collider; // Get the specific collider andd object that was hit in this event
+            GameObject hitChildObject = hitCollider.gameObject;
+
             if (smallShip != null & objectHitParent != null)
             {
                 if (objectHitParent != smallShip.gameObject)
@@ -652,7 +655,7 @@ public static class PlasmaFunctions
                     InstantiatePlasmaExplosion(smallShip.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, smallShip.laserColor, shieldType, audioManager);
 
                     //This applies damage to the target
-                    ApplyDamage(smallShip, objectHit, hitPosition);
+                    ApplyDamage(smallShip, objectHit, hitPosition, hitChildObject);
                 }
             }
         }
@@ -742,10 +745,16 @@ public static class PlasmaFunctions
     }
 
     //This calculates and applies damage to the 
-    public static void ApplyDamage(SmallShip attackingShip, GameObject objectHit, Vector3 hitPosition)
+    public static void ApplyDamage(SmallShip attackingShip, GameObject objectHit, Vector3 hitPosition, GameObject childObject = null)
     {
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
-        LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
+        LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>(); 
+        ShipSystem shipSystem = null;
+
+        if (childObject != null)
+        {
+            shipSystem = childObject.gameObject.GetComponent<ShipSystem>();
+        }
 
         float damage = CalculateLaserDamage(attackingShip);
 
@@ -764,6 +773,11 @@ public static class PlasmaFunctions
         if (largeShip != null)
         {
             DamageFunctions.TakeDamage_LargeShip(largeShip, damage, hitPosition);
+        }
+
+        if (shipSystem != null)
+        {
+            DamageFunctions.TakeShipSystemDamage(shipSystem, damage);
         }
     }
 

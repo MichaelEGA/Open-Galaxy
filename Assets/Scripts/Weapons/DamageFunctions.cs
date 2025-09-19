@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public static class DamageFunctions
 {
@@ -887,8 +888,22 @@ public static class DamageFunctions
 
         if (shipSystem.hull <= 0)
         {
+            ParticleFunctions.InstantiatePersistantExplosion(shipSystem.gameObject, shipSystem.transform.position, "explosion_wreck", 1);
+            shipSystem.gameObject.SetActive(false);
+            HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was destroyed.");
+        }
+    }
+
+    //This causes the ship to take damage from lasers and torpedoes
+    public static void TakeShipSystemSystemDamage(ShipSystem shipSystem, float damage)
+    {
+        shipSystem.systems = shipSystem.systems - damage;
+
+        if (shipSystem.systems <= 0 & shipSystem.disabled == false)
+        {
+            shipSystem.disabled = true;
             //Intantiate explosion and deactivate ship systemm
-            Debug.Log("ship system " + shipSystem.transform.name + " was destroyed");
+            HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was disabled.");
         }
     }
 

@@ -60,7 +60,7 @@ public class Torpedo : MonoBehaviour
 
             SmallShip targetSmallShip = collision.gameObject.GetComponentInParent<SmallShip>();
 
-            if (targetSmallShip != null) 
+            if (targetSmallShip != null)
             {
                 if (targetSmallShip.hasPlasma == false)
                 {
@@ -77,6 +77,18 @@ public class Torpedo : MonoBehaviour
             }
 
             break;
+        }
+
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            GameObject hitChild = contact.otherCollider.gameObject;
+
+            ShipSystem shipSystem = hitChild.GetComponent<ShipSystem>();
+
+            if (shipSystem != null)
+            {
+                DamageFunctions.TakeShipSystemDamage(shipSystem, damagePower);
+            }
         }
 
         TorpedoFunctions.DeactivateTorpedo(this);

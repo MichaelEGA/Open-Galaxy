@@ -386,7 +386,6 @@ public static class TorpedoFunctions
         {
             Physics.IgnoreCollision(collider, torpedoCollider, true);
         }
-
     }
 
     #endregion

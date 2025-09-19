@@ -718,7 +718,7 @@ public static class IonFunctions
     public static void InstantiateIonExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string laserColor, string shieldType, Audio audioManager)
     {
         //This selects the correct explosion colour
-        string explosionChoice = "laserblast_red";
+        string explosionChoice = "laserblast_ion";
 
         if (forward > 0 & shieldFront > 0 || forward < 0 & shieldBack > 0)
         {
@@ -726,18 +726,14 @@ public static class IonFunctions
             {
                 explosionChoice = "blackhole";
             }
-            else if (laserColor == "red")
+            else
             {
-                explosionChoice = "laserblast_red";
-            }
-            else if (laserColor == "green")
-            {
-                explosionChoice = "laserblast_green";
+                explosionChoice = "laserblast_ion";
             }
         }
         else
         {
-            explosionChoice = "hullstrike";
+            explosionChoice = "laserblast_ion";
         }
 
         //This instantiates an explosion at the point of impact

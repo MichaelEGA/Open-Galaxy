@@ -888,7 +888,14 @@ public static class DamageFunctions
 
         if (shipSystem.hull <= 0)
         {
-            ParticleFunctions.InstantiatePersistantExplosion(shipSystem.gameObject, shipSystem.transform.position, "explosion_wreck", 1);
+            float explosionScale = GetExplosionScale(shipSystem.gameObject);
+            
+            if (shipSystem.ionParticleSystemGO != null)
+            {
+                GameObject.Destroy(shipSystem.ionParticleSystemGO);
+            }
+
+            ParticleFunctions.InstantiatePersistantExplosion(shipSystem.gameObject, shipSystem.transform.position, "explosion_system", explosionScale);
             shipSystem.gameObject.SetActive(false);
             HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was destroyed.");
         }
@@ -902,9 +909,27 @@ public static class DamageFunctions
         if (shipSystem.systems <= 0 & shipSystem.disabled == false)
         {
             shipSystem.disabled = true;
-            //Intantiate explosion and deactivate ship systemm
+            float explosionScale = GetExplosionScale(shipSystem.gameObject);
+            ParticleSystem ionParticleSystem = ParticleFunctions.InstantiatePersistantExplosion(shipSystem.gameObject, shipSystem.transform.position, "explosion_system_ion", explosionScale);
+            shipSystem.ionParticleSystemGO = ionParticleSystem.gameObject;
             HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was disabled.");
         }
+    }
+
+    public static float GetExplosionScale(GameObject systemGO)
+    {
+        float scale = 1;
+
+        Renderer targetRenderer = systemGO.GetComponent<Renderer>();
+       
+        if (targetRenderer != null )
+        {
+            Vector3 targetSize = targetRenderer.bounds.size;
+
+            scale = targetSize.x;
+        }
+
+        return scale;
     }
 
     #endregion

@@ -286,7 +286,8 @@ public static class TorpedoFunctions
         if (torpedo != null)
         {
             torpedoScript = torpedo.GetComponent<Torpedo>();
-            torpedoScript.firingShip = smallShip;
+            torpedoScript.scene = scene;
+            torpedoScript.attackingShip = smallShip;
             torpedoScript.destroyAfter = Time.time + 30;
             torpedoScript.fireTime = Time.time;
             torpedoScript.target = null;
@@ -343,7 +344,7 @@ public static class TorpedoFunctions
                     torpedoScript.target = target;
                 }
 
-                torpedoScript.firingShip = smallShip;
+                torpedoScript.attackingShip = smallShip;
                 torpedoScript.destroyAfter = Time.time + 30;
 
                 GameObjectUtils.AddMeshColliders(torpedo, true);
@@ -382,7 +383,7 @@ public static class TorpedoFunctions
 
         Collider torpedoCollider = torpedo.gameObject.GetComponentInChildren<Collider>();
 
-        foreach (Collider collider in torpedo.firingShip.colliders)
+        foreach (Collider collider in torpedo.attackingShip.colliders)
         {
             Physics.IgnoreCollision(collider, torpedoCollider, true);
         }
@@ -528,30 +529,52 @@ public static class TorpedoFunctions
 
     #region damage
 
-    //This causes the ship to take damage from torpedos
-    public static void CauseTorpedoDamage(SmallShip firingShip, GameObject other, Torpedo torpedo, Vector3 hitPosition)
+    //This runs the torpedo collision event
+    public static void RunCollisionEvent(Torpedo torpedo, Collision collision)
     {
-        SmallShip smallShip = other.GetComponentInParent<SmallShip>();
-        LargeShip largeShip = other.GetComponentInParent<LargeShip>();
+        CauseTorpedoDamage(torpedo.attackingShip, collision.gameObject, torpedo, collision.transform.position);
 
-        if (Time.time > 10)
+        foreach (ContactPoint contact in collision.contacts)
         {
-            if (smallShip != null)
+            Scene scene = SceneFunctions.GetScene();
+
+            SmallShip targetSmallShip = collision.gameObject.GetComponentInParent<SmallShip>();
+
+            if (targetSmallShip != null)
             {
-                if (smallShip.gameObject != firingShip.gameObject)
+                if (targetSmallShip.hasPlasma == false)
                 {
-                    DamageFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
-                    Task a = new Task(DamageFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
+                    ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
+                }
+                else
+                {
+                    ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "blackhole", 6, torpedo.audioManager);
                 }
             }
-            else if (largeShip != null)
+            else
             {
-                DamageFunctions.TakeDamage_LargeShip(largeShip, torpedo.damagePower * 4, hitPosition);
+                ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
+            }
+
+            break;
+        }
+
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            GameObject hitChild = contact.otherCollider.gameObject;
+
+            ShipSystem shipSystem = hitChild.GetComponent<ShipSystem>();
+
+            if (shipSystem != null)
+            {
+                DamageFunctions.TakeShipSystemDamage(shipSystem, torpedo.damagePower);
             }
         }
+
+        DeactivateTorpedo(torpedo);
     }
 
-    //Destroy close to target
+    //Destroy close to target event
     public static void DestroyCloseToTarget(Torpedo torpedo)
     {
         if (torpedo.target != null)
@@ -562,7 +585,7 @@ public static class TorpedoFunctions
 
             if (distance < 25)
             {
-                CauseTorpedoDamage(torpedo.firingShip, torpedo.target, torpedo, torpedo.transform.position);
+                CauseTorpedoDamage(torpedo.attackingShip, torpedo.target, torpedo, torpedo.transform.position);
 
                 Scene scene = SceneFunctions.GetScene();
 
@@ -583,6 +606,29 @@ public static class TorpedoFunctions
                 }
 
                 DeactivateTorpedo(torpedo);
+            }
+        }
+    }
+
+    //This causes the ship to take damage from torpedos
+    public static void CauseTorpedoDamage(SmallShip firingShip, GameObject other, Torpedo torpedo, Vector3 hitPosition)
+    {
+        SmallShip smallShip = other.GetComponentInParent<SmallShip>();
+        LargeShip largeShip = other.GetComponentInParent<LargeShip>();
+
+        if (Time.time > 10)
+        {
+            if (smallShip != null)
+            {
+                if (smallShip.gameObject != firingShip.gameObject)
+                {
+                    DamageFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
+                    Task a = new Task(DamageFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
+                }
+            }
+            else if (largeShip != null)
+            {
+                DamageFunctions.TakeDamage_LargeShip(largeShip, torpedo.damagePower * 4, hitPosition);
             }
         }
     }

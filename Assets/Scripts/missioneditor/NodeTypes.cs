@@ -1593,7 +1593,7 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options5 = new List<string>();
-        options5.Add("small_nochange");
+        options5.Add("nochange");
         options5.Add("small_low");
         options5.Add("small_medium");
         options5.Add("small_high");

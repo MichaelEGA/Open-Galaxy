@@ -5,7 +5,7 @@ using UnityEngine;
 public class Torpedo : MonoBehaviour
 {
     [Header("Key References")]
-    public SmallShip firingShip;
+    public SmallShip attackingShip;
     [HideInInspector] public Rigidbody torpedoRigidbody;
     [HideInInspector] public Audio audioManager;
 
@@ -52,45 +52,6 @@ public class Torpedo : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        TorpedoFunctions.CauseTorpedoDamage(firingShip, collision.gameObject, this, collision.transform.position);
-
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            Scene scene = SceneFunctions.GetScene();
-
-            SmallShip targetSmallShip = collision.gameObject.GetComponentInParent<SmallShip>();
-
-            if (targetSmallShip != null)
-            {
-                if (targetSmallShip.hasPlasma == false)
-                {
-                    ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion_torpedo", 3f, audioManager, "mid_explosion_02", 1500, "Explosions");
-                }
-                else
-                {
-                    ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "blackhole", 6, audioManager);
-                }
-            }
-            else
-            {
-                ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion_torpedo", 3f, audioManager, "mid_explosion_02", 1500, "Explosions");
-            }
-
-            break;
-        }
-
-        foreach (ContactPoint contact in collision.contacts)
-        {
-            GameObject hitChild = contact.otherCollider.gameObject;
-
-            ShipSystem shipSystem = hitChild.GetComponent<ShipSystem>();
-
-            if (shipSystem != null)
-            {
-                DamageFunctions.TakeShipSystemDamage(shipSystem, damagePower);
-            }
-        }
-
-        TorpedoFunctions.DeactivateTorpedo(this);
+        TorpedoFunctions.RunCollisionEvent(this, collision);
     }
 }

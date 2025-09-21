@@ -6,6 +6,8 @@ public class Torpedo : MonoBehaviour
 {
     [Header("Key References")]
     public SmallShip attackingShip;
+    public SmallShip targetSmallShip;
+    public LargeShip targetLargeShip;
     [HideInInspector] public Rigidbody torpedoRigidbody;
     [HideInInspector] public Audio audioManager;
 
@@ -35,6 +37,10 @@ public class Torpedo : MonoBehaviour
     [HideInInspector] public float rollInput;
     [HideInInspector] public float turnInput;
 
+    [Header("Counter Measures")]
+    public bool targetWarned;
+    public float pressedTime;
+
     private void Start()
     {
         TorpedoFunctions.IgnoreColliders(this);
@@ -48,6 +54,7 @@ public class Torpedo : MonoBehaviour
         TorpedoFunctions.TorpedoMove(this);
         TorpedoFunctions.DestroyCloseToTarget(this);
         TorpedoFunctions.DestroyAfterTime(this);
+        TorpedoFunctions.CounterMeasures(this);
     }
 
     void OnCollisionEnter(Collision collision)

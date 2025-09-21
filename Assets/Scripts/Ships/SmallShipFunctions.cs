@@ -171,6 +171,7 @@ public static class SmallShipFunctions
                 smallShip.toggleWeaponNumber = keyboard.capsLockKey.isPressed;
                 smallShip.matchSpeed = keyboard.eKey.isPressed;
                 smallShip.focusCamera = mouse.rightButton.isPressed;
+                smallShip.fireCounterMeasures = keyboard.spaceKey.isPressed;
             }
         }
     }

@@ -136,6 +136,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool matchSpeed;
     [HideInInspector] public bool focusCamera;
     [HideInInspector] public bool contextButton;
+    [HideInInspector] public bool fireCounterMeasures;
     [HideInInspector] public float toggleCameraPressTime;
 
     [Header("Ship Weapons")]
@@ -194,8 +195,6 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool hasTorpedos;
     [HideInInspector] public bool torpedoLockingOn;
     [HideInInspector] public bool torpedoLockedOn;
-
-
 
     [Header("Ship Targetting")]
     public GameObject waypoint;

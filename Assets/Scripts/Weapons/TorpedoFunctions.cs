@@ -286,7 +286,6 @@ public static class TorpedoFunctions
         if (torpedo != null)
         {
             torpedoScript = torpedo.GetComponent<Torpedo>();
-            torpedoScript.scene = scene;
             torpedoScript.attackingShip = smallShip;
             torpedoScript.destroyAfter = Time.time + 30;
             torpedoScript.fireTime = Time.time;
@@ -342,6 +341,16 @@ public static class TorpedoFunctions
                 if (smallShip.torpedoLockedOn == true)
                 {
                     torpedoScript.target = target;
+
+                    if (torpedoScript.targetSmallShip == null)
+                    {
+                        torpedoScript.targetSmallShip = target.GetComponent<SmallShip>();
+                    }
+
+                    if (torpedoScript.targetLargeShip == null)
+                    {
+                        torpedoScript.targetLargeShip = target.GetComponent<LargeShip>();
+                    }
                 }
 
                 torpedoScript.attackingShip = smallShip;
@@ -523,6 +532,66 @@ public static class TorpedoFunctions
             //This adds makes the ship move forward
             torpedo.torpedoRigidbody.AddForce(torpedo.gameObject.transform.position + torpedo.gameObject.transform.forward * Time.fixedDeltaTime * torpedo.thrustSpeed * 60000);
         }     
+    }
+
+    #endregion
+
+    #region countermeasures
+
+    //This checks if the enemy ship has fired countermeasures and takes appropriate action
+    public static void CounterMeasures(Torpedo torpedo)
+    {
+        if (torpedo.target != null)
+        {
+            float distance = Vector3.Distance(torpedo.gameObject.transform.position, torpedo.target.transform.position);
+
+            if (torpedo.targetSmallShip != null)
+            {
+                if (torpedo.targetSmallShip.isAI == false)
+                {
+                    if (torpedo.targetWarned == false)
+                    {
+                        torpedo.targetWarned = true;
+
+                        HudFunctions.AddToShipLog("Hostile torpedo locked and incoming");
+
+                        //Play warning sound
+                    }
+
+                    //Display torpedo information on hud
+                }
+
+                if (distance > 1000 & torpedo.pressedTime + 5 < Time.time)
+                {
+                    if (torpedo.targetSmallShip.fireCounterMeasures == true)
+                    {
+                        //Play sound
+
+                        if (torpedo.targetSmallShip.isAI == false)
+                        {
+                            HudFunctions.AddToShipLog("Counter measure fired: No Effect");
+                        }
+
+                        torpedo.pressedTime = Time.time;
+                    }
+                }
+
+                if (distance < 1000 & torpedo.pressedTime + 5 < Time.time)
+                {
+                    if (torpedo.targetSmallShip.fireCounterMeasures == true)
+                    {
+                        //Play sound
+
+                        DeactivateTorpedo(torpedo);
+
+                        if (torpedo.targetSmallShip.isAI == false)
+                        {
+                            HudFunctions.AddToShipLog("Counter measure fire: Torpedo deactivated");
+                        }
+                    }
+                }  
+            }
+        }
     }
 
     #endregion

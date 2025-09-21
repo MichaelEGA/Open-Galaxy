@@ -65,7 +65,6 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float maneuvarabilityActual;
     [HideInInspector] public bool spinShip;
 
-
     [Header("Docking")]
     [HideInInspector] public DockingPoint[] dockingPoints;
     public GameObject targetDockingPoint;
@@ -84,6 +83,7 @@ public class LargeShip : MonoBehaviour
     [Header("Ship Weapons")]
     public bool weaponsLock = false;
     [HideInInspector] public string laserColor = "red";
+    [HideInInspector] public bool fireCounterMeasures;
 
     [Header("Ship Controls")]
     public bool controlLock;

@@ -4760,7 +4760,6 @@ public static class MissionFunctions
         if (exitMenu != null) { GameObject.Destroy(exitMenu.gameObject); }
         if (loadingScreen != null) { GameObject.Destroy(loadingScreen); }
         if (fade != null) { GameObject.Destroy(fade); }
-        if (cockpitAnchor != null) { GameObject.Destroy(cockpitAnchor); }
         if (missionBriefing != null) { GameObject.Destroy(missionBriefing); }
         if (nextMissionScreen != null) { GameObject.Destroy(nextMissionScreen); }
 

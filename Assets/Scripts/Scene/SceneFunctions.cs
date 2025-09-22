@@ -2730,6 +2730,13 @@ public static class SceneFunctions
             FollowCamera.transform.parent = null;
         }
 
+        GameObject CockpitCamera = GameObject.Find("Cockpit Camera");
+
+        if (CockpitCamera != null)
+        {
+            CockpitCamera.transform.parent = null;
+        }
+
         TerrainManager terrainManager = GameObject.FindAnyObjectByType<TerrainManager>();
 
         if (terrainManager != null)
@@ -2812,14 +2819,21 @@ public static class SceneFunctions
             scene.torpedosPool.Clear();
         }
 
-        if (scene.cockpit != null)
-        {
-            GameObject.Destroy(scene.cockpit);
-        }
+        //if (scene.cockpit != null)
+        //{
+        //    GameObject.Destroy(scene.cockpit);
+        //}
 
         if (scene.centerPivot != null)
         {
             GameObject.Destroy(scene.centerPivot);
+        }
+
+        GameObject CockpitAnchor = GameObject.Find("Cockpit Anchor");
+
+        if (CockpitAnchor != null)
+        {
+            GameObject.Destroy(CockpitAnchor);
         }
     }
 

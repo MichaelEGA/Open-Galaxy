@@ -126,9 +126,11 @@ public static class LaserFunctions
 
         //This loads the particle system and the particle collider
         smallShip.laserMuzzleFlashParticleSystem = new GameObject();
+        smallShip.laserMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
         smallShip.laserMuzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + smallShip.gameObject.name;
         ParticleSystem particleSystem = smallShip.laserMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = smallShip.laserMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
+
 
         //This sets the particle system to be subordinate to the smallship
         particleSystem.transform.SetParent(smallShip.transform);

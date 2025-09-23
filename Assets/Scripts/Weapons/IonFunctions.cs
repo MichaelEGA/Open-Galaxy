@@ -105,6 +105,7 @@ public static class IonFunctions
         //This loads the particle system and the particle collider
         smallShip.ionMuzzleFlashParticleSystem = new GameObject();
         smallShip.ionMuzzleFlashParticleSystem.name = "ionmuzzleflashparticlesystem_" + smallShip.gameObject.name;
+        smallShip.ionMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
         ParticleSystem particleSystem = smallShip.ionMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = smallShip.ionMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
 

@@ -106,6 +106,7 @@ public static class PlasmaFunctions
         //This loads the particle system and the particle collider
         smallShip.plasmaMuzzleFlashParticleSystem = new GameObject();
         smallShip.plasmaMuzzleFlashParticleSystem.name = "plasmaMuzzleflashparticlesystem_" + smallShip.gameObject.name;
+        smallShip.plasmaMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
         ParticleSystem particleSystem = smallShip.plasmaMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = smallShip.plasmaMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
 

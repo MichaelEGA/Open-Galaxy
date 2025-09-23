@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public static class TorpedoFunctions
 {
@@ -558,7 +560,13 @@ public static class TorpedoFunctions
                         //Play warning sound
                     }
 
-                    //Display torpedo information on hud
+                    //This displays information on the hud to warn the player
+                    if (torpedo.hud == null)
+                    {
+                        torpedo.hud = HudFunctions.GetHud();
+                    }
+
+                    HudFunctions.DisplayCounterMeasureWarning(torpedo.hud, distance);
                 }
 
                 if (distance > 1000 & torpedo.pressedTime + 5 < Time.time)
@@ -714,7 +722,25 @@ public static class TorpedoFunctions
     //This causes a torpedo to explode on impact, deactivates and puts it pack in the torpedo pool
     public static void DeactivateTorpedo(Torpedo torpedo)
     {
+        ClearHudWarning(torpedo);
         torpedo.gameObject.SetActive(false);
+    }
+
+    public static void ClearHudWarning(Torpedo torpedo)
+    {
+        if (torpedo.targetSmallShip != null)
+        {
+            if (torpedo.targetSmallShip.isAI == false)
+            {
+                //This clears the counter measure warning on the hud
+                if (torpedo.hud == null)
+                {
+                    torpedo.hud = HudFunctions.GetHud();
+                }
+
+                HudFunctions.ClearCounterMeasureWarning(torpedo.hud);
+            }
+        }
     }
 
     #endregion

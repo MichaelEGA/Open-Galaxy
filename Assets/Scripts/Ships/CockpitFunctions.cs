@@ -195,10 +195,6 @@ public static class CockpitFunctions
             }
         }
     }
-    public static bool IsCloseEnough(Vector3 a, Vector3 b, float epsilon)
-    {
-        return Vector3.Distance(a, b) < epsilon;
-    }
 
     #endregion
 
@@ -512,8 +508,6 @@ public static class CockpitFunctions
                     smallShip.currentRotation = Quaternion.RotateTowards(smallShip.currentRotation, focusRotation, step2);
                     smallShip.cockpitCamera.transform.localRotation = smallShip.currentRotation;
                 }
-
-
             }
         }
     }

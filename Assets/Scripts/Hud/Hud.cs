@@ -37,6 +37,9 @@ public class Hud : MonoBehaviour
     [HideInInspector] public RawImage shieldRearInside;
     [HideInInspector] public RawImage shieldRearOutside;
 
+    [Header("Counter Measure System")]
+    [HideInInspector] public Text counterMeasureWarning;
+
     [Header("Target Information")]
     public AudioSource lockBeep;
     [HideInInspector] public GameObject directionArrow;

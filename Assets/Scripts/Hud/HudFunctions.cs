@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.InputSystem;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public static class HudFunctions
 {
@@ -53,7 +53,6 @@ public static class HudFunctions
                 }
             }
         }
-
     }
 
     //This loads the radar camera
@@ -487,6 +486,49 @@ public static class HudFunctions
         if (hud.systemsText != null & hud.smallShip != null & Time.timeScale != 0)
         {
             hud.systemsText.text = hud.smallShip.systemsLevel.ToString("000");
+        }
+    }
+
+    #endregion
+
+    #region counter measure display
+
+    //Display ship info
+    public static void DisplayCounterMeasureWarning(Hud hud, float distance)
+    {
+        //This looks for the ship info object to see if they have been loaded into the hud or not
+        if (hud.counterMeasureWarning == null)
+        {
+            GameObject counterMeasureGO = GameObject.Find("CounterMeasureWarning");
+            if (counterMeasureGO != null) { hud.counterMeasureWarning = counterMeasureGO.GetComponent<Text>(); }
+        }
+
+        //This displays the counter measure warning
+        if (hud.counterMeasureWarning != null)
+        {
+            if (distance > 1000)
+            {
+                hud.counterMeasureWarning.text = "WARNING TORPEDO LOCKED \n" + distance;
+            }
+            else
+            {
+                hud.counterMeasureWarning.text = "FIRE COUNTERMEASURE! \n" + distance;
+            }
+        }
+    }
+
+    public static void ClearCounterMeasureWarning(Hud hud)
+    {
+        if (hud.counterMeasureWarning == null)
+        {
+            GameObject counterMeasureGO = GameObject.Find("CounterMeasureWarning");
+            if (counterMeasureGO != null) { hud.counterMeasureWarning = counterMeasureGO.GetComponent<Text>(); }
+        }
+
+        //This clears the counter measure warning
+        if (hud.counterMeasureWarning != null)
+        {
+            hud.counterMeasureWarning.text = "";
         }
     }
 
@@ -2245,7 +2287,7 @@ public static class HudFunctions
         //This changes the colour
         Color newColour;
 
-        if (ColorUtility.TryParseHtmlString(colour, out newColour))
+        if (UnityEngine.ColorUtility.TryParseHtmlString(colour, out newColour))
         {
             //Do nothing
         }

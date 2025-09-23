@@ -40,6 +40,7 @@ public class Torpedo : MonoBehaviour
     [Header("Counter Measures")]
     public bool targetWarned;
     public float pressedTime;
+    public Hud hud;
 
     private void Start()
     {

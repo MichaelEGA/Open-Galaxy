@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public static class TorpedoFunctions
 {
@@ -557,7 +556,7 @@ public static class TorpedoFunctions
 
                         HudFunctions.AddToShipLog("Hostile torpedo locked and incoming");
 
-                        //Play warning sound
+                        AudioFunctions.PlayAudioClip(torpedo.targetSmallShip.audioManager, "beep_alert", "Cockpit", torpedo.targetSmallShip.transform.position, 0, 1, 500, 0.9f);
                     }
 
                     //This displays information on the hud to warn the player
@@ -573,11 +572,11 @@ public static class TorpedoFunctions
                 {
                     if (torpedo.targetSmallShip.fireCounterMeasures == true)
                     {
-                        //Play sound
-
                         if (torpedo.targetSmallShip.isAI == false)
                         {
-                            HudFunctions.AddToShipLog("Counter measure fired: No Effect");
+                            HudFunctions.AddToShipLog("No counter measure fired: torpedo not in range");
+                            
+                            AudioFunctions.PlayAudioClip(torpedo.targetSmallShip.audioManager, "beep05_error", "Cockpit", torpedo.targetSmallShip.transform.position, 0, 1, 500, 0.9f);
                         }
 
                         torpedo.pressedTime = Time.time;
@@ -595,6 +594,8 @@ public static class TorpedoFunctions
                         if (torpedo.targetSmallShip.isAI == false)
                         {
                             HudFunctions.AddToShipLog("Counter measure fire: Torpedo deactivated");
+
+                            AudioFunctions.PlayAudioClip(torpedo.targetSmallShip.audioManager, "weapon_counter measure", "Cockpit", torpedo.targetSmallShip.transform.position, 0, 1, 500, 0.9f);
                         }
                     }
                 }  
@@ -697,10 +698,21 @@ public static class TorpedoFunctions
         {
             if (smallShip != null)
             {
-                if (smallShip.gameObject != firingShip.gameObject)
+                if (firingShip != null)
                 {
-                    DamageFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
-                    Task a = new Task(DamageFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
+                    if (smallShip.gameObject != firingShip.gameObject)
+                    {
+                        DamageFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
+                        Task a = new Task(DamageFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
+                    }
+                }
+                else
+                {
+                    if (smallShip.gameObject != firingShip.gameObject)
+                    {
+                        DamageFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
+                        Task a = new Task(DamageFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
+                    }
                 }
             }
             else if (largeShip != null)

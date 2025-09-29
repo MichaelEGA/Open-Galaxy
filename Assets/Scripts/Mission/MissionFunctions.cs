@@ -718,9 +718,9 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
-        else if (missionEvent.eventType == "ifshipsshieldislessthan")
+        else if (missionEvent.eventType == "ifshipsshieldsarelessthan")
         {
-            bool ifshipshieldislessthan = IfShipsShieldIsLessThan(missionEvent);
+            bool ifshipshieldislessthan = IfShipsShieldsAreLessThan(missionEvent);
 
             if (ifshipshieldislessthan == true)
             {
@@ -2599,7 +2599,7 @@ public static class MissionFunctions
     }
 
     //This checks whether a ship's shields are less than the given amount
-    public static bool IfShipsShieldIsLessThan(MissionEvent missionEvent)
+    public static bool IfShipsShieldsAreLessThan(MissionEvent missionEvent)
     {
         Scene scene = SceneFunctions.GetScene();
 

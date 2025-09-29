@@ -138,13 +138,16 @@ public static class DockingFunctions
         {
             foreach (SmallShip tempSmallShip in scene.smallShips)
             {
-                if (tempSmallShip.name.Contains(targetShipName) & tempSmallShip.dockingPoint != null)
+                if (tempSmallShip != null)
                 {
-                    if (tempSmallShip.dockingPoint.isActive == false || tempSmallShip.dockingPoint.isActive == true & includeActive == true)
+                    if (tempSmallShip.name.Contains(targetShipName) & tempSmallShip.dockingPoint != null)
                     {
-                        dockingPoint = tempSmallShip.dockingPoint;
-                        dockingPointFound = true;
-                        break;
+                        if (tempSmallShip.dockingPoint.isActive == false || tempSmallShip.dockingPoint.isActive == true & includeActive == true)
+                        {
+                            dockingPoint = tempSmallShip.dockingPoint;
+                            dockingPointFound = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -155,35 +158,38 @@ public static class DockingFunctions
         {
             foreach (LargeShip tempLargeShip in scene.largeShips)
             {
-                if (tempLargeShip.name.Contains(targetShipName))
+                if (tempLargeShip != null)
                 {
-                    float distance = Mathf.Infinity;
-
-                    foreach (DockingPoint tempDockingPoint in tempLargeShip.dockingPoints)
+                    if (tempLargeShip.name.Contains(targetShipName))
                     {
-                        if (tempDockingPoint.isActive == false || tempDockingPoint.isActive == true & includeActive == true)
-                        {
-                            //This gets the closest docking point on the large ship
-                            float tempDistance = Vector3.Distance(tempDockingPoint.transform.position, ship.position);
+                        float distance = Mathf.Infinity;
 
-                            if (tempDistance < distance)
+                        foreach (DockingPoint tempDockingPoint in tempLargeShip.dockingPoints)
+                        {
+                            if (tempDockingPoint.isActive == false || tempDockingPoint.isActive == true & includeActive == true)
                             {
-                                if (largeShip == null & !tempDockingPoint.name.Contains("ls"))
+                                //This gets the closest docking point on the large ship
+                                float tempDistance = Vector3.Distance(tempDockingPoint.transform.position, ship.position);
+
+                                if (tempDistance < distance)
                                 {
-                                    distance = tempDistance;
-                                    dockingPoint = tempDockingPoint;
-                                }
-                                else if (largeShip != null & tempDockingPoint.name.Contains("ls"))
-                                {
-                                    distance = tempDistance;
-                                    dockingPoint = tempDockingPoint;
+                                    if (largeShip == null & !tempDockingPoint.name.Contains("ls"))
+                                    {
+                                        distance = tempDistance;
+                                        dockingPoint = tempDockingPoint;
+                                    }
+                                    else if (largeShip != null & tempDockingPoint.name.Contains("ls"))
+                                    {
+                                        distance = tempDistance;
+                                        dockingPoint = tempDockingPoint;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    dockingPointFound = true;
-                    break;
+                        dockingPointFound = true;
+                        break;
+                    }
                 }
             }
         }

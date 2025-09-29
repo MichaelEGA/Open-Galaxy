@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -205,18 +206,24 @@ public static class GameObjectUtils
 
         foreach (MeshFilter meshFilter in meshFilters)
         {
-            MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
-            meshCollider.convex = convex;
-            meshCollider.sharedMesh = meshFilter.sharedMesh;
+            if (!meshFilter.gameObject.name.Contains("nocollider"))
+            {
+                MeshCollider meshCollider = meshFilter.gameObject.AddComponent<MeshCollider>();
+                meshCollider.convex = convex;
+                meshCollider.sharedMesh = meshFilter.sharedMesh;
+            }
         }
 
         SkinnedMeshRenderer[] skinnedMeshRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
 
         foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
         {
-            MeshCollider meshCollider = skinnedMeshRenderer.gameObject.AddComponent<MeshCollider>();
-            meshCollider.convex = convex;
-            meshCollider.sharedMesh = skinnedMeshRenderer.sharedMesh;
+            if (!skinnedMeshRenderer.gameObject.name.Contains("nocollider"))
+            {
+                MeshCollider meshCollider = skinnedMeshRenderer.gameObject.AddComponent<MeshCollider>();
+                meshCollider.convex = convex;
+                meshCollider.sharedMesh = skinnedMeshRenderer.sharedMesh;
+            }
         }
     }
 
@@ -227,14 +234,20 @@ public static class GameObjectUtils
 
         foreach (MeshFilter meshFilter in meshFilters)
         {
-            SphereCollider sphereCollider = meshFilter.gameObject.AddComponent<SphereCollider>();
+            if (!meshFilter.gameObject.name.Contains("nocollider"))
+            {
+                SphereCollider sphereCollider = meshFilter.gameObject.AddComponent<SphereCollider>();
+            }
         }
 
         SkinnedMeshRenderer[] skinnedMeshRenderers = gameObject.GetComponentsInChildren<SkinnedMeshRenderer>();
 
         foreach (SkinnedMeshRenderer skinnedMeshRenderer in skinnedMeshRenderers)
         {
-            SphereCollider sphereCollider = skinnedMeshRenderer.gameObject.AddComponent<SphereCollider>();
+            if (!skinnedMeshRenderer.gameObject.name.Contains("nocollider"))
+            {
+                SphereCollider sphereCollider = skinnedMeshRenderer.gameObject.AddComponent<SphereCollider>();
+            }   
         }
     }
 

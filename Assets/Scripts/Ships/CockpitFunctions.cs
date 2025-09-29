@@ -497,7 +497,7 @@ public static class CockpitFunctions
                 }
                 else
                 {
-                    Vector3 focusPosition = new Vector3(0, 0, 0.5f);
+                    Vector3 focusPosition = new Vector3(0, 0, 0.25f);
                     Quaternion focusRotation = Quaternion.Euler(0, 0, 0);
 
                     step = 10f * Time.deltaTime;

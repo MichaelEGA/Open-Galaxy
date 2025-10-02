@@ -240,16 +240,21 @@ public static class MissionEditorFunctions
         event_Buttons.Add(spaces + "Display Ship Information");
         event_Buttons.Add(spaces + "Display Prop Information");
         event_Buttons.Add(spaces + "Display Terrain Texture Information");
+        event_Buttons.Add(spaces + "Display Sound Information");
         event_Buttons.Add(spaces + "Display Location");
+
 
         List<string> event_Functions = new List<string>();
         event_Functions.Add("OpenAddNewEvent");
         event_Functions.Add("OpenDisplayShipInformation");
         event_Functions.Add("OpenDisplayPropInformation");
         event_Functions.Add("OpenDisplayTextureInformation");
+        event_Functions.Add("OpenDisplaySoundInformation");
         event_Functions.Add("OpenDisplayLocation");
 
+
         List<string> event_Shortcuts = new List<string>();
+        event_Shortcuts.Add("");
         event_Shortcuts.Add("");
         event_Shortcuts.Add("");
         event_Shortcuts.Add("");
@@ -467,6 +472,10 @@ public static class MissionEditorFunctions
         {
             button.onClick.AddListener(() => { OpenWindow("displaytextureinformation"); });
         }
+        else if (functionType == "OpenDisplaySoundInformation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaysoundinformation"); });
+        }
         else if (functionType == "MakeFullscreen")
         {
             button.onClick.AddListener(() => { SetWindowMode("fullscreen"); });
@@ -639,6 +648,10 @@ public static class MissionEditorFunctions
         else if (functionType == "OpenDisplayTextureInformation")
         {
             button.onClick.AddListener(() => { OpenWindow("displaytextureinformation"); });
+        }
+        else if (functionType == "OpenDisplaySoundInformation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaysoundinformation"); });
         }
         else if (functionType == "MakeFullscreen")
         {

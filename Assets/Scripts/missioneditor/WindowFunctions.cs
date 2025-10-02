@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public static class WindowFunctions
@@ -35,6 +36,10 @@ public static class WindowFunctions
         else if (window.windowType == "displaytextureinformation")
         {
             WindowFunctions.Draw_TextureInformation(window);
+        }
+        else if (window.windowType == "displaysoundinformation")
+        {
+            WindowFunctions.Draw_SoundInformation(window);
         }
         else if (window.windowType == "abouteditor")
         {
@@ -382,6 +387,55 @@ public static class WindowFunctions
         DrawDropDownMenuSansLabel(window, options, "textures", "all", 7, 151f, -7.4f, 10, 65);
 
         DisplayTextureInformation(firstTexture);
+    }
+
+    //This draws the display ship information window
+    public static void Draw_SoundInformation(Window window)
+    {
+        window.transform.name = "window_soundinformation";
+
+        DrawWindowBase(window, 250, 200);
+
+        DrawText(window, "Sound Information", 8, 5, -5, 12.5f, 90);
+
+        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
+
+        List<string> buttonList = new List<string>();
+        List<string> options = new List<string>();
+
+        UnityEngine.Object[] terrainTextures = Resources.LoadAll(OGGetAddress.musicclips, typeof(AudioClip));
+
+        string firstTrack = "building_cloudcity01";
+        bool firstTrackCaptured = false;
+
+        foreach (UnityEngine.Object textureType in terrainTextures)
+        {
+            //This adds the texture to the list
+            buttonList.Add(textureType.name);
+
+            //This captures the name of the first texture to display
+            if (firstTrackCaptured == false)
+            {
+                firstTrack = textureType.name;
+                firstTrackCaptured = true;
+            }
+        }
+
+        List<string> functionList = new List<string>();
+
+        foreach (string button in buttonList)
+        {
+            functionList.Add("DisplaySoundInformation");
+        }
+
+        string[] buttons = buttonList.ToArray();
+        string[] functions = functionList.ToArray();
+
+        DrawScrollableButtons(window, 5, -29, 161f, 115, 10, 7, buttons, functions, "scollablesoundlist");
+
+        DrawScrollableText(window, 127.5f, -102, 88f, 115, 7, "No Track Selected", 225f, "SoundInformationTextBox");
     }
 
     //This draws a window that displays the location of all relevant nodes on the map
@@ -766,6 +820,10 @@ public static class WindowFunctions
         else if (functionType == "DisplayTextureInformation")
         {
             button.onClick.AddListener(() => { DisplayTextureInformation(buttonText); });
+        }
+        else if (functionType == "DisplaySoundInformation")
+        {
+            button.onClick.AddListener(() => { DisplaySoundInformation(buttonText); });
         }
     }
 
@@ -2024,6 +2082,37 @@ public static class WindowFunctions
                             propPreview.texture = (Texture2D)tempTexture;
                         }
                     }
+
+                    break;
+                }
+            }
+        }
+    }
+
+    //This displays sound information and plays the track
+    public static void DisplaySoundInformation(string track)
+    {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor.DisplayTextureInformationTextBox == null)
+        {
+            GameObject DisplaySoundInformationTextBoxGO = GameObject.Find("SoundInformationTextBox");
+
+            if (DisplaySoundInformationTextBoxGO != null)
+            {
+                missionEditor.DisplaySoundInformationTextBox = DisplaySoundInformationTextBoxGO.GetComponentInChildren<Text>();
+            }
+        }
+
+        if (missionEditor.DisplaySoundInformationTextBox != null)
+        {
+            UnityEngine.Object[] tracks = Resources.LoadAll(OGGetAddress.musicclips, typeof(AudioClip));
+
+            foreach (UnityEngine.Object tempTrack in tracks)
+            {
+                if (tempTrack.name == track)
+                {
+                    missionEditor.DisplaySoundInformationTextBox.text = tempTrack.name;
 
                     break;
                 }

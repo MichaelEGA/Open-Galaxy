@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 public static class WindowFunctions
 {
@@ -40,6 +41,14 @@ public static class WindowFunctions
         else if (window.windowType == "displaysoundinformation")
         {
             WindowFunctions.Draw_SoundInformation(window);
+        }
+        else if (window.windowType == "displayallegianceinformation")
+        {
+            WindowFunctions.Draw_AllegianceInformation(window);
+        }
+        else if (window.windowType == "displaytorpedoinformation")
+        {
+            WindowFunctions.Draw_TorpedoInformation(window);
         }
         else if (window.windowType == "abouteditor")
         {
@@ -405,22 +414,30 @@ public static class WindowFunctions
         List<string> buttonList = new List<string>();
         List<string> options = new List<string>();
 
-        UnityEngine.Object[] terrainTextures = Resources.LoadAll(OGGetAddress.musicclips, typeof(AudioClip));
+        UnityEngine.Object[] musicTracks = Resources.LoadAll(OGGetAddress.musicclips, typeof(AudioClip));
 
-        string firstTrack = "building_cloudcity01";
+        string firstTrack = "";
         bool firstTrackCaptured = false;
 
-        foreach (UnityEngine.Object textureType in terrainTextures)
+        foreach (UnityEngine.Object musicTrack in musicTracks)
         {
             //This adds the texture to the list
-            buttonList.Add(textureType.name);
+            buttonList.Add(musicTrack.name);
 
             //This captures the name of the first texture to display
             if (firstTrackCaptured == false)
             {
-                firstTrack = textureType.name;
+                firstTrack = musicTrack.name;
                 firstTrackCaptured = true;
             }
+        }
+
+        UnityEngine.Object[] audioTracks = Resources.LoadAll(OGGetAddress.audioclips, typeof(AudioClip));
+
+        foreach (UnityEngine.Object audioTrack in audioTracks)
+        {
+            //This adds the texture to the list
+            buttonList.Add(audioTrack.name);
         }
 
         List<string> functionList = new List<string>();
@@ -436,6 +453,114 @@ public static class WindowFunctions
         DrawScrollableButtons(window, 5, -29, 161f, 115, 10, 7, buttons, functions, "scollablesoundlist");
 
         DrawScrollableText(window, 127.5f, -102, 88f, 115, 7, "No Track Selected", 225f, "SoundInformationTextBox");
+
+        DrawTextButton(window, 127.5f, -29, 10, 115f, "none", "Play Track", 7, "PlayTrack", TextAnchor.MiddleCenter);
+
+        DrawTextButton(window, 127.5f, -44, 10, 115f, "none", "Stop Track", 7, "StopTrack", TextAnchor.MiddleCenter);
+    }
+
+    //This draws the allegiance information window
+    public static void Draw_AllegianceInformation(Window window)
+    {
+        window.transform.name = "window_allegianceinformation";
+
+        DrawWindowBase(window, 250, 200);
+
+        DrawText(window, "Allegiance Information", 8, 5, -5, 12.5f, 90);
+
+        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
+
+        List<string> buttonList = new List<string>();
+        List<string> options = new List<string>();
+
+        options.Add("all");
+
+        TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
+        Allegiances allegiances = JsonUtility.FromJson<Allegiances>(allegiancesFile.text);
+
+        string firstAllegiance = "";
+        bool firstAllegianceCaptured = false;
+
+        foreach (Allegiance allegiance in allegiances.allegianceData)
+        {
+            //This adds the ship to the list
+            buttonList.Add(allegiance.allegiance);
+
+            //This captures the name of the first ship to display
+            if (firstAllegianceCaptured == false)
+            {
+                firstAllegiance = allegiance.allegiance;
+                firstAllegianceCaptured = true;
+            }
+        }
+
+        List<string> functionList = new List<string>();
+
+        foreach (string button in buttonList)
+        {
+            functionList.Add("DisplayAllegianceInformation");
+        }
+
+        string[] buttons = buttonList.ToArray();
+        string[] functions = functionList.ToArray();
+
+        DrawScrollableButtons(window, 5, -29, 161f, 115, 10, 7, buttons, functions, "scollableallegiancelist");
+
+        DrawScrollableText(window, 127.5f, -29, 161f, 115, 7, "No Allegiance Selected", 225f, "AllegianceInformationTextBox");
+    }
+
+    //This draws the torpedo information window
+    public static void Draw_TorpedoInformation(Window window)
+    {
+        window.transform.name = "window_torpedoinformation";
+
+        DrawWindowBase(window, 250, 200);
+
+        DrawText(window, "Torpedo Information", 8, 5, -5, 12.5f, 90);
+
+        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
+
+        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
+
+        List<string> buttonList = new List<string>();
+        List<string> options = new List<string>();
+
+        options.Add("all");
+
+        TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "TorpedoTypes") as TextAsset;
+        TorpedoTypes torpedoTypes = JsonUtility.FromJson<TorpedoTypes>(allegiancesFile.text);
+
+        string firstTorpedoType = "";
+        bool firstTorpedoTypeCaptured = false;
+
+        foreach (TorpedoType torpedoType in torpedoTypes.torpedoTypeData)
+        {
+            //This adds the ship to the list
+            buttonList.Add(torpedoType.name);
+
+            //This captures the name of the first ship to display
+            if (firstTorpedoTypeCaptured == false)
+            {
+                firstTorpedoType = torpedoType.name;
+                firstTorpedoTypeCaptured = true;
+            }
+        }
+
+        List<string> functionList = new List<string>();
+
+        foreach (string button in buttonList)
+        {
+            functionList.Add("DisplayTorpedoInformation");
+        }
+
+        string[] buttons = buttonList.ToArray();
+        string[] functions = functionList.ToArray();
+
+        DrawScrollableButtons(window, 5, -29, 161f, 115, 10, 7, buttons, functions, "scollabletorpedolist");
+
+        DrawScrollableText(window, 127.5f, -29, 161f, 115, 7, "No Torpedo Selected", 225f, "torpedoInformationTextBox");
     }
 
     //This draws a window that displays the location of all relevant nodes on the map
@@ -824,6 +949,22 @@ public static class WindowFunctions
         else if (functionType == "DisplaySoundInformation")
         {
             button.onClick.AddListener(() => { DisplaySoundInformation(buttonText); });
+        }
+        else if (functionType == "DisplayAllegianceInformation")
+        {
+            button.onClick.AddListener(() => { DisplayAllegianceInformation(buttonText); });
+        }
+        else if (functionType == "DisplayTorpedoInformation")
+        {
+            button.onClick.AddListener(() => { DisplayTorpedoInformation(buttonText); });
+        }
+        else if (functionType == "PlayTrack")
+        {
+            button.onClick.AddListener(() => { PlayTrack(); });
+        }
+        else if (functionType == "StopTrack")
+        {
+            button.onClick.AddListener(() => { StopTrack(); });
         }
     }
 
@@ -2094,7 +2235,7 @@ public static class WindowFunctions
     {
         MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
 
-        if (missionEditor.DisplayTextureInformationTextBox == null)
+        if (missionEditor.DisplaySoundInformationTextBox == null)
         {
             GameObject DisplaySoundInformationTextBoxGO = GameObject.Find("SoundInformationTextBox");
 
@@ -2106,16 +2247,188 @@ public static class WindowFunctions
 
         if (missionEditor.DisplaySoundInformationTextBox != null)
         {
-            UnityEngine.Object[] tracks = Resources.LoadAll(OGGetAddress.musicclips, typeof(AudioClip));
+            AudioSource audioSource = missionEditor.DisplaySoundInformationTextBox.gameObject.GetComponent<AudioSource>();
 
-            foreach (UnityEngine.Object tempTrack in tracks)
+            if (audioSource == null)
+            {
+                audioSource = missionEditor.DisplaySoundInformationTextBox.gameObject.AddComponent<AudioSource>();
+            }
+
+            UnityEngine.Object[] musicTracks = Resources.LoadAll(OGGetAddress.musicclips, typeof(AudioClip));
+
+            bool trackFound = false;
+
+            foreach (UnityEngine.Object tempTrack in musicTracks)
             {
                 if (tempTrack.name == track)
                 {
-                    missionEditor.DisplaySoundInformationTextBox.text = tempTrack.name;
+                    AudioClip tempTrackAC = tempTrack as AudioClip;
+
+                    string information = "name: " + tempTrackAC.name + "\n" + "length:" + tempTrackAC.length;
+
+                    missionEditor.DisplaySoundInformationTextBox.text = information;
+
+                    audioSource.clip = tempTrackAC;
+
+                    audioSource.loop = false;
+
+                    trackFound = true;
 
                     break;
                 }
+            }
+
+            if (trackFound == false)
+            {
+                UnityEngine.Object[] audioTracks = Resources.LoadAll(OGGetAddress.audioclips, typeof(AudioClip));
+
+                foreach (UnityEngine.Object tempTrack in audioTracks)
+                {
+                    if (tempTrack.name == track)
+                    {
+                        AudioClip tempTrackAC = tempTrack as AudioClip;
+
+                        string information = "name: " + tempTrackAC.name + "\n" + "length:" + tempTrackAC.length + " seconds";
+
+                        missionEditor.DisplaySoundInformationTextBox.text = information;
+
+                        audioSource.clip = tempTrackAC;
+
+                        audioSource.loop = false;
+
+                        trackFound = true;
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    //This starts the audio track playing
+    public static void PlayTrack()
+    {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor.DisplaySoundInformationTextBox != null)
+        {
+            AudioSource audioSource = missionEditor.DisplaySoundInformationTextBox.gameObject.GetComponent<AudioSource>();
+
+            if (audioSource == null)
+            {
+                audioSource = missionEditor.DisplaySoundInformationTextBox.gameObject.AddComponent<AudioSource>();
+            }
+
+            if (audioSource != null)
+            {
+                audioSource.Play();
+            }
+        }
+    }
+
+    //This stops the audio track playing
+    public static void StopTrack()
+    {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor.DisplaySoundInformationTextBox != null)
+        {
+            AudioSource audioSource = missionEditor.DisplaySoundInformationTextBox.gameObject.GetComponent<AudioSource>();
+
+            if (audioSource == null)
+            {
+                audioSource = missionEditor.DisplaySoundInformationTextBox.gameObject.AddComponent<AudioSource>();
+            }
+
+            if (audioSource != null)
+            {
+                audioSource.Stop();
+            }
+        }
+    }
+
+    //This displays allegiance information in the text box
+    public static void DisplayAllegianceInformation(string allegiance)
+    {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor.DisplayAllegianceInformationTextBox == null)
+        {
+            GameObject DisplayAllegianceInformationTextBoxGO = GameObject.Find("AllegianceInformationTextBox");
+
+            if (DisplayAllegianceInformationTextBoxGO != null)
+            {
+                missionEditor.DisplayAllegianceInformationTextBox = DisplayAllegianceInformationTextBoxGO.GetComponentInChildren<Text>();
+            }
+        }
+
+        if (missionEditor.DisplayAllegianceInformationTextBox != null)
+        {
+            //This gets the Json ship data
+            TextAsset allegianceFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
+            Allegiances allegiances = JsonUtility.FromJson<Allegiances>(allegianceFile.text);
+
+            foreach (Allegiance tempAllegiance in allegiances.allegianceData)
+            {
+                if (tempAllegiance.allegiance == allegiance)
+                {
+                    string information = "Allegiance: " + tempAllegiance.allegiance 
+                        + "\n" + "Enemy01: " + tempAllegiance.enemy01
+                        + "\n" + "Enemy02: " + tempAllegiance.enemy02
+                        + "\n" + "Enemy03: " + tempAllegiance.enemy03
+                        + "\n" + "Enemy04: " + tempAllegiance.enemy04
+                        + "\n" + "Enemy05: " + tempAllegiance.enemy05
+                        + "\n" + "Enemy06: " + tempAllegiance.enemy06
+                        + "\n" + "Enemy07: " + tempAllegiance.enemy07
+                        + "\n" + "Enemy08: " + tempAllegiance.enemy08
+                        + "\n" + "Enemy09: " + tempAllegiance.enemy09
+                        + "\n" + "Enemy10: " + tempAllegiance.enemy10;
+
+                    missionEditor.DisplayAllegianceInformationTextBox.text = information;
+                    break;
+                }
+            }
+        }
+    }
+
+    //This displays allegiance information in the text box
+    public static void DisplayTorpedoInformation(string torpedoType)
+    {
+        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor.DisplayTorpedoInformationTextBox == null)
+        {
+            GameObject DisplayTorpedoInformationTextBoxGO = GameObject.Find("torpedoInformationTextBox");
+
+            if (DisplayTorpedoInformationTextBoxGO != null)
+            {
+                missionEditor.DisplayTorpedoInformationTextBox = DisplayTorpedoInformationTextBoxGO.GetComponentInChildren<Text>();
+            }
+        }
+
+        if (missionEditor.DisplayTorpedoInformationTextBox != null)
+        {
+            TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "TorpedoTypes") as TextAsset;
+            TorpedoTypes torpedoTypes = JsonUtility.FromJson<TorpedoTypes>(allegiancesFile.text);
+
+            foreach (TorpedoType tempTorpedoType in torpedoTypes.torpedoTypeData)
+            {
+                if (tempTorpedoType.name == torpedoType)
+                {
+                    //This adds the ship to the list
+                    string information = "name: " + tempTorpedoType.name
+                        + "\n" + "prefab:" + tempTorpedoType.prefab
+                        + "\n" + "speed:" + tempTorpedoType.speedRating
+                        + "\n" + "damage:" + tempTorpedoType.damageRating
+                        + "\n" + "audio:" + tempTorpedoType.explosionAudio
+                        + "\n" + "damage:" + tempTorpedoType.launchAudio
+                        + "\n" + "maneuverability:" + tempTorpedoType.maneuverabilityRating
+                        + "\n" + "colour:" + tempTorpedoType.trailColor;
+
+                    missionEditor.DisplayTorpedoInformationTextBox.text = information;
+
+                    break;
+                }           
             }
         }
     }

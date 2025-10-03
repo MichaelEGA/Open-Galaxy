@@ -241,6 +241,8 @@ public static class MissionEditorFunctions
         event_Buttons.Add(spaces + "Display Prop Information");
         event_Buttons.Add(spaces + "Display Terrain Texture Information");
         event_Buttons.Add(spaces + "Display Sound Information");
+        event_Buttons.Add(spaces + "Display Allegiance Information");
+        event_Buttons.Add(spaces + "Display Torpedo Information");
         event_Buttons.Add(spaces + "Display Location");
 
 
@@ -250,10 +252,14 @@ public static class MissionEditorFunctions
         event_Functions.Add("OpenDisplayPropInformation");
         event_Functions.Add("OpenDisplayTextureInformation");
         event_Functions.Add("OpenDisplaySoundInformation");
+        event_Functions.Add("OpenDisplayAllegianceInformation");
+        event_Functions.Add("OpenDisplayTorpedoInformation");
         event_Functions.Add("OpenDisplayLocation");
 
 
         List<string> event_Shortcuts = new List<string>();
+        event_Shortcuts.Add("");
+        event_Shortcuts.Add("");
         event_Shortcuts.Add("");
         event_Shortcuts.Add("");
         event_Shortcuts.Add("");
@@ -476,6 +482,14 @@ public static class MissionEditorFunctions
         {
             button.onClick.AddListener(() => { OpenWindow("displaysoundinformation"); });
         }
+        else if (functionType == "OpenDisplayAllegianceInformation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displayallegianceinformation"); });
+        }
+        else if (functionType == "OpenDisplayTorpedoInformation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaytorpedoinformation"); });
+        }
         else if (functionType == "MakeFullscreen")
         {
             button.onClick.AddListener(() => { SetWindowMode("fullscreen"); });
@@ -652,6 +666,14 @@ public static class MissionEditorFunctions
         else if (functionType == "OpenDisplaySoundInformation")
         {
             button.onClick.AddListener(() => { OpenWindow("displaysoundinformation"); });
+        }
+        else if (functionType == "OpenDisplayAllegianceInformation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displayallegianceinformation"); });
+        }
+        else if (functionType == "OpenDisplayTorpedoInformation")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaytorpedoinformation"); });
         }
         else if (functionType == "MakeFullscreen")
         {

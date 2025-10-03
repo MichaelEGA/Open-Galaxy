@@ -23,6 +23,8 @@ public class MissionEditor : MonoBehaviour
     public Text DisplayPropInformationTextBox;
     public Text DisplayTextureInformationTextBox;
     public Text DisplaySoundInformationTextBox;
+    public Text DisplayAllegianceInformationTextBox;
+    public Text DisplayTorpedoInformationTextBox;
     public Text scaleIndicator;
     public Text messageTextbox;
     public Text missionName;

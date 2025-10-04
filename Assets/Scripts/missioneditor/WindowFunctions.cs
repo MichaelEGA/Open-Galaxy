@@ -258,7 +258,7 @@ public static class WindowFunctions
 
         DrawScrollableText(window, 127.5f, -102, 88f, 115, 7, "No Ship Selected", 225f, "ShipInformationTextBox");
 
-        DrawDropDownMenuSansLabel(window, options, "ships", "all", 7, 151f, -7.4f, 10, 65);
+        DrawDropDownMenuSansLabel(window, options, "ships", "all", 7, 151f, -5.4f, 10, 65);
 
         DisplayShipInformation(firstShip);
     }
@@ -334,7 +334,7 @@ public static class WindowFunctions
 
         DrawScrollableText(window, 127.5f, -102, 88f, 115, 7, "No Prop Selected", 225f, "PropInformationTextBox");
 
-        DrawDropDownMenuSansLabel(window, options, "props", "all", 7, 151f, -7.4f, 10, 65);
+        DrawDropDownMenuSansLabel(window, options, "props", "all", 7, 151f, -5.4f, 10, 65);
 
         DisplayPropInformation(firstProp);
     }
@@ -391,9 +391,9 @@ public static class WindowFunctions
 
         DrawRawImage(window, 147.5f, -29, 73f, 73f, "assettexturepreview");
 
-        DrawScrollableText(window, 127.5f, -102, 88f, 115, 7, "No Texture Selected", 225f, "TextureInformationTextBox");
+        DrawScrollableText(window, 127.5f, -107, 83f, 115, 7, "No Texture Selected", 225f, "TextureInformationTextBox");
 
-        DrawDropDownMenuSansLabel(window, options, "textures", "all", 7, 151f, -7.4f, 10, 65);
+        DrawDropDownMenuSansLabel(window, options, "textures", "all", 7, 151f, -5.4f, 10, 65);
 
         DisplayTextureInformation(firstTexture);
     }
@@ -452,11 +452,11 @@ public static class WindowFunctions
 
         DrawScrollableButtons(window, 5, -29, 161f, 115, 10, 7, buttons, functions, "scollablesoundlist");
 
-        DrawScrollableText(window, 127.5f, -102, 88f, 115, 7, "No Track Selected", 225f, "SoundInformationTextBox");
-
         DrawTextButton(window, 127.5f, -29, 10, 115f, "none", "Play Track", 7, "PlayTrack", TextAnchor.MiddleCenter);
 
         DrawTextButton(window, 127.5f, -44, 10, 115f, "none", "Stop Track", 7, "StopTrack", TextAnchor.MiddleCenter);
+
+        DrawScrollableText(window, 127.5f, -59, 131f, 115, 7, "No Track Selected", 225f, "SoundInformationTextBox");
     }
 
     //This draws the allegiance information window
@@ -658,7 +658,7 @@ public static class WindowFunctions
         Image highlight = nodeHighlight.AddComponent<Image>();
         highlight.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         highlight.type = Image.Type.Sliced;
-        highlight.pixelsPerUnitMultiplier = 5;
+        highlight.pixelsPerUnitMultiplier = 40; //5
         highlight.color = new Color(90f / 250f, 90f / 250f, 90f / 250f);
 
         window.highlightRect = nodeHighlight.GetComponent<RectTransform>();
@@ -674,7 +674,7 @@ public static class WindowFunctions
         Image background = nodeBackground.AddComponent<Image>();
         background.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
         background.type = Image.Type.Sliced;
-        background.pixelsPerUnitMultiplier = 5;
+        background.pixelsPerUnitMultiplier = 40; //5
         background.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
 
         window.backgrounRect = nodeBackground.GetComponent<RectTransform>();
@@ -1036,7 +1036,7 @@ public static class WindowFunctions
 
         foreach (string button in buttons)
         {
-            DrawTextButton(window, 0, buttonDrop, buttonHeight, width, "none", button, fontSize, functions[i], TextAnchor.MiddleLeft, false, contentGO.transform);
+            DrawTextButton(window, 5, buttonDrop, buttonHeight, width, "none", button, fontSize, functions[i], TextAnchor.MiddleLeft, false, contentGO.transform);
             buttonDrop -= buttonHeight;
             i++;
         }
@@ -1115,7 +1115,7 @@ public static class WindowFunctions
         rectTransform.anchorMax = new Vector2(0, 1);
         rectTransform.anchorMin = new Vector2(0, 1);
         rectTransform.pivot = new Vector2(0, 1);
-        rectTransform.anchoredPosition = new Vector2(0, 0);
+        rectTransform.anchoredPosition = new Vector2(5, 0); //5 creates a slight margin with the side of the box
         rectTransform.sizeDelta = new Vector2(width - 5, textBoxHeight);
         rectTransform.localScale = new Vector3(1, 1, 1);
 
@@ -1497,7 +1497,7 @@ public static class WindowFunctions
         Image inputFieldImage = dropdownGO.AddComponent<Image>();
         inputFieldImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Grey");
         inputFieldImage.type = Image.Type.Sliced;
-        inputFieldImage.pixelsPerUnitMultiplier = 30;
+        inputFieldImage.pixelsPerUnitMultiplier = 40;
 
         //This draws the input field
         GameObject labelGO = new GameObject();

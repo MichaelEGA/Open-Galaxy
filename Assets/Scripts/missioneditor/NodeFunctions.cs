@@ -534,7 +534,7 @@ public class NodeFunctions : MonoBehaviour
                 Image highlight = nodeHighlight.AddComponent<Image>();
                 highlight.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
                 highlight.type = Image.Type.Sliced;
-                highlight.pixelsPerUnitMultiplier = 5;
+                highlight.pixelsPerUnitMultiplier = 40; //5
 
                 node.highlightImage = highlight;
                 node.highlightImage.color = new Color(90f / 250f, 90f / 250f, 90f / 250f);
@@ -552,7 +552,7 @@ public class NodeFunctions : MonoBehaviour
                 Image background = nodeBackground.AddComponent<Image>();
                 background.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
                 background.type = Image.Type.Sliced;
-                background.pixelsPerUnitMultiplier = 5;
+                background.pixelsPerUnitMultiplier = 40; //5
                 background.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
 
                 node.backgroundRect = nodeBackground.GetComponent<RectTransform>();

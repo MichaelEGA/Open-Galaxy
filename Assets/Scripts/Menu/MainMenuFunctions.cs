@@ -33,10 +33,10 @@ public static class MainMenuFunctions
 
         GameObject artCredit = GameObject.Find("ArtCredit");
         Text creditText = artCredit.GetComponent<Text>();
-        string artworkName = CapitalizeFirstLetters(texture.name);
+        string artworkName = texture.name; //CapitalizeFirstLetters(texture.name);
         creditText.text = artworkName + " by Tegnemaskin";
 
-        MainMenu mainMenu = GetMainMenu();
+        MainMenu mainMenu = menu.GetComponent<MainMenu>();
         mainMenu.background = texture;
 
         //This starts the menu background music
@@ -125,12 +125,13 @@ public static class MainMenuFunctions
         RawImage menuBackgroundImage = menu.GetComponentInChildren<RawImage>();
         menuBackgroundImage.texture = texture;
 
-        GameObject artCredit = GameObject.Find("ArtCredit");
+        Transform artCreditTransform = GameObjectUtils.FindChildTransformContaining(menu.transform, "ArtCredit");
+        GameObject artCredit = artCreditTransform.gameObject; //GameObject.Find("ArtCredit");
         Text creditText = artCredit.GetComponent<Text>();
-        string artworkName = CapitalizeFirstLetters(texture.name);
+        string artworkName = texture.name;
         creditText.text = artworkName + " by Tegnemaskin";
 
-        MainMenu mainMenu = GetMainMenu();
+        MainMenu mainMenu = menu.GetComponent<MainMenu>();
         mainMenu.background = texture;
 
         //This starts the menu background music

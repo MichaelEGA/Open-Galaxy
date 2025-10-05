@@ -71,28 +71,12 @@ public static class SceneFunctions
         }
 
         //This loads the planet materials
-        Object[] planetMaterials = Resources.LoadAll(OGGetAddress.planets_planetmaterials, typeof(Material));
+        Object[] planetPrefabs = Resources.LoadAll(OGGetAddress.planets, typeof(GameObject));
 
-        if (planetMaterials != null)
+        if (planetPrefabs != null)
         {
-            scene.planetMaterialPool = new Material[planetMaterials.Length];
-            scene.planetMaterialPool = planetMaterials;
-        }
-
-        Object[] cloudMaterials = Resources.LoadAll(OGGetAddress.planets_cloudmaterials, typeof(Material));
-
-        if (cloudMaterials != null)
-        {
-            scene.cloudMaterialPool = new Material[cloudMaterials.Length];
-            scene.cloudMaterialPool = cloudMaterials;
-        }
-
-        Object[] atmosphereMaterials = Resources.LoadAll(OGGetAddress.planets_atmospherematerials, typeof(Material));
-
-        if (atmosphereMaterials != null)
-        {
-            scene.atmosphereMaterialPool = new Material[atmosphereMaterials.Length];
-            scene.atmosphereMaterialPool = atmosphereMaterials;
+            scene.planetPrefabPool = new GameObject[planetPrefabs.Length];
+            scene.planetPrefabPool = planetPrefabs;
         }
 
         Object[] terrainTextures = Resources.LoadAll(OGGetAddress.terrain, typeof(Texture2D));
@@ -756,145 +740,65 @@ public static class SceneFunctions
         //This gets key references
         Scene scene = GetScene();
 
-        InstantiatePlanetPrefab(planetType);
+        GameObject planet = InstantiatePlanetPrefab(planetType);
 
-        //scene.centerPivot = GameObject.Find("centerpivot");
+        if (scene.planets == null)
+        {
+            scene.planets = new List<GameObject>();
+        }
 
-        //IgnoreCollisionWithPlanet();
+        scene.planets.Add(planet);
 
-        //if (scene.centerPivot == null)
-        //{
+        IgnoreCollisionWithPlanet();
+
+        if (planet != null)
+        {
+            Transform[] planetTransforms = GameObjectUtils.GetAllChildTransformsIncludingInactive(planet.transform);
             
-        //    scene.centerPivot = GameObject.Instantiate(planetPrefab);
-        //    scene.planetPivot = GameObject.Find("planetpivot");
-        //    scene.planet = GameObject.Find("planet");
-        //    scene.deathstar = GameObject.Find("deathstar");
-        //    scene.deathstar2 = GameObject.Find("deathstar2");
-        //    scene.clouds = GameObject.Find("clouds");
-        //    scene.atmosphere = GameObject.Find("atmosphere");
-        //    scene.rings = GameObject.Find("rings");
-        //}
+            //This turns the planet rings on and off
+            foreach (Transform transform in planetTransforms)
+            {
+                if (transform.name == "rings")
+                {
+                    if (ringsType == "none")
+                    {
+                        transform.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        transform.gameObject.SetActive(true);
+                    }
+                }
 
-        //Renderer planetRenderer = scene.planet.GetComponent<Renderer>();
-        //Renderer cloudRenderer = scene.clouds.GetComponent<Renderer>();
-        //Renderer atmosphereRenderer = scene.atmosphere.GetComponent<Renderer>();
-        //Renderer ringsRenderer = scene.rings.GetComponent<Renderer>();
+            }
 
-        ////This disables/enables gameobjects
-        //if (cloudType == "none")
-        //{
-        //    scene.clouds.SetActive(false);
-        //}
-        //else
-        //{
-        //    scene.clouds.SetActive(true);
-        //}
+            //This rotates and positions the planet
+            float actualDistance = (0.6f / 100f) * distance;
 
-        //if (atmosphereType == "none")
-        //{
-        //    scene.atmosphere.SetActive(false);
-        //}
-        //else
-        //{
-        //    scene.atmosphere.SetActive(true);
-        //}
+            float x = 0.4f + actualDistance;
+            float y = 0;
+            float z = 0.4f + actualDistance;
 
-        //if (ringsType == "none")
-        //{
-        //    scene.rings.SetActive(false);
-        //}
-        //else
-        //{
-        //    scene.rings.SetActive(true);
-        //}
+            float xRot = planetXRot;
+            float yRot = planetYRot;
+            float zRot = planetZRot;
 
-        //if (planetType == "deathstar" || planetType == "deathstar2")
-        //{
-        //    if (planetType == "deathstar")
-        //    {
-        //        scene.deathstar.SetActive(true);
-        //        scene.deathstar2.SetActive(false);
-        //    }
-        //    else if (planetType == "deathstar2")
-        //    {
-        //        scene.deathstar2.SetActive(true);
-        //        scene.deathstar.SetActive(false);
-        //    }
-        //    else
-        //    {
-        //        scene.deathstar2.SetActive(false);
-        //        scene.deathstar.SetActive(false);
-        //    }
+            foreach (Transform transform in planetTransforms)
+            {
+                if (transform.name == "planetpivot")
+                {
+                    transform.localPosition = new Vector3(x, y, z);
+                    transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
+                }
+            }
 
-        //    scene.planet.SetActive(false);
-        //}
-        //else
-        //{
-        //    scene.deathstar.SetActive(false);
-        //    scene.deathstar2.SetActive(false);
-        //    scene.planet.SetActive(true);
-        //}
+            //This rotates the whole system
+            xRot = pivotXRot;
+            yRot = pivotYRot;
+            zRot = pivotZRot;
 
-        ////Set materials
-        //if (planetType != "deathstar" & planetType != "deathstar2")
-        //{
-        //    if (planetRenderer != null)
-        //    {
-        //        foreach (Object planetMaterial in scene.planetMaterialPool)
-        //        {
-        //            if (planetMaterial.name == planetType)
-        //            {
-        //                planetRenderer.material = (Material)planetMaterial;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
-
-        //if (cloudRenderer != null)
-        //{
-        //    foreach (Object cloudMaterial in scene.cloudMaterialPool)
-        //    {
-        //        if (cloudMaterial.name == cloudType)
-        //        {
-        //            cloudRenderer.material = (Material)cloudMaterial;
-        //            break;
-        //        }
-        //    }
-        //}
-        
-        //if (atmosphereRenderer != null)
-        //{
-        //    foreach (Object atmosphereMaterial in scene.atmosphereMaterialPool)
-        //    {
-        //        if (atmosphereMaterial.name == atmosphereType)
-        //        {
-        //            atmosphereRenderer.material = (Material)atmosphereMaterial;
-        //            break;
-        //        }
-        //    }
-        //}
-        
-        ////Set rotation and distance
-        //float actualDistance = (0.6f / 100f) * distance;
-
-        //float x = 0.4f + actualDistance;
-        //float y = 0;
-        //float z = 0.4f + actualDistance;
-
-        //scene.planetPivot.transform.localPosition = new Vector3(x, y, z);
-
-        //float xRot = planetXRot;
-        //float yRot = planetYRot;
-        //float zRot = planetZRot;
-
-        //scene.planetPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
-
-        //xRot = pivotXRot;
-        //yRot = pivotYRot;
-        //zRot = pivotZRot;
-
-        //scene.centerPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
+            planet.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
+        }
     }
 
     //This instantiates a planet prefab
@@ -902,11 +806,11 @@ public static class SceneFunctions
     {
         Scene scene = SceneFunctions.GetScene();
 
-        GameObject shipPrefab = null;
+        GameObject planetPrefab = null;
         GameObject tempPrefab = null;
 
         //This gets a backup prefab from another pool if the selected pool doesn't have the requested prefab
-        foreach (GameObject objectPrefab in scene.shipsPrefabPool)
+        foreach (GameObject objectPrefab in scene.planetPrefabPool)
         {
             if (objectPrefab.name == name)
             {
@@ -918,10 +822,10 @@ public static class SceneFunctions
         //This instantiates the prefab
         if (tempPrefab != null)
         {
-            shipPrefab = GameObject.Instantiate(tempPrefab) as GameObject;
+            planetPrefab = GameObject.Instantiate(tempPrefab) as GameObject;
         }
 
-        return shipPrefab;
+        return planetPrefab;
     }
 
     //This ensures the planet does not hit any actual in scene objects
@@ -1276,7 +1180,6 @@ public static class SceneFunctions
 
         if (ship != null)
         {
-
             if (shipType.scriptType == "smallship")
             {
                 //Add appropriate ship script

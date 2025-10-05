@@ -61,11 +61,7 @@ public class Scene : MonoBehaviour
     public LensFlareComponentSRP lensFlare;
 
     [Header("Planet")]
-    [HideInInspector] public GameObject[] planets;
-    [HideInInspector] public Object[] planetMaterialPool;
-    [HideInInspector] public Object[] cloudMaterialPool;
-    [HideInInspector] public Object[] atmosphereMaterialPool;
-    [HideInInspector] public Object[] ringMaterialPool;
+    [HideInInspector] public List<GameObject> planets;
 
     [Header("Skybox")]
     public GameObject terrain;

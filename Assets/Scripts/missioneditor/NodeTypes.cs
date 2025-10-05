@@ -284,14 +284,6 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetCloudList(), "clouds", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data4 = NodeFunctions.DrawDropDownMenu(node, GetAtmosphereList(), "atmosphere", "blue", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
         List<string> options4 = new List<string>();
         options4.Add("none");
         options4.Add("ring01");
@@ -5232,10 +5224,7 @@ public static class NodeTypes
     {
         List<string> planetList = new List<string>();
 
-        planetList.Add("deathstar");
-        planetList.Add("deathstar2");
-
-        Object[] planets = Resources.LoadAll(OGGetAddress.planets_planetmaterials, typeof(Material));
+        Object[] planets = Resources.LoadAll(OGGetAddress.planets, typeof(GameObject));
 
         foreach (Object planet in planets)
         {
@@ -5243,38 +5232,6 @@ public static class NodeTypes
         }
 
         return planetList;
-    }
-
-    public static List<string> GetAtmosphereList()
-    {
-        List<string> atmosphereList = new List<string>();
-
-        atmosphereList.Add("none");
-
-        Object[] atmospheres = Resources.LoadAll(OGGetAddress.planets_atmospherematerials, typeof(Material));
-
-        foreach (Object atmosphere in atmospheres)
-        {
-            atmosphereList.Add(atmosphere.name);
-        }
-
-        return atmosphereList;
-    }
-
-    public static List<string> GetCloudList()
-    {
-        List<string> cloudList = new List<string>();
-
-        cloudList.Add("none");
-
-        Object[] clouds = Resources.LoadAll(OGGetAddress.planets_cloudmaterials, typeof(Material));
-
-        foreach (Object cloud in clouds)
-        {
-            cloudList.Add(cloud.name);
-        }
-
-        return cloudList;
     }
 
     public static List<string> GetSkyboxList()

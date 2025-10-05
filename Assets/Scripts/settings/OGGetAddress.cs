@@ -22,9 +22,6 @@ public static class OGGetAddress
     public static string musicclips = "audio/musicclips/";
     public static string particles = "particles/";
     public static string planets = "objects/planets/";
-    public static string planets_atmospherematerials = "objects/planets/atmospherematerials/";
-    public static string planets_cloudmaterials = "objects/planets/cloudmaterials/";
-    public static string planets_planetmaterials = "objects/planets/planetmaterials/";
     public static string props = "objects/props/";
     public static string terrain = "objects/terrain/";
     public static string radar = "objects/radar/";

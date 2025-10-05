@@ -911,7 +911,7 @@ public static class SmallShipFunctions
             {
                 float particleSpeed = (4f / smallShip.speedRating) * smallShip.thrustSpeed;
                 var main = smallShip.movementEffect.main;
-                main.simulationSpeed = particleSpeed;
+                main.simulationSpeed = particleSpeed * 2;
             }
             else if (smallShip.thrustSpeed < 10)
             {

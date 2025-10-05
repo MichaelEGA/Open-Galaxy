@@ -742,17 +742,23 @@ public static class SceneFunctions
 
         GameObject planet = InstantiatePlanetPrefab(planetType);
 
-        if (scene.planets == null)
+        if (scene.planetsPool == null)
         {
-            scene.planets = new List<GameObject>();
+            scene.planetsPool = new List<GameObject>();
         }
 
-        scene.planets.Add(planet);
+        scene.planetsPool.Add(planet);
 
         IgnoreCollisionWithPlanet();
 
         if (planet != null)
         {
+            planet.transform.position = new Vector3(0, 0, 0);
+
+            planet.layer = 27;
+
+            GameObjectUtils.SetLayerAllChildren(planet.transform, 27);
+
             Transform[] planetTransforms = GameObjectUtils.GetAllChildTransformsIncludingInactive(planet.transform);
             
             //This turns the planet rings on and off

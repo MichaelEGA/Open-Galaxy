@@ -60,9 +60,6 @@ public class Scene : MonoBehaviour
     public Light sceneLight;
     public LensFlareComponentSRP lensFlare;
 
-    [Header("Planet")]
-    [HideInInspector] public List<GameObject> planets;
-
     [Header("Skybox")]
     public GameObject terrain;
     public GameObject viewDistancePlane;

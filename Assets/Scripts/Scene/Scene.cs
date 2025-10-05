@@ -22,6 +22,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public Object[] cockpitPrefabPool;
     [HideInInspector] public Object[] propPrefabPool;
     [HideInInspector] public Object[] particlePrefabPool;
+    [HideInInspector] public Object[] planetPrefabPool;
     [HideInInspector] public Object[] terrainTexturesPool;
     [HideInInspector] public GameObject hyperspaceTunnelPrefab;
 
@@ -36,6 +37,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> cockpitPool;
     [HideInInspector] public List<GameObject> tilesPool;
     [HideInInspector] public List<GameObject> tilesSetPool;
+    [HideInInspector] public List<GameObject> planetsPool;
     [HideInInspector] public List<Transform> systemTransformsPool;
     [HideInInspector] public GameObject hyperspaceTunnel;
     [HideInInspector] public GameObject cockpit;
@@ -59,14 +61,7 @@ public class Scene : MonoBehaviour
     public LensFlareComponentSRP lensFlare;
 
     [Header("Planet")]
-    [HideInInspector] public GameObject centerPivot;
-    [HideInInspector] public GameObject planetPivot;
-    [HideInInspector] public GameObject planet;
-    [HideInInspector] public GameObject deathstar;
-    [HideInInspector] public GameObject deathstar2;
-    [HideInInspector] public GameObject clouds;
-    [HideInInspector] public GameObject atmosphere;
-    [HideInInspector] public GameObject rings;
+    [HideInInspector] public GameObject[] planets;
     [HideInInspector] public Object[] planetMaterialPool;
     [HideInInspector] public Object[] cloudMaterialPool;
     [HideInInspector] public Object[] atmosphereMaterialPool;

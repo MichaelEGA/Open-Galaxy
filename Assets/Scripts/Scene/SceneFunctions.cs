@@ -751,148 +751,177 @@ public static class SceneFunctions
     #region planet creation
 
     //This generates the planet texture
-    public static void GeneratePlanet(string planetType, string cloudType, string atmosphereType, string ringsType, float distance, float planetXRot, float planetYRot, float planetZRot, float pivotXRot, float pivotYRot, float pivotZRot )
+    public static void GeneratePlanet(string planetType, string ringsType, float distance, float planetXRot, float planetYRot, float planetZRot, float pivotXRot, float pivotYRot, float pivotZRot )
     {
         //This gets key references
         Scene scene = GetScene();
 
-        scene.centerPivot = GameObject.Find("centerpivot");
+        InstantiatePlanetPrefab(planetType);
 
-        IgnoreCollisionWithPlanet();
+        //scene.centerPivot = GameObject.Find("centerpivot");
 
-        if (scene.centerPivot == null)
-        {
-            GameObject planetPrefab = Resources.Load(OGGetAddress.planets + "centerpivot") as GameObject;
-            scene.centerPivot = GameObject.Instantiate(planetPrefab);
-            scene.planetPivot = GameObject.Find("planetpivot");
-            scene.planet = GameObject.Find("planet");
-            scene.deathstar = GameObject.Find("deathstar");
-            scene.deathstar2 = GameObject.Find("deathstar2");
-            scene.clouds = GameObject.Find("clouds");
-            scene.atmosphere = GameObject.Find("atmosphere");
-            scene.rings = GameObject.Find("rings");
-        }
+        //IgnoreCollisionWithPlanet();
 
-        Renderer planetRenderer = scene.planet.GetComponent<Renderer>();
-        Renderer cloudRenderer = scene.clouds.GetComponent<Renderer>();
-        Renderer atmosphereRenderer = scene.atmosphere.GetComponent<Renderer>();
-        Renderer ringsRenderer = scene.rings.GetComponent<Renderer>();
+        //if (scene.centerPivot == null)
+        //{
+            
+        //    scene.centerPivot = GameObject.Instantiate(planetPrefab);
+        //    scene.planetPivot = GameObject.Find("planetpivot");
+        //    scene.planet = GameObject.Find("planet");
+        //    scene.deathstar = GameObject.Find("deathstar");
+        //    scene.deathstar2 = GameObject.Find("deathstar2");
+        //    scene.clouds = GameObject.Find("clouds");
+        //    scene.atmosphere = GameObject.Find("atmosphere");
+        //    scene.rings = GameObject.Find("rings");
+        //}
 
-        //This disables/enables gameobjects
-        if (cloudType == "none")
-        {
-            scene.clouds.SetActive(false);
-        }
-        else
-        {
-            scene.clouds.SetActive(true);
-        }
+        //Renderer planetRenderer = scene.planet.GetComponent<Renderer>();
+        //Renderer cloudRenderer = scene.clouds.GetComponent<Renderer>();
+        //Renderer atmosphereRenderer = scene.atmosphere.GetComponent<Renderer>();
+        //Renderer ringsRenderer = scene.rings.GetComponent<Renderer>();
 
-        if (atmosphereType == "none")
-        {
-            scene.atmosphere.SetActive(false);
-        }
-        else
-        {
-            scene.atmosphere.SetActive(true);
-        }
+        ////This disables/enables gameobjects
+        //if (cloudType == "none")
+        //{
+        //    scene.clouds.SetActive(false);
+        //}
+        //else
+        //{
+        //    scene.clouds.SetActive(true);
+        //}
 
-        if (ringsType == "none")
-        {
-            scene.rings.SetActive(false);
-        }
-        else
-        {
-            scene.rings.SetActive(true);
-        }
+        //if (atmosphereType == "none")
+        //{
+        //    scene.atmosphere.SetActive(false);
+        //}
+        //else
+        //{
+        //    scene.atmosphere.SetActive(true);
+        //}
 
-        if (planetType == "deathstar" || planetType == "deathstar2")
-        {
-            if (planetType == "deathstar")
-            {
-                scene.deathstar.SetActive(true);
-                scene.deathstar2.SetActive(false);
-            }
-            else if (planetType == "deathstar2")
-            {
-                scene.deathstar2.SetActive(true);
-                scene.deathstar.SetActive(false);
-            }
-            else
-            {
-                scene.deathstar2.SetActive(false);
-                scene.deathstar.SetActive(false);
-            }
+        //if (ringsType == "none")
+        //{
+        //    scene.rings.SetActive(false);
+        //}
+        //else
+        //{
+        //    scene.rings.SetActive(true);
+        //}
 
-            scene.planet.SetActive(false);
-        }
-        else
-        {
-            scene.deathstar.SetActive(false);
-            scene.deathstar2.SetActive(false);
-            scene.planet.SetActive(true);
-        }
+        //if (planetType == "deathstar" || planetType == "deathstar2")
+        //{
+        //    if (planetType == "deathstar")
+        //    {
+        //        scene.deathstar.SetActive(true);
+        //        scene.deathstar2.SetActive(false);
+        //    }
+        //    else if (planetType == "deathstar2")
+        //    {
+        //        scene.deathstar2.SetActive(true);
+        //        scene.deathstar.SetActive(false);
+        //    }
+        //    else
+        //    {
+        //        scene.deathstar2.SetActive(false);
+        //        scene.deathstar.SetActive(false);
+        //    }
 
-        //Set materials
-        if (planetType != "deathstar" & planetType != "deathstar2")
-        {
-            if (planetRenderer != null)
-            {
-                foreach (Object planetMaterial in scene.planetMaterialPool)
-                {
-                    if (planetMaterial.name == planetType)
-                    {
-                        planetRenderer.material = (Material)planetMaterial;
-                        break;
-                    }
-                }
-            }
-        }
+        //    scene.planet.SetActive(false);
+        //}
+        //else
+        //{
+        //    scene.deathstar.SetActive(false);
+        //    scene.deathstar2.SetActive(false);
+        //    scene.planet.SetActive(true);
+        //}
 
-        if (cloudRenderer != null)
-        {
-            foreach (Object cloudMaterial in scene.cloudMaterialPool)
-            {
-                if (cloudMaterial.name == cloudType)
-                {
-                    cloudRenderer.material = (Material)cloudMaterial;
-                    break;
-                }
-            }
-        }
+        ////Set materials
+        //if (planetType != "deathstar" & planetType != "deathstar2")
+        //{
+        //    if (planetRenderer != null)
+        //    {
+        //        foreach (Object planetMaterial in scene.planetMaterialPool)
+        //        {
+        //            if (planetMaterial.name == planetType)
+        //            {
+        //                planetRenderer.material = (Material)planetMaterial;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
+
+        //if (cloudRenderer != null)
+        //{
+        //    foreach (Object cloudMaterial in scene.cloudMaterialPool)
+        //    {
+        //        if (cloudMaterial.name == cloudType)
+        //        {
+        //            cloudRenderer.material = (Material)cloudMaterial;
+        //            break;
+        //        }
+        //    }
+        //}
         
-        if (atmosphereRenderer != null)
+        //if (atmosphereRenderer != null)
+        //{
+        //    foreach (Object atmosphereMaterial in scene.atmosphereMaterialPool)
+        //    {
+        //        if (atmosphereMaterial.name == atmosphereType)
+        //        {
+        //            atmosphereRenderer.material = (Material)atmosphereMaterial;
+        //            break;
+        //        }
+        //    }
+        //}
+        
+        ////Set rotation and distance
+        //float actualDistance = (0.6f / 100f) * distance;
+
+        //float x = 0.4f + actualDistance;
+        //float y = 0;
+        //float z = 0.4f + actualDistance;
+
+        //scene.planetPivot.transform.localPosition = new Vector3(x, y, z);
+
+        //float xRot = planetXRot;
+        //float yRot = planetYRot;
+        //float zRot = planetZRot;
+
+        //scene.planetPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
+
+        //xRot = pivotXRot;
+        //yRot = pivotYRot;
+        //zRot = pivotZRot;
+
+        //scene.centerPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
+    }
+
+    //This instantiates a planet prefab
+    public static GameObject InstantiatePlanetPrefab(string name)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        GameObject shipPrefab = null;
+        GameObject tempPrefab = null;
+
+        //This gets a backup prefab from another pool if the selected pool doesn't have the requested prefab
+        foreach (GameObject objectPrefab in scene.shipsPrefabPool)
         {
-            foreach (Object atmosphereMaterial in scene.atmosphereMaterialPool)
+            if (objectPrefab.name == name)
             {
-                if (atmosphereMaterial.name == atmosphereType)
-                {
-                    atmosphereRenderer.material = (Material)atmosphereMaterial;
-                    break;
-                }
+                tempPrefab = objectPrefab;
+                break;
             }
         }
-        
-        //Set rotation and distance
-        float actualDistance = (0.6f / 100f) * distance;
 
-        float x = 0.4f + actualDistance;
-        float y = 0;
-        float z = 0.4f + actualDistance;
+        //This instantiates the prefab
+        if (tempPrefab != null)
+        {
+            shipPrefab = GameObject.Instantiate(tempPrefab) as GameObject;
+        }
 
-        scene.planetPivot.transform.localPosition = new Vector3(x, y, z);
-
-        float xRot = planetXRot;
-        float yRot = planetYRot;
-        float zRot = planetZRot;
-
-        scene.planetPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
-
-        xRot = pivotXRot;
-        yRot = pivotYRot;
-        zRot = pivotZRot;
-
-        scene.centerPivot.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
+        return shipPrefab;
     }
 
     //This ensures the planet does not hit any actual in scene objects
@@ -916,43 +945,6 @@ public static class SceneFunctions
         Physics.IgnoreLayerCollision(27, 21, true);
         Physics.IgnoreLayerCollision(27, 22, true);
         Physics.IgnoreLayerCollision(27, 23, true);
-    }
-
-    //These functions make the planets fly in and out when exiting hyperspace
-    public static IEnumerator PlanetFlyIn()
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        if (scene.mainShip != null & scene.centerPivot != null)
-        {
-            Vector3 startPosition = scene.mainShip.gameObject.transform.position + scene.mainShip.gameObject.transform.forward * 500;
-            Vector3 endPosition = scene.centerPivot.transform.position;
-
-            Task a = new Task(GameObjectUtils.LerpBetweenTwoPoints(scene.centerPivot, endPosition, startPosition, 2));
-
-            while (a.Running == true)
-            {
-                yield return null;
-            }
-        }
-    }
-
-    public static IEnumerator PlanetFlyOut()
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        if (scene.mainShip != null & scene.centerPivot != null)
-        {
-            Vector3 startPosition = scene.centerPivot.transform.position;
-            Vector3 endPosition = scene.mainShip.gameObject.transform.position + scene.mainShip.gameObject.transform.forward * -500;
-
-            Task a = new Task(GameObjectUtils.LerpBetweenTwoPoints(scene.centerPivot, endPosition, startPosition, 2));
-
-            while (a.Running == true)
-            {
-                yield return null;
-            }
-        }
     }
 
     #endregion
@@ -2819,14 +2811,14 @@ public static class SceneFunctions
             scene.torpedosPool.Clear();
         }
 
-        //if (scene.cockpit != null)
-        //{
-        //    GameObject.Destroy(scene.cockpit);
-        //}
-
-        if (scene.centerPivot != null)
+        if (scene.planetsPool != null)
         {
-            GameObject.Destroy(scene.centerPivot);
+            foreach (GameObject gameobject in scene.planetsPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.planetsPool.Clear();
         }
 
         GameObject CockpitAnchor = GameObject.Find("Cockpit Anchor");
@@ -2932,9 +2924,14 @@ public static class SceneFunctions
             scene.asteroidPool.Clear();
         }
 
-        if (scene.centerPivot != null)
+        if (scene.planetsPool != null)
         {
-            GameObject.Destroy(scene.centerPivot);
+            foreach (GameObject gameobject in scene.planetsPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.planetsPool.Clear();
         }
     }
 

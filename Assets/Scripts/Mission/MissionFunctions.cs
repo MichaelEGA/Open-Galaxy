@@ -3126,7 +3126,7 @@ public static class MissionFunctions
 
         Scene scene = SceneFunctions.GetScene();
 
-        SceneFunctions.GeneratePlanet(planetType, cloudsType, atmosphereType, ringsType, distance, planetRotationX, planetRotationY, planetRotationZ, pivotRotationX, pivotRotationY, pivotRotationZ);
+        SceneFunctions.GeneratePlanet(planetType, ringsType, distance, planetRotationX, planetRotationY, planetRotationZ, pivotRotationX, pivotRotationY, pivotRotationZ);
     }
 
     //This loads a single prop on the ground

@@ -29,7 +29,6 @@ public class MissionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MissionFunctions.ExitOnPlayerDestroy(this);
         MissionFunctions.ActivateExitMenu(this);
 
         //This plays the messages in the cue which prevents audio from overlapping

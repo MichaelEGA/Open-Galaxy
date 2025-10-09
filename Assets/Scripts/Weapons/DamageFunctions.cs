@@ -543,9 +543,13 @@ public static class DamageFunctions
         //This resets the ship for the next load if needed
         smallShip.exploded = false;
 
-        //This deactivates the ship
-        //smallShip.gameObject.SetActive(false);
+        //This unloads the mission
+        if (smallShip.isAI == false)
+        {
+            MissionFunctions.ExitOnPlayerDestroy();
+        }
 
+        //This deactivates the ship
         GameObject.Destroy(smallShip.gameObject);
     }
 

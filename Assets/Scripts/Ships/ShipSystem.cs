@@ -3,8 +3,8 @@ using UnityEngine.Rendering;
 
 public class ShipSystem : MonoBehaviour
 {
-    public float hull = 100;
-    public float systems = 100;
+    public float hull = 1000;
+    public float systems = 1000;
     public bool disabled = false;
     public GameObject ionParticleSystemGO;
 }

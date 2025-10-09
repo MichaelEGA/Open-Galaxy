@@ -432,11 +432,13 @@ public static class MainMenuFunctions
 
                 string campaignName = "none";
 
+                bool campaignNodeExists = false;
+
                 foreach (MissionEvent missionEvent in tempMission.missionEventData)
                 {
                     if (missionEvent.eventType == "campaigninformation")
                     {
-                        bool isPresent = false;
+                        bool campaignExists = false;
 
                         campaignName = missionEvent.data1;
 
@@ -444,20 +446,52 @@ public static class MainMenuFunctions
                         {
                             if (campaign == missionEvent.data1)
                             {
-                                isPresent = true;
+                                campaignExists = true;
                             }
                         }
 
-                        if (isPresent == false)
+                        if (campaignExists == false)
                         {
                             mainMenu.campaigns.Add(missionEvent.data1);
                             mainMenu.campaignDescriptions.Add(missionEvent.data2);
                         }
+
+                        campaignNodeExists = true;
+
+                        break;
                     }
                 }
 
-                mainMenu.customMissionNames.Add(mission.name);
-                mainMenu.customMissionCampaigns.Add(campaignName);
+                if (campaignNodeExists == true)
+                {
+                    mainMenu.customMissionNames.Add(mission.name);
+                    mainMenu.customMissionCampaigns.Add(campaignName);
+                }
+               
+                //This creates a special folder for missions that aren't part of a larger campaign
+                if (campaignNodeExists == false)
+                {
+                    bool campaignExists = false;
+
+                    foreach (string campaign in mainMenu.campaigns)
+                    {
+                        if (campaign == "Misc")
+                        {
+                            campaignExists = true;
+                        }
+                    }
+
+                    if (campaignExists == false)
+                    {
+                        mainMenu.campaigns.Add("Misc");
+                        mainMenu.campaignDescriptions.Add("Single missions of different types.");
+                    }
+
+                    mainMenu.customMissionNames.Add(mission.name);
+                    mainMenu.customMissionCampaigns.Add("Misc");
+                }
+
+               
             }
         }
         else

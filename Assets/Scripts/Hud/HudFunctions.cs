@@ -1466,7 +1466,7 @@ public static class HudFunctions
                 }
             }
 
-            if (hud.waypointIsActive == true & hud.mainCamera != null & waypointObject != null & waypointMarker != null & waypointArrow != null & hud.waypointText != null & hud.waypointTitle != null)
+            if (hud.waypointIsActive == true & hud.mainCamera != null & waypointObject != null & waypointMarker != null & waypointArrow != null & hud.waypointText != null & hud.waypointTitle != null & hud.smallShip != null)
             {
                 GameObject waypointGO = waypointObject;
                 GameObject shipGO = hud.smallShip.gameObject;

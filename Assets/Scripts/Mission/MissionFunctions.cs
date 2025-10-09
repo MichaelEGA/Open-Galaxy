@@ -4645,33 +4645,21 @@ public static class MissionFunctions
     #region exit functions
 
     //This checks whether the player ship has been destroyed
-    public static void ExitOnPlayerDestroy(MissionManager missionManager)
+    public static void ExitOnPlayerDestroy()
     {
+        MissionManager missionManager = GetMissionManager();
+
         if (missionManager.unloading == false)
         {
-            if (missionManager.scene == null)
-            {
-                missionManager.scene = SceneFunctions.GetScene();
-            }
+            Task a = new Task(UnloadAfter(5));
+            Task b = new Task(HudFunctions.FadeOutHud(0.25f));
 
-            if (missionManager.scene != null)
-            {
-                if (missionManager.scene.mainShip != null)
-                {
-                    if (missionManager.scene.mainShip.activeSelf == false)
-                    {
-                        Task a = new Task(UnloadAfter(5));
-                        Task b = new Task(HudFunctions.FadeOutHud(0.25f));
+            missionManager.missionTasks.Add(a);
+            missionManager.missionTasks.Add(b);
 
-                        missionManager.missionTasks.Add(a);
-                        missionManager.missionTasks.Add(b);
-
-                        Cursor.visible = true;
-                        Cursor.lockState = CursorLockMode.None;
-                        missionManager.unloading = true;
-                    }
-                }
-            }
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            missionManager.unloading = true;
         }
     }
 

@@ -1181,6 +1181,7 @@ public static class MissionFunctions
         Scene scene = SceneFunctions.GetScene();
 
         string shipName = missionEvent.data1;
+        string system = missionEvent.data3;
 
         bool activate = false;
 
@@ -1199,7 +1200,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(shipName))
                         {
-                            ShipSystemFunctions.ActivateSystemTransforms(ship, activate);
+                            ShipSystemFunctions.ActivateSystemTransforms(ship, activate, system);
                         }
                     }
                 }
@@ -4392,7 +4393,14 @@ public static class MissionFunctions
 
                             if (smallShip != null)
                             {
-                                TargetingFunctions.GetSpecificTarget_SmallShipPlayer(smallShip, missionEvent.data2);
+                                TargetingFunctions.GetSpecificTarget_SmallShip(smallShip, missionEvent.data2);
+                            }
+
+                            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+                            if (largeShip != null)
+                            {
+                                TargetingFunctions.GetSpecificTarget_LargeShipAI(largeShip, missionEvent.data2);
                             }
                         }
                     }

@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 public static class ShipSystemFunctions
 {
     //This activates and deactivates a system transform
-    public static void ActivateSystemTransforms(GameObject ship, bool activate)
+    public static void ActivateSystemTransforms(GameObject ship, bool activate, string system)
     {
         if (ship != null)
         {
@@ -17,11 +17,26 @@ public static class ShipSystemFunctions
             {
                 foreach (Transform systemTransform in systemTransforms)
                 {
-                    systemTransform.gameObject.SetActive(activate);
-                    
-                    if (systemTransform.GetComponent<ShipSystem>() == null)
+                    if (system == "" || system == "none" || system == "all")
                     {
-                        systemTransform.AddComponent<ShipSystem>();
+                        systemTransform.gameObject.SetActive(activate);
+
+                        if (systemTransform.GetComponent<ShipSystem>() == null)
+                        {
+                            systemTransform.AddComponent<ShipSystem>();
+                        }
+                    }
+                    else
+                    {
+                        if (systemTransform.name.Contains(system))
+                        {
+                            systemTransform.gameObject.SetActive(activate);
+
+                            if (systemTransform.GetComponent<ShipSystem>() == null)
+                            {
+                                systemTransform.AddComponent<ShipSystem>();
+                            }
+                        }
                     }
                 }
 

@@ -520,7 +520,7 @@ public static class TargetingFunctions
     }
 
     //This gets the designated target and sets it as the ships target if it can be found
-    public static void GetSpecificTarget_SmallShipPlayer(SmallShip smallShip = null, string targetName = "none")
+    public static void GetSpecificTarget_SmallShip(SmallShip smallShip = null, string targetName = "none")
     {
         Scene scene = smallShip.scene;
         GameObject target = null;
@@ -948,8 +948,6 @@ public static class TargetingFunctions
             }
 
             largeShip.targetRigidbody = target.GetComponent<Rigidbody>();
-
-            targetSmallShip.numberTargeting += 1;
         }
     }
 

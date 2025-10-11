@@ -1388,6 +1388,17 @@ public static class NodeTypes
 
         drop -= 15;
 
+        List<string> options2 = new List<string>();
+        options2.Add("all");
+        options2.Add("engine");
+        options2.Add("shield");
+        options2.Add("gravitywell");
+        options2.Add("dovinbasal");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options2, "system", "all", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;

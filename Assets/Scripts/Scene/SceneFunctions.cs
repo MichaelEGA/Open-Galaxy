@@ -136,7 +136,7 @@ public static class SceneFunctions
             mainCameraGO.tag = "MainCamera";
             mainCameraGO.AddComponent<AudioListener>();
             mainCamera = mainCameraGO.AddComponent<Camera>();
-            mainCamera.cullingMask = LayerMask.GetMask("Default", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
+            mainCamera.cullingMask = LayerMask.GetMask("Default", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "collision11", "collision12", "collision13", "collision14", "collision15", "collision16");
             mainCamera.nearClipPlane = 0.01f;
             mainCamera.farClipPlane = 90000;
             var mainCameraData = mainCamera.GetUniversalAdditionalCameraData();
@@ -152,7 +152,7 @@ public static class SceneFunctions
             followCameraGO = new GameObject();
             followCameraGO.name = "Follow Camera";
             followCamera = followCameraGO.AddComponent<Camera>();
-            followCamera.cullingMask = LayerMask.GetMask("Default", "collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10");
+            followCamera.cullingMask = LayerMask.GetMask("Default", "collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "collision11", "collision12", "collision13", "collision14", "collision15", "collision16");
             followCamera.nearClipPlane = 0.01f;
             followCamera.farClipPlane = 90000;
             var secondaryMainCameraData = followCamera.GetUniversalAdditionalCameraData();

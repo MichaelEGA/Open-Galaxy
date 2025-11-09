@@ -213,7 +213,7 @@ public static class LaserFunctions
     {
         LayerMask collisionLayers = new LayerMask(); 
 
-        if (smallShip.isAI != false)
+        if (smallShip.isAI == true)
         {
 
             //This gets the Json ship data

@@ -141,6 +141,20 @@ public static class TerrainManagerFunctions
 
             terrainMaterial.SetTexture("_Main_Texture", selectedTexture);
 
+            //Apply base terrain texture
+            Texture2D selectedTextureNormal = null;
+
+            foreach (Object tempTexture in terrainManager.scene.terrainTexturesPool)
+            {
+                if (tempTexture.name == textureName + "_normal")
+                {
+                    selectedTextureNormal = (Texture2D)tempTexture;
+                    break;
+                }
+            }
+
+            terrainMaterial.SetTexture("_Main_Texture_Normal", selectedTextureNormal);
+            
             //Apply cliff terrain texture
             Texture2D selectedCliffTexture = null;
 
@@ -154,6 +168,20 @@ public static class TerrainManagerFunctions
             }
 
             terrainMaterial.SetTexture("_Cliff_Texture", selectedCliffTexture);
+
+            //Apply cliff terrain texture normal
+            Texture2D selectedCliffTextureNormal = null;
+
+            foreach (Object tempTexture in terrainManager.scene.terrainTexturesPool)
+            {
+                if (tempTexture.name == terrainManager.cliffTextureType + "_normal")
+                {
+                    selectedCliffTextureNormal = (Texture2D)tempTexture;
+                    break;
+                }
+            }
+
+            terrainMaterial.SetTexture("_Cliff_Texture_Normal", selectedCliffTextureNormal);
 
             terrainMaterials.Add(terrainMaterial);
         }

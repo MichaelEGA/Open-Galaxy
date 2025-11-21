@@ -5267,7 +5267,10 @@ public static class NodeTypes
 
         foreach (Object texture in textures)
         {
-            textureList.Add(texture.name);
+            if (!texture.name.Contains("_normal"))
+            {
+                textureList.Add(texture.name);
+            }
         }
 
         return textureList;
@@ -5281,7 +5284,7 @@ public static class NodeTypes
 
         foreach (Object texture in textures)
         {
-            if (texture.name.Contains("cliff"))
+            if (texture.name.Contains("cliff") & !texture.name.Contains("normal"))
             {
                 textureList.Add(texture.name);
             }
@@ -5298,7 +5301,7 @@ public static class NodeTypes
 
         foreach (Object texture in textures)
         {
-            if (texture.name.Contains("water"))
+            if (texture.name.Contains("water") & !texture.name.Contains("normal"))
             {
                 textureList.Add(texture.name);
             }

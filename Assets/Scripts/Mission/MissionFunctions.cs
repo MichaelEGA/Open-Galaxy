@@ -224,6 +224,14 @@ public static class MissionFunctions
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", startTime);
             }
+            else if (missionEvent.eventType == "preload_loadbiometerrain" & missionEvent.conditionLocation == location)
+            {
+                LoadScreenFunctions.AddLogToLoadingScreen("Loading biome terrain", startTime);
+
+                Task a = new Task(LoadBiomeTerrain(missionEvent));
+                while (a.Running == true) { yield return null; }
+                LoadScreenFunctions.AddLogToLoadingScreen("Biome Terrain loaded", startTime);
+            }
             else if (missionEvent.eventType == "preload_sethudcolour" & missionEvent.conditionLocation == location)
             {
                 SetHudColour(missionEvent);
@@ -3418,7 +3426,7 @@ public static class MissionFunctions
         SceneFunctions.LoadSingleShipAsWreck(position, rotation, type, name, fireNumber, fireScaleMin, fireScaleMax, seed);
     }
 
-    //This loads a dynamic terrain
+    //This loads a single type terrain
     public static IEnumerator LoadTerrain(MissionEvent missionEvent)
     {
         Scene scene = SceneFunctions.GetScene();
@@ -3543,6 +3551,167 @@ public static class MissionFunctions
         terrainManager.canyonDepth = canyonDepth;
         terrainManager.blendFactor = blendFactor;
         terrainManager.seaLevel = seaLevel;
+
+        Task a = new Task(TerrainManagerFunctions.CommenceTerrainGeneration(terrainManager));
+        terrainManager.terrainTasks.Add(a);
+
+        while (a.Running == true)
+        {
+            yield return null;
+        }
+    }
+
+    //This loads a biome terrain with all four terrain types mixed
+    public static IEnumerator LoadBiomeTerrain(MissionEvent missionEvent)
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        string textureType1 = missionEvent.data1;
+        string textureType2 = missionEvent.data2;
+        string textureType3 = missionEvent.data3;
+        string textureType4 = missionEvent.data4;
+        string textureType5 = missionEvent.data5;
+        string clifftextureType = missionEvent.data6;
+        string seaTextureType = missionEvent.data7;
+        string maskNoise = missionEvent.data8;
+        string blendNoise = missionEvent.data9;
+
+        int seed = 0;
+
+        if (int.TryParse(missionEvent.data10, out _))
+        {
+            seed = int.Parse(missionEvent.data10);
+        }
+
+        float plainsPercentage = 0.33f;
+
+        if (float.TryParse(missionEvent.data11, out _))
+        {
+            plainsPercentage = float.Parse(missionEvent.data11);
+        }
+
+        float hillsPercentage = 0.33f;
+
+        if (float.TryParse(missionEvent.data12, out _))
+        {
+            hillsPercentage = float.Parse(missionEvent.data12);
+        }
+
+        float plainsAmplitude = 0.01f;
+
+        if (float.TryParse(missionEvent.data13, out _))
+        {
+            plainsAmplitude = float.Parse(missionEvent.data13);
+        }
+
+        float desertAmplitude = 0.1f;
+
+        if (float.TryParse(missionEvent.data14, out _))
+        {
+            desertAmplitude = float.Parse(missionEvent.data14);
+        }
+
+        float hillsAmplitude = 0.45f;
+
+        if (float.TryParse(missionEvent.data15, out _))
+        {
+            hillsAmplitude = float.Parse(missionEvent.data15);
+        }
+
+        float mountainsAmplitude = 1;
+
+        if (float.TryParse(missionEvent.data16, out _))
+        {
+            mountainsAmplitude = float.Parse(missionEvent.data16);
+        }
+
+        float terrainHeight = 50;
+
+        if (float.TryParse(missionEvent.data17, out _))
+        {
+            terrainHeight = float.Parse(missionEvent.data17);
+        }
+
+        int terraceNumber = 50;
+
+        if (int.TryParse(missionEvent.data18, out _))
+        {
+            terraceNumber = int.Parse(missionEvent.data18);
+        }
+
+        float canyonDepth = 50;
+
+        if (float.TryParse(missionEvent.data19, out _))
+        {
+            canyonDepth = float.Parse(missionEvent.data19);
+        }
+
+        float blendFactor = 0.5f;
+
+        if (float.TryParse(missionEvent.data20, out _))
+        {
+            blendFactor = float.Parse(missionEvent.data20);
+        }
+
+        TerrainManager terrainManager = scene.AddComponent<TerrainManager>();
+
+        terrainManager.player = scene.mainCamera.transform;
+        terrainManager.textureType1 = textureType1;
+        terrainManager.textureType2 = textureType2;
+        terrainManager.textureType3 = textureType2;
+        terrainManager.textureType4 = textureType2;
+        terrainManager.textureType5 = textureType2;
+        terrainManager.cliffTextureType = clifftextureType;
+        terrainManager.seaTextureType = seaTextureType;
+
+        terrainManager.terrainType = TerrainType.Biomes;
+        
+        if (maskNoise == "Terraces")
+        {
+            terrainManager.maskType = MaskType.Terraces;
+        }
+        else if (maskNoise == "Canyons")
+        {
+            terrainManager.maskType = MaskType.Canyons;
+        }
+        else
+        {
+            terrainManager.maskType = MaskType.None;
+        }
+
+        if (blendNoise == "Mountains")
+        {
+            terrainManager.blendType = BlendType.Mountains;
+        }
+        else if (blendNoise == "Hills")
+        {
+            terrainManager.blendType = BlendType.Hills;
+        }
+        else if (blendNoise == "Desert")
+        {
+            terrainManager.blendType = BlendType.Desert;
+        }
+        else if (blendNoise == "Plains")
+        {
+            terrainManager.blendType = BlendType.Plains;
+        }
+        else if (blendNoise == "None")
+        {
+            terrainManager.blendType = BlendType.None;
+        }
+
+        terrainManager.plainsPercentage = plainsPercentage;
+        terrainManager.hillsPercentage = hillsPercentage;
+        terrainManager.plainsAmp = plainsAmplitude;
+        terrainManager.desertAmp = desertAmplitude;
+        terrainManager.hillsAmp = hillsAmplitude;
+        terrainManager.mountAmp = mountainsAmplitude;
+
+        terrainManager.seed = seed;
+        terrainManager.terrainHeight = terrainHeight;
+        terrainManager.canyonDepth = canyonDepth;
+        terrainManager.blendFactor = blendFactor;
+        terrainManager.seaLevel = -100;
 
         Task a = new Task(TerrainManagerFunctions.CommenceTerrainGeneration(terrainManager));
         terrainManager.terrainTasks.Add(a);

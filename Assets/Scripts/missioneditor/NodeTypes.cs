@@ -1032,9 +1032,108 @@ public static class NodeTypes
 
         node.data15 = NodeFunctions.DrawInputField(node, "blend factor", "0.5", 7, 5, drop, 12.5f, 90, 5f);
 
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_PreLoad_LoadBiomeTerrain(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "pl_loadbiometerrain", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadbiometerrain", 7, 5, drop, 12.5f, 90);
+
         drop -= 15;
 
-        node.data16 = NodeFunctions.DrawInputField(node, "sea level", "-100", 7, 5, drop, 12.5f, 90, 5f);
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture 1", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture 2", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture 3", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture 4", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureList(), "texture 5", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureCliffList(), "cliff texture", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, GetTerrainTextureWaterList(), "sea texture", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, GetMaskNoiseTypes(), "mask noise", "None", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawDropDownMenu(node, GetBlendNoiseTypes(), "blend noise", "None", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data10 = NodeFunctions.DrawInputField(node, "seed", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawInputField(node, "plains percent", "0.33", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data12 = NodeFunctions.DrawInputField(node, "hills percent", "0.33", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data13 = NodeFunctions.DrawInputField(node, "plains amp", "0.01", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data14 = NodeFunctions.DrawInputField(node, "desert amp", "0.10", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data15 = NodeFunctions.DrawInputField(node, "hills amp", "0.45", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data16 = NodeFunctions.DrawInputField(node, "mountains amp", "1", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data17 = NodeFunctions.DrawInputField(node, "terrain height", "500", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data18 = NodeFunctions.DrawInputField(node, "terraces", "4", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data19 = NodeFunctions.DrawInputField(node, "canyon depth", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data20 = NodeFunctions.DrawInputField(node, "blend factor", "0.5", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 

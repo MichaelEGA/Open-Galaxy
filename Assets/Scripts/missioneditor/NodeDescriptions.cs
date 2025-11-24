@@ -175,6 +175,18 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
+        else if (name == "preload_loadbiometerrain")
+        {
+            description =
+           "Pre-Load Biome Terrain \n " +
+           "\n " +
+           "This node loads a biome terrain i.e. a terrain with all four terrain types mixed together plains, desert, hills, mounatins. \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- The plain percentage and the hills percentage cannon be more than 0.5 each.  \n" +
+           "- If the plains make up 0.33 of the terrain and hill make up 0.33 of the terrain, the leftover 0.33 is for the moutains.  \n" +
+           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
         else if (name == "preload_setfogdistanceandcolor")
         {
             description =

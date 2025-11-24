@@ -14,6 +14,7 @@ public enum TerrainType
     Hills,
     Desert,
     Plains,
+    Biomes
 }
 
 /// <summary>
@@ -85,6 +86,7 @@ public class TerrainManager : MonoBehaviour
     public FastNoiseLite desertNoise = new FastNoiseLite();
     public FastNoiseLite plainsNoise = new FastNoiseLite();
     public FastNoiseLite canyonNoise = new FastNoiseLite(); // Noise for canyon masking
+    public FastNoiseLite biomeNoise = new FastNoiseLite();
 
     [Header("Terrain Generation Parameters")]
     public TerrainType terrainType = TerrainType.Mountains; // The primary terrain type to generate
@@ -92,10 +94,17 @@ public class TerrainManager : MonoBehaviour
     public BlendType blendType = BlendType.None;            // The type of terrain to blend with
     public float terrainHeight = 50;                        // Maximum height of the terrain
     public float blendFactor = 0.5f;                       // Factor for blending between terrain types
-    public float canyonDepth = 50f;                        // Depth of generated canyons
+    public float canyonDepth = 50f;    
     public int terraceNumber = 4;
     public int seed = 1337;                                // Seed for noise generation to ensure reproducible terrains
 
+    [Header("Biome Specific Parameters")]
+    public float plainsAmp = 0.01f;
+    public float desertAmp = 0.10f;
+    public float hillsAmp = 0.45f;
+    public float mountAmp = 1.0f;// Depth of generated canyons
+    public float plainsPercentage = 0.33f;
+    public float hillsPercentage = 0.33f;
     /// <summary>
     /// Called once per frame.
     /// Continues the terrain generation process.

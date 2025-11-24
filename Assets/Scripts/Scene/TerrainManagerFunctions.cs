@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public static class TerrainManagerFunctions
 {
@@ -256,6 +254,13 @@ public static class TerrainManagerFunctions
         terrainManager.canyonNoise.SetFractalOctaves(3);
         terrainManager.canyonNoise.SetFractalLacunarity(2f);
         terrainManager.canyonNoise.SetFractalGain(0.3f);
+
+        //Biome Noise
+        terrainManager.biomeNoise = new FastNoiseLite();
+        terrainManager.biomeNoise.SetSeed(seed);
+        terrainManager.biomeNoise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
+        terrainManager.biomeNoise.SetFrequency(0.0005f); // Low frequency = large features
+        terrainManager.biomeNoise.SetFractalType(FastNoiseLite.FractalType.FBm); // Adds detail
     }
 
     //This queues the tiles that need to be made before the mission is started
@@ -453,26 +458,83 @@ public static class TerrainManagerFunctions
 
                 //This slightly adjusts the height of the terrain to prevent an unrealistic uniformity
                 float dynamicTerrainHeight = ((terrainHeight / 5f) * 3.5f);
-                dynamicTerrainHeight = dynamicTerrainHeight + ((terrainHeight / 5f) * (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale))) + ((terrainHeight / 10f) * (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale))); 
+                dynamicTerrainHeight = dynamicTerrainHeight + ((terrainHeight / 5f) * (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale))) + ((terrainHeight / 10f) * (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale)));
 
-                //Add terrain noise
-                if (terrainType == TerrainType.Mountains)
+                if (terrainType == TerrainType.Biomes)
                 {
-                    height = (mountainNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1);
+                    // Get a value between 0 and 1 to decide the biome. 
+                    // We use a very low frequency (scale * 0.1f) so biomes are large areas, not small bumps.
+                    float biomeControl = terrainManager.biomeNoise.GetNoise(worldX * (tileNoiseScale * 0.2f), worldZ * (tileNoiseScale * 0.2f));
+
+                    // Normalize from [-1, 1] to [0, 1]
+                    biomeControl = (biomeControl + 1f) / 2f;
+
+                    //Define amplitude
+                    float plainsAmp = terrainManager.plainsAmp;
+                    float desertAmp = terrainManager.desertAmp;
+                    float hillsAmp = terrainManager.hillsAmp;
+                    float mountAmp = terrainManager.mountAmp;
+
+                    // Define heights for all 4 types at this specific vertex
+                    float hPlains = (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * plainsAmp;
+                    float hDesert = (desertNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * desertAmp;
+                    float hHills = (hillNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * hillsAmp;
+                    float hMount = (mountainNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f) * mountAmp;
+
+                    // Blend based on the biomeControl value, original values
+                    // 0.0 - 0.33 : Plains -> Desert
+                    // 0.33 - 0.66 : Desert -> Hills
+                    // 0.66 - 1.0 : Hills -> Mountains
+                    float valueA = terrainManager.plainsPercentage;
+                    float valueB = terrainManager.plainsPercentage + terrainManager.hillsPercentage;
+
+                    if (valueA > 0.5f)
+                    {
+                        valueA = 0.49f;
+                    }
+
+                    if (valueB > 1)
+                    {
+                        valueB = 0.98f;
+                    }
+
+                    if (biomeControl < valueA)
+                    {
+                        float a = Mathf.InverseLerp(0.0f, valueA, biomeControl);
+                        height = Mathf.Lerp(hPlains, hDesert, a);
+                    }
+                    else if (biomeControl < valueB)
+                    {
+                        float a = Mathf.InverseLerp(valueA, valueB, biomeControl);
+                        height = Mathf.Lerp(hDesert, hHills, a);
+                    }
+                    else
+                    {
+                        float a = Mathf.InverseLerp(valueB, 1.0f, biomeControl);
+                        height = Mathf.Lerp(hHills, hMount, a);
+                    }
                 }
-                else if (terrainType == TerrainType.Hills)
+                else
                 {
-                    height = (hillNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f);
+                    //Add terrain noise
+                    if (terrainType == TerrainType.Mountains)
+                    {
+                        height = (mountainNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1);
+                    }
+                    else if (terrainType == TerrainType.Hills)
+                    {
+                        height = (hillNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f);
+                    }
+                    else if (terrainType == TerrainType.Desert)
+                    {
+                        height = (desertNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f);
+                    }
+                    else if (terrainType == TerrainType.Plains)
+                    {
+                        height = (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f);
+                    }
                 }
-                else if (terrainType == TerrainType.Desert)
-                {
-                    height = (desertNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f);
-                }
-                else if (terrainType == TerrainType.Plains)
-                {
-                    height = (plainsNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale) + 1f);
-                }
-              
+
                 //Add mask noise
                 if (maskType == MaskType.Terraces)
                 {
@@ -491,7 +553,8 @@ public static class TerrainManagerFunctions
 
                 //This applies the height only after the terracing has been applied
                 height = height * dynamicTerrainHeight;
-               
+                
+
                 if (maskType == MaskType.Canyons)
                 {
                     float canyonNoise = terrainManager.canyonNoise.GetNoise(worldX * tileNoiseScale, worldZ * tileNoiseScale);
@@ -531,7 +594,7 @@ public static class TerrainManagerFunctions
                     (float)z / (resolution - 1) * tileSize
                 );
 
-                uv[i] = new Vector2((float)x / (resolution - 1), (float)z / (resolution - 1));
+                uv[i] = new Vector2((float)x / (resolution - 1), (float)z / (resolution - 1)); 
             }
 
             if (terrainManager.initialGenerationComplete == true) //This slows down the terrain generation during gameplay

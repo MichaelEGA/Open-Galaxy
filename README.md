@@ -1,7 +1,7 @@
 # Open-Galaxy
 
 Gameplay
-<img width="1452" height="809" alt="Screenshot 2025-07-28 212638" src="https://github.com/user-attachments/assets/3a3a3df2-7c51-4338-8003-17d607a27fd5" />
+<img width="1491" height="831" alt="Screenshot 2025-11-25 101813" src="https://github.com/user-attachments/assets/4eaaa4bd-c0e6-455c-a1f7-55c9da69f3f2" />
 
 ![Screenshot 2025-06-24 142541](https://github.com/user-attachments/assets/482729b3-fdd5-4fcd-8f80-5b0a160e024b)
 
@@ -16,10 +16,9 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - Missions Events
   - AI Tagging
   - Easy to use mission editor
-  - Endless Terrain System
   - External mission loading
   - 21 Inbuilt Missions
-  - 400+ Ships and Props
+  - 400+ Ships
   - Keyboard and Mouse Support
   - X-Box Controller Support
 
@@ -57,9 +56,9 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - Left Thumbstick Button  changes between first and third person viewpoint
   - Scan a target by selecting it and then flying close
     
-**Latest Development Release:** 8.3.89
+**Latest Development Release:** 9.2.78 **(Not Recommended for Play)**
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.8.3.89/Open.Galaxy.8.3.89.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.9.2.78/Open.Galaxy.9.2.78.zip
     
 **Latest Milestone Release:** 8.3.89
 
@@ -93,6 +92,80 @@ Assets have only been used when permission has been given or implied by the auth
 The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
 
 **Changelog**
+
+24/11/25 - 9.2.78
+  - NOTE: This is the last release with endless terrain node. The feature is no longer in development and will be removed from future releases. But I made this release to preserve the code and to give an example of what it would have been like.
+  - added: muzzle flash for lasers
+  - added: Vong gameplay features: blackhole shields, burst fire
+  - added: Simplified Turret System
+  - added: Upgraded large ship targetting
+  - added: New and updated onhit functions
+  - added: New turret types: Plasma
+  - added: Hit points on large ships: shields, systems, turbolasers
+  - added: warning of target lock
+  - added: counter measure system
+  - added: listen to music tracks and internal sounds in editor
+  - added: display allegiance information in editor
+  - added: add x-box controller haptics for: firing lasers, firnng torpedos, being hit, collision, WEP
+  - added: plasma cannons small ship
+  - added: different explosions for shielded and unshield hit
+  - added: blackhole shields
+  - added: low power rapid fire laser
+  - added: activate rapid fire node
+  - added: load ship as wreck node/function
+  - added: aurebresh subtitle to display title node
+  - added: in turret tags to largeship ai tags
+  - added: make onlaserturrethit script
+  - added: make new onlaserhit
+  - added: make new onplasmahit
+  - added: make new onionhit
+  - added: plasma turret 
+  - added: make onplasmaturrethit script
+  - added: code to prevent lasers from firing
+  - added: turret laser damage to ship type
+  - added: replace has plasma with has blackhole shields
+  - added: shield type to ship types
+  - added: new x-wing cockpit
+  - added: new y-wing cockpit
+  - added: updated tie fighter cockpit
+  - added: display torpedo information
+  - added: load mulitple planets
+  - added: speed up speed particle system
+  - added: make systems stronger, maybe 500
+  - added: find a way to use default sprite in editor
+  - added: make mission files without a campaign node load in misc folder
+  - added: new a-wing cockpit
+  - added: select specifically what systems are active to target
+  - added: new falcon cockpit
+  - fixed: fixed hangar rotations on mc80
+  - updated: improved large ship explosion timing
+  - fixed: setshiplevels prevents ship from using lasers
+  - fixed: assault cruiser needs engine glow
+  - fixed: ship list needs to be realphabetised
+  - fixed: fix turret bug that prevents large turrets from targetting a single target
+  - fixed: destroy destroyed ships rather than just deactivating
+  - fixed: destroyed' ships are listed as having 'jumped to hyperspace'
+  - added: null checks for destroyed ships
+  - added: make low accuracy default for turrets
+  - added:  particle spark explosion for unshielded ships
+  - fixed: rapid fire is too powerful against hulls
+  - fixed: torpedos not hitting system colliders
+  - updated: set up immobiliser
+  - updated: set vigil corvette and immobiliser to read/write in editor
+  - fixed: cockpit doesn't load on second mission
+  - fixed: rapid fire event not activating in dark tide mission
+  - fixed: no change' should not be prefaced by small on AddAITagLargship in the accuracy section for the small turrets
+  - fixed: make game not add colliders to objects marked nocollider
+  - fixed: reference from miid_roik to vong_miid_roik
+  - updated: redo buttons on briefing and post briefing screens
+  - fixed: make text on mission editor buttons not completely on the left
+  - fixed: background picture credit inaccurate after exiting mission editor
+  - fixed: add vong to enemy list for 'hostile' allegiance
+  - fixed: game not exiting mission when player is destroyed
+  - fixed: bug where main target ship couldn't be set on large ships
+  - fixed: collision layer bug that is causing ships to disapppear
+  - updated: death star credits, remove N8
+  - fixed: ion cannons not hitting target, probably layer problem
 
 24/08/25 - 8.3.89 (Milestone Release)
   - Setup: vong ships (10/10)

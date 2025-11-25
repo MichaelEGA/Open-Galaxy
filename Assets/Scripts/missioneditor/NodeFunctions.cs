@@ -185,10 +185,6 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_LoadSingleShipAtDistanceAndAngleFromPlayer(node);
         }
-        else if (node.nodeType == "loadsingleshiponground")
-        {
-            NodeTypes.Draw_LoadSingleShipOnGround(node);
-        }
         else if (node.nodeType == "loadmultipleships")
         {
             NodeTypes.Draw_LoadMultipleShips(node);
@@ -196,10 +192,6 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "loadmultipleshipsfromhangar")
         {
             NodeTypes.Draw_LoadMultipleShipsFromHangar(node);
-        }
-        else if (node.nodeType == "loadmultipleshipsonground")
-        {
-            NodeTypes.Draw_LoadMultipleShipsOnGround(node);
         }
         else if (node.nodeType == "pausesequence")
         {
@@ -217,21 +209,9 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadPlanet(node);
         }
-        else if (node.nodeType == "preload_loadmultiplepropsonground")
-        {
-            NodeTypes.Draw_PreLoad_LoadMultiplePropsOnGround(node);
-        }
         else if (node.nodeType == "preload_loadmultipleships")
         {
             NodeTypes.Draw_PreLoad_LoadMultipleShips(node);
-        }
-        else if (node.nodeType == "preload_loadmultipleshipsonground")
-        {
-            NodeTypes.Draw_PreLoad_LoadMultipleShipsOnGround(node);
-        }
-        else if (node.nodeType == "preload_loadsingleproponground")
-        {
-            NodeTypes.Draw_PreLoad_LoadSinglePropOnGround(node);
         }
         else if (node.nodeType == "preload_loadsingleship")
         {
@@ -240,18 +220,6 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "preload_loadsingleshipaswreck")
         {
             NodeTypes.Draw_PreLoad_LoadSingleShipAsWreck(node);
-        }
-        else if (node.nodeType == "preload_loadsingleshiponground")
-        {
-            NodeTypes.Draw_PreLoad_LoadSingleShipOnGround(node);
-        }
-        else if (node.nodeType == "preload_loadterrain")
-        {
-            NodeTypes.Draw_PreLoad_LoadTerrain(node);
-        }
-        else if (node.nodeType == "preload_loadbiometerrain")
-        {
-            NodeTypes.Draw_PreLoad_LoadBiomeTerrain(node);
         }
         else if (node.nodeType == "preload_setfogdistanceandcolor")
         {

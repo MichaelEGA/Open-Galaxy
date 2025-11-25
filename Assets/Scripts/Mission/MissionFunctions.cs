@@ -216,22 +216,6 @@ public static class MissionFunctions
                 LoadPlanet(missionEvent);
                 LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", startTime);
             }
-            else if (missionEvent.eventType == "preload_loadterrain" & missionEvent.conditionLocation == location)
-            {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading terrain", startTime);
-
-                Task a = new Task(LoadTerrain(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Terrain loaded", startTime);
-            }
-            else if (missionEvent.eventType == "preload_loadbiometerrain" & missionEvent.conditionLocation == location)
-            {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading biome terrain", startTime);
-
-                Task a = new Task(LoadBiomeTerrain(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Biome Terrain loaded", startTime);
-            }
             else if (missionEvent.eventType == "preload_sethudcolour" & missionEvent.conditionLocation == location)
             {
                 SetHudColour(missionEvent);
@@ -269,19 +253,6 @@ public static class MissionFunctions
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", startTime);
             }
-            else if (missionEvent.eventType == "preload_loadsingleproponground" & missionEvent.conditionLocation == location)
-            {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading prop", startTime);
-                LoadSinglePropOnGround(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Single prop loaded", startTime);
-            }
-            else if (missionEvent.eventType == "preload_loadmultiplepropsonground" & missionEvent.conditionLocation == location)
-            {
-                Task a = new Task(LoadMultiplePropsOnGround(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Multiple props loaded on the ground", startTime);
-            }
-
         }
 
         //Then this preloads all the ships in the scene
@@ -301,20 +272,6 @@ public static class MissionFunctions
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
                 LoadScreenFunctions.AddLogToLoadingScreen("Multiple shis loaded", startTime);
-            }
-            else if (missionEvent.eventType == "preload_loadsingleshipsonground" & missionEvent.conditionLocation == location)
-            {
-                if (firstRun == false & missionEvent.data10 == "false" || firstRun == false & missionEvent.data10 == "none" || firstRun == true)
-                {
-                    LoadSingleShipOnGround(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded on the ground", startTime);
-                }
-            }
-            else if (missionEvent.eventType == "preload_loadmultipleshipsonground" & missionEvent.conditionLocation == location)
-            {
-                Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
-                while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Multiple ships loaded on the ground", startTime);
             }
             else if (missionEvent.eventType == "preload_loadsingleshipaswreck" & missionEvent.conditionLocation == location)
             {
@@ -767,11 +724,6 @@ public static class MissionFunctions
             LoadSingleShipAtDistanceAndAngleFromPlayer(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
-        else if (missionEvent.eventType == "loadsingleshiponground")
-        {
-            LoadSingleShipOnGround(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
         else if (missionEvent.eventType == "loadmultipleships")
         {
             Task a = new Task(LoadMultipleShips(missionEvent));
@@ -781,12 +733,6 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "loadmultipleshipsfromhangar")
         {
             Task a = new Task(LoadMultipleShipsFromHangar(missionEvent));
-            missionManager.missionTasks.Add(a);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "loadmultipleshipsonground")
-        {
-            Task a = new Task(LoadMultipleShipsOnGround(missionEvent));
             missionManager.missionTasks.Add(a);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
@@ -2802,80 +2748,6 @@ public static class MissionFunctions
         yield return null;
     }
 
-    //This loads props multiple props on the ground
-    public static IEnumerator LoadMultiplePropsOnGround(MissionEvent missionEvent)
-    {
-        float x = missionEvent.x;
-        float y = missionEvent.y;
-        float z = missionEvent.z;
-
-        Vector3 position = new Vector3(x, y, z);
-
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        string type1 = missionEvent.data1;
-        string type2 = missionEvent.data2;
-        string type3 = missionEvent.data3;
-        string type4 = missionEvent.data4;
-        string type5 = missionEvent.data5;
-
-        string pattern = "treepositions";
-
-        if (missionEvent.data6 != "none")
-        {
-            pattern = missionEvent.data6;
-        }
-
-        float width = 1000;
-
-        if (float.TryParse(missionEvent.data7, out _))
-        {
-            width = float.Parse(missionEvent.data7);
-        }
-
-        float length = 1000;
-
-        if (float.TryParse(missionEvent.data8, out _))
-        {
-            length = float.Parse(missionEvent.data8);
-        }
-
-        int number = 1;
-
-        if (int.TryParse(missionEvent.data9, out _))
-        {
-            number = int.Parse(missionEvent.data9);
-        }
-
-        float separation = 0;
-
-        if (float.TryParse(missionEvent.data10, out _))
-        {
-            separation = float.Parse(missionEvent.data10);
-        }
-
-        int seed = 1;
-
-        if (int.TryParse(missionEvent.data11, out _))
-        {
-            seed = int.Parse(missionEvent.data11);
-        }
-
-        bool ifRaycastFailsStillLoad = false;
-
-        if (bool.TryParse(missionEvent.data12, out _))
-        {
-            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data12);
-        }
-
-        Task a = new Task(SceneFunctions.LoadMultiplePropsOnGround(position, rotation, type1, type2, type3, type4, type5, pattern, width, length, number, separation, seed, ifRaycastFailsStillLoad));
-        while (a.Running == true) { yield return null; }
-    }
-
     //This loads multiple ships by name
     public static IEnumerator LoadMultipleShips(MissionEvent missionEvent)
     {
@@ -3027,89 +2899,6 @@ public static class MissionFunctions
         while (c.Running == true) { yield return null; }
     }
 
-    //This loads multiple ships by name
-    public static IEnumerator LoadMultipleShipsOnGround(MissionEvent missionEvent)
-    {
-        float x = missionEvent.x;
-        float y = missionEvent.y;
-        float z = missionEvent.z;
-
-        Vector3 position = new Vector3(x, y, z);
-
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        string type = "dsturrettall";
-        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
-
-        string name = "tower";
-        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
-
-        string allegiance = "imperial";
-        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
-
-        string cargo = "no cargo";
-        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
-
-        int number = 1;
-
-        if (int.TryParse(missionEvent.data5, out _))
-        {
-            number = int.Parse(missionEvent.data5);
-        }
-
-        float width = 1000;
-
-        if (float.TryParse(missionEvent.data7, out _))
-        {
-            width = float.Parse(missionEvent.data7);
-        }
-
-        float length = 1000;
-
-        if (float.TryParse(missionEvent.data8, out _))
-        {
-            length = float.Parse(missionEvent.data8);
-        }
-
-        float distanceAboveGround = 0;
-
-        if (float.TryParse(missionEvent.data9, out _))
-        {
-            distanceAboveGround = float.Parse(missionEvent.data9);
-        }
-
-        int shipsPerLine = 1;
-
-        if (int.TryParse(missionEvent.data10, out _))
-        {
-            shipsPerLine = int.Parse(missionEvent.data10);
-        }
-
-        float positionVariance = 10;
-
-        if (float.TryParse(missionEvent.data11, out _))
-        {
-            positionVariance = float.Parse(missionEvent.data11);
-        }
-
-        bool ifRaycastFailsStillLoad = false;
-
-        if (bool.TryParse(missionEvent.data12, out _))
-        {
-            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data12);
-        }
-
-        string laserColor = "red";
-        if (missionEvent.data13 != "none") { laserColor = missionEvent.data13; }
-
-        Task a = new Task(SceneFunctions.LoadMultipleShipsOnGround(position, rotation, type, name, allegiance, cargo, number, length, width, distanceAboveGround, shipsPerLine, positionVariance, ifRaycastFailsStillLoad, laserColor));
-        while (a.Running == true) { yield return null; }
-    }
-
     //This loads a planet in the scene
     public static void LoadPlanet(MissionEvent missionEvent)
     {
@@ -3136,38 +2925,6 @@ public static class MissionFunctions
         Scene scene = SceneFunctions.GetScene();
 
         SceneFunctions.GeneratePlanet(planetType, ringsType, distance, planetRotationX, planetRotationY, planetRotationZ, pivotRotationX, pivotRotationY, pivotRotationZ);
-    }
-
-    //This loads a single prop on the ground
-    public static void LoadSinglePropOnGround(MissionEvent missionEvent)
-    {
-        float x = missionEvent.x;
-        float y = missionEvent.y;
-        float z = missionEvent.z;
-
-        Vector3 position = new Vector3(x, y, z);
-
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        string type = "redwood01";
-
-        if (missionEvent.data1 != "none") 
-        { 
-            type = missionEvent.data1; 
-        }
-
-        bool ifRaycastFailsStillLoad = false;
-
-        if (bool.TryParse(missionEvent.data2, out _))
-        {
-            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data2);
-        }
-
-        SceneFunctions.LoadSinglePropOnGround(position, rotation, type, ifRaycastFailsStillLoad);
     }
 
     //This loads a single ship by name
@@ -3313,67 +3070,6 @@ public static class MissionFunctions
         SceneFunctions.LoadSingleShipFromHangar(type, name, allegiance, cargo, launchShip, 0, laserColor);
     }
 
-    //This loads a single ship on the ground
-    public static void LoadSingleShipOnGround(MissionEvent missionEvent)
-    {
-        float x = missionEvent.x;
-        float y = missionEvent.y;
-        float z = missionEvent.z;
-
-        Vector3 position = new Vector3(x, y, z);
-
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        string type = "tiefighter";
-        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
-
-        string name = "alpha";
-        if (missionEvent.data2 != "none") { name = missionEvent.data2; }
-
-        string allegiance = "imperial";
-        if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
-
-        string cargo = "no cargo";
-        if (missionEvent.data4 != "none") { cargo = missionEvent.data4; }
-
-        bool isAI = false;
-
-        if (bool.TryParse(missionEvent.data5, out _))
-        {
-            isAI = bool.Parse(missionEvent.data5);
-        }
-
-        float distanceAboveGround = 0;
-
-        if (float.TryParse(missionEvent.data6, out _))
-        {
-            distanceAboveGround = float.Parse(missionEvent.data6);
-        }
-
-        float positionVariance = 10;
-
-        if (float.TryParse(missionEvent.data7, out _))
-        {
-            positionVariance = float.Parse(missionEvent.data7);
-        }
-
-        bool ifRaycastFailsStillLoad = false;
-
-        if (bool.TryParse(missionEvent.data8, out _))
-        {
-            ifRaycastFailsStillLoad = bool.Parse(missionEvent.data8);
-        }
-
-        string laserColor = "red";
-        if (missionEvent.data9 != "none") { laserColor = missionEvent.data9; }
-
-        SceneFunctions.LoadSingleShipOnGround(position, rotation, type, name, allegiance, cargo, isAI, distanceAboveGround, positionVariance, ifRaycastFailsStillLoad, laserColor);
-    }
-
     //This loads a single ship as a wreck
     public static void LoadSingleShipAsWreck(MissionEvent missionEvent)
     {
@@ -3424,302 +3120,6 @@ public static class MissionFunctions
         }
 
         SceneFunctions.LoadSingleShipAsWreck(position, rotation, type, name, fireNumber, fireScaleMin, fireScaleMax, seed);
-    }
-
-    //This loads a single type terrain
-    public static IEnumerator LoadTerrain(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        string textureType1 = missionEvent.data1;
-        string textureType2 = missionEvent.data2;
-        string textureType3 = missionEvent.data3;
-        string textureType4 = missionEvent.data4;
-        string textureType5 = missionEvent.data5;
-        string clifftextureType = missionEvent.data6;
-        string seaTextureType = missionEvent.data7;
-        string baseNoise = missionEvent.data8;
-        string maskNoise = missionEvent.data9;
-        string blendNoise = missionEvent.data10;
-
-        int seed = 0;
-
-        if (int.TryParse(missionEvent.data11, out _))
-        {
-            seed = int.Parse(missionEvent.data11);
-        }
-
-        float terrainHeight = 50;
-
-        if (float.TryParse(missionEvent.data12, out _))
-        {
-            terrainHeight = float.Parse(missionEvent.data12);
-        }
-
-        int terraceNumber = 50;
-
-        if (int.TryParse(missionEvent.data13, out _))
-        {
-            terraceNumber = int.Parse(missionEvent.data13);
-        }
-
-        float canyonDepth = 50;
-
-        if (float.TryParse(missionEvent.data14, out _))
-        {
-            canyonDepth = float.Parse(missionEvent.data14);
-        }
-
-        float blendFactor = 0.5f;
-
-        if (float.TryParse(missionEvent.data15, out _))
-        {
-            blendFactor = float.Parse(missionEvent.data15);
-        }
-
-        float seaLevel =-100f;
-
-        if (float.TryParse(missionEvent.data16, out _))
-        {
-            seaLevel = float.Parse(missionEvent.data16);
-        }
-
-        TerrainManager terrainManager = scene.AddComponent<TerrainManager>();
-
-        terrainManager.player = scene.mainCamera.transform;
-        terrainManager.textureType1 = textureType1;
-        terrainManager.textureType2 = textureType2;
-        terrainManager.textureType3 = textureType2;
-        terrainManager.textureType4 = textureType2;
-        terrainManager.textureType5 = textureType2;
-        terrainManager.cliffTextureType = clifftextureType;
-        terrainManager.seaTextureType = seaTextureType;
-
-        if (baseNoise == "Mountains")
-        {
-            terrainManager.terrainType = TerrainType.Mountains;
-        }
-        else if (baseNoise == "Hills")
-        {
-            terrainManager.terrainType = TerrainType.Hills;
-        }
-        else if (baseNoise == "Desert")
-        {
-            terrainManager.terrainType = TerrainType.Desert;
-        }
-        else if (baseNoise == "Plains")
-        {
-            terrainManager.terrainType = TerrainType.Plains;
-        }
-
-        if (maskNoise == "Terraces")
-        {
-            terrainManager.maskType = MaskType.Terraces;
-        }
-        else if (maskNoise == "Canyons")
-        {
-            terrainManager.maskType = MaskType.Canyons;
-        }
-        else
-        {
-            terrainManager.maskType = MaskType.None;
-        }
-
-        if (blendNoise == "Mountains")
-        {
-            terrainManager.blendType = BlendType.Mountains;
-        }
-        else if (blendNoise == "Hills")
-        {
-            terrainManager.blendType = BlendType.Hills;
-        }
-        else if (blendNoise == "Desert")
-        {
-            terrainManager.blendType = BlendType.Desert;
-        }
-        else if (blendNoise == "Plains")
-        {
-            terrainManager.blendType = BlendType.Plains;
-        }
-        else if (blendNoise == "None")
-        {
-            terrainManager.blendType = BlendType.None;
-        }
-
-        terrainManager.seed = seed;
-        terrainManager.terrainHeight = terrainHeight;
-        terrainManager.canyonDepth = canyonDepth;
-        terrainManager.blendFactor = blendFactor;
-        terrainManager.seaLevel = seaLevel;
-
-        Task a = new Task(TerrainManagerFunctions.CommenceTerrainGeneration(terrainManager));
-        terrainManager.terrainTasks.Add(a);
-
-        while (a.Running == true)
-        {
-            yield return null;
-        }
-    }
-
-    //This loads a biome terrain with all four terrain types mixed
-    public static IEnumerator LoadBiomeTerrain(MissionEvent missionEvent)
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        string textureType1 = missionEvent.data1;
-        string textureType2 = missionEvent.data2;
-        string textureType3 = missionEvent.data3;
-        string textureType4 = missionEvent.data4;
-        string textureType5 = missionEvent.data5;
-        string clifftextureType = missionEvent.data6;
-        string seaTextureType = missionEvent.data7;
-        string maskNoise = missionEvent.data8;
-        string blendNoise = missionEvent.data9;
-
-        int seed = 0;
-
-        if (int.TryParse(missionEvent.data10, out _))
-        {
-            seed = int.Parse(missionEvent.data10);
-        }
-
-        float plainsPercentage = 0.33f;
-
-        if (float.TryParse(missionEvent.data11, out _))
-        {
-            plainsPercentage = float.Parse(missionEvent.data11);
-        }
-
-        float hillsPercentage = 0.33f;
-
-        if (float.TryParse(missionEvent.data12, out _))
-        {
-            hillsPercentage = float.Parse(missionEvent.data12);
-        }
-
-        float plainsAmplitude = 0.01f;
-
-        if (float.TryParse(missionEvent.data13, out _))
-        {
-            plainsAmplitude = float.Parse(missionEvent.data13);
-        }
-
-        float desertAmplitude = 0.1f;
-
-        if (float.TryParse(missionEvent.data14, out _))
-        {
-            desertAmplitude = float.Parse(missionEvent.data14);
-        }
-
-        float hillsAmplitude = 0.45f;
-
-        if (float.TryParse(missionEvent.data15, out _))
-        {
-            hillsAmplitude = float.Parse(missionEvent.data15);
-        }
-
-        float mountainsAmplitude = 1;
-
-        if (float.TryParse(missionEvent.data16, out _))
-        {
-            mountainsAmplitude = float.Parse(missionEvent.data16);
-        }
-
-        float terrainHeight = 50;
-
-        if (float.TryParse(missionEvent.data17, out _))
-        {
-            terrainHeight = float.Parse(missionEvent.data17);
-        }
-
-        int terraceNumber = 50;
-
-        if (int.TryParse(missionEvent.data18, out _))
-        {
-            terraceNumber = int.Parse(missionEvent.data18);
-        }
-
-        float canyonDepth = 50;
-
-        if (float.TryParse(missionEvent.data19, out _))
-        {
-            canyonDepth = float.Parse(missionEvent.data19);
-        }
-
-        float blendFactor = 0.5f;
-
-        if (float.TryParse(missionEvent.data20, out _))
-        {
-            blendFactor = float.Parse(missionEvent.data20);
-        }
-
-        TerrainManager terrainManager = scene.AddComponent<TerrainManager>();
-
-        terrainManager.player = scene.mainCamera.transform;
-        terrainManager.textureType1 = textureType1;
-        terrainManager.textureType2 = textureType2;
-        terrainManager.textureType3 = textureType2;
-        terrainManager.textureType4 = textureType2;
-        terrainManager.textureType5 = textureType2;
-        terrainManager.cliffTextureType = clifftextureType;
-        terrainManager.seaTextureType = seaTextureType;
-
-        terrainManager.terrainType = TerrainType.Biomes;
-        
-        if (maskNoise == "Terraces")
-        {
-            terrainManager.maskType = MaskType.Terraces;
-        }
-        else if (maskNoise == "Canyons")
-        {
-            terrainManager.maskType = MaskType.Canyons;
-        }
-        else
-        {
-            terrainManager.maskType = MaskType.None;
-        }
-
-        if (blendNoise == "Mountains")
-        {
-            terrainManager.blendType = BlendType.Mountains;
-        }
-        else if (blendNoise == "Hills")
-        {
-            terrainManager.blendType = BlendType.Hills;
-        }
-        else if (blendNoise == "Desert")
-        {
-            terrainManager.blendType = BlendType.Desert;
-        }
-        else if (blendNoise == "Plains")
-        {
-            terrainManager.blendType = BlendType.Plains;
-        }
-        else if (blendNoise == "None")
-        {
-            terrainManager.blendType = BlendType.None;
-        }
-
-        terrainManager.plainsPercentage = plainsPercentage;
-        terrainManager.hillsPercentage = hillsPercentage;
-        terrainManager.plainsAmp = plainsAmplitude;
-        terrainManager.desertAmp = desertAmplitude;
-        terrainManager.hillsAmp = hillsAmplitude;
-        terrainManager.mountAmp = mountainsAmplitude;
-
-        terrainManager.seed = seed;
-        terrainManager.terrainHeight = terrainHeight;
-        terrainManager.canyonDepth = canyonDepth;
-        terrainManager.blendFactor = blendFactor;
-        terrainManager.seaLevel = -100;
-
-        Task a = new Task(TerrainManagerFunctions.CommenceTerrainGeneration(terrainManager));
-        terrainManager.terrainTasks.Add(a);
-
-        while (a.Running == true)
-        {
-            yield return null;
-        }
     }
 
     //This changes the type of music that is playing

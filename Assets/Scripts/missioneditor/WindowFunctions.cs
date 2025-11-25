@@ -116,7 +116,6 @@ public static class WindowFunctions
         buttonList.Add("ifsystemisactive");
         buttonList.Add("loadmultipleships");
         buttonList.Add("loadmultipleshipsfromhangar");
-        buttonList.Add("loadmultipleshipsonground");
         buttonList.Add("loadsingleship");
         buttonList.Add("loadsingleshipfromhangar");
         buttonList.Add("loadsingleshipatdistanceandanglefromplayer");
@@ -125,15 +124,10 @@ public static class WindowFunctions
         buttonList.Add("playmusictrack");
         buttonList.Add("preload_loadasteroids");
         buttonList.Add("preload_loadplanet");
-        buttonList.Add("preload_loadmultiplepropsonground");
         buttonList.Add("preload_loadmultipleships");
-        buttonList.Add("preload_loadmultipleshipsonground");
-        buttonList.Add("preload_loadsingleproponground");
         buttonList.Add("preload_loadsingleship");
         buttonList.Add("preload_loadsingleshipaswreck");
         buttonList.Add("preload_loadsingleshiponground");
-        buttonList.Add("preload_loadterrain");
-        buttonList.Add("preload_loadbiometerrain");
         buttonList.Add("preload_setfogdistanceandcolor");
         buttonList.Add("preload_sethudcolour");
         buttonList.Add("preload_setlighting");

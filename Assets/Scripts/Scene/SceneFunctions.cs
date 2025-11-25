@@ -2638,15 +2638,6 @@ public static class SceneFunctions
             CockpitCamera.transform.parent = null;
         }
 
-        TerrainManager terrainManager = GameObject.FindAnyObjectByType<TerrainManager>();
-
-        if (terrainManager != null)
-        {
-            TerrainManagerFunctions.StopTerrainCoroutines();
-            TerrainManagerFunctions.DestroyAllTiles();
-            GameObject.Destroy(terrainManager);
-        }
-
         if (scene.objectPool != null)
         {
             foreach (GameObject gameobject in scene.objectPool)
@@ -2742,15 +2733,6 @@ public static class SceneFunctions
     public static void ClearLocation()
     {
         Scene scene = GetScene();
-
-        TerrainManager terrainManager = GameObject.FindAnyObjectByType<TerrainManager>();
-
-        if (terrainManager != null)
-        {
-            TerrainManagerFunctions.StopTerrainCoroutines();
-            TerrainManagerFunctions.DestroyAllTiles();
-            GameObject.Destroy(terrainManager);
-        }
 
         if (scene.objectPool != null)
         {
@@ -3030,7 +3012,4 @@ public static class SceneFunctions
 
 
     #endregion
-
-
-
 }

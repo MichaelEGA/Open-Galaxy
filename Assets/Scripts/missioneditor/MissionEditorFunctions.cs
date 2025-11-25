@@ -20,7 +20,6 @@ public static class MissionEditorFunctions
         Draw_MesssageTextBox(missionEditor);
         Draw_CurrentFileTextBox(missionEditor);
         Draw_MainMenu(missionEditor);
-        OGSettingsFunctions.SetDefaultCursor();
     }
 
     public static void Draw_ScaleIndicator(MissionEditor missionEditor)
@@ -2251,8 +2250,6 @@ public static class MissionEditorFunctions
 
         OGSettingsFunctions.SetGameWindowMode(settings.gameWindowMode);
 
-        OGSettingsFunctions.SetOGCursor();
-
         //This destroys everyting associated with the ship preview
         if (missionEditor.previewCamera != null)
         {
@@ -2267,14 +2264,6 @@ public static class MissionEditorFunctions
         if (missionEditor.previewModel != null)
         {
             GameObject.Destroy(missionEditor.previewModel.gameObject);
-        }
-
-        //This destroys and then remakes the main menu before destroying the mission editor
-        MainMenu mainMenu = MainMenuFunctions.GetMainMenu();
-
-        if (mainMenu != null)
-        {
-            GameObject.Destroy(mainMenu.gameObject);
         }
 
         MainMenuFunctions.RunMenuWithoutIntroduction();

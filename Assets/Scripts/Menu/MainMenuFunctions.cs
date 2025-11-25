@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,31 +13,44 @@ public static class MainMenuFunctions
     #region disclaimer, title screen, and menu loading sequence
 
     //This displays the disclaimer, the title, then loads the menu
-    public static IEnumerator RunMenu()
+    public static IEnumerator RunMainMenu()
     {
-        //This changes the cursor from unity's default to the open galaxy cursor
-        OGSettingsFunctions.SetOGCursor();
+        //This sets the cursor settings
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
 
-        GameObject background = LoadBackgroundPrefab();
-        GameObject disclaimer = LoadDisclaimerPrefab();
-        GameObject title = LoadTitlePrefab();
-        GameObject menu = LoadMenuPrefab();
+        //This loads the menu
+        GameObject mainMenuGO = LoadMenuPrefab();
+        MainMenu mainMenu = mainMenuGO.GetComponent<MainMenu>();
+
+        //This gets the main references
+        GameObject background_black = GameObject.Find("Background_Black");
+        GameObject background_image = GameObject.Find("Background_Image");
+        GameObject disclaimer = GameObject.Find("Disclaimer");
+        GameObject title = GameObject.Find("Title");
+        GameObject menu = GameObject.Find("Menu");
+        GameObject loadingScreen = GameObject.Find("LoadingScreen");
+
+        //This gets the canvas group function
+        mainMenu.background_black_cg = background_black.GetComponent<CanvasGroup>();
+        mainMenu.background_image_cg = background_image.GetComponent<CanvasGroup>();
+        mainMenu.disclaimer_cg = disclaimer.GetComponent<CanvasGroup>();
+        mainMenu.title_cg = title.GetComponent<CanvasGroup>();
+        mainMenu.menu_cg = menu.GetComponent<CanvasGroup>();
+        mainMenu.loadingScreen_cg = loadingScreen.GetComponent<CanvasGroup>();
 
         //This loads the background image
         Texture2D texture = LoadBackgroundImage();
 
-        RawImage titleBackgroundImage = background.GetComponentInChildren<RawImage>();
-        titleBackgroundImage.texture = texture;
-
-        RawImage menuBackgroundImage = menu.GetComponentInChildren<RawImage>();
+        RawImage menuBackgroundImage = background_image.GetComponentInChildren<RawImage>();
         menuBackgroundImage.texture = texture;
 
+        //This applies the art credit
         GameObject artCredit = GameObject.Find("ArtCredit");
         Text creditText = artCredit.GetComponent<Text>();
-        string artworkName = texture.name; //CapitalizeFirstLetters(texture.name);
-        creditText.text = artworkName + " by Tegnemaskin";
+        string artworkName = texture.name;
+        creditText.text = artworkName;
 
-        MainMenu mainMenu = menu.GetComponent<MainMenu>();
         mainMenu.background = texture;
 
         //This starts the menu background music
@@ -45,123 +59,21 @@ public static class MainMenuFunctions
         //This updates the version number on the menu
         UpdateVersionOnMenu();
 
-        if (background != null)
-        {
-            CanvasGroup canvasGroup = background.GetComponent<CanvasGroup>();
-
-            if (canvasGroup != null)
-            {
-                Task a = new Task(FadeInCanvas(canvasGroup, 0.5f));
-            }
-        }
-
+        //Fade in background image
+        Task a = new Task(FadeInCanvas(mainMenu.background_image_cg, 0.5f));
+   
         yield return new WaitForSeconds(2);
 
-        if (disclaimer != null)
-        {
-            CanvasGroup canvasGroup = disclaimer.GetComponent<CanvasGroup>();
+        //Fade in and out disclaimer
+        Task b = new Task(FadeInCanvas(mainMenu.disclaimer_cg, 0.5f));
 
-            if (canvasGroup != null)
-            {
-                Task a = new Task(FadeInCanvas(canvasGroup, 0.5f));
+        yield return new WaitForSeconds(5);
 
-                yield return new WaitForSeconds(5);
-
-                Task b = new Task(FadeOutAndDeactivate(canvasGroup, 0.5f));
-            }
-        }
-
+        Task c = new Task(FadeOutCanvas(mainMenu.disclaimer_cg, 0.5f));
+     
         yield return new WaitForSeconds(2f);
 
-        if (title != null)
-        {
-            CanvasGroup canvasGroup = title.GetComponent<CanvasGroup>();
-
-            if (canvasGroup != null)
-            {
-                Task a = new Task(FadeInCanvas(canvasGroup, 0.5f));
-
-                yield return new WaitForSeconds(7);
-
-                Task b = new Task(FadeOutAndDeactivate(canvasGroup, 0.5f));
-            }
-        }
-
-        yield return new WaitForSeconds(1f);
-
-        if (menu != null)
-        {
-            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-
-            if (canvasGroup != null)
-            {
-                Task a = new Task(FadeInCanvas(canvasGroup, 0.5f));
-            }
-        }
-
-        if (background != null)
-        {
-            CanvasGroup canvasGroup = background.GetComponent<CanvasGroup>();
-
-            if (canvasGroup != null)
-            {
-                Task a = new Task(FadeOutAndDeactivate(canvasGroup, 0.5f));
-            }
-        }
-    }
-
-    //This loads the menu sans the disclaimer and title
-    public static void RunMenuWithoutIntroduction()
-    {
-        //This changes the cursor from unity's default to the open galaxy cursor
-        OGSettingsFunctions.SetOGCursor();
-
-        //This instantiates the menu
-        GameObject menu = LoadMenuPrefab();
-
-        //This loads the background image
-        Texture2D texture = LoadBackgroundImage();
-
-        RawImage menuBackgroundImage = menu.GetComponentInChildren<RawImage>();
-        menuBackgroundImage.texture = texture;
-
-        Transform artCreditTransform = GameObjectUtils.FindChildTransformContaining(menu.transform, "ArtCredit");
-        GameObject artCredit = artCreditTransform.gameObject; //GameObject.Find("ArtCredit");
-        Text creditText = artCredit.GetComponent<Text>();
-        string artworkName = texture.name;
-        creditText.text = artworkName + " by Tegnemaskin";
-
-        MainMenu mainMenu = menu.GetComponent<MainMenu>();
-        mainMenu.background = texture;
-
-        //This starts the menu background music
-        PlayBackgroundMusic(true);
-
-        if (menu != null)
-        {
-            CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-
-            if (canvasGroup != null)
-            {
-                Task a = new Task(FadeInCanvas(canvasGroup, 0.5f));
-            }
-        }        
-    }
-
-    //This loads the disclaimer
-    public static GameObject LoadDisclaimerPrefab()
-    {      
-        GameObject menuPrefab = Resources.Load(OGGetAddress.menus + "Disclaimer") as GameObject;
-        GameObject disclaimer = GameObject.Instantiate(menuPrefab);
-        disclaimer.name = "Disclaimer";
-        return disclaimer;
-    }
-
-    //This loads the Title Menu
-    public static GameObject LoadTitlePrefab()
-    {
-        GameObject menuPrefab = Resources.Load(OGGetAddress.menus + "Title") as GameObject;
-        GameObject title = GameObject.Instantiate(menuPrefab);
+        //This loads a message under the title
         GameObject tip = GameObject.Find("Tip");
         title.name = "Title";
 
@@ -171,24 +83,78 @@ public static class MainMenuFunctions
             DisplayMessageOnTitleScreen(messageText);
         }
 
-        return title;
+        //Fade title in and out
+        Task d = new Task(FadeInCanvas(mainMenu.title_cg, 0.5f));
+
+        yield return new WaitForSeconds(7);
+
+        Task e = new Task(FadeOutCanvas(mainMenu.title_cg, 0.5f));
+
+        yield return new WaitForSeconds(1f);
+
+        //Fade in main menu
+        Task f = new Task(FadeInCanvas(mainMenu.menu_cg, 0.5f));
     }
 
-    //This loads the background
-    public static GameObject LoadBackgroundPrefab()
+    //This loads the menu sans the disclaimer and title
+    public static void RunMenuWithoutIntroduction()
     {
-        GameObject menuPrefab = Resources.Load(OGGetAddress.menus + "Background") as GameObject;
-        GameObject background = GameObject.Instantiate(menuPrefab);
-        background.name = "Background";
-        return background;
+        //This sets the cursor settings
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        //This loads the menu
+        GameObject mainMenuGO = LoadMenuPrefab();
+        MainMenu mainMenu = mainMenuGO.GetComponent<MainMenu>();
+
+        //This gets the main references
+        GameObject background_black = GameObject.Find("Background_Black");
+        GameObject background_image = GameObject.Find("Background_Image");
+        GameObject disclaimer = GameObject.Find("Disclaimer");
+        GameObject title = GameObject.Find("Title");
+        GameObject menu = GameObject.Find("Menu");
+        GameObject loadingScreen = GameObject.Find("LoadingScreen");
+
+        //This gets the canvas group function
+        mainMenu.background_black_cg = background_black.GetComponent<CanvasGroup>();
+        mainMenu.background_image_cg = background_image.GetComponent<CanvasGroup>();
+        mainMenu.disclaimer_cg = disclaimer.GetComponent<CanvasGroup>();
+        mainMenu.title_cg = title.GetComponent<CanvasGroup>();
+        mainMenu.menu_cg = menu.GetComponent<CanvasGroup>();
+        mainMenu.loadingScreen_cg = loadingScreen.GetComponent<CanvasGroup>();
+
+        //This loads the background image
+        Texture2D texture = LoadBackgroundImage();
+
+        RawImage menuBackgroundImage = background_image.GetComponentInChildren<RawImage>();
+        menuBackgroundImage.texture = texture;
+
+        //This applies the art credit
+        GameObject artCredit = GameObject.Find("ArtCredit");
+        Text creditText = artCredit.GetComponent<Text>();
+        string artworkName = texture.name;
+        creditText.text = artworkName;
+
+        mainMenu.background = texture;
+
+        //This starts the menu background music
+        PlayBackgroundMusic(true);
+
+        //This updates the version number on the menu
+        UpdateVersionOnMenu();
+
+        //Fade in background image
+        Task a = new Task(FadeInCanvas(mainMenu.background_image_cg, 0.5f));
+
+        //Fade in main menu
+        Task f = new Task(FadeInCanvas(mainMenu.menu_cg, 0.5f));
     }
 
     //This Loads the main menu
     public static GameObject LoadMenuPrefab()
     {
-        GameObject menuPrefab = Resources.Load(OGGetAddress.menus + "Menu") as GameObject;
+        GameObject menuPrefab = Resources.Load(OGGetAddress.menus + "MainMenu") as GameObject;
         GameObject menu = GameObject.Instantiate(menuPrefab);
-        menu.name = "Menu";
         return menu;
     }
 
@@ -225,36 +191,6 @@ public static class MainMenuFunctions
         texture = backgroundImages[pictureSelection] as Texture2D;
 
         return texture;
-    }
-
-    //Capitilises the first letters of a given screen
-    public static string CapitalizeFirstLetters(this string input)
-    {
-        if (string.IsNullOrEmpty(input))
-            return input;
-
-        StringBuilder result = new StringBuilder(input.Length);
-        bool newWord = true;
-
-        foreach (char c in input)
-        {
-            if (char.IsWhiteSpace(c))
-            {
-                newWord = true;
-                result.Append(c);
-            }
-            else if (newWord)
-            {
-                result.Append(char.ToUpper(c, CultureInfo.InvariantCulture));
-                newWord = false;
-            }
-            else
-            {
-                result.Append(c);
-            }
-        }
-
-        return result.ToString();
     }
 
     #endregion
@@ -1019,13 +955,11 @@ public static class MainMenuFunctions
 
                 Task a = new Task(MissionFunctions.RunMission(name, OGGetAddress.missions_custom, true));
 
-                GameObject menu = GameObject.Find("Menu");
+                //Fade out menu
+                Task b = new Task(FadeOutCanvas(mainMenu.menu_cg, 0.01f));
 
-                if (menu != null)
-                {
-                    CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-                    Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.01f));
-                }
+                //Fade in loading screen
+                Task c = new Task(FadeInCanvas(mainMenu.loadingScreen_cg, 0.01f));
             }
         }
     }
@@ -1043,13 +977,11 @@ public static class MainMenuFunctions
 
                 Task a = new Task(MissionFunctions.RunMission(name, OGGetAddress.missions_internal));
 
-                GameObject menu = GameObject.Find("Menu");
+                //Fade out menu
+                Task b = new Task(FadeOutCanvas(mainMenu.menu_cg, 0.01f));
 
-                if (menu != null)
-                {
-                    CanvasGroup canvasGroup = menu.GetComponent<CanvasGroup>();
-                    Task i = new Task(FadeOutAndDeactivate(canvasGroup, 0.01f));
-                }
+                //Fade in loading screen
+                Task c = new Task(FadeInCanvas(mainMenu.loadingScreen_cg, 0.01f));
             }
         }   
     }
@@ -1069,6 +1001,10 @@ public static class MainMenuFunctions
         missionEditor.SetActive(true);
 
         PlayBackgroundMusic(false);
+
+        MainMenu mainMenu = GetMainMenu();
+
+        Task a = new Task(FadeOutMenuAndDestroyMainMenu(mainMenu, 0.25f));
     }
 
     //This sets the screen resolution
@@ -1682,27 +1618,41 @@ public static class MainMenuFunctions
     }
 
     //This coroutine can be used to fade the canvas group out
-    public static IEnumerator FadeOutAndDeactivate(CanvasGroup canvasGroup, float duration)
+    public static IEnumerator FadeOutMenuAndDestroyMainMenu(MainMenu mainMenu, float duration)
     {
         //This sets the starting alpha value to 1
-        float alpha2 = 1;
+        float alpha = 1;
 
         //This fades the canvas out
-        while (alpha2 > 0)
+        while (alpha > 0)
         {
-            if (canvasGroup != null)
-            {
-                alpha2 = alpha2 - (1f / (60f * duration));
-                canvasGroup.alpha = alpha2;
-                yield return new WaitForSecondsRealtime(0.016f);
-            }
-            else
-            {
-                break;
-            }
+            alpha = alpha - (1f / (60f * duration));
+            mainMenu.background_black_cg.alpha = alpha;
+            mainMenu.background_image_cg.alpha = alpha;
+            mainMenu.menu_cg.alpha = alpha;
+            yield return new WaitForSecondsRealtime(0.016f);
         }
 
-        canvasGroup.gameObject.SetActive(false);
+        GameObject.Destroy(mainMenu.gameObject);
+    }
+
+    //This coroutine can be used to fade the canvas group out
+    public static IEnumerator FadeOutLoadingScreenAndDestroyMainMenu(MainMenu mainMenu, float duration)
+    {
+        //This sets the starting alpha value to 1
+        float alpha = 1;
+
+        //This fades the canvas out
+        while (alpha > 0)
+        {
+            alpha = alpha - (1f / (60f * duration));
+            mainMenu.background_black_cg.alpha = alpha;
+            mainMenu.background_image_cg.alpha = alpha;
+            mainMenu.loadingScreen_cg.alpha = alpha;
+            yield return new WaitForSecondsRealtime(0.016f);
+        }
+
+        GameObject.Destroy(mainMenu.gameObject);
     }
 
     //This returns the main menu

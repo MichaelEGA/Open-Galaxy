@@ -14,7 +14,7 @@ public class StartGame : MonoBehaviour
 
         Task special = new Task(SceneFunctions.GenerateStarField());
 
-        Task a = new Task(MainMenuFunctions.RunMenu());
+        Task a = new Task(MainMenuFunctions.RunMainMenu());
     
         OGSettingsFunctions.LoadSettingsData();
 

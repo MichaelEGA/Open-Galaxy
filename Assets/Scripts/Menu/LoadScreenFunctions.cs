@@ -8,19 +8,11 @@ public static class LoadScreenFunctions
     //This displays the loading screen
     public static void LoadingScreen(bool display, string loadingScreenTitle = "", string message = "")
     {
-        Scene scene = SceneFunctions.GetScene(); //This gets the reference
-        GameObject loadingScreen = scene.loadingScreen;
+        MainMenu mainMenu = MainMenuFunctions.GetMainMenu();
+        GameObject loadingScreen = mainMenu.loadingScreen_cg.gameObject;
 
         if (display == true)
         {
-            if (loadingScreen == null)
-            {
-                GameObject loadingScreenPrefab = Resources.Load(OGGetAddress.menus + "LoadingScreen") as GameObject;
-                loadingScreen = GameObject.Instantiate(loadingScreenPrefab);
-                loadingScreen.name = "LoadingScreen";
-                scene.loadingScreen = loadingScreen; //This preserves the reference
-            }
-
             GameObject gameType = GameObject.Find("Gametype");
 
             if (gameType != null)
@@ -34,23 +26,10 @@ public static class LoadScreenFunctions
             {
                 tip.GetComponent<Text>().text = message;
             }
-
-            if (loadingScreen != null)
-            {
-                loadingScreen.SetActive(true);
-            }
         }
         else
         {
-            if (loadingScreen != null)
-            {
-                CanvasGroup canvasGroup = loadingScreen.GetComponent<CanvasGroup>();
-
-                if (canvasGroup != null)
-                {
-                    Task a = new Task(MainMenuFunctions.FadeOutAndDeactivate(canvasGroup, 0.25f));
-                }
-            }
+            Task a = new Task(MainMenuFunctions.FadeOutLoadingScreenAndDestroyMainMenu(mainMenu, 0.25f));
 
             GameObject hud = GameObject.Find("Hud");
 
@@ -62,18 +41,7 @@ public static class LoadScreenFunctions
                 {
                     HudFunctions.SetHudTransparency(1);
                 }
-
             }
-        }
-
-        //This sets the background of the load screen to the same as the menu
-        MainMenu mainMenu = MainMenuFunctions.GetMainMenu();
-        
-        if (loadingScreen != null & mainMenu != null)
-        {
-            RawImage background = loadingScreen.GetComponentInChildren<RawImage>();
-
-            background.texture = mainMenu.background;
         }
     }
 

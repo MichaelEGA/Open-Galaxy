@@ -8,7 +8,15 @@ using UnityEngine.InputSystem.UI;
 
 public class MainMenu: MonoBehaviour
 {
-    public GameObject menu;
+    public GameObject mainMenu;
+
+    public CanvasGroup background_black_cg;
+    public CanvasGroup background_image_cg;
+    public CanvasGroup disclaimer_cg;
+    public CanvasGroup title_cg;
+    public CanvasGroup menu_cg;
+    public CanvasGroup loadingScreen_cg;
+
     public EventSystem eventSystem;
     public Dictionary<string, System.Delegate> functions;
     public GameObject[] buttons;

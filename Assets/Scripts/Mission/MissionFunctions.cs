@@ -4297,10 +4297,10 @@ public static class MissionFunctions
 
         if (mainMenu != null)
         {
-            if (mainMenu.menu != null)
+            if (mainMenu.mainMenu != null)
             {
-                mainMenu.menu.SetActive(true);
-                CanvasGroup canvasGroup = mainMenu.menu.GetComponent<CanvasGroup>();
+                mainMenu.mainMenu.SetActive(true);
+                CanvasGroup canvasGroup = mainMenu.mainMenu.GetComponent<CanvasGroup>();
                 Task b = new Task(MainMenuFunctions.FadeInCanvas(canvasGroup, 0.5f));
                 MainMenuFunctions.ActivateStartGameMenu();
             }
@@ -4316,14 +4316,12 @@ public static class MissionFunctions
         Scene scene = SceneFunctions.GetScene();
 
         ExitMenu exitMenu = GameObject.FindFirstObjectByType<ExitMenu>();
-        GameObject loadingScreen = scene.loadingScreen;
         GameObject fade = scene.fade;
         GameObject cockpitAnchor = scene.cockpitAnchor;
         GameObject missionBriefing = scene.missionBriefing;
         GameObject nextMissionScreen = GameObject.Find("NextMission");
 
         if (exitMenu != null) { GameObject.Destroy(exitMenu.gameObject); }
-        if (loadingScreen != null) { GameObject.Destroy(loadingScreen); }
         if (fade != null) { GameObject.Destroy(fade); }
         if (missionBriefing != null) { GameObject.Destroy(missionBriefing); }
         if (nextMissionScreen != null) { GameObject.Destroy(nextMissionScreen); }
@@ -4332,14 +4330,6 @@ public static class MissionFunctions
 
         MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>(FindObjectsInactive.Include);
         GameObject missionManagerGO = missionManager.gameObject;
-
-        //This tells the main menu that the mission is no longer running
-        MainMenu mainMenu = GameObject.FindObjectOfType<MainMenu>(true);
-
-        if (mainMenu != null)
-        {
-            mainMenu.missionRunning = false;
-        }
 
         //This stops any active event series coroutines so they don't continue running when a new mission is loaded
         foreach (Task eventSeries in missionManager.missionTasks)
@@ -4385,13 +4375,15 @@ public static class MissionFunctions
             }
             else
             {
-                ReturnToMainMenu();
+                //This tells the main menu that the mission is no longer running
+                MainMenuFunctions.RunMenuWithoutIntroduction();
                 MainMenuFunctions.OutputMenuMessage("The requested mission was not found");
             }
         }
         else
         {
-            ReturnToMainMenu();
+            //This tells the main menu that the mission is no longer running
+            MainMenuFunctions.RunMenuWithoutIntroduction();
         }
     }
 

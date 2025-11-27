@@ -70,17 +70,17 @@ public static class MainMenuFunctions
         yield return new WaitForSeconds(5);
 
         Task c = new Task(FadeOutCanvas(mainMenu.disclaimer_cg, 0.5f));
-     
-        yield return new WaitForSeconds(2f);
 
         //This loads a message under the title
-        GameObject tip = GameObject.Find("Tip");
+        GameObject tip = GameObject.Find("Title_Tip");
 
         if (tip != null)
         {
             Text messageText = tip.GetComponent<Text>();
             DisplayMessageOnTitleScreen(messageText);
         }
+
+        yield return new WaitForSeconds(2f);
 
         //Fade title in and out
         Task d = new Task(FadeInCanvas(mainMenu.title_cg, 0.5f));
@@ -1574,15 +1574,15 @@ public static class MainMenuFunctions
     public static IEnumerator FadeInCanvas(CanvasGroup canvasGroup, float duration)
     {
         //This sets the starting alpha value to 0
-        float alpha1 = 0;
+        float alpha = 0;
 
         //This fades in the canvas
-        while (alpha1 < 1)
+        while (alpha < 1)
         {
             if (canvasGroup != null)
             {
-                alpha1 = alpha1 + (1f / (60f * duration));
-                canvasGroup.alpha = alpha1;
+                alpha = alpha + (1f / (60f * duration));
+                canvasGroup.alpha = alpha;
                 yield return new WaitForSecondsRealtime(0.016f);
             }
             else
@@ -1596,15 +1596,15 @@ public static class MainMenuFunctions
     public static IEnumerator FadeOutCanvas(CanvasGroup canvasGroup, float duration)
     {
         //This sets the starting alpha value to 1
-        float alpha2 = 1;
+        float alpha = 1;
 
         //This fades the canvas out
-        while (alpha2 > 0)
+        while (alpha > 0)
         {
             if (canvasGroup != null)
             {
-                alpha2 = alpha2 - (1f / (60f * duration));
-                canvasGroup.alpha = alpha2;
+                alpha = alpha - (1f / (60f * duration));
+                canvasGroup.alpha = alpha;
                 yield return new WaitForSecondsRealtime(0.016f);
             }
             else

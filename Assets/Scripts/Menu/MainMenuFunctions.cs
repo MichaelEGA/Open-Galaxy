@@ -27,7 +27,7 @@ public static class MainMenuFunctions
         GameObject background_black = GameObject.Find("Background_Black");
         GameObject background_image = GameObject.Find("Background_Image");
         GameObject disclaimer = GameObject.Find("Disclaimer");
-        GameObject title = GameObject.Find("Title");
+        GameObject title = GameObject.Find("TitleLogo");
         GameObject menu = GameObject.Find("Menu");
         GameObject loadingScreen = GameObject.Find("LoadingScreen");
 

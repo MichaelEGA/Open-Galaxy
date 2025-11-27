@@ -61,6 +61,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,6 +84,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -129,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9104232985307125395}
   m_Layer: 0
-  m_Name: turretsmall
+  m_Name: turretsmall_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,7 +202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4708149572879185188}
   m_Layer: 0
-  m_Name: turretsmall
+  m_Name: turretsmall_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -261,7 +264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8952965817919393895}
   m_Layer: 0
-  m_Name: turretlarge
+  m_Name: turretlarge_restrict_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,13 +278,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2945513719131392996}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.9914449, w: 0.13052626}
+  m_LocalRotation: {x: -0.7010574, y: -0.09229599, z: 0.7010574, w: 0.09229599}
   m_LocalPosition: {x: -62.5, y: -23.1, z: -131}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8644557660270137230}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 165}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 165}
 --- !u!1 &3381301476495927612
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +295,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7146442926941869294}
   m_Layer: 0
-  m_Name: turretsmall
+  m_Name: turretsmall_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -354,7 +357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3605801379053915636}
   m_Layer: 0
-  m_Name: turretsmall
+  m_Name: turretsmall_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -416,7 +419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2762830803330250943}
   m_Layer: 0
-  m_Name: turretlarge
+  m_Name: turretlarge_restrict_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -430,13 +433,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6019288469228596614}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.9914449, w: 0.13052626}
+  m_LocalRotation: {x: -0.7010574, y: 0.09229599, z: -0.7010574, w: 0.09229599}
   m_LocalPosition: {x: 62.5, y: -21.7, z: -131}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8644557660270137230}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -165}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -165}
 --- !u!1 &6055118024942421291
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,6 +563,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -581,6 +586,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0

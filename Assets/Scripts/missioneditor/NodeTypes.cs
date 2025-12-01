@@ -1320,6 +1320,8 @@ public static class NodeTypes
 
         drop -= 15 * multiplySize;
 
+        node.data3 = NodeFunctions.DrawInputField(node, "Date", "Not Specified", 7, 5, drop, 12.5f, 90, 5f);
+
         drop -= 15;
 
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));

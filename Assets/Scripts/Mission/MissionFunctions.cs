@@ -60,7 +60,7 @@ public static class MissionFunctions
         DisplayLoadingScreen(missionName, true);
 
         //This tells the player that the mission is being loaded
-        LoadScreenFunctions.AddLogToLoadingScreen("Start loading " + missionName + ".", startTime);
+        MainMenuFunctions.AddLogToLoadingScreen("Start loading " + missionName + ".", startTime);
 
         //This loads the base game scene
         LoadScene(missionName, missionAddress, addressIsExternal, startTime);
@@ -96,7 +96,7 @@ public static class MissionFunctions
         while (a.Running == true) { yield return null; }
 
         //This tells the player to get ready, starts the game, locks the cursor and gets rid of the loading screen
-        LoadScreenFunctions.AddLogToLoadingScreen(missionName + " loaded.", startTime);
+        MainMenuFunctions.AddLogToLoadingScreen(missionName + " loaded.", startTime);
 
         //This unpause the game 
         Time.timeScale = 1;
@@ -154,7 +154,7 @@ public static class MissionFunctions
                 if (tempMissionEvent.data1 == "true")
                 {
                     missionEvent = tempMissionEvent;
-                    LoadScreenFunctions.AddLogToLoadingScreen("Starting location node found", startTime);
+                    MainMenuFunctions.AddLogToLoadingScreen("Starting location node found", startTime);
                     break;
                 }
             }
@@ -162,7 +162,7 @@ public static class MissionFunctions
 
         if (missionEvent == null)
         {
-            LoadScreenFunctions.AddLogToLoadingScreen("No starting location node found searching for another location node.", startTime);
+            MainMenuFunctions.AddLogToLoadingScreen("No starting location node found searching for another location node.", startTime);
 
             Debug.Log("run 3");
 
@@ -171,7 +171,7 @@ public static class MissionFunctions
                 if (tempMissionEvent.eventType == "createlocation")
                 {
                     missionEvent = tempMissionEvent;
-                    LoadScreenFunctions.AddLogToLoadingScreen("Secondary location node found.", startTime);
+                    MainMenuFunctions.AddLogToLoadingScreen("Secondary location node found.", startTime);
                     break;
                 }
             }
@@ -179,7 +179,7 @@ public static class MissionFunctions
 
         if (missionEvent == null)
         {
-            LoadScreenFunctions.AddLogToLoadingScreen("No starting location found aborting load", startTime);
+            MainMenuFunctions.AddLogToLoadingScreen("No starting location found aborting load", startTime);
         }
 
         return missionEvent;
@@ -212,34 +212,34 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "preload_loadplanet" & missionEvent.conditionLocation == location)
             {
-                LoadScreenFunctions.AddLogToLoadingScreen("Loading planet", startTime);
+                MainMenuFunctions.AddLogToLoadingScreen("Loading planet", startTime);
                 LoadPlanet(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Planet loaded", startTime);
+                MainMenuFunctions.AddLogToLoadingScreen("Planet loaded", startTime);
             }
             else if (missionEvent.eventType == "preload_sethudcolour" & missionEvent.conditionLocation == location)
             {
                 SetHudColour(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Hud Colour Set", startTime);
+                MainMenuFunctions.AddLogToLoadingScreen("Hud Colour Set", startTime);
             }
             else if (missionEvent.eventType == "preload_setsceneradius" & missionEvent.conditionLocation == location)
             {
                 SetSceneRadius(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Scene radius set", startTime);
+                MainMenuFunctions.AddLogToLoadingScreen("Scene radius set", startTime);
             }
             else if (missionEvent.eventType == "preload_setskybox" & missionEvent.conditionLocation == location)
             {
                 SetSkyBox(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Skybox set", startTime);
+                MainMenuFunctions.AddLogToLoadingScreen("Skybox set", startTime);
             }
             else if (missionEvent.eventType == "preload_setlighting" & missionEvent.conditionLocation == location)
             {
                 SetLighting(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Lighting set", startTime);
+                MainMenuFunctions.AddLogToLoadingScreen("Lighting set", startTime);
             }
             else if (missionEvent.eventType == "preload_setfogdistanceandcolor" & missionEvent.conditionLocation == location)
             {
                 SetFogDistanceAndColor(missionEvent);
-                LoadScreenFunctions.AddLogToLoadingScreen("Fog settings set", startTime);
+                MainMenuFunctions.AddLogToLoadingScreen("Fog settings set", startTime);
             }
 
         }
@@ -251,7 +251,7 @@ public static class MissionFunctions
             {
                 Task a = new Task(LoadAsteroids(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Asteroids loaded", startTime);
+                MainMenuFunctions.AddLogToLoadingScreen("Asteroids loaded", startTime);
             }
         }
 
@@ -264,14 +264,14 @@ public static class MissionFunctions
                 if (firstRun == false & missionEvent.data8 == "false" || firstRun == false & missionEvent.data8 == "none" || firstRun == true)
                 {
                     LoadSingleShip(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded", startTime);
+                    MainMenuFunctions.AddLogToLoadingScreen("Single ship loaded", startTime);
                 }
             }
             if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
-                LoadScreenFunctions.AddLogToLoadingScreen("Multiple shis loaded", startTime);
+                MainMenuFunctions.AddLogToLoadingScreen("Multiple shis loaded", startTime);
             }
             else if (missionEvent.eventType == "preload_loadsingleshipaswreck" & missionEvent.conditionLocation == location)
             {
@@ -279,7 +279,7 @@ public static class MissionFunctions
                 if (firstRun == false & missionEvent.data8 == "false" || firstRun == false & missionEvent.data8 == "none" || firstRun == true)
                 {
                     LoadSingleShipAsWreck(missionEvent);
-                    LoadScreenFunctions.AddLogToLoadingScreen("Single ship loaded as wreck", startTime);
+                    MainMenuFunctions.AddLogToLoadingScreen("Single ship loaded as wreck", startTime);
                 }
             }
         }
@@ -834,18 +834,18 @@ public static class MissionFunctions
 
         //This creates the hud
         HudFunctions.CreateHud();
-        LoadScreenFunctions.AddLogToLoadingScreen("Hud created.", startTime);
+        MainMenuFunctions.AddLogToLoadingScreen("Hud created.", startTime);
 
         //This creates the scene and gets the cameras
         SceneFunctions.GetCameras();
         SceneFunctions.ActivateCameras(true);
-        LoadScreenFunctions.AddLogToLoadingScreen("Scene created.", startTime);
+        MainMenuFunctions.AddLogToLoadingScreen("Scene created.", startTime);
 
         //THis loads the audio and music manager
         AudioFunctions.CreateAudioManager(missionAddress + missionName + "_audio/", addressIsExternal);
-        LoadScreenFunctions.AddLogToLoadingScreen("Audio Manager created", startTime);
+        MainMenuFunctions.AddLogToLoadingScreen("Audio Manager created", startTime);
         MusicFunctions.CreateMusicManager();
-        LoadScreenFunctions.AddLogToLoadingScreen("Music Manager created", startTime);
+        MainMenuFunctions.AddLogToLoadingScreen("Music Manager created", startTime);
     }
 
     //This displays the loading screen
@@ -865,11 +865,11 @@ public static class MissionFunctions
             messages[8] = "When you push all your energy to engines your WEP system increases to full strength.";
             messages[9] = "Remember you can link your torpedoes and lasers for greater impact.";
             int randomMessageNo = Random.Range(0, 9);
-            LoadScreenFunctions.LoadingScreen(true, missionName, messages[randomMessageNo]);
+            MainMenuFunctions.DisplayLoadingScreen(true, missionName, messages[randomMessageNo]);
         }
         else
         {
-            LoadScreenFunctions.LoadingScreen(false);
+            MainMenuFunctions.DisplayLoadingScreen(false);
         }
     }
 

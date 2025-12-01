@@ -10,6 +10,7 @@ public class ButtonInfo : MonoBehaviour, ISelectHandler, IPointerEnterHandler
 { 
     public Text buttonName; //The button name
     public Text description; //The description of what the button does (if button has one)
+    public Text informationRight; //The information that appears on the right hand side of the button
     public float buttonShiftDown; //How far to move the button down
     public float buttonShiftRight; //How far to move the button right
     public bool noSound = false;

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -214,6 +214,7 @@ public static class MainMenuFunctions
         //This loads and sorts the campaign data from internal and then external sources
         LoadInternalCampaignData(mainMenu);
         LoadExternalCampaignData(mainMenu);
+        OrganiseListsBasedOnDate(mainMenu);
 
         //This creates sub menus from both the menu data and the campaign data
         CreateSubMenus(mainMenu);
@@ -252,6 +253,11 @@ public static class MainMenuFunctions
         if (mainMenu.campaignDescriptions == null)
         {
             mainMenu.campaignDescriptions = new List<string>();
+        }
+
+        if (mainMenu.campaignDates == null)
+        {
+            mainMenu.campaignDates = new List<string>();
         }
 
         if (mainMenu.mainMissionCampaigns == null)
@@ -313,6 +319,7 @@ public static class MainMenuFunctions
                         {
                             mainMenu.campaigns.Add(missionEvent.data1);
                             mainMenu.campaignDescriptions.Add(missionEvent.data2);
+                            mainMenu.campaignDates.Add(missionEvent.data3);
                         }
                     }
                 }
@@ -389,6 +396,7 @@ public static class MainMenuFunctions
                         {
                             mainMenu.campaigns.Add(missionEvent.data1);
                             mainMenu.campaignDescriptions.Add(missionEvent.data2);
+                            mainMenu.campaignDates.Add(missionEvent.data3);
                         }
 
                         campaignNodeExists = true;
@@ -433,6 +441,36 @@ public static class MainMenuFunctions
         {
             Debug.LogWarning("Open Galaxy found no external files or was unable to load them.");
         }
+    }
+
+    //This organises the lists based on the date
+    public static void OrganiseListsBasedOnDate(MainMenu mainMenu)
+    {
+        List<string> campaign = mainMenu.campaigns;
+        List<string> descriptions = mainMenu.campaignDescriptions;
+        List<string> date = mainMenu.campaignDates;
+
+        // Combine, converting numbers to int for sorting
+        var triples = date.Select((numStr, i) =>
+        {
+            bool valid = int.TryParse(numStr, out int num);
+            return new
+            {
+                NumberString = numStr,
+                NumberInt = valid ? num : int.MaxValue, // put invalid numbers at the end by sorting as MaxValue
+                IsValid = valid,
+                Name = campaign[i],
+                Description = descriptions[i]
+            };
+        })
+          .OrderBy(x => x.NumberInt)
+          .ThenBy(x => x.IsValid ? 0 : 1) // if numbers are equal, keep invalids last
+          .ToList();
+
+        // Extract sorted lists
+        mainMenu.campaignDates = triples.Select(x => x.NumberString).ToList();
+        mainMenu.campaigns = triples.Select(x => x.Name).ToList();
+        mainMenu.campaignDescriptions = triples.Select(x => x.Description).ToList();
     }
 
     //This creates a dictionary of the all the functions the menu can call
@@ -573,9 +611,13 @@ public static class MainMenuFunctions
 
             if ("Start Game_Settings" == subMenu.name)
             {
+                int i = 0;
+
                 foreach (string campaign in mainMenu.campaigns)
                 {
-                    buttonDrop = CreateCampaignButton(mainMenu, subMenu, buttonDrop, campaign, "ContentButton02", "ActivateSubMenu", "", campaign);
+                    buttonDrop = CreateCampaignButton(mainMenu, subMenu, buttonDrop, campaign, "ContentButton02", "ActivateSubMenu", campaign, "", mainMenu.campaignDates[i]);
+                 
+                    i++;
                 }
 
                 //This sets the size of the sub menu according to the how many buttons have been generated
@@ -613,7 +655,24 @@ public static class MainMenuFunctions
                 }
             }
 
-            CreateMissionButtons(mainMenu, missions.ToArray(), campaign + "_Settings", functions.ToArray(), campaign, mainMenu.campaignDescriptions[i2]);
+            //This calculates the campaign date
+            string date = mainMenu.campaignDates[i2];
+
+            if (float.TryParse(date, out _))
+            {
+                float number = float.Parse(date);
+
+                if (number < 0)
+                {
+                    date = Mathf.Abs(number) + " BBY";
+                }
+                else
+                {
+                    date = number + " ABY";
+                }
+            }
+
+            CreateMissionButtons(mainMenu, missions.ToArray(), campaign + "_Settings", functions.ToArray(), campaign, mainMenu.campaignDescriptions[i2], date);
             i2++;
         }
     }
@@ -755,7 +814,7 @@ public static class MainMenuFunctions
     }
 
     //This creates a sub menu button
-    public static float CreateCampaignButton(MainMenu mainMenu, GameObject subMenu, float buttonDrop, string buttonName, string buttonType, string functionName, string buttonDescription = "", string variable = "none")
+    public static float CreateCampaignButton(MainMenu mainMenu, GameObject subMenu, float buttonDrop, string buttonName, string buttonType, string functionName, string variable = "none", string buttonDescription = "", string informationRight = "")
     {
         GameObject button = null;
 
@@ -773,6 +832,27 @@ public static class MainMenuFunctions
         if (button.GetComponent<ButtonInfo>().description != null)
         {
             button.GetComponent<ButtonInfo>().description.text = buttonDescription;
+        }
+
+        if (button.GetComponent<ButtonInfo>().informationRight != null)
+        {
+            string text = informationRight;
+
+            if (float.TryParse(informationRight, out _))
+            {
+                float number = float.Parse(informationRight);
+
+                if (number < 0)
+                {
+                    text = Mathf.Abs(number) + " BBY";
+                }
+                else
+                {
+                    text = number + " ABY";
+                }
+            }
+
+            button.GetComponent<ButtonInfo>().informationRight.text = text;
         }
 
         button.transform.localPosition = new Vector3(20, 0, 0);
@@ -804,7 +884,7 @@ public static class MainMenuFunctions
     }
 
     //This adds a button for each mission avaible in the folder
-    public static void CreateMissionButtons(MainMenu mainMenu, string[] missions, string subMenuName, string[] functions, string campaignName, string campaignDescription)
+    public static void CreateMissionButtons(MainMenu mainMenu, string[] missions, string subMenuName, string[] functions, string campaignName, string campaignDescription, string date)
     {
         foreach (GameObject subMenu in mainMenu.SubMenus)
         {
@@ -812,7 +892,7 @@ public static class MainMenuFunctions
             {
                 float buttonDrop = 20;
 
-                buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, campaignName, "GameButton02", "ActivateSubMenu", campaignDescription, "Start Game");
+                buttonDrop = CreateSubMenuButton(mainMenu, subMenu, buttonDrop, campaignName + ", " + date, "GameButton02", "ActivateSubMenu", campaignDescription, "Start Game");
 
                 int i = 0;
 
@@ -919,6 +999,29 @@ public static class MainMenuFunctions
     #endregion
 
     #region menu functions
+
+    //This adds a message to the ship log
+    public static void AddLogToLoadingScreen(string message, float time, bool showTime = true)
+    {
+        GameObject loadingInfo = GameObject.Find("LoadingInfo");
+
+        if (loadingInfo != null)
+        {
+            Text loadingInfoText = loadingInfo.GetComponent<Text>();
+
+            if (loadingInfoText != null)
+            {
+                if (showTime == true)
+                {
+                    loadingInfoText.text = loadingInfoText.text + "\n" + GetTimeAsString(time) + " " + message;
+                }
+                else
+                {
+                    loadingInfoText.text = loadingInfoText.text + "\n" + "          " + message;
+                }
+            }
+        }
+    }
 
     //Displays a message on the title screen
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
@@ -1397,6 +1500,46 @@ public static class MainMenuFunctions
         ActivateSubMenu("Settings");
     }
 
+    //This displays the loading screen
+    public static void DisplayLoadingScreen(bool display, string loadingScreenTitle = "", string message = "")
+    {
+        MainMenu mainMenu = MainMenuFunctions.GetMainMenu();
+        GameObject loadingScreen = mainMenu.loadingScreen_cg.gameObject;
+
+        if (display == true)
+        {
+            GameObject gameType = GameObject.Find("Gametype");
+
+            if (gameType != null)
+            {
+                gameType.GetComponent<Text>().text = loadingScreenTitle;
+            }
+
+            GameObject tip = GameObject.Find("Tip");
+
+            if (tip != null)
+            {
+                tip.GetComponent<Text>().text = message;
+            }
+        }
+        else
+        {
+            Task a = new Task(MainMenuFunctions.FadeOutLoadingScreenAndDestroyMainMenu(mainMenu, 0.25f));
+
+            GameObject hud = GameObject.Find("Hud");
+
+            if (hud != null)
+            {
+                CanvasGroup hudCanvasGroup = hud.GetComponent<CanvasGroup>();
+
+                if (hudCanvasGroup != null)
+                {
+                    HudFunctions.SetHudTransparency(1);
+                }
+            }
+        }
+    }
+
     //This opens the custom mission directory
     public static void OpenCustomMissionDirectory()
     {
@@ -1652,6 +1795,17 @@ public static class MainMenuFunctions
         }
 
         GameObject.Destroy(mainMenu.gameObject);
+    }
+
+    //This caculates the time in 60 second increments
+    public static string GetTimeAsString(float startTime)
+    {
+        float timer = Time.unscaledTime - startTime;
+        int minutes = Mathf.FloorToInt(timer / 60F);
+        int seconds = Mathf.FloorToInt(timer - minutes * 60);
+        string timeAsString = string.Format("{0:0}:{1:00}", minutes, seconds);
+
+        return timeAsString;
     }
 
     //This returns the main menu

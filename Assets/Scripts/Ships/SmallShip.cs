@@ -125,6 +125,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool powerToEngine;
     [HideInInspector] public bool resetPowerLevels;
     [HideInInspector] public bool fireWeapon;
+    [HideInInspector] public bool rapidFire;
     [HideInInspector] public bool getNextTarget;
     [HideInInspector] public bool getNextEnemy;
     [HideInInspector] public bool getClosestEnemy;
@@ -145,6 +146,7 @@ public class SmallShip : MonoBehaviour
     public bool hasRapidFire = false;
     public string activeWeapon = "lasers";
     public string weaponMode = "single";
+    public string weaponMode2 = "normal";
     [HideInInspector] public float toggleWeaponPressedTime;
 
     [HideInInspector] public GameObject laserParticleSystem;

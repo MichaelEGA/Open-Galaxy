@@ -392,10 +392,6 @@ public static class LaserFunctions
             {
                 smallShip.weaponMode = "all";
             }
-            else if (smallShip.weaponMode == "dual" & smallShip.hasRapidFire == true || smallShip.weaponMode == "all" & smallShip.hasRapidFire == true)
-            {
-                smallShip.weaponMode = "rapid";
-            }
             else
             {
                 smallShip.weaponMode = "single";
@@ -404,7 +400,6 @@ public static class LaserFunctions
             smallShip.laserModePressedTime = Time.time + 0.2f;
 
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
-
         }
     }
 
@@ -415,7 +410,7 @@ public static class LaserFunctions
     //This allows the player to fire the lasers
     public static void InitiateFiringPlayer(SmallShip smallShip)
     {
-        if (smallShip.fireWeapon == true & smallShip.isAI == false)
+        if (smallShip.fireWeapon == true & smallShip.isAI == false || smallShip.rapidFire == true & smallShip.isAI == false & smallShip.hasRapidFire == true)
         {
             InitiateFiring(smallShip);
         }
@@ -428,25 +423,32 @@ public static class LaserFunctions
 
         if (smallShip.isDisabled == false)
         {
+            string weaponmode = smallShip.weaponMode;
+
+            if (smallShip.hasRapidFire == true & smallShip.rapidFire == true)
+            {
+                weaponmode = "rapid";
+            }
+
             //This calculates the delay before the next laser fires
             float laserWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
 
-            if (smallShip.weaponMode == "dual")
+            if (weaponmode == "dual")
             {
                 laserWaitTime = laserWaitTime * 2;
             }
-            else if (smallShip.weaponMode == "all")
+            else if (weaponmode == "all")
             {
                 laserWaitTime = laserWaitTime * 4;
             }
-            else if (smallShip.weaponMode == "rapid")
+            else if (weaponmode == "rapid")
             {
                 laserWaitTime = laserWaitTime * 0.25f;
             }
 
             if (Time.time > smallShip.laserPressedTime & smallShip.laserfiring != true & smallShip.activeWeapon == "lasers" & smallShip.weaponsLock == false)
             {
-                if (smallShip.weaponMode == "single" || smallShip.weaponMode == "rapid")
+                if (weaponmode == "single" || weaponmode == "rapid")
                 {
                     if (smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
                     {
@@ -540,10 +542,12 @@ public static class LaserFunctions
         smallShip.laserfiring = true;
 
         float volume = 0.6f;
+        float pitch = 1;
 
         if (smallShip.weaponMode == "rapid")
         {
             volume = 0.3f;
+            pitch = 1.1f;
         }
 
         if (smallShip != null)
@@ -575,7 +579,7 @@ public static class LaserFunctions
                         particleSystem.transform.position = firstCannon.transform.position;
                         particleSystem.transform.rotation = firstCannon.transform.rotation;
                         particleSystem.Play();
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, 1, 500, volume);
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, pitch, 500, volume);
 
                         if (smallShip.isAI == false)
                         {
@@ -604,7 +608,7 @@ public static class LaserFunctions
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
 
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, secondCannon.transform.position, spatialBlend, 1, 500, volume);
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, secondCannon.transform.position, spatialBlend, pitch, 500, volume);
                     }
                 }
 
@@ -626,7 +630,7 @@ public static class LaserFunctions
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
 
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, 1, 500, volume);
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, pitch, 500, volume);
                     }
                 }
 
@@ -648,7 +652,7 @@ public static class LaserFunctions
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
 
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, fourthCannon.transform.position, spatialBlend, 1, 500, volume);
+                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, fourthCannon.transform.position, spatialBlend, pitch, 500, volume);
                     }
                 }
 
@@ -807,7 +811,7 @@ public static class LaserFunctions
         {
             bool rapidFire = false;
 
-            if (attackingShip.weaponMode == "rapid")
+            if (attackingShip.rapidFire == true & attackingShip.hasRapidFire == true)
             {
                 rapidFire = true;
             }

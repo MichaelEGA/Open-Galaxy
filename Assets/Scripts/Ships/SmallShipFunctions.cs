@@ -167,6 +167,7 @@ public static class SmallShipFunctions
                 smallShip.getClosestEnemy = keyboard.fKey.isPressed;
                 smallShip.selectTargetInFront = keyboard.gKey.isPressed;
                 smallShip.fireWeapon = mouse.leftButton.isPressed;
+                smallShip.rapidFire = mouse.middleButton.isPressed;
                 smallShip.toggleWeapons = keyboard.tabKey.isPressed;
                 smallShip.toggleWeaponNumber = keyboard.capsLockKey.isPressed;
                 smallShip.matchSpeed = keyboard.eKey.isPressed;
@@ -239,6 +240,7 @@ public static class SmallShipFunctions
                 smallShip.getClosestEnemy = gamepad.rightShoulder.isPressed;
                 smallShip.selectTargetInFront = gamepad.yButton.isPressed;
                 smallShip.fireWeapon = gamepad.rightTrigger.isPressed;
+                smallShip.rapidFire = gamepad.aButton.isPressed;
                 smallShip.toggleWeapons = gamepad.bButton.isPressed;
                 smallShip.toggleWeaponNumber = gamepad.aButton.isPressed;
                 smallShip.matchSpeed = gamepad.leftStickButton.isPressed;

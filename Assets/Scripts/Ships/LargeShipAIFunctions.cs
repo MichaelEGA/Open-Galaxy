@@ -588,21 +588,6 @@ public static class LargeShipAIFunctions
         AngleTowardsWaypoint(largeShip);
     }
 
-    //This causes the ship to come to a full stop
-    public static void Stationary(LargeShip largeShip)
-    {
-        NoSpeed(largeShip);
-    }
-
-    //This selects a random waypoint
-    public static void SelectRandomWaypoint(LargeShip largeShip)
-    {
-        float x = Random.Range(0, 15000);
-        float y = Random.Range(0, 15000);
-        float z = Random.Range(0, 15000);
-        largeShip.waypoint.transform.position = new Vector3(x, y, z);
-    }
-
     //This prevents the ship from rotating and locks the direction forward
     public static void NoRotation(LargeShip largeShip)
     {

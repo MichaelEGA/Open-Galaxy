@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
 
 public static class HudFunctions
@@ -403,25 +404,32 @@ public static class HudFunctions
 
         if (hud.weaponModeText != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.weaponMode == "single")
+            if (hud.smallShip.hasRapidFire == true & hud.smallShip.rapidFire == true)
             {
-                hud.weaponModeText.text = "SNG";
-            }
-            else if (hud.smallShip.weaponMode == "dual")
-            {
-                hud.weaponModeText.text = "DUL";
-            }
-            else if (hud.smallShip.weaponMode == "all")
-            {
-                hud.weaponModeText.text = "ALL";
-            }
-            else if (hud.smallShip.weaponMode == "rapid")
-            {
+                SetTextColour("#EBB426", hud.weaponModeText);
+
                 hud.weaponModeText.text = "RPD";
             }
             else
             {
-                hud.weaponModeText.text = "";
+                SetTextColour("#D73320", hud.weaponModeText);
+
+                if (hud.smallShip.weaponMode == "single")
+                {
+                    hud.weaponModeText.text = "SNG";
+                }
+                else if (hud.smallShip.weaponMode == "dual")
+                {
+                    hud.weaponModeText.text = "DUL";
+                }
+                else if (hud.smallShip.weaponMode == "all")
+                {
+                    hud.weaponModeText.text = "ALL";
+                }
+                else
+                {
+                    hud.weaponModeText.text = "";
+                }
             }
         }
     }
@@ -2623,6 +2631,26 @@ public static class HudFunctions
             }
 
             yield return new WaitForSecondsRealtime(0.016f);
+        }
+    }
+
+    //This sets the colour of a text item
+    public static void SetTextColour(string colour, Text text)
+    {
+        //This gets the hud reference
+        Hud hud = GetHud();
+
+        //This sets the fog color to match the skybox
+        Color newColour;
+
+        if (ColorUtility.TryParseHtmlString(colour, out newColour))
+        {
+            //Do nothing
+        }
+
+        if (text != null)
+        {
+            text.color = newColour;
         }
     }
 

@@ -30,14 +30,6 @@ public static class WindowFunctions
         {
             WindowFunctions.Draw_ShipInformation(window);
         }
-        else if (window.windowType == "displaypropinformation")
-        {
-            WindowFunctions.Draw_PropInformation(window);
-        }
-        else if (window.windowType == "displaytextureinformation")
-        {
-            WindowFunctions.Draw_TextureInformation(window);
-        }
         else if (window.windowType == "displaysoundinformation")
         {
             WindowFunctions.Draw_SoundInformation(window);
@@ -251,146 +243,11 @@ public static class WindowFunctions
 
         DrawRawImage(window, 147.5f, -29, 73f, 73f, "assetpreview");
 
-        DrawScrollableText(window, 127.5f, -102, 88f, 115, 7, "No Ship Selected", 225f, "ShipInformationTextBox");
+        DrawScrollableText(window, 127.5f, -102, 88f, 115, 7, "No Ship Selected", 345f, "ShipInformationTextBox");
 
         DrawDropDownMenuSansLabel(window, options, "ships", "all", 7, 151f, -5.4f, 10, 65);
 
         DisplayShipInformation(firstShip);
-    }
-
-    //This draws the display ship information window
-    public static void Draw_PropInformation(Window window) 
-    {
-        window.transform.name = "window_propinformation";
-
-        DrawWindowBase(window, 250, 200);
-
-        DrawText(window, "Prop Information", 8, 5, -5, 12.5f, 90);
-
-        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
-
-        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
-
-        List<string> buttonList = new List<string>();
-        List<string> options = new List<string>();
-
-        options.Add("all");
-
-        UnityEngine.Object[] props = Resources.LoadAll(OGGetAddress.props, typeof(GameObject));
-
-        string firstProp = "building_cloudcity01";
-        bool firstShipCaptured = false;
-
-        foreach (UnityEngine.Object propType in props)
-        {
-            //This adds the ship to the list
-            buttonList.Add(propType.name);
-
-            //This captures the name of the first ship to display
-            if (firstShipCaptured == false)
-            {
-                firstProp = propType.name;
-                firstShipCaptured = true;
-            }
-
-            //This creates the list to sort the props
-            bool addString = true;
-
-            string category = GetNameBeforeUnderscore(propType.name);
-
-            foreach (string sortString in options)
-            {
-                if (sortString == category)
-                {
-                    addString = false;
-                    break;
-                }
-            }
-
-            if (addString == true)
-            {
-                options.Add(category);
-            }
-        }
-
-        List<string> functionList = new List<string>();
-
-        foreach (string button in buttonList)
-        {
-            functionList.Add("DisplayPropInformation");
-        }
-
-        string[] buttons = buttonList.ToArray();
-        string[] functions = functionList.ToArray();
-
-        DrawScrollableButtons(window, 5, -29, 161f, 115, 10, 7, buttons, functions, "scollableproplist");
-
-        DrawRawImage(window, 147.5f, -29, 73f, 73f, "assetproppreview");
-
-        DrawScrollableText(window, 127.5f, -102, 88f, 115, 7, "No Prop Selected", 225f, "PropInformationTextBox");
-
-        DrawDropDownMenuSansLabel(window, options, "props", "all", 7, 151f, -5.4f, 10, 65);
-
-        DisplayPropInformation(firstProp);
-    }
-
-    //This draws the display ship information window
-    public static void Draw_TextureInformation(Window window)
-    {
-        window.transform.name = "window_terraininformation";
-
-        DrawWindowBase(window, 250, 200);
-
-        DrawText(window, "Terrain Information", 8, 5, -5, 12.5f, 90);
-
-        DrawImageButton(window, 235, -6.5f, 10, 10, "cross", "DeleteWindow");
-
-        DrawLineBreak(window, "#808080", 0, -20, 1, 250);
-
-        List<string> buttonList = new List<string>();
-        List<string> options = new List<string>();
-
-        options.Add("all");
-        options.Add("cliff");
-        options.Add("water");
-
-        UnityEngine.Object[] terrainTextures = Resources.LoadAll(OGGetAddress.terrain, typeof(Texture2D));
-
-        string firstTexture = "building_cloudcity01";
-        bool firstTextureCaptured = false;
-
-        foreach (UnityEngine.Object textureType in terrainTextures)
-        {
-            //This adds the texture to the list
-            buttonList.Add(textureType.name);
-
-            //This captures the name of the first texture to display
-            if (firstTextureCaptured == false)
-            {
-                firstTexture = textureType.name;
-                firstTextureCaptured = true;
-            }
-        }
-
-        List<string> functionList = new List<string>();
-
-        foreach (string button in buttonList)
-        {
-            functionList.Add("DisplayTextureInformation");
-        }
-
-        string[] buttons = buttonList.ToArray();
-        string[] functions = functionList.ToArray();
-
-        DrawScrollableButtons(window, 5, -29, 161f, 115, 10, 7, buttons, functions, "scollabletexturelist");
-
-        DrawRawImage(window, 147.5f, -29, 73f, 73f, "assettexturepreview");
-
-        DrawScrollableText(window, 127.5f, -107, 83f, 115, 7, "No Texture Selected", 225f, "TextureInformationTextBox");
-
-        DrawDropDownMenuSansLabel(window, options, "textures", "all", 7, 151f, -5.4f, 10, 65);
-
-        DisplayTextureInformation(firstTexture);
     }
 
     //This draws the display ship information window
@@ -932,14 +789,6 @@ public static class WindowFunctions
         else if (functionType == "DisplayShipInformation")
         {
             button.onClick.AddListener(() => { DisplayShipInformation(buttonText); });
-        }
-        else if (functionType == "DisplayPropInformation")
-        {
-            button.onClick.AddListener(() => { DisplayPropInformation(buttonText); });
-        }
-        else if (functionType == "DisplayTextureInformation")
-        {
-            button.onClick.AddListener(() => { DisplayTextureInformation(buttonText); });
         }
         else if (functionType == "DisplaySoundInformation")
         {
@@ -1643,10 +1492,6 @@ public static class WindowFunctions
         {
             SortPropList(dropdown.captionText.text);
         }
-        else if (dropdown.name == "textures")
-        {
-            SortTextureList(dropdown.captionText.text);
-        }
     }
 
     //This sets the rect transform
@@ -2012,54 +1857,6 @@ public static class WindowFunctions
 
     }
 
-    //This sorts the ships and remakes the window
-    public static void SortTextureList(string value)
-    {
-        GameObject shipPreviewGO = GameObject.Find("scollabletexturelist");
-
-        Window window = shipPreviewGO.GetComponentInParent<Window>();
-
-        if (shipPreviewGO != null)
-        {
-            GameObject.Destroy(shipPreviewGO);
-        }
-
-        List<string> buttonList = new List<string>();
-
-        UnityEngine.Object[] props = Resources.LoadAll(OGGetAddress.terrain, typeof(Texture2D));
-
-        if (value != "all")
-        {
-            foreach (UnityEngine.Object tempProp in props)
-            {
-                //This adds the ship to the list
-                if (tempProp.name.Contains(value))
-                {
-                    buttonList.Add(tempProp.name);
-                }
-            }
-        }
-        else
-        {
-            foreach (UnityEngine.Object tempProp in props)
-            {
-                buttonList.Add(tempProp.name);
-            }
-        }
-
-        List<string> functionList = new List<string>();
-
-        foreach (string button in buttonList)
-        {
-            functionList.Add("DisplayTextureInformation");
-        }
-
-        string[] buttons = buttonList.ToArray();
-        string[] functions = functionList.ToArray();
-
-        DrawScrollableButtons(window, 5, -29, 161f, 115, 10, 7, buttons, functions, "scollabletexturelist");
-    }
-
     //This displays ship information
     public static void DisplayShipInformation(string ship)
     {
@@ -2113,112 +1910,70 @@ public static class WindowFunctions
                         {
                             shipPreview.texture = missionEditor.previewRenderTexture;
                         }
-                    }
-                        
-                    break;
-                }
-            }
-        }
-    }
 
-    //This displays ship information
-    public static void DisplayPropInformation(string prop)
-    {
-        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
-
-        if (missionEditor.DisplayPropInformationTextBox == null)
-        {
-            GameObject DisplayPropInformationTextBoxGO = GameObject.Find("PropInformationTextBox");
-
-            if (DisplayPropInformationTextBoxGO != null)
-            {
-                missionEditor.DisplayPropInformationTextBox = DisplayPropInformationTextBoxGO.GetComponentInChildren<Text>();
-            }
-        }
-
-        if (missionEditor.DisplayPropInformationTextBox != null)
-        {
-
-            UnityEngine.Object[] props = Resources.LoadAll(OGGetAddress.props, typeof(GameObject));
-
-            foreach (UnityEngine.Object tempProp in props)
-            {
-                if (tempProp.name == prop)
-                {
-                    missionEditor.DisplayPropInformationTextBox.text = tempProp.name;
-
-                    GameObject propPreviewGO = GameObject.Find("Button_assetproppreview");
-
-                    if (propPreviewGO != null)
-                    {
-                        RawImage propPreview = propPreviewGO.GetComponentInChildren<RawImage>();
-
-                        if (missionEditor.previewCamera != null)
-                        {
-                            GameObject.Destroy(missionEditor.previewCamera.gameObject);
-                        }
-
-                        if (missionEditor.previewRenderTexture != null)
-                        {
-                            GameObject.Destroy(missionEditor.previewRenderTexture);
-                        }
-
+                         //Add extra information from model
                         if (missionEditor.previewModel != null)
                         {
-                            GameObject.Destroy(missionEditor.previewModel.gameObject);
-                        }
+                            Transform[] turretLarge = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "turretlarge", "plasma");
+                            Transform[] turretSmall = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "turretsmall", "plasma");
+                            Transform[] plasmaTurretLarge = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "plasmaturretlarge");
+                            Transform[] plasmaTurretSmall = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "plasmaturretsmall");
+                            Transform[] gunbank = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "gunbank");
+                            Transform[] missilebank = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "missilebank");
+                            Transform[] ionbank = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "ionbank");
+                            Transform[] plasmabank = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "plasmabank");
+                            Transform[] systemEngine = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "system_engine");
+                            Transform[] systemShield = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "system_shield");
+                            Transform[] systemRadar = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "system_radar");
+                            Transform[] systemGravityWell = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "system_gravitywell");
+                            Transform[] systemDovinBasal = GameObjectUtils.FindAllChildTransformsContaining(missionEditor.previewModel.transform, "system_dovinbasal");
 
-                        LoadModelAndRenderStatic("objects/props/" + tempProp.name, new Vector3(0, 0, 0), new Vector3(0, 0, 0), 256, 256, propPreview, out missionEditor.previewModel, out missionEditor.previewCamera, out missionEditor.previewRenderTexture);
+                            float lasers = 0;
 
-                        if (missionEditor.previewRenderTexture != null)
-                        {
-                            propPreview.texture = missionEditor.previewRenderTexture;
+                            if (gunbank.Length > 1)
+                            {
+                                lasers -= 1;
+                            }
+
+                            float torpedos = 0;
+
+                            if (missilebank.Length > 1)
+                            {
+                                torpedos -= 1;
+                            }
+
+                            float ioncannons = 0;
+
+                            if (ionbank.Length > 1)
+                            {
+                                ioncannons -= 1;
+                            }
+
+                            float plasmacannons = 0;
+
+                            if (plasmabank.Length > 1)
+                            {
+                                plasmacannons -= 1;
+                            }
+
+                            missionEditor.DisplayShipInformationTextBox.text =
+                                missionEditor.DisplayShipInformationTextBox.text
+                                + " turretlarge: " + turretLarge.Length + "\n"
+                                + " turretsmall: " + turretSmall.Length + "\n"
+                                + " plasmaturretlarge: " + plasmaTurretLarge.Length + "\n"
+                                + " plasmaturretsmall: " + plasmaTurretSmall.Length + "\n"
+                                + " lasers: " + lasers + "\n"
+                                + " torpedos: " + torpedos + "\n"
+                                + " ion cannons: " + ioncannons + "\n"
+                                + " plasma cannons: " + plasmacannons + "\n"
+                                + " system engine: " + systemEngine.Length + "\n"
+                                + " system shield: " + systemShield.Length + "\n"
+                                + " system radar: " + systemRadar.Length + "\n"
+                                + " system gravitywell: " + systemGravityWell.Length + "\n"
+                                + " system dovinbasal: " + systemDovinBasal.Length;
                         }
                     }
-
-                    break;
-                }
-            }
-        }
-    }
-
-    //This displays terrain texture information
-    public static void DisplayTextureInformation(string texture)
-    {
-        MissionEditor missionEditor = MissionEditorFunctions.GetMissionEditor();
-
-        if (missionEditor.DisplayTextureInformationTextBox == null)
-        {
-            GameObject DisplayTextureInformationTextBoxGO = GameObject.Find("TextureInformationTextBox");
-
-            if (DisplayTextureInformationTextBoxGO != null)
-            {
-                missionEditor.DisplayTextureInformationTextBox = DisplayTextureInformationTextBoxGO.GetComponentInChildren<Text>();
-            }
-        }
-
-        if (missionEditor.DisplayTextureInformationTextBox != null)
-        {
-            UnityEngine.Object[] textures = Resources.LoadAll(OGGetAddress.terrain, typeof(Texture2D));
-
-            foreach (UnityEngine.Object tempTexture in textures)
-            {
-                if (tempTexture.name == texture)
-                {
-                    missionEditor.DisplayTextureInformationTextBox.text = tempTexture.name;
-
-                    GameObject texturePreviewGO = GameObject.Find("Button_assettexturepreview");
-
-                    if (texturePreviewGO != null)
-                    {
-                        RawImage propPreview = texturePreviewGO.GetComponentInChildren<RawImage>();
-
-                        if (propPreview != null)
-                        {
-                            propPreview.texture = (Texture2D)tempTexture;
-                        }
-                    }
-
+                        
                     break;
                 }
             }
@@ -2516,14 +2271,5 @@ public static class WindowFunctions
         return bounds;
     }
 
-    //Gets the name of something before the first underscore
-    public static string GetNameBeforeUnderscore(string name)
-    {
-        int underscoreIndex = name.IndexOf('_');
-        if (underscoreIndex > 0)
-            return name.Substring(0, underscoreIndex);
-        else
-            return name;
-    }
     #endregion
 }

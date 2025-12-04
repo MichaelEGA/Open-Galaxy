@@ -2409,7 +2409,7 @@ public static class HudFunctions
     //This gets the HUD script
     public static Hud GetHud()
     {
-        Hud hud = GameObject.FindObjectOfType<Hud>();
+        Hud hud = GameObject.FindFirstObjectByType<Hud>();
         return hud;
     }
 

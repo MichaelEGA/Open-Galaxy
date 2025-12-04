@@ -299,6 +299,8 @@ public static class MainMenuFunctions
 
                 string campaignName = "none";
 
+                bool campaignNodeExists = false;
+
                 foreach (MissionEvent missionEvent in tempMission.missionEventData)
                 {
                     if (missionEvent.eventType == "campaigninformation")
@@ -321,11 +323,39 @@ public static class MainMenuFunctions
                             mainMenu.campaignDescriptions.Add(missionEvent.data2);
                             mainMenu.campaignDates.Add(missionEvent.data3);
                         }
+
+                        campaignNodeExists = true;
+
+                        break;
                     }
                 }
 
                 mainMenu.mainMissionNames.Add(mission.name);
                 mainMenu.mainMissionCampaigns.Add(campaignName);
+                
+                //This creates a special folder for missions that aren't part of a larger campaign
+                if (campaignNodeExists == false)
+                {
+                    bool campaignExists = false;
+
+                    foreach (string campaign in mainMenu.campaigns)
+                    {
+                        if (campaign == "Misc")
+                        {
+                            campaignExists = true;
+                        }
+                    }
+
+                    if (campaignExists == false)
+                    {
+                        mainMenu.campaigns.Add("Misc");
+                        mainMenu.campaignDescriptions.Add("Single missions of different types.");
+                        mainMenu.campaignDates.Add("");
+                    }
+
+                    mainMenu.customMissionNames.Add(mission.name);
+                    mainMenu.customMissionCampaigns.Add("Misc");
+                }
             }
         }
     }
@@ -428,6 +458,7 @@ public static class MainMenuFunctions
                     {
                         mainMenu.campaigns.Add("Misc");
                         mainMenu.campaignDescriptions.Add("Single missions of different types.");
+                        mainMenu.campaignDates.Add("");
                     }
 
                     mainMenu.customMissionNames.Add(mission.name);

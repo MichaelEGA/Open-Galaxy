@@ -22,7 +22,6 @@ public static class CockpitFunctions
             RunCockpitShake(smallShip);
             CockpitCameraMovement(smallShip);
             CockpitAnchorRotation(smallShip);
-            ShakeCockpitDuringHyperspace(smallShip);
         }
     }
 
@@ -256,13 +255,13 @@ public static class CockpitFunctions
         {
             if (smallShip.thrustSpeed > smallShip.speedRating / 2f & smallShip.cockpitDamageShake != true)
             {
-                if (smallShip.turnInput > 0.75f || smallShip.turnInput < -0.75f || smallShip.pitchInput > 0.75f || smallShip.pitchInput < -0.75f || smallShip.thrustSpeed > smallShip.speedRating + 5 || smallShip.rollInput > 0.75f || smallShip.rollInput < -75f)
+                if (smallShip.thrustSpeed > smallShip.speedRating + 10)
                 {
                     float shakeMagnitude = 0.001f;
 
                     if (smallShip.speedShakeMagnitude < shakeMagnitude)
                     {
-                        smallShip.speedShakeMagnitude += 0.00005f;
+                        smallShip.speedShakeMagnitude += 0.00005f; //This slowly increases the shake magnitude until it reaches 0.001f
                     }
 
                 }
@@ -397,21 +396,6 @@ public static class CockpitFunctions
         }
     }
 
-    //This shakes the cockpit during hyperspace
-    public static void ShakeCockpitDuringHyperspace(SmallShip smallShip)
-    {
-        if (smallShip.inHyperspace == true)
-        {
-            float x = Random.Range(-1f, 1f) * 0.0025f;
-            float y = Random.Range(-1f, 1f) * 0.0025f;
-
-            if (smallShip.cockpit != null)
-            {
-                smallShip.cockpit.transform.localPosition = new Vector3(x, y, smallShip.basePosition.z);
-            }
-        }
-    }
-
     //This dynamically adjusts the position of the cockpit camera to simulate the movement of the pilots head and body
     public static void CockpitCameraMovement(SmallShip smallShip)
     {
@@ -426,9 +410,19 @@ public static class CockpitFunctions
             {
                 float gForceMagnitude;
 
-                if (smallShip.thrustSpeed <= smallShip.speedRating)
+                //This smooth changes the thrust speed to prevent the camera lurching backwards and forwards between two values
+                if (smallShip.smoothThrust < smallShip.thrustSpeed)
                 {
-                    gForceMagnitude = 5f / 125f * smallShip.thrustSpeed;
+                    smallShip.smoothThrust += 0.1f;
+                }
+                else if (smallShip.smoothThrust > smallShip.thrustSpeed)
+                {
+                    smallShip.smoothThrust += 0.1f;
+                }
+
+                if (smallShip.smoothThrust <= smallShip.speedRating)
+                {
+                    gForceMagnitude = 5f / 125f * smallShip.smoothThrust;
                 }
                 else
                 {

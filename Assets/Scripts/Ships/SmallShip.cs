@@ -270,6 +270,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float movementTime = 0.1f;
     [HideInInspector] public float randomisationX = 0;
     [HideInInspector] public float randomisationY = 0;
+    [HideInInspector] public float smoothThrust;
     [HideInInspector] public string cockpitName;
     [HideInInspector] public GameObject cockpitAnchor;
     [HideInInspector] public GameObject cockpit;
@@ -280,6 +281,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public AudioSource cockpitAudioSource;
     [HideInInspector] public Vector3 currentPosition;
     [HideInInspector] public Quaternion currentRotation;
+
 
     [Header("Systems")]
     public float restoreDelayTime;

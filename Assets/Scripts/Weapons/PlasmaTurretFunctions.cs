@@ -48,6 +48,17 @@ public static class PlasmaTurretFunctions
             {
                 turret.turretGO = new GameObject();
                 turret.turretGO.name = "plasmaturretBase_" + turret.shipGO.name;
+
+                //This creates an anchor for all the plasma turret base
+                GameObject laserturretbaseanchor = GameObject.Find("plasmaturretbaseanchor");
+
+                if (laserturretbaseanchor == null)
+                {
+                    laserturretbaseanchor = new GameObject("plasmaturretbaseanchor");
+                }
+
+                turret.turretGO.transform.SetParent(laserturretbaseanchor.transform);
+
             }
 
             //This gets all the current turret positions
@@ -84,7 +95,17 @@ public static class PlasmaTurretFunctions
         OnPlasmaTurretHit onPlasmaTurretHit = particleSystemGO.AddComponent<OnPlasmaTurretHit>();
         onPlasmaTurretHit.particleSystemScript = particleSystem;
         onPlasmaTurretHit.plasmaTurret = turret;
-        
+
+        //This creates an anchor for all the plasma turret particle systems
+        GameObject plasmaturretparticlesanchor = GameObject.Find("plasmaturretparticleanchor");
+
+        if (plasmaturretparticlesanchor == null)
+        {
+            plasmaturretparticlesanchor = new GameObject("plasmaturretparticleanchor");
+        }
+
+        particleSystem.transform.SetParent(plasmaturretparticlesanchor.transform);
+
         //This adds the new particle system to the pool
         if (scene != null)
         {
@@ -180,6 +201,16 @@ public static class PlasmaTurretFunctions
         OnPlasmaTurretHit onPlasmaTurretHit = particleSystemGO.AddComponent<OnPlasmaTurretHit>();
         onPlasmaTurretHit.particleSystemScript = particleSystem;
         onPlasmaTurretHit.plasmaTurret = turret;
+
+        //This creates an anchor for all the plasma turret particle systems
+        GameObject plasmaturretparticlesanchor = GameObject.Find("plasmaturretparticleanchor");
+
+        if (plasmaturretparticlesanchor == null)
+        {
+            plasmaturretparticlesanchor = new GameObject("plasmaturretparticleanchor");
+        }
+
+        particleSystem.transform.SetParent(plasmaturretparticlesanchor.transform);
 
         //This adds the new particle system to the pool
         if (scene != null)

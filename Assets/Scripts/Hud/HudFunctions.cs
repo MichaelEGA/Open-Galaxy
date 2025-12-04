@@ -160,6 +160,17 @@ public static class HudFunctions
                                         GameObjectUtils.ApplyMaterialToAllMeshes(radarObject, hud.wireframeMaterial);
                                     }
 
+                                    //This creates an anchor for all the radar objects
+                                    GameObject radarshipdisplayanchor = GameObject.Find("radarshipdisplayanchor");
+
+                                    if (radarshipdisplayanchor == null)
+                                    {
+                                        radarshipdisplayanchor = new GameObject("radarshipdisplayanchor");
+                                    }
+
+                                    radarObject.transform.SetParent(radarshipdisplayanchor.transform);
+
+                                    //This sets the radar object in the hud
                                     hud.radarObject = radarObject;
                                 }
                             }

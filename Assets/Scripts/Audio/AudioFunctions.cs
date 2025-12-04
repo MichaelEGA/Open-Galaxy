@@ -466,6 +466,17 @@ public static class AudioFunctions
             audioSource = audioSourceGO.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
             audioManager.audioSources.Add(audioSource);
+
+            //This creates an anchor for all the laser particle systems
+            GameObject audiosouceanchor = GameObject.Find("audiosourceanchor");
+
+            //This sets the anchor for the audio source
+            if (audioManager.audioSourceAnchor == null)
+            {
+                audioManager.audioSourceAnchor = new GameObject("audiosourceanchor");
+            }
+
+            audioSourceGO.transform.SetParent(audioManager.audioSourceAnchor.transform);
         }
 
         return audioSource;

@@ -28,6 +28,16 @@ public static class PlasmaFunctions
         onPlasmaHit.particleSystemScript = particleSystem;
         onPlasmaHit.smallShip = smallShip;
 
+        //This creates an anchor for all the plasma particle systems
+        GameObject plasmaparticlesanchor = GameObject.Find("plasmaparticleanchor");
+
+        if (plasmaparticlesanchor == null)
+        {
+            plasmaparticlesanchor = new GameObject("plasmaparticleanchor");
+        }
+
+        particleSystem.transform.SetParent(plasmaparticlesanchor.transform);
+
         //This adds the new particle system to the pool
         if (smallShip.scene != null)
         {
@@ -112,6 +122,7 @@ public static class PlasmaFunctions
 
         //This sets the particle system to be subordinate to the smallship
         particleSystem.transform.SetParent(smallShip.transform);
+        smallShip.plasmaMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
 
         //This adds the new particle system to the pool
         if (smallShip.scene != null)

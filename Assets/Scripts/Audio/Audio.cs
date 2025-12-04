@@ -11,6 +11,7 @@ public class Audio : MonoBehaviour
     public List<AudioSource> audioSources;
     public List<AudioSource> independentAudioSources;
     public AudioMixer audioMixer;
+    public GameObject audioSourceAnchor;
 
     public float voiceSavedVolume;
     public float cockpitSavedVolume;

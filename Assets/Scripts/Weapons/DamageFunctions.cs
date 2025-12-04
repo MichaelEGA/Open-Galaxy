@@ -375,7 +375,7 @@ public static class DamageFunctions
                 GameObject smokeTrail = GameObject.Instantiate(tempSmokeTrail) as GameObject;
                 smallShip.smokeTrail = smokeTrail;
                 smokeTrail.transform.SetParent(smallShip.transform);
-                smokeTrail.transform.localPosition = new Vector3(0, 0, 0);
+                smokeTrail.transform.localPosition = new Vector3(1, 1, 1);
                 smokeTrail.layer = smallShip.gameObject.layer;
                 smokeTrail.SetActive(true);
             }
@@ -392,6 +392,8 @@ public static class DamageFunctions
                     var main = particleSystem.main;
 
                     main.customSimulationSpace = scene.transform;
+
+                    particleSystem.transform.localScale = new Vector3(1, 1, 1);
                 }
             }
         }

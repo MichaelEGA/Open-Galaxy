@@ -27,6 +27,16 @@ public static class IonFunctions
         onIonHit.particleSystemScript = particleSystem;
         onIonHit.smallShip = smallShip;
 
+        //This creates an anchor for all the ion particle systems
+        GameObject ionparticleanchor = GameObject.Find("ionparticleanchor");
+
+        if (ionparticleanchor == null)
+        {
+            ionparticleanchor = new GameObject("ionparticleanchor");
+        }
+
+        particleSystem.transform.SetParent(ionparticleanchor.transform);
+
         //This adds the new particle system to the pool
         if (smallShip.scene != null)
         {
@@ -111,6 +121,7 @@ public static class IonFunctions
 
         //This sets the particle system to be subordinate to the smallship
         particleSystem.transform.SetParent(smallShip.transform);
+        smallShip.ionMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
 
         //This adds the new particle system to the pool
         if (smallShip.scene != null)

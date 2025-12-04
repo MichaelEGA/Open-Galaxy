@@ -48,6 +48,17 @@ public static class LaserTurretFunctions
             {
                 turret.turretGO = new GameObject();
                 turret.turretGO.name = "turretBase_" + turret.shipGO.name;
+
+                //This creates an anchor for all the laser turret base
+                GameObject laserturretbaseanchor = GameObject.Find("laserturretbaseanchor");
+
+                if (laserturretbaseanchor == null)
+                {
+                    laserturretbaseanchor = new GameObject("laserturretbaseanchor");
+                }
+
+                turret.turretGO.transform.SetParent(laserturretbaseanchor.transform);
+
             }
 
             //This gets all the current turret positions
@@ -88,7 +99,17 @@ public static class LaserTurretFunctions
         OnLaserTurretHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserTurretHit>();
         onLaserTurretHit.particleSystemScript = particleSystem;
         onLaserTurretHit.laserTurret = turret;
-        
+
+        //This creates an anchor for all the laser turret particle systems
+        GameObject laserturretparticlesanchor = GameObject.Find("laserturretparticleanchor");
+
+        if (laserturretparticlesanchor == null)
+        {
+            laserturretparticlesanchor = new GameObject("laserturretparticleanchor");
+        }
+
+        particleSystem.transform.SetParent(laserturretparticlesanchor.transform);
+
         //This adds the new particle system to the pool
         if (scene != null)
         {
@@ -201,6 +222,16 @@ public static class LaserTurretFunctions
         OnLaserTurretHit onLaserTurretHit = particleSystemGO.AddComponent<OnLaserTurretHit>();
         onLaserTurretHit.particleSystemScript = particleSystem;
         onLaserTurretHit.laserTurret = turret;
+
+        //This creates an anchor for all the laser turret particle systems
+        GameObject laserturretparticlesanchor = GameObject.Find("laserturretparticleanchor");
+
+        if (laserturretparticlesanchor == null)
+        {
+            laserturretparticlesanchor = new GameObject("laserturretparticleanchor");
+        }
+
+        particleSystem.transform.SetParent(laserturretparticlesanchor.transform);
 
         //This adds the new particle system to the pool
         if (scene != null)

@@ -33,6 +33,16 @@ public static class LaserFunctions
         onLaserHit.particleSystemScript = particleSystem;
         onLaserHit.smallShip = smallShip;
 
+        //This creates an anchor for all the laser particle systems
+        GameObject laserparticlesanchor = GameObject.Find("laserparticleanchor");
+
+        if (laserparticlesanchor == null)
+        {
+            laserparticlesanchor = new GameObject("laserparticleanchor");
+        }
+
+        particleSystem.transform.SetParent(laserparticlesanchor.transform);
+
         //This adds the new particle system to the pool
         if (smallShip.scene != null)
         {
@@ -132,9 +142,9 @@ public static class LaserFunctions
         ParticleSystem particleSystem = smallShip.laserMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = smallShip.laserMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
 
-
         //This sets the particle system to be subordinate to the smallship
         particleSystem.transform.SetParent(smallShip.transform);
+        smallShip.laserMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
 
         //This adds the new particle system to the pool
         if (smallShip.scene != null)

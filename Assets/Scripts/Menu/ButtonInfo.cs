@@ -50,11 +50,17 @@ public class ButtonInfo : MonoBehaviour, ISelectHandler, IPointerEnterHandler
             }
         }
 
-        if (button != null) 
+        if (eventData is PointerEventData)
         {
-            scrollRect.content.localPosition = GetSnapToPositionToBringChildIntoView(scrollRect, button);
+           //Do nothing here for the moment
         }
-        
+        else
+        {
+            if (button != null)
+            {
+                scrollRect.content.localPosition = GetSnapToPositionToBringChildIntoView(scrollRect, button);
+            }
+        }
     }
 
     public Vector2 GetSnapToPositionToBringChildIntoView(ScrollRect instance, RectTransform child)

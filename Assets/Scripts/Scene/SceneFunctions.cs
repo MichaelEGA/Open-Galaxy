@@ -889,6 +889,7 @@ public static class SceneFunctions
             asteroid.transform.rotation = Quaternion.Euler(rotations[i]);
             asteroid.name = "asteroid";
             asteroid.layer = LayerMask.NameToLayer("collision_asteroid");
+            GameObjectUtils.SetLayerAllChildren(asteroid.transform, asteroid.layer);
             Rigidbody rigidBody = GameObjectUtils.AddRigidbody(asteroid, 100f, 0, 0);
             GameObjectUtils.AddMeshColliders(asteroid, true);
 

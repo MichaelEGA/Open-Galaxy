@@ -859,8 +859,16 @@ public static class LaserTurretFunctions
 
                     Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
 
+                    //This gets the size of the laser to make sure the explosion matches
+                    string size = "small";
+
+                    if (particleSystemScript.gameObject.name.Contains("large"))
+                    {
+                        size = "large";
+                    }
+                   
                     //This instantiates an explosion at the hit position
-                    LaserTurretFunctions.InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, laserTurret.laserSize, laserTurret.laserColor, shieldType, audioManager);
+                    LaserTurretFunctions.InstantiateLaserExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, size, laserTurret.laserColor, shieldType, audioManager);
 
                     //This applies damage to the target
                     ApplyDamage(laserTurret, objectHit, hitPosition, hitChildObject);
@@ -872,7 +880,7 @@ public static class LaserTurretFunctions
     //This function returns the root parent of the prefab by looking for the component that will only be attached to the parent gameobject
     public static GameObject ReturnParent(GameObject objectHit)
     {
-        GameObject parent = null;
+        GameObject parent = objectHit; //This assumes the object his is the parent unless another is found
 
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
@@ -926,7 +934,7 @@ public static class LaserTurretFunctions
     }
 
     //This instantiates the correct explosion at the hit position
-    public static void InstantiateLaserExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string mode, string laserColor, string shieldType, Audio audioManager)
+    public static void InstantiateLaserExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string size, string laserColor, string shieldType, Audio audioManager)
     {
         //This selects the correct explosion colour
         string explosionChoice = "laserblast_red";
@@ -945,14 +953,18 @@ public static class LaserTurretFunctions
             {
                 explosionChoice = "laserblast_green";
             }
+            else
+            {
+                explosionChoice = "hullstrike";
+            }
         }
         else
         {
             explosionChoice = "hullstrike";
         }
-       
+
         //This instantiates an explosion at the point of impact
-        if (mode == "large")
+        if (size == "large")
         {
             ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 100, audioManager);
         }

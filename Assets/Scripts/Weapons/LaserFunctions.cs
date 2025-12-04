@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 //These functions are called by the small ship functions script
@@ -709,7 +710,7 @@ public static class LaserFunctions
     //This function returns the root parent of the prefab by looking for the component that will only be attached to the parent gameobject
     public static GameObject ReturnParent(GameObject objectHit)
     {
-        GameObject parent = null;
+        GameObject parent = objectHit; //This assumes the object his is the parent unless another is found
 
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
@@ -747,8 +748,7 @@ public static class LaserFunctions
             Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
             forward = -Vector3.Dot(smallShip.gameObject.transform.position, relativePosition.normalized);
         }
-
-        if (largeShip != null)
+        else if (largeShip != null)
         {
             shieldType = largeShip.shieldType;
 

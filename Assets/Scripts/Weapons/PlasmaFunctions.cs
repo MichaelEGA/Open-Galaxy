@@ -665,7 +665,7 @@ public static class PlasmaFunctions
     //This function returns the root parent of the prefab by looking for the component that will only be attached to the parent gameobject
     public static GameObject ReturnParent(GameObject objectHit)
     {
-        GameObject parent = null;
+        GameObject parent = objectHit; //This assumes the object his is the parent unless another is found
 
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
@@ -734,6 +734,7 @@ public static class PlasmaFunctions
             {
                 explosionChoice = "laserblast_yellow";
             }
+            
         }
         else
         {

@@ -498,6 +498,9 @@ public static class DamageFunctions
 
     public static void DeactivateShip_SmallShip(SmallShip smallShip)
     {
+        //This gets the scene reference
+        Scene scene = smallShip.scene;
+
         //Stops listing the ship as targetting another ship
         if (smallShip.target != null)
         {
@@ -552,7 +555,11 @@ public static class DamageFunctions
         }
 
         //This deactivates the ship
+        GameObject.Destroy(smallShip.waypoint);
         GameObject.Destroy(smallShip.gameObject);
+
+        //This removes null objects from the pool
+        scene.objectPool.RemoveAll(item => item == null);
     }
 
     #endregion
@@ -822,15 +829,20 @@ public static class DamageFunctions
     //This deactivates the ship so that it no longer appears in the scene
     public static void DeactivateShip_LargeShip(LargeShip largeShip)
     {
+        //This gets the scene reference
+        Scene scene = largeShip.scene;
+
         LargeShipFunctions.EndAllTasks(largeShip);
 
         //This sets the ship up for the next time it is loaded from the pool
         largeShip.spinShip = false;
         largeShip.explode = false;
 
-        //largeShip.gameObject.SetActive(false);
-
+        GameObject.Destroy(largeShip.waypoint);
         GameObject.Destroy(largeShip.gameObject);
+
+        //This removes null objects from the pool
+        scene.objectPool.RemoveAll(item => item == null);
     }
 
     //This creates a debris exxplosions

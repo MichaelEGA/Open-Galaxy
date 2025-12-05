@@ -187,7 +187,7 @@ public static class AudioFunctions
                 {
                     float tempDistance = Vector3.Distance(location, mainShip.transform.position);
 
-                    if (tempDistance > distance)
+                    if (tempDistance > distance & spatialBlend > 0)
                     {
                         dontPlay = true;
                     }

@@ -4151,7 +4151,7 @@ public static class MissionFunctions
                                 {
                                     foreach (GameObject ship2 in scene.objectPool)
                                     {
-                                        if (ship2 == null)
+                                        if (ship2 != null)
                                         {
                                             if (ship2.name.Contains(missionEvent.data2))
                                             {

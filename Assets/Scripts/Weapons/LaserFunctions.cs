@@ -39,6 +39,8 @@ public static class LaserFunctions
         if (laserparticlesanchor == null)
         {
             laserparticlesanchor = new GameObject("laserparticleanchor");
+
+            laserparticlesanchor.transform.SetParent(smallShip.scene.transform);
         }
 
         particleSystem.transform.SetParent(laserparticlesanchor.transform);
@@ -614,7 +616,7 @@ public static class LaserFunctions
                         particleSystem.transform.rotation = secondCannon.transform.rotation;
                         particleSystem.Play();
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
@@ -636,7 +638,7 @@ public static class LaserFunctions
                         particleSystem.transform.rotation = thirdCannon.transform.rotation;
                         particleSystem.Play();
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
@@ -658,7 +660,7 @@ public static class LaserFunctions
                         particleSystem.transform.rotation = fourthCannon.transform.rotation;
                         particleSystem.Play();
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }

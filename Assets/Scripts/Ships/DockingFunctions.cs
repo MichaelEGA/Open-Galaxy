@@ -283,7 +283,7 @@ public static class DockingFunctions
 
             if (smallShip != null)
             {
-                if (smallShip.isAI == false)
+                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                 {
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, "clank01", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                     Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.25f, 0.6f, 0.6f));
@@ -307,7 +307,7 @@ public static class DockingFunctions
 
         if (smallShip != null)
         {
-            if (smallShip.isAI == false)
+            if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
             {
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "clank01", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                 Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.25f, 0.6f, 0.6f));

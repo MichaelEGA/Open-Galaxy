@@ -55,6 +55,10 @@ public static class PlasmaTurretFunctions
                 if (laserturretbaseanchor == null)
                 {
                     laserturretbaseanchor = new GameObject("plasmaturretbaseanchor");
+
+                    Scene scene = SceneFunctions.GetScene();
+
+                    laserturretbaseanchor.transform.SetParent(scene.transform);
                 }
 
                 turret.turretGO.transform.SetParent(laserturretbaseanchor.transform);
@@ -102,6 +106,8 @@ public static class PlasmaTurretFunctions
         if (plasmaturretparticlesanchor == null)
         {
             plasmaturretparticlesanchor = new GameObject("plasmaturretparticleanchor");
+
+            plasmaturretparticlesanchor.transform.SetParent(scene.transform);
         }
 
         particleSystem.transform.SetParent(plasmaturretparticlesanchor.transform);
@@ -109,12 +115,12 @@ public static class PlasmaTurretFunctions
         //This adds the new particle system to the pool
         if (scene != null)
         {
-            if (scene.lasersPool == null)
+            if (scene.plasmaPool == null)
             {
-                scene.lasersPool = new List<GameObject>();
+                scene.plasmaPool = new List<GameObject>();
             }
 
-            scene.lasersPool.Add(turret.largeParticleSystemGO);
+            scene.plasmaPool.Add(particleSystemGO);
         }
 
         //This sets the paticle to operate in world space (as opposed to local)
@@ -208,6 +214,8 @@ public static class PlasmaTurretFunctions
         if (plasmaturretparticlesanchor == null)
         {
             plasmaturretparticlesanchor = new GameObject("plasmaturretparticleanchor");
+
+            plasmaturretparticlesanchor.transform.SetParent(scene.transform);
         }
 
         particleSystem.transform.SetParent(plasmaturretparticlesanchor.transform);
@@ -215,12 +223,12 @@ public static class PlasmaTurretFunctions
         //This adds the new particle system to the pool
         if (scene != null)
         {
-            if (scene.lasersPool == null)
+            if (scene.plasmaPool == null)
             {
-                scene.lasersPool = new List<GameObject>();
+                scene.plasmaPool = new List<GameObject>();
             }
 
-            scene.lasersPool.Add(turret.largeParticleSystemGO);
+            scene.plasmaPool.Add(particleSystemGO);
         }
 
         //This sets the paticle to operate in world space (as opposed to local)

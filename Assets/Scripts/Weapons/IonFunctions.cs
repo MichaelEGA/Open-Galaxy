@@ -33,6 +33,8 @@ public static class IonFunctions
         if (ionparticleanchor == null)
         {
             ionparticleanchor = new GameObject("ionparticleanchor");
+
+            ionparticleanchor.transform.SetParent(smallShip.scene.transform);
         }
 
         particleSystem.transform.SetParent(ionparticleanchor.transform);
@@ -547,7 +549,7 @@ public static class IonFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, 1, 500, 0.6f);
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
@@ -570,7 +572,7 @@ public static class IonFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, secondCannon.transform.position, spatialBlend, 1, 500, 0.6f);
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
@@ -592,7 +594,7 @@ public static class IonFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, 1, 500, 0.6f);
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
@@ -613,7 +615,7 @@ public static class IonFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, fourthCannon.transform.position, spatialBlend, 1, 500, 0.6f);
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }

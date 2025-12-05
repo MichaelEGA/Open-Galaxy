@@ -16,6 +16,7 @@ public static class AudioFunctions
         audioManagerGO.name = "Audio Manager";
         Audio audioManager = audioManagerGO.AddComponent<Audio>();
         audioManager.audioMixer = Resources.Load<AudioMixer>(OGGetAddress.audiomixers + "OGAudio");
+        audioManager.scene = SceneFunctions.GetScene();
 
         LoadAudioClips(audioManager);
 
@@ -474,6 +475,8 @@ public static class AudioFunctions
             if (audioManager.audioSourceAnchor == null)
             {
                 audioManager.audioSourceAnchor = new GameObject("audiosourceanchor");
+
+                audioManager.audioSourceAnchor.transform.SetParent(audioManager.scene.transform);
             }
 
             audioSourceGO.transform.SetParent(audioManager.audioSourceAnchor.transform);

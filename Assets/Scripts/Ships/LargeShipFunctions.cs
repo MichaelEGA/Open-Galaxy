@@ -191,6 +191,8 @@ public static class LargeShipFunctions
         Vector3 startPosition = largeShip.gameObject.transform.localPosition;
         Vector3 endPosition = largeShip.transform.localPosition + largeShip.gameObject.transform.forward * 30000;
 
+        AudioFunctions.PlayAudioClip(largeShip.audioManager, "hyperspace03_exit", "Explosions", largeShip.transform.position, 1, 1, 10000, 1f);
+
         float timeElapsed = 0;
         float lerpDuration = 1;
 

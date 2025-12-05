@@ -2702,6 +2702,16 @@ public static class SceneFunctions
             scene.ionPool.Clear();
         }
 
+        if (scene.plasmaPool != null)
+        {
+            foreach (GameObject gameobject in scene.plasmaPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.plasmaPool.Clear();
+        }
+
         if (scene.torpedosPool != null)
         {
             foreach (GameObject gameobject in scene.torpedosPool)
@@ -2804,6 +2814,16 @@ public static class SceneFunctions
             }
 
             scene.ionPool.Clear();
+        }
+
+        if (scene.plasmaPool != null)
+        {
+            foreach (GameObject gameobject in scene.plasmaPool)
+            {
+                GameObject.Destroy(gameobject);
+            }
+
+            scene.plasmaPool.Clear();
         }
 
         if (scene.asteroidPool != null)

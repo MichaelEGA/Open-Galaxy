@@ -902,8 +902,6 @@ public static class HudFunctions
                             //This gets the vector3 of the target
                             Vector3 targetPositionRadar = ship.transform.position - mainShip.transform.position;
 
-                            //This displays the radar dot in the correct relative position
-
                             //This determines the objects relative position and size
                             yPositionRadar = Vector3.Dot(mainShip.transform.up, targetPositionRadar.normalized);
                             xPositionRadar = Vector3.Dot(mainShip.transform.right, targetPositionRadar.normalized);

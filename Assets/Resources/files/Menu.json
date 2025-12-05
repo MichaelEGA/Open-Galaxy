@@ -450,7 +450,7 @@
     },
     {
       "ParentMenu": "View Controls - Controller",
-      "Name": "Select Nearest Enemy - Right Shoulder Button",
+      "Name": "Rapid Fire - Right Shoulder Button",
       "Description": "View Player Controls",
       "Function": "none",
       "Type": "ContentButton02",
@@ -466,7 +466,7 @@
     },
     {
       "ParentMenu": "View Controls - Controller",
-      "Name": "Cycle Enemy Targets - X Button",
+      "Name": "Get Closest Enemy - X Button",
       "Description": "View Player Controls",
       "Function": "none",
       "Type": "ContentButton02",
@@ -483,6 +483,14 @@
     {
       "ParentMenu": "View Controls - Controller",
       "Name": "Link Canons - A Button",
+      "Description": "View Player Controls",
+      "Function": "none",
+      "Type": "ContentButton02",
+      "Variable": "none"
+    },
+    {
+      "ParentMenu": "View Controls - Controller",
+      "Name": "Switch Between Weapons - B button",
       "Description": "View Player Controls",
       "Function": "none",
       "Type": "ContentButton02",
@@ -539,14 +547,6 @@
     {
       "ParentMenu": "View Controls - Controller",
       "Name": "Focus Camera - Left Trigger",
-      "Description": "View Player Controls",
-      "Function": "none",
-      "Type": "ContentButton02",
-      "Variable": "none"
-    },
-    {
-      "ParentMenu": "View Controls - Controller",
-      "Name": "Switch Between Weapons - B button",
       "Description": "View Player Controls",
       "Function": "none",
       "Type": "ContentButton02",
@@ -623,6 +623,14 @@
       "Function": "ActivateSubMenu",
       "Type": "ContentButton01",
       "Variable": "Change Default Camera"
+    },
+    {
+      "ParentMenu": "Change Default Camera",
+      "Name": "Back to Settings",
+      "Description": "Returns to settings sub menu",
+      "Function": "ActivateSubMenu",
+      "Type": "ContentButton02",
+      "Variable": "Settings"
     },
     {
       "ParentMenu": "Change Default Camera",

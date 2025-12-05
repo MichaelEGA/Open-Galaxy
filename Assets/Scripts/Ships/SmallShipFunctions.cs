@@ -236,11 +236,11 @@ public static class SmallShipFunctions
                 smallShip.powerToLasers = gamepad.dpad.right.isPressed;
                 smallShip.resetPowerLevels = gamepad.dpad.down.isPressed;
                 smallShip.getNextTarget = gamepad.leftShoulder.isPressed;
-                smallShip.getNextEnemy = gamepad.xButton.isPressed;
-                smallShip.getClosestEnemy = gamepad.rightShoulder.isPressed;
+                //smallShip.getNextEnemy = gamepad.xButton.isPressed;
+                smallShip.getClosestEnemy = gamepad.xButton.isPressed;
                 smallShip.selectTargetInFront = gamepad.yButton.isPressed;
                 smallShip.fireWeapon = gamepad.rightTrigger.isPressed;
-                smallShip.rapidFire = gamepad.aButton.isPressed;
+                smallShip.rapidFire =  gamepad.rightShoulder.isPressed;
                 smallShip.toggleWeapons = gamepad.bButton.isPressed;
                 smallShip.toggleWeaponNumber = gamepad.aButton.isPressed;
                 smallShip.matchSpeed = gamepad.leftStickButton.isPressed;
@@ -834,6 +834,8 @@ public static class SmallShipFunctions
 
         Vector3 startPosition = smallShip.gameObject.transform.localPosition;
         Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 30000;
+
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Explosions", smallShip.transform.position, 1, 1, 1000, 1f);
 
         float timeElapsed = 0;
         float lerpDuration = 1;

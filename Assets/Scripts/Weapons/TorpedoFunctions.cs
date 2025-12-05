@@ -164,7 +164,7 @@ public static class TorpedoFunctions
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
-                if (smallShip.isAI == false)
+                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                 {
                     Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.1f, 0.50f, 0.50f));
                 }
@@ -194,7 +194,7 @@ public static class TorpedoFunctions
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
-                if (smallShip.isAI == false)
+                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                 {
                     Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.1f, 0.55f, 0.55f));
                 }
@@ -245,7 +245,7 @@ public static class TorpedoFunctions
 
                 }
 
-                if (smallShip.isAI == false)
+                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                 {
                     Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.1f, 0.60f, 0.60f));
                 }

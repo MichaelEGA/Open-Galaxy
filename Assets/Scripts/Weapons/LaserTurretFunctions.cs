@@ -55,6 +55,10 @@ public static class LaserTurretFunctions
                 if (laserturretbaseanchor == null)
                 {
                     laserturretbaseanchor = new GameObject("laserturretbaseanchor");
+
+                    Scene scene = SceneFunctions.GetScene();
+
+                    laserturretbaseanchor.transform.SetParent(scene.transform);
                 }
 
                 turret.turretGO.transform.SetParent(laserturretbaseanchor.transform);
@@ -106,6 +110,8 @@ public static class LaserTurretFunctions
         if (laserturretparticlesanchor == null)
         {
             laserturretparticlesanchor = new GameObject("laserturretparticleanchor");
+
+            laserturretparticlesanchor.transform.SetParent(scene.transform);
         }
 
         particleSystem.transform.SetParent(laserturretparticlesanchor.transform);
@@ -229,6 +235,8 @@ public static class LaserTurretFunctions
         if (laserturretparticlesanchor == null)
         {
             laserturretparticlesanchor = new GameObject("laserturretparticleanchor");
+
+            laserturretparticlesanchor.transform.SetParent(scene.transform);
         }
 
         particleSystem.transform.SetParent(laserturretparticlesanchor.transform);

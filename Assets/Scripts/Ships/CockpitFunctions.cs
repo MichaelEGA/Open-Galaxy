@@ -214,6 +214,7 @@ public static class CockpitFunctions
                     smallShip.cockpitAnchor = new GameObject();
                     smallShip.cockpitAnchor.name = "Cockpit Anchor";
                     smallShip.scene.cockpitAnchor = smallShip.cockpitAnchor;
+                    smallShip.cockpitAnchor.transform.SetParent(smallShip.transform);
                 }
 
                 smallShip.cockpitAnchor.transform.rotation = Quaternion.identity;

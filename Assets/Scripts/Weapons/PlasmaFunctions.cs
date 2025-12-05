@@ -34,6 +34,8 @@ public static class PlasmaFunctions
         if (plasmaparticlesanchor == null)
         {
             plasmaparticlesanchor = new GameObject("plasmaparticleanchor");
+
+            plasmaparticlesanchor.transform.SetParent(smallShip.scene.transform);
         }
 
         particleSystem.transform.SetParent(plasmaparticlesanchor.transform);
@@ -127,12 +129,12 @@ public static class PlasmaFunctions
         //This adds the new particle system to the pool
         if (smallShip.scene != null)
         {
-            if (smallShip.scene.lasersPool == null)
+            if (smallShip.scene.plasmaPool == null)
             {
-                smallShip.scene.lasersPool = new List<GameObject>();
+                smallShip.scene.plasmaPool = new List<GameObject>();
             }
 
-            smallShip.scene.lasersPool.Add(smallShip.laserParticleSystem);
+            smallShip.scene.plasmaPool.Add(smallShip.laserParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -548,7 +550,7 @@ public static class PlasmaFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, 1, 500, 0.6f);
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
@@ -570,7 +572,7 @@ public static class PlasmaFunctions
                         particleSystem.transform.rotation = secondCannon.transform.rotation;
                         particleSystem.Play();
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
@@ -592,7 +594,7 @@ public static class PlasmaFunctions
                         particleSystem.transform.rotation = thirdCannon.transform.rotation;
                         particleSystem.Play();
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
@@ -614,7 +616,7 @@ public static class PlasmaFunctions
                         particleSystem.transform.rotation = fourthCannon.transform.rotation;
                         particleSystem.Play();
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }

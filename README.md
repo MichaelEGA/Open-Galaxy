@@ -64,6 +64,14 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
 
   - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.8.3.89/Open.Galaxy.8.3.89.zip
 
+**News**
+
+  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-version-8-is-released
+  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-50-is-released
+  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-40-is-released
+  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-30-is-released
+  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-200-released
+
 **Roadmap**
 
   - Roadmap: https://docs.google.com/spreadsheets/d/14mWjYlATWQYKEfD6AG4MwC_ppTzG-aDlsI2yR2h7D54/edit?usp=sharing

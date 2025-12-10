@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: 31756f452f8900b439cb324487eff708
+guid: 9e5640709a2202443a228e918f0d358c
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cockpit_cockpitMat
+    second: {fileID: 2100000, guid: 3437ad553f1e4b34dbc2809a364955b2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: detail_detailMat
+    second: {fileID: 2100000, guid: f13936c379d0a464d8edcf89780c8e53, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -56,6 +66,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8

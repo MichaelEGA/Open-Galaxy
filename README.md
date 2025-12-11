@@ -66,8 +66,10 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
 
 **News Articles**
 
+  - https://www.indiedb.com/groups/2025-indie-of-the-year-awards/top100
   - https://www.moddb.com/games/open-galaxy/news/open-galaxy-version-8-is-released
   - https://www.moddb.com/games/open-galaxy/news/open-galaxy-50-is-released
+  - https://www.indiedb.com/groups/2024-indie-of-the-year-awards/top100
   - https://www.moddb.com/games/open-galaxy/news/open-galaxy-40-is-released
   - https://www.moddb.com/games/open-galaxy/news/open-galaxy-30-is-released
   - https://www.moddb.com/games/open-galaxy/news/open-galaxy-200-released

@@ -64,6 +64,16 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
 
   - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.8.3.89/Open.Galaxy.8.3.89.zip
 
+**News Articles**
+
+  - https://www.indiedb.com/groups/2025-indie-of-the-year-awards/top100
+  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-version-8-is-released
+  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-50-is-released
+  - https://www.indiedb.com/groups/2024-indie-of-the-year-awards/top100
+  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-40-is-released
+  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-30-is-released
+  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-200-released
+
 **Roadmap**
 
   - Roadmap: https://docs.google.com/spreadsheets/d/14mWjYlATWQYKEfD6AG4MwC_ppTzG-aDlsI2yR2h7D54/edit?usp=sharing
@@ -73,7 +83,7 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - https://github.com/MichaelEGA/Open-Galaxy/wiki
 
 **Open Galaxy uses freely available community assets**
-  - Open Galaxy Assets: https://sketchfab.com/MichaelEGA/models
+  - Open Galaxy Assets: https://www.moddb.com/games/open-galaxy/addons
   - First Strike Assets: https://www.moddb.com/mods/first-strike/news/public-release-of-first-strike-models
   - Original Trilogy Mod Assets: https://www.indiedb.com/downloads/original-trilogy-assets
   - evillejedi: https://www.moddb.com/members/evillejedi
@@ -84,8 +94,9 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - EmperorNiko: https://www.moddb.com/members/emperorniko
   - doclusifer2: https://sketchfab.com/doclusifer2
   - FS2MediaVPs: https://scp.indiegames.us/bnr_mediavp.php
+  - Luis_Humainoide: https://pixabay.com/users/humanoide_media-12661853/
 
-Assets have only been used when permission has been given or implied by the author. No assets from officially licensed star wars games have been used. For a full list of assets and their authors see the in game credits.
+Assets have only been used when permission has been given or implied by the author. No assets from officially licensed star wars games or sources have been used. For a full list of assets and their authors see the in game credits.
 
 **Licence**  
 

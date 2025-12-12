@@ -98,7 +98,7 @@ public static class AvoidCollisionsFunctions
                                     if (shipARight > 0) { direction = 1; } else { direction = 0; }
                                     if (shipAUp > 0) { direction = 3; } else { direction = 2; }
 
-                                    if (smallShipA.isAI == true)
+                                    if (smallShipA.isAI == true & smallShipA.flyInFormation == false)
                                     {
                                         Task a = new Task(SmallShipAIFunctions.Evade(smallShipA, 2, "avoidCollision", direction));
                                     }
@@ -110,7 +110,7 @@ public static class AvoidCollisionsFunctions
                                     if (shipBRight > 0) { direction = 1; } else { direction = 0; }
                                     if (shipBUp > 0) { direction = 3; } else { direction = 2; }
 
-                                    if (smallShipB.aiEvade == false & smallShipB.isAI == true)
+                                    if (smallShipB.aiEvade == false & smallShipB.isAI == true & smallShipB.flyInFormation == false)
                                     {
                                         Task b = new Task(SmallShipAIFunctions.Evade(smallShipB, 2, "avoidCollision", direction));
                                     }
@@ -218,13 +218,14 @@ public static class AvoidCollisionsFunctions
                             }
                         }
 
-                        if (hitSave.transform.GetComponentInParent<SmallShip>() != true)
+                        if (hitSave.transform.GetComponentInParent<SmallShip>() != true & !hitSave.transform.name.Contains("planet"))
                         {
                             if (smallShip != null)
                             {
                                 if (smallShip.isAI == true)
                                 {
-                                    Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 2, "avoidCollision", direction));
+                                    Debug.Log("Hit: " + hitSave.transform.name);
+                                    Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 6, "avoidCollision", direction));
                                 }
                             }
                         }
@@ -235,9 +236,10 @@ public static class AvoidCollisionsFunctions
 
                         if (smallShip != null)
                         {
-                            if (smallShip.isAI == true & hit.transform.GetComponentInParent<SmallShip>() != true)
+                            if (smallShip.isAI == true & hit.transform.GetComponentInParent<SmallShip>() != true & !hit.transform.name.Contains("planet"))
                             {
-                                Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 6, "avoidCollision", direction));
+                                Debug.Log("Hit: " + hit.transform.name);
+                                Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 6, "avoidCollisionLa", direction));
                             }
                         }
                     }

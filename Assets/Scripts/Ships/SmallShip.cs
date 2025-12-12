@@ -253,6 +253,11 @@ public class SmallShip : MonoBehaviour
     public float yFormationPos;
     public float zFormationPos;
 
+    public float integral;
+    public float lastError;
+    public float Kp = 0.5f, Ki, Kd = 100;
+    public float maxIntegral = 10f;
+
     [Header("Particle Effcets")]
     [HideInInspector] public GameObject smokeTrail;
     [HideInInspector] public ParticleSystem movementEffect;

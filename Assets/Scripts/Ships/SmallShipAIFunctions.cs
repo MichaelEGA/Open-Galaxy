@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 //These functions are called by the small ship functions script
@@ -652,17 +653,59 @@ public static class SmallShipAIFunctions
             //This corrects the input for the follow target if necessary
             if (smallShip.followTarget != null & smallShip.flyInFormation == true)
             {
-                if (smallShip.thrustSpeed > smallShip.speedRating)
+                Quaternion flatLeaderRotation = Quaternion.Euler(0, smallShip.followTarget.transform.eulerAngles.y, 0);
+
+                Vector3 desiredPosition = smallShip.followTarget.transform.position + flatLeaderRotation * new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos);
+
+                float distance = Vector3.Distance(smallShip.transform.position, desiredPosition);
+
+                float positionError = Vector3.Dot(desiredPosition - smallShip.transform.position, smallShip.transform.forward);
+
+                // --- 2. Calculate PID Output ---
+                float desiredAcceleration = PIDUpdate(smallShip, positionError, Time.fixedDeltaTime);
+
+                // --- 3. Determine Bang-Bang Thrust (The Modification) ---
+                int thrustInput = 0;
+
+                // Using a small deadzone (e.g., 0.1) prevents constant switching/chattering
+                if (desiredAcceleration > 0.25f)
                 {
-                    smallShip.thrustInput = -1;
+                    // Need to accelerate forward
+                    thrustInput = 1;
+                }
+                else if (desiredAcceleration < -0.25f)
+                {
+                    // Need to accelerate backward (brake)
+                    thrustInput = -1;
                 }
                 else
                 {
-                    smallShip.thrustInput = 1;
+                    // Within deadzone, maintain current speed or coast
+                    thrustInput = 0;
                 }
             }
         }        
     }
+
+    public static float PIDUpdate(SmallShip smallShip, float error, float deltaTime)
+    {
+        // P: Proportional term
+        float pTerm = smallShip.Kp * error;
+
+        // I: Integral term (clamped to prevent windup)
+        smallShip.integral += error * deltaTime;
+        smallShip.integral = Mathf.Clamp(smallShip.integral, -smallShip.maxIntegral, smallShip.maxIntegral);
+        float iTerm = smallShip.Ki * smallShip.integral;
+
+        // D: Derivative term
+        float derivative = (error - smallShip.lastError) / deltaTime;
+        smallShip.lastError = error;
+        float dTerm = smallShip.Kd * derivative;
+
+        // Total output (desired force/acceleration)
+        return pTerm + iTerm + dTerm;
+    }
+    
 
     #endregion
 
@@ -1489,12 +1532,15 @@ public static class SmallShipAIFunctions
 
                     Transform target = smallShip.followTarget.transform;
 
-                    Vector3 adjustedPosition = target.position + new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos);
+                    Quaternion flatLeaderRotation = Quaternion.Euler(0, smallShip.followTarget.transform.eulerAngles.y, 0);
 
-                    float distance = Vector3.Distance(smallShip.transform.position, adjustedPosition);
+                    Vector3 desiredPosition = smallShip.followTarget.transform.position + flatLeaderRotation * new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos);
+
+                    float distance = Vector3.Distance(smallShip.transform.position, desiredPosition);
 
                     smallShip.aiMatchSpeed = true;
-                    AngleTowardsPoint(smallShip, adjustedPosition);
+
+                    AngleTowardsPoint(smallShip, desiredPosition);
                 }
                 else
                 {
@@ -1747,6 +1793,9 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
+
+            Debug.Log("Evade activated, mode: " + mode);
+
             if (TagExists(smallShip, "nospeed") == true & TagExists(smallShip, "norotation") == true)
             {
                 //Do nothing

@@ -96,7 +96,7 @@ public static class MainMenuFunctions
     }
 
     //This loads the menu sans the disclaimer and title
-    public static void RunMenuWithoutIntroduction()
+    public static void RunMainMenuWithoutIntroduction()
     {
         //This sets the cursor settings
         Cursor.visible = true;
@@ -147,6 +147,48 @@ public static class MainMenuFunctions
 
         //Fade in main menu
         Task f = new Task(FadeInCanvas(mainMenu.menu_cg, 0.5f));
+    }
+
+    //This loads the menu but only displays the loading menu
+    public static void RunLoadingScreen()
+    {
+        //This sets the cursor settings
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        //This loads the menu
+        GameObject mainMenuGO = LoadMenuPrefab();
+        MainMenu mainMenu = mainMenuGO.GetComponent<MainMenu>();
+
+        //This gets the main references
+        GameObject background_black = GameObject.Find("Background_Black");
+        GameObject background_image = GameObject.Find("Background_Image");
+        GameObject disclaimer = GameObject.Find("Disclaimer");
+        GameObject title = GameObject.Find("Title");
+        GameObject menu = GameObject.Find("Menu");
+        GameObject loadingScreen = GameObject.Find("LoadingScreen");
+
+        //This gets the canvas group function
+        mainMenu.background_black_cg = background_black.GetComponent<CanvasGroup>();
+        mainMenu.background_image_cg = background_image.GetComponent<CanvasGroup>();
+        mainMenu.disclaimer_cg = disclaimer.GetComponent<CanvasGroup>();
+        mainMenu.title_cg = title.GetComponent<CanvasGroup>();
+        mainMenu.menu_cg = menu.GetComponent<CanvasGroup>();
+        mainMenu.loadingScreen_cg = loadingScreen.GetComponent<CanvasGroup>();
+
+        //This loads the background image
+        Texture2D texture = LoadBackgroundImage();
+
+        RawImage menuBackgroundImage = background_image.GetComponentInChildren<RawImage>();
+        menuBackgroundImage.texture = texture;
+
+        mainMenu.background = texture;
+
+        //Fade in background image
+        Task a = new Task(FadeInCanvas(mainMenu.background_image_cg, 0.5f));
+
+        //Fade in main menu
+        Task f = new Task(FadeInCanvas(mainMenu.loadingScreen_cg, 0.5f));
     }
 
     //This Loads the main menu
@@ -208,13 +250,9 @@ public static class MainMenuFunctions
         //This creates the function dictionary
         CreateFunctionDictionary(mainMenu);
 
-        //This initiates all lists used by the main menu
-        InitiateLists(mainMenu);
-
-        //This loads and sorts the campaign data from internal and then external sources
-        LoadInternalCampaignData(mainMenu);
-        LoadExternalCampaignData(mainMenu);
-        OrganiseListsBasedOnDate(mainMenu);
+        //This loads/reloads the misssion data for the first time
+        MissionDataFunctions.LoadMissionData();
+        mainMenu.missionData = MissionDataFunctions.GetMissionData();
 
         //This creates sub menus from both the menu data and the campaign data
         CreateSubMenus(mainMenu);
@@ -240,268 +278,6 @@ public static class MainMenuFunctions
         MainMenu mainMenu = GameObject.FindFirstObjectByType<MainMenu>();
 
         mainMenu.buttons = Resources.LoadAll<GameObject>(OGGetAddress.menubuttons);
-    }
-
-    //This initiates all the lists used by the  main menu
-    public static void InitiateLists(MainMenu mainMenu)
-    {
-        if (mainMenu.campaigns == null)
-        {
-            mainMenu.campaigns = new List<string>();
-        }
-
-        if (mainMenu.campaignDescriptions == null)
-        {
-            mainMenu.campaignDescriptions = new List<string>();
-        }
-
-        if (mainMenu.campaignDates == null)
-        {
-            mainMenu.campaignDates = new List<string>();
-        }
-
-        if (mainMenu.mainMissionCampaigns == null)
-        {
-            mainMenu.mainMissionCampaigns = new List<string>();
-        }
-
-        if (mainMenu.mainMissionNames == null)
-        {
-            mainMenu.mainMissionNames = new List<string>();
-        }
-
-        if (mainMenu.customMissionCampaigns == null)
-        {
-            mainMenu.customMissionCampaigns = new List<string>();
-        }
-
-        if (mainMenu.customMissionNames == null)
-        {
-            mainMenu.customMissionNames = new List<string>();
-        }
-
-    }
-
-    //This loads all the interal campaign data
-    public static void LoadInternalCampaignData(MainMenu mainMenu)
-    {
-        //This loads the mission data
-        Object[] mainMissions = Resources.LoadAll(OGGetAddress.missions_internal, typeof(TextAsset));
-
-        //This gets all the main campaigns
-        if (mainMissions.Length > 0)
-        {
-            foreach (Object mission in mainMissions)
-            {
-                TextAsset missionString = (TextAsset)mission;
-
-                Mission tempMission = JsonUtility.FromJson<Mission>(missionString.text);
-
-                string campaignName = "none";
-
-                bool campaignNodeExists = false;
-
-                foreach (MissionEvent missionEvent in tempMission.missionEventData)
-                {
-                    if (missionEvent.eventType == "campaigninformation")
-                    {
-                        bool isPresent = false;
-
-                        campaignName = missionEvent.data1;
-
-                        foreach (string campaign in mainMenu.campaigns)
-                        {
-                            if (campaign == missionEvent.data1)
-                            {
-                                isPresent = true;
-                            }
-                        }
-
-                        if (isPresent == false)
-                        {
-                            mainMenu.campaigns.Add(missionEvent.data1);
-                            mainMenu.campaignDescriptions.Add(missionEvent.data2);
-                            mainMenu.campaignDates.Add(missionEvent.data3);
-                        }
-
-                        campaignNodeExists = true;
-
-                        break;
-                    }
-                }
-
-                mainMenu.mainMissionNames.Add(mission.name);
-                mainMenu.mainMissionCampaigns.Add(campaignName);
-                
-                //This creates a special folder for missions that aren't part of a larger campaign
-                if (campaignNodeExists == false)
-                {
-                    bool campaignExists = false;
-
-                    foreach (string campaign in mainMenu.campaigns)
-                    {
-                        if (campaign == "Misc")
-                        {
-                            campaignExists = true;
-                        }
-                    }
-
-                    if (campaignExists == false)
-                    {
-                        mainMenu.campaigns.Add("Misc");
-                        mainMenu.campaignDescriptions.Add("Single missions of different types.");
-                        mainMenu.campaignDates.Add("");
-                    }
-
-                    mainMenu.customMissionNames.Add(mission.name);
-                    mainMenu.customMissionCampaigns.Add("Misc");
-                }
-            }
-        }
-    }
-
-    //This loads all the external campaign data
-    public static void LoadExternalCampaignData(MainMenu mainMenu)
-    {
-        //This gets the external folder
-        var info = new DirectoryInfo(OGGetAddress.missions_custom);
-
-        //This loads the mission data
-        if (info.Exists == false)
-        {
-            Directory.CreateDirectory(OGGetAddress.missions_custom);
-            info = new DirectoryInfo(OGGetAddress.missions_custom);
-        }
-
-        List<TextAsset> customMissionsList = new List<TextAsset>();
-
-        if (info.Exists == true)
-        {
-            var fileInfo = info.GetFiles("*.json");
-
-            if (fileInfo.Length > 0)
-            {
-                foreach (FileInfo file in fileInfo)
-                {
-                    string path = OGGetAddress.missions_custom + file.Name;
-                    string missionDataString = File.ReadAllText(path);
-                    TextAsset missionDataTextAsset = new TextAsset(missionDataString);
-                    missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
-                    customMissionsList.Add(missionDataTextAsset);
-                }
-            }
-        }
-
-        Object[] customMissions = customMissionsList.ToArray();
-
-        if (customMissions.Length > 0)
-        {
-            foreach (Object mission in customMissions)
-            {
-                TextAsset missionString = (TextAsset)mission;
-
-                Mission tempMission = JsonUtility.FromJson<Mission>(missionString.text);
-
-                string campaignName = "none";
-
-                bool campaignNodeExists = false;
-
-                foreach (MissionEvent missionEvent in tempMission.missionEventData)
-                {
-                    if (missionEvent.eventType == "campaigninformation")
-                    {
-                        bool campaignExists = false;
-
-                        campaignName = missionEvent.data1;
-
-                        foreach (string campaign in mainMenu.campaigns)
-                        {
-                            if (campaign == missionEvent.data1)
-                            {
-                                campaignExists = true;
-                            }
-                        }
-
-                        if (campaignExists == false)
-                        {
-                            mainMenu.campaigns.Add(missionEvent.data1);
-                            mainMenu.campaignDescriptions.Add(missionEvent.data2);
-                            mainMenu.campaignDates.Add(missionEvent.data3);
-                        }
-
-                        campaignNodeExists = true;
-
-                        break;
-                    }
-                }
-
-                if (campaignNodeExists == true)
-                {
-                    mainMenu.customMissionNames.Add(mission.name);
-                    mainMenu.customMissionCampaigns.Add(campaignName);
-                }
-               
-                //This creates a special folder for missions that aren't part of a larger campaign
-                if (campaignNodeExists == false)
-                {
-                    bool campaignExists = false;
-
-                    foreach (string campaign in mainMenu.campaigns)
-                    {
-                        if (campaign == "Misc")
-                        {
-                            campaignExists = true;
-                        }
-                    }
-
-                    if (campaignExists == false)
-                    {
-                        mainMenu.campaigns.Add("Misc");
-                        mainMenu.campaignDescriptions.Add("Single missions of different types.");
-                        mainMenu.campaignDates.Add("");
-                    }
-
-                    mainMenu.customMissionNames.Add(mission.name);
-                    mainMenu.customMissionCampaigns.Add("Misc");
-                }
-
-               
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Open Galaxy found no external files or was unable to load them.");
-        }
-    }
-
-    //This organises the lists based on the date
-    public static void OrganiseListsBasedOnDate(MainMenu mainMenu)
-    {
-        List<string> campaign = mainMenu.campaigns;
-        List<string> descriptions = mainMenu.campaignDescriptions;
-        List<string> date = mainMenu.campaignDates;
-
-        // Combine, converting numbers to int for sorting
-        var triples = date.Select((numStr, i) =>
-        {
-            bool valid = int.TryParse(numStr, out int num);
-            return new
-            {
-                NumberString = numStr,
-                NumberInt = valid ? num : int.MaxValue, // put invalid numbers at the end by sorting as MaxValue
-                IsValid = valid,
-                Name = campaign[i],
-                Description = descriptions[i]
-            };
-        })
-          .OrderBy(x => x.NumberInt)
-          .ThenBy(x => x.IsValid ? 0 : 1) // if numbers are equal, keep invalids last
-          .ToList();
-
-        // Extract sorted lists
-        mainMenu.campaignDates = triples.Select(x => x.NumberString).ToList();
-        mainMenu.campaigns = triples.Select(x => x.Name).ToList();
-        mainMenu.campaignDescriptions = triples.Select(x => x.Description).ToList();
     }
 
     //This creates a dictionary of the all the functions the menu can call
@@ -565,7 +341,7 @@ public static class MainMenuFunctions
         subMenus.Add("Model Credits");
 
         //This creates a list of submenus from the campaign data
-        foreach (string campaign in mainMenu.campaigns)
+        foreach (string campaign in mainMenu.missionData.campaigns)
         {
             subMenus.Add(campaign);
         }
@@ -644,9 +420,9 @@ public static class MainMenuFunctions
             {
                 int i = 0;
 
-                foreach (string campaign in mainMenu.campaigns)
+                foreach (string campaign in mainMenu.missionData.campaigns)
                 {
-                    buttonDrop = CreateCampaignButton(mainMenu, subMenu, buttonDrop, campaign, "ContentButton02", "ActivateSubMenu", campaign, "", mainMenu.campaignDates[i]);
+                    buttonDrop = CreateCampaignButton(mainMenu, subMenu, buttonDrop, campaign, "ContentButton02", "ActivateSubMenu", campaign, "", mainMenu.missionData.campaignDates[i]);
                  
                     i++;
                 }
@@ -663,31 +439,31 @@ public static class MainMenuFunctions
     {
         int i2 = 0;
 
-        foreach (string campaign in mainMenu.campaigns)
+        foreach (string campaign in mainMenu.missionData.campaigns)
         {
             List<string> missions = new List<string>();
             List<string> functions = new List<string>();
 
-            for (int i = 0; i < mainMenu.mainMissionCampaigns.Count; i++)
+            for (int i = 0; i < mainMenu.missionData.mainMissionCampaigns.Count; i++)
             {
-                if (mainMenu.mainMissionCampaigns[i] == campaign)
+                if (mainMenu.missionData.mainMissionCampaigns[i] == campaign)
                 {
-                    missions.Add(mainMenu.mainMissionNames[i]);
+                    missions.Add(mainMenu.missionData.mainMissionNames[i]);
                     functions.Add("LoadMainMission");
                 }
             }
 
-            for (int i = 0; i < mainMenu.customMissionCampaigns.Count; i++)
+            for (int i = 0; i < mainMenu.missionData.customMissionCampaigns.Count; i++)
             {
-                if (mainMenu.customMissionCampaigns[i] == campaign)
+                if (mainMenu.missionData.customMissionCampaigns[i] == campaign)
                 {
-                    missions.Add(mainMenu.customMissionNames[i]);
+                    missions.Add(mainMenu.missionData.customMissionNames[i]);
                     functions.Add("LoadCustomMission");
                 }
             }
 
             //This calculates the campaign date
-            string date = mainMenu.campaignDates[i2];
+            string date = mainMenu.missionData.campaignDates[i2];
 
             if (float.TryParse(date, out _))
             {
@@ -703,7 +479,7 @@ public static class MainMenuFunctions
                 }
             }
 
-            CreateMissionButtons(mainMenu, missions.ToArray(), campaign + "_Settings", functions.ToArray(), campaign, mainMenu.campaignDescriptions[i2], date);
+            CreateMissionButtons(mainMenu, missions.ToArray(), campaign + "_Settings", functions.ToArray(), campaign, mainMenu.missionData.campaignDescriptions[i2], date);
             i2++;
         }
     }
@@ -1086,7 +862,7 @@ public static class MainMenuFunctions
             {
                 mainMenu.missionRunning = true; //This prevents multiple missions running
 
-                Task a = new Task(MissionFunctions.RunMission(name, OGGetAddress.missions_custom, true));
+                MissionDataFunctions.LoadExternalMission(name);
 
                 //Fade out menu
                 Task b = new Task(FadeOutCanvas(mainMenu.menu_cg, 0.01f));
@@ -1108,7 +884,7 @@ public static class MainMenuFunctions
             {
                 mainMenu.missionRunning = true; //This prevents multiple missions running
 
-                Task a = new Task(MissionFunctions.RunMission(name, OGGetAddress.missions_internal));
+                MissionDataFunctions.LoadInternalMission(name);
 
                 //Fade out menu
                 Task b = new Task(FadeOutCanvas(mainMenu.menu_cg, 0.01f));
@@ -1535,6 +1311,13 @@ public static class MainMenuFunctions
     public static void DisplayLoadingScreen(bool display, string loadingScreenTitle = "", string message = "")
     {
         MainMenu mainMenu = MainMenuFunctions.GetMainMenu();
+
+        if (mainMenu == null)
+        {
+            MainMenuFunctions.RunLoadingScreen(); 
+            mainMenu = MainMenuFunctions.GetMainMenu();
+        }
+
         GameObject loadingScreen = mainMenu.loadingScreen_cg.gameObject;
 
         if (display == true)
@@ -1843,11 +1626,6 @@ public static class MainMenuFunctions
     public static MainMenu GetMainMenu()
     {
         MainMenu mainMenu = GameObject.FindFirstObjectByType<MainMenu>(FindObjectsInactive.Include);
-
-        if (mainMenu== null)
-        {
-            Debug.Log("Main Menu is null");
-        }
 
         return mainMenu;
     }

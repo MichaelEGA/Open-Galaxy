@@ -164,8 +164,6 @@ public static class MissionFunctions
         {
             MainMenuFunctions.AddLogToLoadingScreen("No starting location node found searching for another location node.", startTime);
 
-            Debug.Log("run 3");
-
             foreach (MissionEvent tempMissionEvent in mission.missionEventData)
             {
                 if (tempMissionEvent.eventType == "createlocation")
@@ -4374,25 +4372,23 @@ public static class MissionFunctions
 
             if (missionCheck.externalMision == true)
             {
-                MainMenuFunctions.LoadCustomMission(missionName);
-                Debug.Log("Loading external mision");
+                MissionDataFunctions.LoadExternalMission(missionName);
             }
-            else if (missionCheck.externalMision == true)
+            else if (missionCheck.internalMission == true)
             {
-                MainMenuFunctions.LoadMission(missionName);
-                Debug.Log("Loading internal mision");
+                MissionDataFunctions.LoadInternalMission(missionName);
             }
             else
             {
                 //This tells the main menu that the mission is no longer running
-                MainMenuFunctions.RunMenuWithoutIntroduction();
+                MainMenuFunctions.RunMainMenuWithoutIntroduction();
                 MainMenuFunctions.OutputMenuMessage("The requested mission was not found");
             }
         }
         else
         {
             //This tells the main menu that the mission is no longer running
-            MainMenuFunctions.RunMenuWithoutIntroduction();
+            MainMenuFunctions.RunMainMenuWithoutIntroduction();
         }
     }
 

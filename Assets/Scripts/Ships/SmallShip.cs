@@ -240,7 +240,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool withdraw;
     [HideInInspector] public bool isAI;
     public bool requestingTarget;
-    [HideInInspector] public bool aiMatchSpeed;
+    public bool aiMatchSpeed;
     [HideInInspector] public bool aiStarted;
     [HideInInspector] public bool aiEvade;
     [HideInInspector] public bool boostIsActive;
@@ -252,11 +252,6 @@ public class SmallShip : MonoBehaviour
     public float xFormationPos;
     public float yFormationPos;
     public float zFormationPos;
-
-    public float integral;
-    public float lastError;
-    public float Kp = 0.5f, Ki, Kd = 100;
-    public float maxIntegral = 10f;
 
     [Header("Particle Effcets")]
     [HideInInspector] public GameObject smokeTrail;

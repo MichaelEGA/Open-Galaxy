@@ -35,16 +35,11 @@ public class MainMenu: MonoBehaviour
 
     public Texture2D background;
 
-    public List<string> campaigns;
-    public List<string> campaignDescriptions;
-    public List<string> campaignDates;
-    public List<string> mainMissionCampaigns;
-    public List<string> mainMissionNames;
-    public List<string> customMissionCampaigns;
-    public List<string> customMissionNames;
     public List<Texture2D> backgroundPictures;
 
     public bool missionRunning;
+
+    public MissionData missionData;
 
     void Start()
     {

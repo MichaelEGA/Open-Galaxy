@@ -640,6 +640,7 @@ public static class SmallShipAIFunctions
         if (smallShip != null)
         {
             float oneThird = (smallShip.speedRating / 3f);
+            float oneHalf = (smallShip.speedRating / 2f);
 
             if (smallShip.thrustSpeed > smallShip.targetSpeed & smallShip.thrustSpeed > oneThird)
             {
@@ -653,59 +654,59 @@ public static class SmallShipAIFunctions
             //This corrects the input for the follow target if necessary
             if (smallShip.followTarget != null & smallShip.flyInFormation == true)
             {
+                smallShip.thrustInput = 1;
+
+                //This gets the formation position and distance
                 Quaternion flatLeaderRotation = Quaternion.Euler(0, smallShip.followTarget.transform.eulerAngles.y, 0);
 
                 Vector3 desiredPosition = smallShip.followTarget.transform.position + flatLeaderRotation * new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos);
 
                 float distance = Vector3.Distance(smallShip.transform.position, desiredPosition);
 
-                float positionError = Vector3.Dot(desiredPosition - smallShip.transform.position, smallShip.transform.forward);
+                //This slows the ship down for the turn
+                Vector3 targetRelativePosition = desiredPosition - smallShip.transform.position;
 
-                // --- 2. Calculate PID Output ---
-                float desiredAcceleration = PIDUpdate(smallShip, positionError, Time.fixedDeltaTime);
+                float followTargetForward = Vector3.Dot(smallShip.transform.forward, targetRelativePosition.normalized);
 
-                // --- 3. Determine Bang-Bang Thrust (The Modification) ---
-                int thrustInput = 0;
-
-                // Using a small deadzone (e.g., 0.1) prevents constant switching/chattering
-                if (desiredAcceleration > 0.25f)
+                if (followTargetForward < 0.25f)
                 {
-                    // Need to accelerate forward
-                    thrustInput = 1;
+                    if (smallShip.thrustSpeed > oneHalf)
+                    {
+                        smallShip.thrustInput = -1;
+                    }
+                    else
+                    {
+                        smallShip.thrustInput = 1;
+                    }
                 }
-                else if (desiredAcceleration < -0.25f)
+
+                //This dynamically adjusts the speed to stay in formation
+                float breakingDistance = 500;
+
+                float aggressionFactor = 1f;
+
+                float decimalPercentage = (distance / breakingDistance) * aggressionFactor;
+
+                if (distance > 15 & distance < breakingDistance)
                 {
-                    // Need to accelerate backward (brake)
-                    thrustInput = -1;
+                    float dynamicSpeed = ((smallShip.speedRating - smallShip.followTarget.thrustSpeed) * decimalPercentage) + smallShip.followTarget.thrustSpeed;
+
+                    if (smallShip.thrustSpeed > dynamicSpeed)
+                    {
+                        smallShip.thrustInput = -1;
+                    }
+                    else if (smallShip.thrustSpeed < dynamicSpeed)
+                    {
+                        smallShip.thrustInput = 1;
+                    }
                 }
-                else
+                if (distance <= 15 & distance < breakingDistance)
                 {
-                    // Within deadzone, maintain current speed or coast
-                    thrustInput = 0;
+                    smallShip.thrustInput = -1;
                 }
             }
         }        
     }
-
-    public static float PIDUpdate(SmallShip smallShip, float error, float deltaTime)
-    {
-        // P: Proportional term
-        float pTerm = smallShip.Kp * error;
-
-        // I: Integral term (clamped to prevent windup)
-        smallShip.integral += error * deltaTime;
-        smallShip.integral = Mathf.Clamp(smallShip.integral, -smallShip.maxIntegral, smallShip.maxIntegral);
-        float iTerm = smallShip.Ki * smallShip.integral;
-
-        // D: Derivative term
-        float derivative = (error - smallShip.lastError) / deltaTime;
-        smallShip.lastError = error;
-        float dTerm = smallShip.Kd * derivative;
-
-        // Total output (desired force/acceleration)
-        return pTerm + iTerm + dTerm;
-    }
-    
 
     #endregion
 
@@ -1793,9 +1794,6 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-
-            Debug.Log("Evade activated, mode: " + mode);
-
             if (TagExists(smallShip, "nospeed") == true & TagExists(smallShip, "norotation") == true)
             {
                 //Do nothing

@@ -592,6 +592,7 @@ public static class LaserFunctions
                         particleSystem.transform.position = firstCannon.transform.position;
                         particleSystem.transform.rotation = firstCannon.transform.rotation;
                         particleSystem.Play();
+
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, pitch, 500, volume);
 
                         if (smallShip.isAI == false)

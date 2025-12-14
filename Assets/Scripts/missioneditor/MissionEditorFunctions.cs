@@ -2244,7 +2244,7 @@ public static class MissionEditorFunctions
             GameObject.Destroy(missionEditor.previewModel.gameObject);
         }
 
-        MainMenuFunctions.RunMenuWithoutIntroduction();
+        MainMenuFunctions.RunMainMenuWithoutIntroduction();
 
         if (missionEditor != null)
         {

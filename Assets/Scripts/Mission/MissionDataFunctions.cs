@@ -17,6 +17,7 @@ public static class MissionDataFunctions
             missionData = missionDataGO.AddComponent<MissionData>();
         }
 
+        ClearLists(missionData);
         InitiateLists(missionData);
         LoadInternalCampaignData(missionData);
         LoadExternalCampaignData(missionData);
@@ -61,6 +62,45 @@ public static class MissionDataFunctions
             missionData.customMissionNames = new List<string>();
         }
 
+    }
+
+    //This clears the lists to prevent duplication when reloading data
+    public static void ClearLists(MissionData missionData)
+    {
+        if (missionData.campaigns != null)
+        {
+            missionData.campaigns.Clear();
+        }
+
+        if (missionData.campaignDescriptions != null)
+        {
+            missionData.campaignDescriptions.Clear();
+        }
+
+        if (missionData.campaignDates != null)
+        {
+            missionData.campaignDates.Clear();
+        }
+
+        if (missionData.mainMissionCampaigns != null)
+        {
+            missionData.mainMissionCampaigns.Clear();
+        }
+
+        if (missionData.mainMissionNames != null)
+        {
+            missionData.mainMissionNames.Clear();
+        }
+
+        if (missionData.customMissionCampaigns != null)
+        {
+            missionData.customMissionCampaigns.Clear();
+        }
+
+        if (missionData.customMissionNames != null)
+        {
+            missionData.customMissionNames.Clear();
+        }
     }
 
     //This loads all the interal campaign data

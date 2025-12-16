@@ -533,6 +533,17 @@ public static class DamageFunctions
             smallShip.audioManager = null;
         }
 
+        //This disconnects the cockpit camera
+        if (smallShip.isAI == false)
+        {
+            GameObject CockpitCamera = GameObject.Find("Cockpit Camera");
+
+            if (CockpitCamera != null)
+            {
+                CockpitCamera.transform.parent = null;
+            }
+        }
+
         //This deactives the cockpit
         if (smallShip.cockpit != null)
         {

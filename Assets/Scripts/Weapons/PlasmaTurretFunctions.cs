@@ -314,7 +314,7 @@ public static class PlasmaTurretFunctions
             layerNames.Add(tempAllegiance.allegiance); //This makes a list of collision layers and their corresponding integer
         }
 
-        collisionLayers = LayerMask.GetMask("collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "invisible");
+        collisionLayers = LayerMask.GetMask("collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "collision11", "collision12", "collision13", "collision14", "collision15", "collision16", "invisible");
 
         if (allegiance == null)
         {
@@ -339,14 +339,14 @@ public static class PlasmaTurretFunctions
     public static int GetLayerInt(string layer, List<string> layerNames)
     {
         int layerNumber = 0;
-        int i = 0;
+        int i = 8; //The first seven layers are already allocated, so they are skipped
 
         foreach (string tempLayer in layerNames)
         {
 
             if (tempLayer == layer)
             {
-                layerNumber = i + 8; //The first nine layers are already allocated, so they are skipped
+                layerNumber = i;
                 break;
             }
 

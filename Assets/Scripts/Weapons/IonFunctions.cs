@@ -230,14 +230,14 @@ public static class IonFunctions
     public static int GetLayerInt(string layer, List<string> layerNames)
     {
         int layerNumber = 0;
-        int i = 0;
+        int i = 8; //The first seven layers are already allocated, so they are skipped
 
         foreach (string tempLayer in layerNames)
         {
 
             if (tempLayer == layer)
             {
-                layerNumber = i + 8; //The first nine layers are already allocated, so they are skipped
+                layerNumber = i;
                 break;
             }
 

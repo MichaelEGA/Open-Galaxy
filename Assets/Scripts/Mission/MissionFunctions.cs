@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -256,7 +257,12 @@ public static class MissionFunctions
         //Then this preloads all the ships in the scene
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-            if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
+            if (missionEvent.eventType == "preload_loadfilmcamera" & missionEvent.conditionLocation == location)
+            {
+                LoadFilmCamera(missionEvent);
+                MainMenuFunctions.AddLogToLoadingScreen("Film camera loaded", startTime);
+            }
+            else if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
             {
                 //This extra check is run to prevent the game loading the player ship twice
                 if (firstRun == false & missionEvent.data8 == "false" || firstRun == false & missionEvent.data8 == "none" || firstRun == true)
@@ -265,7 +271,7 @@ public static class MissionFunctions
                     MainMenuFunctions.AddLogToLoadingScreen("Single ship loaded", startTime);
                 }
             }
-            if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
+            else if (missionEvent.eventType == "preload_loadmultipleships" & missionEvent.conditionLocation == location)
             {
                 Task a = new Task(LoadMultipleShips(missionEvent));
                 while (a.Running == true) { yield return null; }
@@ -996,7 +1002,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -1063,7 +1069,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -1108,7 +1114,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -1146,7 +1152,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -1212,7 +1218,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -1275,7 +1281,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -1658,7 +1664,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -1889,7 +1895,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -1952,7 +1958,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2015,7 +2021,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2068,7 +2074,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2113,7 +2119,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2158,7 +2164,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2203,7 +2209,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2255,7 +2261,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2309,13 +2315,13 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject tempShipA in scene.objectPool)
+                foreach (GameObject tempShipA in scene.objectPool.ToList())
                 {
                     if (tempShipA != null)
                     {
                         if (tempShipA.name.Contains(shipA))
                         {
-                            foreach (GameObject tempShipB in scene.objectPool)
+                            foreach (GameObject tempShipB in scene.objectPool.ToList())
                             {
                                 if (tempShipB != null)
                                 {
@@ -2361,7 +2367,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2431,7 +2437,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2488,7 +2494,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2521,7 +2527,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2579,7 +2585,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2631,7 +2637,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2679,7 +2685,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -2753,6 +2759,12 @@ public static class MissionFunctions
         while (a.Running == true) { yield return null; }
 
         yield return null;
+    }
+
+    //This loads the film camera
+    public static void LoadFilmCamera(MissionEvent missionEvenet)
+    {
+        SceneFunctions.LoadFilmCamera();
     }
 
     //This loads multiple ships by name
@@ -3167,7 +3179,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -3210,7 +3222,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -3247,7 +3259,7 @@ public static class MissionFunctions
             {
                 if (scene.objectPool != null)
                 {
-                    foreach (GameObject ship in scene.objectPool)
+                    foreach (GameObject ship in scene.objectPool.ToList())
                     {
                         if (ship != null)
                         {
@@ -3281,7 +3293,7 @@ public static class MissionFunctions
             if (scene.objectPool != null)
             {
                 //This finds the ship 
-                foreach (GameObject tempShip in scene.objectPool)
+                foreach (GameObject tempShip in scene.objectPool.ToList())
                 {
                     if (tempShip != null)
                     {
@@ -3292,7 +3304,7 @@ public static class MissionFunctions
                             if (followTarget != null)
                             {
                                 //This finds the target to follow
-                                foreach (GameObject tempShip2 in scene.objectPool)
+                                foreach (GameObject tempShip2 in scene.objectPool.ToList())
                                 {
                                     if (tempShip2.name.Contains(missionEvent.data1))
                                     {
@@ -3562,7 +3574,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -3597,7 +3609,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -3640,7 +3652,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -3722,7 +3734,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -3924,7 +3936,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -3959,7 +3971,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -3994,7 +4006,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -4049,7 +4061,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -4084,7 +4096,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -4135,7 +4147,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {
                     if (ship != null)
                     {
@@ -4147,7 +4159,7 @@ public static class MissionFunctions
                             {
                                 if (smallShip.waypoint != null)
                                 {
-                                    foreach (GameObject ship2 in scene.objectPool)
+                                    foreach (GameObject ship2 in scene.objectPool.ToList())
                                     {
                                         if (ship2 != null)
                                         {
@@ -4166,7 +4178,7 @@ public static class MissionFunctions
                             {
                                 if (largeShip.waypoint != null)
                                 {
-                                    foreach (GameObject ship2 in scene.objectPool)
+                                    foreach (GameObject ship2 in scene.objectPool.ToList())
                                     {
                                         if (ship2 != null)
                                         {
@@ -4203,7 +4215,7 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool)
+                foreach (GameObject ship in scene.objectPool.ToList())
                 {    
                     if (ship != null)
                     {

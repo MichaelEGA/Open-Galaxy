@@ -205,6 +205,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadAsteroids(node);
         }
+        else if (node.nodeType == "preload_loadfilmcamera")
+        {
+            NodeTypes.Draw_PreLoad_LoadFilmCamera(node);
+        }
         else if (node.nodeType == "preload_loadplanet")
         {
             NodeTypes.Draw_PreLoad_LoadPlanet(node);

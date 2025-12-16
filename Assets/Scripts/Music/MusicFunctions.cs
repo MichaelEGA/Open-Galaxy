@@ -101,8 +101,15 @@ public static class MusicFunctions
 
                 while (musicManager.track1.volume < 1)
                 {
-                    musicManager.track1.volume += 0.1f;
-                    yield return new WaitForSeconds(0.1f);
+                    if (musicManager != null)
+                    {
+                        musicManager.track1.volume += 0.1f;
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
             else

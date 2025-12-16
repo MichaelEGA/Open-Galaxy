@@ -2550,6 +2550,21 @@ public static class SceneFunctions
 
     #endregion
 
+    #region film camera loading
+
+    //This instantiates the film camera
+    public static void LoadFilmCamera()
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        GameObject filmCamera = new GameObject();
+        filmCamera.name = "filmcamera";
+
+        filmCamera.AddComponent<FilmCamera>();
+    }
+
+    #endregion
+
     #region floating point control and camera rotation
 
     //This recenter the scene so the player is always close to the center to prevent floating point inaccuraries 
@@ -2868,6 +2883,15 @@ public static class SceneFunctions
         Scene scene = GameObject.FindObjectOfType<Scene>();  //This gets the scene reference
 
         scene.mainShip = smallShip.gameObject;
+
+    }
+
+    //Allows the player ship or AI to declare itself to the scene as the main ship
+    public static void IdentifyAsMainCamera(FilmCamera filmCamera)
+    {
+        Scene scene = GameObject.FindObjectOfType<Scene>();  //This gets the scene reference
+
+        scene.mainShip = filmCamera.gameObject;
 
     }
 

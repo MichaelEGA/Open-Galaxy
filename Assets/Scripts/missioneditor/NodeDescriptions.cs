@@ -59,6 +59,16 @@ public static class NodeDescriptions
             "- Seed: allows you to generate the same field each time, by typing in the same seed number and setting the same values. \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
+        else if (name == "preload_loadfilmcamera")
+        {
+            description =
+            "Pre-Load Film Camera \n " +
+            "\n " +
+            "This node loads the film camera. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
         else if (name == "preload_loadplanet")
         {
            description =

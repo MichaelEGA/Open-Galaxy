@@ -237,7 +237,7 @@ public static class AvoidCollisionsFunctions
                         {
                             if (smallShip.isAI == true & hit.transform.GetComponentInParent<SmallShip>() != true & !hit.transform.name.Contains("planet"))
                             {
-                                Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 6, "avoidCollisionLa", direction));
+                                Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 6, "avoidCollision", direction));
                             }
                         }
                     }

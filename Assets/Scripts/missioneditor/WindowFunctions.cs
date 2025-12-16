@@ -115,6 +115,7 @@ public static class WindowFunctions
         buttonList.Add("pausesequence");
         buttonList.Add("playmusictrack");
         buttonList.Add("preload_loadasteroids");
+        buttonList.Add("preload_loadfilmcamera");
         buttonList.Add("preload_loadplanet");
         buttonList.Add("preload_loadmultipleships");
         buttonList.Add("preload_loadsingleship");

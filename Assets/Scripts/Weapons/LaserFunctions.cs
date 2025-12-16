@@ -228,7 +228,6 @@ public static class LaserFunctions
 
         if (smallShip.isAI == true)
         {
-
             //This gets the Json ship data
             TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
             Allegiances allegiances = JsonUtility.FromJson<Allegiances>(allegiancesFile.text);
@@ -245,12 +244,13 @@ public static class LaserFunctions
                 }
 
                 layerNames.Add(tempAllegiance.allegiance); //This makes a list of collision layers and their corresponding integer
-
             }
 
             collisionLayers = LayerMask.GetMask("collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "collision11", "collision12", "collision13", "collision14", "collision15", "collision16", "invisible");
 
-            collisionLayers &= ~(1 << GetLayerInt(allegiance.allegiance, layerNames));
+            collisionLayers &= ~(1 << ((GetLayerInt(allegiance.allegiance, layerNames))));
+
+            Debug.Log(layerNames.Count);
 
         }
         else
@@ -259,14 +259,13 @@ public static class LaserFunctions
         }
 
         return collisionLayers;
-
     }
 
     //This gets the int for the laser collision layers
     public static int GetLayerInt(string layer, List<string> layerNames)
     {
         int layerNumber = 0;
-        int i = 7; //The first seven layers are already allocated, so they are skipped
+        int i = 8; //The first seven layers are already allocated, so they are skipped
 
         foreach (string tempLayer in layerNames)
         {

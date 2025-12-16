@@ -56,16 +56,17 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - Left Thumbstick Button  changes between first and third person viewpoint
   - Scan a target by selecting it and then flying close
     
-**Latest Development Release:** 9.2.78 **(Not Recommended for Play)**
+**Latest Development Release:** 10.0.55
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.9.2.78/Open.Galaxy.9.2.78.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.10.0.55/Open.Galaxy.10.0.55.zip
     
-**Latest Milestone Release:** 8.3.89
+**Latest Milestone Release:** 10.0.55
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.8.3.89/Open.Galaxy.8.3.89.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.10.0.55/Open.Galaxy.10.0.55.zip
 
 **News Articles**
 
+ -  https://www.indiedb.com/games/open-galaxy/news/open-galaxy-version-10-is-released
   - https://www.indiedb.com/groups/2025-indie-of-the-year-awards/top100
   - https://www.moddb.com/games/open-galaxy/news/open-galaxy-version-8-is-released
   - https://www.moddb.com/games/open-galaxy/news/open-galaxy-50-is-released
@@ -103,6 +104,80 @@ Assets have only been used when permission has been given or implied by the auth
 The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
 
 **Changelog**
+
+14/12/25 - 10.0.55 (Milestone Release)
+  - removed: terrain code and associated assets and shaders
+  - updated: redo main menu fades to use fade groups
+  - added: add turret number and restrictions to all capital ships
+  - added: systems to all large ships
+  - fixed: all missions with broken largeship aitags
+  - added: incorporate loadscreenfunctions into the mainmenufunctions script
+  - added: campaign date to campaign node
+  - added: new tie fighter cockpit
+  - added: new b-wing cockpit
+  - added: new falcon cockpit
+  - setup:  corellian battlecruiser
+  - setup: gladiator
+  - setup: implacable cruiser
+  - updated: game to unity 6.2
+  - added: systems to: bsun
+  - added: systems to: cis
+  - added: systems to: fel
+  - added: systems to: fo
+  - added: systems to: gall
+  - added: systems to: hutt
+  - added: systems to: imp
+  - added: systems to: krayt
+  - added: systems to: man
+  - added: systems to: misc
+  - added: systems to: orep
+  - added: systems to: pir
+  - added: systems to: rep
+  - added: systems to: sith
+  - added: systems to: vong
+  - added: systems to: reb - > corona
+  - setup: scmitar bomber
+  - setup: vigil corvette
+  - fixed: A New Ally broken aiTags
+  - fixed: Strike At Sullust broken aiTags
+  - fixed: Aftermath of Hoth broken aiTags
+  - fixed: Defenders of the March broken aiTags
+  - fixed: Dark Tide broken aiTags
+  - setup: praetor cruiser
+  - added: create special rapid fire button
+  - updated: change pitch sound on rapid fire lasers
+  - added: list ship turret/laser number and systems in description in editor
+  - removed: terrain texture display from editor
+  - removed: prop display from editor
+  - updated: clean up inspector during runtime
+  - updated: fine-tune formation flying values
+  - fixed: title doesn't appear when game is run in build
+  - updated: make rpd appear on hud in yellow when the trigger is fired
+  - added: splash damage effect for plasma weapons
+  - added: laser splash not showing when turbo lasers hit
+  - fixed: solve menu bug introduced by controller select check
+  - fixed: asteroids not showing laser hits
+  - fixed: torpedo warning not clearning
+  - added: rapid fire button to controller controls
+  - added: rapid fire button to mouse and keyboard controls
+  - fixed: cockpit jerky bug when 'w' is held down
+  - fixed: prevent cockpit shake during hyperspace
+  - fixed: particle scaling problem
+  - fixed: plasmaparticlesystems not being deleted when mission is over
+  - fixed: ships should make a 'bang' sound when they jump to hyperspace
+  - fixed: camera settings menu needs back to settings button
+  - fixed: move rapid fire button on controller to shoulder
+  - fixed: controller should not rumble when using keyboard controls 
+  - fixed: radar dots not clearing when object is destroyed
+  - fixed: radio audio sometimes not playing
+  - fixed: Strike At Sullust Mission 6, ship doesn't board Ars Opus
+  - fixed: ana mission 5 scan nav buoy 21 wrongly reads scan nav buoy 20
+  - fixed: tie cockpit needs windows
+  - fixed: can't load next mission if main menu is destroyed, find solution
+  - fixed: other ships lasers are not always appearing in game, check to see if it's a camera layer problem
+  - fixed: check to see if there are layer problems with the avoid collision logic
+  - fixed: hammer is not firing on corvetttes
+  - fixed: cockpit camera is being deleted after a mission
 
 24/11/25 - 9.2.78
   - NOTE: This is the last release with endless terrain node. The feature is no longer in development and will be removed from future releases. But I made this release to preserve the code and to give an example of what it would have been like.

@@ -59,16 +59,6 @@ public static class NodeDescriptions
             "- Seed: allows you to generate the same field each time, by typing in the same seed number and setting the same values. \n" +
             "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
-        else if (name == "preload_loadfilmcamera")
-        {
-            description =
-            "Pre-Load Film Camera \n " +
-            "\n " +
-            "This node loads the film camera. \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
-        }
         else if (name == "preload_loadplanet")
         {
            description =
@@ -255,6 +245,16 @@ public static class NodeDescriptions
            "- If you want the ship to 'return' you will need to load a new ship with the same name and parameters. \n" +
            "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
+        else if (name == "activatefilmcamera")
+        {
+            description =
+            "Activate Film Camera \n " +
+            "\n " +
+            "This node activates the film camera. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
         else if (name == "activatedocking")
         {

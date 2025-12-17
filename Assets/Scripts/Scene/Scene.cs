@@ -68,13 +68,15 @@ public class Scene : MonoBehaviour
     public float fogDistanceFromCenter = 15000;
 
     [Header("Cameras")]
-    [HideInInspector] public GameObject mainCamera;
-    [HideInInspector] public GameObject followCamera;
-    [HideInInspector] public GameObject planetCamera;
-    [HideInInspector] public GameObject starfieldCamera;
-    [HideInInspector] public GameObject cockpitCamera;
-    [HideInInspector] public GameObject cockpitAnchor;
-    [HideInInspector] public bool followCameraIsActive = true;
+    public bool followCameraIsActive = true;
+    public bool filmCameraIsActive = false;
+    public GameObject mainCamera;
+    public GameObject followCamera;
+    public GameObject planetCamera;
+    public GameObject starfieldCamera;
+    public GameObject filmCamera;
+    public GameObject cockpitCamera;
+    public GameObject cockpitAnchor;
 
 
     [Header("Starfield")]
@@ -97,7 +99,7 @@ public class Scene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SceneFunctions.RecenterScene(mainShip);
+        SceneFunctions.RecenterScene(this);
         SceneFunctions.RotateStarfieldAndPlanetCamera(this);
         AvoidCollisionsFunctions.AvoidCollision(this);
 

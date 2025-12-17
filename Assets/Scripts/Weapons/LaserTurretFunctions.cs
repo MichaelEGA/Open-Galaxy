@@ -843,11 +843,14 @@ public static class LaserTurretFunctions
     //This fires the turret using a given firepoint
     public static void FireTurret(GameObject turret, ParticleSystem particleSystem, Vector3 firePoint, Audio audioManager, string audioFile)
     {
-        particleSystem.transform.position = firePoint;
-        particleSystem.transform.rotation = turret.transform.rotation;
-        particleSystem.Play();
+        if (particleSystem != null & firePoint != null)
+        {
+            particleSystem.transform.position = firePoint;
+            particleSystem.transform.rotation = turret.transform.rotation;
+            particleSystem.Play();
 
-        AudioFunctions.PlayAudioClip(audioManager, audioFile, "External", firePoint, 1, 1, 500, 0.6f);
+            AudioFunctions.PlayAudioClip(audioManager, audioFile, "External", firePoint, 1, 1, 500, 0.6f);
+        }
     }
 
     #endregion

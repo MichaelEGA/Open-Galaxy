@@ -17,6 +17,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ActivateDocking(node);
         }
+        else if (node.nodeType == "activatefilmcamera")
+        {
+            NodeTypes.Draw_ActivateFilmCamera(node);
+        }
         else if (node.nodeType == "activatehyperspace")
         {
             NodeTypes.Draw_ActivateHyperspace(node);
@@ -204,10 +208,6 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "preload_loadasteroids")
         {
             NodeTypes.Draw_PreLoad_LoadAsteroids(node);
-        }
-        else if (node.nodeType == "preload_loadfilmcamera")
-        {
-            NodeTypes.Draw_PreLoad_LoadFilmCamera(node);
         }
         else if (node.nodeType == "preload_loadplanet")
         {

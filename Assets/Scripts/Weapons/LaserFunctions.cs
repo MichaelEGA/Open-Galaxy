@@ -249,9 +249,6 @@ public static class LaserFunctions
             collisionLayers = LayerMask.GetMask("collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "collision11", "collision12", "collision13", "collision14", "collision15", "collision16", "invisible");
 
             collisionLayers &= ~(1 << ((GetLayerInt(allegiance.allegiance, layerNames))));
-
-            Debug.Log(layerNames.Count);
-
         }
         else
         {

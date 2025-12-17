@@ -14,6 +14,9 @@ public class Hud : MonoBehaviour
     [HideInInspector] public float startTime;
     [HideInInspector] public Color colour;
 
+    [HideInInspector] public GameObject blackBars;
+    [HideInInspector] public CanvasGroup blackBarsCanvasGroup;
+
     [Header("Hud Elements Check")]
     [HideInInspector] public bool hudElementsSet;
 

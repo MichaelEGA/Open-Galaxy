@@ -2359,6 +2359,11 @@ public static class HudFunctions
 
         if (hud != null)
         {
+            if (hud.blackBars != null)
+            {
+                GameObject.Destroy(hud.blackBars);
+            }
+
             UnloadRadarObjects(hud);
             GameObject.Destroy(hud.gameObject);
         }
@@ -2640,6 +2645,86 @@ public static class HudFunctions
             }
 
             yield return new WaitForSecondsRealtime(0.016f);
+        }
+    }
+
+    //This fades in the black bars
+    public static IEnumerator FadeInBlackBars(float duration)
+    {
+        Hud hud = GetHud();
+
+        if (hud != null)
+        {
+            if (hud.blackBars == null)
+            {
+                GameObject blackBarsPrefab = Resources.Load(OGGetAddress.hud + "BlackBars") as GameObject;
+                hud.blackBars = GameObject.Instantiate(blackBarsPrefab);
+            }
+
+            if (hud.blackBars != null & hud.blackBarsCanvasGroup == null)
+            {
+                hud.blackBarsCanvasGroup = hud.blackBars.GetComponent<CanvasGroup>();
+            }
+
+            if (hud.blackBarsCanvasGroup != null)
+            {
+                //This sets the starting alpha value to 0
+                float alpha1 = 0;
+
+                //This fades in the canvas
+                while (alpha1 < 1)
+                {
+                    alpha1 = alpha1 + (1f / (60f * duration));
+
+                    if (hud.blackBarsCanvasGroup != null)
+                    {
+                        hud.blackBarsCanvasGroup.alpha = alpha1;
+                    }
+
+                    yield return new WaitForSecondsRealtime(0.016f);
+                }
+            }
+
+        }
+    }
+
+    //This fades out the black bars
+    public static IEnumerator FadeOutBlackBars(float duration)
+    {
+        Hud hud = GetHud();
+
+        if (hud != null)
+        {
+            if (hud.blackBars == null)
+            {
+                GameObject blackBarsPrefab = Resources.Load(OGGetAddress.hud + "BlackBars") as GameObject;
+                hud.blackBars = GameObject.Instantiate(blackBarsPrefab);
+            }
+
+            if (hud.blackBars != null & hud.blackBarsCanvasGroup == null)
+            {
+                hud.blackBarsCanvasGroup = hud.blackBars.GetComponent<CanvasGroup>();
+            }
+
+            if (hud.blackBarsCanvasGroup != null)
+            {
+                //This sets the starting alpha value to 1
+                float alpha = 1;
+
+                //This fades the canvas out
+                while (alpha > 0)
+                {
+                    alpha = alpha - (1f / (60f * duration));
+
+                    if (hud.blackBarsCanvasGroup != null)
+                    {
+                        hud.blackBarsCanvasGroup.alpha = alpha;
+                    }
+
+                    yield return new WaitForSecondsRealtime(0.016f);
+                }
+            }
+
         }
     }
 

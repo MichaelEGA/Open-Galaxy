@@ -257,12 +257,7 @@ public static class MissionFunctions
         //Then this preloads all the ships in the scene
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
-            if (missionEvent.eventType == "preload_loadfilmcamera" & missionEvent.conditionLocation == location)
-            {
-                LoadFilmCamera(missionEvent);
-                MainMenuFunctions.AddLogToLoadingScreen("Film camera loaded", startTime);
-            }
-            else if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
+            if (missionEvent.eventType == "preload_loadsingleship" & missionEvent.conditionLocation == location)
             {
                 //This extra check is run to prevent the game loading the player ship twice
                 if (firstRun == false & missionEvent.data8 == "false" || firstRun == false & missionEvent.data8 == "none" || firstRun == true)
@@ -385,6 +380,11 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "activatedocking")
         {
             ActivateDocking(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "activatefilmcamera")
+        {
+            ActivateFilmCamera(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "activatehyperspace")
@@ -1057,6 +1057,50 @@ public static class MissionFunctions
                     }
                 }
             }
+        }
+    }
+
+    //This activates the film camera
+    public static void ActivateFilmCamera(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        Vector3 position = new Vector3(x, y, z);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        bool activate = false;
+
+        if (bool.TryParse(missionEvent.data1, out _))
+        {
+            activate = bool.Parse(missionEvent.data1);
+        }
+
+        string mode = missionEvent.data2;
+
+        bool blackbars = false;
+
+        if (bool.TryParse(missionEvent.data3, out _))
+        {
+            blackbars = bool.Parse(missionEvent.data3);
+        }
+
+        string targetName = missionEvent.data4;
+
+        if (activate == true)
+        {
+            FilmCameraFunctions.ActivateFilmCamera();
+            FilmCameraFunctions.SetFilmCameraValues(mode, blackbars, position, rotation, targetName);
+        }
+        else
+        {
+            FilmCameraFunctions.DeactivateFilmCamera();
         }
     }
 
@@ -2759,12 +2803,6 @@ public static class MissionFunctions
         while (a.Running == true) { yield return null; }
 
         yield return null;
-    }
-
-    //This loads the film camera
-    public static void LoadFilmCamera(MissionEvent missionEvenet)
-    {
-        SceneFunctions.LoadFilmCamera();
     }
 
     //This loads multiple ships by name

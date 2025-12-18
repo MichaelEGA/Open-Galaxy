@@ -1093,10 +1093,31 @@ public static class MissionFunctions
 
         string targetName = missionEvent.data4;
 
+        bool shakecamera = false;
+
+        if (bool.TryParse(missionEvent.data5, out _))
+        {
+            shakecamera = bool.Parse(missionEvent.data5);
+        }
+
+        float shakerate = 1;
+
+        if (float.TryParse(missionEvent.data6, out _))
+        {
+            shakerate = float.Parse(missionEvent.data6);
+        }
+
+        float shakestrength = 0.7f;
+
+        if (float.TryParse(missionEvent.data7, out _))
+        {
+            shakestrength = float.Parse(missionEvent.data7);
+        }
+
         if (activate == true)
         {
             FilmCameraFunctions.ActivateFilmCamera();
-            FilmCameraFunctions.SetFilmCameraValues(mode, blackbars, position, rotation, targetName);
+            FilmCameraFunctions.SetFilmCameraValues(mode, blackbars, position, rotation, targetName, shakecamera, shakerate, shakestrength);
         }
         else
         {

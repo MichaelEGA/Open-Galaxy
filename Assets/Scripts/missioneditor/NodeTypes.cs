@@ -917,6 +917,7 @@ public static class NodeTypes
         options2.Add("relativestaticshot");
         options2.Add("relativestaticlocked");
         options2.Add("trackingshot");
+        options2.Add("relativetrackingshot");
         options2.Add("mountedshot");
         options2.Add("mountedshotlocked");
         options2.Add("cockpitshot");
@@ -934,6 +935,22 @@ public static class NodeTypes
         drop -= 15;
 
         node.data4 = NodeFunctions.DrawInputField(node, "target ship", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("true");
+        options4.Add("false");
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options4, "shake camera", "false", 7, 5, drop, 12.5f, 90, 5f);
+        
+        drop -= 15;
+
+        node.data6 = NodeFunctions.DrawInputField(node, "shake rate", "1", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data7 = NodeFunctions.DrawInputField(node, "shake strength", "0.7", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

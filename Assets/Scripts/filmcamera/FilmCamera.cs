@@ -30,8 +30,8 @@ public class FilmCamera : MonoBehaviour
     public bool blackbars = false;
     public bool blackbarsActive = false;
     public bool shakeCamera = false;
-    public float shakeFrequency = 1f;
-    public float shakeMagnitude = 0.5f;
+    public float shakeRate = 1f;
+    public float shakeStrength = 0.5f;
     public float smoothTime = 0.1f;
     public Vector3 currentVelocity = Vector3.zero;
     public Vector3 originalPosition = Vector3.zero;

@@ -76,7 +76,7 @@ public class FilmCameraFunctions : MonoBehaviour
     }
 
     //This sets the values of the film camera
-    public static void SetFilmCameraValues(string mode, bool blackbars, Vector3 position, Quaternion rotation, string targetName)
+    public static void SetFilmCameraValues(string mode, bool blackbars, Vector3 position, Quaternion rotation, string targetName, bool shakecamera, float shakerate, float shakestrength)
     {
         FilmCamera filmCamera = GetFilmCamera();
 
@@ -88,6 +88,9 @@ public class FilmCameraFunctions : MonoBehaviour
             filmCamera.position = position;
             filmCamera.targetName = targetName;
             filmCamera.targetShip = null;
+            filmCamera.shakeCamera = shakecamera;
+            filmCamera.shakeRate = shakerate;
+            filmCamera.shakeStrength = shakestrength;
             FadeInBlackBars(filmCamera);
             filmCamera.staticShotTaken = false;
         }
@@ -123,6 +126,10 @@ public class FilmCameraFunctions : MonoBehaviour
         else if (filmCamera.mode == "trackingshot")
         {
             TrackingShot(filmCamera);
+        }
+        else if (filmCamera.mode == "relativetrackingshot")
+        {
+            RelativeTrackingShot(filmCamera);
         }
         else if (filmCamera.mode == "mountedshot")
         {
@@ -265,6 +272,30 @@ public class FilmCameraFunctions : MonoBehaviour
         }
     }
 
+    //The camera sits in a static position but tracks the targeted ship
+    public static void RelativeTrackingShot(FilmCamera filmCamera)
+    {
+        if (filmCamera.targetShip == null)
+        {
+            SearchForShip(filmCamera);
+        }
+
+        if (filmCamera.targetShip != null)
+        {
+            if (filmCamera.staticShotTaken == false)
+            {
+                filmCamera.transform.parent = filmCamera.targetShip.transform; //This parents it to the ship object to get the right position
+                filmCamera.transform.localPosition = filmCamera.position;
+                filmCamera.transform.rotation = Quaternion.identity;
+                filmCamera.transform.parent = filmCamera.scene.transform;
+                filmCamera.staticShotTaken = true;
+            }
+           
+
+            filmCamera.transform.LookAt(filmCamera.targetShip.transform.position);
+        }
+    }
+
     //This locks the camera on the target ship while moving along with the ship
     public static void MountedShot(FilmCamera filmCamera)
     {
@@ -350,10 +381,10 @@ public class FilmCameraFunctions : MonoBehaviour
     {
         if (filmCamera.filmCamera != null & filmCamera.shakeCamera == true)
         {
-            float x = Mathf.PerlinNoise(Time.time * filmCamera.shakeFrequency, 0) * 2 - 1; // Generates noise
-            float y = Mathf.PerlinNoise(0, Time.time * filmCamera.shakeFrequency) * 2 - 1;
+            float x = Mathf.PerlinNoise(Time.time * filmCamera.shakeRate, 0) * 2 - 1; // Generates noise
+            float y = Mathf.PerlinNoise(0, Time.time * filmCamera.shakeRate) * 2 - 1;
 
-            Vector3 shakePosition = new Vector3(x, y, 0) * filmCamera.shakeMagnitude;
+            Vector3 shakePosition = new Vector3(x, y, 0) * filmCamera.shakeStrength;
 
             filmCamera.filmCamera.transform.localPosition = filmCamera.originalPosition + shakePosition;
 

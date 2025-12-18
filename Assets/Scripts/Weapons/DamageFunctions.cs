@@ -544,6 +544,13 @@ public static class DamageFunctions
             }
         }
 
+        Transform FilmCamera = GameObjectUtils.FindChildTransformCalled(smallShip.transform, "filmcameraGO");
+
+        if (FilmCamera != null)
+        {
+            FilmCamera.transform.parent = null;
+        }
+
         //This deactives the cockpit
         if (smallShip.cockpit != null)
         {

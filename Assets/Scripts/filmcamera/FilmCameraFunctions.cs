@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
+using Unity.Burst;
 
 public class FilmCameraFunctions : MonoBehaviour
 {
@@ -19,8 +21,12 @@ public class FilmCameraFunctions : MonoBehaviour
         }
 
         //This activates the film camera
-        SceneFunctions.ActivateFilmCamera(true);
-        Task a = new Task(HudFunctions.FadeOutHud(0.1f));
+        if (filmCamera.active == false)
+        {
+            SceneFunctions.ActivateFilmCamera(true);
+            Task a = new Task(HudFunctions.FadeOutHud(0.1f));
+            filmCamera.active = true;
+        }
     }
 
     //This deactivates the film camera
@@ -34,8 +40,12 @@ public class FilmCameraFunctions : MonoBehaviour
             filmCamera = CreateFilmCamera();
         }
 
-        SceneFunctions.ActivateFilmCamera(false);
-        Task a = new Task(HudFunctions.FadeInHud(0.1f));
+        if (filmCamera.active == true)
+        {
+            SceneFunctions.ActivateFilmCamera(false);
+            Task a = new Task(HudFunctions.FadeInHud(0.1f));
+            filmCamera.active = false;
+        }
     }
 
     //This gets the main camera
@@ -76,7 +86,9 @@ public class FilmCameraFunctions : MonoBehaviour
             filmCamera.rotation = rotation;
             filmCamera.position = position;
             filmCamera.targetName = targetName;
+            filmCamera.targetShip = null;
             FadeInBlackBars(filmCamera);
+            filmCamera.staticShotTaken = false;
         }
     }
 
@@ -93,7 +105,23 @@ public class FilmCameraFunctions : MonoBehaviour
         }
         else if (filmCamera.mode == "staticshot")
         {
-            //
+            StaticShot(filmCamera);
+        }
+        else if (filmCamera.mode == "staticshotlocked")
+        {
+            StaticShotLocked(filmCamera);
+        }
+        else if (filmCamera.mode == "relativestaticshot")
+        {
+            RelativeStaticShot(filmCamera);
+        }
+        else if (filmCamera.mode == "relativestaticlocked")
+        {
+            RelativeStaticShotLocked(filmCamera);
+        }
+        else if (filmCamera.mode == "trackingshot")
+        {
+            TrackingShot(filmCamera);
         }
         else if (filmCamera.mode == "mountedshot")
         {
@@ -103,13 +131,9 @@ public class FilmCameraFunctions : MonoBehaviour
         {
             MountedShotLocked(filmCamera);
         }
-        else if (filmCamera.mode == "trackingshotstatic")
+        else if (filmCamera.mode == "cockpitshot")
         {
-           //
-        }
-        else if (filmCamera.mode == "trackingshotdynamic")
-        {
-           //
+            //
         }
     }
 
@@ -158,8 +182,71 @@ public class FilmCameraFunctions : MonoBehaviour
         }
     }
 
-    //This locks the camera on the target ship while moving along with the ship
-    public static void MountedShot(FilmCamera filmCamera)
+    //This set the position and rotation of the camera for a static shot
+    public static void StaticShot(FilmCamera filmCamera)
+    {
+        filmCamera.transform.parent = filmCamera.scene.transform;
+        filmCamera.transform.localPosition = filmCamera.position;
+        filmCamera.transform.localRotation = filmCamera.rotation;
+    }
+
+    //This set the position and rotation of the camera for a static shot
+    public static void StaticShotLocked(FilmCamera filmCamera)
+    {
+        if (filmCamera.targetShip == null)
+        {
+            SearchForShip(filmCamera);
+        }
+
+        if (filmCamera.targetShip != null & filmCamera.staticShotTaken == false) //This check prevents the camera moving with the ship
+        {
+            filmCamera.transform.parent = filmCamera.scene.transform;
+            filmCamera.transform.localPosition = filmCamera.position;
+            filmCamera.transform.rotation = Quaternion.identity;
+            filmCamera.transform.LookAt(filmCamera.targetShip.transform.position);
+            filmCamera.staticShotTaken = true;
+        }
+    }
+
+    //This sets the position and rotation of the camera for a static shot relative to a ship
+    public static void RelativeStaticShot(FilmCamera filmCamera)
+    {
+        if (filmCamera.targetShip == null)
+        {
+            SearchForShip(filmCamera);
+        }
+
+        if (filmCamera.targetShip != null & filmCamera.staticShotTaken == false) //This check prevents the camera moving with the ship
+        {
+            filmCamera.transform.parent = filmCamera.targetShip.transform; //This parents it to the ship object to get the right position
+            filmCamera.transform.localPosition = filmCamera.position;
+            filmCamera.transform.localRotation = filmCamera.rotation;
+            filmCamera.transform.parent = filmCamera.scene.transform; //This unparents it from the ship object so the camera doesn't move with the ship
+            filmCamera.staticShotTaken = true;
+        }
+    }
+
+    //This sets the position and rotation of the camera for a static shot relative to a ship
+    public static void RelativeStaticShotLocked(FilmCamera filmCamera)
+    {
+        if (filmCamera.targetShip == null)
+        {
+            SearchForShip(filmCamera);
+        }
+
+        if (filmCamera.targetShip != null & filmCamera.staticShotTaken == false) //This check prevents the camera moving with the ship
+        {
+            filmCamera.transform.parent = filmCamera.targetShip.transform; //This parents it to the ship object to get the right position
+            filmCamera.transform.localPosition = filmCamera.position;
+            filmCamera.transform.rotation = Quaternion.identity;
+            filmCamera.transform.LookAt(filmCamera.targetShip.transform.position);
+            filmCamera.transform.parent = filmCamera.scene.transform; //This unparents it from the ship object so the camera doesn't move with the ship
+            filmCamera.staticShotTaken = true;
+        }
+    }
+
+    //The camera sits in a static position but tracks the targeted ship
+    public static void TrackingShot(FilmCamera filmCamera)
     {
         if (filmCamera.targetShip == null)
         {
@@ -168,9 +255,26 @@ public class FilmCameraFunctions : MonoBehaviour
 
         if (filmCamera.targetShip != null)
         {
+            filmCamera.transform.parent = filmCamera.scene.transform;
+            filmCamera.transform.localPosition = filmCamera.position;
+            filmCamera.transform.rotation = Quaternion.identity;
+            filmCamera.transform.LookAt(filmCamera.targetShip.transform.position);
+        }
+    }
+
+    //This locks the camera on the target ship while moving along with the ship
+    public static void MountedShot(FilmCamera filmCamera)
+    {
+        if (filmCamera.targetShip == null)
+        {
+            SearchForShip(filmCamera);
+        }
+        
+        if (filmCamera.targetShip != null)
+        {
             filmCamera.transform.parent = filmCamera.targetShip.transform;
             filmCamera.transform.localPosition = filmCamera.position;
-            filmCamera.transform.rotation = filmCamera.rotation;
+            filmCamera.transform.localRotation = filmCamera.rotation;
         }
     }
 
@@ -186,7 +290,13 @@ public class FilmCameraFunctions : MonoBehaviour
         {
             filmCamera.transform.parent = filmCamera.targetShip.transform;
             filmCamera.transform.localPosition = filmCamera.position;
-            filmCamera.transform.LookAt(filmCamera.targetShip.transform.position);
+            
+            if (filmCamera.staticShotTaken == false)
+            {
+                filmCamera.transform.rotation = Quaternion.identity;
+                filmCamera.transform.LookAt(filmCamera.targetShip.transform.position);
+                filmCamera.staticShotTaken = true;
+            }
         }
     }
 
@@ -220,13 +330,15 @@ public class FilmCameraFunctions : MonoBehaviour
     //This fades in black bars on the top and bottom of the screen for a more cinematic effect
     public static void FadeInBlackBars(FilmCamera filmCamera)
     {
-        if (filmCamera.blackbars == false)
+        if (filmCamera.blackbars == false & filmCamera.blackbarsActive == true)
         {
             Task a = new Task(HudFunctions.FadeOutBlackBars(0.1f));
+            filmCamera.blackbarsActive = false;
         }
-        else if (filmCamera.blackbars == true)
+        else if (filmCamera.blackbars == true & filmCamera.blackbarsActive == false)
         {
             Task a = new Task(HudFunctions.FadeInBlackBars(0.1f));
+            filmCamera.blackbarsActive = true;
         }
     }
 

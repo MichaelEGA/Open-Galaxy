@@ -913,10 +913,13 @@ public static class NodeTypes
         List<string> options2 = new List<string>();
         options2.Add("freelook");
         options2.Add("staticshot");
+        options2.Add("staticshotlocked");
+        options2.Add("relativestaticshot");
+        options2.Add("relativestaticlocked");
+        options2.Add("trackingshot");
         options2.Add("mountedshot");
         options2.Add("mountedshotlocked");
-        options2.Add("trackingshotstatic");
-        options2.Add("trackingshot");
+        options2.Add("cockpitshot");
 
         node.data2 = NodeFunctions.DrawDropDownMenu(node, options2, "mode", "freelook", 7, 5, drop, 12.5f, 90, 5f);
 

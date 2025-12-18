@@ -4,12 +4,15 @@ public class FilmCamera : MonoBehaviour
 {
     public Scene scene;
     public GameObject filmCamera;
-
+    public bool active;
     public Vector3 position;
     public Quaternion rotation;
 
     //Film Camera Modes
     public string mode = "freelook";
+
+    //Static shot
+    public bool staticShotTaken = false;
 
     //Free look mode values
     public bool looking = false;
@@ -17,12 +20,15 @@ public class FilmCamera : MonoBehaviour
     public float fastMovementSpeed = 100f;
     public float freeLookSensitivity = 3f;
 
-    //Look at ship static
+    //Look at ship
     public string targetName;
     public GameObject targetShip;
+    public float followSpeed = 16;
+    public float rotationSpeed = 6;
 
     //Other Effects
     public bool blackbars = false;
+    public bool blackbarsActive = false;
 
     void FixedUpdate()
     {

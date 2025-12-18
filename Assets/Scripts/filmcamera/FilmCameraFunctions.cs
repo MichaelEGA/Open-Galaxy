@@ -1,9 +1,10 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using Unity.Burst;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 public class FilmCameraFunctions : MonoBehaviour
 {
@@ -135,6 +136,8 @@ public class FilmCameraFunctions : MonoBehaviour
         {
             //
         }
+
+        ShakeCamera(filmCamera);
     }
 
     //This allows the player to move the camera freely
@@ -342,6 +345,21 @@ public class FilmCameraFunctions : MonoBehaviour
         }
     }
 
+    //This shakes the camera using noise
+    public static void ShakeCamera(FilmCamera filmCamera)
+    {
+        if (filmCamera.filmCamera != null & filmCamera.shakeCamera == true)
+        {
+            float x = Mathf.PerlinNoise(Time.time * filmCamera.shakeFrequency, 0) * 2 - 1; // Generates noise
+            float y = Mathf.PerlinNoise(0, Time.time * filmCamera.shakeFrequency) * 2 - 1;
+
+            Vector3 shakePosition = new Vector3(x, y, 0) * filmCamera.shakeMagnitude;
+
+            filmCamera.filmCamera.transform.localPosition = filmCamera.originalPosition + shakePosition;
+
+            filmCamera.filmCamera.transform.localPosition = Vector3.SmoothDamp(filmCamera.filmCamera.transform.localPosition, filmCamera.originalPosition + shakePosition, ref filmCamera.currentVelocity, filmCamera.smoothTime);
+        }
+    }
 
     #endregion
 

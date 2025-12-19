@@ -204,47 +204,17 @@ public static class CockpitFunctions
     {
         if (smallShip.scene != null & smallShip.cockpit == null)
         {
-            //This creates the cockpit scene anchor
-            if (smallShip.cockpitAnchor == null)
-            {
-                smallShip.cockpitAnchor = GameObject.Find("Cockpit Anchor");
-
-                if (smallShip.cockpitAnchor == null)
-                {
-                    smallShip.cockpitAnchor = new GameObject();
-                    smallShip.cockpitAnchor.name = "Cockpit Anchor";
-                    smallShip.scene.cockpitAnchor = smallShip.cockpitAnchor;
-                    smallShip.cockpitAnchor.transform.SetParent(smallShip.transform);
-                }
-
-                smallShip.cockpitAnchor.transform.rotation = Quaternion.identity;
-            }
-
             //This anchors the cockpit camera to the cockpit scene
             if (smallShip.cockpitCamera == null)
             {
                 smallShip.cockpitCamera = GameObject.Find("Cockpit Camera");
-
-                if (smallShip.cockpitCamera != null)
-                {
-                    smallShip.cockpitCamera.transform.rotation = Quaternion.identity;
-                    smallShip.cockpitCamera.transform.SetParent(smallShip.cockpitAnchor.transform);
-                }
             }
 
             //This loads the cockpit and sets it to the anchor
             if (smallShip.cockpit == null)
             {
-                smallShip.cockpit = SceneFunctions.InstantiateCockpitPrefab(smallShip.cockpitName);
+                smallShip.cockpit = SceneFunctions.ActivateCockpit(smallShip.cockpitName);
                 smallShip.scene.cockpit = smallShip.cockpit;
-
-                if (smallShip.cockpit != null)
-                {
-                    if (smallShip.cockpitAnchor != null)
-                    {
-                        smallShip.cockpit.transform.SetParent(smallShip.cockpitAnchor.transform);
-                    }
-                }
             }
         }
     }
@@ -510,9 +480,10 @@ public static class CockpitFunctions
     //Cockpit anchor rotation
     public static void CockpitAnchorRotation(SmallShip smallShip)
     {
-        if (smallShip.cockpitAnchor != null)
+        if (smallShip.cockpitCamera != null & smallShip.cockpit != null)
         {
-            smallShip.cockpitAnchor.transform.rotation = smallShip.transform.rotation;
+            smallShip.cockpitCamera.transform.rotation = smallShip.transform.rotation;
+            smallShip.cockpit.transform.rotation = smallShip.transform.rotation;
         }       
     }
 

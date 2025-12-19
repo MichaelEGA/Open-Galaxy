@@ -278,6 +278,16 @@ public static class SceneFunctions
             }
         }
 
+        if (cockpitCameraGO != null)
+        {
+            Camera cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
+
+            if (cockpitCamera != null)
+            {
+                cockpitCamera.enabled = true;
+            }
+        }
+
         if (filmCameraGO != null)
         {
             Camera filmCamera = filmCameraGO.GetComponent<Camera>();
@@ -343,16 +353,6 @@ public static class SceneFunctions
                     audioListener.enabled = true;
                 }
             }
-
-            if (cockpitCameraGO != null)
-            {
-                Camera cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
-
-                if (cockpitCamera != null)
-                {
-                    cockpitCamera.enabled = false;
-                }
-            }
         }
         else
         {
@@ -379,16 +379,6 @@ public static class SceneFunctions
                 if (audioListener != null)
                 {
                     audioListener.enabled = true;
-                }
-            }
-
-            if (cockpitCameraGO != null)
-            {
-                Camera cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
-
-                if (cockpitCamera != null)
-                {
-                    cockpitCamera.enabled = true;
                 }
             }
         }
@@ -429,7 +419,7 @@ public static class SceneFunctions
 
                             if (cockpitCamera != null)
                             {
-                                cockpitCamera.enabled = false;
+                                cockpitCamera.enabled = true;
                             }
 
                             scene.followCameraIsActive = true;
@@ -488,7 +478,7 @@ public static class SceneFunctions
 
                     if (cockpitCamera != null)
                     {
-                        cockpitCamera.enabled = false;
+                        cockpitCamera.enabled = true;
                     }
 
                     scene.filmCameraIsActive = true;
@@ -534,7 +524,7 @@ public static class SceneFunctions
 
                     if (cockpitCamera != null)
                     {
-                        cockpitCamera.enabled = false;
+                        cockpitCamera.enabled = true;
                     }
 
                     scene.filmCameraIsActive = false;
@@ -2683,34 +2673,85 @@ public static class SceneFunctions
 
     #region cockpit loading
 
-    //This instanties the designated prefabe from the pool listed in the settings or finds a substitute from another pool if the prefab is not present
-    public static GameObject InstantiateCockpitPrefab(string name)
+    //This activates the designated cockpit
+    public static GameObject ActivateCockpit(string name)
     {
-        Scene scene = SceneFunctions.GetScene();
+        GameObject cockpit = null;
 
-        GameObject cockpitPrefab = null;
-        GameObject tempPrefab = null;
+        //This gets the scene reference
+        Scene scene = GetScene();
 
-        //This gets the prefab from the designated pool
+        //This checks whether the requested cockpit exists or not
+        bool cockpitExists = false;
+
         foreach (GameObject objectPrefab in scene.cockpitPrefabPool)
         {
             if (objectPrefab.name == name)
             {
-                tempPrefab = objectPrefab;
+                cockpitExists = true;
                 break;
             }
         }
 
-        //This instantiates the prefab
-        if (tempPrefab != null)
+        if (cockpitExists == true)
         {
-            cockpitPrefab = GameObject.Instantiate(tempPrefab) as GameObject;
-            cockpitPrefab.transform.position = new Vector3(0, 0, 0);
-            cockpitPrefab.layer = LayerMask.NameToLayer("cockpit");
-            GameObjectUtils.SetLayerAllChildren(cockpitPrefab.transform, 28);
+            //This sets up the cockpit pool if needed
+            if (scene.cockpitsPool == null)
+            {
+                scene.cockpitsPool = new List<GameObject>();
+            }
+
+            //This sets the cockpit to active if it exists in the list
+            bool cockpitLoaded = false;
+
+            foreach (GameObject tempCockpit in scene.cockpitsPool)
+            {
+                if (tempCockpit.name == name)
+                {
+                    tempCockpit.SetActive(false);
+                    cockpit = tempCockpit;
+                    cockpitLoaded = true;
+                    break;
+                }
+            }
+
+            //This loads the cockpit if it hasn't been loaded
+            if (cockpitLoaded == false)
+            {
+                foreach (GameObject objectPrefab in scene.cockpitPrefabPool)
+                {
+                    if (objectPrefab.name == name)
+                    {
+                        cockpit = GameObject.Instantiate(objectPrefab) as GameObject;
+                        cockpit.transform.position = new Vector3(0, 0, 0);
+                        cockpit.layer = LayerMask.NameToLayer("cockpit");
+                        GameObjectUtils.SetLayerAllChildren(cockpit.transform, 28);
+                        scene.cockpitsPool.Add(cockpit);
+                        cockpit.SetActive(true);
+                    }
+                }
+            }
         }
 
-        return cockpitPrefab;
+        return cockpit;
+    }
+
+    //This deactivates all cockpits
+    public static void DeactivateCockpits()
+    {
+        //This gets the scene reference
+        Scene scene = GetScene();
+
+        if (scene.cockpitsPool != null)
+        {
+            foreach (GameObject tempCockpit in scene.cockpitsPool)
+            {
+                if (tempCockpit != null)
+                {
+                    tempCockpit.SetActive(false);
+                }
+            }
+        }
     }
 
     #endregion

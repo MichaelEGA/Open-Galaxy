@@ -95,6 +95,17 @@ public class FilmCameraFunctions : MonoBehaviour
 
         if (filmCamera != null)
         {
+            //Reset all key vaules
+            filmCamera.transform.parent = null;
+            filmCamera.moveGO.transform.localPosition = Vector3.zero;
+            filmCamera.rotateGO.transform.localRotation = Quaternion.identity;
+            filmCamera.filmCameraGO.transform.localPosition = Vector3.zero;
+            RestoreTargetShipLayer(filmCamera); //This restores previously selected ships real layer before nulling the value
+            filmCamera.targetShip = null;
+            filmCamera.targetShipCameraGO = null;
+            filmCamera.cockpitGO = null;
+            filmCamera.staticShotTaken = false;
+
             //Set mode type
             filmCamera.mode = mode;
             
@@ -102,24 +113,27 @@ public class FilmCameraFunctions : MonoBehaviour
             filmCamera.rotation = rotation;
             filmCamera.position = position;
             filmCamera.targetName = targetName;
-            filmCamera.targetShip = null;
-            filmCamera.staticShotTaken = false;
 
-            //Set secondary values
-            filmCamera.blackbars = blackbars;
+            //Set shake camera vaules
             filmCamera.shakeCamera = shakecamera;
             filmCamera.shakeRate = shakerate;
             filmCamera.shakeStrength = shakestrength;
-            filmCamera.moveGO.transform.localPosition = Vector3.zero;
+            
+            //Set move camera values
             filmCamera.moveActive = moveActive;
             filmCamera.moveAxis = moveAxis;
             filmCamera.moveSpeed = moveSpeed;
-            filmCamera.rotateGO.transform.localRotation = Quaternion.identity;
+            
+            //Set rotate camera values
             filmCamera.rotateActive = rotateActive;
             filmCamera.rotationAxis = rotateAxis;
             filmCamera.secondaryRotationSpeed = rotateSpeed;
 
+            //Set secondary values
+            filmCamera.blackbars = blackbars; //MOVE THIS TO HUD FUNCTIONS
+
             //Other functions
+            SceneFunctions.DeactivateCockpits();
             FadeInBlackBars(filmCamera);
         }
     }
@@ -169,7 +183,7 @@ public class FilmCameraFunctions : MonoBehaviour
         }
         else if (filmCamera.mode == "cockpitshot")
         {
-            //
+            CockpitShot(filmCamera);
         }
 
         //Run Secondary Functions
@@ -365,25 +379,50 @@ public class FilmCameraFunctions : MonoBehaviour
         }
     }
 
-    //This searches for and returns the target ship
-    public static void SearchForShip(FilmCamera filmCamera)
+    //This sets the camera to the cockpit view
+    public static void CockpitShot(FilmCamera filmCamera)
     {
-        Scene scene = filmCamera.scene;
-
-        if (scene != null)
+        if (filmCamera.targetShip == null)
         {
-            if (scene.objectPool != null)
+            SearchForShip(filmCamera);
+        }
+
+        if (filmCamera.cockpitCameraGO == null)
+        {
+            filmCamera.cockpitCameraGO = GameObject.Find("Cockpit Camera");
+        }
+
+        if (filmCamera.targetShip != null)
+        {
+            if (filmCamera.targetShipCameraGO == null)
             {
-                foreach (GameObject tempShip in scene.objectPool.ToList())
+                Transform targetShipCameraGO = GameObjectUtils.FindChildTransformCalled(filmCamera.targetShip.transform, "camera");
+                filmCamera.targetShipCameraGO = targetShipCameraGO.gameObject;
+            }
+
+            if (filmCamera.targetShipCameraGO != null)
+            {
+                filmCamera.transform.parent = filmCamera.targetShipCameraGO.transform;
+                filmCamera.transform.localPosition = Vector3.zero;
+
+                if (filmCamera.cockpitGO == null)
                 {
-                    if (tempShip != null)
+                    SmallShip smallShip = filmCamera.targetShip.GetComponent<SmallShip>();
+
+                    if (smallShip != null)
                     {
-                        if (tempShip.name.Contains(filmCamera.targetName))
-                        {
-                            filmCamera.targetShip = tempShip;
-                        }
+                        string cockpitName = smallShip.cockpitName;
+                        filmCamera.cockpitGO = SceneFunctions.ActivateCockpit(cockpitName);
+                        SetTargetShipToPlayerLayer(filmCamera); //This sets the ships layer to player to prevent the ship being seen in cockpit view
                     }
                 }
+
+                if (filmCamera.cockpitGO != null & filmCamera.cockpitCameraGO != null)
+                {
+                    filmCamera.cockpitGO.transform.rotation = filmCamera.targetShip.transform.rotation;
+                    filmCamera.cockpitCameraGO.transform.rotation = filmCamera.targetShip.transform.rotation;
+                }
+
             }
         }
     }
@@ -476,6 +515,64 @@ public class FilmCameraFunctions : MonoBehaviour
     #endregion
 
     #region film camera tools
+
+    //This searches for and returns the target ship
+    public static void SearchForShip(FilmCamera filmCamera)
+    {
+        Scene scene = filmCamera.scene;
+
+        if (scene != null)
+        {
+            if (scene.objectPool != null)
+            {
+                foreach (GameObject tempShip in scene.objectPool.ToList())
+                {
+                    if (tempShip != null)
+                    {
+                        if (tempShip.name.Contains(filmCamera.targetName))
+                        {
+                            filmCamera.targetShip = tempShip;
+                            SaveShipLayer(filmCamera); //This saves the ship layer to restore later if needed
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //This saves the ships layer to restore later is needed
+    public static void SaveShipLayer(FilmCamera filmCamera)
+    {
+        if (filmCamera.targetShip != null)
+        {
+            filmCamera.savedLayerMask = filmCamera.targetShip.layer;
+        }
+    }
+
+    //This sets the ship to player target layer
+    public static void SetTargetShipToPlayerLayer(FilmCamera filmCamera)
+    {
+        if (filmCamera.targetShip != null)
+        {
+            filmCamera.savedLayerMask = filmCamera.targetShip.layer;
+
+            filmCamera.targetShip.layer = LayerMask.NameToLayer("collision_player");
+
+            GameObjectUtils.SetLayerAllChildren(filmCamera.targetShip.transform, LayerMask.NameToLayer("collision_player"));
+        }
+    }
+
+    //This restores the ships layer
+    public static void RestoreTargetShipLayer(FilmCamera filmCamera)
+    {
+        if (filmCamera.targetShip != null)
+        {
+            filmCamera.targetShip.layer = filmCamera.savedLayerMask;
+
+            GameObjectUtils.SetLayerAllChildren(filmCamera.targetShip.transform, filmCamera.savedLayerMask);
+        }
+    }
 
     //This gets the film camera script and script gameobject
     public static FilmCamera GetFilmCamera()

@@ -35,7 +35,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public List<GameObject> plasmaPool;
     [HideInInspector] public List<GameObject> torpedosPool;
     [HideInInspector] public List<GameObject> environmentsPool;
-    [HideInInspector] public List<GameObject> cockpitPool;
+    [HideInInspector] public List<GameObject> cockpitsPool;
     [HideInInspector] public List<GameObject> tilesPool;
     [HideInInspector] public List<GameObject> tilesSetPool;
     [HideInInspector] public List<GameObject> planetsPool;

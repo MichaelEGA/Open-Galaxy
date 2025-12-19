@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.Burst;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 public class FilmCameraFunctions : MonoBehaviour
@@ -56,16 +57,28 @@ public class FilmCameraFunctions : MonoBehaviour
         GameObject filmCameraScriptGO = new GameObject();
         filmCameraScriptGO.name = "filmcameraGO";
 
+        //This creates a second gameobject to control the pan and the zoom
+        GameObject panandzoomGO = new GameObject();
+        panandzoomGO.name = "panandzoomGO";
+        panandzoomGO.transform.parent = filmCameraScriptGO.transform;
+
+        //This creates a third gameobject to control the rotation
+        GameObject rotateGO = new GameObject();
+        rotateGO.name = "rotateGO";
+        rotateGO.transform.parent = panandzoomGO.transform;
+
         //This adds the script and gets the scene reference
         FilmCamera filmCameraScript = filmCameraScriptGO.AddComponent<FilmCamera>();
         filmCameraScript.scene = SceneFunctions.GetScene();
+        filmCameraScript.moveGO = panandzoomGO;
+        filmCameraScript.rotateGO = rotateGO;
 
         //This gets the actual camera
         GameObject filmCamera = filmCameraScript.scene.filmCamera;
-        filmCameraScript.filmCamera = filmCamera;
+        filmCameraScript.filmCameraGO = filmCamera;
 
-        //This parents the camera to the script gameobject
-        filmCamera.transform.parent = filmCameraScriptGO.transform;
+        //This parents the camera to the pan and the zoom gameobject
+        filmCamera.transform.parent = rotateGO.transform;
         filmCamera.transform.localPosition = Vector3.zero;
         filmCamera.transform.rotation = Quaternion.identity;
 
@@ -76,29 +89,44 @@ public class FilmCameraFunctions : MonoBehaviour
     }
 
     //This sets the values of the film camera
-    public static void SetFilmCameraValues(string mode, bool blackbars, Vector3 position, Quaternion rotation, string targetName, bool shakecamera, float shakerate, float shakestrength)
+    public static void SetFilmCameraValues(string mode, bool blackbars, Vector3 position, Quaternion rotation, string targetName, bool shakecamera, float shakerate, float shakestrength, bool moveActive, string moveAxis, float moveSpeed, bool rotateActive, string rotateAxis, float rotateSpeed)
     {
         FilmCamera filmCamera = GetFilmCamera();
 
         if (filmCamera != null)
         {
+            //Set mode type
             filmCamera.mode = mode;
-            filmCamera.blackbars = blackbars;
+            
+            //Set key values
             filmCamera.rotation = rotation;
             filmCamera.position = position;
             filmCamera.targetName = targetName;
             filmCamera.targetShip = null;
+            filmCamera.staticShotTaken = false;
+
+            //Set secondary values
+            filmCamera.blackbars = blackbars;
             filmCamera.shakeCamera = shakecamera;
             filmCamera.shakeRate = shakerate;
             filmCamera.shakeStrength = shakestrength;
+            filmCamera.moveGO.transform.localPosition = Vector3.zero;
+            filmCamera.moveActive = moveActive;
+            filmCamera.moveAxis = moveAxis;
+            filmCamera.moveSpeed = moveSpeed;
+            filmCamera.rotateGO.transform.localRotation = Quaternion.identity;
+            filmCamera.rotateActive = rotateActive;
+            filmCamera.rotationAxis = rotateAxis;
+            filmCamera.secondaryRotationSpeed = rotateSpeed;
+
+            //Other functions
             FadeInBlackBars(filmCamera);
-            filmCamera.staticShotTaken = false;
         }
     }
 
     #endregion
 
-    #region camera modes
+    #region primary camera modes
 
     //This switches the camera between different control modes
     public static void RunFilmCamera(FilmCamera filmCamera)
@@ -144,7 +172,10 @@ public class FilmCameraFunctions : MonoBehaviour
             //
         }
 
+        //Run Secondary Functions
         ShakeCamera(filmCamera);
+        MoveCameraAlongAxis(filmCamera);
+        RotateCameraOnAxis(filmCamera);
     }
 
     //This allows the player to move the camera freely
@@ -255,7 +286,7 @@ public class FilmCameraFunctions : MonoBehaviour
         }
     }
 
-    //The camera sits in a static position but tracks the targeted ship
+    //The camera is placed in scene space and tracks the targeted ship
     public static void TrackingShot(FilmCamera filmCamera)
     {
         if (filmCamera.targetShip == null)
@@ -272,7 +303,7 @@ public class FilmCameraFunctions : MonoBehaviour
         }
     }
 
-    //The camera sits in a static position but tracks the targeted ship
+    //The camera is placed relative to a ship and tracks the targeted ship
     public static void RelativeTrackingShot(FilmCamera filmCamera)
     {
         if (filmCamera.targetShip == null)
@@ -359,7 +390,7 @@ public class FilmCameraFunctions : MonoBehaviour
 
     #endregion
 
-    #region other camera effects
+    #region secondary camera modes
 
     //This fades in black bars on the top and bottom of the screen for a more cinematic effect
     public static void FadeInBlackBars(FilmCamera filmCamera)
@@ -379,16 +410,66 @@ public class FilmCameraFunctions : MonoBehaviour
     //This shakes the camera using noise
     public static void ShakeCamera(FilmCamera filmCamera)
     {
-        if (filmCamera.filmCamera != null & filmCamera.shakeCamera == true)
+        if (filmCamera.filmCameraGO != null & filmCamera.shakeCamera == true)
         {
             float x = Mathf.PerlinNoise(Time.time * filmCamera.shakeRate, 0) * 2 - 1; // Generates noise
             float y = Mathf.PerlinNoise(0, Time.time * filmCamera.shakeRate) * 2 - 1;
 
             Vector3 shakePosition = new Vector3(x, y, 0) * filmCamera.shakeStrength;
+            Vector3 currentVelocity = Vector3.zero;
+            Vector3 startingPosition = Vector3.zero;
 
-            filmCamera.filmCamera.transform.localPosition = filmCamera.originalPosition + shakePosition;
+            filmCamera.filmCameraGO.transform.localPosition = startingPosition + shakePosition; //Vector3.zero is the starting position
 
-            filmCamera.filmCamera.transform.localPosition = Vector3.SmoothDamp(filmCamera.filmCamera.transform.localPosition, filmCamera.originalPosition + shakePosition, ref filmCamera.currentVelocity, filmCamera.smoothTime);
+            filmCamera.filmCameraGO.transform.localPosition = Vector3.SmoothDamp(filmCamera.filmCameraGO.transform.localPosition, startingPosition + shakePosition, ref currentVelocity, filmCamera.smoothTime);
+        }
+    }
+
+    //This pans and zooms the camera left or right 
+    public static void MoveCameraAlongAxis(FilmCamera filmCamera)
+    {
+        if (filmCamera.moveActive == true)
+        {
+            Vector3 moveAxis = Vector3.up;
+
+            if (filmCamera.moveAxis == "xaxis")
+            {
+                moveAxis = Vector3.right;
+            }
+            else if (filmCamera.moveAxis == "yaxis")
+            {
+                moveAxis = Vector3.up;
+            }
+            else if (filmCamera.moveAxis == "zaxis")
+            {
+                moveAxis = Vector3.forward;
+            }
+
+            filmCamera.moveGO.transform.Translate(moveAxis * filmCamera.moveSpeed * Time.deltaTime);
+        }
+    }
+
+    //This rotates the camera
+    public static void RotateCameraOnAxis(FilmCamera filmCamera)
+    {
+        if (filmCamera.rotateActive == true)
+        {
+            Vector3 rotationAxis = Vector3.up;
+
+            if (filmCamera.rotationAxis == "xaxis")
+            {
+                rotationAxis = Vector3.right;
+            }
+            else if (filmCamera.rotationAxis == "yaxis")
+            {
+                rotationAxis = Vector3.up;
+            }
+            else if (filmCamera.rotationAxis == "zaxis")
+            {
+                rotationAxis = Vector3.forward;
+            }
+
+            filmCamera.rotateGO.transform.Rotate(rotationAxis * filmCamera.secondaryRotationSpeed * Time.deltaTime);
         }
     }
 

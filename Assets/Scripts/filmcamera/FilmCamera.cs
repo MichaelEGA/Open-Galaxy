@@ -3,7 +3,9 @@ using UnityEngine;
 public class FilmCamera : MonoBehaviour
 {
     public Scene scene;
-    public GameObject filmCamera;
+    public GameObject filmCameraGO;
+    public GameObject moveGO;
+    public GameObject rotateGO;
     public bool active;
     public Vector3 position;
     public Quaternion rotation;
@@ -24,7 +26,7 @@ public class FilmCamera : MonoBehaviour
     public string targetName;
     public GameObject targetShip;
     public float followSpeed = 16;
-    public float rotationSpeed = 6;
+    public float rotateSpeed = 6;
 
     //Other Effects
     public bool blackbars = false;
@@ -33,8 +35,23 @@ public class FilmCamera : MonoBehaviour
     public float shakeRate = 1f;
     public float shakeStrength = 0.5f;
     public float smoothTime = 0.1f;
-    public Vector3 currentVelocity = Vector3.zero;
-    public Vector3 originalPosition = Vector3.zero;
+    
+    //Pan and zoom
+    public Vector3 startPosition;
+    public Vector3 endPosition;
+    public float duration;
+    public float timeElapsed;
+
+
+    //Pan and zoom
+    public float moveSpeed;
+    public bool moveActive = false;
+    public string moveAxis;
+
+    //Rotation
+    public float secondaryRotationSpeed;
+    public bool rotateActive = false;
+    public string rotationAxis;
 
     void FixedUpdate()
     {

@@ -13,6 +13,7 @@ public class Scene : MonoBehaviour
     public float sceneRadius = 15000;
     public List<string> availibleLocations;
     public string allegiance = "none";
+    public OGCamera ogCamera;
 
     [Header("The Main Ship")]
     [HideInInspector] public GameObject mainShip;
@@ -66,13 +67,6 @@ public class Scene : MonoBehaviour
     public GameObject viewDistancePlane;
     public GameObject fogwall;
     public float fogDistanceFromCenter = 15000;
-
-    [Header("Cameras")]
-    public GameObject mainCamera;
-    public GameObject planetCamera;
-    public GameObject starfieldCamera;
-    public GameObject cockpitCamera;
-    public GameObject cockpitAnchor;
 
     [Header("Starfield")]
     [HideInInspector] public GameObject waypointObject;

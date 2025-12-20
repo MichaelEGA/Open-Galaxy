@@ -38,9 +38,6 @@ public class NextMissionFunctions
         AudioFunctions.MuteSelectedAudio("explosionsvolume");
         AudioFunctions.MuteSelectedAudio("cockpitvolume");
 
-        //This turns off all the other cameras not used for the mission briefing scene
-        SceneFunctions.ActivateCameras(false);
-
         //This makes sure the controller is not vibrating
         SmallShipFunctions.StopShakeController();
 
@@ -193,8 +190,6 @@ public class NextMissionFunctions
 
         //This makes the hud visible again
         HudFunctions.SetHudTransparency(1);
-
-        SceneFunctions.ActivateCameras(true);
 
         //This stopes the audio briefing if it is still playing
         if (nextMission.missionDebriefingAudio != null)

@@ -96,7 +96,7 @@ public static class MissionFunctions
         Task a = new Task(FindAndRunPreLoadEvents(mission, firstLocationNode.conditionLocation, startTime, true));
         while (a.Running == true) { yield return null; }
 
-        //This actives the camera for the mission
+        //This activates the OG Camera
         OGCameraFunctions.ActivateOGCamera();
 
         //This tells the player to get ready, starts the game, locks the cursor and gets rid of the loading screen
@@ -844,8 +844,6 @@ public static class MissionFunctions
         MainMenuFunctions.AddLogToLoadingScreen("Hud created.", startTime);
 
         //This creates the scene and gets the cameras
-        SceneFunctions.GetCameras();
-        SceneFunctions.ActivateCameras(true);
         MainMenuFunctions.AddLogToLoadingScreen("Scene created.", startTime);
 
         //THis loads the audio and music manager
@@ -1350,6 +1348,7 @@ public static class MissionFunctions
 
         //This gets several important references
         Scene scene = SceneFunctions.GetScene();
+        OGCamera ogCamera = OGCameraFunctions.GetOGCamera();
         SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
@@ -1387,7 +1386,7 @@ public static class MissionFunctions
         //while (a.Running == true) { yield return null; }
 
         //This makes the stars stretch out
-        scene.planetCamera.GetComponent<Camera>().enabled = false;
+        ogCamera.planetCamera.GetComponent<Camera>().enabled = false;
 
         Time.timeScale = 0;
 
@@ -1472,14 +1471,14 @@ public static class MissionFunctions
         //This plays the hyperspace exit
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
-        scene.starfieldCamera.GetComponent<Camera>().enabled = true;
+        ogCamera.starfieldCamera.GetComponent<Camera>().enabled = true;
 
         //This shrinks the starfield
         Task d = new Task(SceneFunctions.ShrinkStarfield());
         while (d.Running == true) { yield return null; }
 
         //Task e = new Task(SceneFunctions.PlanetFlyIn());
-        
+
         //while (e.Running == true) 
         //{
         //    if (scene.planetCamera.GetComponent<Camera>().enabled == false)
@@ -1492,7 +1491,7 @@ public static class MissionFunctions
         //    yield return null;
         //}
 
-        scene.planetCamera.GetComponent<Camera>().enabled = true;
+        ogCamera.planetCamera.GetComponent<Camera>().enabled = true;
 
         //This fades the hud back in
         Task fadeIN = new Task(HudFunctions.FadeInHud(1));
@@ -1526,6 +1525,7 @@ public static class MissionFunctions
 
         //This gets several important references
         Scene scene = SceneFunctions.GetScene();
+        OGCamera ogCamera = OGCameraFunctions.GetOGCamera();
         SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
@@ -1591,9 +1591,8 @@ public static class MissionFunctions
 
         yield return new WaitForSecondsRealtime(1); //This gives the rigidbody time to calculate the new velocity
 
-        //This makes the stars stretch out
-        scene.planetCamera.GetComponent<Camera>().enabled = true;
-        scene.mainCamera.GetComponent<Camera>().enabled = true;
+        ogCamera.planetCamera.GetComponent<Camera>().enabled = true;
+        ogCamera.mainCamera.GetComponent<Camera>().enabled = true;
 
         //This fades the hud back in
         Task fadeIN = new Task(HudFunctions.FadeInHud(1));
@@ -4410,7 +4409,6 @@ public static class MissionFunctions
 
         ExitMenu exitMenu = GameObject.FindFirstObjectByType<ExitMenu>();
         GameObject fade = scene.fade;
-        GameObject cockpitAnchor = scene.cockpitAnchor;
         GameObject missionBriefing = scene.missionBriefing;
         GameObject nextMissionScreen = GameObject.Find("NextMission");
 

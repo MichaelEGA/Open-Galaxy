@@ -1336,8 +1336,14 @@ public static class MainMenuFunctions
                 tip.GetComponent<Text>().text = message;
             }
         }
-        else
+        else 
         {
+            if (mainMenu != null)
+            {
+               AudioListener menuAudioListener = mainMenu.GetComponent<AudioListener>();
+               menuAudioListener.enabled = false; //This prevents the two audio listener problem running
+            }
+
             Task a = new Task(MainMenuFunctions.FadeOutLoadingScreenAndDestroyMainMenu(mainMenu, 0.25f));
 
             GameObject hud = GameObject.Find("Hud");

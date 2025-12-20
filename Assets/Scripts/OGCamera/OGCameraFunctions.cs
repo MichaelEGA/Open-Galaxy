@@ -23,13 +23,6 @@ public class OGCameraFunctions : MonoBehaviour
         {
             ogCamera  = CreateOGCamera();
         }
-
-        //This activates the film camera
-        if (ogCamera.active == false)
-        {
-            Task a = new Task(HudFunctions.FadeOutHud(0.1f));
-            ogCamera.active = true;
-        }
     }
 
     //This deactivates the film camera
@@ -37,17 +30,6 @@ public class OGCameraFunctions : MonoBehaviour
     {
         //This checks the film camera script exists
         OGCamera ogCamera = GetOGCamera();
-        
-        if (ogCamera == null)
-        {
-            ogCamera = CreateOGCamera();
-        }
-
-        if (ogCamera.active == true)
-        {
-            Task a = new Task(HudFunctions.FadeInHud(0.1f));
-            ogCamera.active = false;
-        }
     }
 
     //This gets the main camera
@@ -73,17 +55,13 @@ public class OGCameraFunctions : MonoBehaviour
         ogCamera.moveGO = panandzoomGO;
         ogCamera.rotateGO = rotateGO;
 
-        //This gets the actual camera
-        GameObject mainCamera = ogCamera.scene.mainCamera;
-        ogCamera.mainCameraGO = mainCamera;
+        //This creates or finds the cameras
+        CreateCameras(ogCamera);
 
         //This parents the camera to the pan and the zoom gameobject
-        mainCamera.transform.parent = rotateGO.transform;
-        mainCamera.transform.localPosition = Vector3.zero;
-        mainCamera.transform.rotation = Quaternion.identity;
-
-        //This parents the script object to the scene
-        ogCamera.transform.parent = ogCamera.scene.transform;
+        ogCamera.mainCamera.transform.parent = rotateGO.transform;
+        ogCamera.mainCamera.transform.localPosition = Vector3.zero;
+        ogCamera.mainCamera.transform.rotation = Quaternion.identity;
 
         //This makes sure the player layer is visible if needed
         if (ogCamera.viewType == "thirdperson")
@@ -92,6 +70,125 @@ public class OGCameraFunctions : MonoBehaviour
         }
 
         return ogCamera;
+    }
+
+    //This creates the starfield Camera
+    public static void CreateCameras(OGCamera ogCamera)
+    {
+        GameObject starfieldCameraGO = GameObject.Find("Starfield Camera");
+        Camera starfieldCamera = null;
+
+        bool loading = false;
+
+        if (starfieldCameraGO == null)
+        {
+            starfieldCameraGO = new GameObject();
+            starfieldCameraGO.name = "Starfield Camera";
+            starfieldCamera = starfieldCameraGO.AddComponent<Camera>();
+            starfieldCamera.nearClipPlane = 0.01f;
+            starfieldCamera.cullingMask = LayerMask.GetMask("starfield");
+            var starfieldCameraData = starfieldCamera.GetUniversalAdditionalCameraData();
+            starfieldCameraData.renderPostProcessing = true;
+            loading = true;
+        }
+
+        ogCamera.starfieldCamera = starfieldCameraGO;
+
+        GameObject planetCameraGO = GameObject.Find("Planet Camera");
+        Camera planetCamera = null;
+
+        if (planetCameraGO == null)
+        {
+            planetCameraGO = new GameObject();
+            planetCameraGO.name = "Planet Camera";
+            planetCamera = planetCameraGO.AddComponent<Camera>();
+            planetCamera.cullingMask = LayerMask.GetMask("planet");
+            planetCamera.nearClipPlane = 0.01f;
+            var planetCameraData = planetCamera.GetUniversalAdditionalCameraData();
+            planetCameraData.renderType = CameraRenderType.Overlay;
+        }
+
+        ogCamera.planetCamera = planetCameraGO;
+
+        GameObject mainCameraGO = GameObject.Find("Main Camera");
+        Camera mainCamera = null;
+
+        if (mainCameraGO == null)
+        {
+            mainCameraGO = new GameObject();
+            mainCameraGO.name = "Main Camera";
+            mainCameraGO.tag = "MainCamera";
+            mainCameraGO.AddComponent<AudioListener>();
+            mainCamera = mainCameraGO.AddComponent<Camera>();
+            mainCamera.cullingMask = LayerMask.GetMask("Default", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "collision11", "collision12", "collision13", "collision14", "collision15", "collision16");
+            mainCamera.nearClipPlane = 0.01f;
+            mainCamera.farClipPlane = 90000;
+            var mainCameraData = mainCamera.GetUniversalAdditionalCameraData();
+            mainCameraData.renderType = CameraRenderType.Overlay;
+            mainCameraData.renderPostProcessing = true;
+        }
+
+        ogCamera.mainCamera = mainCameraGO;
+
+        GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
+        Camera cockpitCamera = null;
+
+        if (cockpitCameraGO == null)
+        {
+            cockpitCameraGO = new GameObject();
+            cockpitCameraGO.name = "Cockpit Camera";
+            cockpitCamera = cockpitCameraGO.AddComponent<Camera>();
+            cockpitCamera.cullingMask = LayerMask.GetMask("cockpit");
+            cockpitCamera.nearClipPlane = 0.01f;
+            var cockpitCameraData = cockpitCamera.GetUniversalAdditionalCameraData();
+            cockpitCameraData.renderType = CameraRenderType.Overlay;
+            cockpitCameraData.renderPostProcessing = true;
+        }
+
+        ogCamera.cockpitCamera = cockpitCameraGO;
+
+        if (loading == true)
+        {
+            var starfieldCameraData = starfieldCamera.GetUniversalAdditionalCameraData();
+            starfieldCameraData.cameraStack.Add(planetCamera);
+            starfieldCameraData.cameraStack.Add(mainCamera);
+            starfieldCameraData.cameraStack.Add(cockpitCamera);
+        }
+    }
+
+    //This activates or deactivates the game cameras
+    public static void ActivateStarfieldCamera(bool active)
+    {
+        //This gets the camera references
+        GameObject starfieldCameraGO = GameObject.Find("Starfield Camera");
+
+        //This activates the required cameras
+        if (starfieldCameraGO != null)
+        {
+            Camera starfieldCamera = starfieldCameraGO.GetComponent<Camera>();
+
+            if (starfieldCamera != null)
+            {
+                starfieldCamera.enabled = active;
+            }
+        }
+    }
+
+    //This activates or deactivates the game cameras
+    public static void ActivatePlanetCamera(bool active)
+    {
+        //This gets the camera references
+        GameObject planetCameraGO = GameObject.Find("Planet Camera");
+
+        if (planetCameraGO != null)
+        {
+            Camera planetCamera = planetCameraGO.GetComponent<Camera>();
+
+            if (planetCamera != null)
+            {
+                planetCamera.enabled = active;
+            }
+        }
     }
 
     //This sets the values of the film camera
@@ -131,12 +228,10 @@ public class OGCameraFunctions : MonoBehaviour
 
             //Set secondary values
             ogCamera.blackbars = true; //MOVE THIS TO HUD FUNCTIONS
-
-            //Other functions
-            FadeInBlackBars(ogCamera);
         }
     }
 
+    //This resets the camera values to default
     public static void ResetOGCameraVaules()
     {
         OGCamera ogCamera = GetOGCamera();
@@ -147,7 +242,7 @@ public class OGCameraFunctions : MonoBehaviour
             ogCamera.transform.parent = null;
             ogCamera.moveGO.transform.localPosition = Vector3.zero;
             ogCamera.rotateGO.transform.localRotation = Quaternion.identity;
-            ogCamera.mainCameraGO.transform.localPosition = Vector3.zero;
+            ogCamera.mainCamera.transform.localPosition = Vector3.zero;
             RestoreTargetShipLayer(ogCamera); //This restores previously selected ships real layer before nulling the value
             ogCamera.targetShip = null;
             ogCamera.targetShipCameraGO = null;
@@ -249,9 +344,9 @@ public class OGCameraFunctions : MonoBehaviour
             SearchForPlayerShip(ogCamera);
         }
 
-        if (ogCamera.cockpitCameraGO == null)
+        if (ogCamera.cockpitCamera == null)
         {
-            ogCamera.cockpitCameraGO = GameObject.Find("Cockpit Camera");
+            ogCamera.cockpitCamera = GameObject.Find("Cockpit Camera");
         }
 
         if (ogCamera.targetShip != null)
@@ -279,10 +374,10 @@ public class OGCameraFunctions : MonoBehaviour
                     }
                 }
 
-                if (ogCamera.cockpitGO != null & ogCamera.cockpitCameraGO != null)
+                if (ogCamera.cockpitGO != null & ogCamera.cockpitCamera != null)
                 {
                     ogCamera.cockpitGO.transform.rotation = ogCamera.targetShip.transform.rotation;
-                    ogCamera.cockpitCameraGO.transform.rotation = ogCamera.targetShip.transform.rotation;
+                    ogCamera.cockpitCamera.transform.rotation = ogCamera.targetShip.transform.rotation;
                 }
 
             }
@@ -613,9 +708,9 @@ public class OGCameraFunctions : MonoBehaviour
             SearchForShip(ogCamera);
         }
 
-        if (ogCamera.cockpitCameraGO == null)
+        if (ogCamera.cockpitCamera == null)
         {
-            ogCamera.cockpitCameraGO = GameObject.Find("Cockpit Camera");
+            ogCamera.cockpitCamera = GameObject.Find("Cockpit Camera");
         }
 
         if (ogCamera.targetShip != null)
@@ -643,10 +738,10 @@ public class OGCameraFunctions : MonoBehaviour
                     }
                 }
 
-                if (ogCamera.cockpitGO != null & ogCamera.cockpitCameraGO != null)
+                if (ogCamera.cockpitGO != null & ogCamera.cockpitCamera != null)
                 {
                     ogCamera.cockpitGO.transform.rotation = ogCamera.targetShip.transform.rotation;
-                    ogCamera.cockpitCameraGO.transform.rotation = ogCamera.targetShip.transform.rotation;
+                    ogCamera.cockpitCamera.transform.rotation = ogCamera.targetShip.transform.rotation;
                 }
 
             }
@@ -657,25 +752,10 @@ public class OGCameraFunctions : MonoBehaviour
 
     #region secondary camera functions
 
-    //This fades in black bars on the top and bottom of the screen for a more cinematic effect
-    public static void FadeInBlackBars(OGCamera ogCamera)
-    {
-        if (ogCamera.blackbars == false & ogCamera.blackbarsActive == true)
-        {
-            Task a = new Task(HudFunctions.FadeOutBlackBars(0.1f));
-            ogCamera.blackbarsActive = false;
-        }
-        else if (ogCamera.blackbars == true & ogCamera.blackbarsActive == false)
-        {
-            Task a = new Task(HudFunctions.FadeInBlackBars(0.1f));
-            ogCamera.blackbarsActive = true;
-        }
-    }
-
     //This shakes the camera using noise
     public static void ShakeCamera(OGCamera ogCamera)
     {
-        if (ogCamera.mainCameraGO != null & ogCamera.shakeCamera == true)
+        if (ogCamera.mainCamera != null & ogCamera.shakeCamera == true)
         {
             float x = Mathf.PerlinNoise(Time.time * ogCamera.shakeRate, 0) * 2 - 1; // Generates noise
             float y = Mathf.PerlinNoise(0, Time.time * ogCamera.shakeRate) * 2 - 1;
@@ -684,9 +764,9 @@ public class OGCameraFunctions : MonoBehaviour
             Vector3 currentVelocity = Vector3.zero;
             Vector3 startingPosition = Vector3.zero;
 
-            ogCamera.mainCameraGO.transform.localPosition = startingPosition + shakePosition; //Vector3.zero is the starting position
+            ogCamera.mainCamera.transform.localPosition = startingPosition + shakePosition; //Vector3.zero is the starting position
 
-            ogCamera.mainCameraGO.transform.localPosition = Vector3.SmoothDamp(ogCamera.mainCameraGO.transform.localPosition, startingPosition + shakePosition, ref currentVelocity, ogCamera.smoothTime);
+            ogCamera.mainCamera.transform.localPosition = Vector3.SmoothDamp(ogCamera.mainCamera.transform.localPosition, startingPosition + shakePosition, ref currentVelocity, ogCamera.smoothTime);
         }
     }
 

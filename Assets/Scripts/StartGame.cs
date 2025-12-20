@@ -10,8 +10,6 @@ public class StartGame : MonoBehaviour
     {
         Camera menuCamera = GameObject.FindAnyObjectByType<Camera>();
 
-        SceneFunctions.CreateCameras();
-
         Task special = new Task(SceneFunctions.GenerateStarField());
 
         Task a = new Task(MainMenuFunctions.RunMainMenu());

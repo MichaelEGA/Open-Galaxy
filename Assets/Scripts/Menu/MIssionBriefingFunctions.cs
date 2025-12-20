@@ -38,8 +38,6 @@ public static class MissionBriefingFunctions
         //This makes the hud visible again
         HudFunctions.SetHudTransparency(1);
 
-        SceneFunctions.ActivateCameras(true);
-
         Task a = new Task(UnlockPlayerControlsAfter(2));
     }
 
@@ -60,9 +58,6 @@ public static class MissionBriefingFunctions
 
         //This makes the hud invisible
         HudFunctions.SetHudTransparency(0);
-
-        //This turns off all the other cameras not used for the mission briefing scene
-        SceneFunctions.ActivateCameras(false);
 
         //This loads the ready room
         GameObject environmentGO = Resources.Load<GameObject>("objects/readyrooms/readyroom_white");

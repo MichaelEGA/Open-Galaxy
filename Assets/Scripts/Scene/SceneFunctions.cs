@@ -24,7 +24,6 @@ public static class SceneFunctions
         sceneGO.name = "scene";
 
         LoadScenePrefabs();
-        GetCameras();
 
         return scene;
     }
@@ -90,164 +89,6 @@ public static class SceneFunctions
         scene.hyperspaceTunnelPrefab = Resources.Load(OGGetAddress.hyperspace + "HyperspaceTunnel") as GameObject;
 
         scene.skyboxes = Resources.LoadAll<Material>(OGGetAddress.skyboxes);
-    }
-
-    //This creates the starfield Camera
-    public static void CreateCameras()
-    {
-        GameObject starfieldCameraGO = GameObject.Find("Starfield Camera");
-        Camera starfieldCamera = null;
-
-        bool loading = false;
-
-        if (starfieldCameraGO == null)
-        {
-            starfieldCameraGO = new GameObject();
-            starfieldCameraGO.name = "Starfield Camera";
-            starfieldCamera = starfieldCameraGO.AddComponent<Camera>();
-            starfieldCamera.nearClipPlane = 0.01f;
-            starfieldCamera.cullingMask = LayerMask.GetMask("starfield");
-            var starfieldCameraData = starfieldCamera.GetUniversalAdditionalCameraData();
-            starfieldCameraData.renderPostProcessing = true;
-            loading = true;
-        }
-
-        GameObject planetCameraGO = GameObject.Find("Planet Camera");
-        Camera planetCamera = null;
-
-        if (planetCameraGO == null)
-        {
-            planetCameraGO = new GameObject();
-            planetCameraGO.name = "Planet Camera";
-            planetCamera = planetCameraGO.AddComponent<Camera>();
-            planetCamera.cullingMask = LayerMask.GetMask("planet");
-            planetCamera.nearClipPlane = 0.01f;
-            var planetCameraData = planetCamera.GetUniversalAdditionalCameraData();
-            planetCameraData.renderType = CameraRenderType.Overlay;
-        }
-
-        GameObject mainCameraGO = GameObject.Find("Main Camera");
-        Camera mainCamera = null;
-
-        if (mainCameraGO == null)
-        {
-            mainCameraGO = new GameObject();
-            mainCameraGO.name = "Main Camera";
-            mainCameraGO.tag = "MainCamera";
-            mainCameraGO.AddComponent<AudioListener>();
-            mainCamera = mainCameraGO.AddComponent<Camera>();
-            mainCamera.cullingMask = LayerMask.GetMask("Default", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "collision11", "collision12", "collision13", "collision14", "collision15", "collision16");
-            mainCamera.nearClipPlane = 0.01f;
-            mainCamera.farClipPlane = 90000;
-            var mainCameraData = mainCamera.GetUniversalAdditionalCameraData();
-            mainCameraData.renderType = CameraRenderType.Overlay;
-            mainCameraData.renderPostProcessing = true;
-        }
-
-        GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
-        Camera cockpitCamera = null;
-
-        if (cockpitCameraGO == null)
-        {
-            cockpitCameraGO = new GameObject();
-            cockpitCameraGO.name = "Cockpit Camera";
-            cockpitCamera = cockpitCameraGO.AddComponent<Camera>();
-            cockpitCamera.cullingMask = LayerMask.GetMask("cockpit");
-            cockpitCamera.nearClipPlane = 0.01f;
-            var cockpitCameraData = cockpitCamera.GetUniversalAdditionalCameraData();
-            cockpitCameraData.renderType = CameraRenderType.Overlay;
-            cockpitCameraData.renderPostProcessing = true;
-        }
-
-        if (loading == true)
-        {
-            var starfieldCameraData = starfieldCamera.GetUniversalAdditionalCameraData();
-            starfieldCameraData.cameraStack.Add(planetCamera);
-            starfieldCameraData.cameraStack.Add(mainCamera);
-            starfieldCameraData.cameraStack.Add(cockpitCamera);
-        }
-    }
-
-    //This gets the cameras and adds them to the scene script
-    public static void GetCameras()
-    {
-        Scene scene = GetScene();
-
-        GameObject starfieldCamera = GameObject.Find("Starfield Camera");
-        GameObject planetCamera = GameObject.Find("Planet Camera");
-        GameObject mainCamera = GameObject.Find("Main Camera");
-        GameObject cockpitCamera = GameObject.Find("Cockpit Camera");
-
-        scene.starfieldCamera = starfieldCamera;
-        scene.planetCamera = planetCamera;
-        scene.mainCamera = mainCamera;
-        scene.cockpitCamera = cockpitCamera;
-    }
-
-    //This activates or deactivates the game cameras
-    public static void ActivateCameras(bool active)
-    {
-        //This gets the scene reference
-        Scene scene = SceneFunctions.GetScene();
-
-        //This gets the camera references
-        GameObject starfieldCameraGO = GameObject.Find("Starfield Camera");
-        GameObject planetCameraGO = GameObject.Find("Planet Camera");
-        GameObject mainCameraGO = GameObject.Find("Main Camera");
-        GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
-
-        //This gets the default camera position
-        OGSettings oGSettings = OGSettingsFunctions.GetSettings();
-
-        //if (oGSettings.cameraPosition == "follow")
-        //{
-        //    scene.followCameraIsActive = true;
-        //}
-        //else
-        //{
-        //    scene.followCameraIsActive = false;
-        //}
-
-        //This activates the required cameras
-        if (starfieldCameraGO != null)
-        {
-            Camera starfieldCamera = starfieldCameraGO.GetComponent<Camera>();
-
-            if (starfieldCamera != null)
-            {
-                starfieldCamera.enabled = active;
-            }
-        }
-
-        if (planetCameraGO != null)
-        {
-            Camera planetCamera = planetCameraGO.GetComponent<Camera>();
-
-            if (planetCamera != null)
-            {
-                planetCamera.enabled = active;
-            }
-        }
-
-        if (cockpitCameraGO != null)
-        {
-            Camera cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
-
-            if (cockpitCamera != null)
-            {
-                cockpitCamera.enabled = true;
-            }
-        }
-
-        if (mainCameraGO != null)
-        {
-            Camera mainCamera = mainCameraGO.GetComponent<Camera>();
-
-            if (mainCamera != null)
-            {
-                mainCamera.enabled = true;
-            }
-        }
     }
 
     #endregion
@@ -2468,35 +2309,57 @@ public static class SceneFunctions
     //This recenter the scene so the player is always close to the center to prevent floating point inaccuraries 
     public static void RecenterScene(Scene scene)
     {      
-        if (scene.mainCamera != null)
+        if (scene.ogCamera == null)
         {
-            Vector3 cameraPosition = scene.mainCamera.transform.position; //This checks the ships position
+            scene.ogCamera = OGCameraFunctions.GetOGCamera();
+        }
 
-            if (cameraPosition.x > 1000 || cameraPosition.x < -1000 || cameraPosition.y > 1000 || cameraPosition.y < -1000 || cameraPosition.z > 1000 || cameraPosition.z < -1000)
+        if (scene.ogCamera != null)
+        {
+            OGCamera oGCamera = scene.ogCamera;
+
+            if (oGCamera.mainCamera != null)
             {
-                GameObject tempGO = new GameObject();
+                Vector3 cameraPosition = oGCamera.mainCamera.transform.position; //This checks the ships position
 
-                tempGO.transform.position = scene.mainCamera.transform.position;
+                if (cameraPosition.x > 1000 || cameraPosition.x < -1000 || cameraPosition.y > 1000 || cameraPosition.y < -1000 || cameraPosition.z > 1000 || cameraPosition.z < -1000)
+                {
+                    GameObject tempGO = new GameObject();
 
-                scene.gameObject.transform.SetParent(tempGO.transform); //This parents the scene anchor to the ship
+                    tempGO.transform.position = oGCamera.mainCamera.transform.position;
 
-                tempGO.transform.position = new Vector3(0, 0, 0); //This moves the ship back to 0,0,0
+                    scene.gameObject.transform.SetParent(tempGO.transform); //This parents the scene anchor to the ship
 
-                scene.gameObject.transform.SetParent(null); //This unparents the scene anchor from the ship
+                    tempGO.transform.position = new Vector3(0, 0, 0); //This moves the ship back to 0,0,0
 
-                GameObject.Destroy(tempGO);
+                    scene.gameObject.transform.SetParent(null); //This unparents the scene anchor from the ship
+
+                    GameObject.Destroy(tempGO);
+                }
             }
-        } 
+        }
     }
 
     //This rotates the starfield camera to follow the players rotation
     public static void RotateStarfieldAndPlanetCamera(Scene scene)
     {
-        if (scene.starfieldCamera != null & scene.planetCamera != null)
+        if (scene.ogCamera == null)
         {
-            scene.starfieldCamera.transform.rotation = scene.mainCamera.transform.rotation;
-            scene.planetCamera.transform.rotation = scene.mainCamera.transform.rotation;
+            scene.ogCamera = OGCameraFunctions.GetOGCamera();
         }
+
+        if (scene.ogCamera != null)
+        {
+            OGCamera ogCamera = scene.ogCamera;
+
+            if (ogCamera.starfieldCamera != null & ogCamera.planetCamera != null)
+            {
+                ogCamera.starfieldCamera.transform.rotation = ogCamera.mainCamera.transform.rotation;
+                ogCamera.planetCamera.transform.rotation = ogCamera.mainCamera.transform.rotation;
+            }
+        }
+
+       
     }
 
     #endregion

@@ -3,11 +3,12 @@ using UnityEngine;
 public class OGCamera : MonoBehaviour
 {
     public Scene scene;
-    public GameObject mainCameraGO;
-    public GameObject cockpitCameraGO;
+    public GameObject mainCamera;
+    public GameObject cockpitCamera;
+    public GameObject starfieldCamera;
+    public GameObject planetCamera;
     public GameObject moveGO;
     public GameObject rotateGO;
-    public bool active;
     public Vector3 position;
     public Quaternion rotation;
 

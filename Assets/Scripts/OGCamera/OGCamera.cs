@@ -51,7 +51,6 @@ public class OGCamera : MonoBehaviour
     public bool shakeCamera = false;
     public float shakeRate = 1f;
     public float shakeStrength = 0.5f;
-    public float smoothTime = 0.1f;
     
     //Pan and zoom
     public float moveSpeed;

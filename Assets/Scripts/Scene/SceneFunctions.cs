@@ -144,47 +144,6 @@ public static class SceneFunctions
             mainCameraData.renderPostProcessing = true;
         }
 
-        GameObject followCameraGO = GameObject.Find("Follow Camera");
-        Camera followCamera = null;
-
-        if (followCameraGO == null)
-        {
-            followCameraGO = new GameObject();
-            followCameraGO.name = "Follow Camera";
-            followCamera = followCameraGO.AddComponent<Camera>();
-            followCamera.cullingMask = LayerMask.GetMask("Default", "collision_player", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "collision11", "collision12", "collision13", "collision14", "collision15", "collision16");
-            followCamera.nearClipPlane = 0.01f;
-            followCamera.farClipPlane = 90000;
-            var secondaryMainCameraData = followCamera.GetUniversalAdditionalCameraData();
-            secondaryMainCameraData.renderType = CameraRenderType.Overlay;
-            secondaryMainCameraData.renderPostProcessing = true;
-        }
-
-        GameObject filmCameraGO = GameObject.Find("Film Camera");
-        Camera filmCamera = null;
-
-        if (filmCameraGO == null)
-        {
-            filmCameraGO = new GameObject();
-            filmCameraGO.name = "Film Camera";
-            filmCameraGO.AddComponent<AudioListener>();
-            filmCamera = filmCameraGO.AddComponent<Camera>();
-            filmCamera.cullingMask = LayerMask.GetMask("Default", "collision_asteroid", "collision01", "collision02", "collision03", "collision04", "collision05", "collision06", "collision07", "collision08", "collision09", "collision10", "collision11", "collision12", "collision13", "collision14", "collision15", "collision16");
-            filmCamera.nearClipPlane = 0.01f;
-            filmCamera.farClipPlane = 90000;
-            var filmCameraData = filmCamera.GetUniversalAdditionalCameraData();
-            filmCameraData.renderType = CameraRenderType.Overlay;
-            filmCameraData.renderPostProcessing = true;
-        }
-
-        //This ensures only one audio listener is active
-        AudioListener filmCameraAL = filmCameraGO.GetComponent<AudioListener>();
-
-        if (filmCameraAL != null)
-        {
-            filmCameraAL.enabled = false;
-        }
-
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
         Camera cockpitCamera = null;
 
@@ -205,8 +164,6 @@ public static class SceneFunctions
             var starfieldCameraData = starfieldCamera.GetUniversalAdditionalCameraData();
             starfieldCameraData.cameraStack.Add(planetCamera);
             starfieldCameraData.cameraStack.Add(mainCamera);
-            starfieldCameraData.cameraStack.Add(followCamera);
-            starfieldCameraData.cameraStack.Add(filmCamera);
             starfieldCameraData.cameraStack.Add(cockpitCamera);
         }
     }
@@ -219,15 +176,11 @@ public static class SceneFunctions
         GameObject starfieldCamera = GameObject.Find("Starfield Camera");
         GameObject planetCamera = GameObject.Find("Planet Camera");
         GameObject mainCamera = GameObject.Find("Main Camera");
-        GameObject followCamera = GameObject.Find("Follow Camera");
-        GameObject filmCamera = GameObject.Find("Film Camera");
         GameObject cockpitCamera = GameObject.Find("Cockpit Camera");
 
         scene.starfieldCamera = starfieldCamera;
         scene.planetCamera = planetCamera;
         scene.mainCamera = mainCamera;
-        scene.followCamera = followCamera;
-        scene.filmCamera = filmCamera;
         scene.cockpitCamera = cockpitCamera;
     }
 
@@ -241,21 +194,19 @@ public static class SceneFunctions
         GameObject starfieldCameraGO = GameObject.Find("Starfield Camera");
         GameObject planetCameraGO = GameObject.Find("Planet Camera");
         GameObject mainCameraGO = GameObject.Find("Main Camera");
-        GameObject followCameraGO = GameObject.Find("Follow Camera");
-        GameObject filmCameraGO = GameObject.Find("Film Camera");
         GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
 
         //This gets the default camera position
         OGSettings oGSettings = OGSettingsFunctions.GetSettings();
 
-        if (oGSettings.cameraPosition == "follow")
-        {
-            scene.followCameraIsActive = true;
-        }
-        else
-        {
-            scene.followCameraIsActive = false;
-        }
+        //if (oGSettings.cameraPosition == "follow")
+        //{
+        //    scene.followCameraIsActive = true;
+        //}
+        //else
+        //{
+        //    scene.followCameraIsActive = false;
+        //}
 
         //This activates the required cameras
         if (starfieldCameraGO != null)
@@ -288,257 +239,13 @@ public static class SceneFunctions
             }
         }
 
-        if (filmCameraGO != null)
-        {
-            Camera filmCamera = filmCameraGO.GetComponent<Camera>();
-            AudioListener filmCameraAL = filmCameraGO.GetComponent<AudioListener>();
-
-            if (filmCamera != null)
-            {
-                filmCamera.enabled = false;
-            }
-
-            if (filmCameraAL != null)
-            {
-                filmCameraAL.enabled = false;
-            }
-        }
-
-        if (scene.followCameraIsActive == false & active == true)
-        {
-            if (mainCameraGO != null)
-            {
-                Camera mainCamera = mainCameraGO.GetComponent<Camera>();
-
-                if (mainCamera != null)
-                {
-                    mainCamera.enabled = true;
-                }
-            }
-
-            if (followCameraGO != null)
-            {
-                Camera followCamera = followCameraGO.GetComponent<Camera>();
-
-                if (followCamera != null)
-                {
-                    followCamera.enabled = false;
-                }
-            }
-        }
-        else if (scene.followCameraIsActive == true & active == true)
-        {
-            if (followCameraGO != null)
-            {
-                Camera followCamera = followCameraGO.GetComponent<Camera>();
-
-                if (followCamera != null)
-                {
-                    followCamera.enabled = true;
-                }
-            }
-
-            if (mainCameraGO != null)
-            {
-                Camera mainCamera = mainCameraGO.GetComponent<Camera>();
-                AudioListener audioListener = mainCameraGO.GetComponent<AudioListener>();
-
-                if (mainCamera != null)
-                {
-                    mainCamera.enabled = false;
-                }
-
-                if (audioListener != null)
-                {
-                    audioListener.enabled = true;
-                }
-            }
-        }
-        else
-        {
-            if (followCameraGO != null)
-            {
-                Camera secondaryCamera = followCameraGO.GetComponent<Camera>();
-
-                if (secondaryCamera != null)
-                {
-                    secondaryCamera.enabled = false;
-                }
-            }
-
-            if (mainCameraGO != null)
-            {
-                Camera mainCamera = mainCameraGO.GetComponent<Camera>();
-                AudioListener audioListener = mainCameraGO.GetComponent<AudioListener>();
-
-                if (mainCamera != null)
-                {
-                    mainCamera.enabled = true;
-                }
-
-                if (audioListener != null)
-                {
-                    audioListener.enabled = true;
-                }
-            }
-        }
-    }
-
-    //This activates and deactivates the follow camera
-    public static void ActivateFollowCamera(bool activate)
-    {
-        Scene scene = GetScene();
-
-        GameObject mainCameraGO = GameObject.Find("Main Camera");
-        GameObject followCameraGO = GameObject.Find("Follow Camera");
-        GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
-        GameObject filmCameraGO = GameObject.Find("Film Camera");
-
-        if (mainCameraGO != null & followCameraGO != null)
+        if (mainCameraGO != null)
         {
             Camera mainCamera = mainCameraGO.GetComponent<Camera>();
-            Camera followCamera = followCameraGO.GetComponent<Camera>();
-            Camera filmCamera = filmCameraGO.GetComponent<Camera>();
-            Camera cockpitCamera = null;
 
-            if (cockpitCameraGO != null)
+            if (mainCamera != null)
             {
-                cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
-            }
-
-            if (filmCamera != null)
-            {
-                if (filmCamera.enabled == false) //This prevents cameras being enabled when the film camera is active
-                {
-                    if (mainCamera != null & followCamera != null)
-                    {
-                        if (activate == true)
-                        {
-                            mainCamera.enabled = false;
-                            followCamera.enabled = true;
-
-                            if (cockpitCamera != null)
-                            {
-                                cockpitCamera.enabled = true;
-                            }
-
-                            scene.followCameraIsActive = true;
-                        }
-                        else
-                        {
-                            mainCamera.enabled = true;
-                            followCamera.enabled = false;
-
-                            if (cockpitCamera != null)
-                            {
-                                cockpitCamera.enabled = true;
-                            }
-
-                            scene.followCameraIsActive = false;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    //This activates the film camera
-    public static void ActivateFilmCamera(bool activate)
-    {
-        Scene scene = GetScene();
-
-        GameObject mainCameraGO = GameObject.Find("Main Camera");
-        GameObject followCameraGO = GameObject.Find("Follow Camera");
-        GameObject cockpitCameraGO = GameObject.Find("Cockpit Camera");
-        GameObject filmCameraGO = GameObject.Find("Film Camera");
-
-        if (mainCameraGO != null & followCameraGO != null)
-        {
-            Camera mainCamera = mainCameraGO.GetComponent<Camera>();
-            Camera followCamera = followCameraGO.GetComponent<Camera>();
-            Camera filmCamera = filmCameraGO.GetComponent<Camera>();
-
-            Camera cockpitCamera = null;
-
-            if (cockpitCameraGO != null)
-            {
-                cockpitCamera = cockpitCameraGO.GetComponent<Camera>();
-            }
-
-            AudioListener mainCameraAL = mainCameraGO.GetComponent<AudioListener>();
-            AudioListener filmCameraAL = filmCameraGO.GetComponent<AudioListener>();
-
-            if (mainCamera != null & followCamera != null & filmCamera != null)
-            {
-                if (activate == true)
-                {
-                    filmCamera.enabled = true;
-                    mainCamera.enabled = false;
-                    followCamera.enabled = false;
-
-                    if (cockpitCamera != null)
-                    {
-                        cockpitCamera.enabled = true;
-                    }
-
-                    scene.filmCameraIsActive = true;
-
-                    if (filmCameraAL != null)
-                    {
-                        filmCameraAL.enabled = true;
-                    }
-
-                    if (mainCameraAL != null)
-                    {
-                        mainCameraAL.enabled = false;
-                    }
-                }
-                else if (scene.followCameraIsActive == false)
-                {
-                    filmCamera.enabled = false;
-                    mainCamera.enabled = true;
-                    followCamera.enabled = false;
-
-                    if (cockpitCamera != null)
-                    {
-                        cockpitCamera.enabled = true;
-                    }
-
-                    scene.filmCameraIsActive = false;
-
-                    if (filmCameraAL != null)
-                    {
-                        filmCameraAL.enabled = false;
-                    }
-
-                    if (mainCameraAL != null)
-                    {
-                        mainCameraAL.enabled = true;
-                    }
-                }
-                else if (scene.followCameraIsActive == true)
-                {
-                    filmCamera.enabled = false;
-                    mainCamera.enabled = false;
-                    followCamera.enabled = true;
-
-                    if (cockpitCamera != null)
-                    {
-                        cockpitCamera.enabled = true;
-                    }
-
-                    scene.filmCameraIsActive = false;
-
-                    if (filmCameraAL != null)
-                    {
-                        filmCameraAL.enabled = false;
-                    }
-
-                    if (mainCameraAL != null)
-                    {
-                        mainCameraAL.enabled = true;
-                    }
-                }
+                mainCamera.enabled = true;
             }
         }
     }
@@ -2761,78 +2468,34 @@ public static class SceneFunctions
     //This recenter the scene so the player is always close to the center to prevent floating point inaccuraries 
     public static void RecenterScene(Scene scene)
     {      
-        if (scene.filmCameraIsActive == false)
+        if (scene.mainCamera != null)
         {
-            if (scene.mainShip != null)
+            Vector3 cameraPosition = scene.mainCamera.transform.position; //This checks the ships position
+
+            if (cameraPosition.x > 1000 || cameraPosition.x < -1000 || cameraPosition.y > 1000 || cameraPosition.y < -1000 || cameraPosition.z > 1000 || cameraPosition.z < -1000)
             {
-                Vector3 shipPosition = scene.mainShip.transform.position; //This checks the ships position
+                GameObject tempGO = new GameObject();
 
-                if (shipPosition.x > 1000 || shipPosition.x < -1000 || shipPosition.y > 1000 || shipPosition.y < -1000 || shipPosition.z > 1000 || shipPosition.z < -1000)
-                {
-                    GameObject tempGO = new GameObject();
+                tempGO.transform.position = scene.mainCamera.transform.position;
 
-                    tempGO.transform.position = scene.mainShip.transform.position;
+                scene.gameObject.transform.SetParent(tempGO.transform); //This parents the scene anchor to the ship
 
-                    scene.gameObject.transform.SetParent(tempGO.transform); //This parents the scene anchor to the ship
+                tempGO.transform.position = new Vector3(0, 0, 0); //This moves the ship back to 0,0,0
 
-                    tempGO.transform.position = new Vector3(0, 0, 0); //This moves the ship back to 0,0,0
+                scene.gameObject.transform.SetParent(null); //This unparents the scene anchor from the ship
 
-                    scene.gameObject.transform.SetParent(null); //This unparents the scene anchor from the ship
-
-                    GameObject.Destroy(tempGO);
-                }
+                GameObject.Destroy(tempGO);
             }
-        }
-        else
-        {
-            if (scene.filmCamera != null)
-            {
-                Vector3 cameraPosition = scene.filmCamera.transform.position; //This checks the ships position
-
-                if (cameraPosition.x > 1000 || cameraPosition.x < -1000 || cameraPosition.y > 1000 || cameraPosition.y < -1000 || cameraPosition.z > 1000 || cameraPosition.z < -1000)
-                {
-                    GameObject tempGO = new GameObject();
-
-                    tempGO.transform.position = scene.followCamera.transform.position;
-
-                    scene.gameObject.transform.SetParent(tempGO.transform); //This parents the scene anchor to the ship
-
-                    tempGO.transform.position = new Vector3(0, 0, 0); //This moves the ship back to 0,0,0
-
-                    scene.gameObject.transform.SetParent(null); //This unparents the scene anchor from the ship
-
-                    GameObject.Destroy(tempGO);
-                }
-            }
-        }
+        } 
     }
 
     //This rotates the starfield camera to follow the players rotation
     public static void RotateStarfieldAndPlanetCamera(Scene scene)
     {
-        if (scene.starfieldCamera != null & scene.planetCamera != null & scene.followCamera != null & scene.filmCamera != null)
+        if (scene.starfieldCamera != null & scene.planetCamera != null)
         {
-            if (scene.filmCameraIsActive == false )
-            { 
-                if (scene.mainShip != null)
-                {
-                    if (scene.followCameraIsActive == false)
-                    {
-                        scene.starfieldCamera.transform.rotation = scene.mainShip.transform.rotation;
-                        scene.planetCamera.transform.rotation = scene.mainShip.transform.rotation;
-                    }
-                    else
-                    {
-                        scene.starfieldCamera.transform.rotation = scene.followCamera.transform.rotation;
-                        scene.planetCamera.transform.rotation = scene.followCamera.transform.rotation;
-                    }
-                }
-            }
-            else
-            {
-                scene.starfieldCamera.transform.rotation = scene.filmCamera.transform.rotation;
-                scene.planetCamera.transform.rotation = scene.filmCamera.transform.rotation;
-            }
+            scene.starfieldCamera.transform.rotation = scene.mainCamera.transform.rotation;
+            scene.planetCamera.transform.rotation = scene.mainCamera.transform.rotation;
         }
     }
 

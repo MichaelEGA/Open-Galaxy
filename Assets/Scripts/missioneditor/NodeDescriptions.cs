@@ -246,16 +246,6 @@ public static class NodeDescriptions
            "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
-        else if (name == "activatefilmcamera")
-        {
-            description =
-            "Activate Film Camera \n " +
-            "\n " +
-            "This node activates the film camera. \n" +
-            "\n " +
-            "Extra Information \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
-        }
         else if (name == "activatedocking")
         {
             description =
@@ -733,6 +723,16 @@ public static class NodeDescriptions
             "- If loop is set to false the track will play once and then stop, if set to true it will repeat. \n" +
             "- Select none if you want the music to fade out. \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
+        else if (name == "setcamera")
+        {
+            description =
+            "Set Camera \n " +
+            "\n " +
+            "This manually sets the camera mode. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
         else if (name == "setcargo")
         {

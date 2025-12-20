@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class FilmCamera : MonoBehaviour
+public class OGCamera : MonoBehaviour
 {
     public Scene scene;
-    public GameObject filmCameraGO;
+    public GameObject mainCameraGO;
     public GameObject cockpitCameraGO;
     public GameObject moveGO;
     public GameObject rotateGO;
@@ -11,8 +11,15 @@ public class FilmCamera : MonoBehaviour
     public Vector3 position;
     public Quaternion rotation;
 
-    //Film Camera Modes
-    public string mode = "freelook";
+    //Film camera mode
+    public string mode = "gamemode";
+
+    //Game Mode
+    public string viewType = "thirdperson";
+    public float toggleGameCameraPressTime;
+
+    //Film Camera Shot Type
+    public string shotType = "freelook";
 
     //Static shot
     public bool staticShotTaken = false;
@@ -57,6 +64,6 @@ public class FilmCamera : MonoBehaviour
 
     void FixedUpdate()
     {
-        FilmCameraFunctions.RunFilmCamera(this);
+        OGCameraFunctions.RunCamera(this);
     }
 }

@@ -68,16 +68,11 @@ public class Scene : MonoBehaviour
     public float fogDistanceFromCenter = 15000;
 
     [Header("Cameras")]
-    public bool followCameraIsActive = true;
-    public bool filmCameraIsActive = false;
     public GameObject mainCamera;
-    public GameObject followCamera;
     public GameObject planetCamera;
     public GameObject starfieldCamera;
-    public GameObject filmCamera;
     public GameObject cockpitCamera;
     public GameObject cockpitAnchor;
-
 
     [Header("Starfield")]
     [HideInInspector] public GameObject waypointObject;

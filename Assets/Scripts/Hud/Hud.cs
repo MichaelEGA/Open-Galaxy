@@ -7,9 +7,9 @@ public class Hud : MonoBehaviour
 {
     [Header("Key References")]
     [HideInInspector] public Scene scene;
+    [HideInInspector] public OGCamera ogCamera;
     [HideInInspector] public SmallShip smallShip;
     [HideInInspector] public Camera mainCamera;
-    [HideInInspector] public Camera secondaryCamera;
     [HideInInspector] public Camera starfieldCamera;
     [HideInInspector] public float startTime;
     [HideInInspector] public Color colour;

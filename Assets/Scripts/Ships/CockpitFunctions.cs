@@ -92,14 +92,14 @@ public static class CockpitFunctions
                 {
                     if (keyboard.f1Key.isPressed == true & Time.time > smallShip.toggleCameraPressTime + 0.5f)
                     {
-                        if (smallShip.scene.followCameraIsActive == false)
-                        {
-                            SceneFunctions.ActivateFollowCamera(true);
-                        }
-                        else
-                        {
-                            SceneFunctions.ActivateFollowCamera(false);
-                        }
+                        //if (smallShip.scene.followCameraIsActive == false)
+                        //{
+                        //    //SceneFunctions.ActivateFollowCamera(true);
+                        //}
+                        //else
+                        //{
+                        //    //SceneFunctions.ActivateFollowCamera(false);
+                        //}
 
                         smallShip.toggleCameraPressTime = Time.time;
                     }
@@ -109,14 +109,14 @@ public static class CockpitFunctions
                 {
                     if (controller.rightStickButton.isPressed == true & Time.time > smallShip.toggleCameraPressTime + 0.5f)
                     {
-                        if (smallShip.scene.followCameraIsActive == false)
-                        {
-                            SceneFunctions.ActivateFollowCamera(true);
-                        }
-                        else
-                        {
-                            SceneFunctions.ActivateFollowCamera(false);
-                        }
+                        //if (smallShip.scene.followCameraIsActive == false)
+                        //{
+                        //    //SceneFunctions.ActivateFollowCamera(true);
+                        //}
+                        //else
+                        //{
+                        //   // SceneFunctions.ActivateFollowCamera(false);
+                        //}
 
                         smallShip.toggleCameraPressTime = Time.time;
                     }
@@ -127,11 +127,11 @@ public static class CockpitFunctions
                 {
                     Scene scene = SceneFunctions.GetScene();
 
-                    if (scene.followCamera != null)
-                    {
-                        smallShip.followCamera = scene.followCamera;
-                        smallShip.followCamera.transform.SetParent(scene.transform);
-                    }
+                    //if (scene.followCamera != null)
+                    //{
+                    //    smallShip.followCamera = scene.followCamera;
+                    //    smallShip.followCamera.transform.SetParent(scene.transform);
+                    //}
                 }
 
                 Transform target = smallShip.transform; // The target to follow (the ship itself);

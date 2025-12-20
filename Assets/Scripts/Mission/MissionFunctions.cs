@@ -96,6 +96,9 @@ public static class MissionFunctions
         Task a = new Task(FindAndRunPreLoadEvents(mission, firstLocationNode.conditionLocation, startTime, true));
         while (a.Running == true) { yield return null; }
 
+        //This actives the camera for the mission
+        OGCameraFunctions.ActivateOGCamera();
+
         //This tells the player to get ready, starts the game, locks the cursor and gets rid of the loading screen
         MainMenuFunctions.AddLogToLoadingScreen(missionName + " loaded.", startTime);
 
@@ -380,11 +383,6 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "activatedocking")
         {
             ActivateDocking(missionEvent);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "activatefilmcamera")
-        {
-            ActivateFilmCamera(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "activatehyperspace")
@@ -749,6 +747,11 @@ public static class MissionFunctions
             PlayMusicTrack(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "setcamera")
+        {
+            SetCamera(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "setcargo")
         {
             SetCargo(missionEvent);
@@ -1057,103 +1060,6 @@ public static class MissionFunctions
                     }
                 }
             }
-        }
-    }
-
-    //This activates the film camera
-    public static void ActivateFilmCamera(MissionEvent missionEvent)
-    {
-        float x = missionEvent.x;
-        float y = missionEvent.y;
-        float z = missionEvent.z;
-
-        Vector3 position = new Vector3(x, y, z);
-
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        bool activate = false;
-
-        if (bool.TryParse(missionEvent.data1, out _))
-        {
-            activate = bool.Parse(missionEvent.data1);
-        }
-
-        string mode = missionEvent.data2;
-
-        bool blackbars = false;
-
-        if (bool.TryParse(missionEvent.data3, out _))
-        {
-            blackbars = bool.Parse(missionEvent.data3);
-        }
-
-        string targetName = missionEvent.data4;
-
-        bool shakecamera = false;
-
-        if (bool.TryParse(missionEvent.data5, out _))
-        {
-            shakecamera = bool.Parse(missionEvent.data5);
-        }
-
-        float shakerate = 1;
-
-        if (float.TryParse(missionEvent.data6, out _))
-        {
-            shakerate = float.Parse(missionEvent.data6);
-        }
-
-        float shakestrength = 0.7f;
-
-        if (float.TryParse(missionEvent.data7, out _))
-        {
-            shakestrength = float.Parse(missionEvent.data7);
-        }
-
-        bool move = false;
-
-        if (bool.TryParse(missionEvent.data8, out _))
-        {
-            move = bool.Parse(missionEvent.data8);
-        }
-
-        string moveAxis = missionEvent.data9;
-
-        float moveSpeed = 50f;
-
-        if (float.TryParse(missionEvent.data10, out _))
-        {
-            moveSpeed = float.Parse(missionEvent.data10);
-        }
-
-        bool rotate = false;
-
-        if (bool.TryParse(missionEvent.data11, out _))
-        {
-            rotate = bool.Parse(missionEvent.data11);
-        }
-
-        string rotateAxis = missionEvent.data12;
-
-        float rotateSpeed = 50f;
-
-        if (float.TryParse(missionEvent.data13, out _))
-        {
-            rotateSpeed = float.Parse(missionEvent.data13);
-        }
-
-        if (activate == true)
-        {
-            FilmCameraFunctions.ActivateFilmCamera();
-            FilmCameraFunctions.SetFilmCameraValues(mode, blackbars, position, rotation, targetName, shakecamera, shakerate, shakestrength, move, moveAxis, moveSpeed, rotate, rotateAxis, rotateSpeed);
-        }
-        else
-        {
-            FilmCameraFunctions.DeactivateFilmCamera();
         }
     }
 
@@ -3249,6 +3155,83 @@ public static class MissionFunctions
         {
             Task a = new Task(MusicFunctions.PlayMusicTrack(musicManager, track, loop));
         }       
+    }
+
+    //This manually sets the camera mode
+    public static void SetCamera(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        Vector3 position = new Vector3(x, y, z);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string mode = missionEvent.data1;
+
+        string shotType = missionEvent.data2;
+
+        string targetName = missionEvent.data3;
+
+        bool move = false;
+
+        if (bool.TryParse(missionEvent.data4, out _))
+        {
+            move = bool.Parse(missionEvent.data4);
+        }
+
+        string moveAxis = missionEvent.data5;
+
+        float moveSpeed = 50f;
+
+        if (float.TryParse(missionEvent.data6, out _))
+        {
+            moveSpeed = float.Parse(missionEvent.data6);
+        }
+
+        bool rotate = false;
+
+        if (bool.TryParse(missionEvent.data7, out _))
+        {
+            rotate = bool.Parse(missionEvent.data7);
+        }
+
+        string rotateAxis = missionEvent.data8;
+
+        float rotateSpeed = 50f;
+
+        if (float.TryParse(missionEvent.data9, out _))
+        {
+            rotateSpeed = float.Parse(missionEvent.data9);
+        }
+
+        bool shakecamera = false;
+
+        if (bool.TryParse(missionEvent.data10, out _))
+        {
+            shakecamera = bool.Parse(missionEvent.data10);
+        }
+
+        float shakerate = 1;
+
+        if (float.TryParse(missionEvent.data11, out _))
+        {
+            shakerate = float.Parse(missionEvent.data11);
+        }
+
+        float shakestrength = 0.7f;
+
+        if (float.TryParse(missionEvent.data12, out _))
+        {
+            shakestrength = float.Parse(missionEvent.data12);
+        }
+
+        OGCameraFunctions.SetOGCameraValues(mode, shotType, position, rotation, targetName, shakecamera, shakerate, shakestrength, move, moveAxis, moveSpeed, rotate, rotateAxis, rotateSpeed);
     }
 
     //This changes the selected ship/s cargo

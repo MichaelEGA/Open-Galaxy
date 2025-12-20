@@ -363,16 +363,11 @@ public class SmallShip : MonoBehaviour
 
         //Systems functions
         DamageFunctions.RestoreShipsSystems_SmallShip(this);
-
-        //Cockpit Functions
-        CockpitFunctions.RunCockpitFunctions(this);
-        
     }
     
     void FixedUpdate()
     {
         SmallShipFunctions.MoveShip(this);
-        CockpitFunctions.FollowCamera(this);
     }
 
     void OnCollisionEnter(Collision collision)

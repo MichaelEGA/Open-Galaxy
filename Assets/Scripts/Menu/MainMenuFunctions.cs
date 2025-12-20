@@ -834,7 +834,7 @@ public static class MainMenuFunctions
     public static void DisplayMessageOnTitleScreen(Text titleScreenMessageBox)
     {
         string[] messages = new string[12];
-        messages[0] = "Welcome to Open Galaxy. Version " + Application.version;
+        messages[0] = "Welcome to Open Galaxy Version " + Application.version;
         messages[1] = "Open Galaxy's is a platform for X-Wing and Tie Fighter style custom missions.";
         messages[2] = "All Open Galaxy's missions were created using the inbuilt mission editor.";
         messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";

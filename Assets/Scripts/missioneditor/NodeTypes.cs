@@ -848,161 +848,6 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
-    public static void Draw_ActivateFilmCamera(Node node)
-    {
-        NodeFunctions.DrawNodeBase(node);
-
-        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
-
-        NodeFunctions.DrawText(node, "activatefilmcamera", 8, 17.5f, -5, 12.5f, 65);
-
-        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
-
-        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
-
-        float drop = -25;
-
-        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.eventType = NodeFunctions.DrawText(node, "activatefilmcamera", 7, 5, drop, 12.5f, 90);
-
-        drop -= 15;
-
-        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.y = NodeFunctions.DrawInputField(node, "y", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options1 = new List<string>();
-        options1.Add("true");
-        options1.Add("false");
-
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "active", "true", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options2 = new List<string>();
-        options2.Add("freelook");
-        options2.Add("staticshot");
-        options2.Add("staticshotlocked");
-        options2.Add("relativestaticshot");
-        options2.Add("relativestaticlocked");
-        options2.Add("trackingshot");
-        options2.Add("relativetrackingshot");
-        options2.Add("mountedshot");
-        options2.Add("mountedshotlocked");
-        options2.Add("cockpitshot");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options2, "mode", "freelook", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options3 = new List<string>();
-        options3.Add("true");
-        options3.Add("false");
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options3, "blackbars", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data4 = NodeFunctions.DrawInputField(node, "target ship", "none", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options4 = new List<string>();
-        options4.Add("true");
-        options4.Add("false");
-
-        node.data5 = NodeFunctions.DrawDropDownMenu(node, options4, "shake camera", "false", 7, 5, drop, 12.5f, 90, 5f);
-        
-        drop -= 15;
-
-        node.data6 = NodeFunctions.DrawInputField(node, "shake rate", "1", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data7 = NodeFunctions.DrawInputField(node, "shake strength", "0.7", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options5 = new List<string>();
-        options5.Add("true");
-        options5.Add("false");
-
-        node.data8 = NodeFunctions.DrawDropDownMenu(node, options5, "move", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options6 = new List<string>();
-        options6.Add("xaxis");
-        options6.Add("yaxis");
-        options6.Add("zaxis");
-
-        node.data9 = NodeFunctions.DrawDropDownMenu(node, options6, "move axis", "xaxis", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data10 = NodeFunctions.DrawInputField(node, "move speed", "50", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options7 = new List<string>();
-        options7.Add("true");
-        options7.Add("false");
-
-        node.data11 = NodeFunctions.DrawDropDownMenu(node, options7, "rotate", "false", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        List<string> options8 = new List<string>();
-        options8.Add("xaxis");
-        options8.Add("yaxis");
-        options8.Add("zaxis");
-
-        node.data12 = NodeFunctions.DrawDropDownMenu(node, options8, "rotate axis", "xaxis", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data13 = NodeFunctions.DrawInputField(node, "rotate speed", "50", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
-
-        drop -= 30;
-
-        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
-    }
-
     public static void Draw_ActivateRapidFire(Node node)
     {
         NodeFunctions.DrawNodeBase(node);
@@ -3685,6 +3530,154 @@ public static class NodeTypes
         drop -= 15;
 
         node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
+    public static void Draw_SetCamera(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawNodeLink(node, 7.5f, -12f, 10, 10, "female");
+
+        NodeFunctions.DrawText(node, "setcamera", 8, 17.5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventID = NodeFunctions.DrawText(node, "", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.eventType = NodeFunctions.DrawText(node, "setcamera", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionTime = NodeFunctions.DrawInputField(node, "Time", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.y = NodeFunctions.DrawInputField(node, "y", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.z = NodeFunctions.DrawInputField(node, "z", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.xRotation = NodeFunctions.DrawInputField(node, "xRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.yRotation = NodeFunctions.DrawInputField(node, "yRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.zRotation = NodeFunctions.DrawInputField(node, "zRot", "0", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options1 = new List<string>();
+        options1.Add("gamemode");
+        options1.Add("filmmode");
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, options1, "mode", "gamemode", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options2 = new List<string>();
+        options2.Add("freelook");
+        options2.Add("staticshot");
+        options2.Add("staticshotlocked");
+        options2.Add("relativestaticshot");
+        options2.Add("relativestaticlocked");
+        options2.Add("trackingshot");
+        options2.Add("relativetrackingshot");
+        options2.Add("mountedshot");
+        options2.Add("mountedshotlocked");
+        options2.Add("cockpitshot");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options2, "shottype", "freelook", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawInputField(node, "target ship", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options5 = new List<string>();
+        options5.Add("false");
+        options5.Add("true");
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, options5, "move", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options6 = new List<string>();
+        options6.Add("xaxis");
+        options6.Add("yaxis");
+        options6.Add("zaxis");
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, options6, "move axis", "xaxis", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data6 = NodeFunctions.DrawInputField(node, "move speed", "50", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options7 = new List<string>();
+        options7.Add("false");
+        options7.Add("true");
+
+
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, options7, "rotate", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options8 = new List<string>();
+        options8.Add("xaxis");
+        options8.Add("yaxis");
+        options8.Add("zaxis");
+
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, options8, "rotate axis", "xaxis", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawInputField(node, "rotate speed", "50", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options4 = new List<string>();
+        options4.Add("true");
+        options4.Add("false");
+
+        node.data10 = NodeFunctions.DrawDropDownMenu(node, options4, "shake camera", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawInputField(node, "shake rate", "1", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data12 = NodeFunctions.DrawInputField(node, "shake strength", "0.7", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

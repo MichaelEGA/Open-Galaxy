@@ -67,7 +67,6 @@ public static class WindowFunctions
         List<string> buttonList = new List<string>();
 
         buttonList.Add("activatedocking");
-        buttonList.Add("activatefilmcamera");
         buttonList.Add("activatehyperspace");
         buttonList.Add("activaterapidfire");
         buttonList.Add("activatesystemstargeting");
@@ -126,6 +125,7 @@ public static class WindowFunctions
         buttonList.Add("preload_setlighting");
         buttonList.Add("preload_setsceneradius");
         buttonList.Add("preload_setskybox");
+        buttonList.Add("setcamera");
         buttonList.Add("setcargo");
         buttonList.Add("setcontrollock");
         buttonList.Add("setfollowtarget");

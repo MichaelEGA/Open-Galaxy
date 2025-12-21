@@ -474,7 +474,7 @@ public class OGCameraFunctions : MonoBehaviour
                             ogCamera.cockpitCamera.transform.localRotation = smallShip.currentRotation;
                         }
 
-                        ShakeCockpit(ogCamera);
+                        ShakeAndHitFirstPerson(ogCamera);
                     }
                 }
             }
@@ -552,7 +552,83 @@ public class OGCameraFunctions : MonoBehaviour
                 {
                     followCamera.transform.SetParent(smallShip.transform);
                 }
+
+                ShakeAndHitThirdPerson(ogCamera);
             }
+        }
+    }
+
+    #endregion
+
+    #region secondary game camera functions
+
+    //This causes the cockpit to shake when using boost or hit
+    public static void ShakeAndHitFirstPerson(OGCamera ogCamera)
+    {
+        if (ogCamera.targetShip != null & ogCamera.cockpitGO != null)
+        {
+            SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+
+            float shakeStrength = 0;
+            float shakeRate = 10;
+
+            if (smallShip.wep == true || ogCamera.hitTime + 0.5f > Time.time)
+            {
+                shakeStrength = 0.002f;
+            }
+
+            if (ogCamera.shipHit == true)
+            {
+                ogCamera.hitTime = Time.time;
+                ogCamera.shipHit = false;
+            }
+
+            float x = Mathf.PerlinNoise(Time.time * shakeRate, 0) * 2 - 1; // Generates noise
+            float y = Mathf.PerlinNoise(0, Time.time * shakeRate) * 2 - 1;
+
+            Vector3 shakePosition = new Vector3(x, y, 0) * shakeStrength;
+            Vector3 currentVelocity = Vector3.zero;
+            Vector3 startingPosition = Vector3.zero;
+            float smoothTime = 0.1f;
+
+            ogCamera.cockpitGO.transform.localPosition = startingPosition + shakePosition; //Vector3.zero is the starting position
+
+            ogCamera.cockpitGO.transform.localPosition = Vector3.SmoothDamp(ogCamera.cockpitGO.transform.localPosition, startingPosition + shakePosition, ref currentVelocity, smoothTime);
+        }
+    }
+
+    //This causes the camera to shake when using boost or hit
+    public static void ShakeAndHitThirdPerson(OGCamera ogCamera)
+    {
+        if (ogCamera.targetShip != null)
+        {
+            SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+
+            float shakeStrength = 0;
+            float shakeRate = 10;
+
+            if (ogCamera.hitTime + 0.5f > Time.time) //Shaking with WEP doesn't look good just with hit
+            {
+                shakeStrength = 0.1f;
+            }
+
+            if (ogCamera.shipHit == true)
+            {
+                ogCamera.hitTime = Time.time;
+                ogCamera.shipHit = false;
+            }
+
+            float x = Mathf.PerlinNoise(Time.time * shakeRate, 0) * 2 - 1; // Generates noise
+            float y = Mathf.PerlinNoise(0, Time.time * shakeRate) * 2 - 1;
+
+            Vector3 shakePosition = new Vector3(x, y, 0) * shakeStrength;
+            Vector3 currentVelocity = Vector3.zero;
+            Vector3 startingPosition = Vector3.zero;
+            float smoothTime = 0.1f;
+
+            ogCamera.mainCamera.transform.localPosition = startingPosition + shakePosition; //Vector3.zero is the starting position
+
+            ogCamera.mainCamera.transform.localPosition = Vector3.SmoothDamp(ogCamera.mainCamera.transform.localPosition, startingPosition + shakePosition, ref currentVelocity, smoothTime);
         }
     }
 
@@ -935,7 +1011,7 @@ public class OGCameraFunctions : MonoBehaviour
                             ogCamera.cockpitCamera.transform.localRotation = smallShip.currentRotation;
                         }
 
-                        ShakeCockpit(ogCamera);
+                        ShakeAndHitFirstPerson(ogCamera);
                     }
                 }
 
@@ -945,7 +1021,7 @@ public class OGCameraFunctions : MonoBehaviour
 
     #endregion
 
-    #region secondary camera functions
+    #region secondary film camera functions
 
     //This shakes the camera using noise
     public static void ShakeCamera(OGCamera ogCamera)
@@ -963,34 +1039,6 @@ public class OGCameraFunctions : MonoBehaviour
             ogCamera.mainCamera.transform.localPosition = startingPosition + shakePosition; //Vector3.zero is the starting position
 
             ogCamera.mainCamera.transform.localPosition = Vector3.SmoothDamp(ogCamera.mainCamera.transform.localPosition, startingPosition + shakePosition, ref currentVelocity, smoothTime);
-        }
-    }
-
-    public static void ShakeCockpit(OGCamera ogCamera)
-    {
-        if (ogCamera.targetShip != null)
-        {
-            SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
-
-            float shakeStrength = 0;
-            float shakeRate = 10;
-
-            if (smallShip.wep == true)
-            {
-                shakeStrength = 0.002f;
-            }
-
-            float x = Mathf.PerlinNoise(Time.time * shakeRate, 0) * 2 - 1; // Generates noise
-            float y = Mathf.PerlinNoise(0, Time.time * shakeRate) * 2 - 1;
-
-            Vector3 shakePosition = new Vector3(x, y, 0) * shakeStrength;
-            Vector3 currentVelocity = Vector3.zero;
-            Vector3 startingPosition = Vector3.zero;
-            float smoothTime = 0.1f;
-
-            ogCamera.cockpitGO.transform.localPosition = startingPosition + shakePosition; //Vector3.zero is the starting position
-
-            ogCamera.cockpitGO.transform.localPosition = Vector3.SmoothDamp(ogCamera.cockpitGO.transform.localPosition, startingPosition + shakePosition, ref currentVelocity, smoothTime);
         }
     }
 

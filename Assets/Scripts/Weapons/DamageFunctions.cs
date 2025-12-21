@@ -89,14 +89,12 @@ public static class DamageFunctions
                 if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
 
                 //This shakes the cockpit camera
-                Task a = new Task(CockpitFunctions.CockpitDamageShake(smallShip, 1, 0.011f));
+                smallShip.scene.ogCamera.shipHit = true;
 
                 if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                 {
                     Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
                 }
-
-                SmallShipFunctions.AddTaskToPool(smallShip, a);
             }
         }
     }
@@ -180,15 +178,12 @@ public static class DamageFunctions
                 if (smallShip.rearShieldLevel < 0) { smallShip.rearShieldLevel = 0; }
                 if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
 
-                //This shakes the cockpit camera
-                Task a = new Task(CockpitFunctions.CockpitDamageShake(smallShip, 1, 0.011f));
+                smallShip.scene.ogCamera.shipHit = true;
 
                 if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                 {
                     Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
                 }
-
-                SmallShipFunctions.AddTaskToPool(smallShip, a);
             }
 
             //This disables a ship that has less than 1 percent systems power

@@ -62,6 +62,10 @@ public class OGCamera : MonoBehaviour
     public bool rotateActive = false;
     public string rotationAxis;
 
+    //Shake and hit
+    public float hitTime;
+    public bool shipHit;
+
     void FixedUpdate()
     {
         OGCameraFunctions.RunCamera(this);

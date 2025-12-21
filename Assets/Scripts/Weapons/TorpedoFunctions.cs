@@ -256,8 +256,8 @@ public static class TorpedoFunctions
 
             }
 
-            //This shakes the camera
-            Task a = new Task(CockpitFunctions.ActivateCockpitShake(smallShip, 0.5f));
+            //This shakes the cockpit camera
+            smallShip.scene.ogCamera.shipHit = true;
 
             smallShip.torpedoPressedTime = Time.time + 2.5f;
         }

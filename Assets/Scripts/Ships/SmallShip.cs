@@ -20,6 +20,7 @@ public class SmallShip : MonoBehaviour
     public string shieldType;
     public string cargo = "no cargo";
     public string explosionType;
+    public string cockpitName;
 
     [Header("Ship Components")]
     public Rigidbody shipRigidbody;
@@ -36,13 +37,7 @@ public class SmallShip : MonoBehaviour
     [Header("Scene Reference")]
     public Scene scene;
 
-    [Header("Ship Cameras")]
-    [HideInInspector] public GameObject mainCamera;
-    [HideInInspector] public GameObject followCamera;
-    [HideInInspector] public bool cameraAttached;
-    [HideInInspector] public bool attachCameraToAI;
-    [HideInInspector] public Vector3 cameraLocalPosition;
-    [HideInInspector] public GameObject cockpitCamera;
+    [Header("Ship Cameras Positions")]
     [HideInInspector] public GameObject cameraPosition;
     [HideInInspector] public GameObject followCameraPosition;
     [HideInInspector] public GameObject focusCameraPosition;
@@ -64,6 +59,9 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float thrustInput = 1;
     [HideInInspector] public float thrustTimeStamp;
     [HideInInspector] public bool wep;
+
+    [Header("Hyperspace")]
+    public bool inHyperspace;
 
     [Header("Controller Inputs")]
     [HideInInspector] public float controllerSenstivity = 0.05f;
@@ -262,26 +260,6 @@ public class SmallShip : MonoBehaviour
 
     [Header("Ship Collisions")]
     [HideInInspector] public bool isCurrentlyColliding;
-
-    [Header("Ship Cockpit")]
-    public bool inHyperspace;
-    [HideInInspector] public bool cockpitShake;
-    [HideInInspector] public float shakeMagnitude = 0.1f;
-    [HideInInspector] public float movementTime = 0.1f;
-    [HideInInspector] public float randomisationX = 0;
-    [HideInInspector] public float randomisationY = 0;
-    [HideInInspector] public float smoothThrust;
-    [HideInInspector] public string cockpitName;
-    [HideInInspector] public GameObject cockpitAnchor;
-    [HideInInspector] public GameObject cockpit;
-    [HideInInspector] public bool cockpitDamageShake;
-    [HideInInspector] public bool cockpitSpeedShake;
-    [HideInInspector] public float speedShakeMagnitude;
-    [HideInInspector] public Vector3 basePosition = new Vector3(0,0,0);
-    [HideInInspector] public AudioSource cockpitAudioSource;
-    [HideInInspector] public Vector3 currentPosition;
-    [HideInInspector] public Quaternion currentRotation;
-
 
     [Header("Systems")]
     public float restoreDelayTime;

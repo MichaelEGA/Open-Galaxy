@@ -2229,6 +2229,15 @@ public static class SceneFunctions
         //This gets the scene reference
         Scene scene = GetScene();
 
+        //This gets the cockpit anchor
+        GameObject cockpitAnchor = GameObject.Find("cockpitanchor");
+
+        if (cockpitAnchor == null)
+        {
+            cockpitAnchor = new GameObject();
+            cockpitAnchor.name = "cockpitanchor";
+        }
+
         //This checks whether the requested cockpit exists or not
         bool cockpitExists = false;
 
@@ -2272,6 +2281,8 @@ public static class SceneFunctions
                     {
                         cockpit = GameObject.Instantiate(objectPrefab) as GameObject;
                         cockpit.transform.position = new Vector3(0, 0, 0);
+                        cockpit.transform.parent = cockpitAnchor.transform;
+                        cockpit.transform.localRotation = Quaternion.identity;
                         cockpit.layer = LayerMask.NameToLayer("cockpit");
                         GameObjectUtils.SetLayerAllChildren(cockpit.transform, 28);
                         scene.cockpitsPool.Add(cockpit);

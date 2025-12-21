@@ -19,6 +19,7 @@ public static class HudFunctions
         hudGO.name = "Hud";
         Hud hudScript = hudGO.AddComponent<Hud>();
         hudScript.startTime = Time.time;
+        hudScript.ogCamera = OGCameraFunctions.GetOGCamera();
 
         GameObject fadePrefab = Resources.Load(OGGetAddress.hud + "Fade") as GameObject;
         GameObject fadeGO = GameObject.Instantiate(fadePrefab);
@@ -1132,11 +1133,11 @@ public static class HudFunctions
 
             if (hud.mainCamera == null)
             {
-                if (hud.smallShip != null)
+                if (hud.ogCamera != null)
                 {
-                    if (hud.smallShip.mainCamera != null)
+                    if (hud.ogCamera.mainCamera != null)
                     {
-                        hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
+                        hud.mainCamera = hud.ogCamera.GetComponent<Camera>();
                     }
                 }
             }
@@ -1334,11 +1335,16 @@ public static class HudFunctions
 
             if (hud.mainCamera == null)
             {
-                if (hud.smallShip != null)
+                if (hud.ogCamera == null)
                 {
-                    if (hud.smallShip.mainCamera != null)
+                    hud.ogCamera = OGCameraFunctions.GetOGCamera();
+                }
+
+                if (hud.ogCamera != null)
+                {
+                    if (hud.ogCamera.mainCamera != null)
                     {
-                        hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
+                        hud.mainCamera = hud.ogCamera.mainCamera.GetComponent<Camera>();
                     }
                 }
             }
@@ -1431,11 +1437,16 @@ public static class HudFunctions
 
             if (hud.mainCamera == null)
             {
-                if (hud.smallShip != null)
+                if (hud.ogCamera == null)
                 {
-                    if (hud.smallShip.mainCamera != null)
+                    hud.ogCamera = OGCameraFunctions.GetOGCamera();
+                }
+
+                if (hud.ogCamera != null)
+                {
+                    if (hud.ogCamera.mainCamera != null)
                     {
-                        hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
+                        hud.mainCamera = hud.ogCamera.mainCamera.GetComponent<Camera>();
                     }
                 }
             }
@@ -1763,9 +1774,9 @@ public static class HudFunctions
                                     {
                                         if (hud.smallShip != null)
                                         {
-                                            if (hud.smallShip.mainCamera != null)
+                                            if (hud.ogCamera.mainCamera != null)
                                             {
-                                                hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
+                                                hud.mainCamera = hud.ogCamera.mainCamera.GetComponent<Camera>();
                                             }
                                         }
                                     }
@@ -1875,29 +1886,28 @@ public static class HudFunctions
 
         if (Time.timeScale != 0)
         {
-
             if (hud.mainCamera == null)
             {
-                if (hud.smallShip != null)
+                if (hud.ogCamera != null)
                 {
-                    if (hud.smallShip.mainCamera != null)
+                    if (hud.ogCamera.mainCamera != null)
                     {
-                        hud.mainCamera = hud.smallShip.mainCamera.GetComponent<Camera>();
+                        hud.mainCamera = hud.ogCamera.mainCamera.GetComponent<Camera>();
                     }
                 }
             }
 
             if (hud.mainCamera != null)
             {
-                if (hud.smallShip != null & hud.reticule != null)
+                if (hud.ogCamera != null & hud.reticule != null & hud.smallShip != null)
                 {
-                    if (hud.smallShip.cameraPosition != null)
+                    if (hud.smallShip.target != null)
                     {
                         GameObject target = hud.smallShip.target;
                         GameObject mainShip = hud.smallShip.gameObject;
 
                         //This gets the intercept point
-                        Vector3 reticulePosition = hud.smallShip.cameraPosition.transform.position + (hud.smallShip.cameraPosition.transform.forward * hud.smallShip.interceptDistance);
+                        Vector3 reticulePosition = hud.ogCamera.transform.position + (hud.ogCamera.transform.forward * hud.smallShip.interceptDistance);
 
                         //This gets the targets position on the camera
                         Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(reticulePosition);

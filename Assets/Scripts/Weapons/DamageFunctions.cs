@@ -350,9 +350,8 @@ public static class DamageFunctions
                         smallShip.hullLevel = 0;
                     }
 
-                    Task a = new Task(CockpitFunctions.ActivateCockpitShake(smallShip, 0.5f));
-                    
-                    SmallShipFunctions.AddTaskToPool(smallShip, a);
+                    //This shakes the cockpit camera
+                    smallShip.scene.ogCamera.shipHit = true;
                 }
             }
         }
@@ -513,9 +512,6 @@ public static class DamageFunctions
         //This stops all task being run by the ship
         SmallShipFunctions.EndAllTasks(smallShip);
 
-        //This removes the main camera
-        CockpitFunctions.RemoveMainCamera(smallShip);
-
         //This turns of the engine sound and release the ship audio source from the ship
         if (smallShip.audioManager != null)
         {
@@ -528,34 +524,11 @@ public static class DamageFunctions
             smallShip.audioManager = null;
         }
 
-        //This disconnects the cockpit camera
-        if (smallShip.isAI == false)
+        Transform ogCamera = GameObjectUtils.FindChildTransformCalled(smallShip.transform, "ogcameraGO");
+
+        if (ogCamera != null)
         {
-            GameObject CockpitCamera = GameObject.Find("Cockpit Camera");
-
-            if (CockpitCamera != null)
-            {
-                CockpitCamera.transform.parent = null;
-            }
-        }
-
-        Transform FilmCamera = GameObjectUtils.FindChildTransformCalled(smallShip.transform, "filmcameraGO");
-
-        if (FilmCamera != null)
-        {
-            FilmCamera.transform.parent = null;
-        }
-
-        //This deactives the cockpit
-        if (smallShip.cockpit != null)
-        {
-            smallShip.cockpit.SetActive(false);
-        }
-
-        //This disconnects the follow camera
-        if (smallShip.followCamera != null)
-        {
-            smallShip.followCamera.transform.SetParent(null);
+            ogCamera.transform.parent = null;
         }
 
         //This resets the ship for the next load if needed

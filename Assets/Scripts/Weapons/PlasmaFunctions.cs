@@ -186,12 +186,46 @@ public static class PlasmaFunctions
         particleSystem.Stop();
     }
 
+    //This modifies the collision layers to the player layer so that it's visible in film mode
+    public static void ChangeCollisionLayerToPlayer(SmallShip smallShip)
+    {
+        OnLaserHit onLaserHit = smallShip.laserParticleSystem.GetComponent<OnLaserHit>();
+
+        if (onLaserHit != null)
+        {
+            ParticleSystem particleSystem = onLaserHit.particleSystemScript;
+
+            if (particleSystem != null)
+            {
+                var collision = particleSystem.collision;
+                collision.collidesWith = SetPlasmaCollisionLayers(smallShip, true);
+            }
+        }
+    }
+
+    //This resets the collision layers
+    public static void ResetCollisionLayers(SmallShip smallShip)
+    {
+        OnLaserHit onLaserHit = smallShip.laserParticleSystem.GetComponent<OnLaserHit>();
+
+        if (onLaserHit != null)
+        {
+            ParticleSystem particleSystem = onLaserHit.particleSystemScript;
+
+            if (particleSystem != null)
+            {
+                var collision = particleSystem.collision;
+                collision.collidesWith = SetPlasmaCollisionLayers(smallShip);
+            }
+        }
+    }
+
     //This sets the collision layer for the lasers
-    public static LayerMask SetPlasmaCollisionLayers(SmallShip smallShip)
+    public static LayerMask SetPlasmaCollisionLayers(SmallShip smallShip, bool markAsPlayer = false)
     {
         LayerMask collisionLayers = new LayerMask(); 
 
-        if (smallShip.isAI != false)
+        if (smallShip.isAI != false & markAsPlayer == false)
         {
             //This gets the Json ship data
             TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;

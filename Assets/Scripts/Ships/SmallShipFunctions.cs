@@ -19,10 +19,6 @@ public static class SmallShipFunctions
             {
                 SceneFunctions.IdentifyAsMainShip(smallShip);
             }
-            else if (smallShip.attachCameraToAI == true)
-            {
-                SceneFunctions.IdentifyAsMainShip(smallShip);
-            }
 
             //This gets the camera position which is used for targetting as well as placing the cockpit
             if (smallShip.cameraPosition == null)

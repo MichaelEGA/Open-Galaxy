@@ -4446,8 +4446,8 @@ public static class MissionFunctions
         AudioFunctions.UnloadAudioManager();
         HudFunctions.UnloadHud();
         MusicFunctions.UnloadMusicManager();
-
         SmallShipFunctions.StopShakeController();
+        OGCameraFunctions.UnloadOGCamera();
 
         //This loads the next mission if requested
         if (loadFollowingMision == true)

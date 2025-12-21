@@ -317,48 +317,6 @@ public static class AudioFunctions
         }
     }
 
-    //This function specifcally plays hud shake noise
-    public static void PlayCockpitShakeNoise(SmallShip smallShip)
-    {
-        if (smallShip.audioManager == null)
-        {
-            smallShip.audioManager = GetAudioManager();
-        }
-
-        if (smallShip.cockpitAudioSource == null & smallShip.audioManager != null)
-        {
-            AudioClip audioClip = GetAudioClip(smallShip.audioManager, "shaking01");
-            AudioSource audioSource = GetAudioSource(smallShip.audioManager);
-
-            if (audioClip != null & audioSource != null)
-            {
-                smallShip.cockpitAudioSource = audioSource;
-                smallShip.cockpitAudioSource.clip = audioClip;
-            }
-        }
-
-        if (smallShip.cockpitAudioSource != null)
-        {
-            smallShip.cockpitAudioSource.volume = smallShip.speedShakeMagnitude * 500;
-
-            if (smallShip.cockpitAudioSource.isPlaying == false)
-            {
-                smallShip.cockpitAudioSource.priority = 128;
-                smallShip.cockpitAudioSource.spatialBlend = 0;
-                smallShip.cockpitAudioSource.pitch = 1;
-                smallShip.cockpitAudioSource.reverbZoneMix = 1;
-                smallShip.cockpitAudioSource.dopplerLevel = 0f;
-                smallShip.cockpitAudioSource.spread = 45;
-                smallShip.cockpitAudioSource.maxDistance = 1000;
-                smallShip.cockpitAudioSource.rolloffMode = AudioRolloffMode.Linear;
-                smallShip.cockpitAudioSource.loop = true;
-                smallShip.cockpitAudioSource.Play();
-            }
-
-            smallShip.cockpitAudioSource.gameObject.transform.position = smallShip.transform.position;
-        }
-    }
-
     #endregion
 
     #region get audio clip and get audio source functions

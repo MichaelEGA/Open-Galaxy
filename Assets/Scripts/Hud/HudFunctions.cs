@@ -20,10 +20,17 @@ public static class HudFunctions
         Hud hudScript = hudGO.AddComponent<Hud>();
         hudScript.startTime = Time.time;
         hudScript.ogCamera = OGCameraFunctions.GetOGCamera();
+        hudScript.hudCG = hudGO.GetComponent<CanvasGroup>();
 
         GameObject fadePrefab = Resources.Load(OGGetAddress.hud + "Fade") as GameObject;
         GameObject fadeGO = GameObject.Instantiate(fadePrefab);
         fadeGO.name = "Fade";
+        hudScript.fadeCG = fadeGO.GetComponent<CanvasGroup>();
+
+        GameObject letterboxPrefab = Resources.Load(OGGetAddress.hud + "Fade") as GameObject;
+        GameObject letterboxGO = GameObject.Instantiate(fadePrefab);
+        letterboxGO.name = "Fade";
+        hudScript.letterboxCG = letterboxGO.GetComponent<CanvasGroup>();
 
         Scene scene = SceneFunctions.GetScene();
         scene.fade = fadeGO;
@@ -70,6 +77,50 @@ public static class HudFunctions
         camera.targetTexture = renderTexture[0] as RenderTexture;
         camera.transform.position = new Vector3(0, 0, -50);
         camera.name = "Radar Camera";
+    }
+
+    //This allows you to choose the hud you want
+    public static void ChooseHud(Hud hud, string mode)
+    {
+        if (hud != null)
+        {
+            if (mode == "hud")
+            {
+                if (hud.hudCG != null & hud.fadeCG & hud.letterboxCG != null)
+                {
+                    Task a = new Task(FadeInCanvasGroup(hud.hudCG, 0.5f));
+                    Task b = new Task(FadeOutCanvasGroup(hud.fadeCG, 0.5f));
+                    Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
+                }
+            }
+            else if (mode == "fade")
+            {
+                if (hud.hudCG != null & hud.fadeCG & hud.letterboxCG != null)
+                {
+                    Task a = new Task(FadeOutCanvasGroup(hud.hudCG, 0.5f));
+                    Task b = new Task(FadeInCanvasGroup(hud.fadeCG, 0.5f));
+                    Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
+                }
+            }
+            else if (mode == "letterboxing")
+            {
+                if (hud.hudCG != null & hud.fadeCG & hud.letterboxCG != null)
+                {
+                    Task a = new Task(FadeOutCanvasGroup(hud.hudCG, 0.5f));
+                    Task b = new Task(FadeOutCanvasGroup(hud.fadeCG, 0.5f));
+                    Task c = new Task(FadeInCanvasGroup(hud.letterboxCG, 0.5f));
+                }
+            }
+            else if (mode == "none")
+            {
+                if (hud.hudCG != null & hud.fadeCG & hud.letterboxCG != null)
+                {
+                    Task a = new Task(FadeOutCanvasGroup(hud.hudCG, 0.5f));
+                    Task b = new Task(FadeOutCanvasGroup(hud.fadeCG, 0.5f));
+                    Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
+                }
+            }
+        }
     }
 
     #endregion
@@ -2289,11 +2340,6 @@ public static class HudFunctions
 
         if (hud != null)
         {
-            if (hud.blackBars != null)
-            {
-                GameObject.Destroy(hud.blackBars);
-            }
-
             UnloadRadarObjects(hud);
             GameObject.Destroy(hud.gameObject);
         }
@@ -2493,19 +2539,6 @@ public static class HudFunctions
 
     }
 
-    //This fades a raw image in and out
-    public static IEnumerator FadeRawImageInAndOut(RawImage rawimage, float fadeintime = 0.5f, float holdtime = 1, float fadeOuttime = 0.5f)
-    {
-        Hud hud = GetHud();
-        Task a = new Task(FadeInRawImage(rawimage, fadeintime));
-        AddTaskToPool(hud, a);
-        while (a.Running == true) { yield return null; }
-        yield return new WaitForSeconds(holdtime);
-        Task b = new Task(FadeOutRawImage(rawimage, fadeOuttime));
-        AddTaskToPool(hud, b);
-        while (b.Running == true) { yield return null; }
-    }
-
     //This fades an image in out
     public static IEnumerator FadeImageInAndOut(Image image, float fadeintime = 0.5f, float holdtime = 1, float fadeOuttime = 0.5f)
     {
@@ -2579,82 +2612,54 @@ public static class HudFunctions
     }
 
     //This fades in the black bars
-    public static IEnumerator FadeInBlackBars(float duration)
+    public static IEnumerator FadeInCanvasGroup(CanvasGroup canvasGroup, float duration)
     {
-        Hud hud = GetHud();
-
-        if (hud != null)
+        if (canvasGroup != null)
         {
-            if (hud.blackBars == null)
-            {
-                GameObject blackBarsPrefab = Resources.Load(OGGetAddress.hud + "BlackBars") as GameObject;
-                hud.blackBars = GameObject.Instantiate(blackBarsPrefab);
-            }
-
-            if (hud.blackBars != null & hud.blackBarsCanvasGroup == null)
-            {
-                hud.blackBarsCanvasGroup = hud.blackBars.GetComponent<CanvasGroup>();
-            }
-
-            if (hud.blackBarsCanvasGroup != null)
+            if (canvasGroup.alpha < 1)
             {
                 //This sets the starting alpha value to 0
-                float alpha1 = 0;
+                float alpha1 = canvasGroup.alpha;
 
                 //This fades in the canvas
                 while (alpha1 < 1)
                 {
                     alpha1 = alpha1 + (1f / (60f * duration));
 
-                    if (hud.blackBarsCanvasGroup != null)
+                    if (canvasGroup != null)
                     {
-                        hud.blackBarsCanvasGroup.alpha = alpha1;
+                        canvasGroup.alpha = alpha1;
                     }
 
                     yield return new WaitForSecondsRealtime(0.016f);
                 }
             }
-
         }
     }
 
     //This fades out the black bars
-    public static IEnumerator FadeOutBlackBars(float duration)
+    public static IEnumerator FadeOutCanvasGroup(CanvasGroup canvasGroup, float duration)
     {
-        Hud hud = GetHud();
-
-        if (hud != null)
+        if (canvasGroup != null)
         {
-            if (hud.blackBars == null)
-            {
-                GameObject blackBarsPrefab = Resources.Load(OGGetAddress.hud + "BlackBars") as GameObject;
-                hud.blackBars = GameObject.Instantiate(blackBarsPrefab);
-            }
-
-            if (hud.blackBars != null & hud.blackBarsCanvasGroup == null)
-            {
-                hud.blackBarsCanvasGroup = hud.blackBars.GetComponent<CanvasGroup>();
-            }
-
-            if (hud.blackBarsCanvasGroup != null)
+            if (canvasGroup.alpha > 0)
             {
                 //This sets the starting alpha value to 1
-                float alpha = 1;
+                float alpha = canvasGroup.alpha;
 
                 //This fades the canvas out
                 while (alpha > 0)
                 {
                     alpha = alpha - (1f / (60f * duration));
 
-                    if (hud.blackBarsCanvasGroup != null)
+                    if (canvasGroup != null)
                     {
-                        hud.blackBarsCanvasGroup.alpha = alpha;
+                        canvasGroup.alpha = alpha;
                     }
 
                     yield return new WaitForSecondsRealtime(0.016f);
                 }
             }
-
         }
     }
 

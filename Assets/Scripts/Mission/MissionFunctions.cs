@@ -465,18 +465,6 @@ public static class MissionFunctions
             DisplayMissionBriefing(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
-        else if (missionEvent.eventType == "fadeinfromcolour")
-        {
-            Task a = new Task(FadeInFromColour(missionEvent));
-            missionManager.missionTasks.Add(a);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
-        else if (missionEvent.eventType == "fadetocolour")
-        {
-            Task a = new Task(FadeToColour(missionEvent));
-            missionManager.missionTasks.Add(a);
-            FindNextEvent(missionEvent.nextEvent1, eventSeries);
-        }
         else if (missionEvent.eventType == "ifobjectiveisactive")
         {
             bool ifObjectiveIsActive = IfObjectiveIsActive(missionEvent);
@@ -765,6 +753,11 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "setfollowtarget")
         {
             SetFollowTarget(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "sethudmode")
+        {
+            SetHudMode(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setobjective")
@@ -1802,37 +1795,6 @@ public static class MissionFunctions
         Task a = new Task(MissionBriefingFunctions.ActivateMissionBriefing(message, audio, internalAudioFile, distortion, distortionLevel, model));
     }
 
-    //This fades the screem from black to normal
-    public static IEnumerator FadeInFromColour(MissionEvent missionEvent)
-    {
-        string colour = missionEvent.data1;
-
-        //This fades the scene back ing
-        HudFunctions.FadeOutBackground(1, colour);
-
-        yield return new WaitForSeconds(1.5f);
-
-        //This fades the hud back in
-        Task a = new Task(HudFunctions.FadeInHud(1));
-    }
-
-    //This fades the screen to black
-    public static IEnumerator FadeToColour(MissionEvent missionEvent)
-    {
-        string colour = missionEvent.data1;
-
-        //This fades out the hud
-        Task a = new Task(HudFunctions.FadeOutHud(1));
-
-        while (a.Running == true)
-        {
-            yield return null;
-        }
-
-        //This fades the scene out
-        HudFunctions.FadeInBackground(1, colour);
-    }
-   
     //This checks whether a mission objective is active or not
     public static bool IfObjectiveIsActive(MissionEvent missionEvent)
     {
@@ -3425,6 +3387,14 @@ public static class MissionFunctions
                 }
             }
         }
+    }
+
+    //This selects the hud type to display
+    public static void SetHudMode(MissionEvent missionEvent)
+    {
+        string mode = missionEvent.data1;
+
+        HudFunctions.SetHudMode(mode);
     }
 
     //This returns the next position in the formation based on the received values

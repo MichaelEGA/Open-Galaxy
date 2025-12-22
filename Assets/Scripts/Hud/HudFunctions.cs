@@ -27,8 +27,8 @@ public static class HudFunctions
         fadeGO.name = "Fade";
         hudScript.fadeCG = fadeGO.GetComponent<CanvasGroup>();
 
-        GameObject letterboxPrefab = Resources.Load(OGGetAddress.hud + "Fade") as GameObject;
-        GameObject letterboxGO = GameObject.Instantiate(fadePrefab);
+        GameObject letterboxPrefab = Resources.Load(OGGetAddress.hud + "Letterbox") as GameObject;
+        GameObject letterboxGO = GameObject.Instantiate(letterboxPrefab);
         letterboxGO.name = "Fade";
         hudScript.letterboxCG = letterboxGO.GetComponent<CanvasGroup>();
 
@@ -80,8 +80,10 @@ public static class HudFunctions
     }
 
     //This allows you to choose the hud you want
-    public static void ChooseHud(Hud hud, string mode)
+    public static void SetHudMode(string mode)
     {
+        Hud hud = HudFunctions.GetHud();
+
         if (hud != null)
         {
             if (mode == "hud")
@@ -102,7 +104,7 @@ public static class HudFunctions
                     Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
                 }
             }
-            else if (mode == "letterboxing")
+            else if (mode == "letterbox")
             {
                 if (hud.hudCG != null & hud.fadeCG & hud.letterboxCG != null)
                 {
@@ -2340,6 +2342,16 @@ public static class HudFunctions
 
         if (hud != null)
         {
+            if (hud.letterboxCG != null)
+            {
+                GameObject.Destroy(hud.letterboxCG.gameObject);
+            }
+
+            if (hud.fadeCG != null)
+            {
+                GameObject.Destroy(hud.fadeCG.gameObject);
+            }
+
             UnloadRadarObjects(hud);
             GameObject.Destroy(hud.gameObject);
         }

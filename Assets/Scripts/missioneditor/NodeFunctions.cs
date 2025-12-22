@@ -85,14 +85,6 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DisplayMissionBriefing(node);
         }
-        else if (node.nodeType == "fadeinfromcolour")
-        {
-            NodeTypes.Draw_FadeInFromColour(node);
-        }
-        else if (node.nodeType == "fadetocolour")
-        {
-            NodeTypes.Draw_FadeToColour(node);
-        }
         else if (node.nodeType == "exitmission")
         {
             NodeTypes.Draw_ExitMission(node);
@@ -256,6 +248,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "setfollowtarget")
         {
             NodeTypes.Draw_SetFollowTarget(node);
+        }
+        else if (node.nodeType == "sethudmode")
+        {
+            NodeTypes.Draw_SetHudMode(node);
         }
         else if (node.nodeType == "setobjective")
         {

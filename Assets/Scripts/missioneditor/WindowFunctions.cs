@@ -129,6 +129,7 @@ public static class WindowFunctions
         buttonList.Add("setcargo");
         buttonList.Add("setcontrollock");
         buttonList.Add("setfollowtarget");
+        buttonList.Add("sethudmode");
         buttonList.Add("setobjective");
         buttonList.Add("setdontattacklargeships");
         buttonList.Add("setshipallegiance");

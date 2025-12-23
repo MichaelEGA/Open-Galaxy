@@ -217,6 +217,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float targetSpeed;
     [HideInInspector] public float targetShield;
     [HideInInspector] public float targetHull;
+    public Vector3 interceptPoint;
     [HideInInspector] public float interceptForward;
     [HideInInspector] public float interceptRight;
     [HideInInspector] public float interceptUp;

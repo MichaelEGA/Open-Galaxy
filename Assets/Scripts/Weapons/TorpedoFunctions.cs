@@ -257,7 +257,10 @@ public static class TorpedoFunctions
             }
 
             //This shakes the cockpit camera
-            smallShip.scene.ogCamera.shipHit = true;
+            if (smallShip.isAI == false)
+            {
+                smallShip.scene.ogCamera.shipHit = true;
+            }
 
             smallShip.torpedoPressedTime = Time.time + 2.5f;
         }

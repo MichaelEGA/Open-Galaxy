@@ -485,13 +485,22 @@ public class OGCameraFunctions : MonoBehaviour
                         float yRotation = 3f * smallShip.turnInput;
                         float zRotation = 3f * smallShip.rollInput;
 
-                        float step = 2f * Time.deltaTime;
-                        float step2 = 10f * Time.deltaTime;
+                        //This dampens the movement prevent eratic jumps due to changes in input
+                        float currentVelocity = 0;
+                        float smoothTime = 0.1f;
 
-                        Vector3 dynamicLocation = new Vector3(xLocation, yLocation, zLocation);
+                        ogCamera.x = Mathf.SmoothDamp(ogCamera.x, xLocation, ref currentVelocity, smoothTime);
+                        ogCamera.y = Mathf.SmoothDamp(ogCamera.y, xLocation, ref currentVelocity, smoothTime);
+                        ogCamera.z = Mathf.SmoothDamp(ogCamera.z, xLocation, ref currentVelocity, smoothTime);
+
+                        //Vector3 dynamicLocation = new Vector3(xLocation, yLocation, zLocation);
+                        Vector3 dynamicLocation = new Vector3(ogCamera.x, ogCamera.y, ogCamera.z);
                         Quaternion dynamicRotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
                         //This applies the caluclations to the cockpit camera
+                        float step = 2f * Time.deltaTime;
+                        float step2 = 10f * Time.deltaTime;
+
                         if (smallShip.focusCamera == false)
                         {
                             ogCamera.cockpitPosition = Vector3.MoveTowards(ogCamera.cockpitPosition, dynamicLocation, step);
@@ -1031,13 +1040,22 @@ public class OGCameraFunctions : MonoBehaviour
                         float yRotation = 3f * smallShip.turnInput;
                         float zRotation = 3f * smallShip.rollInput;
 
-                        float step = 2f * Time.deltaTime;
-                        float step2 = 10f * Time.deltaTime;
+                        //This dampens the input prevent eratic movement due to dramatic changes in input
+                        float currentVelocity = 0;
+                        float smoothTime = 1f; //0.3f
 
-                        Vector3 dynamicLocation = new Vector3(xLocation, yLocation, zLocation);
+                        ogCamera.x = Mathf.SmoothDamp(ogCamera.x, xLocation, ref currentVelocity, smoothTime);
+                        ogCamera.y = Mathf.SmoothDamp(ogCamera.y, xLocation, ref currentVelocity, smoothTime);
+                        ogCamera.z = Mathf.SmoothDamp(ogCamera.z, xLocation, ref currentVelocity, smoothTime);
+
+                        //Vector3 dynamicLocation = new Vector3(xLocation, yLocation, zLocation);
+                        Vector3 dynamicLocation = new Vector3(ogCamera.x, ogCamera.y, ogCamera.z);
                         Quaternion dynamicRotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
                         //This applies the caluclations to the cockpit camera
+                        float step = 2f * Time.deltaTime;
+                        float step2 = 10f * Time.deltaTime;
+
                         if (smallShip.focusCamera == false)
                         {
                             ogCamera.cockpitPosition = Vector3.MoveTowards(ogCamera.cockpitPosition, dynamicLocation, step);

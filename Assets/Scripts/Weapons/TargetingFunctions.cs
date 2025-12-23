@@ -1,6 +1,8 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public static class TargetingFunctions
 {
@@ -56,6 +58,10 @@ public static class TargetingFunctions
                 Vector3 interceptPosition = (targetPosition + targettingErrorMargin) + targetVelocity * distanceToIntercept;
                 Vector3 interceptRelativePosition = interceptPosition - shipPosition;
 
+                Vector3 currentVelocity = Vector3.zero;
+                float smoothTime = 0.3f;
+
+                smallShip.interceptPoint = Vector3.SmoothDamp(smallShip.interceptPoint, interceptRelativePosition, ref currentVelocity, smoothTime);
                 smallShip.interceptDistance = Vector3.Distance(interceptPosition, shipPosition);
                 smallShip.interceptForward = Vector3.Dot(shipTransform.forward, interceptRelativePosition.normalized);
                 smallShip.interceptRight = Vector3.Dot(shipTransform.right, interceptRelativePosition.normalized);

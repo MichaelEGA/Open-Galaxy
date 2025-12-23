@@ -31,6 +31,9 @@ public class OGCamera : MonoBehaviour
     public float movementTime; 
     public float randomisationX;
     public float randomisationY;
+    public float x;
+    public float y;
+    public float z;
 
     //OG camera mode
     public string mode = "gamemode";

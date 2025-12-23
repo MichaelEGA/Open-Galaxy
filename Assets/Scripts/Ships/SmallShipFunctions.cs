@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using static UnityEditor.FilePathAttribute;
 
 //These functions are called by the smallship script
 public static class SmallShipFunctions
@@ -395,13 +396,13 @@ public static class SmallShipFunctions
 
                 if (forward < 0.8)
                 {
-                    SmoothTurnInput(smallShip, right);
-                    SmoothPitchInput(smallShip, -up);
+                    SmallShipAIFunctions.SmoothTurnInput(smallShip, right);
+                    SmallShipAIFunctions.SmoothPitchInput(smallShip, -up);
                 }
                 else
                 {
-                    SmoothTurnInput(smallShip, right * 5);
-                    SmoothPitchInput(smallShip, -up * 5);
+                    SmallShipAIFunctions.SmoothTurnInput(smallShip, right * 5);
+                    SmallShipAIFunctions.SmoothPitchInput(smallShip, -up * 5);
                 }
 
                 smallShip.thrustInput = 1;
@@ -426,20 +427,20 @@ public static class SmallShipFunctions
         if (smallShip.spinShip == true)
         {
             smallShip.automaticRotationSpin = true;
-            SmoothTurnInput(smallShip, 0);
-            SmoothPitchInput(smallShip, 0);
+            SmallShipAIFunctions.SmoothTurnInput(smallShip, 0);
+            SmallShipAIFunctions.SmoothPitchInput(smallShip, 0);
 
             if (smallShip.rollInputActual > 0)
             {
-                SmoothRollInput(smallShip, 1);
+                SmallShipAIFunctions.SmoothRollInput(smallShip, 1);
             }
             else if (smallShip.rollInputActual < 0)
             {
-                SmoothRollInput(smallShip, -1);
+                SmallShipAIFunctions.SmoothRollInput(smallShip, -1);
             }
             else
             {
-                SmoothRollInput(smallShip, 1);
+                SmallShipAIFunctions.SmoothRollInput(smallShip, 1);
             }
         }
         else
@@ -453,29 +454,10 @@ public static class SmallShipFunctions
     {
         if (smallShip.controlLock == true)
         {
-            SmoothTurnInput(smallShip, 0);
-            SmoothPitchInput(smallShip, 0);
-            SmoothRollInput(smallShip, 0);
+            SmallShipAIFunctions.SmoothTurnInput(smallShip, 0);
+            SmallShipAIFunctions.SmoothPitchInput(smallShip, 0);
+            SmallShipAIFunctions.SmoothRollInput(smallShip, 0);
         }
-    }
-
-    //For AI Input. These functions smoothly transitions between different pitch, turn, and roll inputs by lerping between different values like the ai is using a joystick or controller
-    public static void SmoothPitchInput(SmallShip smallShip, float pitchInput)
-    {
-        float step = +Time.deltaTime / 0.01f;
-        smallShip.pitchInput = Mathf.Lerp(smallShip.pitchInput, pitchInput, step);
-    }
-
-    public static void SmoothTurnInput(SmallShip smallShip, float turnInput)
-    {
-        float step = +Time.deltaTime / 0.01f;
-        smallShip.turnInput = Mathf.Lerp(smallShip.turnInput, turnInput, step);
-    }
-
-    public static void SmoothRollInput(SmallShip smallShip, float rollInput)
-    {
-        float step = +Time.deltaTime / 0.01f;
-        smallShip.rollInput = Mathf.Lerp(smallShip.rollInput, rollInput, step);
     }
 
     #endregion

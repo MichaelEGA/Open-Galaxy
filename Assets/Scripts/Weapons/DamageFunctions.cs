@@ -89,7 +89,10 @@ public static class DamageFunctions
                 if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
 
                 //This shakes the cockpit camera
-                smallShip.scene.ogCamera.shipHit = true;
+                if (smallShip.isAI == false)
+                {
+                    smallShip.scene.ogCamera.shipHit = true;
+                }
 
                 if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                 {
@@ -178,7 +181,10 @@ public static class DamageFunctions
                 if (smallShip.rearShieldLevel < 0) { smallShip.rearShieldLevel = 0; }
                 if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
 
-                smallShip.scene.ogCamera.shipHit = true;
+                if (smallShip.isAI == false)
+                {
+                    smallShip.scene.ogCamera.shipHit = true;
+                }
 
                 if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                 {
@@ -351,7 +357,10 @@ public static class DamageFunctions
                     }
 
                     //This shakes the cockpit camera
-                    smallShip.scene.ogCamera.shipHit = true;
+                    if (smallShip.isAI == false)
+                    {
+                        smallShip.scene.ogCamera.shipHit = true;
+                    }
                 }
             }
         }

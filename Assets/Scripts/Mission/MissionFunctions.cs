@@ -1270,6 +1270,7 @@ public static class MissionFunctions
         string flightPatternsTag = missionEvent.data5;
         string enermyManagementTag = missionEvent.data6;
         string targetingControlTag = missionEvent.data7;
+        string collisionControlTag = missionEvent.data8;
 
         if (scene != null)
         {
@@ -1315,6 +1316,11 @@ public static class MissionFunctions
                                     if (targetingControlTag != "none" & targetingControlTag != "nochange")
                                     {
                                         SmallShipAIFunctions.AddTag(smallShip, targetingControlTag);
+                                    }
+
+                                    if (collisionControlTag != "none" & collisionControlTag != "nochange")
+                                    {
+                                        SmallShipAIFunctions.AddTag(smallShip, collisionControlTag);
                                     }
                                 }
                             }
@@ -3393,8 +3399,9 @@ public static class MissionFunctions
     public static void SetHudMode(MissionEvent missionEvent)
     {
         string mode = missionEvent.data1;
+        string text = missionEvent.data2;
 
-        HudFunctions.SetHudMode(mode);
+        HudFunctions.SetHudMode(mode, text);
     }
 
     //This returns the next position in the formation based on the received values

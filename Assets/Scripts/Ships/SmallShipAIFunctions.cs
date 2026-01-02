@@ -45,6 +45,7 @@ public static class SmallShipAIFunctions
             AddTag(smallShip, "chasewithdraw");
             AddTag(smallShip, "resetenergylevels");
             AddTag(smallShip, "targetallprefsmall");
+            AddTag(smallShip, "collisionevasiongeg");
         }
     }
 
@@ -121,6 +122,12 @@ public static class SmallShipAIFunctions
                 RemoveSingleTag(smallShip, "targetlargeshipsonly");
                 smallShip.requestingTarget = true; //This forces the ship to select a new target on the basis of the selected tag.
             }
+            else if (tag == "collisionevasion" || tag == "nocollisionevasion")
+            {
+                RemoveSingleTag(smallShip, "collisionevasion");
+                RemoveSingleTag(smallShip, "nocollisionevasion");
+            }
+
 
             AddSingleTag(smallShip, tag);
         }
@@ -644,11 +651,13 @@ public static class SmallShipAIFunctions
 
             if (smallShip.thrustSpeed > smallShip.targetSpeed & smallShip.thrustSpeed > oneThird)
             {
-                smallShip.thrustInput = -1;
+                //smallShip.thrustInput = -1;
+                smallShip.thrustSpeed -= 1;
             }
             else
             {
-                smallShip.thrustInput = 1;
+                //smallShip.thrustInput = 1;
+                smallShip.thrustSpeed += 1;
             }
 
             //This corrects the input for the follow target if necessary
@@ -672,11 +681,13 @@ public static class SmallShipAIFunctions
                 {
                     if (smallShip.thrustSpeed > oneHalf)
                     {
-                        smallShip.thrustInput = -1;
+                        //smallShip.thrustInput = -1;
+                        smallShip.thrustSpeed -= 1;
                     }
                     else
                     {
-                        smallShip.thrustInput = 1;
+                        //smallShip.thrustInput = 1;
+                        smallShip.thrustSpeed += 1;
                     }
                 }
 
@@ -693,16 +704,19 @@ public static class SmallShipAIFunctions
 
                     if (smallShip.thrustSpeed > dynamicSpeed)
                     {
-                        smallShip.thrustInput = -1;
+                        //smallShip.thrustInput = -1;
+                        smallShip.thrustSpeed -= 1;
                     }
                     else if (smallShip.thrustSpeed < dynamicSpeed)
                     {
-                        smallShip.thrustInput = 1;
+                        //smallShip.thrustInput = 1;
+                        smallShip.thrustSpeed += 1;
                     }
                 }
                 if (distance <= 15 & distance < breakingDistance)
                 {
-                    smallShip.thrustInput = -1;
+                    //smallShip.thrustInput = -1;
+                    smallShip.thrustSpeed -= 1;
                 }
             }
         }
@@ -1794,7 +1808,7 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (TagExists(smallShip, "nospeed") == true & TagExists(smallShip, "norotation") == true)
+            if (TagExists(smallShip, "nospeed") == true & TagExists(smallShip, "norotation") == true || TagExists(smallShip, "nocollisionevasion") == true)
             {
                 //Do nothing
             }
@@ -2191,6 +2205,9 @@ public static class SmallShipAIFunctions
         }
     }
 
+    #endregion
+
+    #region Input AI steering values with smoothing
     //For AI Input. These functions smoothly transitions between different pitch, turn, and roll inputs by lerping between different values like the ai is using a joystick or controller
     public static void SmoothPitchInput(SmallShip smallShip, float pitchInput)
     {

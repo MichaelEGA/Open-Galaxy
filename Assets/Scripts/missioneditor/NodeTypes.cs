@@ -1287,6 +1287,15 @@ public static class NodeTypes
 
         drop -= 15;
 
+        List<string> options7 = new List<string>();
+        options7.Add("nochange");
+        options7.Add("collisionevasion");
+        options7.Add("nocollisionevasion");
+
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, options7, "collision", "nochange", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
@@ -3788,11 +3797,18 @@ public static class NodeTypes
         options.Add("hud");
         options.Add("letterbox");
         options.Add("fade");
+        options.Add("titlemessage");
         options.Add("none");
 
         node.data1 = NodeFunctions.DrawDropDownMenu(node, options, "mode", "hud", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
+
+        float multiplySize = 5;
+
+        node.data2 = NodeFunctions.DrawInputFieldLarge(node, "Message", "none", 7, 5, drop, 12.5f * multiplySize, 90);
+
+        drop -= 15 * multiplySize;
 
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 

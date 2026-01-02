@@ -62,35 +62,16 @@ public static class LargeShipFunctions
         }
         else if (largeShip.spinShip == false & largeShip.controlLock == true)
         {
-            SmoothPitchInput(largeShip, 0);
-            SmoothTurnInput(largeShip, 0);
-            SmoothRollInput(largeShip, 0);
+            LargeShipAIFunctions.SmoothPitchInput(largeShip, 0);
+            LargeShipAIFunctions.SmoothTurnInput(largeShip, 0);
+            LargeShipAIFunctions.SmoothRollInput(largeShip, 0);
         }
         else
         {
-            SmoothPitchInput(largeShip, 0);
-            SmoothTurnInput(largeShip, 0);
-            SmoothRollInput(largeShip, 1);
+            LargeShipAIFunctions.SmoothPitchInput(largeShip, 0);
+            LargeShipAIFunctions.SmoothTurnInput(largeShip, 0);
+            LargeShipAIFunctions.SmoothRollInput(largeShip, 1);
         }
-    }
-
-    //For AI Input. These functions smoothly transitions between different pitch, turn, and roll inputs by lerping between different values like the ai is using a joystick or controller
-    public static void SmoothPitchInput(LargeShip largeShip, float pitchInput)
-    {
-        float step = +Time.deltaTime / 0.01f;
-        largeShip.pitchInput = Mathf.Lerp(largeShip.pitchInput, pitchInput, step);
-    }
-
-    public static void SmoothTurnInput(LargeShip largeShip, float turnInput)
-    {
-        float step = +Time.deltaTime / 0.01f;
-        largeShip.turnInput = Mathf.Lerp(largeShip.turnInput, turnInput, step);
-    }
-
-    public static void SmoothRollInput(LargeShip largeShip, float rollInput)
-    {
-        float step = +Time.deltaTime / 0.01f;
-        largeShip.rollInput = Mathf.Lerp(largeShip.rollInput, rollInput, step);
     }
 
     public static void NoInput(LargeShip largeShip)

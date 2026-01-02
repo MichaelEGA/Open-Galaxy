@@ -4,7 +4,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
-using static UnityEditor.FilePathAttribute;
 
 //These functions are called by the smallship script
 public static class SmallShipFunctions

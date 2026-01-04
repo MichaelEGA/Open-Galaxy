@@ -1953,7 +1953,7 @@ public static class HudFunctions
         hud.reticuleFlashing = false;
     }
 
-    //This displays a target where the intercept point for the target ship is
+    //This displays the reticule
     public static void DisplayReticule(Hud hud)
     {
         if (hud.reticule == null)
@@ -1977,15 +1977,21 @@ public static class HudFunctions
 
             if (hud.mainCamera != null)
             {
+                Debug.Log("is runnin 1");
+
                 if (hud.ogCamera != null & hud.reticule != null & hud.smallShip != null)
                 {
-                    if (hud.smallShip.target != null)
+                    Debug.Log("is running 2");
+
+                    if (hud.smallShip.target != null & hud.ogCamera.viewType == "thirdperson")
                     {
+                        Debug.Log("is running 3");
+
                         GameObject target = hud.smallShip.target;
                         GameObject mainShip = hud.smallShip.gameObject;
 
-                        //This gets the intercept point
-                        Vector3 reticulePosition = hud.ogCamera.transform.position + (hud.ogCamera.transform.forward * hud.smallShip.interceptDistance);
+                        //This gets the current firing position using the intercept distance
+                        Vector3 reticulePosition = hud.smallShip.transform.position + (hud.smallShip.transform.forward * hud.smallShip.interceptDistance);
 
                         //This gets the targets position on the camera
                         Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(reticulePosition);
@@ -1993,13 +1999,25 @@ public static class HudFunctions
                         //This translates that position to the intercept point
                         hud.reticule.gameObject.transform.position = new Vector2(screenPosition.x, screenPosition.y);
                     }
-                }
-            }
-            else
-            {
-                if (hud.reticule != null)
-                {
-                    hud.reticule.gameObject.transform.position = new Vector2(0, 0);
+                    else if (hud.ogCamera.viewType == "thirdperson")
+                    {
+                        GameObject target = hud.smallShip.target;
+                        GameObject mainShip = hud.smallShip.gameObject;
+
+                        //This gets the current firing position using the intercept distance
+                        Vector3 reticulePosition = hud.smallShip.transform.position + (hud.smallShip.transform.forward * 500);
+
+                        //This gets the targets position on the camera
+                        Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(reticulePosition);
+
+                        //This translates that position to the intercept point
+                        hud.reticule.gameObject.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+                    }
+                    else
+                    {
+                        //This translates that position to the intercept point
+                        hud.reticule.gameObject.transform.localPosition = new Vector2(0, 0);
+                    }
                 }
             }
         }

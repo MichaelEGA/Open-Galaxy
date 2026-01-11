@@ -1977,16 +1977,10 @@ public static class HudFunctions
 
             if (hud.mainCamera != null)
             {
-                Debug.Log("is runnin 1");
-
                 if (hud.ogCamera != null & hud.reticule != null & hud.smallShip != null)
                 {
-                    Debug.Log("is running 2");
-
                     if (hud.smallShip.target != null & hud.ogCamera.viewType == "thirdperson")
                     {
-                        Debug.Log("is running 3");
-
                         GameObject target = hud.smallShip.target;
                         GameObject mainShip = hud.smallShip.gameObject;
 

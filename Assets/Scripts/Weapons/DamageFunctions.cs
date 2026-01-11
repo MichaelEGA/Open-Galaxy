@@ -533,7 +533,7 @@ public static class DamageFunctions
             smallShip.audioManager = null;
         }
 
-        Transform ogCamera = GameObjectUtils.FindChildTransformCalled(smallShip.transform, "ogcameraGO");
+        Transform ogCamera = GameObjectUtils.FindChildTransformContaining(smallShip.gameObject.transform, "ogcameraGO");
 
         if (ogCamera != null)
         {

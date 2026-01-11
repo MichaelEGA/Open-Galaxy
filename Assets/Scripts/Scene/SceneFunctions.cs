@@ -2265,7 +2265,7 @@ public static class SceneFunctions
             {
                 if (tempCockpit.name == name)
                 {
-                    tempCockpit.SetActive(false);
+                    tempCockpit.SetActive(true);
                     cockpit = tempCockpit;
                     cockpitLoaded = true;
                     break;

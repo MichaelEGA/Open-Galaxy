@@ -533,6 +533,10 @@ public class OGCameraFunctions : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            SceneFunctions.DeactivateCockpits();
+        }
     }
 
     //This sets the camera to play from the third person viewpoint
@@ -1088,6 +1092,10 @@ public class OGCameraFunctions : MonoBehaviour
                 }
 
             }
+        }
+        else
+        {
+            SceneFunctions.DeactivateCockpits();
         }
     }
 

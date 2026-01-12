@@ -2423,6 +2423,22 @@ public static class HudFunctions
 
     #endregion
 
+    #region unload hud and hud assets
+
+    //This plays a video
+    public static void RunVideo()
+    {
+
+    }
+
+    //This stops a video
+    public static void StopVideo()
+    {
+
+    }
+
+    #endregion
+
     #region hud utils
 
     //This changes the alpha of an image

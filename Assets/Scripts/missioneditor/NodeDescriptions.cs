@@ -724,6 +724,16 @@ public static class NodeDescriptions
             "- Select none if you want the music to fade out. \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "playvideo")
+        {
+            description =
+            "Play Video \n " +
+            "\n " +
+            "This function plays the selected mp4 video. \n" +
+            "\n " +
+            "Extra Information \n" +
+           "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
         else if (name == "setcamera")
         {
             description =

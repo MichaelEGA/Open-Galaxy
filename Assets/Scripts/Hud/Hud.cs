@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class Hud : MonoBehaviour
 {
@@ -18,8 +19,6 @@ public class Hud : MonoBehaviour
     [HideInInspector] public CanvasGroup hudCG;
     [HideInInspector] public CanvasGroup letterboxCG;
     [HideInInspector] public CanvasGroup fadeCG;
-    [HideInInspector] public CanvasGroup titleMessageCG;
-    [HideInInspector] public Text titleMessageText;
 
     [Header("Hud Elements Check")]
     [HideInInspector] public bool hudElementsSet;

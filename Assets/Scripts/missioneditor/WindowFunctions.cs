@@ -114,6 +114,7 @@ public static class WindowFunctions
         buttonList.Add("loadsingleshiponground");
         buttonList.Add("pausesequence");
         buttonList.Add("playmusictrack");
+        buttonList.Add("playvideo");
         buttonList.Add("preload_loadasteroids");
         buttonList.Add("preload_loadplanet");
         buttonList.Add("preload_loadmultipleships");

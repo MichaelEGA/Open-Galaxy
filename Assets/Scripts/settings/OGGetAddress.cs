@@ -14,6 +14,7 @@ public static class OGGetAddress
     public static string fogwall = "objects/fogwall/";
     public static string fonts = "fonts/";
     public static string hud = "Hud/";
+    public static string videoplayer = "videoplayer/";
     public static string hyperspace = "objects/hyperspace/";
     public static string menus = "menus/";
     public static string menubuttons = "menus/buttons/";

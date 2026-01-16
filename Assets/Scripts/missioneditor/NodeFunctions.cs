@@ -193,6 +193,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PlayMusicTrack(node);
         }
+        else if (node.nodeType == "playvideo")
+        {
+            NodeTypes.Draw_PlayVideo(node);
+        }
         else if (node.nodeType == "preload_loadasteroids")
         {
             NodeTypes.Draw_PreLoad_LoadAsteroids(node);

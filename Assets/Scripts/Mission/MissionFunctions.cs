@@ -23,17 +23,10 @@ public static class MissionFunctions
 
         SceneFunctions.LoadScenePrefabs();
 
-        //This looks for the mission manager and if it doesn't find one creates one
-        MissionManager missionManager = GameObject.FindFirstObjectByType<MissionManager>(FindObjectsInactive.Include);
-
-        if (missionManager != null)
-        {
-            GameObject.Destroy(missionManager);
-        }
-
+        //This creates the mission manager
         GameObject missionManagerGO = new GameObject();
         missionManagerGO.name = "MissionManager";
-        missionManager = missionManagerGO.AddComponent<MissionManager>();
+        MissionManager missionManager = missionManagerGO.AddComponent<MissionManager>();
 
         missionManager.missionAddress = missionAddress;
 
@@ -325,7 +318,7 @@ public static class MissionFunctions
                 RunEvent(missionManager, missionEvent, eventSeries);
             }
 
-            //This makes sure the mission that mission events aren't run when the mission manager has been deleted
+            //This makes sure that the mission events aren't run when the mission manager has been deleted
             if (missionManager == null || missionManager.eventNo[eventSeries] == 11111)
             {
                 break;
@@ -735,6 +728,11 @@ public static class MissionFunctions
             PlayMusicTrack(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "playvideo")
+        {
+            PlayVideo(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "setcamera")
         {
             SetCamera(missionEvent);
@@ -841,6 +839,8 @@ public static class MissionFunctions
 
         //THis loads the audio and music manager
         AudioFunctions.CreateAudioManager(missionAddress + missionName + "_audio/", addressIsExternal);
+        OGVideoPlayerFunctions.CreateOGVideoPlayer();
+        OGVideoPlayerFunctions.LoadVideos(missionAddress + missionName + "_video/", addressIsExternal);
         MainMenuFunctions.AddLogToLoadingScreen("Audio Manager created", startTime);
         MusicFunctions.CreateMusicManager();
         MainMenuFunctions.AddLogToLoadingScreen("Music Manager created", startTime);
@@ -3124,6 +3124,14 @@ public static class MissionFunctions
         }       
     }
 
+    //This plays a video
+    public static void PlayVideo(MissionEvent missionEvent)
+    {
+        string video = missionEvent.data1;
+
+        OGVideoPlayerFunctions.RunVideo(video);
+    }
+
     //This manually sets the camera mode
     public static void SetCamera(MissionEvent missionEvent)
     {
@@ -3399,9 +3407,8 @@ public static class MissionFunctions
     public static void SetHudMode(MissionEvent missionEvent)
     {
         string mode = missionEvent.data1;
-        string text = missionEvent.data2;
 
-        HudFunctions.SetHudMode(mode, text);
+        HudFunctions.SetHudMode(mode);
     }
 
     //This returns the next position in the formation based on the received values

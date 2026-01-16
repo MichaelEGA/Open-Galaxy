@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public static class HudFunctions
 {
@@ -29,14 +32,8 @@ public static class HudFunctions
 
         GameObject letterboxPrefab = Resources.Load(OGGetAddress.hud + "Letterbox") as GameObject;
         GameObject letterboxGO = GameObject.Instantiate(letterboxPrefab);
-        letterboxGO.name = "Fade";
+        letterboxGO.name = "Letterbox";
         hudScript.letterboxCG = letterboxGO.GetComponent<CanvasGroup>();
-
-        GameObject titleMessagePrefab = Resources.Load(OGGetAddress.hud + "TitleMessage") as GameObject;
-        GameObject titleMessageGO = GameObject.Instantiate(titleMessagePrefab);
-        titleMessageGO.name = "TitleMessage";
-        hudScript.titleMessageCG = titleMessageGO.GetComponent<CanvasGroup>();
-        hudScript.titleMessageText = titleMessageGO.GetComponentInChildren<Text>();
 
         Scene scene = SceneFunctions.GetScene();
         scene.fade = fadeGO;
@@ -86,7 +83,7 @@ public static class HudFunctions
     }
 
     //This allows you to choose the hud you want
-    public static void SetHudMode(string mode, string text = "none")
+    public static void SetHudMode(string mode)
     {
         Hud hud = HudFunctions.GetHud();
 
@@ -99,7 +96,6 @@ public static class HudFunctions
                     Task a = new Task(FadeInCanvasGroup(hud.hudCG, 0.5f));
                     Task b = new Task(FadeOutCanvasGroup(hud.fadeCG, 0.5f));
                     Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
-                    Task d = new Task(FadeOutCanvasGroup(hud.titleMessageCG, 0.5f));
                 }
             }
             else if (mode == "fade")
@@ -109,7 +105,6 @@ public static class HudFunctions
                     Task a = new Task(FadeOutCanvasGroup(hud.hudCG, 0.5f));
                     Task b = new Task(FadeInCanvasGroup(hud.fadeCG, 0.5f));
                     Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
-                    Task d = new Task(FadeOutCanvasGroup(hud.titleMessageCG, 0.5f));
                 }
             }
             else if (mode == "letterbox")
@@ -119,22 +114,6 @@ public static class HudFunctions
                     Task a = new Task(FadeOutCanvasGroup(hud.hudCG, 0.5f));
                     Task b = new Task(FadeOutCanvasGroup(hud.fadeCG, 0.5f));
                     Task c = new Task(FadeInCanvasGroup(hud.letterboxCG, 0.5f));
-                    Task d = new Task(FadeOutCanvasGroup(hud.titleMessageCG, 0.5f));
-                }
-            }
-            else if (mode == "titlemessage")
-            {
-                if (hud.hudCG != null & hud.fadeCG & hud.letterboxCG != null)
-                {
-                    Task a = new Task(FadeOutCanvasGroup(hud.hudCG, 0.5f));
-                    Task b = new Task(FadeOutCanvasGroup(hud.fadeCG, 0.5f));
-                    Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
-                    Task d = new Task(FadeInCanvasGroup(hud.titleMessageCG, 0.5f));
-                }
-
-                if (hud.titleMessageText != null)
-                {
-                    hud.titleMessageText.text = text;
                 }
             }
             else if (mode == "none")
@@ -144,7 +123,6 @@ public static class HudFunctions
                     Task a = new Task(FadeOutCanvasGroup(hud.hudCG, 0.5f));
                     Task b = new Task(FadeOutCanvasGroup(hud.fadeCG, 0.5f));
                     Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
-                    Task d = new Task(FadeOutCanvasGroup(hud.titleMessageCG, 0.5f));
                 }
             }
         }
@@ -2419,22 +2397,6 @@ public static class HudFunctions
 
             hud.radarPool.Clear();
         }       
-    }
-
-    #endregion
-
-    #region unload hud and hud assets
-
-    //This plays a video
-    public static void RunVideo()
-    {
-
-    }
-
-    //This stops a video
-    public static void StopVideo()
-    {
-
     }
 
     #endregion

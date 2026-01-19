@@ -3129,7 +3129,7 @@ public static class MissionFunctions
     {
         string video = missionEvent.data1;
 
-        OGVideoPlayerFunctions.RunVideo(video);
+        Task a = new Task(OGVideoPlayerFunctions.RunVideo(video));
     }
 
     //This manually sets the camera mode
@@ -4432,6 +4432,7 @@ public static class MissionFunctions
         MusicFunctions.UnloadMusicManager();
         SmallShipFunctions.StopShakeController();
         OGCameraFunctions.UnloadOGCamera();
+        OGVideoPlayerFunctions.UnloadOGVideoPlayer();
 
         //This loads the next mission if requested
         if (loadFollowingMision == true)

@@ -58,7 +58,7 @@ public static class OGVideoPlayerFunctions
     #region run video
 
     //This plays a video
-    public static void RunVideo(string name)
+    public static IEnumerator RunVideo(string name)
     {
         OGVideoPlayer ogVideoPlayer = GetOGVideoPlayer();
 
@@ -88,6 +88,13 @@ public static class OGVideoPlayerFunctions
                                 ogVideoPlayer.videoPlayer.source = VideoSource.VideoClip;
                                 ogVideoPlayer.videoPlayer.clip = videoClip;
                                 ogVideoPlayer.videoPlayer.Prepare();
+                                ogVideoPlayer.videoPlayer.errorReceived += OnError;
+
+                                while (ogVideoPlayer.videoPlayer.isPrepared == false)
+                                {
+                                    yield return null;
+                                }
+
                                 ogVideoPlayer.videoPlayer.Play();
                                 
                                 //When the video is finished, stop and close the videoplayer
@@ -118,8 +125,17 @@ public static class OGVideoPlayerFunctions
 
                                 //The video is prepared and played
                                 ogVideoPlayer.videoPlayer.source = VideoSource.Url;
+                                ogVideoPlayer.videoPlayer.controlledAudioTrackCount = 1;
+                                ogVideoPlayer.videoPlayer.EnableAudioTrack(0, true);
                                 ogVideoPlayer.videoPlayer.url = videoAddress;
                                 ogVideoPlayer.videoPlayer.Prepare();
+                                ogVideoPlayer.videoPlayer.errorReceived += OnError;
+
+                                while (ogVideoPlayer.videoPlayer.isPrepared == false)
+                                {
+                                    yield return null;
+                                }
+
                                 ogVideoPlayer.videoPlayer.Play();
 
                                 //When the video is finished, stop and close the videoplayer
@@ -181,6 +197,21 @@ public static class OGVideoPlayerFunctions
 
     #endregion
 
+    #region unloading functions
+
+    //This destroys the OG Video Player
+    public static void UnloadOGVideoPlayer()
+    {
+        OGVideoPlayer ogVideoPlayer = GetOGVideoPlayer();
+
+        if (ogVideoPlayer.videoPlayerCG != null)
+        {
+            GameObject.Destroy(ogVideoPlayer.gameObject);
+        }
+    }
+
+    #endregion
+
     #region 
 
     //This grabs the OGVideoPlayer reference in the scene
@@ -189,6 +220,11 @@ public static class OGVideoPlayerFunctions
         OGVideoPlayer ogVideoPlayer = GameObject.FindFirstObjectByType<OGVideoPlayer>();
 
         return ogVideoPlayer;
+    }
+
+    public static void OnError(VideoPlayer source, string message)
+    {
+        Debug.LogError("VideoPlayer error: " + message + " clip=" + (source.clip != null ? source.clip.name : "null"));
     }
 
     #endregion

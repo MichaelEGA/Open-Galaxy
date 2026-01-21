@@ -2735,15 +2735,6 @@ public static class SceneFunctions
 
         // Apply the scale factor proportionally to all axes
         gameObject.transform.localScale = originalScale * scaleFactor;
-
-        //Bounds newGameObjectBounds = new Bounds(renderers[0].bounds.center, Vector3.zero);
-
-        //foreach (Renderer renderer in renderers)
-        //{
-        //    newGameObjectBounds.Encapsulate(renderer.bounds);
-        //}
-
-        //Debug.Log($"GameObject '{gameObject.name}' scaled to fit Z-axis length {targetZLengthInMeters} meters. But actual length is " + newGameObjectBounds.size.z + " from a size of " + currentZLength);
     }
 
     //This scales the ship to the gameobject / ship to the size given in meteres 

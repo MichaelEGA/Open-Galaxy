@@ -116,6 +116,7 @@ public static class DockingFunctions
                     if (tempDistance < distance)
                     {
                         dockingPoint = tempDockingPoint;
+                        distance = tempDistance;
                     }
                 }
             }
@@ -166,22 +167,25 @@ public static class DockingFunctions
 
                         foreach (DockingPoint tempDockingPoint in tempLargeShip.dockingPoints)
                         {
-                            if (tempDockingPoint.isActive == false || tempDockingPoint.isActive == true & includeActive == true)
+                            if (tempDockingPoint != null)
                             {
-                                //This gets the closest docking point on the large ship
-                                float tempDistance = Vector3.Distance(tempDockingPoint.transform.position, ship.position);
-
-                                if (tempDistance < distance)
+                                if (tempDockingPoint.isActive == false || tempDockingPoint.isActive == true & includeActive == true)
                                 {
-                                    if (largeShip == null & !tempDockingPoint.name.Contains("ls"))
+                                    //This gets the closest docking point on the large ship
+                                    float tempDistance = Vector3.Distance(tempDockingPoint.transform.position, ship.position);
+
+                                    if (tempDistance < distance)
                                     {
-                                        distance = tempDistance;
-                                        dockingPoint = tempDockingPoint;
-                                    }
-                                    else if (largeShip != null & tempDockingPoint.name.Contains("ls"))
-                                    {
-                                        distance = tempDistance;
-                                        dockingPoint = tempDockingPoint;
+                                        if (largeShip == null & !tempDockingPoint.name.Contains("ls")) //if the ship is smallship and the docking point is not a largeship docking point
+                                        {
+                                            distance = tempDistance;
+                                            dockingPoint = tempDockingPoint;
+                                        }
+                                        else if (largeShip != null & tempDockingPoint.name.Contains("ls"))
+                                        {
+                                            distance = tempDistance;
+                                            dockingPoint = tempDockingPoint;
+                                        }
                                     }
                                 }
                             }
@@ -202,12 +206,18 @@ public static class DockingFunctions
     {
         shipDockingPoint.isActive = true;
         targetDockingPoint.isActive = true;
+        bool largeshipDockingOnly = false;
         
         SmallShip smallShip = ship.GetComponent<SmallShip>();
         LargeShip largeShip = ship.GetComponent<LargeShip>();
 
         SmallShip targetSmallShip = targetDockingPoint.GetComponentInParent<SmallShip>();
         LargeShip targetLargeShip = targetDockingPoint.GetComponentInParent<LargeShip>();
+
+        if (largeShip != null & targetLargeShip != null)
+        {
+            largeshipDockingOnly = true;
+        }
 
         HudFunctions.AddToShipLog(ship.name.ToUpper() + " commencing docking sequence with " + targetDockingPoint.transform.parent.name.ToUpper());
 
@@ -251,7 +261,12 @@ public static class DockingFunctions
 
             Quaternion startRotation = ship.transform.localRotation;
             Quaternion endRotation = targetDockingPoint.transform.rotation * Quaternion.Inverse(Quaternion.Inverse(ship.rotation) * shipDockingPoint.transform.rotation) * flip;
-
+            
+            if (largeshipDockingOnly == true)
+            {
+                endRotation = targetLargeShip.transform.rotation; //This makes sure largeships are always rotated the same way as ship they are docking with
+            }
+            
             float timeElapsed = 0;
             float lerpDuration = rotationSpeed;
 

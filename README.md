@@ -56,7 +56,7 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - Left Thumbstick Button  changes between first and third person viewpoint
   - Scan a target by selecting it and then flying close
     
-**Latest Development Release:** 10.7.25
+**Latest Development Release:** 10.7.25 (Season Release)
 
   - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.10.7.25/Open.Galaxy.10.7.25.zip
     

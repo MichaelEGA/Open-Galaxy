@@ -96,7 +96,13 @@ public static class OGVideoPlayerFunctions
                                 }
 
                                 ogVideoPlayer.videoPlayer.Play();
-                                
+
+                                //This mutes game sounds
+                                AudioFunctions.MuteSelectedAudio("externalvolume");
+                                AudioFunctions.MuteSelectedAudio("enginevolume");
+                                AudioFunctions.MuteSelectedAudio("explosionsvolume");
+                                AudioFunctions.MuteSelectedAudio("cockpitvolume");
+
                                 //When the video is finished, stop and close the videoplayer
                                 Task a = new Task(CloseVideoPlayerWhenFinished());
                                 
@@ -138,6 +144,12 @@ public static class OGVideoPlayerFunctions
 
                                 ogVideoPlayer.videoPlayer.Play();
 
+                                //This mutes game sounds
+                                AudioFunctions.MuteSelectedAudio("externalvolume");
+                                AudioFunctions.MuteSelectedAudio("enginevolume");
+                                AudioFunctions.MuteSelectedAudio("explosionsvolume");
+                                AudioFunctions.MuteSelectedAudio("cockpitvolume");
+
                                 //When the video is finished, stop and close the videoplayer
                                 Task a = new Task(CloseVideoPlayerWhenFinished());
                                 
@@ -168,6 +180,12 @@ public static class OGVideoPlayerFunctions
             missionManager.pauseEventSeries = false;
 
             Time.timeScale = 1;
+
+            //This unmutes game sounds
+            AudioFunctions.UnmuteSelectedAudio("externalvolume");
+            AudioFunctions.UnmuteSelectedAudio("enginevolume");
+            AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
+            AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
 
             SetVideoPlayerToInvisible();
         }

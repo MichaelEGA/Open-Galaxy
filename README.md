@@ -56,9 +56,9 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - Left Thumbstick Button  changes between first and third person viewpoint
   - Scan a target by selecting it and then flying close
     
-**Latest Development Release:** 10.0.55
+**Latest Development Release:** 10.7.25 (Season Release)
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.10.0.55/Open.Galaxy.10.0.55.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.10.7.25/Open.Galaxy.10.7.25.zip
     
 **Latest Milestone Release:** 10.0.55
 
@@ -104,6 +104,42 @@ Assets have only been used when permission has been given or implied by the auth
 The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
 
 **Changelog**
+
+24/01/26 - 10.7.25 (Season Release)
+  - NOTE: This is our first season release. It consists of the A New Ally campaign which includes 6 missions and a cutscene.
+  - Added: film camera functions
+  - Updated: make cockpit and camera functions independent of smallship script
+  - Updated: unify all camera functions
+  - Added: make sethud node to control hud, fade screen, and blackbars
+  - Updated: smooth ai turning and targetting
+  - Added: Option to play video cutscenes
+  - Updated: move video player to it's own script
+  - Updated: fix docking script
+  - Added: og camera effect: black bars
+  - Added: og camera: different camera shots  
+  - Added: og camera: camera nosie
+  - Added: og camera: zoom forward/back, pan left/right
+  - Added: og camera: spin
+  - Added: og camera: cockpit shot
+  - Added: og camera: remove black bars option
+  - Added: og camera: temporary change particle systems layer on targeted ship if needed
+  - Added: og camera: change node name to: setfilmcamera
+  - Added: og camera: merge small ship camera functions into film camera script
+  - Added: og camera: merge film, follow, and main camera into the one camera
+  - Added: og camera: merge with star and planet camera functions
+  - Added: og camera: merge camera intialisation functions with og camera script
+  - Added: og camera: first person camera shake on boost and hit
+  - Added: og camera: third person camera shake on boost and hit
+  - Added: og camera: restore cockpit rotation
+  - Added: og camera: add change collision layer to ion and plasma functions
+  - Fixed: destroy OGCamera and subordinate cameras on exit including cockpits before the menu loads
+  - Updated: consider raising smoothdamp on large ship turning to avoid jitter
+  - Added: add aitag == ignore avoid collision warnings
+  - Updated: video player should be removed as a hud element
+  - Updated: video player should instantly appear on video play and instantly disappear when the video is finished
+  - Fixed: video player should play on top of all hud elements
+  - Updated: video player should be destroyed at end of mission
+  - Updated: video player should mute sound from the game
 
 14/12/25 - 10.0.55 (Milestone Release)
   - removed: terrain code and associated assets and shaders

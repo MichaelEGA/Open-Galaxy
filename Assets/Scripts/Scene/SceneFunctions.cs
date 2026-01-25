@@ -2263,7 +2263,7 @@ public static class SceneFunctions
 
             foreach (GameObject tempCockpit in scene.cockpitsPool)
             {
-                if (tempCockpit.name == name)
+                if (tempCockpit.name.Contains(name))
                 {
                     tempCockpit.SetActive(true);
                     cockpit = tempCockpit;

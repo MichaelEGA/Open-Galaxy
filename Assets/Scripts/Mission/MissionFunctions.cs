@@ -1352,6 +1352,7 @@ public static class MissionFunctions
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
         GameObject starfield = SceneFunctions.GetStarfield();
+        Hud hud = HudFunctions.GetHud();
 
         missionManager.pauseEventSeries = true;
 
@@ -1362,7 +1363,11 @@ public static class MissionFunctions
         smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
 
         //This fades out the hud
-        Task fadeOut = new Task(HudFunctions.FadeOutHud(1));
+        
+        if (hud.mode == "hud")
+        {
+            Task fadeOut = new Task(HudFunctions.FadeOutHud(1));
+        }
 
         SmallShipFunctions.CloseWings(smallShip);
 
@@ -1476,24 +1481,13 @@ public static class MissionFunctions
         Task d = new Task(SceneFunctions.ShrinkStarfield());
         while (d.Running == true) { yield return null; }
 
-        //Task e = new Task(SceneFunctions.PlanetFlyIn());
-
-        //while (e.Running == true) 
-        //{
-        //    if (scene.planetCamera.GetComponent<Camera>().enabled == false)
-        //    {
-        //        yield return new WaitForSeconds(1);
-
-        //        scene.planetCamera.GetComponent<Camera>().enabled = true;
-        //    }
-
-        //    yield return null;
-        //}
-
         ogCamera.planetCamera.GetComponent<Camera>().enabled = true;
 
         //This fades the hud back in
-        Task fadeIN = new Task(HudFunctions.FadeInHud(1));
+        if (hud.mode == "hud")
+        {
+            Task fadeIN = new Task(HudFunctions.FadeInHud(1));
+        }
 
         //This unlocks the player controls and turns off invincibility on the player ship
         smallShip.controlLock = controlLock; //This restores the set lock position
@@ -1529,6 +1523,7 @@ public static class MissionFunctions
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
         GameObject starfield = SceneFunctions.GetStarfield();
+        Hud hud = HudFunctions.GetHud();
 
         missionManager.pauseEventSeries = true;
 
@@ -1538,11 +1533,14 @@ public static class MissionFunctions
         smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
 
         //This fades out the hud
-        Task a = new Task(HudFunctions.FadeOutHud(1));
-
-        while (a.Running == true)
+        if (hud.mode == "hud")
         {
-            yield return null;
+            Task a = new Task(HudFunctions.FadeOutHud(1));
+
+            while (a.Running == true)
+            {
+                yield return null;
+            }
         }
 
         //This fades the scene out
@@ -1594,9 +1592,13 @@ public static class MissionFunctions
         ogCamera.mainCamera.GetComponent<Camera>().enabled = true;
 
         //This fades the hud back in
-        Task fadeIN = new Task(HudFunctions.FadeInHud(1));
+        if (hud.mode == "hud")
+        {
+            Task fadeIN = new Task(HudFunctions.FadeInHud(1));
 
-        yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.5f);
+
+        }
 
         //This fades the scene back ing
         HudFunctions.FadeOutBackground(1, colour);

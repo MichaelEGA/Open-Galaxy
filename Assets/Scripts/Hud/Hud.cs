@@ -14,6 +14,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public Camera starfieldCamera;
     [HideInInspector] public float startTime;
     [HideInInspector] public Color colour;
+    [HideInInspector] public string mode = "hud";
 
     [Header("Canvas Groups")]
     [HideInInspector] public CanvasGroup hudCG;

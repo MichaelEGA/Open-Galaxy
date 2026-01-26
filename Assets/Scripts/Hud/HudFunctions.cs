@@ -96,6 +96,7 @@ public static class HudFunctions
                     Task a = new Task(FadeInCanvasGroup(hud.hudCG, 0.5f));
                     Task b = new Task(FadeOutCanvasGroup(hud.fadeCG, 0.5f));
                     Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
+                    hud.mode = "hud";
                 }
             }
             else if (mode == "fade")
@@ -105,6 +106,7 @@ public static class HudFunctions
                     Task a = new Task(FadeOutCanvasGroup(hud.hudCG, 0.5f));
                     Task b = new Task(FadeInCanvasGroup(hud.fadeCG, 0.5f));
                     Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
+                    hud.mode = "fade";
                 }
             }
             else if (mode == "letterbox")
@@ -114,6 +116,7 @@ public static class HudFunctions
                     Task a = new Task(FadeOutCanvasGroup(hud.hudCG, 0.5f));
                     Task b = new Task(FadeOutCanvasGroup(hud.fadeCG, 0.5f));
                     Task c = new Task(FadeInCanvasGroup(hud.letterboxCG, 0.5f));
+                    hud.mode = "letterbox";
                 }
             }
             else if (mode == "none")
@@ -123,6 +126,7 @@ public static class HudFunctions
                     Task a = new Task(FadeOutCanvasGroup(hud.hudCG, 0.5f));
                     Task b = new Task(FadeOutCanvasGroup(hud.fadeCG, 0.5f));
                     Task c = new Task(FadeOutCanvasGroup(hud.letterboxCG, 0.5f));
+                    hud.mode = "none";
                 }
             }
         }

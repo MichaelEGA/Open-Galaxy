@@ -401,6 +401,7 @@ public class OGCameraFunctions : MonoBehaviour
             {
                 ogCamera.transform.parent = ogCamera.targetShipCameraGO.transform;
                 ogCamera.transform.localPosition = Vector3.zero;
+                ogCamera.transform.localRotation = Quaternion.identity;
 
                 if (ogCamera.cockpitGO == null)
                 {
@@ -960,6 +961,7 @@ public class OGCameraFunctions : MonoBehaviour
             {
                 ogCamera.transform.parent = ogCamera.targetShipCameraGO.transform;
                 ogCamera.transform.localPosition = Vector3.zero;
+                ogCamera.transform.localRotation = Quaternion.identity;
 
                 if (ogCamera.cockpitGO == null)
                 {

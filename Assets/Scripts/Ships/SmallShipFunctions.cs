@@ -780,30 +780,44 @@ public static class SmallShipFunctions
     //Jump to Hyperspace
     public static IEnumerator JumpToHyperspace(SmallShip smallShip)
     {
-        CloseWings(smallShip);
-
-        smallShip.jumpingToHyperspace = true;
-
-        Vector3 startPosition = smallShip.gameObject.transform.localPosition;
-        Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 30000;
-
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Explosions", smallShip.transform.position, 1, 1, 1000, 1f);
-
-        float timeElapsed = 0;
-        float lerpDuration = 1;
-
-        while (timeElapsed < lerpDuration)
+        if (smallShip != null)
         {
-            smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
-            timeElapsed += Time.deltaTime;
-            yield return null;
+            CloseWings(smallShip);
+
+            yield return new WaitForSeconds(3.4f); //This gives the wings time to close
         }
 
-        HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " jumped to hyperspace");
+        if (smallShip != null)
+        {
+            smallShip.jumpingToHyperspace = true;
 
-        smallShip.jumpingToHyperspace = false;
+            Vector3 startPosition = smallShip.gameObject.transform.localPosition;
+            Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 5000; //Original 30000
 
-        DamageFunctions.DeactivateShip_SmallShip(smallShip);
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Explosions", smallShip.transform.position, 1, 1, 1000, 1f);
+
+            float timeElapsed = 0;
+            float lerpDuration = 1;
+
+            while (timeElapsed < lerpDuration)
+            {
+                if (smallShip != null)
+                {
+                    smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+                    timeElapsed += Time.deltaTime;
+                    yield return null;
+                }
+            }
+
+            if (smallShip != null)
+            {
+                HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " jumped to hyperspace");
+
+                smallShip.jumpingToHyperspace = false;
+
+                DamageFunctions.DeactivateShip_SmallShip(smallShip);
+            }
+        }
     }
 
     //Exit Hyperspace

@@ -240,8 +240,9 @@ public static class NodeDescriptions
             "\n " +
            "Extra Information \n" +
            "- When activated the ship will jump out of the scene and be deactivated. \n" +
+           "- The ship will take 3.4 seconds to jump, to give ships with s-foils time to close. \n" +
            "- This node should only be used on non-player ships \n" +
-           "- For making the player jump to hyperspace use the 'change location' node. \n" +
+           "- For making the player jump to another location through hyperspace use the 'change location' node. \n" +
            "- If you want the ship to 'return' you will need to load a new ship with the same name and parameters. \n" +
            "- This function will affect any ship whose name contains the designated string. \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";

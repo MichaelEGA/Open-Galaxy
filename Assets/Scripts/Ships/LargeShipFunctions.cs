@@ -63,15 +63,15 @@ public static class LargeShipFunctions
         }
         else if (largeShip.spinShip == false & largeShip.controlLock == true)
         {
-            LargeShipAIFunctions.SmoothPitchInput(largeShip, 0);
-            LargeShipAIFunctions.SmoothTurnInput(largeShip, 0);
-            LargeShipAIFunctions.SmoothRollInput(largeShip, 0);
+            largeShip.pitchInput = 0;
+            largeShip.turnInput = 0;
+            largeShip.rollInput = 0;
         }
         else
         {
-            LargeShipAIFunctions.SmoothPitchInput(largeShip, 0);
-            LargeShipAIFunctions.SmoothTurnInput(largeShip, 0);
-            LargeShipAIFunctions.SmoothRollInput(largeShip, 1);
+            largeShip.pitchInput = 0;
+            largeShip.turnInput = 0;
+            largeShip.rollInput = 1;
         }
     }
 

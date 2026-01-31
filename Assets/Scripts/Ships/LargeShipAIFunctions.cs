@@ -1,8 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public static class LargeShipAIFunctions
@@ -741,14 +738,13 @@ public static class LargeShipAIFunctions
         if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
         {
             //Right way up
-            SmoothTurnInput(largeShip, -largeShip.targetForward);
-            SmoothPitchInput(largeShip, -largeShip.targetUp);
+            largeShip.turnInput = -largeShip.targetForward;
+            largeShip.pitchInput = -largeShip.targetUp;
         }
         else
         {
-            //Upside down
-            SmoothTurnInput(largeShip, largeShip.targetForward);
-            SmoothPitchInput(largeShip, largeShip.targetUp);
+            largeShip.turnInput = largeShip.targetForward;
+            largeShip.pitchInput = largeShip.targetUp;           
         }
     }
 
@@ -756,50 +752,50 @@ public static class LargeShipAIFunctions
     public static void PitchUp(LargeShip largeShip)
     {
         largeShip.damperner = 1;
-        SmoothPitchInput(largeShip, 1);
+        largeShip.pitchInput = 1;
     }
 
     //This pitches the ship down
     public static void PitchDown(LargeShip largeShip)
     {
         largeShip.damperner = 1;
-        SmoothPitchInput(largeShip, -1);
+        largeShip.pitchInput = -1;
     }
 
     //This turns the ship right
     public static void TurnRight(LargeShip largeShip)
     {
         largeShip.damperner = 1;
-        SmoothTurnInput(largeShip, 1);
+        largeShip.turnInput = 1;
     }
 
     //This turns the ship Left
     public static void TurnLeft(LargeShip largeShip)
     {
         largeShip.damperner = 1;
-        SmoothTurnInput(largeShip, -1);
+        largeShip.turnInput = -1;
     }
 
     //This causes the ship to roll Right
     public static void RollRight(LargeShip largeShip)
     {
         largeShip.damperner = 1;
-        SmoothRollInput(largeShip, 1);
+        largeShip.rollInput = 1;
     }
 
     //This causes the ship to roll left
     public static void RollLeft(LargeShip largeShip)
     {
         largeShip.damperner = 1;
-        SmoothRollInput(largeShip, -1);
+        largeShip.rollInput = -1;
     }
 
     //This causes the ship to fly forward
     public static void FlyFoward(LargeShip largeShip)
     {
         largeShip.damperner = 1;
-        SmoothPitchInput(largeShip, 0);
-        SmoothTurnInput(largeShip, 0);
+        largeShip.pitchInput = 0;
+        largeShip.turnInput = 0;
     }
 
     //This prevents gimbal lock when the ships turn
@@ -816,14 +812,14 @@ public static class LargeShipAIFunctions
                 if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
                 {
                     //Steering when ship is the right way up
-                    SmoothTurnInput(largeShip, 1);
-                    SmoothPitchInput(largeShip, -0);
+                    largeShip.turnInput = 1;
+                    largeShip.pitchInput = -0;
                 }
                 else
                 {
                     //Steering when the ship is upside down
-                    SmoothTurnInput(largeShip, -1);
-                    SmoothPitchInput(largeShip, -0);
+                    largeShip.turnInput = -1;
+                    largeShip.pitchInput = -0;
                 }
             }
             else
@@ -840,14 +836,14 @@ public static class LargeShipAIFunctions
                 if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
                 {
                     //Right way up
-                    SmoothTurnInput(largeShip, -1);
-                    SmoothPitchInput(largeShip, 0);
+                    largeShip.turnInput = -1;
+                    largeShip.pitchInput = 0;
                 }
                 else
                 {
                     //upside down
-                    SmoothTurnInput(largeShip, 1);
-                    SmoothPitchInput(largeShip, -0);
+                    largeShip.turnInput = 1;
+                    largeShip.pitchInput = 0;
                 }
             }
             else
@@ -869,34 +865,4 @@ public static class LargeShipAIFunctions
     }
 
     #endregion
-
-    #region
-
-    //For AI Input. These functions smoothly transitions between different pitch, turn, and roll inputs by lerping between different values like the ai is using a joystick or controller
-    public static void SmoothPitchInput(LargeShip largeShip, float pitchInput)
-    {
-        float currentVelocity = 0;
-        float smoothTime = 0.1f;
-
-        largeShip.pitchInput = Mathf.SmoothDamp(largeShip.pitchInput, pitchInput, ref currentVelocity, smoothTime);
-    }
-
-    public static void SmoothTurnInput(LargeShip largeShip, float turnInput)
-    {
-        float currentVelocity = 0;
-        float smoothTime = 0.1f;
-
-        largeShip.turnInput = Mathf.SmoothDamp(largeShip.turnInput, turnInput, ref currentVelocity, smoothTime);
-    }
-
-    public static void SmoothRollInput(LargeShip largeShip, float rollInput)
-    {
-        float currentVelocity = 0;
-        float smoothTime = 0.1f;
-
-        largeShip.rollInput = Mathf.SmoothDamp(largeShip.rollInput, rollInput, ref currentVelocity, smoothTime);
-    }
-
-    #endregion
-
 }

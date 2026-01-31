@@ -131,6 +131,8 @@ public class LargeShip : MonoBehaviour
     public bool aiEvade;
     public bool requestingTarget;
     public bool aiStarted;
+    public bool steeringDeadZone;
+    public float damperner;
 
     [Header("Ship Loading")]
     [HideInInspector] public bool loaded;

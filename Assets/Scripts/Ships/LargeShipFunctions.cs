@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -142,25 +143,19 @@ public static class LargeShipFunctions
 
         if (largeShip.jumpingToHyperspace == false & largeShip.exitingHyperspace == false & largeShip.docking == false & largeShip.systemsLevel > 0) 
         {
-            //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
-            float step = +Time.deltaTime / 0.1f;
-            largeShip.pitchInputActual = Mathf.Lerp(largeShip.pitchInputActual, largeShip.pitchInput, step);
-            largeShip.turnInputActual = Mathf.Lerp(largeShip.turnInputActual, largeShip.turnInput, step);
-            largeShip.rollInputActual = Mathf.Lerp(largeShip.rollInputActual, largeShip.rollInput, step);
-
             //This makes the vehicle fly
             if (largeShip.thrustSpeed > 0)
             {
                 largeShip.gameObject.transform.Translate(Vector3.forward * Time.deltaTime * largeShip.thrustSpeed);
             }
 
-            Vector3 x = Vector3.right * largeShip.pitchInputActual;
-            Vector3 y = Vector3.up * largeShip.turnInputActual;
-            Vector3 z = Vector3.forward * largeShip.rollInputActual;
+            Vector3 x = Vector3.right * largeShip.pitchInput;
+            Vector3 y = Vector3.up * largeShip.turnInput;
+            Vector3 z = Vector3.forward * largeShip.rollInput;
 
             Vector3 rotationVector = new Vector3(x.x, y.y, z.z);
 
-            largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime * largeShip.maneuvarabilityActual, Space.World);
+            largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime * largeShip.maneuvarabilityActual * largeShip.damperner, Space.World);
         }
     }
 

@@ -17,10 +17,12 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - AI Tagging
   - Easy to use mission editor
   - External mission loading
-  - 21 Inbuilt Missions
   - 400+ Ships
   - Keyboard and Mouse Support
   - X-Box Controller Support
+
+**Included Campaigns**
+  - A New Ally (6 Missions)
 
 **Keyboard and Mouse**  
   - Mouse Steers

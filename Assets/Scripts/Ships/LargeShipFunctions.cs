@@ -155,7 +155,7 @@ public static class LargeShipFunctions
 
             Vector3 rotationVector = new Vector3(x.x, y.y, z.z);
 
-            largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime * largeShip.maneuvarabilityActual * largeShip.damperner, Space.World);
+            largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime * largeShip.maneuvarabilityActual * largeShip.dampener, Space.World);
         }
     }
 

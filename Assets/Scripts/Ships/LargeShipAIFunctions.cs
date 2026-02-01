@@ -644,7 +644,7 @@ public static class LargeShipAIFunctions
     {
         AvoidGimbalLock(largeShip, largeShip.targetForward);
 
-        largeShip.damperner = 1 - Mathf.Clamp01(largeShip.targetForward);
+        largeShip.dampener = 1 - Mathf.Clamp01(largeShip.targetForward);
 
         if (largeShip.avoidGimbalLock == false)
         {
@@ -667,7 +667,7 @@ public static class LargeShipAIFunctions
     {
         AvoidGimbalLock(largeShip, largeShip.targetForward, true);
 
-        largeShip.damperner = (Mathf.Clamp01(largeShip.targetForward) * -1) + 1;
+        largeShip.dampener = (Mathf.Clamp01(largeShip.targetForward) * -1) + 1;
 
         if (largeShip.avoidGimbalLock == false)
         {
@@ -689,7 +689,7 @@ public static class LargeShipAIFunctions
     {
         AvoidGimbalLock(largeShip, largeShip.waypointForward);
 
-        largeShip.damperner = 1 - Mathf.Clamp01(largeShip.waypointForward);
+        largeShip.dampener = 1 - Mathf.Clamp01(largeShip.waypointForward);
 
         if (largeShip.avoidGimbalLock == false)
         {
@@ -711,7 +711,7 @@ public static class LargeShipAIFunctions
     {
         AvoidGimbalLock(largeShip, largeShip.waypointForward, true);
 
-        largeShip.damperner = (Mathf.Clamp01(largeShip.waypointForward) * -1) + 1;
+        largeShip.dampener = (Mathf.Clamp01(largeShip.waypointForward) * -1) + 1;
 
         if (largeShip.avoidGimbalLock == false)
         {
@@ -733,7 +733,7 @@ public static class LargeShipAIFunctions
     //This angles the ship towards the target vector
     public static void KeepTargetOnRight(LargeShip largeShip)
     {
-        largeShip.damperner = 1;
+        largeShip.dampener = 1;
 
         if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
         {
@@ -751,49 +751,49 @@ public static class LargeShipAIFunctions
     //This pitches the ship up
     public static void PitchUp(LargeShip largeShip)
     {
-        largeShip.damperner = 1;
+        largeShip.dampener = 1;
         largeShip.pitchInput = 1;
     }
 
     //This pitches the ship down
     public static void PitchDown(LargeShip largeShip)
     {
-        largeShip.damperner = 1;
+        largeShip.dampener = 1;
         largeShip.pitchInput = -1;
     }
 
     //This turns the ship right
     public static void TurnRight(LargeShip largeShip)
     {
-        largeShip.damperner = 1;
+        largeShip.dampener = 1;
         largeShip.turnInput = 1;
     }
 
     //This turns the ship Left
     public static void TurnLeft(LargeShip largeShip)
     {
-        largeShip.damperner = 1;
+        largeShip.dampener = 1;
         largeShip.turnInput = -1;
     }
 
     //This causes the ship to roll Right
     public static void RollRight(LargeShip largeShip)
     {
-        largeShip.damperner = 1;
+        largeShip.dampener = 1;
         largeShip.rollInput = 1;
     }
 
     //This causes the ship to roll left
     public static void RollLeft(LargeShip largeShip)
     {
-        largeShip.damperner = 1;
+        largeShip.dampener = 1;
         largeShip.rollInput = -1;
     }
 
     //This causes the ship to fly forward
     public static void FlyFoward(LargeShip largeShip)
     {
-        largeShip.damperner = 1;
+        largeShip.dampener = 1;
         largeShip.pitchInput = 0;
         largeShip.turnInput = 0;
     }
@@ -801,7 +801,7 @@ public static class LargeShipAIFunctions
     //This prevents gimbal lock when the ships turn
     public static void AvoidGimbalLock(LargeShip largeShip, float forward, bool reverse = false)
     {
-        largeShip.damperner = 1;
+        largeShip.dampener = 1;
 
         if (reverse == false)
         {
@@ -858,7 +858,7 @@ public static class LargeShipAIFunctions
     //This resets all the inputs
     public static void ResetSteeringInputs(LargeShip largeShip)
     {
-        largeShip.damperner = 1;
+        largeShip.dampener = 1;
         largeShip.pitchInput = 0;
         largeShip.turnInput = 0;
         largeShip.rollInput = 0;

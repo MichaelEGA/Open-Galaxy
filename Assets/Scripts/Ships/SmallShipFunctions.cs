@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -395,13 +396,13 @@ public static class SmallShipFunctions
 
                 if (forward < 0.8)
                 {
-                    SmallShipAIFunctions.SmoothTurnInput(smallShip, right);
-                    SmallShipAIFunctions.SmoothPitchInput(smallShip, -up);
+                    smallShip.turnInput = right;
+                    smallShip.pitchInput = -up;
                 }
                 else
                 {
-                    SmallShipAIFunctions.SmoothTurnInput(smallShip, right * 5);
-                    SmallShipAIFunctions.SmoothPitchInput(smallShip, -up * 5);
+                    smallShip.turnInput = right * 5;
+                    smallShip.pitchInput = -up * 5;
                 }
 
                 smallShip.thrustInput = 1;
@@ -426,20 +427,22 @@ public static class SmallShipFunctions
         if (smallShip.spinShip == true)
         {
             smallShip.automaticRotationSpin = true;
-            SmallShipAIFunctions.SmoothTurnInput(smallShip, 0);
-            SmallShipAIFunctions.SmoothPitchInput(smallShip, 0);
+
+            smallShip.turnInput = 0;
+            smallShip.pitchInput = 0;
+
 
             if (smallShip.rollInputActual > 0)
             {
-                SmallShipAIFunctions.SmoothRollInput(smallShip, 1);
+                smallShip.rollInput = 1;
             }
             else if (smallShip.rollInputActual < 0)
             {
-                SmallShipAIFunctions.SmoothRollInput(smallShip, -1);
+                smallShip.rollInput = -1;
             }
             else
             {
-                SmallShipAIFunctions.SmoothRollInput(smallShip, 1);
+                smallShip.rollInput = 1;
             }
         }
         else
@@ -453,9 +456,9 @@ public static class SmallShipFunctions
     {
         if (smallShip.controlLock == true)
         {
-            SmallShipAIFunctions.SmoothTurnInput(smallShip, 0);
-            SmallShipAIFunctions.SmoothPitchInput(smallShip, 0);
-            SmallShipAIFunctions.SmoothRollInput(smallShip, 0);
+            smallShip.turnInput = 0;
+            smallShip.pitchInput = 0;
+            smallShip.rollInput = 0;
         }
     }
 
@@ -756,19 +759,13 @@ public static class SmallShipFunctions
 
         if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false & smallShip.isDisabled == false)
         {
-            //This smoothly increases and decreases pitch, turn, and roll to provide smooth movement;
-            float step = +Time.deltaTime / 0.1f;
-            smallShip.pitchInputActual = Mathf.Lerp(smallShip.pitchInputActual, smallShip.pitchInput, step);
-            smallShip.turnInputActual = Mathf.Lerp(smallShip.turnInputActual, smallShip.turnInput, step);
-            smallShip.rollInputActual = Mathf.Lerp(smallShip.rollInputActual, smallShip.rollInput, step);
-
             //This adds makes the ship move forward
             smallShip.shipRigidbody.AddForce(smallShip.gameObject.transform.position + smallShip.gameObject.transform.forward * Time.fixedDeltaTime * smallShip.thrustSpeed * 60000);
 
             //This rotates the ship
-            Vector3 x = Vector3.right * smallShip.pitchSpeed * smallShip.pitchInputActual;
-            Vector3 y = Vector3.up * smallShip.turnSpeed * smallShip.turnInputActual;
-            Vector3 z = Vector3.forward * smallShip.rollSpeed * smallShip.rollInputActual;
+            Vector3 x = Vector3.right * smallShip.pitchSpeed * smallShip.pitchInput;
+            Vector3 y = Vector3.up * smallShip.turnSpeed * smallShip.turnInput;
+            Vector3 z = Vector3.forward * smallShip.rollSpeed * smallShip.rollInput;
 
             Vector3 rotationVector = x + y + z;
 

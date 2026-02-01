@@ -53,13 +53,10 @@ public class LargeShip : MonoBehaviour
     public bool avoidGimbalLock = false;
     public float avoidGimbalLockRight = 1;
     public float avoidGimbalLockUp = 1;
-    [HideInInspector] public float pitchSpeed;
     [HideInInspector] public float pitchInput;
     [HideInInspector] public float pitchInputActual;
-    [HideInInspector] public float turnSpeed;
     [HideInInspector] public float turnInput;
     [HideInInspector] public float turnInputActual;
-    [HideInInspector] public float rollSpeed;
     [HideInInspector] public float rollInput;
     [HideInInspector] public float rollInputActual;
     [HideInInspector] public float maneuvarabilityActual;
@@ -132,7 +129,7 @@ public class LargeShip : MonoBehaviour
     public bool requestingTarget;
     public bool aiStarted;
     public bool steeringDeadZone;
-    public float damperner = 1;
+    public float dampener = 1;
 
     [Header("Ship Loading")]
     [HideInInspector] public bool loaded;

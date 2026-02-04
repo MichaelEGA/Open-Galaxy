@@ -383,14 +383,14 @@ public static class LargeShipAIFunctions
         {
             if (TagExists(largeShip, "movetowaypoint"))
             {
-                if (largeShip.waypointForward < 0.95f)
+                if (largeShip.waypointForward < 0.8f)
                 {
                     if (largeShip.thrustSpeed > 0)
                     {
                         largeShip.thrustInput = -1;
                     }
                 }
-                else
+                else if (largeShip.waypointForward > 0.95f)
                 {
                     if (largeShip.thrustSpeed < largeShip.speedRating)
                     {
@@ -400,6 +400,10 @@ public static class LargeShipAIFunctions
                     {
                         largeShip.thrustInput = -1;
                     }
+                }
+                else
+                {
+                    largeShip.thrustInput = 0;
                 }
             }
             else if (largeShip.target != null)
@@ -690,6 +694,7 @@ public static class LargeShipAIFunctions
         AvoidGimbalLock(largeShip, largeShip.waypointForward);
 
         largeShip.dampener = 1 - Mathf.Clamp01(largeShip.waypointForward);
+        largeShip.dampener = Mathf.Clamp(largeShip.dampener * 5, 0, 1); //multiplies and clamps the dampener to make the movement both smooth and fast
 
         if (largeShip.avoidGimbalLock == false)
         {
@@ -801,6 +806,8 @@ public static class LargeShipAIFunctions
     //This prevents gimbal lock when the ships turn
     public static void AvoidGimbalLock(LargeShip largeShip, float forward, bool reverse = false)
     {
+        largeShip.avoidGimbalLock = false;
+
         largeShip.dampener = 1;
 
         if (reverse == false)
@@ -813,18 +820,14 @@ public static class LargeShipAIFunctions
                 {
                     //Steering when ship is the right way up
                     largeShip.turnInput = 1;
-                    largeShip.pitchInput = -0;
+                    largeShip.pitchInput = 0;
                 }
                 else
                 {
                     //Steering when the ship is upside down
                     largeShip.turnInput = -1;
-                    largeShip.pitchInput = -0;
+                    largeShip.pitchInput = 0;
                 }
-            }
-            else
-            {
-                largeShip.avoidGimbalLock = false;
             }
         }
         else
@@ -846,13 +849,7 @@ public static class LargeShipAIFunctions
                     largeShip.pitchInput = 0;
                 }
             }
-            else
-            {
-                largeShip.avoidGimbalLock = false;
-            }
         }
-
-
     }
 
     //This resets all the inputs

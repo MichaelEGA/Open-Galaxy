@@ -118,15 +118,8 @@ public static class LargeShipFunctions
     //This calculates pitch, turn, and roll according to the speed of the vehicle
     public static void CalculatePitchTurnRollSpeeds(LargeShip largeShip)
     {
-        if (largeShip.reducemaneuvarability == true)
-        {
-            largeShip.maneuvarabilityActual = 1;
-        }
-        else
-        {
-            largeShip.maneuvarabilityActual = largeShip.maneuverabilityRating;
-        }
-
+        largeShip.maneuvarabilityActual = largeShip.maneuverabilityRating;
+        
         if (largeShip.spinShip == true)
         {
             largeShip.maneuvarabilityActual = 2.5f;
@@ -143,19 +136,14 @@ public static class LargeShipFunctions
 
         if (largeShip.jumpingToHyperspace == false & largeShip.exitingHyperspace == false & largeShip.docking == false & largeShip.systemsLevel > 0) 
         {
-            //This makes the vehicle fly
-            if (largeShip.thrustSpeed > 0)
+            if (largeShip.thrustSpeed > 0f)
             {
-                largeShip.gameObject.transform.Translate(Vector3.forward * Time.deltaTime * largeShip.thrustSpeed);
+                largeShip.gameObject.transform.Translate(Vector3.forward * largeShip.thrustSpeed * Time.deltaTime, Space.Self);
             }
 
-            Vector3 x = Vector3.right * largeShip.pitchInput;
-            Vector3 y = Vector3.up * largeShip.turnInput;
-            Vector3 z = Vector3.forward * largeShip.rollInput;
-
-            Vector3 rotationVector = new Vector3(x.x, y.y, z.z);
-
-            largeShip.transform.Rotate(rotationVector, Time.fixedDeltaTime * largeShip.maneuvarabilityActual * largeShip.dampener, Space.World);
+            Vector3 eulerRates = new Vector3(largeShip.pitchInput, largeShip.turnInput, largeShip.rollInput);
+            Vector3 eulerDelta = eulerRates * (Time.deltaTime * largeShip.maneuvarabilityActual * largeShip.dampener);
+            largeShip.gameObject.transform.Rotate(eulerDelta, Space.Self);
         }
     }
 

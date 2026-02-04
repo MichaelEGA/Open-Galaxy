@@ -49,7 +49,6 @@ public class LargeShip : MonoBehaviour
     [HideInInspector] public float thrustInput = 1;
 
     [Header("Ship Rotation")]
-    public bool reducemaneuvarability;
     public bool avoidGimbalLock = false;
     public float avoidGimbalLockRight = 1;
     public float avoidGimbalLockUp = 1;

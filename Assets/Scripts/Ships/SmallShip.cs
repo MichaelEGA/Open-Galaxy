@@ -87,6 +87,10 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool spinShip;
     [HideInInspector] public bool avoidGimbalLock;
 
+    public Vector3 rotRateSmoothVelocity;          // ref for SmoothDamp
+    public Vector3 smoothedRotationRate;
+    public float rotationSmoothTime = 0.01f;
+
     [Header("Docking")]
     public GameObject targetDockingPoint;
     public DockingPoint dockingPoint;

@@ -2429,6 +2429,26 @@ public static class SceneFunctions
             {
                 if (gameobject != null)
                 {
+                    //This destroys the waypoint object
+                    SmallShip smallShip = gameobject.GetComponent<SmallShip>();
+                    LargeShip largeShip = gameobject.GetComponent<LargeShip>();
+
+                    if (smallShip != null)
+                    {
+                        if (smallShip.waypoint != null)
+                        {
+                            GameObject.Destroy(smallShip.waypoint);
+                        }
+                    }
+
+                    if (largeShip != null)
+                    {
+                        if (largeShip.waypoint != null)
+                        {
+                            GameObject.Destroy(largeShip.waypoint);
+                        }
+                    }
+
                     GameObject.Destroy(gameobject);
                 }
             }
@@ -2535,8 +2555,29 @@ public static class SceneFunctions
             {
                 if (gameobject != null)
                 {
-                    if (scene.mainShip != gameobject)
+                    if (scene.mainShip != gameobject) // This prevents the player ship from being destroyed
                     {
+                        //This destroys the waypoint object
+                        SmallShip smallShip = gameobject.GetComponent<SmallShip>();
+                        LargeShip largeShip = gameobject.GetComponent<LargeShip>();
+
+                        if (smallShip != null)
+                        {
+                            if (smallShip.waypoint != null)
+                            {
+                                GameObject.Destroy(smallShip.waypoint);
+                            }
+                        }
+
+                        if (largeShip != null)
+                        {
+                            if (largeShip.waypoint != null)
+                            {
+                                GameObject.Destroy(largeShip.waypoint);
+                            }
+                        }
+
+                        //This destroys the ship
                         GameObject.Destroy(gameobject);
                     }
                 }

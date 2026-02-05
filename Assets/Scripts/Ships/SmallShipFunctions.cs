@@ -759,17 +759,31 @@ public static class SmallShipFunctions
 
         if (smallShip.shipRigidbody != null & smallShip.jumpingToHyperspace == false & smallShip.exitingHyperspace == false & smallShip.docking == false & smallShip.isDisabled == false)
         {
-            //This adds makes the ship move forward
+            ////This adds makes the ship move forward
+            //smallShip.shipRigidbody.AddForce(smallShip.gameObject.transform.position + smallShip.gameObject.transform.forward * Time.fixedDeltaTime * smallShip.thrustSpeed * 60000);
+
+            ////This rotates the ship
+            //Vector3 x = Vector3.right * smallShip.pitchSpeed * smallShip.pitchInput;
+            //Vector3 y = Vector3.up * smallShip.turnSpeed * smallShip.turnInput;
+            //Vector3 z = Vector3.forward * smallShip.rollSpeed * smallShip.rollInput;
+
+            //Vector3 rotationVector = x + y + z;
+
+            //Quaternion deltaRotation = Quaternion.Euler(rotationVector * Time.deltaTime);
+            //smallShip.shipRigidbody.MoveRotation(smallShip.shipRigidbody.rotation * deltaRotation);
+
             smallShip.shipRigidbody.AddForce(smallShip.gameObject.transform.position + smallShip.gameObject.transform.forward * Time.fixedDeltaTime * smallShip.thrustSpeed * 60000);
 
-            //This rotates the ship
-            Vector3 x = Vector3.right * smallShip.pitchSpeed * smallShip.pitchInput;
-            Vector3 y = Vector3.up * smallShip.turnSpeed * smallShip.turnInput;
-            Vector3 z = Vector3.forward * smallShip.rollSpeed * smallShip.rollInput;
+            // --- Rotation: compute raw angular speed vector (deg/sec) ---
+            Vector3 rawRotationRate = Vector3.right * smallShip.pitchSpeed * smallShip.pitchInput
+                                    + Vector3.up * smallShip.turnSpeed * smallShip.turnInput
+                                    + Vector3.forward * smallShip.rollSpeed * smallShip.rollInput;
 
-            Vector3 rotationVector = x + y + z;
+            // Smooth the rotation rate (degrees/sec) over time
+            Vector3 smoothedRotationRate = Vector3.SmoothDamp(smallShip.smoothedRotationRate, rawRotationRate, ref smallShip.rotRateSmoothVelocity, smallShip.rotationSmoothTime, Mathf.Infinity, Time.fixedDeltaTime);
 
-            Quaternion deltaRotation = Quaternion.Euler(rotationVector * Time.deltaTime);
+            // Convert to a delta rotation (degrees this FixedUpdate) and apply
+            Quaternion deltaRotation = Quaternion.Euler(smoothedRotationRate * Time.fixedDeltaTime);
             smallShip.shipRigidbody.MoveRotation(smallShip.shipRigidbody.rotation * deltaRotation);
         }
     }

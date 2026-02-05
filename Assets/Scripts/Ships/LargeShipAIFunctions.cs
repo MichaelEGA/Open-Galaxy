@@ -694,7 +694,6 @@ public static class LargeShipAIFunctions
         AvoidGimbalLock(largeShip, largeShip.waypointForward);
 
         largeShip.dampener = 1 - Mathf.Clamp01(largeShip.waypointForward);
-        largeShip.dampener = Mathf.Clamp(largeShip.dampener * 5, 0, 1); //multiplies and clamps the dampener to make the movement both smooth and fast
 
         if (largeShip.avoidGimbalLock == false)
         {

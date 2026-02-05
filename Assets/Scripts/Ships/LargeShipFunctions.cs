@@ -141,6 +141,8 @@ public static class LargeShipFunctions
                 largeShip.gameObject.transform.Translate(Vector3.forward * largeShip.thrustSpeed * Time.deltaTime, Space.Self);
             }
 
+            largeShip.dampener = Mathf.Clamp(largeShip.dampener * 10, 0, 1); //multiplies and clamps the dampener to make the movement both smooth and fast
+
             Vector3 eulerRates = new Vector3(largeShip.pitchInput, largeShip.turnInput, largeShip.rollInput);
             Vector3 eulerDelta = eulerRates * (Time.deltaTime * largeShip.maneuvarabilityActual * largeShip.dampener);
             largeShip.gameObject.transform.Rotate(eulerDelta, Space.Self);

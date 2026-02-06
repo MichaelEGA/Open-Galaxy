@@ -3634,8 +3634,8 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options4 = new List<string>();
-        options4.Add("true");
         options4.Add("false");
+        options4.Add("true");
 
         node.data10 = NodeFunctions.DrawDropDownMenu(node, options4, "shake camera", "false", 7, 5, drop, 12.5f, 90, 5f);
 

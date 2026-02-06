@@ -32,6 +32,10 @@ public class NextMissionFunctions
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0;
 
+        //This unpauses the event series
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+        missionManager.pauseEventSeries = true;
+
         //This mutes game sounds
         AudioFunctions.MuteSelectedAudio("externalvolume");
         AudioFunctions.MuteSelectedAudio("enginevolume");
@@ -179,6 +183,10 @@ public class NextMissionFunctions
     {
         //This reactivates the time scale
         Time.timeScale = 1;
+
+        //This unpauses the event series
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+        missionManager.pauseEventSeries = false;
 
         //This unmutes game sounds
         AudioFunctions.UnmuteSelectedAudio("externalvolume");

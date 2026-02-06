@@ -176,18 +176,19 @@ public static class OGVideoPlayerFunctions
                 yield return null;
             }
 
-            MissionManager missionManager = MissionFunctions.GetMissionManager();
-            missionManager.pauseEventSeries = false;
-
-            Time.timeScale = 1;
-
             //This unmutes game sounds
             AudioFunctions.UnmuteSelectedAudio("externalvolume");
             AudioFunctions.UnmuteSelectedAudio("enginevolume");
             AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
             AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
 
+            //This makes the video player invisible
             SetVideoPlayerToInvisible();
+
+            //This gets the mission manager and unpauses the event series and the game
+            MissionManager missionManager = MissionFunctions.GetMissionManager();
+            missionManager.pauseEventSeries = false;
+            Time.timeScale = 1;
         }
     }
 

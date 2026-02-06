@@ -12,6 +12,10 @@ public static class MissionBriefingFunctions
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
 
+        //This unpauses the event series
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+        missionManager.pauseEventSeries = false;
+
         //This unmutes game sounds
         AudioFunctions.UnmuteSelectedAudio("externalvolume");
         AudioFunctions.UnmuteSelectedAudio("enginevolume");
@@ -49,6 +53,10 @@ public static class MissionBriefingFunctions
 
         //This pauses the game
         Time.timeScale = 0;
+
+        //This pauses the event series
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+        missionManager.pauseEventSeries = true;
 
         //This gets the current settings for the scene lighting and changes
         var lightingData = SceneFunctions.GetLightingData();

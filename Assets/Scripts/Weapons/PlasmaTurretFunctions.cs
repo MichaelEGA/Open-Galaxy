@@ -875,6 +875,11 @@ public static class PlasmaTurretFunctions
                     //This instantiates an explosion at the hit position
                     InstantiatePlasmaExplosion(laserTurret.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, size, shieldType, audioManager);
 
+                    if (objectHitDetails.isAI == false)
+                    {
+                        HudFunctions.ScreenFlash();
+                    }
+
                     //This applies damage to the target
                     ApplyDamage(laserTurret, objectHit, hitPosition, hitChildObject);
                 }
@@ -903,12 +908,13 @@ public static class PlasmaTurretFunctions
     }
 
     //This gets key information from the object that has been hit by the laser
-    public static (float shieldFront, float shieldBack, float forward, string shieldType) ObjectHitDetails(GameObject objectHit, Vector3 hitPosition)
+    public static (float shieldFront, float shieldBack, float forward, string shieldType, bool isAI) ObjectHitDetails(GameObject objectHit, Vector3 hitPosition)
     {
         float shieldFront = 0;
         float shieldBack = 0;
         float forward = 0;
         string shieldType = "default";
+        bool isAI = true;
 
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
@@ -922,6 +928,8 @@ public static class PlasmaTurretFunctions
 
             Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
             forward = -Vector3.Dot(smallShip.gameObject.transform.position, relativePosition.normalized);
+
+            isAI = smallShip.isAI;
         }
 
         if (largeShip != null)
@@ -935,7 +943,7 @@ public static class PlasmaTurretFunctions
             forward = -Vector3.Dot(largeShip.gameObject.transform.position, relativePosition.normalized);
         }
 
-        return (shieldFront, shieldBack, forward, shieldType);
+        return (shieldFront, shieldBack, forward, shieldType, isAI);
     }
 
     //This instantiates the correct explosion at the hit position

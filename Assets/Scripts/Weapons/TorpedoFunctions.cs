@@ -623,6 +623,11 @@ public static class TorpedoFunctions
 
             if (targetSmallShip != null)
             {
+                if (targetSmallShip.isAI == false)
+                {
+                    HudFunctions.ScreenFlash();
+                }
+
                 if (targetSmallShip.hasPlasma == false)
                 {
                     ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
@@ -672,6 +677,11 @@ public static class TorpedoFunctions
 
                 if (targetSmallShip != null)
                 {
+                    if (targetSmallShip.isAI == false)
+                    {
+                        HudFunctions.ScreenFlash();
+                    }
+
                     if (targetSmallShip.hasPlasma == false)
                     {
                         ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");

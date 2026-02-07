@@ -782,7 +782,7 @@ public static class LaserFunctions
         float shieldBack = 0;
         float forward = 0;
         string shieldType = "default";
-        bool isAI = false;
+        bool isAI = true;
 
         SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();

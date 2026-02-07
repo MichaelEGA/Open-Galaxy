@@ -205,7 +205,7 @@ public static class SceneFunctions
 
                     while (particleSystemRenderer.lengthScale < 1000)
                     {
-                        particleSystemRenderer.lengthScale += 20;
+                        particleSystemRenderer.lengthScale += 50; //20
                         yield return new WaitForSecondsRealtime(waitTime);
                     }
                 }
@@ -245,7 +245,7 @@ public static class SceneFunctions
 
                     while (particleSystemRenderer.lengthScale > 1)
                     {
-                        particleSystemRenderer.lengthScale -= 20;
+                        particleSystemRenderer.lengthScale -= 50; //20
                         yield return new WaitForSecondsRealtime(waitTime);
                     }
 

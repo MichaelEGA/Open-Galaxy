@@ -1363,7 +1363,6 @@ public static class MissionFunctions
         smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
 
         //This fades out the hud
-        
         if (hud.mode == "hud")
         {
             Task fadeOut = new Task(HudFunctions.FadeOutHud(1));
@@ -1386,9 +1385,6 @@ public static class MissionFunctions
         //This clears the current location
         SceneFunctions.ClearLocation();
 
-        //Task a = new Task(SceneFunctions.PlanetFlyOut());
-        //while (a.Running == true) { yield return null; }
-
         //This makes the stars stretch out
         ogCamera.planetCamera.GetComponent<Camera>().enabled = false;
 
@@ -1397,6 +1393,8 @@ public static class MissionFunctions
         //This makes the stars stretch out
         Task b = new Task(SceneFunctions.StretchStarfield());
         while(b.Running == true) { yield return null; }
+
+        HudFunctions.ScreenFlash();
 
         //This activates the hyperspace tunnel
         if (scene.hyperspaceTunnel == null)
@@ -1458,6 +1456,8 @@ public static class MissionFunctions
         yield return new WaitForSecondsRealtime(1); //This gives the rigidbody time to calculate the new velocity
 
         smallShip.inHyperspace = false;
+
+        HudFunctions.ScreenFlash();
 
         //This deactivates the hyperspace tunnel
         if (scene.hyperspaceTunnel != null)

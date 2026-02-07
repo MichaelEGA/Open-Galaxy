@@ -30,6 +30,11 @@ public static class HudFunctions
         fadeGO.name = "Fade";
         hudScript.fadeCG = fadeGO.GetComponent<CanvasGroup>();
 
+        GameObject screenflashPrefab = Resources.Load(OGGetAddress.hud + "Screenflash") as GameObject;
+        GameObject screenflashGO = GameObject.Instantiate(screenflashPrefab);
+        screenflashGO.name = "Screenflash";
+        hudScript.screenflashCG = screenflashGO.GetComponent<CanvasGroup>();
+
         GameObject letterboxPrefab = Resources.Load(OGGetAddress.hud + "Letterbox") as GameObject;
         GameObject letterboxGO = GameObject.Instantiate(letterboxPrefab);
         letterboxGO.name = "Letterbox";
@@ -129,6 +134,17 @@ public static class HudFunctions
                     hud.mode = "none";
                 }
             }
+        }
+    }
+
+    //This causes a flash on the screen
+    public static void ScreenFlash()
+    {
+        Hud hud = HudFunctions.GetHud();
+
+        if (hud.screenflashCG != null)
+        {
+            Task a = new Task(FadeInAndOutCanvasGroup(hud.screenflashCG, 0.025f));
         }
     }
 
@@ -2690,6 +2706,45 @@ public static class HudFunctions
 
                     yield return new WaitForSecondsRealtime(0.016f);
                 }
+            }
+        }
+    }
+
+    //This fades out the black bars
+    public static IEnumerator FadeInAndOutCanvasGroup(CanvasGroup canvasGroup, float duration)
+    {
+        if (canvasGroup != null)
+        {
+            //This sets the starting alpha value to 0
+            float alpha = canvasGroup.alpha;
+
+            //This fades in the canvas
+            while (alpha < 1)
+            {
+                alpha = alpha + (1f / (60f * duration));
+
+                if (canvasGroup != null)
+                {
+                    canvasGroup.alpha = alpha;
+                }
+
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+
+            //This sets the starting alpha value to 1
+            alpha = canvasGroup.alpha;
+
+            //This fades the canvas out
+            while (alpha > 0)
+            {
+                alpha = alpha - (1f / (60f * (duration /2f)));
+
+                if (canvasGroup != null)
+                {
+                    canvasGroup.alpha = alpha;
+                }
+
+                yield return new WaitForSecondsRealtime(0.016f);
             }
         }
     }

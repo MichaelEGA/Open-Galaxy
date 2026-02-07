@@ -20,6 +20,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public CanvasGroup hudCG;
     [HideInInspector] public CanvasGroup letterboxCG;
     [HideInInspector] public CanvasGroup fadeCG;
+    [HideInInspector] public CanvasGroup screenflashCG;
 
     [Header("Hud Elements Check")]
     [HideInInspector] public bool hudElementsSet;

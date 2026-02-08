@@ -183,6 +183,10 @@ public static class SceneFunctions
             ParticleSystem particleSystem = starfield.GetComponent<ParticleSystem>();
             ParticleSystemRenderer particleSystemRenderer = starfield.GetComponent<ParticleSystemRenderer>();
 
+            //This switches the star material to make the stars more blue when they stretch
+            Material starMaterial = Resources.Load(OGGetAddress.particles + "materials/star_hyperspace") as Material;
+            starfield.GetComponent<ParticleSystemRenderer>().material = starMaterial as Material;
+
             if (particleSystemRenderer != null & scene.mainShip != null)
             {
                 Rigidbody rigidbody = scene.mainShip.GetComponent<Rigidbody>();
@@ -252,6 +256,10 @@ public static class SceneFunctions
                     particleSystemRenderer.renderMode = ParticleSystemRenderMode.Billboard;
                 }
             }
+
+            //This returns the star material to normal
+            Material starMaterial = Resources.Load(OGGetAddress.particles + "materials/star") as Material;
+            starfield.GetComponent<ParticleSystemRenderer>().material = starMaterial as Material;
         }
     }
 

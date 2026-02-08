@@ -14,6 +14,7 @@ public class Scene : MonoBehaviour
     public List<string> availibleLocations;
     public string allegiance = "none";
     public OGCamera ogCamera;
+    public bool hyperspace;
 
     [Header("The Main Ship")]
     [HideInInspector] public GameObject mainShip;

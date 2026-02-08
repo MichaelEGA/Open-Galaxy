@@ -228,7 +228,7 @@ public static class MissionFunctions
             }
             else if (missionEvent.eventType == "preload_setlighting" & missionEvent.conditionLocation == location)
             {
-                SetLighting(missionEvent);
+                Task a = new Task(SetLighting(missionEvent));
                 MainMenuFunctions.AddLogToLoadingScreen("Lighting set", startTime);
             }
             else if (missionEvent.eventType == "preload_setfogdistanceandcolor" & missionEvent.conditionLocation == location)
@@ -1354,6 +1354,8 @@ public static class MissionFunctions
         GameObject starfield = SceneFunctions.GetStarfield();
         Hud hud = HudFunctions.GetHud();
 
+        scene.hyperspace = true;
+
         missionManager.pauseEventSeries = true;
 
         bool controlLock = smallShip.controlLock; //This preserves the current lock position
@@ -1427,7 +1429,7 @@ public static class MissionFunctions
         SceneFunctions.SetSkybox("space_black", true);
 
         //This resets the lighting to default
-        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 0, 0);
+        SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 180, 0);
 
         //This resets the fog distanc and colour
         SceneFunctions.SetFogDistanceAndColor(30000, 40000, "#000000");
@@ -1474,6 +1476,8 @@ public static class MissionFunctions
 
         //This plays the hyperspace exit
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+
+        scene.hyperspace = false;
 
         ogCamera.starfieldCamera.GetComponent<Camera>().enabled = true;
 
@@ -3494,8 +3498,16 @@ public static class MissionFunctions
     }
 
     //This changes the lighting in the scene
-    public static void SetLighting(MissionEvent missionEvent)
+    public static IEnumerator SetLighting(MissionEvent missionEvent)
     {
+        //This prevents the lighting changing while in hyperspace
+        Scene scene = SceneFunctions.GetScene();
+
+        while (scene.hyperspace == true)
+        {
+            yield return null; 
+        }
+
         float x = missionEvent.x;
         float y = missionEvent.y;
         float z = missionEvent.z;

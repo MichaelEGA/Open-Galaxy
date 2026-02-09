@@ -86,10 +86,11 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
 
   - https://github.com/MichaelEGA/Open-Galaxy/wiki
 
-**Open Galaxy uses freely available community assets**
+**Open Galaxy uses assets made by the community**
   - Open Galaxy Assets: https://www.moddb.com/games/open-galaxy/addons
   - First Strike Assets: https://www.moddb.com/mods/first-strike/news/public-release-of-first-strike-models
   - Original Trilogy Mod Assets: https://www.indiedb.com/downloads/original-trilogy-assets
+  - Vong Vaders Expansion (Seregruth): https://www.moddb.com/members/seregruth
   - evillejedi: https://www.moddb.com/members/evillejedi
   - warb_null: https://www.moddb.com/members/warb-null
   - spylakewalker: https://www.moddb.com/members/spylakewalker/

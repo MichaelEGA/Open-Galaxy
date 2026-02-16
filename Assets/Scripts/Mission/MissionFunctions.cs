@@ -1426,7 +1426,7 @@ public static class MissionFunctions
         smallShip.transform.localPosition = new Vector3(x, y, z);
 
         //This resets the skybox to black
-        SceneFunctions.SetSkybox("space_black", true);
+        SceneFunctions.SetSkybox("space", true);
 
         //This resets the lighting to default
         SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 0, 180, 0);

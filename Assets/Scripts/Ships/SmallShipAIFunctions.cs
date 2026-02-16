@@ -1,7 +1,5 @@
-using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 //These functions are called by the small ship functions script

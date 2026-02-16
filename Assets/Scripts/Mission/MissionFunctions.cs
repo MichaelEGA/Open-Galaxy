@@ -65,7 +65,7 @@ public static class MissionFunctions
         }
 
         //This sets the skybox to the default space and view distance
-        SceneFunctions.SetSkybox("space_black01", true);
+        SceneFunctions.SetSkybox("space", true);
 
         //This sets the fog and distance color to their default settings
         SceneFunctions.SetFogDistanceAndColor(30000, 40000, "#000000");

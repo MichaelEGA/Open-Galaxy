@@ -692,6 +692,11 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
+        else if (missionEvent.eventType == "loadexplosion")
+        {
+            LoadExplosion(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "loadsingleship")
         {
             LoadSingleShip(missionEvent);
@@ -2752,7 +2757,7 @@ public static class MissionFunctions
 
         Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
-        string type = "default";
+        string type = "explosion01";
         if (missionEvent.data1 != "none") { type = missionEvent.data1; }
 
         float size = 25;
@@ -2769,7 +2774,7 @@ public static class MissionFunctions
 
         if (float.TryParse(missionEvent.data3, out _))
         {
-            size = float.Parse(missionEvent.data3);
+            audioDistance = float.Parse(missionEvent.data3);
         }
 
         ParticleFunctions.InstantiateExplosion(position, "explosion01", size, null, sound, audioDistance);

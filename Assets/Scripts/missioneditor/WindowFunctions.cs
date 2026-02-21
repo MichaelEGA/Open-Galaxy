@@ -106,6 +106,7 @@ public static class WindowFunctions
         buttonList.Add("ifshipsshieldsarelessthan");
         buttonList.Add("ifshipssystemsarelessthan");
         buttonList.Add("ifsystemisactive");
+        buttonList.Add("loadexplosion");
         buttonList.Add("loadmultipleships");
         buttonList.Add("loadmultipleshipsfromhangar");
         buttonList.Add("loadsingleship");

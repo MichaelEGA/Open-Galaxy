@@ -165,6 +165,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfSystemIsActive(node);
         }
+        else if (node.nodeType == "loadexplosion")
+        {
+            NodeTypes.Draw_LoadExplosion(node);
+        }
         else if (node.nodeType == "loadsingleship")
         {
             NodeTypes.Draw_LoadSingleShip(node);

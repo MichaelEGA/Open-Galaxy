@@ -840,7 +840,7 @@ public static class LaserFunctions
         }
 
         //This instantiates an explosion at the point of impact
-        ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 6, audioManager);
+        ParticleFunctions.InstantiateExplosion(hitPosition, explosionChoice, 6, audioManager);
         
     }
 

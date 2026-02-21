@@ -1003,11 +1003,11 @@ public static class LaserTurretFunctions
         //This instantiates an explosion at the point of impact
         if (size == "large")
         {
-            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 100, audioManager);
+            ParticleFunctions.InstantiateExplosion(hitPosition, explosionChoice, 100, audioManager);
         }
         else
         {
-            ParticleFunctions.InstantiateExplosion(objectHit, hitPosition, explosionChoice, 6, audioManager);
+            ParticleFunctions.InstantiateExplosion(hitPosition, explosionChoice, 6, audioManager);
         }
     }
 

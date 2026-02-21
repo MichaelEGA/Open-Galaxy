@@ -222,7 +222,7 @@ public static class DamageFunctions
                 //This creates an explosion where the ship is
                 float explosionsScale = smallShip.shipLength / 10;
 
-                ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion_ion_smallship", explosionsScale);
+                ParticleFunctions.InstantiateExplosion(smallShip.gameObject.transform.position, "explosion_ion_smallship", explosionsScale);
 
                 //This makes an explosion sound
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact01_laserhitshield", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
@@ -451,7 +451,7 @@ public static class DamageFunctions
             //This creates an explosion where the ship is
             float explosionsScale = smallShip.shipLength / 5;
 
-            ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion_smallship", explosionsScale);
+            ParticleFunctions.InstantiateExplosion(smallShip.gameObject.transform.position, "explosion_smallship", explosionsScale);
 
             //This makes an explosion sound
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
@@ -475,7 +475,7 @@ public static class DamageFunctions
         //This creates an explosion where the ship is
         float explosionsScale = smallShip.shipLength / 5;
 
-        ParticleFunctions.InstantiateExplosion(smallShip.scene.gameObject, smallShip.gameObject.transform.position, "explosion_smallship", explosionsScale);
+        ParticleFunctions.InstantiateExplosion(smallShip.gameObject.transform.position, "explosion_smallship", explosionsScale);
 
         //This makes an explosion sound
         AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
@@ -749,7 +749,7 @@ public static class DamageFunctions
 
                             Vector3 worldPoint = meshTransform.TransformPoint(explosionPoint);
 
-                            ParticleSystem explosion = ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, worldPoint, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
+                            ParticleSystem explosion = ParticleFunctions.InstantiateExplosion(worldPoint, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion1", 1500, "Explosions");
 
                             explosions.Add(explosion);
 
@@ -781,7 +781,7 @@ public static class DamageFunctions
                 {
                     float explosionsScale2 = largeShip.shipLength / 50;
 
-                    ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale2, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
+                    ParticleFunctions.InstantiateExplosion(largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale2, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
 
                     yield return new WaitForSeconds(0.25f);
 
@@ -805,7 +805,7 @@ public static class DamageFunctions
                 {
                     float explosionsScale = largeShip.shipLength / 50;
 
-                    ParticleFunctions.InstantiateExplosion(largeShip.scene.gameObject, largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
+                    ParticleFunctions.InstantiateExplosion(largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
 
                     yield return new WaitForSeconds(0.25f);
 
@@ -908,7 +908,7 @@ public static class DamageFunctions
                 GameObject.Destroy(shipSystem.ionParticleSystemGO);
             }
 
-            ParticleFunctions.InstantiatePersistantExplosion(shipSystem.gameObject, shipSystem.transform.position, "explosion_system", explosionScale);
+            ParticleFunctions.InstantiatePersistantExplosion(shipSystem.transform.position, "explosion_system", explosionScale);
             shipSystem.gameObject.SetActive(false);
             HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was destroyed.");
         }
@@ -923,7 +923,7 @@ public static class DamageFunctions
         {
             shipSystem.disabled = true;
             float explosionScale = GetExplosionScale(shipSystem.gameObject);
-            ParticleSystem ionParticleSystem = ParticleFunctions.InstantiatePersistantExplosion(shipSystem.gameObject, shipSystem.transform.position, "explosion_system_ion", explosionScale);
+            ParticleSystem ionParticleSystem = ParticleFunctions.InstantiatePersistantExplosion(shipSystem.transform.position, "explosion_system_ion", explosionScale);
             shipSystem.ionParticleSystemGO = ionParticleSystem.gameObject;
             HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was disabled.");
         }

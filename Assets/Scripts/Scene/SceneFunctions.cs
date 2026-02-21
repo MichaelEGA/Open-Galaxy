@@ -1626,7 +1626,7 @@ public static class SceneFunctions
 
                 float scale = Random.Range(scaleMin, scaleMax);
 
-                ParticleFunctions.InstantiatePersistantExplosion(ship, worldPoint, "explosion_wreck", scale);
+                ParticleFunctions.InstantiatePersistantExplosion(worldPoint, "explosion_wreck", scale);
             }
         }
     }

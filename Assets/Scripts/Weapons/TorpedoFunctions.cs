@@ -630,16 +630,16 @@ public static class TorpedoFunctions
 
                 if (targetSmallShip.hasPlasma == false)
                 {
-                    ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
+                    ParticleFunctions.InstantiateExplosion(contact.point, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
                 }
                 else
                 {
-                    ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "blackhole", 6, torpedo.audioManager);
+                    ParticleFunctions.InstantiateExplosion(contact.point, "blackhole", 6, torpedo.audioManager);
                 }
             }
             else
             {
-                ParticleFunctions.InstantiateExplosion(collision.gameObject, contact.point, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
+                ParticleFunctions.InstantiateExplosion(contact.point, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
             }
 
             break;
@@ -684,16 +684,16 @@ public static class TorpedoFunctions
 
                     if (targetSmallShip.hasPlasma == false)
                     {
-                        ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
+                        ParticleFunctions.InstantiateExplosion(torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
                     }
                     else
                     {
-                        ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "blackhole", 6, torpedo.audioManager);
+                        ParticleFunctions.InstantiateExplosion(torpedo.transform.position, "blackhole", 6, torpedo.audioManager);
                     }
                 }
                 else
                 {
-                    ParticleFunctions.InstantiateExplosion(torpedo.target, torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
+                    ParticleFunctions.InstantiateExplosion(torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
                 }
 
                 DeactivateTorpedo(torpedo);

@@ -5,7 +5,7 @@ using UnityEngine;
 public static class ParticleFunctions
 {
     //This instantiates an explosion at the given point
-    public static ParticleSystem InstantiateExplosion(GameObject parentObject, Vector3 hitPosition, string explosionName = "explosion01", float explosionSize = 25, Audio audioManager = null, string explosionSound = "impact01_laserhitshield", float audioDistance = 500, string mixer = "External")
+    public static ParticleSystem InstantiateExplosion(Vector3 hitPosition, string explosionName = "explosion01", float explosionSize = 25, Audio audioManager = null, string explosionSound = "impact01_laserhitshield", float audioDistance = 500, string mixer = "External")
     {
         Scene scene = SceneFunctions.GetScene();
         ParticleSystem particleSystem = null;
@@ -53,7 +53,7 @@ public static class ParticleFunctions
     }
 
     //This instantiates an explosions at the given point without audio
-    public static ParticleSystem InstantiatePersistantExplosion(GameObject parentObject, Vector3 hitPosition, string explosionName = "explosion01", float explosionSize = 25)
+    public static ParticleSystem InstantiatePersistantExplosion(Vector3 hitPosition, string explosionName = "explosion01", float explosionSize = 25)
     {
         Scene scene = SceneFunctions.GetScene();
         ParticleSystem particleSystem = null;

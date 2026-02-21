@@ -2737,6 +2737,44 @@ public static class MissionFunctions
         yield return null;
     }
 
+    //This loads an explosion at the designated point
+    public static void LoadExplosion(MissionEvent missionEvent)
+    {
+        float x = missionEvent.x;
+        float y = missionEvent.y;
+        float z = missionEvent.z;
+
+        Vector3 position = new Vector3(x, y, z);
+
+        float xRotation = missionEvent.xRotation;
+        float yRotation = missionEvent.yRotation;
+        float zRotation = missionEvent.zRotation;
+
+        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+
+        string type = "default";
+        if (missionEvent.data1 != "none") { type = missionEvent.data1; }
+
+        float size = 25;
+
+        if (float.TryParse(missionEvent.data2, out _))
+        {
+            size = float.Parse(missionEvent.data2);
+        }
+
+        string sound = "impact01_laserhitshield";
+        if (missionEvent.data2 != "none") { sound = missionEvent.data2; }
+
+        float audioDistance = 500;
+
+        if (float.TryParse(missionEvent.data3, out _))
+        {
+            size = float.Parse(missionEvent.data3);
+        }
+
+        ParticleFunctions.InstantiateExplosion(position, "explosion01", size, null, sound, audioDistance);
+    }
+
     //This loads multiple ships by name
     public static IEnumerator LoadMultipleShips(MissionEvent missionEvent)
     {

@@ -2927,8 +2927,8 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> explosionOptions = new List<string>();
-        explosionOptions.Add("explosion_largeship");
         explosionOptions.Add("explosion_smallship");
+        explosionOptions.Add("explosion_largeship");
         explosionOptions.Add("explosion_ion_largeship");
         explosionOptions.Add("explosion_ion_smallship");
         explosionOptions.Add("explosion_system");
@@ -2945,7 +2945,21 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawInputField(node, "audio distance", "500", 7, 5, drop, 12.5f, 90, 5f);
+        List<string> audioOptions = new List<string>();
+        audioOptions.Add("explosion01_xwing");
+        audioOptions.Add("explosion02_protontorpedo");
+        audioOptions.Add("mid_explosion_01");
+        audioOptions.Add("mid_explosion_02"); 
+        audioOptions.Add("mid_explosion_03");
+        audioOptions.Add("mid_explosion_04");
+        audioOptions.Add("proton_explosion1");
+        audioOptions.Add("proton_explosion2");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, audioOptions, "audio file", "explosion01_xwing", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "audio distance", "500", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

@@ -2757,7 +2757,7 @@ public static class MissionFunctions
 
         Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
-        string type = "explosion01";
+        string type = "explosion_smallship";
         if (missionEvent.data1 != "none") { type = missionEvent.data1; }
 
         float size = 25;
@@ -2767,17 +2767,19 @@ public static class MissionFunctions
             size = float.Parse(missionEvent.data2);
         }
 
-        string sound = "impact01_laserhitshield";
-        if (missionEvent.data2 != "none") { sound = missionEvent.data2; }
+        string audioFile = "impact01_laserhitshield";
+        if (missionEvent.data3 != "none") { audioFile = missionEvent.data3; }
 
         float audioDistance = 500;
 
-        if (float.TryParse(missionEvent.data3, out _))
+        if (float.TryParse(missionEvent.data4, out _))
         {
-            audioDistance = float.Parse(missionEvent.data3);
+            audioDistance = float.Parse(missionEvent.data4);
         }
 
-        ParticleFunctions.InstantiateExplosion(position, "explosion01", size, null, sound, audioDistance);
+        Audio AudioManager = AudioFunctions.GetAudioManager();
+
+        ParticleFunctions.InstantiateExplosion(position, type, size, AudioManager, audioFile, audioDistance);
     }
 
     //This loads multiple ships by name

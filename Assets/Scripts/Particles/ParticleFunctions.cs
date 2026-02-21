@@ -53,7 +53,7 @@ public static class ParticleFunctions
     }
 
     //This instantiates an explosions at the given point without audio
-    public static ParticleSystem InstantiatePersistantExplosion(Vector3 hitPosition, string explosionName = "explosion01", float explosionSize = 25)
+    public static ParticleSystem InstantiatePersistantExplosion(Vector3 hitPosition, string explosionName = "explosion_wreck", float explosionSize = 25)
     {
         Scene scene = SceneFunctions.GetScene();
         ParticleSystem particleSystem = null;
@@ -85,6 +85,7 @@ public static class ParticleFunctions
             var main = particleSystem.main;
             main.simulationSpace = ParticleSystemSimulationSpace.Custom;
             main.customSimulationSpace = scene.transform;
+            main.loop = true;
 
             Vector3 scenePoint = scene.transform.InverseTransformPoint(hitPosition);
 

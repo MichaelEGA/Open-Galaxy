@@ -226,12 +226,14 @@ public static class DockingFunctions
             smallShip.docking = true;
             smallShip.thrustSpeed = 0;
             SmallShipFunctions.CloseWings(smallShip);
+            smallShip.targetDockingPoint = targetDockingPoint.gameObject;
         }
 
         if (largeShip != null)
         {
             largeShip.docking = true;
             largeShip.thrustSpeed = 0;
+            largeShip.targetDockingPoint = targetDockingPoint.gameObject;
         }
 
         if (targetSmallShip != null)
@@ -388,6 +390,63 @@ public static class DockingFunctions
         {
             targetLargeShip.docking = false;
             targetLargeShip.thrustSpeed = 0;
+        }
+    }
+
+    //This cancels the docking if the ship has been deactivated or destroyed
+    public static void CancelDocking (SmallShip smallShip = null, LargeShip largeShip = null)
+    {
+        if (smallShip != null)
+        {
+            if (smallShip.targetDockingPoint != null)
+            {
+                LargeShip otherLargeShip = smallShip.targetDockingPoint.GetComponentInParent<LargeShip>();
+
+                if (otherLargeShip != null)
+                {
+                    otherLargeShip.docking = false;
+                }
+
+                SmallShip otherSmallShip = smallShip.targetDockingPoint.GetComponentInParent<SmallShip>();
+
+                if (otherSmallShip  != null)
+                {
+                    otherSmallShip.docking = false;
+                }
+
+                DockingPoint targetDockingPoint = smallShip.targetDockingPoint.GetComponent<DockingPoint>();
+
+                if (targetDockingPoint != null)
+                {
+                    targetDockingPoint.isActive = false;
+                }
+            }
+        }
+        else if (largeShip != null)
+        {
+            if (largeShip.targetDockingPoint != null)
+            {
+                LargeShip otherLargeShip = largeShip.targetDockingPoint.GetComponentInParent<LargeShip>();
+
+                if (otherLargeShip != null)
+                {
+                    otherLargeShip.docking = false;
+                }
+
+                SmallShip otherSmallShip = largeShip.targetDockingPoint.GetComponentInParent<SmallShip>();
+
+                if (otherSmallShip != null)
+                {
+                    otherSmallShip.docking = false;
+                }
+
+                DockingPoint targetDockingPoint = largeShip.targetDockingPoint.GetComponent<DockingPoint>();
+
+                if (targetDockingPoint != null)
+                {
+                    targetDockingPoint.isActive = false;
+                }
+            }
         }
     }
 }

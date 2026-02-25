@@ -521,6 +521,9 @@ public static class DamageFunctions
         //This stops all task being run by the ship
         SmallShipFunctions.EndAllTasks(smallShip);
 
+        //This cancels any docking procedures
+        DockingFunctions.CancelDocking(smallShip, null);
+
         //This turns of the engine sound and release the ship audio source from the ship
         if (smallShip.audioManager != null)
         {
@@ -828,6 +831,8 @@ public static class DamageFunctions
         Scene scene = largeShip.scene;
 
         LargeShipFunctions.EndAllTasks(largeShip);
+
+        DockingFunctions.CancelDocking(null, largeShip);
 
         //This sets the ship up for the next time it is loaded from the pool
         largeShip.spinShip = false;

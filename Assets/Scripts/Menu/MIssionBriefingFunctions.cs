@@ -46,7 +46,7 @@ public static class MissionBriefingFunctions
     }
 
     //This activates the mission briefing when called by a mission event
-    public static IEnumerator ActivateMissionBriefing(string briefingText, string audioName, string internalAudioFile, bool distortion, float distortionLevel, string model)
+    public static IEnumerator ActivateMissionBriefing(string briefingText, string audioName, string internalAudioFile, bool distortion, float distortionLevel, string model, bool noZoom = false)
     {
         //This gets the scene reference
         Scene scene = SceneFunctions.GetScene();
@@ -81,7 +81,7 @@ public static class MissionBriefingFunctions
         LockPlayerControls();
 
         //This moves the camera into position
-        if (model != "none" & model != "") //This checks to see whether the camera should zoom in or not
+        if (model != "none" & model != "" & noZoom != true) //This checks to see whether the camera should zoom in or not
         {
             Camera camera = environment.GetComponentInChildren<Camera>();
             Vector3 endPosition = camera.transform.localPosition;

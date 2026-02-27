@@ -424,10 +424,6 @@ public static class MissionFunctions
         {
             ExitMission();
         }
-        else if (missionEvent.eventType == "exitanddisplaynextmissionmenu")
-        {
-            ExitAndDisplayNextMissionMenu(missionEvent);
-        }
         else if (missionEvent.eventType == "deactivateship")
         {
             DeactivateShip(missionEvent);
@@ -1633,40 +1629,6 @@ public static class MissionFunctions
         UnloadMission();
     }
     
-    //This exist the mission to the Nexy Mission menu
-    public static void ExitAndDisplayNextMissionMenu(MissionEvent missionEvent)
-    {
-        string nextMissionName = missionEvent.data1;
-        string model = missionEvent.data2;
-        string debriefing = missionEvent.data3;
-        string audioFile = missionEvent.data4;
-        string internalFile = missionEvent.data5;
-
-        bool distortion = false;
-
-        if (bool.TryParse(missionEvent.data6, out _))
-        {
-            distortion = bool.Parse(missionEvent.data6);
-        }
-
-        float distortionLevel = 0.5f;
-
-        if (float.TryParse(missionEvent.data7, out _))
-        {
-            distortionLevel = float.Parse(missionEvent.data7);
-        }
-
-        bool nextMissionButton = false;
-
-        if (bool.TryParse(missionEvent.data8, out _))
-        {
-            nextMissionButton = bool.Parse(missionEvent.data8);
-        }
-
-        //Load next mission screen
-        Task a = new Task(NextMissionFunctions.ActivateNextMissionMenu(nextMissionName, model, nextMissionButton, debriefing, audioFile, internalFile, distortionLevel, distortion));
-    }
-
     //This deactivates a ship so that it is no longer part of the scene
     public static void DeactivateShip(MissionEvent missionEvent)
     {
@@ -4496,7 +4458,7 @@ public static class MissionFunctions
         //This loads the next mission if requested
         if (loadFollowingMision == true)
         {
-            var missionCheck =  NextMissionFunctions.CheckIfMissionExists(missionName);
+            var missionCheck =  CheckIfMissionExists(missionName);
 
             if (missionCheck.externalMision == true)
             {
@@ -4519,6 +4481,64 @@ public static class MissionFunctions
             MainMenuFunctions.RunMainMenuWithoutIntroduction();
         }
     }
+
+    //This checks if the mission exists
+    public static (bool externalMision, bool internalMission) CheckIfMissionExists(string missionName)
+    {
+        bool internalMissionExists = false;
+        bool externalMissionExists = false;
+
+        //This gets internal mission data
+        Object[] mainMissions = Resources.LoadAll(OGGetAddress.missions_internal, typeof(TextAsset));
+
+        //This searches to see whether the mission exists internally
+        foreach (Object mission in mainMissions)
+        {
+            if (mission.name == missionName)
+            {
+                internalMissionExists = true;
+            }
+        }
+
+        //This gets external mission data
+        var info = new DirectoryInfo(OGGetAddress.missions_custom);
+
+        if (info.Exists == false)
+        {
+            Directory.CreateDirectory(OGGetAddress.missions_custom);
+            info = new DirectoryInfo(OGGetAddress.missions_custom);
+        }
+
+        List<TextAsset> customMissionsList = new List<TextAsset>();
+
+        if (info.Exists == true)
+        {
+            var fileInfo = info.GetFiles("*.json");
+
+            foreach (FileInfo file in fileInfo)
+            {
+                string path = OGGetAddress.missions_custom + file.Name;
+                string missionDataString = File.ReadAllText(path);
+                TextAsset missionDataTextAsset = new TextAsset(missionDataString);
+                missionDataTextAsset.name = System.IO.Path.GetFileNameWithoutExtension(path);
+                customMissionsList.Add(missionDataTextAsset);
+            }
+        }
+
+        Object[] customMissions = customMissionsList.ToArray();
+
+        //This searches to see whether the mission exists externally
+        foreach (Object mission in customMissions)
+        {
+            if (mission.name == missionName)
+            {
+                externalMissionExists = true;
+            }
+        }
+
+        return (externalMissionExists, internalMissionExists);
+    }
+
 
     #endregion
 

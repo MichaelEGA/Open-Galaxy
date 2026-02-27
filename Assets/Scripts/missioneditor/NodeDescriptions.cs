@@ -323,16 +323,6 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
-        else if (name == "exitanddisplaynextmissionmenu")
-        {
-            description =
-           "Exit and Display Next Mission Menu \n " +
-           "\n " +
-           "This node exits the mission and then displays the next mission menu. \n" +
-           "\n " +
-           "Extra Information \n" +
-           "- If the nextmission is left as 'none' when the next mission node is pressed it will simply return to the main menu with an error message. \n";
-        }
         else if (name == "deactivateship")
         {
             description =

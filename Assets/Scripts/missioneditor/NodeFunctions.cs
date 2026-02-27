@@ -89,10 +89,6 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_ExitMission(node);
         }
-        else if (node.nodeType == "exitanddisplaynextmissionmenu")
-        {
-            NodeTypes.Draw_ExitAndDisplayNextMissionMenu(node);
-        }
         else if (node.nodeType == "ifobjectiveisactive")
         {
             NodeTypes.Draw_IfObjectiveIsActive(node);

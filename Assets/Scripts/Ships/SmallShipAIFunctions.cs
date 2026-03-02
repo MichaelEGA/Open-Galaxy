@@ -118,7 +118,6 @@ public static class SmallShipAIFunctions
                 RemoveSingleTag(smallShip, "targetallpreflarge");
                 RemoveSingleTag(smallShip, "targetsmallshipsonly");
                 RemoveSingleTag(smallShip, "targetlargeshipsonly");
-                smallShip.requestingTarget = true; //This forces the ship to select a new target on the basis of the selected tag.
             }
             else if (tag == "collisionevasion" || tag == "nocollisionevasion")
             {
@@ -1356,7 +1355,7 @@ public static class SmallShipAIFunctions
                 }
                 else
                 {
-                    PatrolRandom(smallShip);
+                    PatrolRandom(smallShip, true);
                 }
             }
 
@@ -1403,7 +1402,7 @@ public static class SmallShipAIFunctions
                 }
                 else
                 {
-                    PatrolRandom(smallShip);
+                    PatrolRandom(smallShip, true);
                 }
             }
 
@@ -1461,7 +1460,7 @@ public static class SmallShipAIFunctions
                 }
                 else
                 {
-                    PatrolRandom(smallShip);
+                    PatrolRandom(smallShip, true);
                 }
             }
 
@@ -1484,7 +1483,7 @@ public static class SmallShipAIFunctions
     }
 
     //This is the basic flight pattern for patrolling
-    public static void PatrolRandom(SmallShip smallShip)
+    public static void PatrolRandom(SmallShip smallShip, bool stayClose = false)
     {
         if (smallShip != null)
         {
@@ -1496,7 +1495,7 @@ public static class SmallShipAIFunctions
 
                     if (distanceToWaypoint < 50)
                     {
-                        SelectRandomWaypoint(smallShip);
+                        SelectRandomWaypoint(smallShip, stayClose);
                     }
 
                     AngleTowardsWaypoint(smallShip);
@@ -1508,7 +1507,7 @@ public static class SmallShipAIFunctions
     }
 
     //This selects a random waypoint
-    public static void SelectRandomWaypoint(SmallShip smallShip)
+    public static void SelectRandomWaypoint(SmallShip smallShip, bool stayClose = false)
     {
         if (smallShip != null)
         {
@@ -1521,9 +1520,34 @@ public static class SmallShipAIFunctions
                 float y = Random.Range(min, max);
                 float z = Random.Range(min, max);
 
+                //This makes ships with no target stay within range of the player/center of the scene
+                if (stayClose == true)
+                {
+                    Vector3 referencePosition = new Vector3(0, 0, 0);
+
+                    if (smallShip.scene != null)
+                    {
+                        Scene scene = smallShip.scene;
+
+                        if (scene != null)
+                        {
+                            if (scene.mainShip != null)
+                            {
+                                referencePosition.x = scene.mainShip.transform.localPosition.x;
+                                referencePosition.y = scene.mainShip.transform.localPosition.y;
+                                referencePosition.z = scene.mainShip.transform.localPosition.z;
+                            }
+                        }
+                    }
+
+                    x = referencePosition.x + Random.Range(-2500, 2500);
+                    y = referencePosition.y + Random.Range(-2500, 2500);
+                    z = referencePosition.z + Random.Range(-2500, 2500);
+                }
+
                 if (smallShip.waypoint != null)
                 {
-                    smallShip.waypoint.transform.position = new Vector3(x, y, z);
+                    smallShip.waypoint.transform.localPosition = new Vector3(x, y, z);
                 }
             }
         }

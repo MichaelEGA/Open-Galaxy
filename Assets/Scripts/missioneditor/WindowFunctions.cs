@@ -87,6 +87,7 @@ public static class WindowFunctions
         buttonList.Add("fadeinfromcolour");
         buttonList.Add("fadetocolour");
         buttonList.Add("exitmission");
+        buttonList.Add("exitmissionandloadnextmission");
         buttonList.Add("ifobjectiveisactive");
         buttonList.Add("ifkeyboardisactive");
         buttonList.Add("ifnumberofshipsislessthan");

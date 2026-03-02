@@ -424,6 +424,10 @@ public static class MissionFunctions
         {
             ExitMission();
         }
+        else if (missionEvent.eventType == "exitmissionandloadnextmission")
+        {
+            ExitMissionAndLoadNextMission(missionEvent);
+        }
         else if (missionEvent.eventType == "deactivateship")
         {
             DeactivateShip(missionEvent);
@@ -1629,6 +1633,14 @@ public static class MissionFunctions
         UnloadMission();
     }
     
+    //This exits the mission and loads the next mission
+    public static void ExitMissionAndLoadNextMission(MissionEvent missionEvent)
+    {
+        string nextMissionName = missionEvent.data1;
+
+        UnloadMission(true, nextMissionName);
+    }
+
     //This deactivates a ship so that it is no longer part of the scene
     public static void DeactivateShip(MissionEvent missionEvent)
     {

@@ -80,7 +80,9 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
 
 **Roadmap**
 
-  - Roadmap: https://docs.google.com/spreadsheets/d/14mWjYlATWQYKEfD6AG4MwC_ppTzG-aDlsI2yR2h7D54/edit?usp=sharing
+  - Game: https://docs.google.com/spreadsheets/d/14mWjYlATWQYKEfD6AG4MwC_ppTzG-aDlsI2yR2h7D54/edit?usp=sharing
+  - Campaigns: https://docs.google.com/spreadsheets/d/1H3Kr3h1uM7lpRkNIa7kgUb1ocyorbGXBZP7qICCMyW4/edit?usp=sharing
+  - Scripts: https://docs.google.com/document/d/1jtZUJDEP6TFDuULHeA2AsWk0AHmk1x5rxQf3agnBEtE/edit?usp=sharing
 
 **Wiki and Mission Editor Tutorials**
 

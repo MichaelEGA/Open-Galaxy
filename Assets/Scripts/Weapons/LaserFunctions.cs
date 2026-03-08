@@ -448,6 +448,55 @@ public static class LaserFunctions
 
     #endregion
 
+    #region laser mode
+
+    //This charges the laser
+    public static void LaserCharging(SmallShip smallShip)
+    {
+        if (smallShip.fireWeapon == false)
+        {
+            if (smallShip.laserPower == 50)
+            {
+                if (smallShip.laserCharge < 50)
+                {
+                    smallShip.laserCharge += 1;
+                }
+                else if (smallShip.laserCharge > 50)
+                {
+                    smallShip.laserCharge -= 1;
+                }
+            }
+            else if (smallShip.laserPower > 50)
+            {
+                if (smallShip.laserCharge < 100)
+                {
+                    smallShip.laserCharge += 1;
+                }
+                else if (smallShip.laserCharge > 100)
+                {
+                    smallShip.laserCharge -= 1;
+                }
+            }
+            else if (smallShip.laserPower < 50)
+            {
+                if (smallShip.laserCharge < 25)
+                {
+                    smallShip.laserCharge += 1;
+                }
+                else if (smallShip.laserCharge > 25)
+                {
+                    smallShip.laserCharge -= 1;
+                }
+            }
+        }
+        else
+        {
+            smallShip.laserCharge -= 1;
+        }
+    }
+
+    #endregion
+
     #region laser fire functions
 
     //This allows the player to fire the lasers

@@ -39,6 +39,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public Slider engineMeter;
     [HideInInspector] public Slider laserMeter;
     [HideInInspector] public Slider WEPMeter;
+    [HideInInspector] public Slider chargeMeter;
     [HideInInspector] public RawImage shieldForwardOutside;
     [HideInInspector] public RawImage shieldForwardInside;
     [HideInInspector] public RawImage hull;
@@ -136,6 +137,7 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplayEngineMeter(this);
         HudFunctions.DisplayLaserMeter(this);
         HudFunctions.DisplayWEPMeter(this);
+        HudFunctions.DisplayChargeMeter(this);
 
         HudFunctions.DisplayShipSpeed(this);
         HudFunctions.DisplayMatchSpeed(this);

@@ -149,7 +149,7 @@ public class SmallShip : MonoBehaviour
     public string activeWeapon = "lasers";
     public string weaponMode = "single";
     public string weaponMode2 = "normal";
-    public float laserCharge;
+    public float weaponCharge;
     public float ionCharge;
     public float plasmaCharge;
     [HideInInspector] public float toggleWeaponPressedTime;
@@ -326,7 +326,6 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.ToggleWeapons(this);
 
         //Laser functions
-        LaserFunctions.LaserCharging(this);
         LaserFunctions.ToggleWeaponMode(this);
         LaserFunctions.InitiateFiringPlayer(this);
 
@@ -355,6 +354,9 @@ public class SmallShip : MonoBehaviour
     void FixedUpdate()
     {
         SmallShipFunctions.MoveShip(this);
+
+        //Laser functions
+        LaserFunctions.LaserCharging(this);
     }
 
     void OnCollisionEnter(Collision collision)

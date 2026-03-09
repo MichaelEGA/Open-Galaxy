@@ -335,6 +335,23 @@ public static class HudFunctions
         }
     }
 
+    //This displays WEP meter
+    public static void DisplayChargeMeter(Hud hud)
+    {
+        if (hud.chargeMeter == null)
+        {
+            GameObject chargeMeter = GameObject.Find("ChargeMeter");
+            if (chargeMeter != null) { hud.chargeMeter = chargeMeter.GetComponent<Slider>(); }
+        }
+
+        if (hud.chargeMeter != null & hud.smallShip != null & Time.timeScale != 0)
+        {
+
+
+            hud.chargeMeter.value = hud.smallShip.weaponCharge;
+        }
+    }
+
     //This displays the speed of the ship
     public static void DisplayShipSpeed(Hud hud)
     {

@@ -457,41 +457,41 @@ public static class LaserFunctions
         {
             if (smallShip.laserPower == 50)
             {
-                if (smallShip.laserCharge < 50)
+                if (smallShip.weaponCharge < 50)
                 {
-                    smallShip.laserCharge += 1;
+                    smallShip.weaponCharge += 1;
                 }
-                else if (smallShip.laserCharge > 50)
+                else if (smallShip.weaponCharge > 50)
                 {
-                    smallShip.laserCharge -= 1;
+                    smallShip.weaponCharge -= 1;
                 }
             }
             else if (smallShip.laserPower > 50)
             {
-                if (smallShip.laserCharge < 100)
+                if (smallShip.weaponCharge < 100)
                 {
-                    smallShip.laserCharge += 1;
+                    smallShip.weaponCharge += 1;
                 }
-                else if (smallShip.laserCharge > 100)
+                else if (smallShip.weaponCharge > 100)
                 {
-                    smallShip.laserCharge -= 1;
+                    smallShip.weaponCharge -= 1;
                 }
             }
             else if (smallShip.laserPower < 50)
             {
-                if (smallShip.laserCharge < 25)
+                if (smallShip.weaponCharge < 25)
                 {
-                    smallShip.laserCharge += 1;
+                    smallShip.weaponCharge += 1;
                 }
-                else if (smallShip.laserCharge > 25)
+                else if (smallShip.weaponCharge > 25)
                 {
-                    smallShip.laserCharge -= 1;
+                    smallShip.weaponCharge -= 1;
                 }
             }
         }
         else
         {
-            smallShip.laserCharge -= 1;
+            smallShip.weaponCharge -= 1;
         }
     }
 
@@ -513,7 +513,7 @@ public static class LaserFunctions
     {
         SetCannons(smallShip); //This sets cannon angle prior to firing the laser
 
-        if (smallShip.isDisabled == false)
+        if (smallShip.isDisabled == false & smallShip.weaponCharge > 0)
         {
             string weaponmode = smallShip.weaponMode;
 

@@ -192,8 +192,6 @@ public static class SmallShipAIFunctions
             {
                 foreach (string tag in smallShip.aiTags.ToArray())
                 {
-                    smallShip.laserfiring = false;
-
                     if (tag == "fullspeedwithboost") //Speed control
                     {
                         FullSpeedWithBoost(smallShip);
@@ -734,7 +732,7 @@ public static class SmallShipAIFunctions
             {
                 smallShip.activeWeapon = "lasers";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.weaponCharge >= 50)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.laserRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -742,7 +740,6 @@ public static class SmallShipAIFunctions
                     {
                         smallShip.weaponMode = "single";
                         LaserFunctions.InitiateFiring(smallShip);
-                        smallShip.laserfiring = true;
                     }
                 }
             }
@@ -759,7 +756,7 @@ public static class SmallShipAIFunctions
             {
                 smallShip.activeWeapon = "lasers";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.weaponCharge >= 50)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.laserRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -767,7 +764,6 @@ public static class SmallShipAIFunctions
                     {
                         smallShip.weaponMode = "dual";
                         LaserFunctions.InitiateFiring(smallShip);
-                        smallShip.laserfiring = true;
                     }
                 }
             }
@@ -783,7 +779,7 @@ public static class SmallShipAIFunctions
             {
                 smallShip.activeWeapon = "lasers";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.weaponCharge >= 50)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.laserRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -791,7 +787,6 @@ public static class SmallShipAIFunctions
                     {
                         smallShip.weaponMode = "all";
                         LaserFunctions.InitiateFiring(smallShip);
-                        smallShip.laserfiring = true;
                     }
                 }
             }
@@ -835,7 +830,7 @@ public static class SmallShipAIFunctions
             {
                 smallShip.activeWeapon = "plasma";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.weaponCharge >= 50)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.plasmaRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -859,7 +854,7 @@ public static class SmallShipAIFunctions
             {
                 smallShip.activeWeapon = "plasma";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.weaponCharge >= 50)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.plasmaRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -882,7 +877,7 @@ public static class SmallShipAIFunctions
             {
                 smallShip.activeWeapon = "plasma";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.weaponCharge >= 50)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.plasmaRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -905,7 +900,7 @@ public static class SmallShipAIFunctions
             {
                 smallShip.activeWeapon = "ion";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.weaponCharge >= 50)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.ionRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -924,12 +919,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-
             if (smallShip.target != null)
             {
                 smallShip.activeWeapon = "ion";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.weaponCharge >= 50)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.ionRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -952,7 +946,7 @@ public static class SmallShipAIFunctions
             {
                 smallShip.activeWeapon = "ion";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.weaponCharge >= 50)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.ionRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -1102,7 +1096,7 @@ public static class SmallShipAIFunctions
 
                     bool dontFire = CheckFire(smallShip);
 
-                    if (dontFire == false)
+                    if (dontFire == false & smallShip.laserRecharged == true)
                     {
                         smallShip.weaponMode = "single";
                         LaserFunctions.InitiateFiring(smallShip);

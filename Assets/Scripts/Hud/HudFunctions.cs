@@ -346,9 +346,22 @@ public static class HudFunctions
 
         if (hud.chargeMeter != null & hud.smallShip != null & Time.timeScale != 0)
         {
-
-
-            hud.chargeMeter.value = hud.smallShip.weaponCharge;
+            if (hud.smallShip.activeWeapon == "lasers")
+            {
+                hud.chargeMeter.value = hud.smallShip.laserCharge;
+            }
+            else if (hud.smallShip.activeWeapon == "ion")
+            {
+                hud.chargeMeter.value = hud.smallShip.ionCharge;
+            }
+            else if (hud.smallShip.activeWeapon == "plasma")
+            {
+                hud.chargeMeter.value = hud.smallShip.plasmaCharge;
+            }
+            else
+            {
+                hud.chargeMeter.value = hud.smallShip.laserCharge;
+            }
         }
     }
 

@@ -395,7 +395,7 @@ public static class PlasmaFunctions
 
     #endregion
 
-    #region laser mode
+    #region plasma mode
 
     //This cycles the laser mode between single, dual, and quad lasers
     public static void ToggleWeaponMode(SmallShip smallShip)
@@ -424,7 +424,68 @@ public static class PlasmaFunctions
 
     #endregion
 
-    #region laser fire functions
+    //This charges the laser
+    public static void PlasmaCharging(SmallShip smallShip)
+    {
+        if (smallShip.weaponRechargeDelay + 1 < Time.time)
+        {
+            if (smallShip.laserPower == 50)
+            {
+                if (smallShip.plasmaCharge < 50)
+                {
+                    smallShip.plasmaCharge += 0.5f;
+                }
+                else if (smallShip.plasmaCharge > 50)
+                {
+                    smallShip.plasmaCharge -= 0.5f;
+                    smallShip.plasmaRecharged = true;
+                }
+                else
+                {
+                    smallShip.plasmaRecharged = true;
+                }
+            }
+            else if (smallShip.laserPower > 50)
+            {
+                if (smallShip.plasmaCharge < 100)
+                {
+                    smallShip.plasmaCharge += 0.5f;
+                }
+                else if (smallShip.plasmaCharge > 100)
+                {
+                    smallShip.plasmaCharge -= 0.5f;
+                    smallShip.plasmaRecharged = true;
+                }
+                else
+                {
+                    smallShip.plasmaRecharged = true;
+                }
+            }
+            else if (smallShip.laserPower < 50)
+            {
+                if (smallShip.plasmaCharge < 25)
+                {
+                    smallShip.plasmaCharge += 0.5f;
+                }
+                else if (smallShip.plasmaCharge > 25)
+                {
+                    smallShip.plasmaCharge -= 0.5f;
+                    smallShip.plasmaRecharged = true;
+                }
+                else
+                {
+                    smallShip.plasmaRecharged = true;
+                }
+            }
+        }
+
+        if (smallShip.plasmaCharge <= 0)
+        {
+            smallShip.plasmaRecharged = false;
+        }
+    }
+
+    #region plasma fire functions
 
     //This allows the player to fire the lasers
     public static void InitiateFiringPlayer(SmallShip smallShip)
@@ -440,7 +501,7 @@ public static class PlasmaFunctions
     {
         SetCannons(smallShip); //This sets cannon angle prior to firing the laser
 
-        if (smallShip.isDisabled == false)
+        if (smallShip.isDisabled == false & smallShip.plasmaCharge > 0 & smallShip.activeWeapon == "plasma")
         {
             //This calculates the delay before the next laser fires
             float plasmaWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
@@ -458,7 +519,25 @@ public static class PlasmaFunctions
                 plasmaWaitTime = plasmaWaitTime * 0.25f;
             }
 
-            if (Time.time > smallShip.plasmaPressedTime & smallShip.laserfiring != true & smallShip.activeWeapon == "plasma" & smallShip.weaponsLock == false)
+            //This calculates the weapon charge the plasma is going to use
+            float weaponCharge = 0.5f;
+
+            if (smallShip.weaponMode == "dual")
+            {
+                weaponCharge = weaponCharge * 2;
+            }
+            else if (smallShip.weaponMode == "all")
+            {
+                weaponCharge = weaponCharge * 4;
+            }
+
+            if (smallShip.weaponMode != "rapid")
+            {
+                smallShip.plasmaCharge -= weaponCharge;
+                smallShip.weaponRechargeDelay = Time.time;
+            }
+
+            if (Time.time > smallShip.plasmaPressedTime & smallShip.laserfiring != true & smallShip.weaponsLock == false)
             {
                 if (smallShip.weaponMode == "single" || smallShip.weaponMode == "rapid")
                 {

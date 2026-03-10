@@ -448,50 +448,66 @@ public static class LaserFunctions
 
     #endregion
 
-    #region laser mode
+    #region laser charging
 
     //This charges the laser
     public static void LaserCharging(SmallShip smallShip)
     {
-        if (smallShip.fireWeapon == false)
+        if (smallShip.weaponRechargeDelay + 1 < Time.time)
         {
             if (smallShip.laserPower == 50)
             {
-                if (smallShip.weaponCharge < 50)
+                if (smallShip.laserCharge < 50)
                 {
-                    smallShip.weaponCharge += 1;
+                    smallShip.laserCharge += 0.5f;
                 }
-                else if (smallShip.weaponCharge > 50)
+                else if (smallShip.laserCharge > 50)
                 {
-                    smallShip.weaponCharge -= 1;
+                    smallShip.laserCharge -= 0.5f;
+                    smallShip.laserRecharged = true;
+                }
+                else
+                {
+                    smallShip.laserRecharged = true;
                 }
             }
             else if (smallShip.laserPower > 50)
             {
-                if (smallShip.weaponCharge < 100)
+                if (smallShip.laserCharge < 100)
                 {
-                    smallShip.weaponCharge += 1;
+                    smallShip.laserCharge += 0.5f;
                 }
-                else if (smallShip.weaponCharge > 100)
+                else if (smallShip.laserCharge > 100)
                 {
-                    smallShip.weaponCharge -= 1;
+                    smallShip.laserCharge -= 0.5f;
+                    smallShip.laserRecharged = true;
+                }
+                else
+                {
+                    smallShip.laserRecharged = true;
                 }
             }
             else if (smallShip.laserPower < 50)
             {
-                if (smallShip.weaponCharge < 25)
+                if (smallShip.laserCharge < 25)
                 {
-                    smallShip.weaponCharge += 1;
+                    smallShip.laserCharge += 0.5f;
                 }
-                else if (smallShip.weaponCharge > 25)
+                else if (smallShip.laserCharge > 25)
                 {
-                    smallShip.weaponCharge -= 1;
+                    smallShip.laserCharge -= 0.5f;
+                    smallShip.laserRecharged = true;
+                }
+                else
+                {
+                    smallShip.laserRecharged = true;
                 }
             }
         }
-        else
+
+        if (smallShip.laserCharge <= 0)
         {
-            smallShip.weaponCharge -= 1;
+            smallShip.laserRecharged = false;
         }
     }
 
@@ -513,34 +529,53 @@ public static class LaserFunctions
     {
         SetCannons(smallShip); //This sets cannon angle prior to firing the laser
 
-        if (smallShip.isDisabled == false & smallShip.weaponCharge > 0)
+        if (smallShip.isDisabled == false & smallShip.laserCharge > 0 & smallShip.activeWeapon == "lasers")
         {
-            string weaponmode = smallShip.weaponMode;
+            string weaponMode = smallShip.weaponMode;
 
             if (smallShip.hasRapidFire == true & smallShip.rapidFire == true)
             {
-                weaponmode = "rapid";
+                weaponMode = "rapid";
             }
 
             //This calculates the delay before the next laser fires
             float laserWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
 
-            if (weaponmode == "dual")
+            if (weaponMode == "dual")
             {
                 laserWaitTime = laserWaitTime * 2;
             }
-            else if (weaponmode == "all")
+            else if (weaponMode == "all")
             {
                 laserWaitTime = laserWaitTime * 4;
             }
-            else if (weaponmode == "rapid")
+            else if (weaponMode == "rapid")
             {
                 laserWaitTime = laserWaitTime * 0.25f;
             }
 
-            if (Time.time > smallShip.laserPressedTime & smallShip.laserfiring != true & smallShip.activeWeapon == "lasers" & smallShip.weaponsLock == false)
+            //This calculates the weapon charge the laser is going to use
+            float weaponCharge = 0.5f;
+
+            if (weaponMode == "dual")
             {
-                if (weaponmode == "single" || weaponmode == "rapid")
+                weaponCharge = weaponCharge * 2;
+            }
+            else if (weaponMode == "all")
+            {
+                weaponCharge = weaponCharge * 4;
+            }
+
+            if (weaponMode != "rapid")
+            {
+                smallShip.laserCharge -= weaponCharge;
+                smallShip.weaponRechargeDelay = Time.time;
+            }
+
+            //This intiates firing for the lasers
+            if (Time.time > smallShip.laserPressedTime & smallShip.laserfiring != true & smallShip.weaponsLock == false)
+            {
+                if (weaponMode == "single" || weaponMode == "rapid")
                 {
                     if (smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
                     {

@@ -423,6 +423,71 @@ public static class IonFunctions
 
     #endregion
 
+    #region laser charging
+
+    //This charges the laser
+    public static void IonCharging(SmallShip smallShip)
+    {
+        if (smallShip.weaponRechargeDelay + 1 < Time.time)
+        {
+            if (smallShip.laserPower == 50)
+            {
+                if (smallShip.ionCharge < 50)
+                {
+                    smallShip.ionCharge += 0.5f;
+                }
+                else if (smallShip.ionCharge > 50)
+                {
+                    smallShip.ionCharge -= 0.5f;
+                    smallShip.ionRecharged = true;
+                }
+                else
+                {
+                    smallShip.ionRecharged = true;
+                }
+            }
+            else if (smallShip.laserPower > 50)
+            {
+                if (smallShip.ionCharge < 100)
+                {
+                    smallShip.ionCharge += 0.5f;
+                }
+                else if (smallShip.ionCharge > 100)
+                {
+                    smallShip.ionCharge -= 0.5f;
+                    smallShip.ionRecharged = true;
+                }
+                else
+                {
+                    smallShip.ionRecharged = true;
+                }
+            }
+            else if (smallShip.laserPower < 50)
+            {
+                if (smallShip.ionCharge < 25)
+                {
+                    smallShip.ionCharge += 0.5f;
+                }
+                else if (smallShip.laserCharge > 25)
+                {
+                    smallShip.ionCharge -= 0.5f;
+                    smallShip.ionRecharged = true;
+                }
+                else
+                {
+                    smallShip.ionRecharged = true;
+                }
+            }
+        }
+
+        if (smallShip.ionCharge <= 0)
+        {
+            smallShip.ionRecharged = false;
+        }
+    }
+
+    #endregion
+
     #region ion fire functions
 
     //This allows the player to fire the ions
@@ -439,7 +504,7 @@ public static class IonFunctions
     {
         SetCannons(smallShip); //This sets cannon angle prior to firing the laser
 
-        if (smallShip.isDisabled == false)
+        if (smallShip.isDisabled == false & smallShip.ionCharge > 0 & smallShip.activeWeapon == "ion")
         {
             //This calculates the delay before the next ion fires
             float ionWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
@@ -457,7 +522,25 @@ public static class IonFunctions
                 ionWaitTime = ionWaitTime * 0.25f;
             }
 
-            if (Time.time > smallShip.ionPressedTime & smallShip.ionfiring != true & smallShip.activeWeapon == "ion" & smallShip.weaponsLock == false)
+            //This calculates the weapon charge the ion is going to use
+            float weaponCharge = 0.5f;
+
+            if (smallShip.weaponMode == "dual")
+            {
+                weaponCharge = weaponCharge * 2;
+            }
+            else if (smallShip.weaponMode == "all")
+            {
+                weaponCharge = weaponCharge * 4;
+            }
+
+            if (smallShip.weaponMode != "rapid")
+            {
+                smallShip.ionCharge -= weaponCharge;
+                smallShip.weaponRechargeDelay = Time.time;
+            }
+
+            if (Time.time > smallShip.ionPressedTime & smallShip.ionfiring != true & smallShip.weaponsLock == false)
             {
                 if (smallShip.weaponMode == "single" || smallShip.weaponMode == "rapid")
                 {

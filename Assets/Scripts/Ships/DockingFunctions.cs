@@ -293,7 +293,7 @@ public static class DockingFunctions
             {
                 ship.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
                 timeElapsed += Time.deltaTime;
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
 
             ship.transform.localPosition = endPosition;
@@ -357,7 +357,7 @@ public static class DockingFunctions
         {
             ship.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
             timeElapsed += Time.deltaTime;
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
 
         ship.localPosition = endPosition;

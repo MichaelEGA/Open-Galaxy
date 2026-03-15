@@ -1131,7 +1131,7 @@ public static class SceneFunctions
 
         if (singleCall == true & exitingHyperspace != true)
         {
-            HudFunctions.AddToShipLog(type + " just entered the area");
+            HudFunctions.AddToShipLog(type.ToUpper() + " just entered the area");
         }
     }
 

@@ -655,7 +655,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.x = NodeFunctions.DrawInputField(node, "x", "0", 7, 5, drop, 12.5f, 90, 5f);
+        node.x = NodeFunctions.DrawInputField(node, "x", "60", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

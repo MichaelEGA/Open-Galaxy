@@ -824,7 +824,7 @@ public static class SmallShipFunctions
 
         smallShip.exitingHyperspace = true;
 
-        Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 30000; 
+        Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 5000; 
         Vector3 startPosition = smallShip.gameObject.transform.localPosition;
 
         float timeElapsed = 0;

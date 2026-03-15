@@ -246,5 +246,25 @@ public static class OGVideoPlayerFunctions
         Debug.LogError("VideoPlayer error: " + message + " clip=" + (source.clip != null ? source.clip.name : "null"));
     }
 
+    public static bool VideoIsPlaying()
+    {
+        bool videoIsPlaying = false;
+
+        OGVideoPlayer ogVideoPlayer = OGVideoPlayerFunctions.GetOGVideoPlayer();
+
+        if (ogVideoPlayer != null)
+        {
+            if (ogVideoPlayer.videoPlayer != null)
+            {
+                if (ogVideoPlayer.videoPlayer.isPlaying == true)
+                {
+                    videoIsPlaying = true;
+                }
+            }
+        }
+
+        return videoIsPlaying;
+    }
+
     #endregion
 }

@@ -445,8 +445,8 @@ public static class SceneFunctions
 
     #region planet creation
 
-    //This generates the planet texture
-    public static void GeneratePlanet(string planetType, string ringsType, float distance, float planetXRot, float planetYRot, float planetZRot, float pivotXRot, float pivotYRot, float pivotZRot )
+    //This generates planet 
+    public static void GeneratePlanet(string planetType, string ringsType, bool atmosphere, float distance, float planetXRot, float planetYRot, float planetZRot, float pivotXRot, float pivotYRot, float pivotZRot )
     {
         //This gets key references
         Scene scene = GetScene();
@@ -478,6 +478,18 @@ public static class SceneFunctions
                 if (transform.name == "rings")
                 {
                     if (ringsType == "none")
+                    {
+                        transform.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        transform.gameObject.SetActive(true);
+                    }
+                }
+
+                if (transform.name == "atmosphere")
+                {
+                    if (atmosphere == false)
                     {
                         transform.gameObject.SetActive(false);
                     }
@@ -1582,6 +1594,11 @@ public static class SceneFunctions
             }
 
             //Add ship to a pool
+            if (scene.asteroidPool == null)
+            {
+                scene.asteroidPool = new List<GameObject>();
+            }
+
             scene.asteroidPool.Add(ship);
         }
     }

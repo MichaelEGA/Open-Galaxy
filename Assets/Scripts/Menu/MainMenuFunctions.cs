@@ -840,7 +840,8 @@ public static class MainMenuFunctions
         messages[3] = "Flying a ship isn't like dusting crops. Familiarise yourself with the controls first.";
         messages[4] = "Open Galaxy gives complete control to mission creators from events to AI behaviour to ship stats.";
         messages[5] = "Every ship in Open Galaxy handles a little differently. Adapt your tactics accordingly.";
-        messages[6] = "Open Galaxy supports controllers and keyboard and mouse.";
+        messages[6] = "Open Galaxy is designed for keyboard and mouse.";
+        messages[6] = "Controller support is still in development. Use with caution.";
         messages[7] = "Check out the credits to see who made Open Galaxy possible.";
         messages[8] = "Open Galaxy is in active development, so if you find a bug, report it.";
         messages[9] = "Open Galaxy has ships from all the major Star Wars timelines and periods.";

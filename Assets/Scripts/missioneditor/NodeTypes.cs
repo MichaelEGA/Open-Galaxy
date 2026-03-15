@@ -284,6 +284,14 @@ public static class NodeTypes
 
         drop -= 15;
 
+        List<string> options3 = new List<string>();
+        options3.Add("true");
+        options3.Add("false");
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, options3, "atmosphere", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         List<string> options4 = new List<string>();
         options4.Add("none");
         options4.Add("ring01");

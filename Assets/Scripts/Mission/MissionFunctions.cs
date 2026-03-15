@@ -2919,9 +2919,15 @@ public static class MissionFunctions
         float pivotRotationZ = missionEvent.zRotation;
 
         string planetType = missionEvent.data2;
-        string cloudsType = missionEvent.data3;
-        string atmosphereType = missionEvent.data4;
+        //string cloudsType = missionEvent.data3;
         string ringsType = missionEvent.data5;
+
+        bool atmosphere = true;
+
+        if (bool.TryParse(missionEvent.data4, out _))
+        {
+            atmosphere = bool.Parse(missionEvent.data4);
+        }
 
         float distance = 50;
 
@@ -2932,7 +2938,7 @@ public static class MissionFunctions
 
         Scene scene = SceneFunctions.GetScene();
 
-        SceneFunctions.GeneratePlanet(planetType, ringsType, distance, planetRotationX, planetRotationY, planetRotationZ, pivotRotationX, pivotRotationY, pivotRotationZ);
+        SceneFunctions.GeneratePlanet(planetType, ringsType, atmosphere, distance, planetRotationX, planetRotationY, planetRotationZ, pivotRotationX, pivotRotationY, pivotRotationZ);
     }
 
     //This loads a single ship by name

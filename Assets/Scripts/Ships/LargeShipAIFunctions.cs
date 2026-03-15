@@ -574,13 +574,22 @@ public static class LargeShipAIFunctions
     //This causes the ship to circle around it's target
     public static void CircleTarget(LargeShip largeShip)
     {
-        if (largeShip.targetDistance > 1500)
+        if (largeShip.circleTargetRangeReached == false)
         {
             AngleTowardsTarget(largeShip);
         }
         else
         {
             KeepTargetOnRight(largeShip);
+        }
+
+        if (largeShip.targetDistance > largeShip.shipLength * 3)
+        {
+            largeShip.circleTargetRangeReached = false;
+        }
+        else if (largeShip.targetDistance < largeShip.shipLength * 1.5)
+        {
+            largeShip.circleTargetRangeReached = true;
         }
     }
 
@@ -737,18 +746,20 @@ public static class LargeShipAIFunctions
     //This angles the ship towards the target vector
     public static void KeepTargetOnRight(LargeShip largeShip)
     {
-        largeShip.dampener = 1;
+        AvoidGimbalLock(largeShip, largeShip.targetRight);
 
+        largeShip.dampener = 1 - Mathf.Clamp01(largeShip.targetRight);
+
+        //Right way up
         if (Vector3.Dot(largeShip.transform.up, Vector3.down) < 0)
         {
-            //Right way up
-            largeShip.turnInput = -largeShip.targetForward;
+            largeShip.turnInput = largeShip.targetForward;
             largeShip.pitchInput = -largeShip.targetUp;
         }
         else
         {
-            largeShip.turnInput = largeShip.targetForward;
-            largeShip.pitchInput = largeShip.targetUp;           
+            largeShip.turnInput = -largeShip.targetForward;
+            largeShip.pitchInput = -largeShip.targetUp;           
         }
     }
 

@@ -129,6 +129,7 @@ public class LargeShip : MonoBehaviour
     public bool aiStarted;
     public bool steeringDeadZone;
     public float dampener = 1;
+    public bool circleTargetRangeReached;
 
     [Header("Ship Loading")]
     [HideInInspector] public bool loaded;

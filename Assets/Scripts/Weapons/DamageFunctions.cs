@@ -764,29 +764,30 @@ public static class DamageFunctions
                 }
             }
 
-            if (explosions != null)
-            {
-                if (explosions.Count > 0)
-                {
-                    foreach (ParticleSystem explosion in explosions)
-                    {
-                        if (explosion != null)
-                        {
-                            GameObject.Destroy(explosion.gameObject);
-                        }
-                    }
-                }
-            }
-
             if (largeShip != null)
             {
                 if (largeShip.scene != null)
                 {
-                    float explosionsScale2 = largeShip.shipLength / 50;
+                    float explosionsScale2 = largeShip.shipLength / 25;
 
                     ParticleFunctions.InstantiateExplosion(largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale2, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
 
-                    yield return new WaitForSeconds(0.25f);
+                    yield return new WaitForSeconds(1.5f);
+
+                    //This removes all the other explosions
+                    if (explosions != null)
+                    {
+                        if (explosions.Count > 0)
+                        {
+                            foreach (ParticleSystem explosion in explosions)
+                            {
+                                if (explosion != null)
+                                {
+                                    GameObject.Destroy(explosion.gameObject);
+                                }
+                            }
+                        }
+                    }
 
                     int scaleNumber = (int)Mathf.Abs(largeShip.shipLength / 100f);
 
@@ -806,11 +807,11 @@ public static class DamageFunctions
             {
                 if (largeShip.scene != null)
                 {
-                    float explosionsScale = largeShip.shipLength / 50;
+                    float explosionsScale = largeShip.shipLength / 25;
 
                     ParticleFunctions.InstantiateExplosion(largeShip.gameObject.transform.position, "explosion_largeship", explosionsScale, largeShip.audioManager, "proton_explosion2", 3000, "Explosions");
 
-                    yield return new WaitForSeconds(0.25f);
+                    yield return new WaitForSeconds(1f);
 
                     int scaleNumber = (int)Mathf.Abs(largeShip.shipLength / 100f);
 
@@ -845,7 +846,7 @@ public static class DamageFunctions
         scene.objectPool.RemoveAll(item => item == null);
     }
 
-    //This creates a debris exxplosions
+    //This creates a debris explosions
     public static void TriggerDebrisExplosion_LargeShip(Vector3 position, int debrisCount = 10)
     {
         Scene scene = SceneFunctions.GetScene();

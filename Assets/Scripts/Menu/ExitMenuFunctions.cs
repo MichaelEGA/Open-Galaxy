@@ -10,58 +10,63 @@ public static class ExitMenuFunctions
     {
         GameObject exitMenu = GameObject.Find("ExitMenu");
 
-        if (isDisplaying == true)
+        bool videoIsPlaying = OGVideoPlayerFunctions.VideoIsPlaying();
+
+        if (videoIsPlaying == false)
         {
-
-            if (exitMenu == null)
+            if (isDisplaying == true)
             {
-                GameObject exitMenuPrefab = Resources.Load(OGGetAddress.menus + "ExitMenu") as GameObject;
-                exitMenu = GameObject.Instantiate(exitMenuPrefab);
-                exitMenu.name = "ExitMenu";
-            }
 
-            if (exitMenu != null)
+                if (exitMenu == null)
+                {
+                    GameObject exitMenuPrefab = Resources.Load(OGGetAddress.menus + "ExitMenu") as GameObject;
+                    exitMenu = GameObject.Instantiate(exitMenuPrefab);
+                    exitMenu.name = "ExitMenu";
+                }
+
+                if (exitMenu != null)
+                {
+                    Time.timeScale = 0;
+
+                    exitMenu.SetActive(true);
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+
+                    //This selects the button for when players are using the controller
+                    exitMenu.GetComponentInChildren<Button>().Select();
+                }
+
+                //This mutes game sounds
+                AudioFunctions.MuteSelectedAudio("voicevolume");
+                AudioFunctions.MuteSelectedAudio("externalvolume");
+                AudioFunctions.MuteSelectedAudio("enginevolume");
+                AudioFunctions.MuteSelectedAudio("explosionsvolume");
+                AudioFunctions.MuteSelectedAudio("cockpitvolume");
+
+                //This makes sure the controller is not vibrating
+                SmallShipFunctions.StopShakeController();
+
+            }
+            else
             {
-                Time.timeScale = 0;
+                Time.timeScale = 1;
 
-                exitMenu.SetActive(true);
+                if (exitMenu != null)
+                {
+                    exitMenu.SetActive(false);
+                }
 
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Confined;
 
-                //This selects the button for when players are using the controller
-                exitMenu.GetComponentInChildren<Button>().Select();
+                //This mutes game sounds
+                AudioFunctions.UnmuteSelectedAudio("voicevolume");
+                AudioFunctions.UnmuteSelectedAudio("externalvolume");
+                AudioFunctions.UnmuteSelectedAudio("enginevolume");
+                AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
+                AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
             }
-
-            //This mutes game sounds
-            AudioFunctions.MuteSelectedAudio("voicevolume");
-            AudioFunctions.MuteSelectedAudio("externalvolume");
-            AudioFunctions.MuteSelectedAudio("enginevolume");
-            AudioFunctions.MuteSelectedAudio("explosionsvolume");
-            AudioFunctions.MuteSelectedAudio("cockpitvolume");
-
-            //This makes sure the controller is not vibrating
-            SmallShipFunctions.StopShakeController();
-
-        }
-        else
-        {
-            Time.timeScale = 1;
-
-            if (exitMenu != null)
-            {
-                exitMenu.SetActive(false);
-            }
-
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Confined;
-
-            //This mutes game sounds
-            AudioFunctions.UnmuteSelectedAudio("voicevolume");
-            AudioFunctions.UnmuteSelectedAudio("externalvolume");
-            AudioFunctions.UnmuteSelectedAudio("enginevolume");
-            AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
-            AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
         }
     }
 }

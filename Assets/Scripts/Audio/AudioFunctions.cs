@@ -251,7 +251,7 @@ public static class AudioFunctions
     }
 
     //This function specifcally plays engine noise
-    public static void PlayEngineNoise(SmallShip smallShip)
+    public static void PlayEngineNoise_SmallShip(SmallShip smallShip)
     {
         float pitch = 1;
         float spatialBlend = 1;
@@ -314,6 +314,66 @@ public static class AudioFunctions
             }
 
             smallShip.engineAudioSource.gameObject.transform.position = smallShip.transform.position;
+        }
+    }
+
+    //This function specifcally plays engine noise
+    public static void PlayEngineNoise_LargeShip(LargeShip largeShip)
+    {
+        float pitch = 1;
+        float spatialBlend = 1;
+        int priority = 128;
+
+        if (largeShip.engineAudioSource == null)
+        {
+            AudioClip audioClip = GetAudioClip(largeShip.audioManager, largeShip.engineAudio);
+            AudioSource audioSource = GetAudioSource(largeShip.audioManager);
+
+            if (audioClip != null & audioSource != null)
+            {
+                largeShip.engineAudioSource = audioSource;
+                largeShip.engineAudioSource.clip = audioClip;
+
+                AudioDistortionFilter audioDistortionFilter = audioSource.gameObject.GetComponent<AudioDistortionFilter>();
+                AudioHighPassFilter audioHighPassFilter = audioSource.gameObject.GetComponent<AudioHighPassFilter>();
+
+                if (audioDistortionFilter != null)
+                {
+                    audioDistortionFilter.enabled = false;
+                    audioDistortionFilter.distortionLevel = 0.5f;
+                }
+
+                if (audioHighPassFilter != null)
+                {
+                    audioHighPassFilter.enabled = false;
+                    audioHighPassFilter.cutoffFrequency = 4000;
+                }
+            }
+        }
+
+        if (largeShip.engineAudioSource != null)
+        {
+            largeShip.engineAudioSource.priority = priority;
+            largeShip.engineAudioSource.spatialBlend = spatialBlend;
+            largeShip.engineAudioSource.pitch = pitch;
+
+            if (largeShip.engineAudioSource.isPlaying == false & largeShip.engineAudioSource.enabled == true)
+            {
+                largeShip.engineAudioSource.reverbZoneMix = 1;
+                largeShip.engineAudioSource.dopplerLevel = 0f;
+                largeShip.engineAudioSource.spread = 45;
+                largeShip.engineAudioSource.maxDistance = largeShip.shipLength * 1.5f;
+                largeShip.engineAudioSource.volume = 0.2f;
+                largeShip.engineAudioSource.rolloffMode = AudioRolloffMode.Linear;
+                largeShip.engineAudioSource.loop = true;
+                largeShip.engineAudioSource.Play();
+
+                Audio audioManager = GetAudioManager();
+
+                ConnectAudioMixerGroup(audioManager, largeShip.engineAudioSource, "Engine");
+            }
+
+            largeShip.engineAudioSource.gameObject.transform.position = largeShip.transform.position;
         }
     }
 

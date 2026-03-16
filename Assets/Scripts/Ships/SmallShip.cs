@@ -320,7 +320,7 @@ public class SmallShip : MonoBehaviour
         SmallShipFunctions.CalculateThrustSpeed(this);
         SmallShipFunctions.CalculatePitchTurnRollSpeeds(this);
         SmallShipFunctions.MovementEffect(this);
-        AudioFunctions.PlayEngineNoise(this);
+        AudioFunctions.PlayEngineNoise_SmallShip(this);
 
         //Targeting Functions
         TargetingFunctions.RunPlayerTargetingFunctions(this);

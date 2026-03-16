@@ -124,7 +124,7 @@ public static class LaserTurretFunctions
                 scene.lasersPool = new List<GameObject>();
             }
 
-            scene.lasersPool.Add(turret.largeParticleSystemGO);
+            scene.lasersPool.Add(particleSystemGO);
         }
 
         //This sets the paticle to operate in world space (as opposed to local)
@@ -249,7 +249,7 @@ public static class LaserTurretFunctions
                 scene.lasersPool = new List<GameObject>();
             }
 
-            scene.lasersPool.Add(turret.largeParticleSystemGO);
+            scene.lasersPool.Add(particleSystemGO);
         }
 
         //This sets the paticle to operate in world space (as opposed to local)

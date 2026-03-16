@@ -1032,6 +1032,7 @@ public static class SceneFunctions
                 largeShip.rearShieldLevel = shipType.shieldRating / 2f;
                 largeShip.speedRating = shipType.speedRating;
                 largeShip.laserColor = laserColor;
+                largeShip.engineAudio = "engine_largeship";
                 largeShip.type = type;
                 largeShip.prefabName = shipType.prefab;
                 largeShip.thrustType = shipType.thrustType;
@@ -2569,7 +2570,7 @@ public static class SceneFunctions
         }
     }
 
-    //This only clears the scene but leaves the scene loaded and the player intact
+    //This clears the scene but leaves the scene loaded and the player intact
     public static void ClearLocation()
     {
         Scene scene = GetScene();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -107,12 +108,12 @@ public static class MissionDataFunctions
     public static void LoadInternalCampaignData(MissionData missionData)
     {
         //This loads the mission data
-        Object[] mainMissions = Resources.LoadAll(OGGetAddress.missions_internal, typeof(TextAsset));
+        UnityEngine.Object[] mainMissions = Resources.LoadAll(OGGetAddress.missions_internal, typeof(TextAsset));
 
         //This gets all the main campaigns
         if (mainMissions.Length > 0)
         {
-            foreach (Object mission in mainMissions)
+            foreach (UnityEngine.Object mission in mainMissions)
             {
                 TextAsset missionString = (TextAsset)mission;
 
@@ -213,11 +214,11 @@ public static class MissionDataFunctions
             }
         }
 
-        Object[] customMissions = customMissionsList.ToArray();
+        UnityEngine.Object[] customMissions = customMissionsList.ToArray();
 
         if (customMissions.Length > 0)
         {
-            foreach (Object mission in customMissions)
+            foreach (UnityEngine.Object mission in customMissions)
             {
                 TextAsset missionString = (TextAsset)mission;
 
@@ -302,27 +303,33 @@ public static class MissionDataFunctions
         List<string> descriptions = missionData.campaignDescriptions;
         List<string> date = missionData.campaignDates;
 
-        // Combine, converting numbers to int for sorting
-        var triples = date.Select((numStr, i) =>
-        {
-            bool valid = int.TryParse(numStr, out int num);
-            return new
-            {
-                NumberString = numStr,
-                NumberInt = valid ? num : int.MaxValue, // put invalid numbers at the end by sorting as MaxValue
-                IsValid = valid,
-                Name = campaign[i],
-                Description = descriptions[i]
-            };
-        })
-          .OrderBy(x => x.NumberInt)
-          .ThenBy(x => x.IsValid ? 0 : 1) // if numbers are equal, keep invalids last
-          .ToList();
+        // Parse numbers and track valid/invalid
+        List<(int index, float? number)> numberData = new List<(int, float?)>();
 
-        // Extract sorted lists
-        missionData.campaignDates = triples.Select(x => x.NumberString).ToList();
-        missionData.campaigns = triples.Select(x => x.Name).ToList();
-        missionData.campaignDescriptions = triples.Select(x => x.Description).ToList();
+        for (int i = 0; i < date.Count; i++)
+        {
+            if (float.TryParse(date[i], out float parsedNumber))
+            {
+                numberData.Add((i, parsedNumber));
+            }
+            else
+            {
+                numberData.Add((i, null));
+            }
+        }
+
+        // Sort
+        List<int> sortedIndices = numberData
+            .OrderBy(x => x.number.HasValue ? 0 : 1)
+            .ThenBy(x => x.number ?? float.MaxValue)
+            .ThenBy(x => x.index)
+            .Select(x => x.index)
+            .ToList();
+
+        // Reorder all three lists
+        missionData.campaigns = sortedIndices.Select(i => campaign[i]).ToList();
+        missionData.campaignDescriptions = sortedIndices.Select(i => descriptions[i]).ToList();
+        missionData.campaignDates = sortedIndices.Select(i => date[i]).ToList();
     }
 
     //This loads a custom mission

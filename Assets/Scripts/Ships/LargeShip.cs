@@ -31,6 +31,7 @@ public class LargeShip : MonoBehaviour
     [Header("Ship Audio")]
     [HideInInspector] public Audio audioManager;
     [HideInInspector] public AudioSource engineAudioSource;
+    [HideInInspector] public string engineAudio;
 
     [Header("Ship Ratings")]
     public float accelerationRating = 50;
@@ -154,6 +155,7 @@ public class LargeShip : MonoBehaviour
             //Ship movement functions
             LargeShipFunctions.CalculateThrustSpeed(this);
             LargeShipFunctions.CalculatePitchTurnRollSpeeds(this);
+            AudioFunctions.PlayEngineNoise_LargeShip(this);
         }
 
         //Damage functions

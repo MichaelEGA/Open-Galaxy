@@ -1112,16 +1112,18 @@ public static class SceneFunctions
             //This causes the ship to come out of hyperspace on loading
             if (exitingHyperspace == true)
             {
-                ship.transform.localPosition = ship.transform.localPosition + (- ship.transform.forward * 30000);
-
                 if (shipType.scriptType == "largeship")
                 {
+                    ship.transform.localPosition = ship.transform.localPosition + (-ship.transform.forward * 30000);
+
                     LargeShip largeShip = ship.GetComponent<LargeShip>();
                     Task a = new Task(LargeShipFunctions.ExitHyperspace(largeShip));
                     LargeShipFunctions.AddTaskToPool(largeShip, a);
                 }
                 else if (shipType.scriptType == "smallship")
                 {
+                    ship.transform.localPosition = ship.transform.localPosition + (-ship.transform.forward * 5000);
+
                     SmallShip smallShip = ship.GetComponent<SmallShip>();
                     Task a = new Task(SmallShipFunctions.ExitHyperspace(smallShip));
                     SmallShipFunctions.AddTaskToPool(smallShip, a);

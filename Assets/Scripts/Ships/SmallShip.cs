@@ -70,6 +70,9 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float controllerTurn;
     [HideInInspector] public float controllerThrust;
     [HideInInspector] public bool keyboardAndMouse = true;
+    public float smoothedPitch;
+    public float smoothedRoll;
+    public float smoothedTurn;
 
     [Header("Ship Rotation")]
     [HideInInspector] public float pitchSpeed;

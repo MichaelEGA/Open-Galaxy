@@ -365,10 +365,14 @@ public class OGCameraFunctions : MonoBehaviour
                 if (ogCamera.viewType == "firstperson")
                 {
                     ogCamera.viewType = "thirdperson";
+                    ResetOGCameraVaules();
+                    ViewPlayerLayer();
                 }
                 else
                 {
                     ogCamera.viewType = "firstperson";
+                    ResetOGCameraVaules();
+                    HidePlayerLayer();
                 }
 
                 ogCamera.toggleGameCameraPressTime = Time.time;

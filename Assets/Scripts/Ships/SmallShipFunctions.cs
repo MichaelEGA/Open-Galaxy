@@ -174,6 +174,15 @@ public static class SmallShipFunctions
         }
     }
 
+    public static float ApplyInputCurve(float input)
+    {
+        float deadzone = 0.15f;
+        if (Mathf.Abs(input) < deadzone) return 0;
+
+        float normalized = (input - Mathf.Sign(input) * deadzone) / (1 - deadzone);
+        return Mathf.Sign(normalized) * Mathf.Pow(Mathf.Abs(normalized), 1.8f);
+    }
+
     //This gets the input from the controller
     public static void GetControllerInput(SmallShip smallShip)
     {
@@ -183,13 +192,18 @@ public static class SmallShipFunctions
             {
                 var gamepad = Gamepad.current;
 
-                float pitchInput = gamepad.rightStick.y.ReadValue();
-                float rollInput = -gamepad.leftStick.x.ReadValue();
-                float turnInput = gamepad.rightStick.x.ReadValue();
+                float pitchInput = ApplyInputCurve(gamepad.rightStick.y.ReadValue());
+                float rollInput = -ApplyInputCurve(gamepad.leftStick.x.ReadValue());
+                float turnInput = ApplyInputCurve(gamepad.rightStick.x.ReadValue());
 
-                smallShip.controllerPitch = pitchInput * smallShip.controllerSenstivity;
-                smallShip.controllerRoll = rollInput * smallShip.controllerSenstivity;
-                smallShip.controllerTurn = turnInput * smallShip.controllerSenstivity;
+                float smoothSpeed = 0.15f; // Smooth damping for bounce
+                smallShip.smoothedPitch = Mathf.Lerp(smallShip.smoothedPitch, pitchInput, smoothSpeed);
+                smallShip.smoothedRoll = Mathf.Lerp(smallShip.smoothedRoll, rollInput, smoothSpeed);
+                smallShip.smoothedTurn = Mathf.Lerp(smallShip.smoothedTurn, turnInput, smoothSpeed);
+
+                smallShip.controllerPitch = smallShip.smoothedPitch * smallShip.controllerSenstivity;
+                smallShip.controllerRoll = smallShip.smoothedRoll * smallShip.controllerSenstivity;
+                smallShip.controllerTurn = smallShip.smoothedTurn * smallShip.controllerSenstivity;
 
                 //Thrust input and smoothing
                 if (gamepad.leftStick.y.ReadValue() > 0.95f & smallShip.controllerThrust < 1)
@@ -670,7 +684,12 @@ public static class SmallShipFunctions
             actualSpeedRating = smallShip.speedRating + smallShip.wepRating;
             acclerationAmount = acclerationAmount * 2;
             smallShip.wep = true;
-            StartShakeController(0.20f, 0.20f);
+
+            if (smallShip.keyboardAndMouse == false)
+            {
+                StartShakeController(0.20f, 0.20f);
+            }
+            
         }
         else if (smallShip.powerMode == "lasers" || smallShip.powerMode == "shields")
         {
@@ -713,7 +732,6 @@ public static class SmallShipFunctions
         {
             smallShip.thrustSpeed = 0;
         }
-
     }
 
     //This calculates pitch, turn, and roll according to the speed of the vehicle

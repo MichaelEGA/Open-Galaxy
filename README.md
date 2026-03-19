@@ -97,4 +97,4 @@ Assets have only been used when permission has been given or implied by the auth
 
 **Licence**  
 
-The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and must be used with permission.
+The game is open source and can be forked, modified, or replicated (Apache 2.0) but models, music, and icons remain the property of the respective creators and can only be used with permission.

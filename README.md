@@ -42,7 +42,7 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - F1 changes between first and third person viewpoint
   - Scan a target by selecting it and then flying close
 
-**Controller**  
+**X-Box Controller**  
   - Right Thumbstick Steers
   - Left Thumbstick Horizontal roll left and right
   - Left Thumbstick Vertical speeds up and slows down

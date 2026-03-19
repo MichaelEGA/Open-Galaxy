@@ -23,6 +23,7 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
 
 **Included Campaigns**
   - A New Ally (6 Missions)
+  - Strike at Sullust (6 Missions)
 
 **Keyboard and Mouse**  
   - Mouse Steers
@@ -58,25 +59,13 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - Left Thumbstick Button  changes between first and third person viewpoint
   - Scan a target by selecting it and then flying close
     
-**Latest Development Release:** 10.7.25 (Season Release)
+**Latest Development Release:** 11.2.24 (Season Release)
 
-  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.10.7.25/Open.Galaxy.10.7.25.zip
+  - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.11.2.24/Open.Galaxy.11.2.24.zip
     
 **Latest Milestone Release:** 10.0.55
 
   - https://github.com/MichaelEGA/Open-Galaxy/releases/download/v.10.0.55/Open.Galaxy.10.0.55.zip
-
-**News Articles**
-
-  - https://www.indiedb.com/games/open-galaxy/news/open-galaxy-season-1-a-new-ally-released
-  - https://www.indiedb.com/games/open-galaxy/news/open-galaxy-version-10-is-released
-  - https://www.indiedb.com/groups/2025-indie-of-the-year-awards/top100
-  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-version-8-is-released
-  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-50-is-released
-  - https://www.indiedb.com/groups/2024-indie-of-the-year-awards/top100
-  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-40-is-released
-  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-30-is-released
-  - https://www.moddb.com/games/open-galaxy/news/open-galaxy-200-released
 
 **Roadmap**
 

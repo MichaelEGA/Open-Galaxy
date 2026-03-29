@@ -856,7 +856,7 @@ public static class MissionFunctions
     {
         if (display == true)
         {
-            string[] messages = new string[10];
+            string[] messages = new string[11];
             messages[0] = "Settle into your seat pilot. Flying a starfighter requires practice, skill, and focus.";
             messages[1] = "If you constantly fly at top speed you will almost always overshoot your target.";
             messages[2] = "Linking your lasers is a good way to compensate when you need power for other systems.";
@@ -867,7 +867,8 @@ public static class MissionFunctions
             messages[7] = "When you push all your energy to engines or lasers your shields will start to lose strength.";
             messages[8] = "When you push all your energy to engines your WEP system increases to full strength.";
             messages[9] = "Remember you can link your torpedoes and lasers for greater impact.";
-            int randomMessageNo = Random.Range(0, 9);
+            messages[10] = "Need to turn faster? Slow down, roll into the turn, and then pitch.";
+            int randomMessageNo = Random.Range(0, 10);
             MainMenuFunctions.DisplayLoadingScreen(true, missionName, messages[randomMessageNo]);
         }
         else
@@ -3050,13 +3051,7 @@ public static class MissionFunctions
     //This loads multiple ships from another ships hangar
     public static void LoadSingleShipFromHangar(MissionEvent missionEvent)
     {
-        float xRotation = missionEvent.xRotation;
-        float yRotation = missionEvent.yRotation;
-        float zRotation = missionEvent.zRotation;
-
-        Quaternion rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
-
-        string type = "tiefighter";
+        string type = "none";
         if (missionEvent.data1 != "none") { type = missionEvent.data1; }
 
         string name = "alpha";
@@ -3066,7 +3061,7 @@ public static class MissionFunctions
         if (missionEvent.data3 != "none") { allegiance = missionEvent.data3; }
 
         string launchShip = "none";
-        if (missionEvent.data4 != "none") { type = missionEvent.data4; }
+        if (missionEvent.data4 != "none") { launchShip = missionEvent.data4; }
 
         string cargo = "no cargo";
         if (missionEvent.data5 != "none") { cargo = missionEvent.data5; }

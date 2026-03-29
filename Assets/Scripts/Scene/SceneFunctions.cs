@@ -1374,32 +1374,32 @@ public static class SceneFunctions
             {
                 hangars = GameObjectUtils.FindAllChildTransformsContaining(launchShipGO.transform, "hangarLaunch");
             }
-        }
 
-        if (hangars == null || hangars.Length < 1)
-        {
-            LargeShip largeShip = launchShipGO.GetComponent<LargeShip>();
-            SmallShip smallShip = launchShipGO.GetComponent<SmallShip>();
-
-            GameObject hangarLaunchGO = new GameObject();
-            hangarLaunchGO.name = "hangarlaunch";
-            hangarLaunchGO.transform.SetParent(launchShipGO.transform);
-
-            float shipLength = 0;
-
-            if (largeShip != null)
+            if (hangars == null || hangars.Length < 1)
             {
-                shipLength = largeShip.shipLength;
+                LargeShip largeShip = launchShipGO.GetComponent<LargeShip>();
+                SmallShip smallShip = launchShipGO.GetComponent<SmallShip>();
+
+                GameObject hangarLaunchGO = new GameObject();
+                hangarLaunchGO.name = "hangarlaunch";
+                hangarLaunchGO.transform.SetParent(launchShipGO.transform);
+
+                float shipLength = 0;
+
+                if (largeShip != null)
+                {
+                    shipLength = largeShip.shipLength;
+                }
+
+                if (smallShip != null)
+                {
+                    shipLength = smallShip.shipLength;
+                }
+
+                hangarLaunchGO.transform.localPosition = new Vector3(0, -shipLength, 0);
+
+                hangars = new Transform[] { hangarLaunchGO.transform };
             }
-
-            if (smallShip != null)
-            {
-                shipLength = smallShip.shipLength;
-            }
-
-            hangarLaunchGO.transform.localPosition = new Vector3(0, -shipLength, 0);
-
-            hangars = new Transform[]{hangarLaunchGO.transform};
         }
 
         //This selects the chosen hangar
@@ -1480,32 +1480,32 @@ public static class SceneFunctions
             {
                 hangars = GameObjectUtils.FindAllChildTransformsContaining(launchShipGO.transform, "hangarLaunch");
             }
-        }
 
-        if (hangars == null || hangars.Length < 1)
-        {
-            LargeShip largeShip = launchShipGO.GetComponent<LargeShip>();
-            SmallShip smallShip = launchShipGO.GetComponent<SmallShip>();
-
-            GameObject hangarLaunchGO = new GameObject();
-            hangarLaunchGO.name = "hangarlaunch";
-            hangarLaunchGO.transform.SetParent(launchShipGO.transform);
-
-            float shipLength = 0;
-
-            if (largeShip != null)
+            if (hangars == null || hangars.Length < 1)
             {
-                shipLength = largeShip.shipLength;
+                LargeShip largeShip = launchShipGO.GetComponent<LargeShip>();
+                SmallShip smallShip = launchShipGO.GetComponent<SmallShip>();
+
+                GameObject hangarLaunchGO = new GameObject();
+                hangarLaunchGO.name = "hangarlaunch";
+                hangarLaunchGO.transform.SetParent(launchShipGO.transform);
+
+                float shipLength = 0;
+
+                if (largeShip != null)
+                {
+                    shipLength = largeShip.shipLength;
+                }
+
+                if (smallShip != null)
+                {
+                    shipLength = smallShip.shipLength;
+                }
+
+                hangarLaunchGO.transform.localPosition = new Vector3(0, -shipLength, 0);
+
+                hangars = new Transform[] { hangarLaunchGO.transform };
             }
-
-            if (smallShip != null)
-            {
-                shipLength = smallShip.shipLength;
-            }
-
-            hangarLaunchGO.transform.localPosition = new Vector3(0, -shipLength, 0);
-
-            hangars = new Transform[] { hangarLaunchGO.transform };
         }
 
         //This selects the chosen hangar

@@ -709,7 +709,7 @@ public static class LaserFunctions
 
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, pitch, 500, volume);
 
-                        if (smallShip.isAI == false)
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
                         {
                             Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }

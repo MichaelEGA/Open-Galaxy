@@ -571,25 +571,38 @@ public static class LargeShipAIFunctions
         }
     }
 
-    //This causes the ship to circle around it's target
+    //This causes the ship to fly towards it's target and then commence to circle around it
     public static void CircleTarget(LargeShip largeShip)
     {
-        if (largeShip.circleTargetRangeReached == false)
+        if (largeShip.targetLargeShip != null)
         {
-            AngleTowardsTarget(largeShip);
-        }
-        else
-        {
-            KeepTargetOnRight(largeShip);
-        }
+            //This chooses the appropriate action to take: fly toward other ship or start circling it
+            if (largeShip.circleTargetRangeReached == false)
+            {
+                AngleTowardsTarget(largeShip);
+            }
+            else
+            {
+                KeepTargetOnRight(largeShip);
+            }
 
-        if (largeShip.targetDistance > largeShip.shipLength * 3)
-        {
-            largeShip.circleTargetRangeReached = false;
-        }
-        else if (largeShip.targetDistance < largeShip.shipLength * 1.5)
-        {
-            largeShip.circleTargetRangeReached = true;
+            //This makes ship the ship circles at the right distance
+            float baseDistance = largeShip.shipLength;
+
+            if (largeShip.targetLargeShip.shipLength > baseDistance)
+            {
+                baseDistance = largeShip.targetLargeShip.shipLength;
+            }
+
+            //This checks if the ship is in the range to circle the target or not
+            if (largeShip.targetDistance > baseDistance * 3)
+            {
+                largeShip.circleTargetRangeReached = false;
+            }
+            else if (largeShip.targetDistance < baseDistance * 1.5)
+            {
+                largeShip.circleTargetRangeReached = true;
+            }
         }
     }
 

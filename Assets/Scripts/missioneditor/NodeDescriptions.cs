@@ -609,6 +609,18 @@ public static class NodeDescriptions
              "- This node will return a result on the first ship that returns a positive result. For example, if you have two ships one named 'Container A' and the other 'Container B' and you simply write 'Container' the node will return a result on the first ship that returns true. \n" +
              "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "ifstringequals")
+        {
+            description =
+             "If String Equals \n " +
+             "\n " +
+             "This function checks if the string in the given slot matches the string in the input \n" +
+             "\n " +
+             "Extra Information \n" +
+             "- This node is useful if you want to check later on if a particular event has taken place or not. \n" +
+             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+             "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
         else if (name == "ifsystemisactive")
         {
             description =
@@ -725,6 +737,16 @@ public static class NodeDescriptions
             "Extra Information \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "savestring")
+        {
+            description =
+            "Save String \n " +
+            "\n " +
+            "This saves a string in the given slow \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- This node is useful if you want to check later on if a particular event has taken place or not. \n";
+        }
         else if (name == "setcamera")
         {
             description =
@@ -732,8 +754,7 @@ public static class NodeDescriptions
             "\n " +
             "This manually sets the camera mode. \n" +
             "\n " +
-            "Extra Information \n" +
-            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+            "Extra Information \n";
         }
         else if (name == "setcargo")
         {

@@ -18,6 +18,9 @@ public class MissionManager : MonoBehaviour
     public bool audioLoaded = false;
     public bool pauseEventSeries;
 
+    //Stored Information
+    public string[] savedStrings;
+
     //Audio Message Queue
     public Queue<string> messageStringQueue = new Queue<string>();
     public Queue<string> messageAudioQueue = new Queue<string>();

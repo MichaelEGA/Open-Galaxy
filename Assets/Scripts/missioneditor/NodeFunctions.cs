@@ -161,6 +161,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfShipsSystemsAreLessThan(node);
         }
+        else if (node.nodeType == "ifstringequals")
+        {
+            NodeTypes.Draw_IfStringEquals(node);
+        }
         else if (node.nodeType == "ifsystemisactive")
         {
             NodeTypes.Draw_IfSystemIsActive(node);
@@ -240,6 +244,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "preload_setskybox")
         {
             NodeTypes.Draw_PreLoad_SetSkybox(node);
+        }
+        else if (node.nodeType == "savestring")
+        {
+            NodeTypes.Draw_SaveString(node);
         }
         else if (node.nodeType == "setcamera")
         {

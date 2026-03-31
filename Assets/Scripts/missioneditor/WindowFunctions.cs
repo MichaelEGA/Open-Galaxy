@@ -105,6 +105,7 @@ public static class WindowFunctions
         buttonList.Add("ifshipofallegianceisactive");
         buttonList.Add("ifshipsshieldsarelessthan");
         buttonList.Add("ifshipssystemsarelessthan");
+        buttonList.Add("ifstringequals");
         buttonList.Add("ifsystemisactive");
         buttonList.Add("loadexplosion");
         buttonList.Add("loadmultipleships");
@@ -127,6 +128,7 @@ public static class WindowFunctions
         buttonList.Add("preload_setlighting");
         buttonList.Add("preload_setsceneradius");
         buttonList.Add("preload_setskybox");
+        buttonList.Add("savestring");
         buttonList.Add("setcamera");
         buttonList.Add("setcargo");
         buttonList.Add("setcontrollock");

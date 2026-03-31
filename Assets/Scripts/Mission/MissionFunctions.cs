@@ -679,6 +679,19 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
+        else if (missionEvent.eventType == "ifstringequals")
+        {
+            bool ifstringequals = IfStringEquals(missionEvent);
+
+            if (ifstringequals == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
         else if (missionEvent.eventType == "ifsystemisactive")
         {
             bool isActive = IfSystemIsActive(missionEvent);
@@ -736,6 +749,11 @@ public static class MissionFunctions
         else if (missionEvent.eventType == "playvideo")
         {
             PlayVideo(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "savestring")
+        {
+            SaveString(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
         else if (missionEvent.eventType == "setcamera")
@@ -2626,6 +2644,38 @@ public static class MissionFunctions
 
         return islessthanamount;
     }
+    
+    //This checks if a saved string is the same as that input given
+    public static bool IfStringEquals(MissionEvent missionEvent)
+    {
+        bool isTheSame = false;
+
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+
+        if (missionManager != null)
+        {
+            if (missionManager.savedStrings == null)
+            {
+                missionManager.savedStrings = new string[100];
+            }
+
+            int slot = 0;
+
+            if (int.TryParse(missionEvent.data1, out _))
+            {
+                slot = int.Parse(missionEvent.data1);
+            }
+
+            string stringToCheck = missionEvent.data2;
+
+            if (missionManager.savedStrings[slot] == stringToCheck)
+            {
+                isTheSame = true;
+            }
+        }
+
+        return isTheSame;
+    }
 
     //This checks whether a particular system on the ship is still active or not i.e. shield, engine, radar, dovin basal
     public static bool IfSystemIsActive(MissionEvent missionEvent)
@@ -3156,6 +3206,31 @@ public static class MissionFunctions
         string video = missionEvent.data1;
 
         Task a = new Task(OGVideoPlayerFunctions.RunVideo(video));
+    }
+
+    //This saves a string
+    public static void SaveString(MissionEvent missionEvent)
+    {
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+
+        if (missionManager != null)
+        {
+            if (missionManager.savedStrings == null)
+            {
+                missionManager.savedStrings = new string[100];
+            }
+
+            int slot = 0;
+
+            if (int.TryParse(missionEvent.data1, out _))
+            {
+                slot = int.Parse(missionEvent.data1);
+            }
+
+            string stringToSave = missionEvent.data2;
+
+            missionManager.savedStrings[slot] = stringToSave;
+        }
     }
 
     //This manually sets the camera mode

@@ -79,6 +79,7 @@ public static class WindowFunctions
         buttonList.Add("createlocation");
         buttonList.Add("custom_node");
         buttonList.Add("deactivateship");
+        buttonList.Add("displaychoice");
         buttonList.Add("displayhint");
         buttonList.Add("displaytitle");
         buttonList.Add("displaymessage");
@@ -88,6 +89,7 @@ public static class WindowFunctions
         buttonList.Add("fadetocolour");
         buttonList.Add("exitmission");
         buttonList.Add("exitmissionandloadnextmission");
+        buttonList.Add("ifchoiceequals");
         buttonList.Add("ifobjectiveisactive");
         buttonList.Add("ifkeyboardisactive");
         buttonList.Add("ifnumberofshipsislessthan");

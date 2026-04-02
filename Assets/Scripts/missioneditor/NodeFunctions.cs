@@ -65,6 +65,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DeactivateShip(node);
         }
+        else if (node.nodeType == "displaychoice")
+        {
+            NodeTypes.Draw_DisplayChoice(node);
+        }
         else if (node.nodeType == "displayhint")
         {
             NodeTypes.Draw_DisplayHint(node);
@@ -92,6 +96,10 @@ public class NodeFunctions : MonoBehaviour
         else if (node.nodeType == "exitmissionandloadnextmission")
         {
             NodeTypes.Draw_ExitMissionAndLoadNextMission(node);
+        }
+        else if (node.nodeType == "ifchoiceequals")
+        {
+            NodeTypes.Draw_IfChoiceEquals(node);
         }
         else if (node.nodeType == "ifobjectiveisactive")
         {

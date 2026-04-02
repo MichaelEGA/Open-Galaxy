@@ -333,6 +333,19 @@ public static class NodeDescriptions
            "Extra Information \n" +
            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "displaychoice")
+        {
+            description =
+            "Display Hint \n " +
+            "\n " +
+            "This node displays a choice that the player can make between four options \n" +
+            "\n " +
+           "Extra Information \n" +
+           "- If you leave the choice as 'none' it will not be listed as a choice for the player. \n" +
+           "- If no choice has been made or the player fails to make a the choice will be listed as 'nochoice'. \n" +
+           "- They player has ten seconds to make a choice before the option to make a choice disappears. \n" +
+           "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
         else if (name == "displayhint")
         {
             description =
@@ -405,6 +418,19 @@ public static class NodeDescriptions
             "\n " +
             "This node fades the screen to a block colour \n" +
             "\n ";
+        }
+        else if (name == "ifchoiceequals")
+        {
+            description =
+            "If Choice Equals \n " +
+            "\n " +
+            "This node checks to see the choice made by the player equals the given string. \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- If the player doesn't make a choice, the choice will be stored as 'nochoice'. \n" +
+            "- This string is case sensitive. If you wrote 'choice one' and you are looking for 'CHOICE ONE' the function wont find it. \n" +
+            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+            "- If the location is left as 'none' the node will run regardless of location. \n";
         }
         else if (name == "ifobjectiveisactive")
         {

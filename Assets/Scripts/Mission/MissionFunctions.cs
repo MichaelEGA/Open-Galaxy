@@ -433,6 +433,11 @@ public static class MissionFunctions
             DeactivateShip(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "displaychoice")
+        {
+            Task a = new Task(DisplayChoice(missionEvent));
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "displayhint")
         {
             DisplayHint(missionEvent);
@@ -457,6 +462,19 @@ public static class MissionFunctions
         {
             DisplayMissionBriefing(missionEvent);
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
+        else if (missionEvent.eventType == "ifchoiceequals")
+        {
+            bool ifChoiceEquals = IfChoiceEquals(missionEvent);
+
+            if (ifChoiceEquals == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
         }
         else if (missionEvent.eventType == "ifobjectiveisactive")
         {
@@ -1695,6 +1713,81 @@ public static class MissionFunctions
         }
     }
 
+    //This allows the player to select between four choices, they have thirty seconds to make a choice
+    public static IEnumerator DisplayChoice(MissionEvent missionEvent)
+    {
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+        
+        if (missionManager != null)
+        {
+            missionManager.choice = "nochoice";
+
+            string choiceUp = missionEvent.data1;
+            string choiceDown = missionEvent.data2;
+            string choiceRight = missionEvent.data3;
+            string choiceLeft = missionEvent.data4;
+
+            var keyboard = Keyboard.current;
+            var gamepad = Gamepad.current;
+
+            float savedTime = Time.time + 10;
+
+            while (Time.time < savedTime)
+            {
+                if (keyboard != null)
+                {
+                    if (keyboard.upArrowKey.isPressed)
+                    {
+                        missionManager.choice = choiceUp;
+                        break;
+                    }
+                    else if (keyboard.downArrowKey.isPressed)
+                    {
+                        missionManager.choice = choiceDown;
+                        break;
+                    }
+                    else if (keyboard.rightArrowKey.isPressed)
+                    {
+                        missionManager.choice = choiceRight;
+                        break;
+                    }
+                    else if (keyboard.leftArrowKey.isPressed)
+                    {
+                        missionManager.choice = choiceLeft;
+                        break;
+                    }
+                }
+                else if (gamepad != null)
+                {
+                    if (gamepad.dpad.up.isPressed)
+                    {
+                        missionManager.choice = choiceUp;
+                        break;
+                    }
+                    else if (gamepad.dpad.down.isPressed)
+                    {
+                        missionManager.choice = choiceDown;
+                        break;
+                    }
+                    else if (gamepad.dpad.right.isPressed)
+                    {
+                        missionManager.choice = choiceRight;
+                        break;
+                    }
+                    else if (gamepad.dpad.left.isPressed)
+                    {
+                        missionManager.choice = choiceLeft;
+                        break;
+                    }
+                }
+
+                yield return null;
+            }
+        }
+
+        yield return null;
+    }
+
     //This temporary displays a large print hint in the center bottom of the screen
     public static void DisplayHint(MissionEvent missionEvent)
     {
@@ -1803,6 +1896,23 @@ public static class MissionFunctions
         string model = missionEvent.data6;
 
         Task a = new Task(MissionBriefingFunctions.ActivateMissionBriefing(message, audio, internalAudioFile, distortion, distortionLevel, model));
+    }
+
+    //This checks what the player has chosen
+    public static bool IfChoiceEquals(MissionEvent missionEvent)
+    {
+        bool inputEqualsChoice = false;
+
+        string choice = missionEvent.data1;
+
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+
+        if (choice == missionManager.choice)
+        {
+            inputEqualsChoice = true;
+        }
+
+        return inputEqualsChoice;
     }
 
     //This checks whether a mission objective is active or not

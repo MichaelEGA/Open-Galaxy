@@ -101,6 +101,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_IfChoiceEquals(node);
         }
+        else if (node.nodeType == "ifchoicehasbeenmade")
+        {
+            NodeTypes.Draw_IfChoiceHasBeenMade(node);
+        }
         else if (node.nodeType == "ifobjectiveisactive")
         {
             NodeTypes.Draw_IfObjectiveIsActive(node);

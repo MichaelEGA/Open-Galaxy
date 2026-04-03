@@ -15,6 +15,7 @@ public class Scene : MonoBehaviour
     public string allegiance = "none";
     public OGCamera ogCamera;
     public bool hyperspace;
+    public MissionManager missionManager;
 
     [Header("The Main Ship")]
     [HideInInspector] public GameObject mainShip;

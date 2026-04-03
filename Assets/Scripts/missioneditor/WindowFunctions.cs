@@ -90,6 +90,7 @@ public static class WindowFunctions
         buttonList.Add("exitmission");
         buttonList.Add("exitmissionandloadnextmission");
         buttonList.Add("ifchoiceequals");
+        buttonList.Add("ifchoicehasbeenmade");
         buttonList.Add("ifobjectiveisactive");
         buttonList.Add("ifkeyboardisactive");
         buttonList.Add("ifnumberofshipsislessthan");

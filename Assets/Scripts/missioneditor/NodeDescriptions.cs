@@ -432,6 +432,17 @@ public static class NodeDescriptions
             "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
             "- If the location is left as 'none' the node will run regardless of location. \n";
         }
+        else if (name == "ifchoicehasbeenmade")
+        {
+            description =
+            "If Choice Has Been Made \n " +
+            "\n " +
+            "This node checks to see the player has made a choice or not \n" +
+            "\n " +
+            "Extra Information \n" +
+            "- This is a branching node. You can intiate a different set of events depending on whether the answer is yes or no. \n" +
+            "- If the location is left as 'none' the node will run regardless of location. \n";
+        }
         else if (name == "ifobjectiveisactive")
         {
             description =

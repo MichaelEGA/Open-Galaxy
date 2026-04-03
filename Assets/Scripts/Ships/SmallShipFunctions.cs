@@ -110,6 +110,16 @@ public static class SmallShipFunctions
     //This gets the input from the keyboard and mouse
     public static void GetKeyboardAndMouseInput(SmallShip smallShip)
     {
+        if (smallShip.scene == null)
+        {
+            smallShip.scene = SceneFunctions.GetScene();
+        }
+
+        if (smallShip.scene.missionManager == null)
+        {
+            smallShip.scene.missionManager = MissionFunctions.GetMissionManager();
+        }
+
         if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false & smallShip.controlLock == false)
         {
             if (smallShip.keyboardAndMouse == true)
@@ -155,10 +165,14 @@ public static class SmallShipFunctions
                     smallShip.turnInput = turnInput;
                 }
 
-                smallShip.powerToShields = keyboard.leftArrowKey.isPressed;
-                smallShip.powerToEngine = keyboard.upArrowKey.isPressed;
-                smallShip.powerToLasers = keyboard.rightArrowKey.isPressed;
-                smallShip.resetPowerLevels = keyboard.downArrowKey.isPressed;
+                if (smallShip.scene.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
+                {
+                    smallShip.powerToShields = keyboard.leftArrowKey.isPressed;
+                    smallShip.powerToEngine = keyboard.upArrowKey.isPressed;
+                    smallShip.powerToLasers = keyboard.rightArrowKey.isPressed;
+                    smallShip.resetPowerLevels = keyboard.downArrowKey.isPressed;
+                }
+
                 smallShip.getNextTarget = keyboard.rKey.isPressed;
                 smallShip.getNextEnemy = keyboard.tKey.isPressed;
                 smallShip.getClosestEnemy = keyboard.fKey.isPressed;
@@ -242,10 +256,14 @@ public static class SmallShipFunctions
                 smallShip.rollInput = smallShip.controllerRoll;
 
                 //Button inputs
-                smallShip.powerToShields = gamepad.dpad.left.isPressed;
-                smallShip.powerToEngine = gamepad.dpad.up.isPressed;
-                smallShip.powerToLasers = gamepad.dpad.right.isPressed;
-                smallShip.resetPowerLevels = gamepad.dpad.down.isPressed;
+                if (smallShip.scene.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
+                {
+                    smallShip.powerToShields = gamepad.dpad.left.isPressed;
+                    smallShip.powerToEngine = gamepad.dpad.up.isPressed;
+                    smallShip.powerToLasers = gamepad.dpad.right.isPressed;
+                    smallShip.resetPowerLevels = gamepad.dpad.down.isPressed;
+                }
+
                 smallShip.getNextTarget = gamepad.leftShoulder.isPressed;
                 //smallShip.getNextEnemy = gamepad.xButton.isPressed;
                 smallShip.getClosestEnemy = gamepad.xButton.isPressed;
@@ -586,9 +604,7 @@ public static class SmallShipFunctions
                 if (smallShip.shieldPower > 0) { smallShip.shieldPower -= 1; }
             }
         }
-
-       
-
+        
     }
 
     //This calculates the ships power levels

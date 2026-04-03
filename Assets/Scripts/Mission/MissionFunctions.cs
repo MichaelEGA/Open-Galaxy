@@ -473,6 +473,19 @@ public static class MissionFunctions
                 FindNextEvent(missionEvent.nextEvent2, eventSeries);
             }
         }
+        else if (missionEvent.eventType == "ifchoicehasbeenmade")
+        {
+            bool ifChoiceHasBeenMade = IfChoiceHasBeenMade(missionEvent);
+
+            if (ifChoiceHasBeenMade == true)
+            {
+                FindNextEvent(missionEvent.nextEvent1, eventSeries);
+            }
+            else
+            {
+                FindNextEvent(missionEvent.nextEvent2, eventSeries);
+            }
+        }
         else if (missionEvent.eventType == "ifobjectiveisactive")
         {
             bool ifObjectiveIsActive = IfObjectiveIsActive(missionEvent);
@@ -1719,6 +1732,7 @@ public static class MissionFunctions
         {
             missionManager.choice = "nochoice";
             missionManager.choiceMade = false;
+            missionManager.controlsReleased = false;
 
             string choiceUp = missionEvent.data1;
             string choiceDown = missionEvent.data2;
@@ -1792,6 +1806,10 @@ public static class MissionFunctions
             }
 
             missionManager.choiceMade = true;
+
+            yield return new WaitForSeconds(1f);
+
+            missionManager.controlsReleased = true; //This releases the controls after one second to prevent the meters from changing
         }
 
         yield return null;
@@ -1922,6 +1940,21 @@ public static class MissionFunctions
         }
 
         return inputEqualsChoice;
+    }
+
+    //This checks whether the player has made a choice yet or not
+    public static bool IfChoiceHasBeenMade(MissionEvent missionEvent)
+    {
+        bool choiceHasBeenMade = false;
+
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+
+        if (missionManager.choiceMade == true)
+        {
+            choiceHasBeenMade = true;
+        }
+
+        return choiceHasBeenMade;
     }
 
     //This checks whether a mission objective is active or not

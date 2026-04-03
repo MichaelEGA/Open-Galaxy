@@ -22,6 +22,13 @@ public class Hud : MonoBehaviour
     [HideInInspector] public CanvasGroup fadeCG;
     [HideInInspector] public CanvasGroup screenflashCG;
 
+    [Header("Choice")]
+    [HideInInspector] public CanvasGroup choiceCG;
+    [HideInInspector] public Text choiceUp;
+    [HideInInspector] public Text choiceDown;
+    [HideInInspector] public Text choiceRight;
+    [HideInInspector] public Text choiceLeft;
+
     [Header("Hud Elements Check")]
     [HideInInspector] public bool hudElementsSet;
 

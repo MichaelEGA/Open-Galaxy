@@ -2188,6 +2188,97 @@ public static class HudFunctions
         }
     }
 
+    public static void DisplayChoice(string choiceUp, string choiceDown, string choiceRight, string choiceLeft, float displayTime)
+    {
+        if (Time.timeScale != 0)
+        {
+            Hud hud = GetHud();
+
+            if (hud != null)
+            {
+                //This gets the references if needed
+                if (hud.choiceCG == null)
+                {
+                    GameObject choiceGO = GameObject.Find("Choice");
+                    if (choiceGO != null) { hud.choiceCG = choiceGO.GetComponent<CanvasGroup>(); }
+                }
+
+                if (hud.choiceUp == null)
+                {
+                    GameObject choiceUpGO = GameObject.Find("ChoiceUp");
+                    if (choiceUpGO != null) { hud.choiceUp = choiceUpGO.GetComponent<Text>(); }
+                }
+
+                if (hud.choiceDown == null)
+                {
+                    GameObject choiceDownGO = GameObject.Find("ChoiceDown");
+                    if (choiceDownGO != null) { hud.choiceDown = choiceDownGO.GetComponent<Text>(); }
+                }
+
+                if (hud.choiceRight == null)
+                {
+                    GameObject choiceRightGO = GameObject.Find("ChoiceRight");
+                    if (choiceRightGO != null) { hud.choiceRight = choiceRightGO.GetComponent<Text>(); }
+                }
+
+                if (hud.choiceLeft == null)
+                {
+                    GameObject choiceLeftGO = GameObject.Find("ChoiceLeft");
+                    if (choiceLeftGO != null) { hud.choiceLeft = choiceLeftGO.GetComponent<Text>(); }
+                }
+
+                //This fades the choice screen in and out
+                if (hud.choiceCG != null)
+                {
+                    Task a = new Task(FadeInAndOutChoiceCG(hud.choiceCG, displayTime)); //This fades the text in and out
+                    AddTaskToPool(hud, a);
+                }
+
+                //This displays the choices
+                if (hud.choiceUp != null)
+                {
+                    if (choiceUp == "none")
+                    {
+                        choiceUp = "";
+                    }
+
+                    hud.choiceUp.text = choiceUp;
+                }
+
+                if (hud.choiceDown != null)
+                {
+                    if (choiceDown == "none")
+                    {
+                        choiceDown = "";
+                    }
+
+                    hud.choiceDown.text = choiceDown;
+                }
+
+                if (hud.choiceRight != null)
+                {
+                    if (choiceRight == "none")
+                    {
+                        choiceRight = "";
+                    }
+
+                    hud.choiceRight.text = choiceRight;
+                }
+
+                if (hud.choiceLeft != null)
+                {
+                    if (choiceLeft == "none")
+                    {
+                        choiceLeft = "";
+                    }
+
+                    hud.choiceLeft.text = choiceLeft;
+                }
+            }
+        }
+    }
+
+
     #endregion
 
     #region moving reticule
@@ -2740,7 +2831,7 @@ public static class HudFunctions
         }
     }
 
-    //This fades out the black bars
+    //This fades out the a canvas group
     public static IEnumerator FadeInAndOutCanvasGroup(CanvasGroup canvasGroup, float duration)
     {
         if (canvasGroup != null)
@@ -2775,6 +2866,63 @@ public static class HudFunctions
                 }
 
                 yield return new WaitForSecondsRealtime(0.016f);
+            }
+        }
+    }
+
+    //This fades in and out the choice display
+    public static IEnumerator FadeInAndOutChoiceCG(CanvasGroup canvasGroup, float duration)
+    {
+        if (canvasGroup != null)
+        {
+            MissionManager missionManager = MissionFunctions.GetMissionManager();
+
+            if (missionManager != null)
+            {
+                //This sets the starting alpha value to 0
+                float alpha = canvasGroup.alpha;
+                float fadeTime = 0.25f;
+
+                //This fades in the canvas
+                while (alpha < 1)
+                {
+                    alpha = alpha + (1f / (60f * fadeTime));
+
+                    if (canvasGroup != null)
+                    {
+                        canvasGroup.alpha = alpha;
+                    }
+
+                    yield return new WaitForSecondsRealtime(0.016f);
+                }
+
+                //This sets the starting alpha value to 1
+                alpha = canvasGroup.alpha;
+
+                float displayTime = Time.time + duration - (fadeTime * 2);
+
+                while (Time.time < displayTime)
+                {
+                    yield return null;
+
+                    if (missionManager.choiceMade == true)
+                    {
+                        break;
+                    }
+                }
+
+                //This fades the canvas out
+                while (alpha > 0)
+                {
+                    alpha = alpha - (1f / (60f * (fadeTime / 2f)));
+
+                    if (canvasGroup != null)
+                    {
+                        canvasGroup.alpha = alpha;
+                    }
+
+                    yield return new WaitForSecondsRealtime(0.016f);
+                }
             }
         }
     }

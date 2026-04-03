@@ -1650,19 +1650,23 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data1 = NodeFunctions.DrawInputField(node, "choice1", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data1 = NodeFunctions.DrawInputField(node, "choiceup", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawInputField(node, "choice2", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawInputField(node, "choicedown", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data3 = NodeFunctions.DrawInputField(node, "choice3", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawInputField(node, "choiceright", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data4 = NodeFunctions.DrawInputField(node, "choice4", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data4 = NodeFunctions.DrawInputField(node, "choiceleft", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "displaytime", "5", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

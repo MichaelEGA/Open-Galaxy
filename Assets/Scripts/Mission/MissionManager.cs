@@ -21,6 +21,7 @@ public class MissionManager : MonoBehaviour
     //Stored Information
     public string[] savedStrings;
     public string choice;
+    public bool choiceMade;
 
     //Audio Message Queue
     public Queue<string> messageStringQueue = new Queue<string>();

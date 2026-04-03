@@ -1,10 +1,7 @@
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -1721,16 +1718,26 @@ public static class MissionFunctions
         if (missionManager != null)
         {
             missionManager.choice = "nochoice";
+            missionManager.choiceMade = false;
 
             string choiceUp = missionEvent.data1;
             string choiceDown = missionEvent.data2;
             string choiceRight = missionEvent.data3;
             string choiceLeft = missionEvent.data4;
 
+            float displayTime = 5;
+
+            if (float.TryParse(missionEvent.data5, out _))
+            {
+                displayTime = float.Parse(missionEvent.data5);
+            }
+
             var keyboard = Keyboard.current;
             var gamepad = Gamepad.current;
 
-            float savedTime = Time.time + 10;
+            float savedTime = Time.time + displayTime;
+
+            HudFunctions.DisplayChoice(choiceUp, choiceDown, choiceRight, choiceLeft, displayTime);
 
             while (Time.time < savedTime)
             {
@@ -1783,6 +1790,8 @@ public static class MissionFunctions
 
                 yield return null;
             }
+
+            missionManager.choiceMade = true;
         }
 
         yield return null;

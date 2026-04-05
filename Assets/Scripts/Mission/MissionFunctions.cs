@@ -1062,16 +1062,32 @@ public static class MissionFunctions
                                 {
                                     Quaternion rotation = Quaternion.Euler(0, 180, 180);
                                     DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
-                                    DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform);
-                                    Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));
-                                    missionManager.missionTasks.Add(a);
+
+                                    if (targetDockingPoint != null)
+                                    {
+                                        DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform);
+
+                                        if (dockingPoint != null)
+                                        {
+                                            Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));
+                                            missionManager.missionTasks.Add(a);
+                                        }
+                                    }
                                 }
                                 else
                                 {
                                     DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName, true);
-                                    DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform, true);
-                                    Task a = new Task(DockingFunctions.EndDocking(ship.transform, dockingPoint, targetDockingPoint, movementSpeed));
-                                    missionManager.missionTasks.Add(a);
+
+                                    if (targetDockingPoint != null)
+                                    {
+                                        DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform, true);
+
+                                        if (dockingPoint != null)
+                                        {
+                                            Task a = new Task(DockingFunctions.EndDocking(ship.transform, dockingPoint, targetDockingPoint, movementSpeed));
+                                            missionManager.missionTasks.Add(a);
+                                        }
+                                    }
                                 }
 
                                 break;
@@ -1084,17 +1100,34 @@ public static class MissionFunctions
                                 if (activateDocking == true)
                                 {
                                     Quaternion rotation = Quaternion.Euler(0, 180, 0);
+
                                     DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName);
-                                    DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform);
-                                    Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));
-                                    missionManager.missionTasks.Add(a);
+
+                                    if (targetDockingPoint != null)
+                                    {
+                                        DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform);
+
+                                        if (dockingPoint != null)
+                                        {
+                                            Task a = new Task(DockingFunctions.StartDocking(ship.transform, dockingPoint, targetDockingPoint, rotation, rotationSpeed, movementSpeed));
+                                            missionManager.missionTasks.Add(a);
+                                        }
+                                    }
                                 }
                                 else
                                 {
                                     DockingPoint targetDockingPoint = DockingFunctions.GetTargetDockingPoint(ship.transform, targetShipName, true);
-                                    DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform, true);
-                                    Task a = new Task(DockingFunctions.EndDocking(ship.transform, dockingPoint, targetDockingPoint, movementSpeed));
-                                    missionManager.missionTasks.Add(a);
+
+                                    if (targetDockingPoint != null)
+                                    {
+                                        DockingPoint dockingPoint = DockingFunctions.GetDockingPoint(ship.transform, targetDockingPoint.transform, true);
+                                        
+                                        if (dockingPoint != null)
+                                        {
+                                            Task a = new Task(DockingFunctions.EndDocking(ship.transform, dockingPoint, targetDockingPoint, movementSpeed));
+                                            missionManager.missionTasks.Add(a);
+                                        }
+                                    }
                                 }
 
                                 break;

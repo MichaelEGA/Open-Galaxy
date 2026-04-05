@@ -305,12 +305,16 @@ public static class DamageFunctions
     {
         if (smallShip != null & collidingWith != null)
         {
-            //Debug.Log(smallShip.name + " colliding with " + collidingWith.name);
-            //Debug.LogError(smallShip.name + " colliding with " + collidingWith.name + " sub object of " + collidingWith.transform.parent.parent.name);
-
             if (smallShip.docking == false)
             {
                 smallShip.isCurrentlyColliding = true;
+
+                SmallShip smallShip2 = collidingWith.GetComponentInParent<SmallShip>();
+
+                if (smallShip2 != null)
+                {
+                    smallShip2.isCurrentlyCollidingSmallShip = true;
+                }
 
                 if (smallShip.isAI == false & smallShip.invincible == false)
                 {
@@ -329,6 +333,7 @@ public static class DamageFunctions
     public static void EndCollision_SmallShip(SmallShip smallShip)
     {
         smallShip.isCurrentlyColliding = false;
+        smallShip.isCurrentlyCollidingSmallShip = false;
     }
 
     //This called when the ship collides with something causing it to take collision damage
@@ -338,17 +343,22 @@ public static class DamageFunctions
         {
             if (Time.time - smallShip.loadTime > 10)
             {
-
                 if (smallShip.hullLevel > 0 & smallShip.invincible == false)
                 {
-
                     if (smallShip.invincible == true & smallShip.hullLevel - 5 < 5)
                     {
                         smallShip.hullLevel = 5;
                     }
                     else
                     {
-                        smallShip.hullLevel -= 5;
+                        if (smallShip.isCurrentlyCollidingSmallShip == true)
+                        {
+                            smallShip.hullLevel -= 5;
+                        }
+                        else
+                        {
+                            smallShip.hullLevel -= 50;
+                        }
                     }
 
                     if (smallShip.hullLevel < 0)

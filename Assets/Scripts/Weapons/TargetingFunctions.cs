@@ -296,7 +296,7 @@ public static class TargetingFunctions
                         {
                             bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempSmallShip.allegiance);
 
-                            if (isHostile == true & tempSmallShip.isDisabled == false)
+                            if (isHostile == true & tempSmallShip.isDisabled == false & tempSmallShip.docking == false)
                             {
                                 float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
 
@@ -337,7 +337,7 @@ public static class TargetingFunctions
                             {
                                 bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempLargeShip.allegiance);
 
-                                if (isHostile == true & tempLargeShip.isDisabled == false)
+                                if (isHostile == true & tempLargeShip.isDisabled == false & tempLargeShip.docking == false)
                                 {
                                     float tempDistance = Vector3.Distance(ship.transform.position, smallShip.gameObject.transform.position);
 
@@ -733,7 +733,7 @@ public static class TargetingFunctions
                 {
                     bool isHostile = GetHostility_SmallShipPlayer(smallShip, tempSmallShip.allegiance);
 
-                    if (isHostile == true & smallShip.isDisabled == false)
+                    if (isHostile == true & smallShip.isDisabled == false & smallShip.docking == false)
                     {
                         float tempDistance = Vector3.Distance(tempSmallShip.transform.position, smallShip.gameObject.transform.position);
 

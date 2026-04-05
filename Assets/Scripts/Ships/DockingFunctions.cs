@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class DockingFunctions
@@ -167,8 +168,10 @@ public static class DockingFunctions
 
                         foreach (DockingPoint tempDockingPoint in tempLargeShip.dockingPoints)
                         {
+         
                             if (tempDockingPoint != null)
                             {
+
                                 if (tempDockingPoint.isActive == false || tempDockingPoint.isActive == true & includeActive == true)
                                 {
                                     //This gets the closest docking point on the large ship
@@ -176,6 +179,7 @@ public static class DockingFunctions
 
                                     if (tempDistance < distance)
                                     {
+
                                         if (largeShip == null & !tempDockingPoint.name.Contains("ls")) //if the ship is smallship and the docking point is not a largeship docking point
                                         {
                                             distance = tempDistance;
@@ -274,40 +278,60 @@ public static class DockingFunctions
 
             while (timeElapsed < lerpDuration)
             {
-                ship.transform.rotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
-                timeElapsed += Time.deltaTime;
-                yield return null;
-            }
-
-            ship.transform.rotation = endRotation;
-
-            Vector3 startPosition = ship.localPosition;
-            Vector3 tdockingPoint = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position);
-            Vector3 sDockingPoint = scene.transform.InverseTransformPoint(shipDockingPoint.transform.position);
-            Vector3 endPosition = tdockingPoint + (ship.localPosition - sDockingPoint);
-
-            timeElapsed = 0;
-            lerpDuration = movementSpeed;
-
-            while (timeElapsed < lerpDuration)
-            {
-                ship.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
-                timeElapsed += Time.deltaTime;
-                yield return new WaitForFixedUpdate();
-            }
-
-            ship.transform.localPosition = endPosition;
-
-            if (smallShip != null)
-            {
-                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                if (ship != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "clank01", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
-                    Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.25f, 0.6f, 0.6f));
+                    ship.transform.rotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
+                    timeElapsed += Time.deltaTime;
+                    yield return null;
+                }
+                else
+                {
+                    break;
                 }
             }
 
-            HudFunctions.AddToShipLog(ship.name.ToUpper() + " docked with " + targetDockingPoint.transform.parent.name.ToUpper());
+            if (ship != null)
+            {
+                ship.transform.rotation = endRotation;
+
+                Vector3 startPosition = ship.localPosition;
+                Vector3 tdockingPoint = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position);
+                Vector3 sDockingPoint = scene.transform.InverseTransformPoint(shipDockingPoint.transform.position);
+                Vector3 endPosition = tdockingPoint + (ship.localPosition - sDockingPoint);
+
+                timeElapsed = 0;
+                lerpDuration = movementSpeed;
+
+                while (timeElapsed < lerpDuration)
+                {
+                    if (ship != null)
+                    {
+                        ship.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+                        timeElapsed += Time.deltaTime;
+                        yield return new WaitForFixedUpdate();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (ship != null)
+                {
+                    ship.transform.localPosition = endPosition;
+
+                    if (smallShip != null)
+                    {
+                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                        {
+                            AudioFunctions.PlayAudioClip(smallShip.audioManager, "clank01", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.25f, 0.6f, 0.6f));
+                        }
+                    }
+
+                    HudFunctions.AddToShipLog(ship.name.ToUpper() + " docked with " + targetDockingPoint.transform.parent.name.ToUpper());
+                }
+            }
         }
     }
 
@@ -355,41 +379,51 @@ public static class DockingFunctions
 
         while (timeElapsed < lerpDuration)
         {
-            ship.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
-            timeElapsed += Time.deltaTime;
-            yield return new WaitForFixedUpdate();
+            if (ship != null)
+            {
+                ship.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+                timeElapsed += Time.deltaTime;
+                yield return new WaitForFixedUpdate();
+            }
+            else
+            {
+                break;
+            }
         }
 
-        ship.localPosition = endPosition;
-
-        shipDockingPoint.isActive = false;
-        targetDockingPoint.isActive = false;
-
-        HudFunctions.AddToShipLog(ship.name.ToUpper() + " released from dock ");
-
-        if (smallShip != null)
+        if (ship != null)
         {
-            smallShip.docking = false;
-            smallShip.thrustSpeed = 0;
-            SmallShipFunctions.OpenWings(smallShip);
-        }
+            ship.localPosition = endPosition;
 
-        if (largeShip != null)
-        {
-            largeShip.docking = false;
-            largeShip.thrustSpeed = 0;
-        }
+            shipDockingPoint.isActive = false;
+            targetDockingPoint.isActive = false;
 
-        if (targetSmallShip != null)
-        {
-            targetSmallShip.docking = false;
-            targetSmallShip.thrustSpeed = 0;
-        }
+            HudFunctions.AddToShipLog(ship.name.ToUpper() + " released from dock ");
 
-        if (targetLargeShip != null)
-        {
-            targetLargeShip.docking = false;
-            targetLargeShip.thrustSpeed = 0;
+            if (smallShip != null)
+            {
+                smallShip.docking = false;
+                smallShip.thrustSpeed = 0;
+                SmallShipFunctions.OpenWings(smallShip);
+            }
+
+            if (largeShip != null)
+            {
+                largeShip.docking = false;
+                largeShip.thrustSpeed = 0;
+            }
+
+            if (targetSmallShip != null)
+            {
+                targetSmallShip.docking = false;
+                targetSmallShip.thrustSpeed = 0;
+            }
+
+            if (targetLargeShip != null)
+            {
+                targetLargeShip.docking = false;
+                targetLargeShip.thrustSpeed = 0;
+            }
         }
     }
 

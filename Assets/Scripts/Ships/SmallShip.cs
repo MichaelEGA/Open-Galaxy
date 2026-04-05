@@ -275,6 +275,7 @@ public class SmallShip : MonoBehaviour
 
     [Header("Ship Collisions")]
     [HideInInspector] public bool isCurrentlyColliding;
+    [HideInInspector] public bool isCurrentlyCollidingSmallShip;
 
     [Header("Systems")]
     public float restoreDelayTime;

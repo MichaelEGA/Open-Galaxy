@@ -1,0 +1,283 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+using System.Collections;
+using System.Collections.Generic;
+
+public static class OGInputFunctions
+{
+    //This updates the input
+    public static void UpdateInput(OGInput ogInput)
+    {
+        if (ogInput.keyboardAndMouse == true)
+        {
+            GetKeyboardAndMouseInput(ogInput);
+        }
+        else
+        {
+            GetKeyboardAndMouseInput(ogInput);
+        }
+    }
+
+    //This gets the keyboard input
+    public static void GetKeyboardAndMouseInput(OGInput ogInput)
+    {
+        //Mouse and Keyboard Input
+        var mouse = Mouse.current;
+        float x = 0;
+        float y = 0;
+        float radiusWidth = Screen.width / 2;
+        float radiusHeight = Screen.height / 2;
+
+        if (mouse != null)
+        {
+            x = mouse.position.x.ReadValue() - radiusWidth;
+            y = mouse.position.y.ReadValue() - radiusHeight;
+        }
+
+        x = x / radiusWidth;
+        y = y / radiusHeight;
+
+        var keyboard = Keyboard.current;
+
+        float pitchInput = -Mathf.Clamp(y, -1.0f, 1.0f);
+        ogInput.rollInput = -Input.GetAxis("LeftHorizontal");
+        float turnInput = Mathf.Clamp(x, -1.0f, 1.0f);
+        ogInput.thrustInput = Input.GetAxis("LeftVertical");
+
+        if (ogInput.invertUpDown == true)
+        {
+            ogInput.pitchInput = -pitchInput;
+        }
+        else
+        {
+            ogInput.pitchInput = pitchInput;
+        }
+
+        if (ogInput.invertLeftRight == true)
+        {
+            ogInput.turnInput = -turnInput;
+        }
+        else
+        {
+            ogInput.turnInput = turnInput;
+        }
+
+        if (ogInput.scene.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
+        {
+            ogInput.powerToShields = keyboard.leftArrowKey.isPressed;
+            ogInput.powerToEngine = keyboard.upArrowKey.isPressed;
+            ogInput.powerToLasers = keyboard.rightArrowKey.isPressed;
+            ogInput.resetPowerLevels = keyboard.downArrowKey.isPressed;
+        }
+
+        ogInput.getNextTarget = keyboard.rKey.isPressed;
+        ogInput.getNextEnemy = keyboard.tKey.isPressed;
+        ogInput.getClosestEnemy = keyboard.fKey.isPressed;
+        ogInput.selectTargetInFront = keyboard.gKey.isPressed;
+        ogInput.fireWeapon = mouse.leftButton.isPressed;
+        ogInput.rapidFire = mouse.middleButton.isPressed;
+        ogInput.toggleWeapons = keyboard.tabKey.isPressed;
+        ogInput.toggleWeaponNumber = keyboard.capsLockKey.isPressed;
+        ogInput.matchSpeed = keyboard.eKey.isPressed;
+        ogInput.focusCamera = mouse.rightButton.isPressed;
+        ogInput.fireCounterMeasures = keyboard.spaceKey.isPressed;
+    }
+
+    //This gets the controller input
+    public static void GetControllerInput(OGInput ogInput)
+    {
+        var gamepad = Gamepad.current;
+
+        float pitchInput = ApplyInputCurve(gamepad.rightStick.y.ReadValue());
+        float rollInput = -ApplyInputCurve(gamepad.leftStick.x.ReadValue());
+        float turnInput = ApplyInputCurve(gamepad.rightStick.x.ReadValue());
+
+        float smoothSpeed = 0.15f; // Smooth damping for bounce
+        ogInput.smoothedPitch = Mathf.Lerp(ogInput.smoothedPitch, pitchInput, smoothSpeed);
+        ogInput.smoothedRoll = Mathf.Lerp(ogInput.smoothedRoll, rollInput, smoothSpeed);
+        ogInput.smoothedTurn = Mathf.Lerp(ogInput.smoothedTurn, turnInput, smoothSpeed);
+
+        ogInput.controllerPitch = ogInput.smoothedPitch * ogInput.controllerSensitivity;
+        ogInput.controllerRoll = ogInput.smoothedRoll * ogInput.controllerSensitivity;
+        ogInput.controllerTurn = ogInput.smoothedTurn * ogInput.controllerSensitivity;
+
+        //Thrust input and smoothing
+        if (gamepad.leftStick.y.ReadValue() > 0.95f & ogInput.controllerThrust < 1)
+        {
+            ogInput.controllerThrust = 1;
+        }
+        else if (gamepad.leftStick.y.ReadValue() < -0.95f & ogInput.controllerThrust > -1)
+        {
+            ogInput.controllerThrust = -1;
+        }
+        else if (gamepad.leftStick.y.ReadValue() > -0.95f & gamepad.leftStick.y.ReadValue() < 0.95f)
+        {
+            ogInput.controllerThrust = 0;
+        }
+
+        //Actual ship inputs
+        if (ogInput.invertUpDown == true)
+        {
+            ogInput.pitchInput = ogInput.controllerPitch;
+        }
+        else
+        {
+            ogInput.pitchInput = -ogInput.controllerPitch;
+        }
+
+        if (ogInput.invertLeftRight == true)
+        {
+            ogInput.turnInput = -ogInput.controllerTurn;
+        }
+        else
+        {
+            ogInput.turnInput = ogInput.controllerTurn;
+        }
+
+        ogInput.thrustInput = ogInput.controllerThrust;
+        ogInput.rollInput = ogInput.controllerRoll;
+
+        //Button inputs
+        if (ogInput.scene.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
+        {
+            ogInput.powerToShields = gamepad.dpad.left.isPressed;
+            ogInput.powerToEngine = gamepad.dpad.up.isPressed;
+            ogInput.powerToLasers = gamepad.dpad.right.isPressed;
+            ogInput.resetPowerLevels = gamepad.dpad.down.isPressed;
+        }
+
+        ogInput.getNextTarget = gamepad.leftShoulder.isPressed;
+        //ogInput.getNextEnemy = gamepad.xButton.isPressed;
+        ogInput.getClosestEnemy = gamepad.xButton.isPressed;
+        ogInput.selectTargetInFront = gamepad.yButton.isPressed;
+        ogInput.fireWeapon = gamepad.rightTrigger.isPressed;
+        ogInput.rapidFire = gamepad.rightShoulder.isPressed;
+        ogInput.toggleWeapons = gamepad.bButton.isPressed;
+        ogInput.toggleWeaponNumber = gamepad.aButton.isPressed;
+        ogInput.matchSpeed = gamepad.leftStickButton.isPressed;
+        ogInput.focusCamera = gamepad.leftTrigger.isPressed;
+    }
+
+    public static float ApplyInputCurve(float input)
+    {
+        float deadzone = 0.15f;
+        if (Mathf.Abs(input) < deadzone) return 0;
+
+        float normalized = (input - Mathf.Sign(input) * deadzone) / (1 - deadzone);
+        return Mathf.Sign(normalized) * Mathf.Pow(Mathf.Abs(normalized), 1.8f);
+    } //subfunction for get controller input
+
+    //This starts shaking the controller
+    public static void StartShakeController(float leftMotorSpeed, float rightMotorSpeed)
+    {
+        var gamepad = Gamepad.current;
+
+        if (gamepad != null)
+        {
+            gamepad.SetMotorSpeeds(leftMotorSpeed, rightMotorSpeed);
+        }
+    }
+
+    //This stops shaking the controller
+    public static void StopShakeController()
+    {
+        var gamepad = Gamepad.current;
+
+        if (gamepad != null)
+        {
+            // Stop the motors after the duration
+            gamepad.SetMotorSpeeds(0f, 0f);
+        }
+    }
+
+    //This shakes the controller
+    public static IEnumerator ShakeControllerForSetTime(float duration, float leftMotorSpeed, float rightMotorSpeed)
+    {
+        var gamepad = Gamepad.current;
+
+        if (gamepad != null)
+        {
+            float elapsed = 0f;
+
+            while (elapsed < duration)
+            {
+                gamepad.SetMotorSpeeds(leftMotorSpeed, rightMotorSpeed);
+                elapsed += Time.unscaledDeltaTime;
+                yield return null; // Wait for the next frame
+            }
+
+            // Stop the motors after the duration
+            gamepad.SetMotorSpeeds(0f, 0f);
+        }
+    }
+
+    //This swaps the input depending on what the player is using
+    public static void DetectInputType(OGInput ogInput)
+    {
+        bool swap = false;
+
+        if (ogInput.keyboardAndMouse == true)
+        {
+            var gamepad = Gamepad.current;
+
+            if (gamepad != null)
+            {
+                if (gamepad.dpad.left.isPressed == true) { swap = true; }
+                else if (gamepad.dpad.left.isPressed) { swap = true; }
+                else if (gamepad.dpad.up.isPressed) { swap = true; }
+                else if (gamepad.dpad.right.isPressed) { swap = true; }
+                else if (gamepad.dpad.down.isPressed) { swap = true; }
+                else if (gamepad.leftShoulder.isPressed) { swap = true; }
+                else if (gamepad.rightShoulder.isPressed) { swap = true; }
+                else if (gamepad.rightTrigger.isPressed) { swap = true; }
+                else if (gamepad.bButton.isPressed) { swap = true; }
+                else if (gamepad.aButton.isPressed) { swap = true; }
+                else if (gamepad.xButton.isPressed) { swap = true; }
+                else if (gamepad.yButton.isPressed) { swap = true; }
+                else if (gamepad.startButton.isPressed) { swap = true; }
+                else if (gamepad.selectButton.isPressed) { swap = true; }
+                else if (gamepad.rightStickButton.isPressed) { swap = true; }
+                else if (gamepad.leftStickButton.isPressed) { swap = true; }
+                else if (gamepad.leftTrigger.isPressed) { swap = true; }
+            }
+        }
+        else
+        {
+            var keyboard = Keyboard.current;
+            var mouse = Mouse.current;
+
+            if (keyboard != null)
+            {
+                if (keyboard.anyKey.wasPressedThisFrame == true) { swap = true; }
+            }
+
+            if (mouse != null)
+            {
+                if (mouse.leftButton.isPressed == true) { swap = true; }
+                else if (mouse.rightButton.isPressed == true) { swap = true; }
+            }
+        }
+
+        if (swap == true)
+        {
+            ogInput.keyboardAndMouse = !ogInput.keyboardAndMouse;
+        }       
+    }
+
+    //This returns the input script in the game
+    public static OGInput GetOGInput()
+    {
+        OGInput ogInput = GameObject.FindAnyObjectByType<OGInput>();
+
+        if (ogInput == null)
+        {
+            GameObject gameObject = new GameObject();
+            gameObject.name = "Input";
+            gameObject.AddComponent<OGInput>();
+        }
+
+        return ogInput;
+    }
+
+}
+

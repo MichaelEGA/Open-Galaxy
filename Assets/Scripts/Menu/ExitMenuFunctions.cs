@@ -45,7 +45,7 @@ public static class ExitMenuFunctions
                 AudioFunctions.MuteSelectedAudio("cockpitvolume");
 
                 //This makes sure the controller is not vibrating
-                SmallShipFunctions.StopShakeController();
+                OGInputFunctions.StopShakeController();
 
             }
             else

@@ -637,6 +637,11 @@ public static class IonFunctions
 
         if (smallShip != null)
         {
+            if (smallShip.ogInput == null)
+            {
+                smallShip.ogInput = OGInputFunctions.GetOGInput();
+            }
+
             if (smallShip.ionParticleSystem != null)
             {
                 ParticleSystem particleSystem = smallShip.ionParticleSystem.GetComponent<ParticleSystem>();
@@ -666,9 +671,9 @@ public static class IonFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, 1, 500, 0.6f);
 
-                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                         {
-                            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
+                            Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
 
                         yield return null;
@@ -689,9 +694,9 @@ public static class IonFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, secondCannon.transform.position, spatialBlend, 1, 500, 0.6f);
 
-                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                         {
-                            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
+                            Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
 
                     }
@@ -711,9 +716,9 @@ public static class IonFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, 1, 500, 0.6f);
 
-                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                         {
-                            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
+                            Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
                     }
                 }
@@ -732,9 +737,9 @@ public static class IonFunctions
                         particleSystem.Play();
                         AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, fourthCannon.transform.position, spatialBlend, 1, 500, 0.6f);
 
-                        if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                         {
-                            Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
+                            Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
                         }
                     }
                 }

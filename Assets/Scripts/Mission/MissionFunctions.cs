@@ -1496,9 +1496,9 @@ public static class MissionFunctions
             scene.hyperspaceTunnel.transform.localRotation = Quaternion.identity;
             scene.hyperspaceTunnel.SetActive(true);
             
-            if (smallShip.keyboardAndMouse == false)
+            if (smallShip.ogInput.keyboardAndMouse == false)
             {
-                Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.15f, 0.9f, 0.9f));
+                Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.15f, 0.9f, 0.9f));
             }
             
             SceneFunctions.SetStarfieldToInvisible(true);
@@ -1553,9 +1553,9 @@ public static class MissionFunctions
             scene.hyperspaceTunnel.SetActive(false);
             scene.hyperspaceTunnel.transform.SetParent(null);
 
-            if (smallShip.keyboardAndMouse == false)
+            if (smallShip.ogInput.keyboardAndMouse == false)
             {
-                Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.15f, 0.9f, 0.9f));
+                Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.15f, 0.9f, 0.9f));
             }
         }
 
@@ -2026,7 +2026,7 @@ public static class MissionFunctions
 
                 if (smallShip != null)
                 {
-                    keyboardIsActive = smallShip.keyboardAndMouse; 
+                    keyboardIsActive = smallShip.ogInput.keyboardAndMouse; 
                 }
             }
         }
@@ -4724,7 +4724,7 @@ public static class MissionFunctions
         AudioFunctions.UnloadAudioManager();
         HudFunctions.UnloadHud();
         MusicFunctions.UnloadMusicManager();
-        SmallShipFunctions.StopShakeController();
+        OGInputFunctions.StopShakeController();
         OGCameraFunctions.UnloadOGCamera();
         OGVideoPlayerFunctions.UnloadOGVideoPlayer();
 

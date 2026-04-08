@@ -5,82 +5,53 @@ using UnityEngine;
 //This script controls a ship by calling the appropriate functions from: Small Ship Functions, Small Ship Laser Functions, and Small Ship AI Functions
 public class SmallShip : MonoBehaviour
 {
+    [Header("Key Reference")]
+    [HideInInspector] public Scene scene;
+    [HideInInspector] public OGInput ogInput;
+
     [Header("Ship Information")]
-    public string allegiance; //Value set in inspector or by loading script
-    public string type;
-    public string shipClass;
-    public string prefabName;
-    public float loadTime;
-    public float shipLength;
-    public string thrustType;
-    public bool exploded;
-    public bool scanned = false;
-    public bool jumpingToHyperspace;
-    public bool exitingHyperspace;
-    public string shieldType;
-    public string cargo = "no cargo";
-    public string explosionType;
-    public string cockpitName;
+    [HideInInspector] public string allegiance; //Value set in inspector or by loading script
+    [HideInInspector] public string type;
+    [HideInInspector] public string shipClass;
+    [HideInInspector] public string prefabName;
+    [HideInInspector] public float loadTime;
+    [HideInInspector] public float shipLength;
+    [HideInInspector] public string thrustType;
+    [HideInInspector] public bool exploded;
+    [HideInInspector] public bool scanned = false;
+    [HideInInspector] public bool jumpingToHyperspace;
+    [HideInInspector] public bool exitingHyperspace;
+    [HideInInspector] public string shieldType;
+    [HideInInspector] public string cargo = "no cargo";
+    [HideInInspector] public string explosionType;
+    [HideInInspector] public string cockpitName;
 
     [Header("Ship Components")]
-    public Rigidbody shipRigidbody;
-    public Collider[] colliders;
-
-    [Header("Ship Audio")]
-    [HideInInspector] public Audio audioManager;
-    [HideInInspector] public AudioSource engineAudioSource;
-    [HideInInspector] public string laserAudio;
-    [HideInInspector] public string ionAudio = "weapon_ioncannon";
-    [HideInInspector] public string plasmaAudio = "weapon_plasma";
-    [HideInInspector] public string engineAudio;
-
-    [Header("Scene Reference")]
-    public Scene scene;
-
-    [Header("Ship Cameras Positions")]
-    [HideInInspector] public GameObject cameraPosition;
-    [HideInInspector] public GameObject followCameraPosition;
-    [HideInInspector] public GameObject focusCameraPosition;
+    [HideInInspector] public Rigidbody shipRigidbody;
+    [HideInInspector] public Collider[] colliders;
 
     [Header("Ship Ratings")]
-    public float accelerationRating = 50; //Value set in inspector or by loading script
-    public float speedRating = 50; //Value set in inspector or by loading script
-    public float maneuverabilityRating = 50; //Value set in inspector or by loading script
-    public float hullRating = 50; //Value set in inspector or by loading script
-    public float systemsRating = 50;
-    public float shieldRating = 50; //Value set in inspector or by loading script
-    public float laserFireRating = 50; //Value set in inspector or by loading script
-    public float laserRating = 50; //Value set in inspector or by loading script
-    public float wepRating = 50;//Value set in inspector or by loading script
+    [HideInInspector] public float accelerationRating = 50; //Value set in inspector or by loading script
+    [HideInInspector] public float speedRating = 50; //Value set in inspector or by loading script
+    [HideInInspector] public float maneuverabilityRating = 50; //Value set in inspector or by loading script
+    [HideInInspector] public float hullRating = 50; //Value set in inspector or by loading script
+    [HideInInspector] public float systemsRating = 50;
+    [HideInInspector] public float shieldRating = 50; //Value set in inspector or by loading script
+    [HideInInspector] public float laserFireRating = 50; //Value set in inspector or by loading script
+    [HideInInspector] public float laserRating = 50; //Value set in inspector or by loading script
+    [HideInInspector] public float wepRating = 50;//Value set in inspector or by loading script
 
     [Header("Ship Speed")]
-    public float thrustSpeed = 70;
-    public float speedInKms;
+    [HideInInspector] public float thrustSpeed = 70;
     [HideInInspector] public float thrustInput = 1;
     [HideInInspector] public float thrustTimeStamp;
     [HideInInspector] public bool wep;
 
-    [Header("Hyperspace")]
-    public bool inHyperspace;
-
-    [Header("Controller Inputs")]
-    [HideInInspector] public float controllerSenstivity = 0.05f;
-    [HideInInspector] public float controllerPitch;
-    [HideInInspector] public float controllerRoll;
-    [HideInInspector] public float controllerTurn;
-    [HideInInspector] public float controllerThrust;
-    [HideInInspector] public bool keyboardAndMouse = true;
-    public float smoothedPitch;
-    public float smoothedRoll;
-    public float smoothedTurn;
-
     [Header("Ship Rotation")]
     [HideInInspector] public float pitchSpeed;
     [HideInInspector] public float pitchInput;
-    [HideInInspector] public float pitchInputActual;
     [HideInInspector] public float turnSpeed;
     [HideInInspector] public float turnInput;
-    [HideInInspector] public float turnInputActual;
     [HideInInspector] public float rollSpeed;
     [HideInInspector] public float rollInput;
     [HideInInspector] public float rollInputActual;
@@ -90,29 +61,13 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool spinShip;
     [HideInInspector] public bool avoidGimbalLock;
 
-    public Vector3 rotRateSmoothVelocity;          // ref for SmoothDamp
-    public Vector3 smoothedRotationRate;
-    public float rotationSmoothTime = 0.01f;
-
-    [Header("Docking")]
-    public GameObject targetDockingPoint;
-    public DockingPoint dockingPoint;
-    public bool docking;
-
-    [Header("Ship Power Distribution")]
-    public string powerMode = "reset";
-    public float laserPower = 100;
-    public float enginePower = 100;
-    public float shieldPower = 100;
-    [HideInInspector] public float powerPressedTime;
-
     [Header("Ship Levels")]
-    public float systemsLevel = 100;
-    public float hullLevel = 100;
-    public float shieldLevel = 200;
-    public float frontShieldLevel = 100;
-    public float rearShieldLevel = 100;
-    public float wepLevel;
+    [HideInInspector] public float systemsLevel = 100;
+    [HideInInspector] public float hullLevel = 100;
+    [HideInInspector] public float shieldLevel = 200;
+    [HideInInspector] public float frontShieldLevel = 100;
+    [HideInInspector] public float rearShieldLevel = 100;
+    [HideInInspector] public float wepLevel;
     [HideInInspector] public float shieldRecharge; //Value set in inspector or by loading script
     [HideInInspector] public float shieldDischarge; //Value set in inspector or by loading script
     [HideInInspector] public float wepRecharge; //Value set in inspector or by loading script
@@ -121,10 +76,17 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool cannotbedisabled;
     [HideInInspector] public bool isDisabled;
 
+    [Header("Ship Power Distribution")]
+    [HideInInspector] public string powerMode = "reset";
+    [HideInInspector] public float laserPower = 100;
+    [HideInInspector] public float enginePower = 100;
+    [HideInInspector] public float shieldPower = 100;
+    [HideInInspector] public float powerPressedTime;
+
     [Header("Ship Controls")]
-    public bool controlLock = false;
-    public bool invertUpDown;
-    public bool invertLeftRight;
+    [HideInInspector] public bool controlLock = false;
+    [HideInInspector] public bool invertUpDown;
+    [HideInInspector] public bool invertLeftRight;
     [HideInInspector] public bool powerToShields;
     [HideInInspector] public bool powerToLasers;
     [HideInInspector] public bool powerToEngine;
@@ -137,28 +99,44 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool selectTargetInFront;
     [HideInInspector] public bool toggleWeapons;
     [HideInInspector] public bool toggleWeaponNumber;
-    [HideInInspector] public bool lookRight;
-    [HideInInspector] public bool lookLeft;
     [HideInInspector] public bool matchSpeed;
     [HideInInspector] public bool focusCamera;
-    [HideInInspector] public bool contextButton;
     [HideInInspector] public bool fireCounterMeasures;
-    [HideInInspector] public float toggleCameraPressTime;
+
+    [Header("Hyperspace")]
+    [HideInInspector] public bool inHyperspace;
+
+    [Header("Ship Audio")]
+    [HideInInspector] public Audio audioManager;
+    [HideInInspector] public AudioSource engineAudioSource;
+    [HideInInspector] public string laserAudio;
+    [HideInInspector] public string ionAudio = "weapon_ioncannon";
+    [HideInInspector] public string plasmaAudio = "weapon_plasma";
+    [HideInInspector] public string engineAudio;
+
+    [Header("Ship Cameras Positions")]
+    [HideInInspector] public GameObject cameraPosition;
+    [HideInInspector] public GameObject followCameraPosition;
+    [HideInInspector] public GameObject focusCameraPosition;
+
+    [Header("Docking")]
+    [HideInInspector] public GameObject targetDockingPoint;
+    [HideInInspector] public DockingPoint dockingPoint;
+    [HideInInspector] public bool docking;
 
     [Header("Ship Weapons")]
-    public bool weaponsLock = false;
-    public bool preventWeaponChange = false;
-    public bool hasRapidFire = false;
-    public string activeWeapon = "lasers";
-    public string weaponMode = "single";
-    public string weaponMode2 = "normal";
-    public float laserCharge;
-    public float ionCharge;
-    public float plasmaCharge;
-    public float weaponRechargeDelay;
-    public bool laserRecharged;
-    public bool ionRecharged;
-    public bool plasmaRecharged;
+    [HideInInspector] public bool weaponsLock = false;
+    [HideInInspector] public bool preventWeaponChange = false;
+    [HideInInspector] public bool hasRapidFire = false;
+    [HideInInspector] public string activeWeapon = "lasers";
+    [HideInInspector] public string weaponMode = "single";
+    [HideInInspector] public float laserCharge;
+    [HideInInspector] public float ionCharge;
+    [HideInInspector] public float plasmaCharge;
+    [HideInInspector] public float weaponRechargeDelay;
+    [HideInInspector] public bool laserRecharged;
+    [HideInInspector] public bool ionRecharged;
+    [HideInInspector] public bool plasmaRecharged;
     [HideInInspector] public float toggleWeaponPressedTime;
 
     [HideInInspector] public GameObject laserParticleSystem;
@@ -211,10 +189,10 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool torpedoLockedOn;
 
     [Header("Ship Targetting")]
-    public GameObject waypoint;
-    public GameObject target;
-    public bool dontSelectLargeShips;
-    public bool autoaim;
+    [HideInInspector] public GameObject waypoint;
+    [HideInInspector] public GameObject target;
+    [HideInInspector] public bool dontSelectLargeShips;
+    [HideInInspector] public bool autoaim;
     [HideInInspector] public SmallShip targetSmallShip;
     [HideInInspector] public LargeShip targetLargeShip;
     [HideInInspector] public Rigidbody targetRigidbody;
@@ -231,7 +209,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float targetSpeed;
     [HideInInspector] public float targetShield;
     [HideInInspector] public float targetHull;
-    public Vector3 interceptPoint;
+    [HideInInspector] public Vector3 interceptPoint;
     [HideInInspector] public float interceptForward;
     [HideInInspector] public float interceptRight;
     [HideInInspector] public float interceptUp;
@@ -244,7 +222,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public int numberTargeting = 0;
 
     [Header("Ship AI")]
-    public List<string> aiTags;
+    [HideInInspector] public List<string> aiTags;
     [HideInInspector] public string aiTargetingMode;
     [HideInInspector] public Vector3 aiTargetingErrorMargin = new Vector3(0, 0, 0);
     [HideInInspector] public float aiRetreatTime;
@@ -252,19 +230,19 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float healthSave;
     [HideInInspector] public bool withdraw;
     [HideInInspector] public bool isAI;
-    public bool requestingTarget;
-    public bool aiMatchSpeed;
+    [HideInInspector] public bool requestingTarget;
+    [HideInInspector] public bool aiMatchSpeed;
     [HideInInspector] public bool aiStarted;
     [HideInInspector] public bool aiEvade;
     [HideInInspector] public bool boostIsActive;
 
     [Header("Formation Flying")]
-    public SmallShip followTarget;
-    public bool flyInFormation;
-    public bool positionLocked;
-    public float xFormationPos;
-    public float yFormationPos;
-    public float zFormationPos;
+    [HideInInspector] public SmallShip followTarget;
+    [HideInInspector] public bool flyInFormation;
+    [HideInInspector] public bool positionLocked;
+    [HideInInspector] public float xFormationPos;
+    [HideInInspector] public float yFormationPos;
+    [HideInInspector] public float zFormationPos;
 
     [Header("Particle Effcets")]
     [HideInInspector] public GameObject smokeTrail;
@@ -278,95 +256,36 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool isCurrentlyCollidingSmallShip;
 
     [Header("Systems")]
-    public float restoreDelayTime;
+    [HideInInspector] public float restoreDelayTime;
 
     [Header("Wings")]
-    public bool wingsOpen = true;
-    public Transform[] wings;
-    public GameObject wing01;
-    public GameObject wing02;
-    public GameObject wing03;
-    public GameObject wing04;
-    public GameObject wing01_open;
-    public GameObject wing01_closed;
-    public GameObject wing02_open;
-    public GameObject wing02_closed;
-    public GameObject wing03_open;
-    public GameObject wing03_closed;
-    public GameObject wing04_open;
-    public GameObject wing04_closed;
+    [HideInInspector] public bool wingsOpen = true;
+    [HideInInspector] public Transform[] wings;
+    [HideInInspector] public GameObject wing01;
+    [HideInInspector] public GameObject wing02;
+    [HideInInspector] public GameObject wing03;
+    [HideInInspector] public GameObject wing04;
+    [HideInInspector] public GameObject wing01_open;
+    [HideInInspector] public GameObject wing01_closed;
+    [HideInInspector] public GameObject wing02_open;
+    [HideInInspector] public GameObject wing02_closed;
+    [HideInInspector] public GameObject wing03_open;
+    [HideInInspector] public GameObject wing03_closed;
+    [HideInInspector] public GameObject wing04_open;
+    [HideInInspector] public GameObject wing04_closed;
 
     [Header("Ship Coroutine Tasks")]
-    public List<Task> tasks;
+    [HideInInspector] public List<Task> tasks;
 
     // Update is called once per frame
     void Update()
     {
-        //Input functions
-        SmallShipFunctions.GetAIInput(this);
-        SmallShipFunctions.DetectInputType(this);
-        SmallShipFunctions.GetKeyboardAndMouseInput(this);
-        SmallShipFunctions.GetControllerInput(this);
-        SmallShipFunctions.TurnShipAround(this);
-        SmallShipFunctions.SpinShip(this);
-        SmallShipFunctions.ControlLock(this);
-
-        //Start functions
-        SmallShipFunctions.PrepareShip(this);
-        SmallShipFunctions.LoadLaserParticleSystem(this);
-
-        //Energy Management functions
-        SmallShipFunctions.CalculatePower(this);
-        SmallShipFunctions.CalculateLevels(this);
-
-        //Ship movement functions
-        SmallShipFunctions.MatchSpeed(this);
-        SmallShipFunctions.CalculateThrustSpeed(this);
-        SmallShipFunctions.CalculatePitchTurnRollSpeeds(this);
-        SmallShipFunctions.MovementEffect(this);
-        AudioFunctions.PlayEngineNoise_SmallShip(this);
-
-        //Targeting Functions
-        TargetingFunctions.RunPlayerTargetingFunctions(this);
-        TargetingFunctions.GetTargetInfo_SmallShip(this);
-
-        //Weapon functions
-        SmallShipFunctions.ToggleWeapons(this);
-
-        //Laser functions
-        LaserFunctions.ToggleWeaponMode(this);
-        LaserFunctions.InitiateFiringPlayer(this);
-
-        //Ion Cannon functions
-        IonFunctions.ToggleWeaponMode(this);
-        IonFunctions.InitiateFiringPlayer(this);
-
-        //Ion Cannon functions
-        PlasmaFunctions.ToggleWeaponMode(this);
-        PlasmaFunctions.InitiateFiringPlayer(this);
-
-        //Torpedo functions
-        TorpedoFunctions.EstablishLockOn(this);
-        TorpedoFunctions.FireTorpedoPlayer(this);
-        TorpedoFunctions.ToggleWeaponMode(this);
-
-        //Damage functions
-        DamageFunctions.TakeCollisionDamage_SmallShip(this);
-        DamageFunctions.SmokeTrail_SmallShip(this);
-        DamageFunctions.Explode_SmallShip(this);
-
-        //Systems functions
-        DamageFunctions.RestoreShipsSystems_SmallShip(this);
+        SmallShipFunctions.RunShipUpdateFunctions(this);
     }
     
     void FixedUpdate()
     {
-        SmallShipFunctions.MoveShip(this);
-
-        //Laser functions
-        LaserFunctions.LaserCharging(this);
-        PlasmaFunctions.PlasmaCharging(this);
-        IonFunctions.IonCharging(this);
+        SmallShipFunctions.RunShipFixedUpdateFunctions(this);
     }
 
     void OnCollisionEnter(Collision collision)

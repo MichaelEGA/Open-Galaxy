@@ -3,9 +3,10 @@ using UnityEngine;
 public class OGInput : MonoBehaviour
 {
     public Scene scene;
+    public OGSettings settings;
 
     //General input settings
-    public bool keyboardAndMouse;
+    public bool keyboardAndMouse = true;
     public bool invertUpDown;
     public bool invertLeftRight;
 

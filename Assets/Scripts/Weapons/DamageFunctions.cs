@@ -94,9 +94,9 @@ public static class DamageFunctions
                     smallShip.scene.ogCamera.shipHit = true;
                 }
 
-                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                 {
-                    Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
+                    Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
                 }
             }
         }
@@ -186,9 +186,9 @@ public static class DamageFunctions
                     smallShip.scene.ogCamera.shipHit = true;
                 }
 
-                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                 {
-                    Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
+                    Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
                 }
             }
 
@@ -227,9 +227,9 @@ public static class DamageFunctions
                 //This makes an explosion sound
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact01_laserhitshield", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
 
-                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                 {
-                    Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.5f, 0.90f, 0.90f));
+                    Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.5f, 0.90f, 0.90f));
                 }
 
 
@@ -320,9 +320,9 @@ public static class DamageFunctions
                 {
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
-                    if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                    if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                     {
-                        Task a = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.5f, 0.90f, 0.90f));
+                        Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.5f, 0.90f, 0.90f));
                     }
                 }
             }

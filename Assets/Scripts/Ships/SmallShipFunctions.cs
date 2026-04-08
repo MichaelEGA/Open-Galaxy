@@ -104,283 +104,112 @@ public static class SmallShipFunctions
 
     #endregion
 
+    #region update functions
+
+    //Run ship update functions
+    public static void RunShipUpdateFunctions(SmallShip smallShip)
+    {
+        //Input functions
+        GetInput(smallShip);
+        TurnShipAround(smallShip);
+        SpinShip(smallShip);
+        ControlLock(smallShip);
+
+        //Start functions
+        PrepareShip(smallShip);
+        LoadLaserParticleSystem(smallShip);
+
+        //Energy Management functions
+        CalculatePower(smallShip);
+        CalculateLevels(smallShip);
+
+        //Ship movement functions
+        MatchSpeed(smallShip);
+        CalculateThrustSpeed(smallShip);
+        CalculatePitchTurnRollSpeeds(smallShip);
+        MovementEffect(smallShip);
+        AudioFunctions.PlayEngineNoise_SmallShip(smallShip);
+
+        //Targeting Functions
+        TargetingFunctions.RunPlayerTargetingFunctions(smallShip);
+        TargetingFunctions.GetTargetInfo_SmallShip(smallShip);
+
+        //Weapon functions
+        ToggleWeapons(smallShip);
+
+        //Laser functions
+        LaserFunctions.ToggleWeaponMode(smallShip);
+        LaserFunctions.InitiateFiringPlayer(smallShip);
+
+        //Ion Cannon functions
+        IonFunctions.ToggleWeaponMode(smallShip);
+        IonFunctions.InitiateFiringPlayer(smallShip);
+
+        //Ion Cannon functions
+        PlasmaFunctions.ToggleWeaponMode(smallShip);
+        PlasmaFunctions.InitiateFiringPlayer(smallShip);
+
+        //Torpedo functions
+        TorpedoFunctions.EstablishLockOn(smallShip);
+        TorpedoFunctions.FireTorpedoPlayer(smallShip);
+        TorpedoFunctions.ToggleWeaponMode(smallShip);
+
+        //Damage functions
+        DamageFunctions.TakeCollisionDamage_SmallShip(smallShip);
+        DamageFunctions.SmokeTrail_SmallShip(smallShip);
+        DamageFunctions.Explode_SmallShip(smallShip);
+
+        //Systems functions
+        DamageFunctions.RestoreShipsSystems_SmallShip(smallShip);
+    }
+
+    //Run ship fixed update functions
+    public static void RunShipFixedUpdateFunctions(SmallShip smallShip)
+    {
+        MoveShip(smallShip);
+
+        //Laser functions
+        LaserFunctions.LaserCharging(smallShip);
+        PlasmaFunctions.PlasmaCharging(smallShip);
+        IonFunctions.IonCharging(smallShip);
+    }
+
+    #endregion
+
     #region ship inputs
 
-    //This gets the input from the keyboard and mouse
-    public static void GetKeyboardAndMouseInput(SmallShip smallShip)
-    {
-        if (smallShip.scene == null)
-        {
-            smallShip.scene = SceneFunctions.GetScene();
-        }
-
-        if (smallShip.scene.missionManager == null)
-        {
-            smallShip.scene.missionManager = MissionFunctions.GetMissionManager();
-        }
-
-        if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false & smallShip.controlLock == false)
-        {
-            if (smallShip.keyboardAndMouse == true)
-            {
-                //Mouse and Keyboard Input
-                var mouse = Mouse.current;
-                float x = 0;
-                float y = 0;
-                float radiusWidth = Screen.width / 2;
-                float radiusHeight = Screen.height / 2;
-
-                if (mouse != null)
-                {
-                    x = mouse.position.x.ReadValue() - radiusWidth;
-                    y = mouse.position.y.ReadValue() - radiusHeight;
-                }
-
-                x = x / radiusWidth;
-                y = y / radiusHeight;
-
-                var keyboard = Keyboard.current;
-
-                float pitchInput = -Mathf.Clamp(y, -1.0f, 1.0f);
-                smallShip.rollInput = -Input.GetAxis("LeftHorizontal");
-                float turnInput = Mathf.Clamp(x, -1.0f, 1.0f);
-                smallShip.thrustInput = Input.GetAxis("LeftVertical");
-
-                if (smallShip.invertUpDown == true)
-                {
-                    smallShip.pitchInput = -pitchInput;
-                }
-                else
-                {
-                    smallShip.pitchInput = pitchInput;
-                }
-
-                if (smallShip.invertLeftRight == true)
-                {
-                    smallShip.turnInput = -turnInput;
-                }
-                else
-                {
-                    smallShip.turnInput = turnInput;
-                }
-
-                if (smallShip.scene.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
-                {
-                    smallShip.powerToShields = keyboard.leftArrowKey.isPressed;
-                    smallShip.powerToEngine = keyboard.upArrowKey.isPressed;
-                    smallShip.powerToLasers = keyboard.rightArrowKey.isPressed;
-                    smallShip.resetPowerLevels = keyboard.downArrowKey.isPressed;
-                }
-
-                smallShip.getNextTarget = keyboard.rKey.isPressed;
-                smallShip.getNextEnemy = keyboard.tKey.isPressed;
-                smallShip.getClosestEnemy = keyboard.fKey.isPressed;
-                smallShip.selectTargetInFront = keyboard.gKey.isPressed;
-                smallShip.fireWeapon = mouse.leftButton.isPressed;
-                smallShip.rapidFire = mouse.middleButton.isPressed;
-                smallShip.toggleWeapons = keyboard.tabKey.isPressed;
-                smallShip.toggleWeaponNumber = keyboard.capsLockKey.isPressed;
-                smallShip.matchSpeed = keyboard.eKey.isPressed;
-                smallShip.focusCamera = mouse.rightButton.isPressed;
-                smallShip.fireCounterMeasures = keyboard.spaceKey.isPressed;
-            }
-        }
-    }
-
-    public static float ApplyInputCurve(float input)
-    {
-        float deadzone = 0.15f;
-        if (Mathf.Abs(input) < deadzone) return 0;
-
-        float normalized = (input - Mathf.Sign(input) * deadzone) / (1 - deadzone);
-        return Mathf.Sign(normalized) * Mathf.Pow(Mathf.Abs(normalized), 1.8f);
-    }
-
-    //This gets the input from the controller
-    public static void GetControllerInput(SmallShip smallShip)
-    {
-        if (smallShip.isAI == false & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false & smallShip.controlLock == false)
-        {
-            if (smallShip.keyboardAndMouse == false)
-            {
-                var gamepad = Gamepad.current;
-
-                float pitchInput = ApplyInputCurve(gamepad.rightStick.y.ReadValue());
-                float rollInput = -ApplyInputCurve(gamepad.leftStick.x.ReadValue());
-                float turnInput = ApplyInputCurve(gamepad.rightStick.x.ReadValue());
-
-                float smoothSpeed = 0.15f; // Smooth damping for bounce
-                smallShip.smoothedPitch = Mathf.Lerp(smallShip.smoothedPitch, pitchInput, smoothSpeed);
-                smallShip.smoothedRoll = Mathf.Lerp(smallShip.smoothedRoll, rollInput, smoothSpeed);
-                smallShip.smoothedTurn = Mathf.Lerp(smallShip.smoothedTurn, turnInput, smoothSpeed);
-
-                smallShip.controllerPitch = smallShip.smoothedPitch * smallShip.controllerSenstivity;
-                smallShip.controllerRoll = smallShip.smoothedRoll * smallShip.controllerSenstivity;
-                smallShip.controllerTurn = smallShip.smoothedTurn * smallShip.controllerSenstivity;
-
-                //Thrust input and smoothing
-                if (gamepad.leftStick.y.ReadValue() > 0.95f & smallShip.controllerThrust < 1)
-                {
-                    smallShip.controllerThrust = 1;
-                }
-                else if (gamepad.leftStick.y.ReadValue() < -0.95f & smallShip.controllerThrust > -1)
-                {
-                    smallShip.controllerThrust = -1;
-                }
-                else if (gamepad.leftStick.y.ReadValue() > -0.95f & gamepad.leftStick.y.ReadValue() < 0.95f)
-                {
-                    smallShip.controllerThrust = 0;
-                }
-
-                //Actual ship inputs
-                if (smallShip.invertUpDown == true)
-                {
-                    smallShip.pitchInput = smallShip.controllerPitch;
-                }
-                else
-                {
-                    smallShip.pitchInput = -smallShip.controllerPitch;
-                }
-
-                if (smallShip.invertLeftRight == true)
-                {
-                    smallShip.turnInput = -smallShip.controllerTurn;
-                }
-                else
-                {
-                    smallShip.turnInput = smallShip.controllerTurn;
-                }
-
-                smallShip.thrustInput = smallShip.controllerThrust;
-                smallShip.rollInput = smallShip.controllerRoll;
-
-                //Button inputs
-                if (smallShip.scene.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
-                {
-                    smallShip.powerToShields = gamepad.dpad.left.isPressed;
-                    smallShip.powerToEngine = gamepad.dpad.up.isPressed;
-                    smallShip.powerToLasers = gamepad.dpad.right.isPressed;
-                    smallShip.resetPowerLevels = gamepad.dpad.down.isPressed;
-                }
-
-                smallShip.getNextTarget = gamepad.leftShoulder.isPressed;
-                //smallShip.getNextEnemy = gamepad.xButton.isPressed;
-                smallShip.getClosestEnemy = gamepad.xButton.isPressed;
-                smallShip.selectTargetInFront = gamepad.yButton.isPressed;
-                smallShip.fireWeapon = gamepad.rightTrigger.isPressed;
-                smallShip.rapidFire =  gamepad.rightShoulder.isPressed;
-                smallShip.toggleWeapons = gamepad.bButton.isPressed;
-                smallShip.toggleWeaponNumber = gamepad.aButton.isPressed;
-                smallShip.matchSpeed = gamepad.leftStickButton.isPressed;
-                smallShip.focusCamera = gamepad.leftTrigger.isPressed;
-            }
-        }
-    }
-
-    //This starts shaking the controller
-    public static void StartShakeController(float leftMotorSpeed, float rightMotorSpeed)
-    {
-        var gamepad = Gamepad.current;
-
-        if (gamepad != null)
-        {
-            gamepad.SetMotorSpeeds(leftMotorSpeed, rightMotorSpeed);
-        }
-    }
-
-    //This stops shaking the controller
-    public static void StopShakeController()
-    {
-        var gamepad = Gamepad.current;
-
-        if (gamepad != null)
-        {
-            // Stop the motors after the duration
-            gamepad.SetMotorSpeeds(0f, 0f);
-        }
-    }
-
-    //This shakes the controller
-    public static  IEnumerator ShakeControllerForSetTime(float duration, float leftMotorSpeed, float rightMotorSpeed)
-    {
-        var gamepad = Gamepad.current;
-
-        if (gamepad != null)
-        {
-            float elapsed = 0f;
-
-            while (elapsed < duration)
-            {
-                gamepad.SetMotorSpeeds(leftMotorSpeed, rightMotorSpeed);
-                elapsed += Time.unscaledDeltaTime;
-                yield return null; // Wait for the next frame
-            }
-
-            // Stop the motors after the duration
-            gamepad.SetMotorSpeeds(0f, 0f);
-        }
-    }
-
-    //This swaps the input depending on what the player is using
-    public static void DetectInputType(SmallShip smallShip)
+    //This gets the input to control the ship from either OGInput script or the AI Controller
+    public static void GetInput(SmallShip smallShip)
     {
         if (smallShip.isAI == false)
         {
-            bool swap = false;
-
-            if (smallShip.keyboardAndMouse == true)
+            //This gets the OGInput function
+            if (smallShip.ogInput == null)
             {
-                var gamepad = Gamepad.current;
-
-                if (gamepad != null)
-                {
-                    if (gamepad.dpad.left.isPressed == true) { swap = true; }
-                    else if (gamepad.dpad.left.isPressed) { swap = true; }
-                    else if (gamepad.dpad.up.isPressed) { swap = true; }
-                    else if (gamepad.dpad.right.isPressed) { swap = true; }
-                    else if (gamepad.dpad.down.isPressed) { swap = true; }
-                    else if (gamepad.leftShoulder.isPressed) { swap = true; }
-                    else if (gamepad.rightShoulder.isPressed) { swap = true; }
-                    else if (gamepad.rightTrigger.isPressed) { swap = true; }
-                    else if (gamepad.bButton.isPressed) { swap = true; }
-                    else if (gamepad.aButton.isPressed) { swap = true; }
-                    else if (gamepad.xButton.isPressed) { swap = true; }
-                    else if (gamepad.yButton.isPressed) { swap = true; }
-                    else if (gamepad.startButton.isPressed) { swap = true; }
-                    else if (gamepad.selectButton.isPressed) { swap = true; }
-                    else if (gamepad.rightStickButton.isPressed) { swap = true; }
-                    else if (gamepad.leftStickButton.isPressed) { swap = true; }
-                    else if (gamepad.leftTrigger.isPressed) { swap = true; }
-                }
-            }
-            else
-            {
-                var keyboard = Keyboard.current;
-                var mouse = Mouse.current;
-
-                if (keyboard != null)
-                {
-                    if (keyboard.anyKey.wasPressedThisFrame == true) { swap = true; }
-                }
-
-                if (mouse != null)
-                {
-                    if (mouse.leftButton.isPressed == true) { swap = true; }
-                    else if (mouse.rightButton.isPressed == true) { swap = true; }
-                }
+                smallShip.ogInput = OGInputFunctions.GetOGInput();
             }
 
-            if (swap == true)
-            {
-                smallShip.keyboardAndMouse = !smallShip.keyboardAndMouse;
-            }
+            smallShip.rollInput = smallShip.ogInput.rollInput;
+            smallShip.thrustInput = smallShip.ogInput.thrustInput;
+            smallShip.pitchInput = smallShip.ogInput.pitchInput;
+            smallShip.turnInput = smallShip.ogInput.turnInput;
+            smallShip.powerToShields = smallShip.ogInput.powerToShields;
+            smallShip.powerToEngine = smallShip.ogInput.powerToEngine;
+            smallShip.powerToLasers = smallShip.ogInput.powerToLasers;
+            smallShip.resetPowerLevels = smallShip.ogInput.resetPowerLevels;
+            smallShip.getNextTarget = smallShip.ogInput.getNextTarget;
+            smallShip.getNextEnemy = smallShip.ogInput.getNextEnemy;
+            smallShip.getClosestEnemy = smallShip.ogInput.getClosestEnemy;
+            smallShip.selectTargetInFront = smallShip.ogInput.selectTargetInFront;
+            smallShip.fireWeapon = smallShip.ogInput.fireWeapon;
+            smallShip.rapidFire = smallShip.ogInput.rapidFire;
+            smallShip.toggleWeapons = smallShip.ogInput.toggleWeapons;
+            smallShip.toggleWeaponNumber = smallShip.ogInput.toggleWeaponNumber;
+            smallShip.matchSpeed = smallShip.ogInput.matchSpeed;
+            smallShip.focusCamera = smallShip.ogInput.focusCamera;
+            smallShip.fireCounterMeasures = smallShip.ogInput.fireCounterMeasures;
         }
-    }
-
-    //This gets the AI input
-    public static void GetAIInput(SmallShip smallShip)
-    {
-        if (smallShip.isAI == true & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false & smallShip.controlLock == false)
+        else if (smallShip.isAI == true & smallShip.automaticRotationTurnAround == false & smallShip.automaticRotationSpin == false & smallShip.controlLock == false)
         {
             SmallShipAIFunctions.GetAIInput(smallShip);
         }
@@ -700,9 +529,9 @@ public static class SmallShipFunctions
             acclerationAmount = acclerationAmount * 2;
             smallShip.wep = true;
 
-            if (smallShip.keyboardAndMouse == false)
+            if (smallShip.ogInput.keyboardAndMouse == false)
             {
-                StartShakeController(0.20f, 0.20f);
+                OGInputFunctions.StartShakeController(0.20f, 0.20f);
             }
             
         }
@@ -712,7 +541,7 @@ public static class SmallShipFunctions
 
             if (smallShip.wep == true)
             {
-                StopShakeController();
+                OGInputFunctions.StopShakeController();
             }
             
             smallShip.wep = false;
@@ -721,7 +550,7 @@ public static class SmallShipFunctions
         {
             if (smallShip.wep == true)
             {
-                StopShakeController();
+                OGInputFunctions.StopShakeController();
             }
 
             smallShip.wep = false;

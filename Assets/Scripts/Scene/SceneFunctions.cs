@@ -967,7 +967,6 @@ public static class SceneFunctions
                 smallShip.cargo = cargo;
                 smallShip.explosionType = shipType.explosionType;
                 smallShip.shipLength = shipType.shipLength;
-                smallShip.controllerSenstivity = ogSettings.controllersensitivity;
                 smallShip.shieldType = shipType.shieldType;
                 ship.name = smallShip.name;
 

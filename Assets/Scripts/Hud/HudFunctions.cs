@@ -2301,78 +2301,84 @@ public static class HudFunctions
             hud.centerReticule = GameObject.Find("Reticule");
         }
 
+        if (hud.ogInput == null)
+        {
+            hud.ogInput = OGInputFunctions.GetOGInput();
+        }
+
         if (hud.smallShip != null)
         {
-            if (hud.movingReticule != null & hud.centerReticule != null & hud.smallShip != null & Time.timeScale != 0 & hud.smallShip.keyboardAndMouse == true)
+            if (hud.smallShip.ogInput != null)
             {
-                hud.movingReticule.SetActive(true);
-
-                var mouse = Mouse.current;
-                float x = mouse.position.x.ReadValue();
-                float y = mouse.position.y.ReadValue();
-                float radiusWidth = Screen.width / 2;
-                float radiusHeight = Screen.height / 2;
-                float x2 = 0;
-                float y2 = 0;
-
-                hud.movingReticule.transform.position = new Vector2(x, y);
-
-                if (hud.smallShip.invertUpDown == true)
+                if (hud.movingReticule != null & hud.centerReticule != null & hud.smallShip != null & Time.timeScale != 0 & hud.ogInput.keyboardAndMouse == true)
                 {
-                    y2 = Screen.height - y;
+                    hud.movingReticule.SetActive(true);
+
+                    var mouse = Mouse.current;
+                    float x = mouse.position.x.ReadValue();
+                    float y = mouse.position.y.ReadValue();
+                    float radiusWidth = Screen.width / 2;
+                    float radiusHeight = Screen.height / 2;
+                    float x2 = 0;
+                    float y2 = 0;
+
+                    hud.movingReticule.transform.position = new Vector2(x, y);
+
+                    if (hud.smallShip.invertUpDown == true)
+                    {
+                        y2 = Screen.height - y;
+                    }
+                    else
+                    {
+                        y2 = y;
+                    }
+
+                    if (hud.smallShip.invertLeftRight == true)
+                    {
+                        x2 = Screen.width - x;
+                    }
+                    else
+                    {
+                        x2 = x;
+                    }
+
+                    Vector2 rotationTarget = new Vector2(x2, y2);
+
+                    float angle = Mathf.Atan2(hud.centerReticule.transform.position.y - rotationTarget.y, hud.centerReticule.transform.position.x - rotationTarget.x) * Mathf.Rad2Deg;
+                    Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+                    hud.movingReticule.transform.rotation = Quaternion.RotateTowards(hud.movingReticule.transform.rotation, targetRotation, 1000 * Time.deltaTime);
+
+                    //This fades the mouse reticle as it gets closer to the center of the scene
+                    if (hud.movingReticleImage != null)
+                    {
+                        float distance = Vector2.Distance(hud.movingReticule.transform.position, hud.centerReticule.transform.position);
+
+                        if (distance < 200 & distance > 10)
+                        {
+                            float alpha = (1f / 190f) * distance;
+
+                            Color newColor = hud.movingReticleImage.color;
+                            newColor.a = alpha;
+                            hud.movingReticleImage.color = newColor;
+                        }
+                        else if (distance < 10)
+                        {
+                            Color newColor = hud.movingReticleImage.color;
+                            newColor.a = 0;
+                            hud.movingReticleImage.color = newColor;
+                        }
+                    }
                 }
                 else
                 {
-                    y2 = y;
+                    hud.movingReticule.SetActive(false);
                 }
-
-                if (hud.smallShip.invertLeftRight == true)
-                {
-                    x2 = Screen.width - x;
-                }
-                else
-                {
-                    x2 = x;
-                }
-
-                Vector2 rotationTarget = new Vector2(x2, y2);
-
-                float angle = Mathf.Atan2(hud.centerReticule.transform.position.y - rotationTarget.y, hud.centerReticule.transform.position.x - rotationTarget.x) * Mathf.Rad2Deg;
-                Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-                hud.movingReticule.transform.rotation = Quaternion.RotateTowards(hud.movingReticule.transform.rotation, targetRotation, 1000 * Time.deltaTime);
-
-                //This fades the mouse reticle as it gets closer to the center of the scene
-                if (hud.movingReticleImage != null)
-                {
-                    float distance = Vector2.Distance(hud.movingReticule.transform.position, hud.centerReticule.transform.position);
-
-                    if (distance < 200 & distance > 10)
-                    {
-                        float alpha = (1f / 190f) * distance;
-
-                        Color newColor = hud.movingReticleImage.color;
-                        newColor.a = alpha;
-                        hud.movingReticleImage.color = newColor;
-                    }
-                    else if (distance < 10)
-                    {
-                        Color newColor = hud.movingReticleImage.color;
-                        newColor.a = 0;
-                        hud.movingReticleImage.color = newColor;
-                    }
-                }
-            }
-            else
-            {
-                hud.movingReticule.SetActive(false);
             }
         }
         else
         {
             hud.movingReticule.SetActive(false);
         }
-
-
     }
 
     #endregion
@@ -2391,9 +2397,14 @@ public static class HudFunctions
             hud.controllerTags = GameObjectUtils.FindAllChildTransformsContaining(hud.transform, "Tab_Controller");
         }
 
+        if (hud.ogInput == null)
+        {
+            hud.ogInput = OGInputFunctions.GetOGInput();
+        }
+
         if (hud.smallShip != null)
         {
-            if (hud.smallShip.keyboardAndMouse == true & hud.keyboardActive == false)
+            if (hud.ogInput.keyboardAndMouse == true & hud.keyboardActive == false)
             {
                 foreach (Transform tag in hud.keyboardTags)
                 {
@@ -2407,7 +2418,7 @@ public static class HudFunctions
 
                 hud.keyboardActive = true;
             }
-            else if (hud.smallShip.keyboardAndMouse == false & hud.keyboardActive == true)
+            else if (hud.ogInput.keyboardAndMouse == false & hud.keyboardActive == true)
             {
                 foreach (Transform tag in hud.keyboardTags)
                 {

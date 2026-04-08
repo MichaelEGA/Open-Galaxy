@@ -8,6 +8,13 @@ public static class OGInputFunctions
     //This updates the input
     public static void UpdateInput(OGInput ogInput)
     {
+        //This gets key references if they're mission
+        if (ogInput.scene == null)
+        {
+            ogInput.scene = SceneFunctions.GetScene();
+        }
+
+        //This gets the input
         if (ogInput.keyboardAndMouse == true)
         {
             GetKeyboardAndMouseInput(ogInput);
@@ -17,10 +24,9 @@ public static class OGInputFunctions
             GetKeyboardAndMouseInput(ogInput);
         }
 
-        if (ogInput.scene == null)
-        {
-            ogInput.scene = SceneFunctions.GetScene();
-        }
+        //This detects a change in input
+        DetectInputType(ogInput);
+        UpdateInputSettings(ogInput);
     }
 
     //This gets the keyboard input
@@ -288,9 +294,7 @@ public static class OGInputFunctions
 
         if (ogInput == null)
         {
-            GameObject gameObject = new GameObject();
-            gameObject.name = "Input";
-            gameObject.AddComponent<OGInput>();
+            CreateOGInput();
         }
 
         return ogInput;
@@ -303,6 +307,22 @@ public static class OGInputFunctions
         gameObject.name = "OGInput";
         OGInput ogInput = gameObject.AddComponent<OGInput>();
         return ogInput;
+    }
+
+    //This updates the OGInput setttings
+    public static void UpdateInputSettings(OGInput ogInput)
+    {
+        if (ogInput != null)
+        {
+            if (ogInput.settings == null)
+            {
+                ogInput.settings = OGSettingsFunctions.GetSettings();
+            }
+
+            ogInput.controllerSensitivity = ogInput.settings.controllersensitivity;
+            ogInput.invertUpDown = ogInput.settings.invertY;
+            ogInput.invertLeftRight = ogInput.settings.invertX;
+        }
     }
 
 }

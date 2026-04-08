@@ -132,6 +132,11 @@ public static class TorpedoFunctions
                 mixer = "Cockpit";
             }
 
+            if (smallShip.ogInput == null)
+            {
+                smallShip.ogInput = OGInputFunctions.GetOGInput();
+            }
+
             List<GameObject> torpedoTubes = new List<GameObject>();
 
             if (smallShip.torpedoTube1 != null)
@@ -164,9 +169,9 @@ public static class TorpedoFunctions
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
-                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                 {
-                    Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.1f, 0.50f, 0.50f));
+                    Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.1f, 0.50f, 0.50f));
                 }
 
                 smallShip.torpedoCycleNumber += 1;
@@ -194,9 +199,9 @@ public static class TorpedoFunctions
                     AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
-                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                 {
-                    Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.1f, 0.55f, 0.55f));
+                    Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.1f, 0.55f, 0.55f));
                 }
 
                 smallShip.torpedoCycleNumber += 1;
@@ -245,9 +250,9 @@ public static class TorpedoFunctions
 
                 }
 
-                if (smallShip.isAI == false & smallShip.keyboardAndMouse == false)
+                if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                 {
-                    Task b = new Task(SmallShipFunctions.ShakeControllerForSetTime(0.1f, 0.60f, 0.60f));
+                    Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.1f, 0.60f, 0.60f));
                 }
 
                 smallShip.torpedoCycleNumber += 1;

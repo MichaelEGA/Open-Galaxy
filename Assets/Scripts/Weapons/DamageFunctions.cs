@@ -94,6 +94,11 @@ public static class DamageFunctions
                     smallShip.scene.ogCamera.shipHit = true;
                 }
 
+                if (smallShip.ogInput == null)
+                {
+                    smallShip.ogInput = OGInputFunctions.GetOGInput();
+                }
+
                 if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
                 {
                     Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));

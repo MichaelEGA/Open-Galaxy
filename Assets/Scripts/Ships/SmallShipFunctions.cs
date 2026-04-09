@@ -158,6 +158,7 @@ public static class SmallShipFunctions
         DamageFunctions.TakeCollisionDamage_SmallShip(smallShip);
         DamageFunctions.SmokeTrail_SmallShip(smallShip);
         DamageFunctions.Explode_SmallShip(smallShip);
+        DamageFunctions.PlayDamageWarningSound(smallShip);
 
         //Systems functions
         DamageFunctions.RestoreShipsSystems_SmallShip(smallShip);

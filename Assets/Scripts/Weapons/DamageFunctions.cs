@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 public static class DamageFunctions
@@ -88,10 +89,12 @@ public static class DamageFunctions
                 if (smallShip.rearShieldLevel < 0) { smallShip.rearShieldLevel = 0; }
                 if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
 
-                //This shakes the cockpit camera
                 if (smallShip.isAI == false)
                 {
+                    //This shakes the cockpit camera
                     smallShip.scene.ogCamera.shipHit = true;
+
+                    
                 }
 
                 if (smallShip.ogInput == null)
@@ -104,6 +107,17 @@ public static class DamageFunctions
                     Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
                 }
             }
+        }
+    }
+
+    public static void PlayDamageWarningSound(SmallShip smallShip)
+    {
+        //This plays a warning sound
+        if (smallShip.hullLevel < 25 & smallShip.warningSoundPlayed == false)
+        {
+            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep_alert", "Cockpit", new Vector3(0, 0, 0), 0, 1, 500, 0.6f);
+
+            smallShip.warningSoundPlayed = true;
         }
     }
 

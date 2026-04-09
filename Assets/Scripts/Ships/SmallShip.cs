@@ -75,6 +75,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool invincible;
     [HideInInspector] public bool cannotbedisabled;
     [HideInInspector] public bool isDisabled;
+    [HideInInspector] public bool warningSoundPlayed;
 
     [Header("Ship Power Distribution")]
     [HideInInspector] public string powerMode = "reset";

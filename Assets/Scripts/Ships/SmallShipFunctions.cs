@@ -530,6 +530,11 @@ public static class SmallShipFunctions
             acclerationAmount = acclerationAmount * 2;
             smallShip.wep = true;
 
+            if (smallShip.ogInput == null)
+            {
+                smallShip.ogInput = OGInputFunctions.GetOGInput();
+            }
+
             if (smallShip.ogInput.keyboardAndMouse == false)
             {
                 OGInputFunctions.StartShakeController(0.20f, 0.20f);

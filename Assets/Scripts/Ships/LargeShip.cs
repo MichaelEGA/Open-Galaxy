@@ -143,12 +143,15 @@ public class LargeShip : MonoBehaviour
     {
         //Start functions
         LargeShipFunctions.PrepareShip(this);
-        
-        //Input functions
-        LargeShipFunctions.GetAIInput(this);
 
-        //Targetting functions
-        TargetingFunctions.GetTargetInfo_LargeShipAI(this);
+        if (shipClass != "buoy" & shipClass != "container")
+        {
+            //Input functions
+            LargeShipFunctions.GetAIInput(this);
+
+            //Targetting functions
+            TargetingFunctions.GetTargetInfo_LargeShipAI(this);
+        }
 
         if (shipClass != "station" & shipClass != "turret" & shipClass != "buoy" & shipClass != "container")
         {

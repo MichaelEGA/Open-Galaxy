@@ -59,7 +59,7 @@ public static class PlasmaFunctions
         main.startSize3D = true;
         main.startSizeX = 0.25f;
         main.startSizeY = 0.25f;
-        main.startSizeZ = 5;
+        main.startSizeZ = 10; //5
         main.startSpeed = 750;
         main.loop = false;
         main.playOnAwake = false;

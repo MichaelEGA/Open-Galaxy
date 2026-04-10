@@ -110,14 +110,18 @@ public static class DamageFunctions
         }
     }
 
+    //This plays a sound when the player ships hull is less than 25
     public static void PlayDamageWarningSound(SmallShip smallShip)
     {
-        //This plays a warning sound
-        if (smallShip.hullLevel < 25 & smallShip.warningSoundPlayed == false)
+        if (smallShip.isAI == false)
         {
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep_alert", "Cockpit", new Vector3(0, 0, 0), 0, 1, 500, 0.6f);
+            //This plays a warning sound
+            if (smallShip.hullLevel < 25 & smallShip.warningSoundPlayed == false)
+            {
+                AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep_alert", "Cockpit", new Vector3(0, 0, 0), 0, 1, 500, 0.6f);
 
-            smallShip.warningSoundPlayed = true;
+                smallShip.warningSoundPlayed = true;
+            }
         }
     }
 
@@ -203,6 +207,11 @@ public static class DamageFunctions
                 if (smallShip.isAI == false)
                 {
                     smallShip.scene.ogCamera.shipHit = true;
+                }
+
+                if (smallShip.ogInput == null)
+                {
+                    smallShip.ogInput = OGInputFunctions.GetOGInput();
                 }
 
                 if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)

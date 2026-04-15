@@ -4,6 +4,7 @@ public class OGInput : MonoBehaviour
 {
     public Scene scene;
     public OGSettings settings;
+    public MissionManager missionManager;
 
     //General input settings
     public bool keyboardAndMouse = true;

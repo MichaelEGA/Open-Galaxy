@@ -73,19 +73,23 @@ public static class OGInputFunctions
             ogInput.turnInput = turnInput;
         }
 
-        if (ogInput.scene != null)
+        if (ogInput.missionManager == null)
         {
-            if (ogInput.scene.missionManager != null)
-            {
-                if (ogInput.scene.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
-                {
-                    ogInput.powerToShields = keyboard.leftArrowKey.isPressed;
-                    ogInput.powerToEngine = keyboard.upArrowKey.isPressed;
-                    ogInput.powerToLasers = keyboard.rightArrowKey.isPressed;
-                    ogInput.resetPowerLevels = keyboard.downArrowKey.isPressed;
-                }
-            } 
+            ogInput.missionManager = MissionFunctions.GetMissionManager();
         }
+
+        if (ogInput.missionManager != null)
+        {
+            if (ogInput.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
+            {
+                ogInput.powerToShields = keyboard.leftArrowKey.isPressed;
+                ogInput.powerToEngine = keyboard.upArrowKey.isPressed;
+                ogInput.powerToLasers = keyboard.rightArrowKey.isPressed;
+                ogInput.resetPowerLevels = keyboard.downArrowKey.isPressed;
+            }
+        }
+        
+       
 
         ogInput.getNextTarget = keyboard.rKey.isPressed;
         ogInput.getNextEnemy = keyboard.tKey.isPressed;
@@ -155,20 +159,22 @@ public static class OGInputFunctions
         ogInput.rollInput = ogInput.controllerRoll;
 
         //Button inputs
-        if (ogInput.scene != null)
+        if (ogInput.missionManager == null)
         {
-            if (ogInput.scene.missionManager != null)
+            ogInput.missionManager = MissionFunctions.GetMissionManager();
+        }
+
+        if (ogInput.missionManager != null)
+        {
+            if (ogInput.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
             {
-                if (ogInput.scene.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
-                {
-                    ogInput.powerToShields = gamepad.dpad.left.isPressed;
-                    ogInput.powerToEngine = gamepad.dpad.up.isPressed;
-                    ogInput.powerToLasers = gamepad.dpad.right.isPressed;
-                    ogInput.resetPowerLevels = gamepad.dpad.down.isPressed;
-                }
+                ogInput.powerToShields = gamepad.dpad.left.isPressed;
+                ogInput.powerToEngine = gamepad.dpad.up.isPressed;
+                ogInput.powerToLasers = gamepad.dpad.right.isPressed;
+                ogInput.resetPowerLevels = gamepad.dpad.down.isPressed;
             }
         }
-        
+
         ogInput.getNextTarget = gamepad.leftShoulder.isPressed;
         //ogInput.getNextEnemy = gamepad.xButton.isPressed;
         ogInput.getClosestEnemy = gamepad.xButton.isPressed;

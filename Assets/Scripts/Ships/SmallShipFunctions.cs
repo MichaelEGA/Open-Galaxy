@@ -700,9 +700,16 @@ public static class SmallShipFunctions
 
         while (timeElapsed < lerpDuration)
         {
-            smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
-            timeElapsed += Time.deltaTime;
-            yield return null;
+            if (smallShip != null)
+            {
+                smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+                timeElapsed += Time.deltaTime;
+                yield return null;
+            }
+            else
+            {
+                break;
+            }
         }
 
         smallShip.gameObject.transform.localPosition = endPosition;

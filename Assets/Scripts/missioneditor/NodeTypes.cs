@@ -1402,6 +1402,14 @@ public static class NodeTypes
 
         drop -= 15;
 
+        List<string> options = new List<string>();
+        options.Add("false");
+        options.Add("true");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options, "long jump", "false", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         node.nextEvent1 = NodeFunctions.DrawNodeLink(node, 5, drop, 12.5f, 90, "male", "Next Event", 7, 5);
 
         drop -= 30;
@@ -1888,10 +1896,10 @@ public static class NodeTypes
         drop -= 15;
 
         List<string> options01 = new List<string>();
-        options01.Add("true");
         options01.Add("false");
+        options01.Add("true");
 
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, options01, "internal file", "true", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options01, "internal file", "false", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

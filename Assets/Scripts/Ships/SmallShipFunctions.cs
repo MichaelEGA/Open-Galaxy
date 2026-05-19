@@ -72,6 +72,7 @@ public static class SmallShipFunctions
             TargetingFunctions.CreateWaypoint_SmallShipPlayer(smallShip);
             DockingFunctions.AddDockingPointsSmallShip(smallShip);
             SmallShipAIFunctions.SetTargetingErrorMargin(smallShip, "low");
+            smallShip.ogInput = OGInputFunctions.GetOGInput();
 
             smallShip.loaded = true;
         }

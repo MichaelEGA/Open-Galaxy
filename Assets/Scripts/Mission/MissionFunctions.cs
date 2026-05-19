@@ -1430,6 +1430,8 @@ public static class MissionFunctions
 
         string jumpLocation = missionEvent.data1;
 
+        string longjump = missionEvent.data2;
+
         //This gets several important references
         Scene scene = SceneFunctions.GetScene();
         OGCamera ogCamera = OGCameraFunctions.GetOGCamera();
@@ -1531,6 +1533,24 @@ public static class MissionFunctions
 
         yield return new WaitForSecondsRealtime(1);
 
+        //This simulates the passing of time by fading the screen in and out midjump
+        if (longjump == "true")
+        {
+            string colour = "#000000";
+
+            yield return new WaitForSecondsRealtime(1);
+
+            //This fades the scene out
+            HudFunctions.FadeInBackground(0.5f, colour);
+
+            yield return new WaitForSecondsRealtime(4);
+
+            //This fades the scene back in
+            HudFunctions.FadeOutBackground(0.5f, colour);
+
+            yield return new WaitForSecondsRealtime(4);
+        }
+
         //This ensures that hyperspace continues for atleast ten seconds
         while (time + 10 > Time.unscaledTime)
         {
@@ -1590,7 +1610,7 @@ public static class MissionFunctions
         missionManager.pauseEventSeries = false;
     }
 
-    //This unloads the current location and loads a new one from the avaiblible locations while simulating a hyperspace jump
+    //This unloads the current location and loads a new one from the avaiblible locations with a simple fade
     public static IEnumerator ChangeLocationFade(MissionEvent missionEvent)
     {
         //This gets all the required data from the event node
@@ -1689,7 +1709,7 @@ public static class MissionFunctions
 
         }
 
-        //This fades the scene back ing
+        //This fades the scene back in
         HudFunctions.FadeOutBackground(1, colour);
 
         //This unlocks the player controls and turns off invincibility on the player ship

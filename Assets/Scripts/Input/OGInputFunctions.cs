@@ -21,7 +21,7 @@ public static class OGInputFunctions
         }
         else
         {
-            GetKeyboardAndMouseInput(ogInput);
+            GetControllerInput(ogInput);
         }
 
         //This detects a change in input

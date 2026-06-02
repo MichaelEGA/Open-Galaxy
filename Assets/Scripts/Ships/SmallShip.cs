@@ -292,6 +292,8 @@ public class SmallShip : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         DamageFunctions.StartCollision_SmallShip(this, collision.gameObject);
+
+        Debug.Log("Collided with " + collision.gameObject.name + " " + collision.collider.gameObject.name);
     }
 
     void OnCollisionExit(Collision collision)

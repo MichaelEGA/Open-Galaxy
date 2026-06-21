@@ -1129,6 +1129,8 @@ public static class SceneFunctions
                 }
             }
 
+            //This allows you to toggle materials on and off in the ship
+            ship.AddComponent<MaterialEmissionManager>();
         }
 
         if (singleCall == true & exitingHyperspace != true)
@@ -1602,6 +1604,14 @@ public static class SceneFunctions
             }
 
             scene.asteroidPool.Add(ship);
+
+            //This disables any emisison on the prefab
+            MaterialEmissionManager materialEmissionManager = ship.AddComponent<MaterialEmissionManager>();
+
+            if (materialEmissionManager != null)
+            {
+                materialEmissionManager.DisableEmissionOnPrefab();
+            }
         }
     }
 

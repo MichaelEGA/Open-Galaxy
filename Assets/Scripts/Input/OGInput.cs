@@ -39,6 +39,11 @@ public class OGInput : MonoBehaviour
     public bool choiceRight;
     public bool choiceLeft;
 
+    //Mouse specific values
+    public Vector2 targetMouseInput;
+    public Vector2 currentMouseInput;
+    public float lerpSpeed = 2.5f;
+
     //Controller specific values
     public float controllerThrust;
     public float smoothedPitch;

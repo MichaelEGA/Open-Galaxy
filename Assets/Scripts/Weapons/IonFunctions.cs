@@ -340,7 +340,7 @@ public static class IonFunctions
     //This sets the rotation of the ions to angle at the correct distance for the targetted ship
     public static void SetCannons(SmallShip smallShip)
     {
-        if (smallShip.autoaim == true & smallShip.target != null & smallShip.targetRigidbody != null & smallShip.targetForward > 0.99f)
+        if (smallShip.autoaim == true & smallShip.target != null & smallShip.targetRigidbody != null & smallShip.targetForward > 0.995f)
         {
             Vector3 interceptPoint = GameObjectUtils.CalculateInterceptPoint(smallShip.transform.position, smallShip.target.transform.position, smallShip.targetRigidbody.linearVelocity, 750);
 

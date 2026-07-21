@@ -32,7 +32,46 @@ public static class OGInputFunctions
     //This gets the keyboard input
     public static void GetKeyboardAndMouseInput(OGInput ogInput)
     {
-        //Mouse and Keyboard Input
+        //Mouse Input
+        //var mouse = Mouse.current;
+        //float x = 0;
+        //float y = 0;
+        //float radiusWidth = Screen.width / 2;
+        //float radiusHeight = Screen.height / 2;
+
+        //if (mouse != null)
+        //{
+        //    x = mouse.position.x.ReadValue() - radiusWidth;
+        //    y = mouse.position.y.ReadValue() - radiusHeight;
+        //}
+
+        //x = x / radiusWidth;
+        //y = y / radiusHeight;
+
+        //float pitchInput = -Mathf.Clamp(y, -1.0f, 1.0f);
+        //ogInput.rollInput = -Input.GetAxis("LeftHorizontal");
+        //float turnInput = Mathf.Clamp(x, -1.0f, 1.0f);
+        //ogInput.thrustInput = Input.GetAxis("LeftVertical");
+
+        //if (ogInput.invertUpDown == true)
+        //{
+        //    ogInput.pitchInput = -pitchInput;
+        //}
+        //else
+        //{
+        //    ogInput.pitchInput = pitchInput;
+        //}
+
+        //if (ogInput.invertLeftRight == true)
+        //{
+        //    ogInput.turnInput = -turnInput;
+        //}
+        //else
+        //{
+        //    ogInput.turnInput = turnInput;
+        //}
+
+        // Then in your input update function:
         var mouse = Mouse.current;
         float x = 0;
         float y = 0;
@@ -48,35 +87,28 @@ public static class OGInputFunctions
         x = x / radiusWidth;
         y = y / radiusHeight;
 
-        var keyboard = Keyboard.current;
+        // Store target values
+        ogInput.targetMouseInput.x = Mathf.Clamp(x, -1.0f, 1.0f);
+        ogInput.targetMouseInput.y = Mathf.Clamp(-y, -1.0f, 1.0f); // Note: -y for pitch
 
-        float pitchInput = -Mathf.Clamp(y, -1.0f, 1.0f);
+        // Lerp toward the target smoothly
+        ogInput.currentMouseInput = Vector2.Lerp(ogInput.currentMouseInput, ogInput.targetMouseInput, ogInput.lerpSpeed * Time.deltaTime);
+
+        // Use the smoothed values
+        ogInput.pitchInput = (ogInput.invertUpDown) ? -ogInput.currentMouseInput.y : ogInput.currentMouseInput.y;
+        ogInput.turnInput = (ogInput.invertLeftRight) ? -ogInput.currentMouseInput.x : ogInput.currentMouseInput.x;
+
         ogInput.rollInput = -Input.GetAxis("LeftHorizontal");
-        float turnInput = Mathf.Clamp(x, -1.0f, 1.0f);
         ogInput.thrustInput = Input.GetAxis("LeftVertical");
 
-        if (ogInput.invertUpDown == true)
-        {
-            ogInput.pitchInput = -pitchInput;
-        }
-        else
-        {
-            ogInput.pitchInput = pitchInput;
-        }
-
-        if (ogInput.invertLeftRight == true)
-        {
-            ogInput.turnInput = -turnInput;
-        }
-        else
-        {
-            ogInput.turnInput = turnInput;
-        }
 
         if (ogInput.missionManager == null)
         {
             ogInput.missionManager = MissionFunctions.GetMissionManager();
         }
+
+        //Keyboard inputs
+        var keyboard = Keyboard.current;
 
         if (ogInput.missionManager != null)
         {
@@ -89,8 +121,6 @@ public static class OGInputFunctions
             }
         }
         
-       
-
         ogInput.getNextTarget = keyboard.rKey.isPressed;
         ogInput.getNextEnemy = keyboard.tKey.isPressed;
         ogInput.getClosestEnemy = keyboard.fKey.isPressed;

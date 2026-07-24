@@ -27,6 +27,7 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
 **Included Campaigns**
   - A New Ally (6 Missions)
   - Strike at Sullust (6 Missions)
+  - The Great Search (6 Missions)
 
 **Keyboard and Mouse**  
   - Mouse Steers
@@ -97,6 +98,10 @@ Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a plat
   - Luis_Humainoide: https://pixabay.com/users/humanoide_media-12661853/
 
 Assets have only been used when permission has been given or implied by the author. No assets from officially licensed Star Wars games or sources have been used. For a full list of assets and their authors see the in game credits.
+
+**AI Disclosure**  
+
+AI is used to generate voices of pilots in mission, AI is also occasionally consulted when solving programming problems. AI is not used to create images, 3d objects, text, or missions.
 
 **Licence**  
 

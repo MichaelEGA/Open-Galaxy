@@ -10,7 +10,7 @@ Mission Editor
 
 Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a platform for single player custom missions. 
 
-**Discord** https://discord.gg/VY9KknXvQ
+**Discord:** https://discord.gg/VY9KknXvQ
 
 **Main Features**
 

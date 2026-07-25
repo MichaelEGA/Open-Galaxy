@@ -101,7 +101,7 @@ Assets have only been used when permission has been given or implied by the auth
 
 **AI Disclosure**  
 
-AI is used to generate voices of pilots in mission, AI is also occasionally consulted when solving programming problems. AI is not used to create images, 3d objects, text, music or missions.
+AI is used to generate voices of pilots in missions, AI is also occasionally consulted when solving programming problems. AI is not used to create images, 3d objects, text, music or missions.
 
 **Licence**  
 

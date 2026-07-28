@@ -701,19 +701,20 @@ public static class SmallShipAIFunctions
 
                     if (smallShip.thrustSpeed > dynamicSpeed)
                     {
-                        //smallShip.thrustInput = -1;
                         smallShip.thrustSpeed -= 1;
                     }
                     else if (smallShip.thrustSpeed < dynamicSpeed)
                     {
-                        //smallShip.thrustInput = 1;
                         smallShip.thrustSpeed += 1;
                     }
                 }
-                if (distance <= 15 & distance < breakingDistance)
+                else if (distance <= 15 & distance < breakingDistance)
                 {
-                    //smallShip.thrustInput = -1;
                     smallShip.thrustSpeed -= 1;
+                }
+                else
+                {
+                    smallShip.thrustSpeed += 1;
                 }
             }
         }
@@ -1557,33 +1558,28 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.aiEvade == false)
+            if (smallShip.followTarget != null)
             {
-                if (smallShip.followTarget != null)
+                if (smallShip.isAI == true)
                 {
-                    if (smallShip.isAI == true)
-                    {
-                        smallShip.flyInFormation = true;
-                    }
-
-                    Transform target = smallShip.followTarget.transform;
-
-                    Quaternion flatLeaderRotation = Quaternion.Euler(0, smallShip.followTarget.transform.eulerAngles.y, 0);
-
-                    Vector3 desiredPosition = smallShip.followTarget.transform.position + flatLeaderRotation * new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos);
-
-                    float distance = Vector3.Distance(smallShip.transform.position, desiredPosition);
-
-                    smallShip.aiMatchSpeed = true;
-
-                    AngleTowardsPoint(smallShip, desiredPosition);
+                    smallShip.flyInFormation = true;
                 }
-                else
-                {
-                    smallShip.aiMatchSpeed = false;
-                    smallShip.flyInFormation = false;
-                    ChaseWithdraw(smallShip);
-                }
+
+                Quaternion flatLeaderRotation = Quaternion.Euler(0, smallShip.followTarget.transform.eulerAngles.y, 0);
+
+                Vector3 desiredPosition = smallShip.followTarget.transform.position + flatLeaderRotation * new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos);
+
+                float distance = Vector3.Distance(smallShip.transform.position, desiredPosition);
+
+                smallShip.aiMatchSpeed = true;
+
+                AngleTowardsPoint(smallShip, desiredPosition);
+            }
+            else
+            {
+                smallShip.aiMatchSpeed = false;
+                smallShip.flyInFormation = false;
+                ChaseWithdraw(smallShip);
             }
         }
     }
@@ -1829,7 +1825,7 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (TagExists(smallShip, "nospeed") == true & TagExists(smallShip, "norotation") == true || TagExists(smallShip, "nocollisionevasion") == true)
+            if (TagExists(smallShip, "nospeed") == true & TagExists(smallShip, "norotation") == true || TagExists(smallShip, "nocollisionevasion") == true || TagExists(smallShip, "formationflying") == true)
             {
                 //Do nothing
             }

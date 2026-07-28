@@ -825,6 +825,8 @@ public static class NodeDescriptions
             "This function sets the designated ship for the ship to follow in formation. \n" +
             "\n " +
             "Extra Information \n" +
+            "- You need to add the ai tag pattern: formation flying for the ship to actually follow the designated ship. \n" +
+            "- Note: when flying in formation only the lead ship will have try to evade collisions. \n" +
             "- This function will affect the first target ship it finds, and then any other ship (that is not the designated target ship) whose name contains the designated string will follow it. \n" +
             "- For example you can set the target ship to 'Alpha01' and then you can set the following ship to 'Alpha' and this will cause all ships with alpha in their name to follow alpha 1. \n" +
             "- If the location is left as 'none' the node will run regardless of location. \n";

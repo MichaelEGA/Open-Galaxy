@@ -1831,7 +1831,8 @@ public static class MissionFunctions
                         break;
                     }
                 }
-                else if (gamepad != null)
+                
+                if (gamepad != null)
                 {
                     if (gamepad.dpad.up.isPressed)
                     {

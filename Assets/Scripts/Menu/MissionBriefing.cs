@@ -6,6 +6,7 @@ public class MissionBriefing : MonoBehaviour
 {
     public AudioSource missionBriefingAudio;
     public GameObject environment;
+    public bool isActive;
 
     //This is used to temporary store the lightning data and then reapply it once the mission briefing is closed
     public string colour = "#FFFFFF";

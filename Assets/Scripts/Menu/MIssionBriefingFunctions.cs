@@ -11,6 +11,7 @@ public static class MissionBriefingFunctions
         Time.timeScale = 1;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
+        missionBriefing.isActive = false;
 
         //This unpauses the event series
         MissionManager missionManager = MissionFunctions.GetMissionManager();
@@ -115,6 +116,8 @@ public static class MissionBriefingFunctions
             scene.missionBriefing = missionBriefingGO;
         }
 
+        missionBriefing.isActive = true;
+
         //This adds the enviroment to mission briefing so it can access it later to destroy it
         missionBriefing.environment = environment;
 
@@ -211,6 +214,20 @@ public static class MissionBriefingFunctions
                 smallShip.controlLock = false;
             }
         }  
+    }
+
+    public static bool MissionBriefingIsActive()
+    {
+        bool isActive = false;
+
+        MissionBriefing missionBriefing = GameObject.FindAnyObjectByType<MissionBriefing>();
+
+        if (missionBriefing != null)
+        {
+            isActive = missionBriefing.isActive;
+        }
+
+        return isActive;
     }
 
 }

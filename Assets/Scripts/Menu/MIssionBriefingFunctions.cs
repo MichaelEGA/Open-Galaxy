@@ -5,37 +5,6 @@ using UnityEngine.UI;
 
 public static class MissionBriefingFunctions
 {
-    //This deactivates the menu and sets the time scale to zero so the player can start playing the game
-    public static void StartGame(MissionBriefing missionBriefing)
-    {
-        MissionFunctions.ResumeGame(2);
-
-        missionBriefing.isActive = false;
-
-        //This unpauses the event series
-        MissionManager missionManager = MissionFunctions.GetMissionManager();
-        missionManager.pauseEventSeries = false;
-
-        //This restores the scenes lighting
-        SceneFunctions.SetLighting("#" + missionBriefing.colour, missionBriefing.sunIsEnabled, missionBriefing.sunIntensity, missionBriefing.sunScale, missionBriefing.x, missionBriefing.y, missionBriefing.z, missionBriefing.xRot, missionBriefing.yRot, missionBriefing.zRot);
-
-        //This stopes the audio briefing if it is still playing
-        if (missionBriefing.missionBriefingAudio != null)
-        {
-            missionBriefing.missionBriefingAudio.Stop();
-        }
-
-        //This destroys the environment
-        if (missionBriefing.environment != null)
-        {
-            GameObject.Destroy(missionBriefing.environment);
-        }
-
-        missionBriefing.gameObject.SetActive(false);
-
-        //This makes the hud visible again
-        HudFunctions.SetHudTransparency(1);
-    }
 
     //This activates the mission briefing when called by a mission event
     public static IEnumerator ActivateMissionBriefing(string briefingText, string audioName, string internalAudioFile, bool distortion, float distortionLevel, string model, bool noZoom = false)
@@ -137,6 +106,38 @@ public static class MissionBriefingFunctions
         missionBriefing.gameObject.GetComponentInChildren<Button>().Select();
 
         yield return null;
+    }
+
+    //This deactivates the menu and sets the time scale to zero so the player can start playing the game
+    public static void DeactivateMissionBriefing(MissionBriefing missionBriefing)
+    {
+        MissionFunctions.ResumeGame(2);
+
+        missionBriefing.isActive = false;
+
+        //This unpauses the event series
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+        missionManager.pauseEventSeries = false;
+
+        //This restores the scenes lighting
+        SceneFunctions.SetLighting("#" + missionBriefing.colour, missionBriefing.sunIsEnabled, missionBriefing.sunIntensity, missionBriefing.sunScale, missionBriefing.x, missionBriefing.y, missionBriefing.z, missionBriefing.xRot, missionBriefing.yRot, missionBriefing.zRot);
+
+        //This stopes the audio briefing if it is still playing
+        if (missionBriefing.missionBriefingAudio != null)
+        {
+            missionBriefing.missionBriefingAudio.Stop();
+        }
+
+        //This destroys the environment
+        if (missionBriefing.environment != null)
+        {
+            GameObject.Destroy(missionBriefing.environment);
+        }
+
+        missionBriefing.gameObject.SetActive(false);
+
+        //This makes the hud visible again
+        HudFunctions.SetHudTransparency(1);
     }
 
     //This lerps the camera to it's new position

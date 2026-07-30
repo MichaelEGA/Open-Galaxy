@@ -435,6 +435,11 @@ public static class MissionFunctions
             Task a = new Task(DisplayChoice(missionEvent));
             FindNextEvent(missionEvent.nextEvent1, eventSeries);
         }
+        else if (missionEvent.eventType == "displayhangarlaunch")
+        {
+            DisplayHangarLaunch(missionEvent);
+            FindNextEvent(missionEvent.nextEvent1, eventSeries);
+        }
         else if (missionEvent.eventType == "displayhint")
         {
             DisplayHint(missionEvent);
@@ -1867,6 +1872,12 @@ public static class MissionFunctions
         }
 
         yield return null;
+    }
+
+    //This displays the chosen ship launching from a hangar
+    public static void DisplayHangarLaunch(MissionEvent missionEvent)
+    {
+        HangarLaunchFunctions.DisplayHangarLaunch();
     }
 
     //This temporary displays a large print hint in the center bottom of the screen

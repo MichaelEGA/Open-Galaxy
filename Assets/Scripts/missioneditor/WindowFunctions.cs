@@ -80,6 +80,7 @@ public static class WindowFunctions
         buttonList.Add("custom_node");
         buttonList.Add("deactivateship");
         buttonList.Add("displaychoice");
+        buttonList.Add("displayhangarlaunch");
         buttonList.Add("displayhint");
         buttonList.Add("displaytitle");
         buttonList.Add("displaymessage");

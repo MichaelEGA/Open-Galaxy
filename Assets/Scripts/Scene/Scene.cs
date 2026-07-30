@@ -78,6 +78,7 @@ public class Scene : MonoBehaviour
     [HideInInspector] public bool runAvoidCollision = true;
 
     [Header("Menus")]
+    [HideInInspector] public GameObject hangarLaunch;
     [HideInInspector] public GameObject missionBriefing;
     [HideInInspector] public GameObject exitMenu;
     [HideInInspector] public GameObject loadingScreen;

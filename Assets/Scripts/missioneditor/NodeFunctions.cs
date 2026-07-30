@@ -69,6 +69,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_DisplayChoice(node);
         }
+        else if (node.nodeType == "displayhangarlaunch")
+        {
+            NodeTypes.Draw_DisplayHangarLaunch(node);
+        }
         else if (node.nodeType == "displayhint")
         {
             NodeTypes.Draw_DisplayHint(node);

@@ -4610,6 +4610,98 @@ public static class MissionFunctions
 
     #endregion
 
+    #region other functions
+
+    //This pauses the game
+    public static void PauseGame(bool lockcursor = true)
+    {
+        //This pauses the game
+        Time.timeScale = 0;
+
+        //This pauses the event series
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+        missionManager.pauseEventSeries = true;
+
+        //This unlocks the curses if requested
+        if (lockcursor == false)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        //This mutes game sounds
+        AudioFunctions.MuteSelectedAudio("voicevolume");
+        AudioFunctions.MuteSelectedAudio("externalvolume");
+        AudioFunctions.MuteSelectedAudio("enginevolume");
+        AudioFunctions.MuteSelectedAudio("explosionsvolume");
+        AudioFunctions.MuteSelectedAudio("cockpitvolume");
+
+        //This makes sure the controller is not vibrating
+        OGInputFunctions.StopShakeController();
+
+        LockPlayerControls();
+    }
+    
+    //This resumes the game
+    public static void ResumeGame(float unlockplayercontrolsafter = 0)
+    {
+        //This resumes the game
+        Time.timeScale = 1;
+
+        //This unpauses the event series
+        MissionManager missionManager = MissionFunctions.GetMissionManager();
+        missionManager.pauseEventSeries = false;
+
+        //This locks the mouse
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
+
+        //This unmutes game sounds
+        AudioFunctions.UnmuteSelectedAudio("voicevolume");
+        AudioFunctions.UnmuteSelectedAudio("externalvolume");
+        AudioFunctions.UnmuteSelectedAudio("enginevolume");
+        AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
+        AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
+
+        Task a = new Task(UnlockPlayerControlsAfter(2));
+    }
+    
+    //This locks the player controls
+    public static void LockPlayerControls()
+    {
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+
+            if (smallShip != null)
+            {
+                smallShip.controlLock = true;
+            }
+        }
+    }
+    
+    //This unlocks the player controls
+    public static IEnumerator UnlockPlayerControlsAfter(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        Scene scene = SceneFunctions.GetScene();
+
+        if (scene != null)
+        {
+            SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+
+            if (smallShip != null)
+            {
+                smallShip.controlLock = false;
+            }
+        }
+    }
+
+    #endregion
+
     #region exit functions
 
     //This checks whether the player ship has been destroyed

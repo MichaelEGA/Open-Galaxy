@@ -8,20 +8,13 @@ public static class MissionBriefingFunctions
     //This deactivates the menu and sets the time scale to zero so the player can start playing the game
     public static void StartGame(MissionBriefing missionBriefing)
     {
-        Time.timeScale = 1;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
+        MissionFunctions.ResumeGame(2);
+
         missionBriefing.isActive = false;
 
         //This unpauses the event series
         MissionManager missionManager = MissionFunctions.GetMissionManager();
         missionManager.pauseEventSeries = false;
-
-        //This unmutes game sounds
-        AudioFunctions.UnmuteSelectedAudio("externalvolume");
-        AudioFunctions.UnmuteSelectedAudio("enginevolume");
-        AudioFunctions.UnmuteSelectedAudio("explosionsvolume");
-        AudioFunctions.UnmuteSelectedAudio("cockpitvolume");
 
         //This restores the scenes lighting
         SceneFunctions.SetLighting("#" + missionBriefing.colour, missionBriefing.sunIsEnabled, missionBriefing.sunIntensity, missionBriefing.sunScale, missionBriefing.x, missionBriefing.y, missionBriefing.z, missionBriefing.xRot, missionBriefing.yRot, missionBriefing.zRot);
@@ -42,8 +35,6 @@ public static class MissionBriefingFunctions
 
         //This makes the hud visible again
         HudFunctions.SetHudTransparency(1);
-
-        Task a = new Task(UnlockPlayerControlsAfter(2));
     }
 
     //This activates the mission briefing when called by a mission event
@@ -52,12 +43,7 @@ public static class MissionBriefingFunctions
         //This gets the scene reference
         Scene scene = SceneFunctions.GetScene();
 
-        //This pauses the game
-        Time.timeScale = 0;
-
-        //This pauses the event series
-        MissionManager missionManager = MissionFunctions.GetMissionManager();
-        missionManager.pauseEventSeries = true;
+        MissionFunctions.PauseGame(false);
 
         //This gets the current settings for the scene lighting and changes
         var lightingData = SceneFunctions.GetLightingData();
@@ -71,15 +57,6 @@ public static class MissionBriefingFunctions
         //This loads the ready room
         GameObject environmentGO = Resources.Load<GameObject>("objects/readyrooms/readyroom_white");
         GameObject environment = GameObject.Instantiate(environmentGO) as GameObject;
-
-        //This mutes game sounds
-        AudioFunctions.MuteSelectedAudio("externalvolume");
-        AudioFunctions.MuteSelectedAudio("enginevolume");
-        AudioFunctions.MuteSelectedAudio("explosionsvolume");
-        AudioFunctions.MuteSelectedAudio("cockpitvolume");
-
-        //This locks the player controls
-        LockPlayerControls();
 
         //This moves the camera into position
         if (model != "none" & model != "" & noZoom != true) //This checks to see whether the camera should zoom in or not
@@ -159,9 +136,6 @@ public static class MissionBriefingFunctions
         //This selects the button for when players are using the controller
         missionBriefing.gameObject.GetComponentInChildren<Button>().Select();
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-
         yield return null;
     }
 
@@ -185,37 +159,7 @@ public static class MissionBriefingFunctions
         // Ensure the final position is set
         gameObject.transform.localPosition = endPosition;
     }
-    public static void LockPlayerControls()
-    {
-        Scene scene = SceneFunctions.GetScene();
-
-        if (scene != null)
-        {
-            SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
-
-            if (smallShip != null)
-            {
-                smallShip.controlLock = true;
-            }
-        }
-    }
-    public static IEnumerator UnlockPlayerControlsAfter(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        Scene scene = SceneFunctions.GetScene();
-
-        if (scene != null)
-        {
-            SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
-
-            if (smallShip != null)
-            {
-                smallShip.controlLock = false;
-            }
-        }  
-    }
-
+   
     public static bool MissionBriefingIsActive()
     {
         bool isActive = false;

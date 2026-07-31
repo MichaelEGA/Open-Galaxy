@@ -2464,7 +2464,7 @@ public static class HudFunctions
         //This fades the fade in
         if (fadeGroup != null & fadeImage != null)
         {
-            Task a = new Task(MainMenuFunctions.FadeInCanvas(fadeGroup, 1));
+            Task a = new Task(MainMenuFunctions.FadeInCanvas(fadeGroup, time));
         }
     }
 
@@ -2492,7 +2492,35 @@ public static class HudFunctions
         //This fades the fade out
         if (fadeGroup != null & fadeImage != null)
         {
-            Task a = new Task(MainMenuFunctions.FadeOutCanvas(fadeGroup, 1));
+            Task a = new Task(MainMenuFunctions.FadeOutCanvas(fadeGroup, time));
+        }
+    }
+
+    //Set the background colour and alpha without fade
+    public static void SetBackgroundAlphaAndColour(float alpha, string colour)
+    {
+        CanvasGroup fadeGroup = null;
+        RawImage fadeImage = null;
+
+        //This gets the references
+        GameObject fadeImageGO = GameObject.Find("FadeImage");
+        if (fadeImageGO != null) { fadeImage = fadeImageGO.GetComponent<RawImage>(); }
+        if (fadeImageGO != null) { fadeGroup = fadeImageGO.GetComponentInParent<CanvasGroup>(); }
+
+        //This changes the colour
+        Color newColour;
+
+        if (UnityEngine.ColorUtility.TryParseHtmlString(colour, out newColour))
+        {
+            //Do nothing
+        }
+
+        fadeImage.color = newColour;
+
+        //This fades the fade in
+        if (fadeGroup != null & fadeImage != null)
+        {
+            fadeGroup.alpha = alpha;
         }
     }
 

@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class HangarLaunch : MonoBehaviour
 {
+    public GameObject ship;
     public GameObject startlocation;
     public GameObject endlocation;
-    public GameObject hangarCamera;
+    public GameObject groundlocation;
+    public GameObject camera;
     public GameObject hangar;
 
     public void CloseHangarLaunch()

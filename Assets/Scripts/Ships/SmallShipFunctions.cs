@@ -658,7 +658,7 @@ public static class SmallShipFunctions
             smallShip.jumpingToHyperspace = true;
 
             Vector3 startPosition = smallShip.gameObject.transform.localPosition;
-            Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 5000; //Original 30000
+            Vector3 endPosition = smallShip.transform.localPosition + smallShip.gameObject.transform.forward * 5000;
 
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Explosions", smallShip.transform.position, 1, 1, 1000, 1f);
 
@@ -671,7 +671,7 @@ public static class SmallShipFunctions
                 {
                     smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
                     timeElapsed += Time.deltaTime;
-                    yield return null;
+                    yield return new WaitForFixedUpdate();
                 }
             }
 
@@ -705,7 +705,7 @@ public static class SmallShipFunctions
             {
                 smallShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
                 timeElapsed += Time.deltaTime;
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
             else
             {

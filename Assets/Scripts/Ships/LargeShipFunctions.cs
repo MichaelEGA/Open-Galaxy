@@ -166,7 +166,7 @@ public static class LargeShipFunctions
         {
             largeShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
             timeElapsed += Time.deltaTime;
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
 
         HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " jumped to hyperspace");
@@ -191,7 +191,7 @@ public static class LargeShipFunctions
         {
             largeShip.gameObject.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
             timeElapsed += Time.deltaTime;
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
 
         largeShip.gameObject.transform.localPosition = endPosition;

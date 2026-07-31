@@ -1877,7 +1877,10 @@ public static class MissionFunctions
     //This displays the chosen ship launching from a hangar
     public static void DisplayHangarLaunch(MissionEvent missionEvent)
     {
-        HangarLaunchFunctions.DisplayHangarLaunch();
+        string hangar = missionEvent.data1;
+        string ship = missionEvent.data2;
+
+        HangarLaunchFunctions.DisplayHangarLaunch(hangar, ship);
     }
 
     //This temporary displays a large print hint in the center bottom of the screen

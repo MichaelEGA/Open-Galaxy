@@ -1147,9 +1147,11 @@ public static class SceneFunctions
         GameObject shipPrefab = null;
         GameObject tempPrefab = null;
 
-        //This gets a backup prefab from another pool if the selected pool doesn't have the requested prefab
+        //This gets the ship prefab from the pool
         foreach (GameObject objectPrefab in scene.shipsPrefabPool)
         {
+            Debug.Log(objectPrefab.name + " vs " + name);
+
             if (objectPrefab.name == name)
             {
                 tempPrefab = objectPrefab;

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class HangarLaunch : MonoBehaviour
 {
-    public GameObject ship;
     public GameObject startlocation;
     public GameObject endlocation;
     public GameObject hangarCamera;
@@ -10,6 +9,6 @@ public class HangarLaunch : MonoBehaviour
 
     public void CloseHangarLaunch()
     {
-        HangarLaunchFunctions.CloseHangarLaunch(this);
+        Task a = new Task(HangarLaunchFunctions.LaunchShip(this));
     }
 }

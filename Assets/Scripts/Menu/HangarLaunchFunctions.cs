@@ -51,6 +51,20 @@ public static class HangarLaunchFunctions
                 {
                     hangarLaunch.groundlocation = t.gameObject;
                 }
+                else if (t.name == "cameralocation")
+                {
+                    hangarLaunch.cameralocation = t.gameObject;
+                }
+            }
+
+            Transform[] hangarMenuTransforms = GameObjectUtils.GetAllChildTransforms(hangarLaunchMenuGO.transform);
+
+            foreach (Transform t in hangarMenuTransforms)
+            {
+                if (t.name == "LaunchShip")
+                {
+                    hangarLaunch.launchbutton = t.gameObject;
+                }
             }
 
             //This get the ship information
@@ -74,6 +88,7 @@ public static class HangarLaunchFunctions
             //This positions the ship and stores its position
             if (ship != null & hangarLaunch.startlocation != null & hangarLaunch.endlocation != null)
             {
+                SceneFunctions.ScaleGameObjectByZAxis(ship, shipType.shipLength);
                 ship.transform.parent = hangar.transform;
                 ship.transform.position = hangarLaunch.groundlocation.transform.position;
                 ship.transform.rotation = hangarLaunch.groundlocation.transform.rotation;
@@ -81,8 +96,31 @@ public static class HangarLaunchFunctions
                 GameObjectUtils.SetLayerAllChildren(ship.transform, 5);
                 hangarLaunch.ship = ship;
                 hangarLaunch.camera.transform.LookAt(hangarLaunch.ship.transform.position);
-            }
 
+
+                foreach (GameObject objectPrefab in scene.cockpitPrefabPool)
+                {
+                    if (objectPrefab.name == shipType.cockpitPrefab)
+                    {
+                        GameObject cockpit = GameObject.Instantiate(objectPrefab) as GameObject;
+                        cockpit.transform.position = ship.transform.position;
+                        cockpit.transform.parent = ship.transform;
+                        cockpit.transform.localRotation = Quaternion.identity;
+                        cockpit.SetActive(true);
+
+                        ship.layer = 0;
+                        GameObjectUtils.SetLayerAllChildren(ship.transform, 0);
+                        cockpit.layer = 5;
+                        GameObjectUtils.SetLayerAllChildren(cockpit.transform, 5);
+
+                        hangarLaunch.cockpit = cockpit;
+
+                        hangarLaunch.camera.transform.SetParent(hangarLaunch.cockpit.transform);
+                        hangarLaunch.camera.transform.localPosition = Vector3.zero;
+                        hangarLaunch.camera.transform.localRotation = Quaternion.identity;
+                    }
+                }
+            }
         }
 
         //This makes the hud invisible
@@ -92,6 +130,8 @@ public static class HangarLaunchFunctions
     //This launches the ship
     public static IEnumerator LaunchShip(HangarLaunch hangarLaunch)
     {
+        hangarLaunch.launchbutton.SetActive(false);
+
         Vector3 groundlocation = hangarLaunch.groundlocation.transform.position;
         Vector3 startPosition = hangarLaunch.startlocation.transform.position;
         Vector3 endPosition = hangarLaunch.endlocation.transform.position;
@@ -99,12 +139,30 @@ public static class HangarLaunchFunctions
         float timeElapsedA = 0;
         float lerpDurationA = 2;
 
+        if (hangarLaunch.cockpit != null)
+        {
+            hangarLaunch.ship.layer = 0;
+            GameObjectUtils.SetLayerAllChildren(hangarLaunch.ship.transform, 0);
+            hangarLaunch.cockpit.layer = 5;
+            GameObjectUtils.SetLayerAllChildren(hangarLaunch.cockpit.transform, 5);
+        }
+        else
+        {
+            hangarLaunch.camera.transform.parent = hangarLaunch.hangar.transform;
+            hangarLaunch.camera.transform.position = hangarLaunch.camera.transform.position;
+            hangarLaunch.camera.transform.rotation = hangarLaunch.camera.transform.rotation;
+        }
+
         while (timeElapsedA < lerpDurationA)
         {
             if (hangarLaunch.ship != null)
             {
+                if (hangarLaunch.cockpit == null)
+                {
+                    hangarLaunch.camera.transform.LookAt(hangarLaunch.ship.transform.position);
+                }
+
                 //This lerps the ship between two positions
-                hangarLaunch.camera.transform.LookAt(hangarLaunch.ship.transform.position);
                 hangarLaunch.ship.transform.position = Vector3.Lerp(groundlocation, startPosition, timeElapsedA / lerpDurationA);
 
                 timeElapsedA += Time.unscaledDeltaTime;
@@ -113,9 +171,9 @@ public static class HangarLaunchFunctions
             }
         }
 
-
         float timeElapsedB = 0;
         float lerpDurationB = 4;
+        bool cameraTransition = false;
         bool fade = false;
         string colour = "#000000";
 
@@ -127,7 +185,7 @@ public static class HangarLaunchFunctions
                 hangarLaunch.camera.transform.LookAt(hangarLaunch.ship.transform.position);
                 hangarLaunch.ship.transform.position = Vector3.Lerp(startPosition, endPosition, timeElapsedB / lerpDurationB);
 
-                //This makes the nose slightly dip as the ship exits
+                ////This makes the nose slightly dip as the ship exits
                 Quaternion startRotation = hangarLaunch.ship.transform.rotation;
                 Vector3 moveDir = (endPosition - startPosition).normalized;
                 Quaternion forwardRotation = Quaternion.LookRotation(moveDir, Vector3.up);
@@ -135,13 +193,33 @@ public static class HangarLaunchFunctions
                 AnimationCurve pitchCurve = null;
                 bool useCurve = pitchCurve != null;
                 float progress = Mathf.Clamp01(timeElapsedB / lerpDurationB);
-                float pitchFactor = useCurve ? pitchCurve.Evaluate(progress) : Mathf.Sin(progress * Mathf.PI);
-                float pitchAngle = -maxPitchDegrees * -pitchFactor; 
+                float pitchTiming = 0.4f;
+                pitchTiming = Mathf.Clamp01(pitchTiming);
+                float pitchProgress = Mathf.Clamp01(progress / Mathf.Max(pitchTiming, 1e-6f));
+                float pitchFactor = useCurve ? pitchCurve.Evaluate(pitchProgress) : Mathf.Sin(pitchProgress * Mathf.PI);
+                float pitchAngle = -maxPitchDegrees * -pitchFactor;
                 Quaternion pitchRotation = Quaternion.Euler(pitchAngle, 0f, 0f);
                 Quaternion targetRotationWithPitch = forwardRotation * pitchRotation;
                 hangarLaunch.ship.transform.rotation = Quaternion.Slerp(startRotation, targetRotationWithPitch, progress);
-
+                
                 timeElapsedB += Time.unscaledDeltaTime;
+
+                //This fades to black at end of cutscene
+                if (timeElapsedB > 0.25f & cameraTransition == false)
+                {
+                    if (hangarLaunch.cockpit != null)
+                    {
+                        hangarLaunch.ship.layer = 5;
+                        GameObjectUtils.SetLayerAllChildren(hangarLaunch.ship.transform, 5);
+                        hangarLaunch.cockpit.SetActive(false);
+                    }
+
+                    hangarLaunch.camera.transform.parent = hangarLaunch.hangar.transform;
+                    hangarLaunch.camera.transform.position = hangarLaunch.cameralocation.transform.position;
+                    hangarLaunch.camera.transform.rotation = hangarLaunch.cameralocation.transform.rotation;
+
+                    cameraTransition = true;
+                }
 
                 //This fades to black at end of cutscene
                 if (timeElapsedB > 2f & fade == false)

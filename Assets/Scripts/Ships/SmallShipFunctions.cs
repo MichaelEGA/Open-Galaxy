@@ -609,11 +609,11 @@ public static class SmallShipFunctions
 
         smallShip.pitchSpeed = (140f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
         smallShip.turnSpeed = (100f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
-        smallShip.rollSpeed = (160f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal);
+        smallShip.rollSpeed = (300f / 100f) * (currentManeuverablity * manveurablityPercentageAsDecimal); //160
 
         if (smallShip.spinShip == true)
         {
-            smallShip.rollSpeed = ((160f / 100f) * 100) * 2.5f * manveurablityPercentageAsDecimal;
+            smallShip.rollSpeed = ((160f / 100f) * 100) * 2.5f * manveurablityPercentageAsDecimal; //10 was 2.5f before
         }
 
     }

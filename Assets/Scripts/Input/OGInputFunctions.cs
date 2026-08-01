@@ -32,46 +32,8 @@ public static class OGInputFunctions
     //This gets the keyboard input
     public static void GetKeyboardAndMouseInput(OGInput ogInput)
     {
-        //Mouse Input
-        //var mouse = Mouse.current;
-        //float x = 0;
-        //float y = 0;
-        //float radiusWidth = Screen.width / 2;
-        //float radiusHeight = Screen.height / 2;
-
-        //if (mouse != null)
-        //{
-        //    x = mouse.position.x.ReadValue() - radiusWidth;
-        //    y = mouse.position.y.ReadValue() - radiusHeight;
-        //}
-
-        //x = x / radiusWidth;
-        //y = y / radiusHeight;
-
-        //float pitchInput = -Mathf.Clamp(y, -1.0f, 1.0f);
-        //ogInput.rollInput = -Input.GetAxis("LeftHorizontal");
-        //float turnInput = Mathf.Clamp(x, -1.0f, 1.0f);
-        //ogInput.thrustInput = Input.GetAxis("LeftVertical");
-
-        //if (ogInput.invertUpDown == true)
-        //{
-        //    ogInput.pitchInput = -pitchInput;
-        //}
-        //else
-        //{
-        //    ogInput.pitchInput = pitchInput;
-        //}
-
-        //if (ogInput.invertLeftRight == true)
-        //{
-        //    ogInput.turnInput = -turnInput;
-        //}
-        //else
-        //{
-        //    ogInput.turnInput = turnInput;
-        //}
-
-        // Then in your input update function:
+        
+        // Mouse Input function
         var mouse = Mouse.current;
         float x = 0;
         float y = 0;
@@ -137,76 +99,83 @@ public static class OGInputFunctions
     //This gets the controller input
     public static void GetControllerInput(OGInput ogInput)
     {
+        // Parameters (tweak these in inspector or as constants)
+        float deadzone = 0.12f;
+        float inputCurveExponent = 3f;    // 3 = cubic, >1 gives finer center control
+        float smoothingSpeed = 3f;        // 6 higher = snappier smoothing
+        float thrustAccel = 2.5f;         // throttle change speed (units/sec)
+        float instantStickThreshold = 0.95f; // full-stick snaps to 1/-1
+
+        // Helper: applies deadzone and an odd power curve, preserving sign
+        float ApplyResponseCurve(float v)
+        {
+            if (Mathf.Abs(v) <= deadzone) return 0f;
+            // remap so we keep continuity across deadzone
+            float sign = Mathf.Sign(v);
+            float norm = (Mathf.Abs(v) - deadzone) / (1f - deadzone); // 0..1
+            return sign * Mathf.Pow(norm, inputCurveExponent);
+        }
+
+        // Frame-rate independent smoothing factor
+        float SmoothingAlpha(float speed)
+        {
+            // speed in units/sec. Convert to per-frame alpha: 1 - exp(-speed * dt)
+            return 1f - Mathf.Exp(-speed * Time.deltaTime);
+        }
+
+        // In Update() or input method:
         var gamepad = Gamepad.current;
+        if (gamepad == null) return;
 
-        float pitchInput = ApplyInputCurve(gamepad.rightStick.y.ReadValue());
-        float rollInput = -ApplyInputCurve(gamepad.leftStick.x.ReadValue());
-        float turnInput = ApplyInputCurve(gamepad.rightStick.x.ReadValue());
+        // Read raw sticks
+        Vector2 left = gamepad.leftStick.ReadValue();
+        Vector2 right = gamepad.rightStick.ReadValue();
 
-        float smoothSpeed = 0.15f; // Smooth damping for bounce
-        ogInput.smoothedPitch = Mathf.Lerp(ogInput.smoothedPitch, pitchInput, smoothSpeed);
-        ogInput.smoothedRoll = Mathf.Lerp(ogInput.smoothedRoll, rollInput, smoothSpeed);
-        ogInput.smoothedTurn = Mathf.Lerp(ogInput.smoothedTurn, turnInput, smoothSpeed);
+        // Raw -> deadzone -> curve
+        float pitchInputRaw = ApplyResponseCurve(right.y);
+        float rollInputRaw = -ApplyResponseCurve(left.x); // keep your sign convention
+        float turnInputRaw = ApplyResponseCurve(right.x);
 
+        // Smooth (frame-rate independent)
+        float alpha = SmoothingAlpha(smoothingSpeed);
+        ogInput.smoothedPitch = Mathf.Lerp(ogInput.smoothedPitch, pitchInputRaw, alpha);
+        ogInput.smoothedRoll = Mathf.Lerp(ogInput.smoothedRoll, rollInputRaw, alpha);
+        ogInput.smoothedTurn = Mathf.Lerp(ogInput.smoothedTurn, turnInputRaw, alpha);
+
+        // Map to controller outputs (sensitivity still applies)
         ogInput.controllerPitch = ogInput.smoothedPitch * ogInput.controllerSensitivity;
         ogInput.controllerRoll = ogInput.smoothedRoll * ogInput.controllerSensitivity;
         ogInput.controllerTurn = ogInput.smoothedTurn * ogInput.controllerSensitivity;
 
-        //Thrust input and smoothing
-        if (gamepad.leftStick.y.ReadValue() > 0.95f & ogInput.controllerThrust < 1)
-        {
-            ogInput.controllerThrust = 1;
-        }
-        else if (gamepad.leftStick.y.ReadValue() < -0.95f & ogInput.controllerThrust > -1)
-        {
-            ogInput.controllerThrust = -1;
-        }
-        else if (gamepad.leftStick.y.ReadValue() > -0.95f & gamepad.leftStick.y.ReadValue() < 0.95f)
-        {
-            ogInput.controllerThrust = 0;
-        }
+        // Throttle: use analog smoothing and instant-snap at full stick
+        float rawThrottle = left.y; // -1..1
+        float targetThrottle;
+        if (rawThrottle >= instantStickThreshold) targetThrottle = 1f;
+        else if (rawThrottle <= -instantStickThreshold) targetThrottle = -1f;
+        else targetThrottle = Mathf.Abs(rawThrottle) > deadzone ? rawThrottle : 0f;
 
-        //Actual ship inputs
-        if (ogInput.invertUpDown == true)
-        {
-            ogInput.pitchInput = ogInput.controllerPitch;
-        }
-        else
-        {
-            ogInput.pitchInput = -ogInput.controllerPitch;
-        }
+        // Smooth throttle with acceleration (frame-rate independent)
+        ogInput.controllerThrust = Mathf.MoveTowards(ogInput.controllerThrust, targetThrottle, thrustAccel * Time.deltaTime);
 
-        if (ogInput.invertLeftRight == true)
-        {
-            ogInput.turnInput = -ogInput.controllerTurn;
-        }
-        else
-        {
-            ogInput.turnInput = ogInput.controllerTurn;
-        }
-
+        // Map to final ship inputs (with inversion)
+        ogInput.pitchInput = ogInput.invertUpDown ? ogInput.controllerPitch : -ogInput.controllerPitch;
+        ogInput.turnInput = ogInput.invertLeftRight ? -ogInput.controllerTurn : ogInput.controllerTurn;
         ogInput.thrustInput = ogInput.controllerThrust;
         ogInput.rollInput = ogInput.controllerRoll;
 
-        //Button inputs
+        // Button inputs (fix boolean operator)
         if (ogInput.missionManager == null)
-        {
             ogInput.missionManager = MissionFunctions.GetMissionManager();
-        }
 
-        if (ogInput.missionManager != null)
+        if (ogInput.missionManager != null && ogInput.missionManager.controlsReleased)
         {
-            if (ogInput.missionManager.controlsReleased == true) //This checks that the controls aren't being used by the choice node
-            {
-                ogInput.powerToShields = gamepad.dpad.left.isPressed;
-                ogInput.powerToEngine = gamepad.dpad.up.isPressed;
-                ogInput.powerToLasers = gamepad.dpad.right.isPressed;
-                ogInput.resetPowerLevels = gamepad.dpad.down.isPressed;
-            }
+            ogInput.powerToShields = gamepad.dpad.left.isPressed;
+            ogInput.powerToEngine = gamepad.dpad.up.isPressed;
+            ogInput.powerToLasers = gamepad.dpad.right.isPressed;
+            ogInput.resetPowerLevels = gamepad.dpad.down.isPressed;
         }
 
         ogInput.getNextTarget = gamepad.leftShoulder.isPressed;
-        //ogInput.getNextEnemy = gamepad.xButton.isPressed;
         ogInput.getClosestEnemy = gamepad.xButton.isPressed;
         ogInput.selectTargetInFront = gamepad.yButton.isPressed;
         ogInput.fireWeapon = gamepad.rightTrigger.isPressed;

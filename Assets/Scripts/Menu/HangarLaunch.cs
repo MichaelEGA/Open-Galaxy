@@ -6,8 +6,11 @@ public class HangarLaunch : MonoBehaviour
     public GameObject startlocation;
     public GameObject endlocation;
     public GameObject groundlocation;
+    public GameObject cameralocation;
     public GameObject camera;
     public GameObject hangar;
+    public GameObject cockpit;
+    public GameObject launchbutton;
 
     public void CloseHangarLaunch()
     {

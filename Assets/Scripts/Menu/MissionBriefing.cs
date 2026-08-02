@@ -22,6 +22,6 @@ public class MissionBriefing : MonoBehaviour
 
     public void StartGame()
     {
-        MissionBriefingFunctions.DeactivateMissionBriefing(this);
+        MissionBriefingFunctions.CloseMissionBriefing(this);
     }
 }

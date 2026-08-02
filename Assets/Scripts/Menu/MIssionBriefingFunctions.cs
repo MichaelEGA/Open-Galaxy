@@ -7,7 +7,7 @@ public static class MissionBriefingFunctions
 {
 
     //This activates the mission briefing when called by a mission event
-    public static IEnumerator ActivateMissionBriefing(string briefingText, string audioName, string internalAudioFile, bool distortion, float distortionLevel, string model, bool noZoom = false)
+    public static IEnumerator DisplayMissionBriefing(string briefingText, string audioName, string internalAudioFile, bool distortion, float distortionLevel, string model, bool noZoom = false)
     {
         //This gets the scene reference
         Scene scene = SceneFunctions.GetScene();
@@ -84,11 +84,11 @@ public static class MissionBriefingFunctions
 
         if (audioName != "none" & internalAudioFile != "true")
         {
-            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audioName, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
+            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audioName, "UI", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
         }
         else if (audioName != "none" & internalAudioFile == "true")
         {
-            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audioName, "Voice", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
+            missionBriefingAudio = AudioFunctions.PlayMissionAudioClip(null, audioName, "UI", new Vector3(0, 0, 0), 0, 1, 500, 1f, 1, distortion, distortionLevel, true);
         }
 
         missionBriefing.missionBriefingAudio = missionBriefingAudio;
@@ -109,7 +109,7 @@ public static class MissionBriefingFunctions
     }
 
     //This deactivates the menu and sets the time scale to zero so the player can start playing the game
-    public static void DeactivateMissionBriefing(MissionBriefing missionBriefing)
+    public static void CloseMissionBriefing(MissionBriefing missionBriefing)
     {
         MissionFunctions.ResumeGame(2);
 

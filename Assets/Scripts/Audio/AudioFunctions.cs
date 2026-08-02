@@ -624,6 +624,11 @@ public static class AudioFunctions
             audioManager.audioMixer.GetFloat(groupName, out audioManager.explosionsSavedVolume);
             audioManager.audioMixer.SetFloat(groupName, -80);
         }
+        else if (groupName == "uivolume")
+        {
+            audioManager.audioMixer.GetFloat(groupName, out audioManager.explosionsSavedVolume);
+            audioManager.audioMixer.SetFloat(groupName, -80);
+        }
     }
 
     //This unmutes selected audio
@@ -649,6 +654,10 @@ public static class AudioFunctions
             audioManager.audioMixer.SetFloat(groupName, audioManager.engineSavedVolume);
         }
         else if (groupName == "explosionsvolume")
+        {
+            audioManager.audioMixer.SetFloat(groupName, audioManager.explosionsSavedVolume);
+        }
+        else if (groupName == "uivolume")
         {
             audioManager.audioMixer.SetFloat(groupName, audioManager.explosionsSavedVolume);
         }

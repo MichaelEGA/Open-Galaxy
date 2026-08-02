@@ -1990,7 +1990,7 @@ public static class MissionFunctions
 
         string model = missionEvent.data6;
 
-        Task a = new Task(MissionBriefingFunctions.ActivateMissionBriefing(message, audio, internalAudioFile, distortion, distortionLevel, model));
+        Task a = new Task(MissionBriefingFunctions.DisplayMissionBriefing(message, audio, internalAudioFile, distortion, distortionLevel, model));
     }
 
     //This checks what the player has chosen
@@ -4643,7 +4643,6 @@ public static class MissionFunctions
             Cursor.lockState = CursorLockMode.None;
         }
 
-        //This mutes game sounds
         AudioFunctions.MuteSelectedAudio("voicevolume");
         AudioFunctions.MuteSelectedAudio("externalvolume");
         AudioFunctions.MuteSelectedAudio("enginevolume");

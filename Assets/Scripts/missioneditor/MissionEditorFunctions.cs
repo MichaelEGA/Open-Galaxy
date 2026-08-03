@@ -2074,7 +2074,6 @@ public static class MissionEditorFunctions
     public static void ScaleGrid(MissionEditor missionEditor)
     {
         bool scalingActive = true;
-        bool scaling = false;
 
         //Checks whether mouse is in position to scale
         foreach (Window window in missionEditor.windows)

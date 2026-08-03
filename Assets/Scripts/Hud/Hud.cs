@@ -55,7 +55,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public RawImage shieldRearOutside;
 
     [Header("Counter Measure System")]
-    [HideInInspector] public Text counterMeasureWarning;
+    [HideInInspector] public Text objectiveIndicator;
 
     [Header("Target Information")]
     public AudioSource lockBeep;
@@ -81,6 +81,7 @@ public class Hud : MonoBehaviour
     [Header("Ship Log")]
     [HideInInspector] public Text shipLog;
     [HideInInspector] public Text objectiveLog;
+    [HideInInspector] public Task objectiveIndicatorTask;
 
     [Header("Moving Reticule")]
     [HideInInspector] public RawImage movingReticleImage;
@@ -140,7 +141,6 @@ public class Hud : MonoBehaviour
     {
         HudFunctions.UpdateKeyReferences(this);
 
-        HudFunctions.DisplayShipInfo(this);
         HudFunctions.DisplayShieldMeter(this);
         HudFunctions.DisplayEngineMeter(this);
         HudFunctions.DisplayLaserMeter(this);

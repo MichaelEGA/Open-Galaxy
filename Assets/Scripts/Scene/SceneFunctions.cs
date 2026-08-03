@@ -1150,8 +1150,6 @@ public static class SceneFunctions
         //This gets the ship prefab from the pool
         foreach (GameObject objectPrefab in scene.shipsPrefabPool)
         {
-            Debug.Log(objectPrefab.name + " vs " + name);
-
             if (objectPrefab.name == name)
             {
                 tempPrefab = objectPrefab;

@@ -3879,6 +3879,7 @@ public static class MissionFunctions
 
                 missionManager.objectiveList = newObjectiveList.ToArray();
 
+                HudFunctions.ObjectiveIndicator(missionEvent.data2);
                 HudFunctions.UpdateObjectives(missionManager.objectiveList);
                 HudFunctions.AddToShipLog("NEW OBJECTIVE: " + objective);
             }

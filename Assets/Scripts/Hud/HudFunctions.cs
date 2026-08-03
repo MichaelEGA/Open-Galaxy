@@ -152,30 +152,6 @@ public static class HudFunctions
 
     #region current main ship display
 
-    //Display ship info
-    public static void DisplayShipInfo(Hud hud)
-    {
-        //This looks for the ship info object to see if they have been loaded into the hud or not
-        if (hud.shipInfo == null)
-        {
-            GameObject shipInfo = GameObject.Find("ShipInfo");
-            if (shipInfo != null) { hud.shipInfo = shipInfo.GetComponent<Text>(); }
-        }
-
-        if (hud.shipName == null)
-        {
-            GameObject shipName = GameObject.Find("ShipName");
-            if (shipName != null) { hud.shipName = shipName.GetComponent<Text>(); }
-        }
-
-        //This displays the ships info
-        if (hud.shipInfo != null & hud.shipName != null & hud.smallShip != null & Time.timeScale != 0)
-        {
-            hud.shipInfo.text = "FLYING " + hud.smallShip.allegiance.ToUpper() + " " + hud.smallShip.type.ToUpper();
-            hud.shipName.text = hud.smallShip.name.ToUpper();
-        }
-    }
-
     //Display preview of ship
     public static void DisplayShipPreview(Hud hud)
     {
@@ -617,46 +593,9 @@ public static class HudFunctions
 
     #endregion
 
-    #region counter measure display
+    #region objectives and counter measure display
 
-    //Display ship info
-    public static void DisplayCounterMeasureWarning(Hud hud, float distance)
-    {
-        //This looks for the ship info object to see if they have been loaded into the hud or not
-        if (hud.counterMeasureWarning == null)
-        {
-            GameObject counterMeasureGO = GameObject.Find("CounterMeasureWarning");
-            if (counterMeasureGO != null) { hud.counterMeasureWarning = counterMeasureGO.GetComponent<Text>(); }
-        }
-
-        //This displays the counter measure warning
-        if (hud.counterMeasureWarning != null)
-        {
-            if (distance > 1000)
-            {
-                hud.counterMeasureWarning.text = "WARNING TORPEDO LOCKED \n" + distance;
-            }
-            else
-            {
-                hud.counterMeasureWarning.text = "FIRE COUNTERMEASURE! \n" + distance;
-            }
-        }
-    }
-
-    public static void ClearCounterMeasureWarning(Hud hud)
-    {
-        if (hud.counterMeasureWarning == null)
-        {
-            GameObject counterMeasureGO = GameObject.Find("CounterMeasureWarning");
-            if (counterMeasureGO != null) { hud.counterMeasureWarning = counterMeasureGO.GetComponent<Text>(); }
-        }
-
-        //This clears the counter measure warning
-        if (hud.counterMeasureWarning != null)
-        {
-            hud.counterMeasureWarning.text = "";
-        }
-    }
+    
 
     #endregion
 
@@ -2047,7 +1986,7 @@ public static class HudFunctions
 
     #endregion
 
-    #region ship log
+    #region player information
 
     //This adds a message to the ship log
     public static void AddToShipLog(string message)
@@ -2105,9 +2044,125 @@ public static class HudFunctions
         }      
     }
 
-    #endregion
+    //Display ship info
+    public static void DisplayCounterMeasureWarning(Hud hud, float distance)
+    {
+        //This looks for the ship info object to see if they have been loaded into the hud or not
+        if (hud.objectiveIndicator == null)
+        {
+            GameObject counterMeasureGO = GameObject.Find("ObjectiveIndicator");
+            if (counterMeasureGO != null) { hud.objectiveIndicator = counterMeasureGO.GetComponent<Text>(); }
+        }
 
-    #region player information
+        //This displays the counter measure warning
+        if (hud.objectiveIndicator != null)
+        {
+            if (distance > 1000)
+            {
+                hud.objectiveIndicator.text = "WARNING TORPEDO LOCKED \n" + distance;
+            }
+            else
+            {
+                hud.objectiveIndicator.text = "FIRE COUNTERMEASURE! \n" + distance;
+            }
+        }
+    }
+
+    public static void ClearCounterMeasureWarning(Hud hud)
+    {
+        if (hud.objectiveIndicator == null)
+        {
+            GameObject counterMeasureGO = GameObject.Find("CounterMeasureWarning");
+            if (counterMeasureGO != null) { hud.objectiveIndicator = counterMeasureGO.GetComponent<Text>(); }
+        }
+
+        //This clears the counter measure warning
+        if (hud.objectiveIndicator != null)
+        {
+            hud.objectiveIndicator.text = "";
+        }
+    }
+
+    //This briefing diplays the new objectives and important information
+    public static void ObjectiveIndicator(string message)
+    {
+        if (Time.timeScale != 0)
+        {
+            Hud hud = GetHud();
+
+            if (hud != null)
+            {
+                if (hud.objectiveIndicator == null)
+                {
+                    GameObject counterMeasureGO = GameObject.Find("ObjectiveIndicator");
+                    if (counterMeasureGO != null) { hud.objectiveIndicator = counterMeasureGO.GetComponent<Text>(); }
+                }
+
+                if (hud.objectiveIndicator != null)
+                {
+                    hud.objectiveIndicator.text = message;
+                }
+
+                hud.objectiveIndicatorTask = new Task(FlashObjectiveText());
+                
+            }
+        }
+    }
+
+    public static IEnumerator FlashObjectiveText()
+    {
+        Hud hud = GetHud();
+
+        if (hud != null)
+        {
+            float fadeTime = 0.25f;
+            float delayTime = fadeTime * 2;
+
+            Task a = new Task(FadeInText(hud.objectiveIndicator, fadeTime));
+
+            yield return new WaitForSeconds(delayTime);
+
+            Task b = new Task(FadeOutText(hud.objectiveIndicator, fadeTime));
+
+            yield return new WaitForSeconds(delayTime);
+
+            Task c = new Task(FadeInText(hud.objectiveIndicator, fadeTime));
+
+            yield return new WaitForSeconds(delayTime);
+
+            Task d = new Task(FadeOutText(hud.objectiveIndicator, fadeTime));
+
+            yield return new WaitForSeconds(delayTime);
+
+            Task e = new Task(FadeInText(hud.objectiveIndicator, fadeTime));
+
+            yield return new WaitForSeconds(delayTime);
+
+            Task f = new Task(FadeOutText(hud.objectiveIndicator, fadeTime));
+
+            yield return new WaitForSeconds(delayTime);
+
+            Task g = new Task(FadeInText(hud.objectiveIndicator, fadeTime));
+
+            yield return new WaitForSeconds(delayTime);
+
+            Task h = new Task(FadeOutText(hud.objectiveIndicator, fadeTime));
+
+            yield return new WaitForSeconds(delayTime);
+
+            Task i = new Task(FadeInText(hud.objectiveIndicator, fadeTime));
+
+            yield return new WaitForSeconds(delayTime);
+
+            Task j = new Task(FadeOutText(hud.objectiveIndicator, fadeTime));
+
+            yield return new WaitForSeconds(delayTime);
+
+            hud.objectiveIndicator.text = "";
+        }
+
+        yield return null;
+    }
 
     //This briefly displays a message in large text in the middle of the screen
     public static void DisplayTitle(string title)
@@ -2651,7 +2706,7 @@ public static class HudFunctions
         }
     }
 
-    //This fades an image in and out
+    //This fades an text in and out
     public static IEnumerator FadeTextInAndOut(Text text, float fadeintime = 0.5f, float holdtime = 1, float fadeOuttime = 0.5f)
     {
         Hud hud = GetHud();

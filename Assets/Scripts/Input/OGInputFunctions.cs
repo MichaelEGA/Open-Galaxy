@@ -101,19 +101,32 @@ public static class OGInputFunctions
     {
         // Parameters (tweak these in inspector or as constants)
         float deadzone = 0.12f;
-        float inputCurveExponent = 3f;    // 3 = cubic, >1 gives finer center control
-        float smoothingSpeed = 3f;        // 6 higher = snappier smoothing
+        float inputCurveExponent = 3f;    // pitch/turn exponent
+        float smoothingSpeed = 3f;        // pitch/turn smoothing (units/sec)
         float thrustAccel = 2.5f;         // throttle change speed (units/sec)
         float instantStickThreshold = 0.95f; // full-stick snaps to 1/-1
+
+        // Roll-specific tuning (make roll snappier)
+        float rollSmoothingSpeed = 8f;          // higher = snappier roll
+        float rollInputCurveExponent = 1.8f;    // closer to 1 = more linear/instant near center
+        float rollSensitivityMultiplier = 1.2f; // optional extra roll sensitivity
 
         // Helper: applies deadzone and an odd power curve, preserving sign
         float ApplyResponseCurve(float v)
         {
             if (Mathf.Abs(v) <= deadzone) return 0f;
-            // remap so we keep continuity across deadzone
             float sign = Mathf.Sign(v);
             float norm = (Mathf.Abs(v) - deadzone) / (1f - deadzone); // 0..1
             return sign * Mathf.Pow(norm, inputCurveExponent);
+        }
+
+        // Overload for roll to allow a different exponent
+        float ApplyResponseCurveRoll(float v, float exponent)
+        {
+            if (Mathf.Abs(v) <= deadzone) return 0f;
+            float sign = Mathf.Sign(v);
+            float norm = (Mathf.Abs(v) - deadzone) / (1f - deadzone); // 0..1
+            return sign * Mathf.Pow(norm, exponent);
         }
 
         // Frame-rate independent smoothing factor
@@ -133,18 +146,28 @@ public static class OGInputFunctions
 
         // Raw -> deadzone -> curve
         float pitchInputRaw = ApplyResponseCurve(right.y);
-        float rollInputRaw = -ApplyResponseCurve(left.x); // keep your sign convention
+        float rollInputRaw = -ApplyResponseCurveRoll(left.x, rollInputCurveExponent); // roll uses custom exponent and original sign convention
         float turnInputRaw = ApplyResponseCurve(right.x);
 
-        // Smooth (frame-rate independent)
+        // Smooth (frame-rate independent) for pitch/turn
         float alpha = SmoothingAlpha(smoothingSpeed);
         ogInput.smoothedPitch = Mathf.Lerp(ogInput.smoothedPitch, pitchInputRaw, alpha);
-        ogInput.smoothedRoll = Mathf.Lerp(ogInput.smoothedRoll, rollInputRaw, alpha);
         ogInput.smoothedTurn = Mathf.Lerp(ogInput.smoothedTurn, turnInputRaw, alpha);
 
-        // Map to controller outputs (sensitivity still applies)
+        // Roll: use its own alpha for snappier response
+        float alphaRoll = SmoothingAlpha(rollSmoothingSpeed);
+        ogInput.smoothedRoll = Mathf.Lerp(ogInput.smoothedRoll, rollInputRaw, alphaRoll);
+
+        // Optional: instant full-stick snap for roll (keeps snappy feel when player hits full deflection)
+        if (Mathf.Abs(left.x) >= instantStickThreshold)
+        {
+            // preserve the processed roll sign (rollInputRaw already includes sign)
+            ogInput.smoothedRoll = Mathf.Sign(rollInputRaw);
+        }
+
+        // Map to controller outputs (sensitivity still applies). Roll gets its multiplier.
         ogInput.controllerPitch = ogInput.smoothedPitch * ogInput.controllerSensitivity;
-        ogInput.controllerRoll = ogInput.smoothedRoll * ogInput.controllerSensitivity;
+        ogInput.controllerRoll = ogInput.smoothedRoll * ogInput.controllerSensitivity * rollSensitivityMultiplier;
         ogInput.controllerTurn = ogInput.smoothedTurn * ogInput.controllerSensitivity;
 
         // Throttle: use analog smoothing and instant-snap at full stick
@@ -163,7 +186,7 @@ public static class OGInputFunctions
         ogInput.thrustInput = ogInput.controllerThrust;
         ogInput.rollInput = ogInput.controllerRoll;
 
-        // Button inputs (fix boolean operator)
+        // Button inputs (unchanged)
         if (ogInput.missionManager == null)
             ogInput.missionManager = MissionFunctions.GetMissionManager();
 

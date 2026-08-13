@@ -3,7 +3,7 @@
 Gameplay
 <img width="1491" height="831" alt="Screenshot 2025-11-25 101813" src="https://github.com/user-attachments/assets/4eaaa4bd-c0e6-455c-a1f7-55c9da69f3f2" />
 
-![Screenshot 2025-06-24 142541](https://github.com/user-attachments/assets/482729b3-fdd5-4fcd-8f80-5b0a160e024b)
+<img width="1919" height="1079" alt="Screenshot 2026-08-10 213233" src="https://github.com/user-attachments/assets/381ead54-2bf8-4111-94c6-ec5422be31ac" />
 
 Mission Editor
 ![Screenshot 2025-06-24 142933](https://github.com/user-attachments/assets/3fc87dc7-f60d-46ec-8716-fe9d89b9d4b0)

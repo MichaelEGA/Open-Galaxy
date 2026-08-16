@@ -6,8 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
-using static UnityEditor.Searcher.SearcherWindow;
+
 
 public static class MissionEditorFunctions
 {
@@ -16,9 +15,9 @@ public static class MissionEditorFunctions
 
     public static void Draw_MissionEditor(MissionEditor missionEditor)
     {
+        Draw_NodeBar(missionEditor);
         Draw_MenuBar(missionEditor);
         Draw_InfoBar(missionEditor);
-        Draw_NodeBar(missionEditor);
         Draw_ScaleIndicator(missionEditor);
         Draw_MesssageTextBox(missionEditor);
         Draw_CurrentFileTextBox(missionEditor);
@@ -161,28 +160,65 @@ public static class MissionEditorFunctions
     public static void Draw_NodeBar(MissionEditor missionEditor)
     {
         //This draws the input label
-        GameObject nodeBarGO = new GameObject();
-        nodeBarGO.name = "Node Bar";
+        GameObject baseGO = new GameObject();
+        GameObject viewportGO = new GameObject();
+        GameObject contentGO = new GameObject();
 
-        nodeBarGO.transform.SetParent(missionEditor.transform);
-        RectTransform rectTransform = nodeBarGO.AddComponent<RectTransform>();
-        rectTransform.anchorMin = new Vector2(0, 0.5f);
-        rectTransform.anchorMax = new Vector2(0, 0.5f);
-        rectTransform.pivot = new Vector2(0, 0.5f);
-        rectTransform.anchoredPosition = new Vector2(0, 0);
-        rectTransform.sizeDelta = new Vector2(74.63721f, 244.72f);
-        rectTransform.localScale = new Vector3(1, 1, 1);
+        baseGO.transform.SetParent(missionEditor.transform);
+        viewportGO.transform.SetParent(baseGO.transform);
+        contentGO.transform.SetParent(viewportGO.transform);
 
-        missionEditor.nodeBarRectTransform = rectTransform;
+        RectTransform baseRectTransform = baseGO.AddComponent<RectTransform>();
+        RectTransform viewportRectTransform = viewportGO.AddComponent<RectTransform>();
+        RectTransform contentRectTransform = contentGO.AddComponent<RectTransform>();
 
-        Image image = nodeBarGO.AddComponent<Image>();
+        baseRectTransform.name = "Node Bar";
+        viewportRectTransform.name = "Viewport";
+        contentRectTransform.name = "ContentRect";
 
-        Color color = Color.red;
+        baseRectTransform.anchorMin = new Vector2(0, 0);
+        baseRectTransform.anchorMax = new Vector2(0, 1);
+        baseRectTransform.pivot = new Vector2(0, 0.5f);
+        baseRectTransform.anchoredPosition = new Vector2(0, 0);
+        baseRectTransform.sizeDelta = new Vector2(74.63721f, 244.72f);
+        baseRectTransform.localScale = new Vector3(1, 1, 1);
+
+        viewportRectTransform.anchorMax = new Vector2(0, 1);
+        viewportRectTransform.anchorMin = new Vector2(0, 0);
+        viewportRectTransform.pivot = new Vector2(0, 0.5f);
+        viewportRectTransform.anchoredPosition = new Vector2(0, 0);
+        viewportRectTransform.sizeDelta = new Vector2(74.63721f, 244.72f);
+        viewportRectTransform.localScale = new Vector3(1, 1, 1);
+
+        contentRectTransform.anchorMax = new Vector2(0, 1);
+        contentRectTransform.anchorMin = new Vector2(0, 1);
+        contentRectTransform.pivot = new Vector2(0, 1);
+        contentRectTransform.anchoredPosition = new Vector2(0, 0);
+        contentRectTransform.sizeDelta = new Vector2(74.63721f, 244.72f*2);
+        contentRectTransform.localScale = new Vector3(1, 1, 1);
+
+        missionEditor.nodeBarRectTransform = contentRectTransform;
+
+        Image maskImage = viewportGO.AddComponent<Image>();
+        maskImage.type = Image.Type.Sliced;
+        maskImage.pixelsPerUnitMultiplier = 30;
+
+        Color color = Color.black;
 
         if (ColorUtility.TryParseHtmlString("#5B5A5A", out color))
         {
-            image.color = color;
+            maskImage.color = color;
         }
+
+        Mask mask = viewportGO.AddComponent<Mask>();
+
+        ScrollRect scrollRect = baseGO.AddComponent<ScrollRect>();
+        scrollRect.content = contentRectTransform;
+        scrollRect.viewport = viewportRectTransform;
+        scrollRect.horizontal = false;
+        scrollRect.inertia = false;
+        scrollRect.elasticity = 0;
+        scrollRect.scrollSensitivity = 10;
     }
 
     public static void Draw_MainMenu(MissionEditor missionEditor)
@@ -2360,11 +2396,22 @@ public static class MissionEditorFunctions
     {
         if (missionEditor.nodes != null)
         {
-            if (missionEditor.nodeCount !=  missionEditor.nodes.Count)
+            float nodeNumber = 0;
+
+            foreach (Node node in missionEditor.nodes)
+            {
+                if (node != null)
+                {
+                    nodeNumber += 1;
+                }
+            }
+
+            if (missionEditor.nodeCount != nodeNumber)
             {
                 ClearNodeBar(missionEditor);
 
-                float buttonDrop = 0;
+                float buttonDrop = -1;
+                float nodeCount = 0;
 
                 foreach(Node node in missionEditor.nodes)
                 {
@@ -2372,11 +2419,14 @@ public static class MissionEditorFunctions
                     {
                         LoadNodeBarButton(missionEditor, node, buttonDrop);
 
-                        buttonDrop -= 12;
+                        buttonDrop -= 9;
+                        nodeCount += 1;
                     }
                 }
 
-                missionEditor.nodeCount = missionEditor.nodes.Count;
+                missionEditor.nodeBarRectTransform.sizeDelta = new Vector2(missionEditor.nodeBarRectTransform.sizeDelta.x, -buttonDrop);
+
+                missionEditor.nodeCount = nodeNumber;
             }
         }
     }
@@ -2403,8 +2453,27 @@ public static class MissionEditorFunctions
         GameObject buttonGO = new GameObject();
         GameObject buttonTextGO = new GameObject();
 
+        string buttonName = "";
+
         //This names the button gameobject
-        buttonGO.name = " Event: " + node.eventID + " " + node.eventType;
+        if (node.eventID != null & node.eventType != null)
+        {
+            if (node.eventID.text != null & node.eventType.text != null)
+            {
+                buttonName = node.eventID.text + " " + node.eventType.text;
+            }
+        }
+
+        if (node.eventID == null & node.eventType != null)
+        {
+            if (node.eventType.text != null)
+            {
+                buttonName = node.eventType.text;
+            }
+        }
+
+        buttonGO.name = buttonName;
+        buttonTextGO.name = buttonName + "_text";
 
         //This adds the button to the list
         missionEditor.nodeBarButtons.Add(buttonGO);
@@ -2418,8 +2487,8 @@ public static class MissionEditorFunctions
         rectTransform1.anchorMax = new Vector2(0, 1);
         rectTransform1.anchorMin = new Vector2(0, 1);
         rectTransform1.pivot = new Vector2(0, 1);
-        rectTransform1.anchoredPosition = new Vector2(0, buttonDrop);
-        rectTransform1.sizeDelta = new Vector2(70, 12);
+        rectTransform1.anchoredPosition = new Vector2(2, buttonDrop);
+        rectTransform1.sizeDelta = new Vector2(70, 8);
         rectTransform1.localScale = new Vector3(1, 1, 1);
 
         //This creates the rect transform for the button text
@@ -2427,26 +2496,27 @@ public static class MissionEditorFunctions
         rectTransform2.anchorMax = new Vector2(0, 1);
         rectTransform2.anchorMin = new Vector2(0, 1);
         rectTransform2.pivot = new Vector2(0, 1);
-        rectTransform2.anchoredPosition = new Vector2(0, 0);
-        rectTransform2.sizeDelta = new Vector2(70, 12);
+        rectTransform2.anchoredPosition = new Vector2(1, 0);
+        rectTransform2.sizeDelta = new Vector2(70, 8);
         rectTransform2.localScale = new Vector3(1, 1, 1);
 
         //This adds the text component
         Text text = buttonTextGO.AddComponent<Text>();
         text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        text.fontSize = 12;
-        text.text = " Event: " + node.eventID + " " + node.eventType;
-        text.alignment = TextAnchor.MiddleCenter;
-        text.color = Color.black;
+        text.fontSize = 5;
+        text.text = buttonName;
+        text.alignment = TextAnchor.MiddleLeft;
+        text.color = Color.white;
 
         //This sets the buton color
         Image buttonImage = buttonGO.AddComponent<Image>();
-        buttonImage.color = Color.white;
+        buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
+        buttonImage.type = Image.Type.Sliced;
+        buttonImage.pixelsPerUnitMultiplier = 40; //5
+        buttonImage.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
 
         Button button = buttonGO.AddComponent<Button>();
         button.targetGraphic = buttonImage;
-
-        Color color = Color.white;
     }
 
     #endregion

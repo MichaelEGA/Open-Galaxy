@@ -898,7 +898,7 @@ public static class WindowFunctions
         DrawVerticalScrollBar(baseGO.transform, scrollRect, 5);
     }
 
-    //This draws a field with scollable test
+    //This draws a field with scollable text
     public static void DrawScrollableText(Window window, float xPos, float yPos, float height, float width, int fontSize, string text, float textBoxHeight, string textBoxName = "textbox")
     {
         //This draws the scrollview

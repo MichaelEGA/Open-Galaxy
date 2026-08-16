@@ -1539,11 +1539,13 @@ public static class MissionEditorFunctions
         float number = mission.missionEventData.Length * 2;
         float count = 0;
 
+        yield return null;
+
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
             Node node = AddNode(missionEvent.eventType, true, missionEvent.nodePosX, missionEvent.nodePosY);
 
-            yield return null;
+            NodeFunctions.IntialiseNode(node);
 
             InputData(node.eventID, missionEvent.eventID);
             InputData(node.eventType, missionEvent.eventType);
@@ -1608,7 +1610,9 @@ public static class MissionEditorFunctions
                                 firstNode.maleNodeLinks[0].connectedNode = nextEvent1.femaleNodeLink;
                             }
                         }
+
                     }
+
 
                     if (missionEvent.nextEvent2 != "none" & firstNode.maleNodeLinks.Count > 1)
                     {
@@ -1654,8 +1658,6 @@ public static class MissionEditorFunctions
             float percentage = (count / number) * 100;
             DisplayMessage("Loading " + percentage.ToString("00") + "% Complete");
             count++;
-
-            yield return null;
         }
 
         //This modifies the caret position to ensure that they display on top of the nodes and not behind them
@@ -1669,12 +1671,13 @@ public static class MissionEditorFunctions
     {
         float number = mission.missionEventData.Length * 2;
         float count = 0;
+        float pauseCount = 0;
 
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
             Node node = AddNode(missionEvent.eventType, true, missionEvent.nodePosX, missionEvent.nodePosY);
 
-            yield return null;
+            NodeFunctions.IntialiseNode(node);
 
             InputData(node.eventID, missionEvent.eventID);
             InputData(node.eventType, missionEvent.eventType);
@@ -1754,6 +1757,14 @@ public static class MissionEditorFunctions
                 }
             }
 
+            pauseCount++;
+
+            if (pauseCount == 100)
+            {
+                pauseCount = 0;
+                yield return null;
+            }
+
             //This caluclates the merging completion rate
             float percentage = (count / number) * 100;
             DisplayMessage("Merging " + percentage.ToString("00") + "% Complete");
@@ -1824,11 +1835,17 @@ public static class MissionEditorFunctions
                 }
             }
 
+            pauseCount++;
+
+            if (pauseCount == 100)
+            {
+                pauseCount = 0;
+                yield return null;
+            }
+
             float percentage = (count / number) * 100;
             DisplayMessage("Merging " + percentage.ToString("00") + "% Complete");
             count++;
-
-            yield return null;
         }
 
         //This modifies the caret position to ensure that they display on top of the nodes and not behind them
@@ -1848,6 +1865,7 @@ public static class MissionEditorFunctions
 
         float number = clipBoardMissionData.missionEventData.Length * 2;
         float count = 0;
+        float pauseCount = 0;
 
         List<Node> pasteNodeList = new List<Node>();
 
@@ -1895,8 +1913,6 @@ public static class MissionEditorFunctions
 
             Node node = AddNode(missionEvent.eventType, true, position.x, position.y);
 
-            yield return null;
-
             InputData(node.eventID, missionEvent.eventID);
             InputData(node.eventType, missionEvent.eventType);
             InputData(node.conditionTime, missionEvent.conditionTime.ToString());
@@ -1935,6 +1951,14 @@ public static class MissionEditorFunctions
             node.nodePosY = position.y;
 
             pasteNodeList.Add(node);
+
+            pauseCount++;
+
+            if (pauseCount == 100)
+            {
+                pauseCount = 0;
+                yield return null;
+            }
 
             float percentage = (count / number) * 100;
             DisplayMessage("Pasting " + percentage.ToString("00") + "% Complete");
@@ -2004,11 +2028,17 @@ public static class MissionEditorFunctions
                 }
             }
 
+            pauseCount++;
+
+            if (pauseCount == 100)
+            {
+                pauseCount = 0;
+                yield return null;
+            }
+
             float percentage = (count / number) * 100;
             DisplayMessage("Pasting " + percentage.ToString("00") + "% Complete");
             count++;
-
-            yield return null;
         }
 
         //This gives the pasted nodes a new ID

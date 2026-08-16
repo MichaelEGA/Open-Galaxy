@@ -7,6 +7,13 @@ public class NodeFunctions : MonoBehaviour
 {
     #region select node functions
 
+    //Intialise node
+    public static void IntialiseNode(Node node)
+    {
+        NodeFunctions.SelectNodeToDraw(node);
+        NodeFunctions.GetUniqueNodeID(node);
+    }
+
     //This selects and draws the chosen node type
     public static void SelectNodeToDraw(Node node)
     {
@@ -1126,6 +1133,8 @@ public class NodeFunctions : MonoBehaviour
         NodeLink nodeLink = nodeLinkGO.AddComponent<NodeLink>();
         nodeLink.node = node;
         nodeLink.mode = mode;
+        nodeLink.IntialiseLink();
+
         
         if (mode == "male")
         {
@@ -1194,7 +1203,7 @@ public class NodeFunctions : MonoBehaviour
 
             textbox = text2;
             nodeLink.textbox = text2;
-        }    
+        }
 
         return textbox;
     }

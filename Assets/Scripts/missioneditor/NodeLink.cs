@@ -15,23 +15,11 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
 
     MissionEditor missionEditor;
     Vector2 targetPosition;
-    bool dragging;
-    bool distanceChecked;
-    bool clickReleased;
+    bool dragging = false;
+    bool distanceChecked = true;
+    bool clickReleased = true;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        missionEditor = MissionEditorFunctions.GetMissionEditor();
-
-        if (missionEditor.nodeLinks == null)
-        {
-            missionEditor.nodeLinks = new List<NodeLink>();
-        }
-
-        missionEditor.nodeLinks.Add(this);
-    }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -43,6 +31,18 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
         {
             textbox.text = "";
         }
+    }
+
+    public void IntialiseLink()
+    {
+        missionEditor = MissionEditorFunctions.GetMissionEditor();
+
+        if (missionEditor.nodeLinks == null)
+        {
+            missionEditor.nodeLinks = new List<NodeLink>();
+        }
+
+        missionEditor.nodeLinks.Add(this);
     }
 
     void OnGUI()
@@ -137,6 +137,7 @@ public class NodeLink : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, I
     public void OnPointerUp(PointerEventData eventData)
     {
         dragging = false;
+        distanceChecked = false; // only re-check proximity after an actual drag
     }
 
     public void OnDrag(PointerEventData eventData) //This is needed otherwise mouse it is not possible to drag the mouse

@@ -11,11 +11,13 @@ public class MissionEditor : MonoBehaviour
     public List<Window> windows;
     public List<GameObject> menus;
     public List<NodeLink> nodeLinks;
+    public List<GameObject> nodeBarButtons;
     public List<GameObject> locationMarkers;
     public List<InputField> inputfields;
     public Vector3 mouseStartPos;
     public RectTransform editorContentRect;
     public RectTransform menuBarRectTransform;
+    public RectTransform nodeBarRectTransform;
     public RectTransform selectionRectTransform;
     public ScrollRect scrollRect;
     public Text AddNodeTextBox;
@@ -37,6 +39,7 @@ public class MissionEditor : MonoBehaviour
     public float scale = 1;
     public float scaleSave;
     public float timePressed;
+    public float nodeCount = 0;
     public bool scrolling = true;
     public bool menusClosed = true;
     public bool draggingGridStarted = false;
@@ -72,6 +75,7 @@ public class MissionEditor : MonoBehaviour
         MissionEditorFunctions.ToggleScrolling(this);
         MissionEditorFunctions.SelectionBox(this);
         MissionEditorFunctions.Shortcuts(this);
+        MissionEditorFunctions.UpdateNodeBar(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)

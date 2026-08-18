@@ -2519,6 +2519,28 @@ public static class MissionEditorFunctions
 
         Button button = buttonGO.AddComponent<Button>();
         button.targetGraphic = buttonImage;
+        button.onClick.AddListener(() => { MoveToNode(node); });
+    }
+
+    //This moves the scroll rect to the selected node
+    public static void MoveToNode(Node node)
+    {
+        MissionEditor missionEditor = GetMissionEditor();
+
+        if (node != null)
+        {
+            ScrollRect scrollRect = missionEditor.scrollRect;
+            RectTransform contentRect = missionEditor.editorContentRect;
+            RectTransform nodeRect = node.GetComponent<RectTransform>();
+
+            if (scrollRect == null || contentRect == null || nodeRect == null) return;
+
+            Canvas.ForceUpdateCanvases();
+
+            contentRect.anchoredPosition =
+                (Vector2)scrollRect.transform.InverseTransformPoint(contentRect.position)
+                - (Vector2)scrollRect.transform.InverseTransformPoint(nodeRect.position);
+        }
     }
 
     #endregion

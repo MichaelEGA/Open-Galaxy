@@ -180,21 +180,21 @@ public static class MissionEditorFunctions
         baseRectTransform.anchorMax = new Vector2(0, 1);
         baseRectTransform.pivot = new Vector2(0, 0.5f);
         baseRectTransform.anchoredPosition = new Vector2(0, 0);
-        baseRectTransform.sizeDelta = new Vector2(74.63721f, 244.72f);
+        baseRectTransform.sizeDelta = new Vector2(74.63721f, 0);
         baseRectTransform.localScale = new Vector3(1, 1, 1);
 
         viewportRectTransform.anchorMax = new Vector2(0, 1);
         viewportRectTransform.anchorMin = new Vector2(0, 0);
         viewportRectTransform.pivot = new Vector2(0, 0.5f);
         viewportRectTransform.anchoredPosition = new Vector2(0, 0);
-        viewportRectTransform.sizeDelta = new Vector2(74.63721f, 244.72f);
+        viewportRectTransform.sizeDelta = new Vector2(74.63721f, 0);
         viewportRectTransform.localScale = new Vector3(1, 1, 1);
 
         contentRectTransform.anchorMax = new Vector2(0, 1);
         contentRectTransform.anchorMin = new Vector2(0, 1);
         contentRectTransform.pivot = new Vector2(0, 1);
         contentRectTransform.anchoredPosition = new Vector2(0, 0);
-        contentRectTransform.sizeDelta = new Vector2(74.63721f, 244.72f*2);
+        contentRectTransform.sizeDelta = new Vector2(74.63721f, 0);
         contentRectTransform.localScale = new Vector3(1, 1, 1);
 
         missionEditor.nodeBarRectTransform = contentRectTransform;
@@ -2410,7 +2410,7 @@ public static class MissionEditorFunctions
             {
                 ClearNodeBar(missionEditor);
 
-                float buttonDrop = -1;
+                float buttonDrop = -14; //Empty space above buttons 
                 float nodeCount = 0;
 
                 foreach(Node node in missionEditor.nodes)
@@ -2423,6 +2423,8 @@ public static class MissionEditorFunctions
                         nodeCount += 1;
                     }
                 }
+
+                buttonDrop -= 14; //Empty space under buttons
 
                 missionEditor.nodeBarRectTransform.sizeDelta = new Vector2(missionEditor.nodeBarRectTransform.sizeDelta.x, -buttonDrop);
 

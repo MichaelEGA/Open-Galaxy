@@ -2,6 +2,7 @@ using SFB;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -2389,7 +2390,7 @@ public static class MissionEditorFunctions
 
     #endregion
 
-    #region
+    #region node bar functions
 
     //This keeps the node bar at the left updated with all the nodes
     public static void UpdateNodeBar(MissionEditor missionEditor)
@@ -2413,7 +2414,22 @@ public static class MissionEditorFunctions
                 float buttonDrop = -14; //Empty space above buttons 
                 float nodeCount = 0;
 
-                foreach(Node node in missionEditor.nodes)
+                buttonDrop -= 9; //Space -> Add Title
+
+                LoadButton(missionEditor, "add event node", buttonDrop);
+
+                buttonDrop -= 9;
+
+                LoadButton(missionEditor, "add ship node", buttonDrop);
+
+                buttonDrop -= 9;
+
+                LoadButton(missionEditor, "add music node", buttonDrop);
+
+                buttonDrop -= 9;
+                buttonDrop -= 9; //Space -> Add Title
+
+                foreach (Node node in missionEditor.nodes)
                 {
                     if (node != null)
                     {
@@ -2520,6 +2536,73 @@ public static class MissionEditorFunctions
         Button button = buttonGO.AddComponent<Button>();
         button.targetGraphic = buttonImage;
         button.onClick.AddListener(() => { MoveToNode(node); });
+    }
+
+    public static void LoadButton(MissionEditor missionEditor, string function, float buttonDrop)
+    {
+        //This creates the button gameobject
+        GameObject buttonGO = new GameObject();
+        GameObject buttonTextGO = new GameObject();
+
+        string buttonName = function;
+        buttonGO.name = buttonName;
+        buttonTextGO.name = buttonName + "_text";
+
+        //This adds the button to the list
+        missionEditor.nodeBarButtons.Add(buttonGO);
+
+        //This sets the parent of the gameobject
+        buttonGO.transform.SetParent(missionEditor.nodeBarRectTransform);
+        buttonTextGO.transform.SetParent(buttonGO.transform);
+
+        //This creates te recttransform for the button base
+        RectTransform rectTransform1 = buttonGO.AddComponent<RectTransform>();
+        rectTransform1.anchorMax = new Vector2(0, 1);
+        rectTransform1.anchorMin = new Vector2(0, 1);
+        rectTransform1.pivot = new Vector2(0, 1);
+        rectTransform1.anchoredPosition = new Vector2(2, buttonDrop);
+        rectTransform1.sizeDelta = new Vector2(70, 8);
+        rectTransform1.localScale = new Vector3(1, 1, 1);
+
+        //This creates the rect transform for the button text
+        RectTransform rectTransform2 = buttonTextGO.AddComponent<RectTransform>();
+        rectTransform2.anchorMax = new Vector2(0, 1);
+        rectTransform2.anchorMin = new Vector2(0, 1);
+        rectTransform2.pivot = new Vector2(0, 1);
+        rectTransform2.anchoredPosition = new Vector2(1, 0);
+        rectTransform2.sizeDelta = new Vector2(70, 8);
+        rectTransform2.localScale = new Vector3(1, 1, 1);
+
+        //This adds the text component
+        Text text = buttonTextGO.AddComponent<Text>();
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.fontSize = 5;
+        text.text = buttonName;
+        text.alignment = TextAnchor.MiddleLeft;
+        text.color = Color.white;
+
+        //This sets the buton color
+        Image buttonImage = buttonGO.AddComponent<Image>();
+        buttonImage.sprite = Resources.Load<Sprite>(OGGetAddress.missioneditor + "NodeSprite_Light");
+        buttonImage.type = Image.Type.Sliced;
+        buttonImage.pixelsPerUnitMultiplier = 40; //5
+        buttonImage.color = new Color(45f / 250f, 45f / 250f, 45f / 250f);
+
+        Button button = buttonGO.AddComponent<Button>();
+        button.targetGraphic = buttonImage;
+
+        if (function == "add event node")
+        {
+            button.onClick.AddListener(() => { OpenWindow("addnodes"); });
+        }
+        else if (function == "add ship node")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displayshipinformation"); });
+        }
+        else if (function == "add music node")
+        {
+            button.onClick.AddListener(() => { OpenWindow("displaysoundinformation"); });
+        }
     }
 
     //This moves the scroll rect to the selected node

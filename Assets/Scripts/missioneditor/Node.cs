@@ -71,8 +71,7 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
     // Start is called before the first frame update
     void Start()
     {
-        //NodeFunctions.SelectNodeToDraw(this);
-        //NodeFunctions.GetUniqueNodeID(this);
+
     }
 
     // Update is called once per frame
@@ -111,9 +110,12 @@ public class Node : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDrag
         }
         else if (scrollReset == false)
         {          
-            missionEditor.scrolling = true;
-            scrollReset = true;
-            startPositionRecorded = false;
+            if (missionEditor != null)
+            {
+                missionEditor.scrolling = true;
+                scrollReset = true;
+                startPositionRecorded = false;
+            }
         }
 
         nodePosX = transform.localPosition.x;

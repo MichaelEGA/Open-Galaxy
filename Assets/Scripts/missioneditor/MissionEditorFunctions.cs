@@ -2,9 +2,7 @@ using SFB;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -1556,6 +1554,8 @@ public static class MissionEditorFunctions
         Node node = nodeGO.AddComponent<Node>();
         node.nodeType = nodeType;
         missionEditor.nodes.Add(node);
+
+        NodeFunctions.IntialiseNode(node);
 
         if (setPosition == true)
         {

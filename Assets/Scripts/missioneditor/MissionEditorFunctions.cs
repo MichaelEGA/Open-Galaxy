@@ -1612,8 +1612,6 @@ public static class MissionEditorFunctions
         {
             Node node = AddNode(missionEvent.eventType, true, missionEvent.nodePosX, missionEvent.nodePosY);
 
-            NodeFunctions.IntialiseNode(node);
-
             InputData(node.eventID, missionEvent.eventID);
             InputData(node.eventType, missionEvent.eventType);
             InputData(node.conditionTime, missionEvent.conditionTime.ToString());
@@ -1743,8 +1741,6 @@ public static class MissionEditorFunctions
         foreach (MissionEvent missionEvent in mission.missionEventData)
         {
             Node node = AddNode(missionEvent.eventType, true, missionEvent.nodePosX, missionEvent.nodePosY);
-
-            NodeFunctions.IntialiseNode(node);
 
             InputData(node.eventID, missionEvent.eventID);
             InputData(node.eventType, missionEvent.eventType);

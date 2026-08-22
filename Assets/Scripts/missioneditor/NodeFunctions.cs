@@ -528,20 +528,10 @@ public class NodeFunctions : MonoBehaviour
         if (node != null)
         {
             if (node.gameObject != null)
-            {
-                node.rectTransform = node.gameObject.GetComponent<RectTransform>();
-
-                if (node.rectTransform == null)
-                {
-                    node.rectTransform = node.gameObject.AddComponent<RectTransform>();
-                }
+            {            
+                node.rectTransform = node.gameObject.AddComponent<RectTransform>();
                 
                 node.name = "Node";
-
-                if (node.rectTransform == null)
-                {
-                    Debug.Log("Rect Transform is null");
-                }
 
                 node.rectTransform.sizeDelta = new Vector2(node.sizeX, node.sizeZ);
                 node.rectTransform.localPosition = new Vector2(node.nodePosX, node.nodePosY);

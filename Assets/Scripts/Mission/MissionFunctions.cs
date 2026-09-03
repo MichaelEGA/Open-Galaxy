@@ -4687,11 +4687,14 @@ public static class MissionFunctions
 
         if (scene != null)
         {
-            SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
-
-            if (smallShip != null)
+            if (scene.mainShip != null)
             {
-                smallShip.controlLock = true;
+                SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+
+                if (smallShip != null)
+                {
+                    smallShip.controlLock = true;
+                }
             }
         }
     }
@@ -4705,11 +4708,14 @@ public static class MissionFunctions
 
         if (scene != null)
         {
-            SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
-
-            if (smallShip != null)
+            if (scene.mainShip != null)
             {
-                smallShip.controlLock = false;
+                SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+
+                if (smallShip != null)
+                {
+                    smallShip.controlLock = false;
+                }
             }
         }
     }

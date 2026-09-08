@@ -11,7 +11,7 @@ Mission Editor
 Open Galaxy is a X-Wing and Tie Fighter inspired space sim designed to be a platform for single player custom missions. 
 
 **Discord** 
-  - https://discord.gg/Vk9HABWZeU
+  - https://discord.gg/KawtvHPyHG
 
 **Main Features**
 
@@ -101,7 +101,7 @@ Assets have only been used when permission has been given or implied by the auth
 
 **AI Disclosure**  
 
-AI is used to generate voices of pilots in missions, AI is also occasionally consulted when solving programming problems. AI is not used to create images, 3d objects, text, music or missions.
+AI is used to generate voices of pilots in missions, AI is also occasionally consulted when solving programming problems, and has been used to generate textures. AI has not used to create 3d objects, text, music or missions.
 
 **Licence**  
 

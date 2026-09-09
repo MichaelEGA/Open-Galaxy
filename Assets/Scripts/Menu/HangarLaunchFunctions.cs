@@ -153,6 +153,27 @@ public static class HangarLaunchFunctions
             hangarLaunch.camera.transform.rotation = hangarLaunch.camera.transform.rotation;
         }
 
+        //while (timeElapsedA < lerpDurationA)
+        //{
+        //    if (hangarLaunch.ship != null)
+        //    {
+        //        if (hangarLaunch.cockpit == null)
+        //        {
+        //            hangarLaunch.camera.transform.LookAt(hangarLaunch.ship.transform.position);
+        //        }
+
+        //        //This lerps the ship between two positions
+        //        hangarLaunch.ship.transform.position = Vector3.Lerp(groundlocation, startPosition, timeElapsedA / lerpDurationA);
+
+        //        timeElapsedA += Time.unscaledDeltaTime;
+
+        //        yield return null;
+        //    }
+        //}
+
+        float wobbleSpeed = 3;
+        float wobbleRange = 2;
+
         while (timeElapsedA < lerpDurationA)
         {
             if (hangarLaunch.ship != null)
@@ -162,12 +183,16 @@ public static class HangarLaunchFunctions
                     hangarLaunch.camera.transform.LookAt(hangarLaunch.ship.transform.position);
                 }
 
-                //This lerps the ship between two positions
+                // This lerps the ship between two positions
                 hangarLaunch.ship.transform.position = Vector3.Lerp(groundlocation, startPosition, timeElapsedA / lerpDurationA);
+
+                // Add rotational wobble
+                float wobbleAmount = Mathf.Sin(timeElapsedA * wobbleSpeed) * wobbleRange;
+                hangarLaunch.ship.transform.rotation = Quaternion.Euler(0, 180, wobbleAmount);
 
                 timeElapsedA += Time.unscaledDeltaTime;
 
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
         }
 
@@ -184,24 +209,6 @@ public static class HangarLaunchFunctions
                 //This lerps the ship between two positions
                 hangarLaunch.camera.transform.LookAt(hangarLaunch.ship.transform.position);
                 hangarLaunch.ship.transform.position = Vector3.Lerp(startPosition, endPosition, timeElapsedB / lerpDurationB);
-
-                ////This makes the nose slightly dip as the ship exits
-                Quaternion startRotation = hangarLaunch.ship.transform.rotation;
-                Vector3 moveDir = (endPosition - startPosition).normalized;
-                Quaternion forwardRotation = Quaternion.LookRotation(moveDir, Vector3.up);
-                float maxPitchDegrees = 10f;
-                AnimationCurve pitchCurve = null;
-                bool useCurve = pitchCurve != null;
-                float progress = Mathf.Clamp01(timeElapsedB / lerpDurationB);
-                float pitchTiming = 0.4f;
-                pitchTiming = Mathf.Clamp01(pitchTiming);
-                float pitchProgress = Mathf.Clamp01(progress / Mathf.Max(pitchTiming, 1e-6f));
-                float pitchFactor = useCurve ? pitchCurve.Evaluate(pitchProgress) : Mathf.Sin(pitchProgress * Mathf.PI);
-                float pitchAngle = -maxPitchDegrees * -pitchFactor;
-                Quaternion pitchRotation = Quaternion.Euler(pitchAngle, 0f, 0f);
-                Quaternion targetRotationWithPitch = forwardRotation * pitchRotation;
-                hangarLaunch.ship.transform.rotation = Quaternion.Slerp(startRotation, targetRotationWithPitch, progress);
-                
                 timeElapsedB += Time.unscaledDeltaTime;
 
                 //This fades to black at end of cutscene
@@ -229,7 +236,7 @@ public static class HangarLaunchFunctions
                     fade = true;
                 }
 
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
         }
 

@@ -19,9 +19,10 @@ public class HangarLaunch : MonoBehaviour
     public GameObject displayShip06;
     public GameObject displayShip07;
     public GameObject displayShip08;
+    public bool shipLaunching = true;
 
     public void CloseHangarLaunch()
     {
-        Task a = new Task(HangarLaunchFunctions.LaunchShip(this));
+        HangarLaunchFunctions.PlayHangarCutscene(this);
     }
 }

@@ -1877,18 +1877,25 @@ public static class MissionFunctions
     //This displays the chosen ship launching from a hangar
     public static void DisplayHangarLaunch(MissionEvent missionEvent)
     {
-        string hangar = missionEvent.data1;
-        string ship = missionEvent.data2;
-        string displayShip01 = missionEvent.data3;
-        string displayShip02 = missionEvent.data4;
-        string displayShip03 = missionEvent.data5;
-        string displayShip04 = missionEvent.data6;
-        string displayShip05 = missionEvent.data7;
-        string displayShip06 = missionEvent.data8;
-        string displayShip07 = missionEvent.data9;
-        string displayShip08 = missionEvent.data10;
+        bool launchShip = false;
 
-        HangarLaunchFunctions.DisplayHangarLaunch(hangar, ship, displayShip01, displayShip02, displayShip03, displayShip04, displayShip05, displayShip06, displayShip07, displayShip08);
+        if (bool.TryParse(missionEvent.data1, out _))
+        {
+            launchShip = bool.Parse(missionEvent.data1);
+        }
+
+        string hangar = missionEvent.data2;
+        string ship = missionEvent.data3;
+        string displayShip01 = missionEvent.data4;
+        string displayShip02 = missionEvent.data5;
+        string displayShip03 = missionEvent.data6;
+        string displayShip04 = missionEvent.data7;
+        string displayShip05 = missionEvent.data8;
+        string displayShip06 = missionEvent.data9;
+        string displayShip07 = missionEvent.data10;
+        string displayShip08 = missionEvent.data11;
+
+        HangarLaunchFunctions.DisplayHangarLaunch(launchShip, hangar, ship, displayShip01, displayShip02, displayShip03, displayShip04, displayShip05, displayShip06, displayShip07, displayShip08);
     }
 
     //This temporary displays a large print hint in the center bottom of the screen

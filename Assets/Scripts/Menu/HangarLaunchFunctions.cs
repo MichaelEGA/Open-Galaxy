@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.HID;
 public static class HangarLaunchFunctions
 {
     //This displays the hangar launch
-    public static void DisplayHangarLaunch(string hangarName, string shipName, string displayShip01 = "", string displayShip02 = "", string displayShip03 = "", string displayShip04 = "", string displayShip05 = "", string displayShip06 = "", string displayShip07 = "", string displayShip08 = "")
+    public static void DisplayHangarLaunch(bool launchShip, string hangarName, string shipName, string displayShip01 = "", string displayShip02 = "", string displayShip03 = "", string displayShip04 = "", string displayShip05 = "", string displayShip06 = "", string displayShip07 = "", string displayShip08 = "")
     {
         //This gets the scene reference
         Scene scene = SceneFunctions.GetScene();
@@ -131,18 +131,9 @@ public static class HangarLaunchFunctions
                         cockpit.transform.position = ship.transform.position;
                         cockpit.transform.parent = ship.transform;
                         cockpit.transform.localRotation = Quaternion.identity;
-                        cockpit.SetActive(true);
-
-                        ship.layer = 0;
-                        GameObjectUtils.SetLayerAllChildren(ship.transform, 0);
-                        cockpit.layer = 5;
-                        GameObjectUtils.SetLayerAllChildren(cockpit.transform, 5);
+                        cockpit.SetActive(false);
 
                         hangarLaunch.cockpit = cockpit;
-
-                        hangarLaunch.camera.transform.SetParent(hangarLaunch.cockpit.transform);
-                        hangarLaunch.camera.transform.localPosition = Vector3.zero;
-                        hangarLaunch.camera.transform.localRotation = Quaternion.identity;
                     }
                 }
             }
@@ -231,6 +222,34 @@ public static class HangarLaunchFunctions
 
         //This makes the hud invisible
         HudFunctions.SetHudTransparency(0);
+
+        //This sets up the scene for either landing or launching
+        if (launchShip == true)
+        {
+            if (hangarLaunch.cockpit != null)
+            {
+                hangarLaunch.ship.layer = 0;
+                GameObjectUtils.SetLayerAllChildren(hangarLaunch.ship.transform, 0);
+                hangarLaunch.cockpit.layer = 5;
+                GameObjectUtils.SetLayerAllChildren(hangarLaunch.cockpit.transform, 5);
+
+                hangarLaunch.camera.transform.SetParent(hangarLaunch.cockpit.transform);
+                hangarLaunch.camera.transform.localPosition = Vector3.zero;
+                hangarLaunch.camera.transform.localRotation = Quaternion.identity;
+                hangarLaunch.cockpit.SetActive(true);
+            }
+            else
+            {
+                hangarLaunch.camera.transform.parent = hangarLaunch.hangar.transform;
+                hangarLaunch.camera.transform.position = hangarLaunch.cameralocation.transform.position;
+                hangarLaunch.camera.transform.rotation = hangarLaunch.cameralocation.transform.rotation;
+            }
+        }
+        else
+        {
+            hangarLaunch.shipLaunching = false;
+            Task a = new Task(LandShip(hangarLaunch));
+        }
     }
 
     public static void DockShipToPosition(GameObject ship, Vector3 targetPosition)
@@ -374,6 +393,20 @@ public static class HangarLaunchFunctions
         return shipType;
     }
 
+    //This plays the launch/landing cutscene
+
+    public static void PlayHangarCutscene(HangarLaunch hangarLaunch)
+    {
+        if (hangarLaunch.shipLaunching == true)
+        {
+            Task a = new Task(LaunchShip(hangarLaunch));
+        }
+        else
+        {
+            HangarLaunchFunctions.CloseHangarLaunch(hangarLaunch);
+        }
+    }
+
     //This launches the ship
     public static IEnumerator LaunchShip(HangarLaunch hangarLaunch)
     {
@@ -385,20 +418,6 @@ public static class HangarLaunchFunctions
 
         float timeElapsedA = 0;
         float lerpDurationA = 2;
-
-        if (hangarLaunch.cockpit != null)
-        {
-            hangarLaunch.ship.layer = 0;
-            GameObjectUtils.SetLayerAllChildren(hangarLaunch.ship.transform, 0);
-            hangarLaunch.cockpit.layer = 5;
-            GameObjectUtils.SetLayerAllChildren(hangarLaunch.cockpit.transform, 5);
-        }
-        else
-        {
-            hangarLaunch.camera.transform.parent = hangarLaunch.hangar.transform;
-            hangarLaunch.camera.transform.position = hangarLaunch.cameralocation.transform.position;
-            hangarLaunch.camera.transform.rotation = hangarLaunch.cameralocation.transform.rotation;
-        }
 
         float wobbleSpeed = 3;
         float wobbleRange = 2;
@@ -473,6 +492,108 @@ public static class HangarLaunchFunctions
         HudFunctions.SetBackgroundAlphaAndColour(0, colour);
 
         HangarLaunchFunctions.CloseHangarLaunch(hangarLaunch);
+    }
+
+    //This lands the ship
+    public static IEnumerator LandShip(HangarLaunch hangarLaunch)
+    {
+        hangarLaunch.launchbutton.SetActive(false);
+
+        Vector3 groundlocation = hangarLaunch.groundlocation.transform.position;
+        Vector3 startPosition = hangarLaunch.startlocation.transform.position;
+        Vector3 endPosition = hangarLaunch.endlocation.transform.position;
+
+        float timeElapsedB = 0;
+        float lerpDurationB = 8;
+        bool cameraTransition = false;
+        bool fade = false;
+        string colour = "#000000";
+
+        while (timeElapsedB < lerpDurationB)
+        {
+            if (hangarLaunch.ship != null)
+            {
+                //This lerps the ship between two positions
+                hangarLaunch.camera.transform.LookAt(hangarLaunch.ship.transform.position);
+                hangarLaunch.ship.transform.position = Vector3.Lerp(endPosition, startPosition, timeElapsedB / lerpDurationB);
+                hangarLaunch.ship.transform.rotation = Quaternion.Euler(0, 0, 0);
+                timeElapsedB += Time.unscaledDeltaTime;
+
+                //This fades to black at end of cutscene
+                if (timeElapsedB > 0.25f & cameraTransition == false)
+                {
+                    if (hangarLaunch.cockpit != null)
+                    {
+                        hangarLaunch.ship.layer = 5;
+                        GameObjectUtils.SetLayerAllChildren(hangarLaunch.ship.transform, 5);
+                        hangarLaunch.cockpit.SetActive(false);
+                    }
+
+                    hangarLaunch.camera.transform.parent = hangarLaunch.hangar.transform;
+                    hangarLaunch.camera.transform.position = hangarLaunch.cameralocation.transform.position;
+                    hangarLaunch.camera.transform.rotation = hangarLaunch.cameralocation.transform.rotation;
+
+                    cameraTransition = true;
+                }
+
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        //This lands the ship and activates the cockpit if available
+        float timeElapsedA = 0;
+        float lerpDurationA = 4;
+
+        if (hangarLaunch.cockpit != null)
+        {
+            hangarLaunch.ship.layer = 0;
+            GameObjectUtils.SetLayerAllChildren(hangarLaunch.ship.transform, 0);
+            hangarLaunch.cockpit.layer = 5;
+            GameObjectUtils.SetLayerAllChildren(hangarLaunch.cockpit.transform, 5);
+        }
+        else
+        {
+            hangarLaunch.camera.transform.parent = hangarLaunch.hangar.transform;
+            hangarLaunch.camera.transform.position = hangarLaunch.cameralocation.transform.position;
+            hangarLaunch.camera.transform.rotation = hangarLaunch.cameralocation.transform.rotation;
+        }
+
+        float wobbleSpeed = 3;
+        float wobbleRange = 2;
+
+        while (timeElapsedA < lerpDurationA)
+        {
+            if (hangarLaunch.ship != null)
+            {
+                if (hangarLaunch.cockpit == null)
+                {
+                    hangarLaunch.camera.transform.LookAt(hangarLaunch.ship.transform.position);
+                }
+                else
+                {
+                    if (hangarLaunch.cockpit.activeSelf == false)
+                    {
+                        hangarLaunch.camera.transform.SetParent(hangarLaunch.cockpit.transform);
+                        hangarLaunch.camera.transform.localPosition = Vector3.zero;
+                        hangarLaunch.camera.transform.localRotation = Quaternion.identity;
+                        hangarLaunch.cockpit.SetActive(true);
+                    }
+                }
+
+                // This lerps the ship between two positions
+                hangarLaunch.ship.transform.position = Vector3.Lerp(startPosition, groundlocation, timeElapsedA / lerpDurationA);
+
+                // Add rotational wobble
+                float wobbleAmount = Mathf.Sin(timeElapsedA * wobbleSpeed) * wobbleRange;
+                hangarLaunch.ship.transform.rotation = Quaternion.Euler(0, 0, wobbleAmount);
+
+                timeElapsedA += Time.unscaledDeltaTime;
+
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        hangarLaunch.launchbutton.SetActive(true);
     }
 
     //This stops displaying the hangar launch

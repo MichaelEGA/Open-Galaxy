@@ -1759,18 +1759,22 @@ public static class NodeTypes
 
         drop -= 15;
 
+        List<string> launching = new List<string>();
+        launching.Add("true");
+        launching.Add("false");
+
+        node.data1 = NodeFunctions.DrawDropDownMenu(node, launching, "launching", "true", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
         List<string> hangarsList = new List<string>();
         hangarsList.Add("hangar");
 
-        node.data1 = NodeFunctions.DrawDropDownMenu(node, hangarsList, "hangar", "hangar", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, hangarsList, "hangar", "hangar", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "main", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
-
-        drop -= 15;
-
-        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "main", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -1799,6 +1803,10 @@ public static class NodeTypes
         drop -= 15;
 
         node.data10 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data11 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 

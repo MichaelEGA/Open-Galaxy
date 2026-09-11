@@ -123,12 +123,24 @@ public static class HangarLaunchFunctions
 
                 CloseWings(ship);
 
+                //This gets the cockpit position and instantiates the cockpit 
+                Transform cockpitPosiition = GameObjectUtils.FindChildTransformCalled(ship.transform, "camera");
+
                 foreach (GameObject objectPrefab in scene.cockpitPrefabPool)
                 {
                     if (objectPrefab.name == shipType.cockpitPrefab)
                     {
                         GameObject cockpit = GameObject.Instantiate(objectPrefab) as GameObject;
-                        cockpit.transform.position = ship.transform.position;
+
+                        if (cockpitPosiition != null)
+                        {
+                            cockpit.transform.position = cockpitPosiition.position;
+                        }
+                        else
+                        {
+                            cockpit.transform.position = ship.transform.position;
+                        }
+
                         cockpit.transform.parent = ship.transform;
                         cockpit.transform.localRotation = Quaternion.identity;
                         cockpit.SetActive(false);
@@ -252,6 +264,7 @@ public static class HangarLaunchFunctions
         }
     }
 
+    //Helper functions for setting up ships in hangar
     public static void DockShipToPosition(GameObject ship, Vector3 targetPosition)
     {
         // Find the dockingPoint01 child object
@@ -394,7 +407,6 @@ public static class HangarLaunchFunctions
     }
 
     //This plays the launch/landing cutscene
-
     public static void PlayHangarCutscene(HangarLaunch hangarLaunch)
     {
         if (hangarLaunch.shipLaunching == true)
@@ -459,14 +471,14 @@ public static class HangarLaunchFunctions
                 hangarLaunch.ship.transform.position = Vector3.Lerp(startPosition, endPosition, timeElapsedB / lerpDurationB);
                 timeElapsedB += Time.unscaledDeltaTime;
 
-                //This fades to black at end of cutscene
-                if (timeElapsedB > 0.25f & cameraTransition == false)
+                //This transitions the camera
+                if (cameraTransition == false)
                 {
                     if (hangarLaunch.cockpit != null)
                     {
+                        hangarLaunch.cockpit.SetActive(false);
                         hangarLaunch.ship.layer = 5;
                         GameObjectUtils.SetLayerAllChildren(hangarLaunch.ship.transform, 5);
-                        hangarLaunch.cockpit.SetActive(false);
                     }
 
                     hangarLaunch.camera.transform.parent = hangarLaunch.hangar.transform;

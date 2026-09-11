@@ -1879,8 +1879,16 @@ public static class MissionFunctions
     {
         string hangar = missionEvent.data1;
         string ship = missionEvent.data2;
+        string displayShip01 = missionEvent.data3;
+        string displayShip02 = missionEvent.data4;
+        string displayShip03 = missionEvent.data5;
+        string displayShip04 = missionEvent.data6;
+        string displayShip05 = missionEvent.data7;
+        string displayShip06 = missionEvent.data8;
+        string displayShip07 = missionEvent.data9;
+        string displayShip08 = missionEvent.data10;
 
-        HangarLaunchFunctions.DisplayHangarLaunch(hangar, ship);
+        HangarLaunchFunctions.DisplayHangarLaunch(hangar, ship, displayShip01, displayShip02, displayShip03, displayShip04, displayShip05, displayShip06, displayShip07, displayShip08);
     }
 
     //This temporary displays a large print hint in the center bottom of the screen

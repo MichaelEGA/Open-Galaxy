@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 public static class NodeTypes
@@ -1765,7 +1766,39 @@ public static class NodeTypes
 
         drop -= 15;
 
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "type", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "main", "tiefighter", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data6 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data7 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data8 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data9 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data10 = NodeFunctions.DrawDropDownMenu(node, GetShipList(), "display", "none", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -4956,6 +4989,8 @@ public static class NodeTypes
         ShipTypes shipTypes = JsonUtility.FromJson<ShipTypes>(shipTypesFile.text);
 
         List<string> shipList = new List<string>();
+
+        shipList.Add("none");
 
         foreach (ShipType shipType in shipTypes.shipTypeData)
         {

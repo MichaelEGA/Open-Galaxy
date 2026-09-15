@@ -1779,9 +1779,12 @@ public static class HudFunctions
 
                     foreach (Transform tempTransform in hud.scene.systemTransformsPool)
                     {
-                        if (tempTransform.gameObject.activeSelf == true)
+                        if (tempTransform != null)
                         {
-                            transformCount++;
+                            if (tempTransform.gameObject.activeSelf == true)
+                            {
+                                transformCount++;
+                            }
                         }
                     }
 

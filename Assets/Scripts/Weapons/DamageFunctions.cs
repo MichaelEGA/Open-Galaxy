@@ -952,7 +952,9 @@ public static class DamageFunctions
                 GameObject.Destroy(shipSystem.ionParticleSystemGO);
             }
 
-            ParticleFunctions.InstantiatePersistantExplosion(shipSystem.transform.position, "explosion_system", explosionScale);
+            ParticleSystem systemSmoke = ParticleFunctions.InstantiatePersistantExplosion(shipSystem.transform.position, "SystemSmoke", explosionScale);
+            systemSmoke.transform.rotation = Quaternion.Euler(-90, 0, 0);
+            systemSmoke.transform.SetParent(shipSystem.gameObject.transform.parent, true);
             shipSystem.gameObject.SetActive(false);
             HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was destroyed.");
         }
@@ -981,9 +983,14 @@ public static class DamageFunctions
        
         if (targetRenderer != null )
         {
-            Vector3 targetSize = targetRenderer.bounds.size;
+            Vector3 targetSize = targetRenderer.bounds.size / 4f;
 
             scale = targetSize.x;
+
+            if (scale > 3)
+            {
+                scale = 3;
+            }
         }
 
         return scale;

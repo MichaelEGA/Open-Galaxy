@@ -13,6 +13,36 @@ public static class ShipSystemFunctions
             //This activates the transforms
             Transform[] systemTransforms = GetSystemTransforms(ship);
 
+            LargeShip largeShip = ship.GetComponent<LargeShip>();
+
+            float hullLevel = 100;
+            float systemLevel = 100;
+            float shieldLevel = 100;
+
+            if (largeShip != null)
+            {
+                shieldLevel = (largeShip.shieldLevel / 10);
+
+                if (shieldLevel > 500)
+                {
+                    shieldLevel = 500;
+                }
+
+                hullLevel = (largeShip.hullLevel / 10);
+
+                if (hullLevel > 500)
+                {
+                    hullLevel = 500;
+                }
+
+                systemLevel = (largeShip.systemsLevel / 10);
+
+                if (systemLevel > 500)
+                {
+                    systemLevel = 500;
+                }
+            }
+
             if (systemTransforms != null)
             {
                 foreach (Transform systemTransform in systemTransforms)
@@ -23,8 +53,10 @@ public static class ShipSystemFunctions
 
                         if (systemTransform.GetComponent<ShipSystem>() == null)
                         {
-                            systemTransform.AddComponent<ShipSystem>();
-                        }
+                            ShipSystem shipSystem = systemTransform.AddComponent<ShipSystem>();
+                            shipSystem.systems = systemLevel;
+                            shipSystem.hull = hullLevel;
+                        } 
                     }
                     else
                     {
@@ -34,7 +66,9 @@ public static class ShipSystemFunctions
 
                             if (systemTransform.GetComponent<ShipSystem>() == null)
                             {
-                                systemTransform.AddComponent<ShipSystem>();
+                                ShipSystem shipSystem = systemTransform.AddComponent<ShipSystem>();
+                                shipSystem.systems = systemLevel;
+                                shipSystem.hull = hullLevel;
                             }
                         }
                     }

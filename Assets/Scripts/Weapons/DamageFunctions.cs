@@ -953,8 +953,8 @@ public static class DamageFunctions
             }
 
             ParticleSystem systemSmoke = ParticleFunctions.InstantiatePersistantExplosion(shipSystem.transform.position, "SystemSmoke", explosionScale);
-            systemSmoke.transform.rotation = Quaternion.Euler(-90, 0, 0);
             systemSmoke.transform.SetParent(shipSystem.gameObject.transform.parent, true);
+            systemSmoke.transform.localRotation = shipSystem.gameObject.transform.localRotation;
             shipSystem.gameObject.SetActive(false);
             HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was destroyed.");
         }

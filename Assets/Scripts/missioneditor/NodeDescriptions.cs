@@ -129,6 +129,17 @@ public static class NodeDescriptions
            "- You cannot select or target a wrecked ship. \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
+        else if (name == "preload_loadtiles")
+        {
+            description =
+           "Pre-Load Tiles \n " +
+           "\n " +
+           "This node loads the tiling system and the chosen tile set i.e. the death star surface \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- The tiles will always load in the center of the scene, so make sure you place any ships above y = 0. \n" +
+           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
         else if (name == "preload_setfogdistanceandcolor")
         {
             description =

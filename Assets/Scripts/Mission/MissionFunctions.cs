@@ -233,7 +233,6 @@ public static class MissionFunctions
                 SetFogDistanceAndColor(missionEvent);
                 MainMenuFunctions.AddLogToLoadingScreen("Fog settings set", startTime);
             }
-
         }
 
         //Then this preloads all the none-ship objects in the scene
@@ -273,6 +272,16 @@ public static class MissionFunctions
                     LoadSingleShipAsWreck(missionEvent);
                     MainMenuFunctions.AddLogToLoadingScreen("Single ship loaded as wreck", startTime);
                 }
+            }
+        }
+
+        //This loads the tiles after the ship has been loaded so the main ship can be added
+        foreach (MissionEvent missionEvent in mission.missionEventData)
+        {
+            if (missionEvent.eventType == "preload_loadtiles" & missionEvent.conditionLocation == location)
+            {
+                LoadTiles(missionEvent);
+                MainMenuFunctions.AddLogToLoadingScreen("Tiles loaded", startTime);
             }
         }
     }
@@ -3414,6 +3423,31 @@ public static class MissionFunctions
         }
 
         SceneFunctions.LoadSingleShipAsWreck(position, rotation, type, name, fireNumber, fireScaleMin, fireScaleMax, seed);
+    }
+
+    //This loads tiles i.e. death star surface
+    public static void LoadTiles(MissionEvent missionEvent)
+    {
+        int seed = 1138;
+
+        if (int.TryParse(missionEvent.data1, out _))
+        {
+            seed = int.Parse(missionEvent.data1);
+        }
+
+        string tileType = missionEvent.data2;
+
+        Scene scene = SceneFunctions.GetScene();
+
+        GameObject tileGO = new GameObject();
+
+        tileGO.transform.parent = scene.transform;
+
+        TerrainTileStreamer terrainTileStreamer = tileGO.AddComponent<TerrainTileStreamer>();
+
+        terrainTileStreamer.seed = seed;
+        terrainTileStreamer.ship = scene.mainShip.transform;
+        terrainTileStreamer.tileParent = tileGO.transform;
     }
 
     //This changes the type of music that is playing

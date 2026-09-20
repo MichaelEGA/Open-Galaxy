@@ -248,6 +248,10 @@ public class NodeFunctions : MonoBehaviour
         {
             NodeTypes.Draw_PreLoad_LoadSingleShipAsWreck(node);
         }
+        else if (node.nodeType == "preload_loadtiles")
+        {
+            NodeTypes.Draw_PreLoad_LoadTiles(node);
+        }
         else if (node.nodeType == "preload_setfogdistanceandcolor")
         {
             NodeTypes.Draw_PreLoad_SetFogDistanceAndColor(node);

@@ -132,6 +132,7 @@ public static class WindowFunctions
         buttonList.Add("preload_setlighting");
         buttonList.Add("preload_setsceneradius");
         buttonList.Add("preload_setskybox");
+        buttonList.Add("preload_loadtiles");
         buttonList.Add("savestring");
         buttonList.Add("setcamera");
         buttonList.Add("setcargo");

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.UIElements;
 
 public static class DamageFunctions
@@ -945,14 +946,22 @@ public static class DamageFunctions
 
         if (shipSystem.hull <= 0)
         {
-            float explosionScale = GetExplosionScale(shipSystem.gameObject);
+            Renderer targetRenderer = shipSystem.gameObject.GetComponent<Renderer>();
+
+            float explosionScale = GetExplosionScale(shipSystem.gameObject, targetRenderer.bounds.size.y);
             
             if (shipSystem.ionParticleSystemGO != null)
             {
                 GameObject.Destroy(shipSystem.ionParticleSystemGO);
             }
 
-            ParticleSystem systemSmoke = ParticleFunctions.InstantiatePersistantExplosion(shipSystem.transform.position, "SystemSmoke", explosionScale);
+            Bounds localBounds = targetRenderer.localBounds;
+
+            Vector3 localBottomCenter = localBounds.center - Vector3.up * localBounds.extents.y;
+
+            Vector3 loadPosition = targetRenderer.transform.TransformPoint(localBottomCenter);
+
+            ParticleSystem systemSmoke = ParticleFunctions.InstantiatePersistantExplosion(loadPosition, "SystemSmoke", explosionScale);
             systemSmoke.transform.SetParent(shipSystem.gameObject.transform.parent, true);
             systemSmoke.transform.localRotation = shipSystem.gameObject.transform.localRotation;
             shipSystem.gameObject.SetActive(false);
@@ -967,32 +976,25 @@ public static class DamageFunctions
 
         if (shipSystem.systems <= 0 & shipSystem.disabled == false)
         {
+            Renderer targetRenderer = shipSystem.gameObject.GetComponent<Renderer>();
+
             shipSystem.disabled = true;
-            float explosionScale = GetExplosionScale(shipSystem.gameObject);
+            float explosionScale = GetExplosionScale(shipSystem.gameObject, targetRenderer.bounds.size.y);
             ParticleSystem ionParticleSystem = ParticleFunctions.InstantiatePersistantExplosion(shipSystem.transform.position, "explosion_system_ion", explosionScale);
             shipSystem.ionParticleSystemGO = ionParticleSystem.gameObject;
             HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was disabled.");
         }
     }
 
-    public static float GetExplosionScale(GameObject systemGO)
+    public static float GetExplosionScale(GameObject systemGO, float boundsSize)
     {
-        float scale = 1;
+        float scale = boundsSize / 4f;
 
-        Renderer targetRenderer = systemGO.GetComponent<Renderer>();
-       
-        if (targetRenderer != null )
+        if (scale > 5)
         {
-            Vector3 targetSize = targetRenderer.bounds.size / 4f;
-
-            scale = targetSize.x;
-
-            if (scale > 3)
-            {
-                scale = 3;
-            }
+            scale = 5;
         }
-
+        
         return scale;
     }
 

@@ -293,7 +293,7 @@ public class SmallShip : MonoBehaviour
     {
         DamageFunctions.StartCollision_SmallShip(this, collision.gameObject);
 
-        Debug.Log("Collided with " + collision.gameObject.name + " " + collision.collider.gameObject.name);
+        Debug.Log("Collided with " + collision.gameObject.name + " " + collision.collider.gameObject.name + "at point" + collision.gameObject.transform.localPosition);
     }
 
     void OnCollisionExit(Collision collision)

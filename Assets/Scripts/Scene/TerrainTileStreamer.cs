@@ -213,33 +213,6 @@ public class TerrainTileStreamer : MonoBehaviour
         loadedTiles.Remove(coordinate);
     }
 
-    private Vector2Int WorldToTileCoordinate(Vector3 worldPosition)
-    {
-        /*
-         * Horizontal map axes:
-         * - Unity X = tile X
-         * - Unity Z = tile Y coordinate in the dictionary
-         *
-         * Unity Y is intentionally ignored.
-         */
-        int tileX = Mathf.FloorToInt(worldPosition.x / tileSize);
-        int tileZ = Mathf.FloorToInt(worldPosition.z / tileSize);
-
-        return new Vector2Int(tileX, tileZ);
-    }
-
-    private Vector3 TileToWorldPosition(Vector2Int coordinate)
-    {
-        /*
-         * Every tile is placed at Unity Y = 0.
-         */
-        return new Vector3(
-            coordinate.x * tileSize + tileSize * 0.5f,
-            0f,
-            coordinate.y * tileSize + tileSize * 0.5f
-        );
-    }
-
     private int GetDeterministicPrefabIndex(Vector2Int coordinate)
     {
         int hash = CoordinateHash(

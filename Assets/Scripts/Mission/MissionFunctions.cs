@@ -3440,8 +3440,8 @@ public static class MissionFunctions
         Scene scene = SceneFunctions.GetScene();
 
         GameObject tileGO = new GameObject();
-
         tileGO.transform.parent = scene.transform;
+        tileGO.transform.localPosition = Vector3.zero;
 
         TerrainTileStreamer terrainTileStreamer = tileGO.AddComponent<TerrainTileStreamer>();
 

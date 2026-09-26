@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TerrainTileStreamer : MonoBehaviour
+public class TileStreamer : MonoBehaviour
 {
     [Header("Generation")]
     [SerializeField] public int seed = 1138;

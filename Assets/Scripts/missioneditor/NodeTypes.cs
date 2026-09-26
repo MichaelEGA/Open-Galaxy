@@ -601,6 +601,48 @@ public static class NodeTypes
         NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
     }
 
+    public static void Draw_PreLoad_LoadTerrain(Node node)
+    {
+        NodeFunctions.DrawNodeBase(node);
+
+        NodeFunctions.DrawText(node, "pl_loadterrain", 8, 5f, -5, 12.5f, 65);
+
+        NodeFunctions.DrawButton(node, 83, -6.5f, 10, 10, "cross", "DeleteNode");
+
+        NodeFunctions.DrawLineBreak(node, "#808080", 0, -20, 1, 100);
+
+        float drop = -25;
+
+        node.eventType = NodeFunctions.DrawText(node, "preload_loadterrain", 7, 5, drop, 12.5f, 90);
+
+        drop -= 15;
+
+        node.conditionLocation = NodeFunctions.DrawInputField(node, "Location", "none", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data1 = NodeFunctions.DrawInputField(node, "seed", "1138", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options01 = new List<string>();
+        options01.Add("forest");
+        options01.Add("forest-mixed");
+
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, options01, "terrain", "forest-mixed", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        List<string> options02 = new List<string>();
+        options02.Add("cliff01");
+
+        node.data3 = NodeFunctions.DrawDropDownMenu(node, options02, "cliff", "cliff01", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 30;
+
+        NodeFunctions.SetNodeSize(node, 100, Mathf.Abs(drop));
+    }
+
     public static void Draw_PreLoad_LoadTiles(Node node)
     {
         NodeFunctions.DrawNodeBase(node);

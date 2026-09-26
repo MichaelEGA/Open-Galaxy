@@ -280,8 +280,15 @@ public static class MissionFunctions
         {
             if (missionEvent.eventType == "preload_loadtiles" & missionEvent.conditionLocation == location)
             {
+                MainMenuFunctions.AddLogToLoadingScreen("Loading tiles. This may take a while...", startTime);
                 LoadTiles(missionEvent);
                 MainMenuFunctions.AddLogToLoadingScreen("Tiles loaded", startTime);
+            }
+            else if (missionEvent.eventType == "preload_loadterrain" & missionEvent.conditionLocation == location)
+            {
+                MainMenuFunctions.AddLogToLoadingScreen("Loading terrain. This may take a while...", startTime);
+                LoadTerrain(missionEvent);
+                MainMenuFunctions.AddLogToLoadingScreen("Terrain loaded", startTime);
             }
         }
     }
@@ -3425,6 +3432,35 @@ public static class MissionFunctions
         SceneFunctions.LoadSingleShipAsWreck(position, rotation, type, name, fireNumber, fireScaleMin, fireScaleMax, seed);
     }
 
+    //This loads a procedural terrain
+    public static void LoadTerrain(MissionEvent missionEvent)
+    {
+        int seed = 1138;
+
+        if (int.TryParse(missionEvent.data1, out _))
+        {
+            seed = int.Parse(missionEvent.data1);
+        }
+
+        string terrainType = missionEvent.data2;
+        string cliffType = missionEvent.data3;
+
+        Scene scene = SceneFunctions.GetScene();
+
+        GameObject terrainGO = new GameObject();
+        terrainGO.name = "terrain";
+        terrainGO.transform.parent = scene.transform;
+        terrainGO.transform.localPosition = Vector3.zero;
+
+        TerrainStreamer terrainTileStreamer = terrainGO.AddComponent<TerrainStreamer>();
+
+        terrainTileStreamer.seed = seed;
+        terrainTileStreamer.ship = scene.mainShip.transform;
+        terrainTileStreamer.tileParent = terrainGO.transform;
+        terrainTileStreamer.terrainTextureType = terrainType;
+        terrainTileStreamer.cliffTextureType = cliffType;
+    }
+
     //This loads tiles i.e. death star surface
     public static void LoadTiles(MissionEvent missionEvent)
     {
@@ -3440,10 +3476,11 @@ public static class MissionFunctions
         Scene scene = SceneFunctions.GetScene();
 
         GameObject tileGO = new GameObject();
+        tileGO.name = "tiles";
         tileGO.transform.parent = scene.transform;
         tileGO.transform.localPosition = Vector3.zero;
 
-        TerrainTileStreamer terrainTileStreamer = tileGO.AddComponent<TerrainTileStreamer>();
+        TileStreamer terrainTileStreamer = tileGO.AddComponent<TileStreamer>();
 
         terrainTileStreamer.seed = seed;
         terrainTileStreamer.ship = scene.mainShip.transform;

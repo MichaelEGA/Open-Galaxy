@@ -129,6 +129,17 @@ public static class NodeDescriptions
            "- You cannot select or target a wrecked ship. \n" +
            "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
         }
+        else if (name == "preload_loadterrain")
+        {
+            description =
+           "Pre-Load Terrain \n " +
+           "\n " +
+           "This node loads the terrain system and the chosen texture set i.e. forest-mixed \n" +
+           "\n " +
+           "Extra Information \n" +
+           "- The terrain will always load in the center of the scene, so make sure you place any ships above y = 0. \n" +
+           "- Preload events do not need to be linked to any other events. OG will search for and run them in the correct order when loading a location. \n";
+        }
         else if (name == "preload_loadtiles")
         {
             description =

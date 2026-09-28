@@ -625,11 +625,7 @@ public static class NodeTypes
 
         drop -= 15;
 
-        List<string> options01 = new List<string>();
-        options01.Add("forest");
-        options01.Add("forest-mixed");
-
-        node.data2 = NodeFunctions.DrawDropDownMenu(node, options01, "terrain", "forest-mixed", 7, 5, drop, 12.5f, 90, 5f);
+        node.data2 = NodeFunctions.DrawDropDownMenu(node, GetTerrainList(), "terrain", "forest-mixed", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 15;
 
@@ -637,6 +633,22 @@ public static class NodeTypes
         options02.Add("cliff01");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options02, "cliff", "cliff01", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data4 = NodeFunctions.DrawInputField(node, "plains", "50", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data5 = NodeFunctions.DrawInputField(node, "desert", "100", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data6 = NodeFunctions.DrawInputField(node, "hills", "200", 7, 5, drop, 12.5f, 90, 5f);
+
+        drop -= 15;
+
+        node.data7 = NodeFunctions.DrawInputField(node, "mounts", "400", 7, 5, drop, 12.5f, 90, 5f);
 
         drop -= 30;
 
@@ -5172,6 +5184,250 @@ public static class NodeTypes
         }
 
         return planetList;
+    }
+
+    public static List<string> GetTerrainList()
+    {
+        List<string> terrainList = new List<string>();
+
+        terrainList.Add("asian-city-farm-dark-forest");
+        terrainList.Add("asian-city-full");
+        terrainList.Add("asian-city-with-forest");
+        terrainList.Add("austr-city-farm");
+        terrainList.Add("bare-ground");
+        terrainList.Add("barren");
+        terrainList.Add("barren-land");
+        terrainList.Add("bare");
+        terrainList.Add("canyon");
+        terrainList.Add("city");
+        terrainList.Add("coast");
+        terrainList.Add("commercial");
+        terrainList.Add("dark");
+        terrainList.Add("decidious");
+        terrainList.Add("desert");
+        terrainList.Add("euro");
+        terrainList.Add("euro-city-farm-brown-dark-forest");
+        terrainList.Add("euro-city-farm-dark-forest");
+        terrainList.Add("euro-city-farm-evergreen-forest");
+        terrainList.Add("euro-city-farm-green-evergreen-forest");
+        terrainList.Add("euro-city-farm-green-mixed-forest");
+        terrainList.Add("euro-city-farm-mixed-forest");
+        terrainList.Add("euro-city-farm-patchy-evergreen-forest");
+        terrainList.Add("euro-city-farm-patchy-mixed-forest");
+        terrainList.Add("euro-city-farm");
+        terrainList.Add("european");
+        terrainList.Add("european-city-on-farm");
+        terrainList.Add("european-city-sparse-drab-farms");
+        terrainList.Add("european-city");
+        terrainList.Add("european-farm-brown");
+        terrainList.Add("european-farm-green");
+        terrainList.Add("european-farm-green-dark");
+        terrainList.Add("european-farm");
+        terrainList.Add("evergreen");
+        terrainList.Add("farm");
+        terrainList.Add("farm-browns");
+        terrainList.Add("farm-greens");
+        terrainList.Add("farm-mixed");
+        terrainList.Add("forest");
+        terrainList.Add("forest-bareground");
+        terrainList.Add("forest-dark-asian-farm");
+        terrainList.Add("forest-dark-asian-villages");
+        terrainList.Add("forest-dark-eurofarm");
+        terrainList.Add("forest-dark-eurofarm-brown-full");
+        terrainList.Add("forest-dark-eurofarm-dark-green");
+        terrainList.Add("forest-dark-eurofarm-green");
+        terrainList.Add("forest-dark-grass-green");
+        terrainList.Add("forest-dark-patchy-farm");
+        terrainList.Add("forest-dark");
+        terrainList.Add("forest-decidious");
+        terrainList.Add("forest-decidious-bareground");
+        terrainList.Add("forest-decidious-barren");
+        terrainList.Add("forest-decidious-eurofarm");
+        terrainList.Add("forest-decidious-eurofarm-green");
+        terrainList.Add("forest-decidious-grand-canyon-red");
+        terrainList.Add("forest-decidious-grass");
+        terrainList.Add("forest-decidious-mixed");
+        terrainList.Add("forest-decidious-mixed-wilderness");
+        terrainList.Add("forest-decidious-red-desert");
+        terrainList.Add("forest-decidious-tundra");
+        terrainList.Add("forest-decidious-western");
+        terrainList.Add("forest-decidious-western-barren");
+        terrainList.Add("forest-eurofarm");
+        terrainList.Add("forest-eurofarm-brown");
+        terrainList.Add("forest-eurofarm-browns");
+        terrainList.Add("forest-evergreen");
+        terrainList.Add("forest-evergreen-bareground");
+        terrainList.Add("forest-evergreen-barren");
+        terrainList.Add("forest-evergreen-eurofarm");
+        terrainList.Add("forest-evergreen-eurofarm-brown");
+        terrainList.Add("forest-evergreen-eurofarm-green");
+        terrainList.Add("forest-evergreen-grand-canyon-red");
+        terrainList.Add("forest-evergreen-grass");
+        terrainList.Add("forest-evergreen-grass-green");
+        terrainList.Add("forest-evergreen-grass-yellow");
+        terrainList.Add("forest-evergreen-mixed");
+        terrainList.Add("forest-evergreen-mixed-wilderness");
+        terrainList.Add("forest-evergreen-western-barren");
+        terrainList.Add("forest-grass-green");
+        terrainList.Add("forest-grass-yellow");
+        terrainList.Add("forest-mixed");
+        terrainList.Add("forest-mixed-barren");
+        terrainList.Add("forest-mixed-barren-land");
+        terrainList.Add("forest-mixed-eurofarm");
+        terrainList.Add("forest-mixed-eurofarm-brown");
+        terrainList.Add("forest-mixed-eurofarm-green");
+        terrainList.Add("forest-mixed-grand-canyon-red");
+        terrainList.Add("forest-mixed-grass-green");
+        terrainList.Add("forest-mixed-grass-yellow");
+        terrainList.Add("forest-mixed-mixed-wilderness");
+        terrainList.Add("forest-mixed-red-desert");
+        terrainList.Add("forest-mixed-western-barren");
+        terrainList.Add("forest-mixed-wilderness");
+        terrainList.Add("forest-spruce");
+        terrainList.Add("forest-spruce-barren");
+        terrainList.Add("forest-spruce-barren-land");
+        terrainList.Add("forest-spruce-eurofarm-green");
+        terrainList.Add("forest-spruce-grand-canyon-red");
+        terrainList.Add("forest-spruce-grass");
+        terrainList.Add("forest-spruce-grass-green");
+        terrainList.Add("forest-spruce-mixed");
+        terrainList.Add("forest-spruce-mixed-wilderness");
+        terrainList.Add("forest-spruce-red-desert");
+        terrainList.Add("forest-spruce-tundra");
+        terrainList.Add("forest-spruce-western-barren");
+        terrainList.Add("forest-tundra");
+        terrainList.Add("forest-with");
+        terrainList.Add("forest-with-heavy-snow");
+        terrainList.Add("french");
+        terrainList.Add("french-farm-sparsecity");
+        terrainList.Add("french-farm-sparsecity-forest");
+        terrainList.Add("fresh-coast-land");
+        terrainList.Add("fresh-coast-trans");
+        terrainList.Add("german");
+        terrainList.Add("german-city");
+        terrainList.Add("grand-canyon");
+        terrainList.Add("grand-canyon-red");
+        terrainList.Add("grand-canyon-red-trees");
+        terrainList.Add("grass");
+        terrainList.Add("grass-green");
+        terrainList.Add("grass-patches-grand-canyon-red");
+        terrainList.Add("grass-yellow");
+        terrainList.Add("ground");
+        terrainList.Add("heavy-urban");
+        terrainList.Add("heavy-urban-so-cal");
+        terrainList.Add("herbacious");
+        terrainList.Add("highway");
+        terrainList.Add("highway-lights");
+        terrainList.Add("industrial");
+        terrainList.Add("israel");
+        terrainList.Add("lake");
+        terrainList.Add("lake-mid");
+        terrainList.Add("medium-urban");
+        terrainList.Add("medium-urban-grand-canyon-red");
+        terrainList.Add("medium-urban-grass-green");
+        terrainList.Add("medium-urban-grass-yellow");
+        terrainList.Add("medium-urban-red-desert");
+        terrainList.Add("medium-urban-western-barren");
+        terrainList.Add("medium-urban-wilderness");
+        terrainList.Add("mine");
+        terrainList.Add("mixed");
+        terrainList.Add("mixed-wilderness");
+        terrainList.Add("mountain");
+        terrainList.Add("mountain-tundra");
+        terrainList.Add("mntn");
+        terrainList.Add("mntn-snow");
+        terrainList.Add("mntn-snow-blues");
+        terrainList.Add("mntn-snow-greys");
+        terrainList.Add("mntn-red-desert");
+        terrainList.Add("new-road-top");
+        terrainList.Add("new-road-top-light");
+        terrainList.Add("new-road-top-white");
+        terrainList.Add("nite");
+        terrainList.Add("nite-full");
+        terrainList.Add("nite-medium");
+        terrainList.Add("nite-sparse");
+        terrainList.Add("ocean");
+        terrainList.Add("ocean-breakers");
+        terrainList.Add("other-urban");
+        terrainList.Add("patchy");
+        terrainList.Add("patchy-farm");
+        terrainList.Add("patchy-farm-browns");
+        terrainList.Add("patchy-farm-greens");
+        terrainList.Add("range");
+        terrainList.Add("range-bare-ground");
+        terrainList.Add("range-herbacious");
+        terrainList.Add("range-herbacious-bare-ground");
+        terrainList.Add("range-herbacious-barren-land");
+        terrainList.Add("range-herbacious-grand-canyon-red");
+        terrainList.Add("range-herbacious-grass-green");
+        terrainList.Add("range-herbacious-grass-yellow");
+        terrainList.Add("range-herbacious-mixed");
+        terrainList.Add("range-herbacious-mixed-wilderness");
+        terrainList.Add("range-herbacious-western");
+        terrainList.Add("range-mixed");
+        terrainList.Add("range-mixed-barren");
+        terrainList.Add("range-mixed-grand");
+        terrainList.Add("range-mixed-grand-canyon-red");
+        terrainList.Add("range-mixed-grass");
+        terrainList.Add("range-mixed-grass-green");
+        terrainList.Add("range-mixed-mixed");
+        terrainList.Add("range-mixed-mixed-wilderness");
+        terrainList.Add("range-mixed-red-desert");
+        terrainList.Add("range-mixed-western");
+        terrainList.Add("range-red-desert");
+        terrainList.Add("range-shrub");
+        terrainList.Add("range-shrub-bare-ground");
+        terrainList.Add("range-shrub-barren");
+        terrainList.Add("range-shrub-grand-canyon-red");
+        terrainList.Add("range-shrub-grass");
+        terrainList.Add("range-shrub-grass-green");
+        terrainList.Add("range-shrub-grass-yellow");
+        terrainList.Add("range-shrub-mixed");
+        terrainList.Add("range-shrub-mixed-wilderness");
+        terrainList.Add("range-shrub-western");
+        terrainList.Add("range-tundra");
+        terrainList.Add("road");
+        terrainList.Add("road-base");
+        terrainList.Add("road-top");
+        terrainList.Add("road-top-light");
+        terrainList.Add("salt");
+        terrainList.Add("salt-coast");
+        terrainList.Add("salt-coast-land");
+        terrainList.Add("salt-evap");
+        terrainList.Add("salt-flats");
+        terrainList.Add("sandy-ground");
+        terrainList.Add("shrub");
+        terrainList.Add("spruce");
+        terrainList.Add("strip-mines");
+        terrainList.Add("suburb");
+        terrainList.Add("suburb-bareground");
+        terrainList.Add("suburb-grass");
+        terrainList.Add("suburb-grass-green");
+        terrainList.Add("suburb-grass-yellow");
+        terrainList.Add("suburb-mixed");
+        terrainList.Add("suburb-mixed-wilderness");
+        terrainList.Add("suburb-red");
+        terrainList.Add("suburb-red-desert");
+        terrainList.Add("suburb-western");
+        terrainList.Add("suburb-western-barren");
+        terrainList.Add("swamp");
+        terrainList.Add("top");
+        terrainList.Add("transportation");
+        terrainList.Add("tundra");
+        terrainList.Add("turquoise-coast-trans");
+        terrainList.Add("urban");
+        terrainList.Add("water");
+        terrainList.Add("water-lake");
+        terrainList.Add("water-ocean");
+        terrainList.Add("water-ocean-trans");
+        terrainList.Add("water-river");
+        terrainList.Add("water-river-browns");
+        terrainList.Add("western");
+        terrainList.Add("western-barren");
+        terrainList.Add("western-barren-canyon-dirt");
+        terrainList.Add("wilderness");
+
+        return terrainList;
     }
 
     public static List<string> GetSkyboxList()

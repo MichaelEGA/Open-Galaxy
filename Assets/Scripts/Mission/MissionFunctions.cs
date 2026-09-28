@@ -3445,6 +3445,31 @@ public static class MissionFunctions
         string terrainType = missionEvent.data2;
         string cliffType = missionEvent.data3;
 
+        float plainsAmp = 50f;
+        float desertAmp = 100f;
+        float hillsAmp = 200f;
+        float mountAmp = 400f;
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            plainsAmp = float.Parse(missionEvent.data4);
+        }
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            desertAmp = float.Parse(missionEvent.data5);
+        }
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            hillsAmp = float.Parse(missionEvent.data6);
+        }
+
+        if (float.TryParse(missionEvent.data4, out _))
+        {
+            mountAmp = float.Parse(missionEvent.data7);
+        }
+
         Scene scene = SceneFunctions.GetScene();
 
         GameObject terrainGO = new GameObject();
@@ -3459,6 +3484,10 @@ public static class MissionFunctions
         terrainTileStreamer.tileParent = terrainGO.transform;
         terrainTileStreamer.terrainTextureType = terrainType;
         terrainTileStreamer.cliffTextureType = cliffType;
+        terrainTileStreamer.plainsAmp = plainsAmp;
+        terrainTileStreamer.desertAmp = desertAmp;
+        terrainTileStreamer.hillsAmp = hillsAmp;
+        terrainTileStreamer.mountAmp = mountAmp;
     }
 
     //This loads tiles i.e. death star surface

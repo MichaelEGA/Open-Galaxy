@@ -20,10 +20,10 @@ public class TerrainGenerator
     private readonly FastNoiseLite biomeNoise;
 
     // Amplitude multipliers for each biome - these need to be MUCH larger
-    private float plainsAmp = 50f;
-    private float desertAmp = 100f;
-    private float hillsAmp = 200f;
-    private float mountAmp = 400f;
+    public float plainsAmp = 50f;
+    public float desertAmp = 100f;
+    public float hillsAmp = 200f;
+    public float mountAmp = 400f;
 
     // Biome percentages
     private float plainsPercentage = 0.25f;

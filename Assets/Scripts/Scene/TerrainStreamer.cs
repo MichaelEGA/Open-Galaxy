@@ -29,6 +29,13 @@ public class TerrainStreamer : MonoBehaviour
     [Header("Tile Parent")]
     [SerializeField] public Transform tileParent;
 
+
+    [Header("Generation settings")]
+    public float plainsAmp = 50f;
+    public float desertAmp = 100f;
+    public float hillsAmp = 200f;
+    public float mountAmp = 400f;
+
     private readonly Dictionary<Vector2Int, GameObject> loadedTiles = new();
 
     private TerrainGenerator terrainGenerator;
@@ -93,6 +100,11 @@ public class TerrainStreamer : MonoBehaviour
             maxTerrainHeight,
             heightCurve
         );
+
+        terrainGenerator.plainsAmp = plainsAmp;
+        terrainGenerator.desertAmp = desertAmp;
+        terrainGenerator.hillsAmp = hillsAmp;
+        terrainGenerator.mountAmp = mountAmp;
 
         tileRadiusInTiles = Mathf.CeilToInt(
             tileRadiusInKilometres * 1000f / tileSize

@@ -78,25 +78,6 @@ public static class SmallShipFunctions
         }
     }
 
-    //This loads the laser particle system if its missing
-    public static void LoadLaserParticleSystem(SmallShip smallShip)
-    {
-
-        if (smallShip.ionParticleSystem == null)
-        {
-            IonFunctions.GetCannons(smallShip);
-            IonFunctions.LoadIonMuzzleFlashParticleSystem(smallShip);
-            IonFunctions.LoadIonParticleSystem(smallShip);
-        }
-
-        if (smallShip.plasmaParticleSystem == null)
-        {
-            PlasmaFunctions.GetCannons(smallShip);
-            PlasmaFunctions.LoadPlasmaMuzzleFlashParticleSystem(smallShip);
-            PlasmaFunctions.LoadPlasmaParticleSystem(smallShip);
-        }
-    }
-
     #endregion
 
     #region update functions
@@ -130,14 +111,6 @@ public static class SmallShipFunctions
 
         //Weapon functions
         ToggleWeapons(smallShip);
-
-        //Ion Cannon functions
-        IonFunctions.ToggleWeaponMode(smallShip);
-        IonFunctions.InitiateFiringPlayer(smallShip);
-
-        //Ion Cannon functions
-        PlasmaFunctions.ToggleWeaponMode(smallShip);
-        PlasmaFunctions.InitiateFiringPlayer(smallShip);
 
         //Torpedo functions
         TorpedoFunctions.EstablishLockOn(smallShip);

@@ -19,16 +19,16 @@ public static class LaserFunctions
         {
             SmallShip smallShip = laser.smallShip;
 
-            LaserFunctions.GetCannons(smallShip);
-            LaserFunctions.LoadLaserParticleSystem(smallShip);
-            LaserFunctions.LoadLaserMuzzleFlashParticleSystem(smallShip);
+            LaserFunctions.GetCannons(laser);
+            LaserFunctions.LoadLaserParticleSystem(laser);
+            LaserFunctions.LoadLaserMuzzleFlashParticleSystem(laser);
         }
     }
 
     //This sets all the correct settings on the provided particle system to fire lasers
-    public static void LoadLaserParticleSystem(SmallShip smallShip)
+    public static void LoadLaserParticleSystem(Laser laser)
     {
-        Laser laser = GetLaserScript(smallShip);
+        SmallShip smallShip = laser.smallShip;
 
         //This loads the necessary prefabs
         GameObject laserGO = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
@@ -48,9 +48,8 @@ public static class LaserFunctions
         laser.laserParticleSystem.name = "laserparticlesystem_" + smallShip.gameObject.name;       
         ParticleSystem particleSystem = laser.laserParticleSystem.AddComponent<ParticleSystem>();
         ParticleSystemRenderer particleSystemRenderer = laser.laserParticleSystem.GetComponent<ParticleSystemRenderer>();
-        Laser onLaserHit = laser.laserParticleSystem.AddComponent<Laser>();
-        onLaserHit.particleSystemScript = particleSystem;
-        onLaserHit.smallShip = smallShip;
+        laser.particleSystemScript = particleSystem;
+        laser.smallShip = smallShip;
 
         //This creates an anchor for all the laser particle systems
         GameObject laserparticlesanchor = GameObject.Find("laserparticleanchor");
@@ -145,9 +144,9 @@ public static class LaserFunctions
     }
 
     //This sets all the correct settings on the provided particle system to make a muzzle flash
-    public static void LoadLaserMuzzleFlashParticleSystem(SmallShip smallShip)
+    public static void LoadLaserMuzzleFlashParticleSystem(Laser laser)
     {
-        Laser laser = GetLaserScript(smallShip);
+        SmallShip smallShip = laser.smallShip;
 
         //This loads the necessary prefabs
         GameObject redMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
@@ -343,9 +342,9 @@ public static class LaserFunctions
     #region ship cannons
 
     //This grabs all the ships laser cannons
-    public static void GetCannons(SmallShip smallShip)
+    public static void GetCannons(Laser laser)
     {
-        Laser laser = GetLaserScript(smallShip);
+        SmallShip smallShip = laser.smallShip;
 
         Transform laser1 = smallShip.gameObject.transform.Find("gunbank01/gunbank01-01");
         Transform laser2 = smallShip.gameObject.transform.Find("gunbank01/gunbank01-02");

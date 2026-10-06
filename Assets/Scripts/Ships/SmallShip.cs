@@ -140,31 +140,8 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool ionRecharged;
     [HideInInspector] public bool plasmaRecharged;
     [HideInInspector] public float toggleWeaponPressedTime;
-
-    [HideInInspector] public GameObject ionParticleSystem;
-    [HideInInspector] public GameObject ionMuzzleFlashParticleSystem;
-    [HideInInspector] public GameObject ionCannon1;
-    [HideInInspector] public GameObject ionCannon2;
-    [HideInInspector] public GameObject ionCannon3;
-    [HideInInspector] public GameObject ionCannon4;
-    [HideInInspector] public float ionCycleNumber;
-    [HideInInspector] public float ionPressedTime;
-    [HideInInspector] public float ionModePressedTime;
-    [HideInInspector] public bool ionfiring;
-    [HideInInspector] public bool hasIon;
-
-
-    [HideInInspector] public GameObject plasmaParticleSystem;
-    [HideInInspector] public GameObject plasmaMuzzleFlashParticleSystem;
-    [HideInInspector] public GameObject plasmaCannon1;
-    [HideInInspector] public GameObject plasmaCannon2;
-    [HideInInspector] public GameObject plasmaCannon3;
-    [HideInInspector] public GameObject plasmaCannon4;
-    [HideInInspector] public float plasmaCycleNumber;
-    [HideInInspector] public float plasmaPressedTime;
-    [HideInInspector] public float plasmaModePressedTime;
-    [HideInInspector] public bool plasmafiring;
-    [HideInInspector] public bool hasPlasma;
+    public bool hasPlasma;
+    public bool hasIon;
 
     [HideInInspector] public GameObject torpedoTube1;
     [HideInInspector] public GameObject torpedoTube2;

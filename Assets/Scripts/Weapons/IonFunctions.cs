@@ -1,31 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 //These functions are called by the small ship functions script
 public static class IonFunctions
 {
     #region intiate particle system
 
-    //This sets all the correct settings on the provided particle system to fire ions
-    public static void LoadIonParticleSystem(SmallShip smallShip)
+    //This prepares the plasma cannons
+    public static void PrepareIon(Ion ion)
     {
-        //This loads the necessary prefabs
-        GameObject ion = Resources.Load(OGGetAddress.particles + "models/ion") as GameObject; //This needs to be created then changed
+        if (ion != null)
+        {
+            ion.smallShip = ion.GetComponent<SmallShip>();
+        }
 
-        Mesh ionMesh = ion.GetComponent<MeshFilter>().sharedMesh;
+        if (ion.ionParticleSystem == null)
+        {
+            SmallShip smallShip = ion.smallShip;
+
+            IonFunctions.GetCannons(ion);
+            IonFunctions.LoadIonParticleSystem(ion);
+            IonFunctions.LoadIonMuzzleFlashParticleSystem(ion);
+        }
+    }
+
+    //This sets all the correct settings on the provided particle system to fire ions
+    public static void LoadIonParticleSystem(Ion ion)
+    {
+        SmallShip smallShip = ion.smallShip;
+
+        //This loads the necessary prefabs
+        GameObject ionGO = Resources.Load(OGGetAddress.particles + "models/ion") as GameObject; //This needs to be created then changed
+
+        Mesh ionMesh = ionGO.GetComponent<MeshFilter>().sharedMesh;
 
         Material ionMaterial = Resources.Load(OGGetAddress.particles + "materials/ion_material") as Material;  //This needs to be created then changed
         GameObject ionLight = Resources.Load(OGGetAddress.particles + "lights/ion_light") as GameObject;  //This needs to be created then changed
 
         //This loads the particle system and the particle collider
-        smallShip.ionParticleSystem = new GameObject();
-        smallShip.ionParticleSystem.name = "ionparticlesystem_" + smallShip.gameObject.name;
-        ParticleSystem particleSystem = smallShip.ionParticleSystem.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = smallShip.ionParticleSystem.GetComponent<ParticleSystemRenderer>();
-        OnIonHit onIonHit = smallShip.ionParticleSystem.AddComponent<OnIonHit>();
-        onIonHit.particleSystemScript = particleSystem;
-        onIonHit.smallShip = smallShip;
+        ion.ionParticleSystem = new GameObject();
+        ion.ionParticleSystem.name = "ionparticlesystem_" + smallShip.gameObject.name;
+        ParticleSystem particleSystem = ion.ionParticleSystem.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = ion.ionParticleSystem.GetComponent<ParticleSystemRenderer>();
+        ion.particleSystemScript = particleSystem;
+        ion.smallShip = smallShip;
 
         //This creates an anchor for all the ion particle systems
         GameObject ionparticleanchor = GameObject.Find("ionparticleanchor");
@@ -47,7 +67,7 @@ public static class IonFunctions
                 smallShip.scene.ionPool = new List<GameObject>();
             }
 
-            smallShip.scene.ionPool.Add(smallShip.ionParticleSystem);
+            smallShip.scene.ionPool.Add(ion.ionParticleSystem);
         }
 
         //This sets the paticle to operate in world space (as opposed to local)
@@ -107,23 +127,25 @@ public static class IonFunctions
     }
 
     //This sets all the correct settings on the provided particle system to make a muzzle flash
-    public static void LoadIonMuzzleFlashParticleSystem(SmallShip smallShip)
+    public static void LoadIonMuzzleFlashParticleSystem(Ion ion)
     {
+        SmallShip smallShip = ion.smallShip;
+
         //This loads the necessary prefabs
         GameObject blueMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/ion_light") as GameObject;
 
         Material blueMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_blue") as Material;
 
         //This loads the particle system and the particle collider
-        smallShip.ionMuzzleFlashParticleSystem = new GameObject();
-        smallShip.ionMuzzleFlashParticleSystem.name = "ionmuzzleflashparticlesystem_" + smallShip.gameObject.name;
-        smallShip.ionMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
-        ParticleSystem particleSystem = smallShip.ionMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = smallShip.ionMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
+        ion.ionMuzzleFlashParticleSystem = new GameObject();
+        ion.ionMuzzleFlashParticleSystem.name = "ionmuzzleflashparticlesystem_" + smallShip.gameObject.name;
+        ion.ionMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
+        ParticleSystem particleSystem = ion.ionMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = ion.ionMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
 
         //This sets the particle system to be subordinate to the smallship
         particleSystem.transform.SetParent(smallShip.transform);
-        smallShip.ionMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
+        ion.ionMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
 
         //This adds the new particle system to the pool
         if (smallShip.scene != null)
@@ -133,7 +155,7 @@ public static class IonFunctions
                 smallShip.scene.lasersPool = new List<GameObject>();
             }
 
-            smallShip.scene.lasersPool.Add(smallShip.ionParticleSystem);
+            smallShip.scene.lasersPool.Add(ion.ionParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -188,11 +210,11 @@ public static class IonFunctions
     //This modifies the collision layers to the player layer so that it's visible in film mode
     public static void ChangeCollisionLayerToPlayer(SmallShip smallShip)
     {
-        OnIonHit onIonHit = smallShip.ionParticleSystem.GetComponent<OnIonHit>();
+        Ion ion = smallShip.GetComponent<Ion>();
 
-        if (onIonHit != null)
+        if (ion != null)
         {
-            ParticleSystem particleSystem = onIonHit.particleSystemScript;
+            ParticleSystem particleSystem = ion.particleSystemScript;
 
             if (particleSystem != null)
             {
@@ -205,11 +227,11 @@ public static class IonFunctions
     //This resets the collision layers
     public static void ResetCollisionLayers(SmallShip smallShip)
     {
-        OnIonHit onIonHit = smallShip.ionParticleSystem.GetComponent<OnIonHit>();
+        Ion ion = smallShip.GetComponent<Ion>();
 
-        if (onIonHit != null)
+        if (ion != null)
         {
-            ParticleSystem particleSystem = onIonHit.particleSystemScript;
+            ParticleSystem particleSystem = ion.particleSystemScript;
 
             if (particleSystem != null)
             {
@@ -286,8 +308,10 @@ public static class IonFunctions
     #region ship cannons
 
     //This grabs all the ships ion cannons
-    public static void GetCannons(SmallShip smallShip)
+    public static void GetCannons(Ion ion)
     {
+        SmallShip smallShip = ion.smallShip;
+
         Transform ion1 = smallShip.gameObject.transform.Find("ionbank01/ionbank01-01");
         Transform ion2 = smallShip.gameObject.transform.Find("ionbank01/ionbank01-02");
         Transform ion3 = smallShip.gameObject.transform.Find("ionbank01/ionbank01-03");
@@ -295,17 +319,17 @@ public static class IonFunctions
 
         if (ion1 != null)
         {
-            smallShip.ionCannon1 = ion1.gameObject;
+            ion.ionCannon1 = ion1.gameObject;
         }
 
         if (ion2 != null)
         {
-            smallShip.ionCannon2 = ion2.gameObject;
+            ion.ionCannon2 = ion2.gameObject;
         }
 
         if (ion3 != null)
         {
-            smallShip.ionCannon3 = ion3.gameObject;
+            ion.ionCannon3 = ion3.gameObject;
         }
         else
         {
@@ -313,13 +337,13 @@ public static class IonFunctions
 
             if (ion3 != null)
             {
-                smallShip.ionCannon3 = ion3.gameObject;
+                ion.ionCannon3 = ion3.gameObject;
             }
         }
 
         if (ion4 != null)
         {
-            smallShip.ionCannon4 = ion4.gameObject;
+            ion.ionCannon4 = ion4.gameObject;
         }
         else
         {
@@ -327,7 +351,7 @@ public static class IonFunctions
 
             if (ion4 != null)
             {
-                smallShip.ionCannon4 = ion4.gameObject;
+                ion.ionCannon4 = ion4.gameObject;
             }
         }
 
@@ -338,52 +362,54 @@ public static class IonFunctions
     }
 
     //This sets the rotation of the ions to angle at the correct distance for the targetted ship
-    public static void SetCannons(SmallShip smallShip)
+    public static void SetCannons(Ion ion)
     {
+        SmallShip smallShip = ion.smallShip;
+
         if (smallShip.autoaim == true & smallShip.target != null & smallShip.targetRigidbody != null & smallShip.targetForward > 0.995f)
         {
             Vector3 interceptPoint = GameObjectUtils.CalculateInterceptPoint(smallShip.transform.position, smallShip.target.transform.position, smallShip.targetRigidbody.linearVelocity, 750);
 
-            if (smallShip.ionCannon1 != null)
+            if (ion.ionCannon1 != null)
             {
-                smallShip.ionCannon1.transform.LookAt(interceptPoint);
+                ion.ionCannon1.transform.LookAt(interceptPoint);
             }
 
-            if (smallShip.ionCannon2 != null)
+            if (ion.ionCannon2 != null)
             {
-                smallShip.ionCannon2.transform.LookAt(interceptPoint);
+                ion.ionCannon2.transform.LookAt(interceptPoint);
             }
 
-            if (smallShip.ionCannon3 != null)
+            if (ion.ionCannon3 != null)
             {
-                smallShip.ionCannon3.transform.LookAt(interceptPoint);
+                ion.ionCannon3.transform.LookAt(interceptPoint);
             }
 
-            if (smallShip.ionCannon4 != null)
+            if (ion.ionCannon4 != null)
             {
-                smallShip.ionCannon4.transform.LookAt(interceptPoint);
+                ion.ionCannon4.transform.LookAt(interceptPoint);
             }
         }
         else
         {
-            if (smallShip.ionCannon1 != null)
+            if (ion.ionCannon1 != null)
             {
-                smallShip.ionCannon1.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+                ion.ionCannon1.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
             }
 
-            if (smallShip.ionCannon2 != null)
+            if (ion.ionCannon2 != null)
             {
-                smallShip.ionCannon2.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+                ion.ionCannon2.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
             }
 
-            if (smallShip.ionCannon3 != null)
+            if (ion.ionCannon3 != null)
             {
-                smallShip.ionCannon3.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+                ion.ionCannon3.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
             }
 
-            if (smallShip.ionCannon4 != null)
+            if (ion.ionCannon4 != null)
             {
-                smallShip.ionCannon4.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
+                ion.ionCannon4.transform.LookAt(smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * smallShip.interceptDistance));
             }
         }
     }
@@ -393,15 +419,17 @@ public static class IonFunctions
     #region ion mode
 
     //This cycles the ion mode between single, dual, and quad ions
-    public static void ToggleWeaponMode(SmallShip smallShip)
+    public static void ToggleWeaponMode(Ion ion)
     {
-        if (smallShip.toggleWeaponNumber == true & Time.time > smallShip.ionModePressedTime & smallShip.activeWeapon == "ion")
+        SmallShip smallShip = ion.smallShip;
+
+        if (smallShip.toggleWeaponNumber == true & Time.time > ion.ionModePressedTime & smallShip.activeWeapon == "ion")
         {
-            if (smallShip.weaponMode == "single" & smallShip.ionCannon2 != null)
+            if (smallShip.weaponMode == "single" & ion.ionCannon2 != null)
             {
                 smallShip.weaponMode = "dual";
             }
-            else if (smallShip.weaponMode == "dual" & smallShip.ionCannon3 != null)
+            else if (smallShip.weaponMode == "dual" & ion.ionCannon3 != null)
             {
                 smallShip.weaponMode = "all";
             }
@@ -414,7 +442,7 @@ public static class IonFunctions
                 smallShip.weaponMode = "single";
             }
 
-            smallShip.ionModePressedTime = Time.time + 0.2f;
+            ion.ionModePressedTime = Time.time + 0.2f;
 
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
@@ -491,8 +519,10 @@ public static class IonFunctions
     #region ion fire functions
 
     //This allows the player to fire the ions
-    public static void InitiateFiringPlayer(SmallShip smallShip)
+    public static void InitiateFiringPlayer(Ion ion)
     {
+        SmallShip smallShip = ion.smallShip;
+
         if (smallShip.fireWeapon == true & smallShip.isAI == false & smallShip.isDisabled == false)
         {
             InitiateFiring(smallShip);
@@ -502,7 +532,9 @@ public static class IonFunctions
     //This executes the firing according to the ion mode
     public static void InitiateFiring(SmallShip smallShip)
     {
-        SetCannons(smallShip); //This sets cannon angle prior to firing the laser
+        Ion ion = smallShip.GetComponent<Ion>();
+
+        SetCannons(ion); //This sets cannon angle prior to firing the laser
 
         if (smallShip.isDisabled == false & smallShip.ionCharge > 0 & smallShip.activeWeapon == "ion")
         {
@@ -540,100 +572,102 @@ public static class IonFunctions
                 smallShip.weaponRechargeDelay = Time.time;
             }
 
-            if (Time.time > smallShip.ionPressedTime & smallShip.ionfiring != true & smallShip.weaponsLock == false)
+            if (Time.time > ion.ionPressedTime & ion.ionfiring != true & smallShip.weaponsLock == false)
             {
                 if (smallShip.weaponMode == "single" || smallShip.weaponMode == "rapid")
                 {
-                    if (smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
+                    if (ion.ionCannon3 != null & ion.ionCannon4 != null)
                     {
-                        smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
+                        ion.ionCycleNumber = ion.ionCycleNumber + 1;
 
-                        if (smallShip.ionCycleNumber > 4)
+                        if (ion.ionCycleNumber > 4)
                         {
-                            smallShip.ionCycleNumber = 1;
+                            ion.ionCycleNumber = 1;
                         }
 
-                        if (smallShip.ionCycleNumber == 1) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1)); }
-                        else if (smallShip.ionCycleNumber == 2) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon2)); }
-                        else if (smallShip.ionCycleNumber == 3) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon3)); }
-                        else if (smallShip.ionCycleNumber == 4) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon4)); }
+                        if (ion.ionCycleNumber == 1) { Task a = new Task(FireIons(ion, 1, ion.ionCannon1)); }
+                        else if (ion.ionCycleNumber == 2) { Task a = new Task(FireIons(ion, 1, ion.ionCannon2)); }
+                        else if (ion.ionCycleNumber == 3) { Task a = new Task(FireIons(ion, 1, ion.ionCannon3)); }
+                        else if (ion.ionCycleNumber == 4) { Task a = new Task(FireIons(ion, 1, ion.ionCannon4)); }
 
                     }
-                    else if (smallShip.ionCannon1 != null & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null)
+                    else if (ion.ionCannon1 != null & ion.ionCannon2 != null & ion.ionCannon3 != null)
                     {
-                        smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
+                        ion.ionCycleNumber = ion.ionCycleNumber + 1;
 
-                        if (smallShip.ionCycleNumber > 3)
+                        if (ion.ionCycleNumber > 3)
                         {
-                            smallShip.ionCycleNumber = 1;
+                            ion.ionCycleNumber = 1;
                         }
 
-                        if (smallShip.ionCycleNumber == 1) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1)); }
-                        else if (smallShip.ionCycleNumber == 2) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon2)); }
-                        else if (smallShip.ionCycleNumber == 3) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon3)); }
+                        if (ion.ionCycleNumber == 1) { Task a = new Task(FireIons(ion, 1, ion.ionCannon1)); }
+                        else if (ion.ionCycleNumber == 2) { Task a = new Task(FireIons(ion, 1, ion.ionCannon2)); }
+                        else if (ion.ionCycleNumber == 3) { Task a = new Task(FireIons(ion, 1, ion.ionCannon3)); }
                     }
-                    else if (smallShip.ionCannon1 != null & smallShip.ionCannon2 != null)
+                    else if (ion.ionCannon1 != null & ion.ionCannon2 != null)
                     {
-                        smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
+                        ion.ionCycleNumber = ion.ionCycleNumber + 1;
 
-                        if (smallShip.ionCycleNumber > 2)
+                        if (ion.ionCycleNumber > 2)
                         {
-                            smallShip.ionCycleNumber = 1;
+                            ion.ionCycleNumber = 1;
                         }
 
-                        if (smallShip.ionCycleNumber == 1) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1)); }
-                        else if (smallShip.ionCycleNumber == 2) { Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon2)); }
+                        if (ion.ionCycleNumber == 1) { Task a = new Task(FireIons(ion, 1, ion.ionCannon1)); }
+                        else if (ion.ionCycleNumber == 2) { Task a = new Task(FireIons(ion, 1, ion.ionCannon2)); }
                     }
-                    else if (smallShip.ionCannon1 != null)
+                    else if (ion.ionCannon1 != null)
                     {
-                        Task a = new Task(FireIons(smallShip, 1, smallShip.ionCannon1));
+                        Task a = new Task(FireIons(ion, 1, ion.ionCannon1));
                     }
 
                 }
                 else if (smallShip.weaponMode == "dual")
                 {
 
-                    smallShip.ionCycleNumber = smallShip.ionCycleNumber + 1;
+                    ion.ionCycleNumber = ion.ionCycleNumber + 1;
 
-                    if (smallShip.ionCycleNumber > 2)
+                    if (ion.ionCycleNumber > 2)
                     {
-                        smallShip.ionCycleNumber = 1;
+                        ion.ionCycleNumber = 1;
                     }
 
-                    if (smallShip.ionCycleNumber == 1 & smallShip.ionCannon1 != null & smallShip.ionCannon2 != null)
+                    if (ion.ionCycleNumber == 1 & ion.ionCannon1 != null & ion.ionCannon2 != null)
                     {
-                        Task a = new Task(FireIons(smallShip, 2, smallShip.ionCannon1, smallShip.ionCannon2));
+                        Task a = new Task(FireIons(ion, 2, ion.ionCannon1, ion.ionCannon2));
                     }
-                    else if (smallShip.ionCycleNumber == 2 & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null & smallShip.ionCannon4 == null)
+                    else if (ion.ionCycleNumber == 2 & ion.ionCannon2 != null & ion.ionCannon3 != null & ion.ionCannon4 == null)
                     {
-                        Task a = new Task(FireIons(smallShip, 2, smallShip.ionCannon2, smallShip.ionCannon3));
+                        Task a = new Task(FireIons(ion, 2, ion.ionCannon2, ion.ionCannon3));
                     }
-                    else if (smallShip.ionCycleNumber == 2 & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
+                    else if (ion.ionCycleNumber == 2 & ion.ionCannon3 != null & ion.ionCannon4 != null)
                     {
-                        Task a = new Task(FireIons(smallShip, 2, smallShip.ionCannon3, smallShip.ionCannon4));
+                        Task a = new Task(FireIons(ion, 2, ion.ionCannon3, ion.ionCannon4));
                     }
                 }
                 else if (smallShip.weaponMode == "all")
                 {
-                    if (smallShip.ionCannon1 != null & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null & smallShip.ionCannon4 == null)
+                    if (ion.ionCannon1 != null & ion.ionCannon2 != null & ion.ionCannon3 != null & ion.ionCannon4 == null)
                     {
-                        Task a = new Task(FireIons(smallShip, 3, smallShip.ionCannon1, smallShip.ionCannon2, smallShip.ionCannon3));
+                        Task a = new Task(FireIons(ion, 3, ion.ionCannon1, ion.ionCannon2, ion.ionCannon3));
                     }
-                    else if (smallShip.ionCannon1 != null & smallShip.ionCannon2 != null & smallShip.ionCannon3 != null & smallShip.ionCannon4 != null)
+                    else if (ion.ionCannon1 != null & ion.ionCannon2 != null & ion.ionCannon3 != null & ion.ionCannon4 != null)
                     {
-                        Task a = new Task(FireIons(smallShip, 4, smallShip.ionCannon1, smallShip.ionCannon2, smallShip.ionCannon3, smallShip.ionCannon4));
+                        Task a = new Task(FireIons(ion, 4, ion.ionCannon1, ion.ionCannon2, ion.ionCannon3, ion.ionCannon4));
                     } 
                 }
 
-                smallShip.ionPressedTime = Time.time + ionWaitTime;
+                ion.ionPressedTime = Time.time + ionWaitTime;
             }
         }
     }
 
     //This fires a ion from the selected cannon
-    public static IEnumerator FireIons(SmallShip smallShip, float ionCannonsToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
+    public static IEnumerator FireIons(Ion ion, float ionCannonsToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
     {
-        smallShip.ionfiring = true;
+        SmallShip smallShip = ion.smallShip;
+
+        ion.ionfiring = true;
 
         if (smallShip != null)
         {
@@ -642,10 +676,10 @@ public static class IonFunctions
                 smallShip.ogInput = OGInputFunctions.GetOGInput();
             }
 
-            if (smallShip.ionParticleSystem != null)
+            if (ion.ionParticleSystem != null)
             {
-                ParticleSystem particleSystem = smallShip.ionParticleSystem.GetComponent<ParticleSystem>();
-                ParticleSystem particleSystemMuzzleFlash = smallShip.ionMuzzleFlashParticleSystem.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystem = ion.ionParticleSystem.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystemMuzzleFlash = ion.ionMuzzleFlashParticleSystem.GetComponent<ParticleSystem>();
 
                 float spatialBlend = 1f;
                 string mixer = "External";
@@ -744,7 +778,7 @@ public static class IonFunctions
                     }
                 }
 
-                smallShip.ionfiring = false;
+                ion.ionfiring = false;
             }
         }
     }

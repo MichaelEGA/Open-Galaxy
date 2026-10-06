@@ -7,26 +7,45 @@ public static class PlasmaFunctions
 {
     #region intiate particle system
 
-    //This sets all the correct settings on the provided particle system to fire lasers
-    public static void LoadPlasmaParticleSystem(SmallShip smallShip)
+    //This prepares the plasma cannons
+    public static void PreparePlasma(Plasma plasma)
     {
-        //This loads the necessary prefabs
-        GameObject plasma = Resources.Load(OGGetAddress.particles + "models/plasma") as GameObject;
+        if (plasma != null)
+        {
+            plasma.smallShip = plasma.GetComponent<SmallShip>();
+        }
 
-        Mesh plasmaMesh = plasma.GetComponent<MeshFilter>().sharedMesh;
+        if (plasma.plasmaParticleSystem == null)
+        {
+            SmallShip smallShip = plasma.smallShip;
+
+            PlasmaFunctions.GetCannons(plasma);
+            PlasmaFunctions.LoadPlasmaParticleSystem(plasma);
+            PlasmaFunctions.LoadPlasmaMuzzleFlashParticleSystem(plasma);
+        }
+    }
+
+    //This sets all the correct settings on the provided particle system to fire lasers
+    public static void LoadPlasmaParticleSystem(Plasma plasma)
+    {
+        SmallShip smallShip = plasma.smallShip;
+
+        //This loads the necessary prefabs
+        GameObject plasmaGO = Resources.Load(OGGetAddress.particles + "models/plasma") as GameObject;
+
+        Mesh plasmaMesh = plasmaGO.GetComponent<MeshFilter>().sharedMesh;
 
         Material plasmaMaterial = Resources.Load(OGGetAddress.particles + "materials/plasma_material") as Material;
 
         GameObject plasmaLight = Resources.Load(OGGetAddress.particles + "lights/plasma_light") as GameObject;
 
         //This loads the particle system and the particle collider
-        smallShip.plasmaParticleSystem = new GameObject();
-        smallShip.plasmaParticleSystem.name = "plasmaparticlesystem_" + smallShip.gameObject.name;       
-        ParticleSystem particleSystem = smallShip.plasmaParticleSystem.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = smallShip.plasmaParticleSystem.GetComponent<ParticleSystemRenderer>();
-        OnPlasmaHit onPlasmaHit = smallShip.plasmaParticleSystem.AddComponent<OnPlasmaHit>();
-        onPlasmaHit.particleSystemScript = particleSystem;
-        onPlasmaHit.smallShip = smallShip;
+        plasma.plasmaParticleSystem = new GameObject();
+        plasma.plasmaParticleSystem.name = "plasmaparticlesystem_" + smallShip.gameObject.name;       
+        ParticleSystem particleSystem = plasma.plasmaParticleSystem.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = plasma.plasmaParticleSystem.GetComponent<ParticleSystemRenderer>();
+        plasma.particleSystemScript = particleSystem;
+        plasma.smallShip = smallShip;
 
         //This creates an anchor for all the plasma particle systems
         GameObject plasmaparticlesanchor = GameObject.Find("plasmaparticleanchor");
@@ -48,7 +67,7 @@ public static class PlasmaFunctions
                 smallShip.scene.lasersPool = new List<GameObject>();
             }
 
-            smallShip.scene.lasersPool.Add(smallShip.plasmaParticleSystem);
+            smallShip.scene.lasersPool.Add(plasma.plasmaParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -108,23 +127,25 @@ public static class PlasmaFunctions
     }
 
     //This sets all the correct settings on the provided particle system to make a muzzle flash
-    public static void LoadPlasmaMuzzleFlashParticleSystem(SmallShip smallShip)
+    public static void LoadPlasmaMuzzleFlashParticleSystem(Plasma plasma)
     {
+        SmallShip smallShip = plasma.smallShip;
+
         //This loads the necessary prefabs
         GameObject orangeMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/plasma_light") as GameObject;
 
         Material orangeMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_orange") as Material;
 
         //This loads the particle system and the particle collider
-        smallShip.plasmaMuzzleFlashParticleSystem = new GameObject();
-        smallShip.plasmaMuzzleFlashParticleSystem.name = "plasmaMuzzleflashparticlesystem_" + smallShip.gameObject.name;
-        smallShip.plasmaMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
-        ParticleSystem particleSystem = smallShip.plasmaMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = smallShip.plasmaMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
+        plasma.plasmaMuzzleFlashParticleSystem = new GameObject();
+        plasma.plasmaMuzzleFlashParticleSystem.name = "plasmaMuzzleflashparticlesystem_" + plasma.gameObject.name;
+        plasma.plasmaMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
+        ParticleSystem particleSystem = plasma.plasmaMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = plasma.plasmaMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
 
         //This sets the particle system to be subordinate to the smallship
         particleSystem.transform.SetParent(smallShip.transform);
-        smallShip.plasmaMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
+        plasma.plasmaMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
 
         //This adds the new particle system to the pool
         if (smallShip.scene != null)
@@ -134,7 +155,7 @@ public static class PlasmaFunctions
                 smallShip.scene.plasmaPool = new List<GameObject>();
             }
 
-            smallShip.scene.plasmaPool.Add(smallShip.plasmaParticleSystem);
+            smallShip.scene.plasmaPool.Add(plasma.plasmaParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -189,11 +210,11 @@ public static class PlasmaFunctions
     //This modifies the collision layers to the player layer so that it's visible in film mode
     public static void ChangeCollisionLayerToPlayer(SmallShip smallShip)
     {
-        OnPlasmaHit onPlasmaHit = smallShip.plasmaParticleSystem.GetComponent<OnPlasmaHit>();
+        Plasma plasma = smallShip.GetComponent<Plasma>();
 
-        if (onPlasmaHit != null)
+        if (plasma != null)
         {
-            ParticleSystem particleSystem = onPlasmaHit.particleSystemScript;
+            ParticleSystem particleSystem = plasma.particleSystemScript;
 
             if (particleSystem != null)
             {
@@ -206,11 +227,11 @@ public static class PlasmaFunctions
     //This resets the collision layers
     public static void ResetCollisionLayers(SmallShip smallShip)
     {
-        OnPlasmaHit onPlasmaHit = smallShip.plasmaParticleSystem.GetComponent<OnPlasmaHit>();
+        Plasma plasma = smallShip.GetComponent<Plasma>();
 
-        if (onPlasmaHit != null)
+        if (plasma != null)
         {
-            ParticleSystem particleSystem = onPlasmaHit.particleSystemScript;
+            ParticleSystem particleSystem = plasma.particleSystemScript;
 
             if (particleSystem != null)
             {
@@ -286,8 +307,10 @@ public static class PlasmaFunctions
     #region ship cannons
 
     //This grabs all the ships laser cannons
-    public static void GetCannons(SmallShip smallShip)
+    public static void GetCannons(Plasma plasma)
     {
+        SmallShip smallShip = plasma.smallShip;
+
         Transform plasma1 = smallShip.gameObject.transform.Find("plasmabank01/plasmabank01-01");
         Transform plasma2 = smallShip.gameObject.transform.Find("plasmabank01/plasmabank01-02");
         Transform plasma3 = smallShip.gameObject.transform.Find("plasmabank01/plasmabank01-03");
@@ -295,17 +318,17 @@ public static class PlasmaFunctions
 
         if (plasma1 != null)
         {
-            smallShip.plasmaCannon1 = plasma1.gameObject;
+            plasma.plasmaCannon1 = plasma1.gameObject;
         }
 
         if (plasma2 != null)
         {
-            smallShip.plasmaCannon2 = plasma2.gameObject;
+            plasma.plasmaCannon2 = plasma2.gameObject;
         }
 
         if (plasma3 != null)
         {
-            smallShip.plasmaCannon3 = plasma3.gameObject;
+            plasma.plasmaCannon3 = plasma3.gameObject;
         }
         else
         {
@@ -313,13 +336,13 @@ public static class PlasmaFunctions
 
             if (plasma3 != null)
             {
-                smallShip.plasmaCannon3 = plasma3.gameObject;
+                plasma.plasmaCannon3 = plasma3.gameObject;
             }
         }
 
         if (plasma4 != null)
         {
-            smallShip.plasmaCannon4 = plasma4.gameObject;
+            plasma.plasmaCannon4 = plasma4.gameObject;
         }
         else
         {
@@ -327,7 +350,7 @@ public static class PlasmaFunctions
 
             if (plasma4 != null)
             {
-                smallShip.plasmaCannon4 = plasma4.gameObject;
+                plasma.plasmaCannon4 = plasma4.gameObject;
             }
         }
 
@@ -341,54 +364,55 @@ public static class PlasmaFunctions
     }
 
     //This sets the rotation of the lasers to angle at the correct distance for the targetted ship
-    public static void SetCannons(SmallShip smallShip)
+    public static void SetCannons(Plasma plasma)
     {      
+        SmallShip smallShip = plasma.smallShip;
 
         if (smallShip.autoaim == true & smallShip.target != null & smallShip.targetRigidbody != null & smallShip.targetForward > 0.995f)
         {
 
             Vector3 interceptPoint = GameObjectUtils.CalculateInterceptPoint(smallShip.transform.position, smallShip.target.transform.position, smallShip.targetRigidbody.linearVelocity, 750);
 
-            if (smallShip.plasmaCannon1 != null)
+            if (plasma.plasmaCannon1 != null)
             {
-                smallShip.plasmaCannon1.transform.LookAt(interceptPoint);
+                plasma.plasmaCannon1.transform.LookAt(interceptPoint);
             }
 
-            if (smallShip.plasmaCannon2 != null)
+            if (plasma.plasmaCannon2 != null)
             {
-                smallShip.plasmaCannon2.transform.LookAt(interceptPoint);
+                plasma.plasmaCannon2.transform.LookAt(interceptPoint);
             }
 
-            if (smallShip.plasmaCannon3 != null)
+            if (plasma.plasmaCannon3 != null)
             {
-                smallShip.plasmaCannon3.transform.LookAt(interceptPoint);
+                plasma.plasmaCannon3.transform.LookAt(interceptPoint);
             }
 
-            if (smallShip.plasmaCannon4 != null)
+            if (plasma.plasmaCannon4 != null)
             {
-                smallShip.plasmaCannon4.transform.LookAt(interceptPoint);
+                plasma.plasmaCannon4.transform.LookAt(interceptPoint);
             }
         }
         else
         {
-            if (smallShip.plasmaCannon1 != null)
+            if (plasma.plasmaCannon1 != null)
             {
-                smallShip.plasmaCannon1.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                plasma.plasmaCannon1.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
             }
 
-            if (smallShip.plasmaCannon2 != null)
+            if (plasma.plasmaCannon2 != null)
             {
-                smallShip.plasmaCannon2.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                plasma.plasmaCannon2.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
             }
 
-            if (smallShip.plasmaCannon3 != null)
+            if (plasma.plasmaCannon3 != null)
             {
-                smallShip.plasmaCannon3.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                plasma.plasmaCannon3.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
             }
 
-            if (smallShip.plasmaCannon4 != null)
+            if (plasma.plasmaCannon4 != null)
             {
-                smallShip.plasmaCannon4.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                plasma.plasmaCannon4.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
             }
         }
     }
@@ -397,16 +421,18 @@ public static class PlasmaFunctions
 
     #region plasma mode
 
-    //This cycles the laser mode between single, dual, and quad lasers
-    public static void ToggleWeaponMode(SmallShip smallShip)
+    //This cycles the plasma mode between single, dual, and quad lasers
+    public static void ToggleWeaponMode(Plasma plasma)
     {
-        if (smallShip.toggleWeaponNumber == true & Time.time > smallShip.plasmaModePressedTime & smallShip.activeWeapon == "plasma")
+        SmallShip smallShip = plasma.smallShip;
+
+        if (smallShip.toggleWeaponNumber == true & Time.time > plasma.plasmaModePressedTime & smallShip.activeWeapon == "plasma")
         {
-            if (smallShip.weaponMode == "single" & smallShip.plasmaCannon2 != null)
+            if (smallShip.weaponMode == "single" & plasma.plasmaCannon2 != null)
             {
                 smallShip.weaponMode = "dual";
             }
-            else if (smallShip.weaponMode == "dual" & smallShip.plasmaCannon3 != null)
+            else if (smallShip.weaponMode == "dual" & plasma.plasmaCannon3 != null)
             {
                 smallShip.weaponMode = "all";
             }
@@ -415,7 +441,7 @@ public static class PlasmaFunctions
                 smallShip.weaponMode = "single";
             }
 
-            smallShip.plasmaModePressedTime = Time.time + 0.2f;
+            plasma.plasmaModePressedTime = Time.time + 0.2f;
 
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
@@ -488,8 +514,10 @@ public static class PlasmaFunctions
     #region plasma fire functions
 
     //This allows the player to fire the lasers
-    public static void InitiateFiringPlayer(SmallShip smallShip)
+    public static void InitiateFiringPlayer(Plasma plasma)
     {
+        SmallShip smallShip = plasma.smallShip;
+
         if (smallShip.fireWeapon == true & smallShip.isAI == false)
         {
             InitiateFiring(smallShip);
@@ -499,7 +527,9 @@ public static class PlasmaFunctions
     //This executes the firing according to the laser mode
     public static void InitiateFiring(SmallShip smallShip)
     {
-        SetCannons(smallShip); //This sets cannon angle prior to firing the laser
+        Plasma plasma = smallShip.GetComponent<Plasma>();
+
+        SetCannons(plasma); //This sets cannon angle prior to firing the laser
 
         if (smallShip.isDisabled == false & smallShip.plasmaCharge > 0 & smallShip.activeWeapon == "plasma")
         {
@@ -537,100 +567,102 @@ public static class PlasmaFunctions
                 smallShip.weaponRechargeDelay = Time.time;
             }
 
-            if (Time.time > smallShip.plasmaPressedTime & smallShip.plasmafiring != true & smallShip.weaponsLock == false)
+            if (Time.time > plasma.plasmaPressedTime & plasma.plasmafiring != true & smallShip.weaponsLock == false)
             {
                 if (smallShip.weaponMode == "single" || smallShip.weaponMode == "rapid")
                 {
-                    if (smallShip.plasmaCannon3 != null & smallShip.plasmaCannon4 != null)
+                    if (plasma.plasmaCannon3 != null & plasma.plasmaCannon4 != null)
                     {
-                        smallShip.plasmaCycleNumber = smallShip.plasmaCycleNumber + 1;
+                        plasma.plasmaCycleNumber = plasma.plasmaCycleNumber + 1;
 
-                        if (smallShip.plasmaCycleNumber > 4)
+                        if (plasma.plasmaCycleNumber > 4)
                         {
-                            smallShip.plasmaCycleNumber = 1;
+                            plasma.plasmaCycleNumber = 1;
                         }
 
-                        if (smallShip.plasmaCycleNumber == 1) { Task a = new Task(FirePlasma(smallShip, 1, smallShip.plasmaCannon1)); }
-                        else if (smallShip.plasmaCycleNumber == 2) { Task a = new Task(FirePlasma(smallShip, 1, smallShip.plasmaCannon2)); }
-                        else if (smallShip.plasmaCycleNumber == 3) { Task a = new Task(FirePlasma(smallShip, 1, smallShip.plasmaCannon3)); }
-                        else if (smallShip.plasmaCycleNumber == 4) { Task a = new Task(FirePlasma(smallShip, 1, smallShip.plasmaCannon4)); }
+                        if (plasma.plasmaCycleNumber == 1) { Task a = new Task(FirePlasma(plasma, 1, plasma.plasmaCannon1)); }
+                        else if (plasma.plasmaCycleNumber == 2) { Task a = new Task(FirePlasma(plasma, 1, plasma.plasmaCannon2)); }
+                        else if (plasma.plasmaCycleNumber == 3) { Task a = new Task(FirePlasma(plasma, 1, plasma.plasmaCannon3)); }
+                        else if (plasma.plasmaCycleNumber == 4) { Task a = new Task(FirePlasma(plasma, 1, plasma.plasmaCannon4)); }
 
                     }
-                    else if (smallShip.plasmaCannon1 != null & smallShip.plasmaCannon2 != null & smallShip.plasmaCannon3 != null)
+                    else if (plasma.plasmaCannon1 != null & plasma.plasmaCannon2 != null & plasma.plasmaCannon3 != null)
                     {
-                        smallShip.plasmaCycleNumber = smallShip.plasmaCycleNumber + 1;
+                        plasma.plasmaCycleNumber = plasma.plasmaCycleNumber + 1;
 
-                        if (smallShip.plasmaCycleNumber > 3)
+                        if (plasma.plasmaCycleNumber > 3)
                         {
-                            smallShip.plasmaCycleNumber = 1;
+                            plasma.plasmaCycleNumber = 1;
                         }
 
-                        if (smallShip.plasmaCycleNumber == 1) { Task a = new Task(FirePlasma(smallShip, 1, smallShip.plasmaCannon1)); }
-                        else if (smallShip.plasmaCycleNumber == 2) { Task a = new Task(FirePlasma(smallShip, 1, smallShip.plasmaCannon2)); }
-                        else if (smallShip.plasmaCycleNumber == 3) { Task a = new Task(FirePlasma(smallShip, 1, smallShip.plasmaCannon3)); }
+                        if (plasma.plasmaCycleNumber == 1) { Task a = new Task(FirePlasma(plasma, 1, plasma.plasmaCannon1)); }
+                        else if (plasma.plasmaCycleNumber == 2) { Task a = new Task(FirePlasma(plasma, 1, plasma.plasmaCannon2)); }
+                        else if (plasma.plasmaCycleNumber == 3) { Task a = new Task(FirePlasma(plasma, 1, plasma.plasmaCannon3)); }
                     }
-                    else if (smallShip.plasmaCannon1 != null & smallShip.plasmaCannon2 != null)
+                    else if (plasma.plasmaCannon1 != null & plasma.plasmaCannon2 != null)
                     {
-                        smallShip.plasmaCycleNumber = smallShip.plasmaCycleNumber + 1;
+                        plasma.plasmaCycleNumber = plasma.plasmaCycleNumber + 1;
 
-                        if (smallShip.plasmaCycleNumber > 2)
+                        if (plasma.plasmaCycleNumber > 2)
                         {
-                            smallShip.plasmaCycleNumber = 1;
+                            plasma.plasmaCycleNumber = 1;
                         }
 
-                        if (smallShip.plasmaCycleNumber == 1) { Task a = new Task(FirePlasma(smallShip, 1, smallShip.plasmaCannon1)); }
-                        else if (smallShip.plasmaCycleNumber == 2) { Task a = new Task(FirePlasma(smallShip, 1, smallShip.plasmaCannon2)); }
+                        if (plasma.plasmaCycleNumber == 1) { Task a = new Task(FirePlasma(plasma, 1, plasma.plasmaCannon1)); }
+                        else if (plasma.plasmaCycleNumber == 2) { Task a = new Task(FirePlasma(plasma, 1, plasma.plasmaCannon2)); }
                     }
-                    else if (smallShip.plasmaCannon1 != null)
+                    else if (plasma.plasmaCannon1 != null)
                     {
-                        Task a = new Task(FirePlasma(smallShip, 1, smallShip.plasmaCannon1));
+                        Task a = new Task(FirePlasma(plasma, 1, plasma.plasmaCannon1));
                     }
 
                 }
                 else if (smallShip.weaponMode == "dual")
                 {
 
-                    smallShip.plasmaCycleNumber = smallShip.plasmaCycleNumber + 1;
+                    plasma.plasmaCycleNumber = plasma.plasmaCycleNumber + 1;
 
-                    if (smallShip.plasmaCycleNumber > 2)
+                    if (plasma.plasmaCycleNumber > 2)
                     {
-                        smallShip.plasmaCycleNumber = 1;
+                        plasma.plasmaCycleNumber = 1;
                     }
 
-                    if (smallShip.plasmaCycleNumber == 1 & smallShip.plasmaCannon1 != null & smallShip.plasmaCannon2 != null)
+                    if (plasma.plasmaCycleNumber == 1 & plasma.plasmaCannon1 != null & plasma.plasmaCannon2 != null)
                     {
-                        Task a = new Task(FirePlasma(smallShip, 2, smallShip.plasmaCannon1, smallShip.plasmaCannon2));
+                        Task a = new Task(FirePlasma(plasma, 2, plasma.plasmaCannon1, plasma.plasmaCannon2));
                     }
-                    else if (smallShip.plasmaCycleNumber == 2 & smallShip.plasmaCannon2 != null & smallShip.plasmaCannon3 != null & smallShip.plasmaCannon4 == null)
+                    else if (plasma.plasmaCycleNumber == 2 & plasma.plasmaCannon2 != null & plasma.plasmaCannon3 != null & plasma.plasmaCannon4 == null)
                     {
-                        Task a = new Task(FirePlasma(smallShip, 2, smallShip.plasmaCannon2, smallShip.plasmaCannon3));
+                        Task a = new Task(FirePlasma(plasma, 2, plasma.plasmaCannon2, plasma.plasmaCannon3));
                     }
-                    else if (smallShip.plasmaCycleNumber == 2 & smallShip.plasmaCannon3 != null & smallShip.plasmaCannon4 != null)
+                    else if (plasma.plasmaCycleNumber == 2 & plasma.plasmaCannon3 != null & plasma.plasmaCannon4 != null)
                     {
-                        Task a = new Task(FirePlasma(smallShip, 2, smallShip.plasmaCannon3, smallShip.plasmaCannon4));
+                        Task a = new Task(FirePlasma(plasma, 2, plasma.plasmaCannon3, plasma.plasmaCannon4));
                     }
                 }
                 else if (smallShip.weaponMode == "all")
                 {
-                    if (smallShip.plasmaCannon1 != null & smallShip.plasmaCannon2 != null & smallShip.plasmaCannon3 != null & smallShip.plasmaCannon4 == null)
+                    if (plasma.plasmaCannon1 != null & plasma.plasmaCannon2 != null & plasma.plasmaCannon3 != null & plasma.plasmaCannon4 == null)
                     {
-                        Task a = new Task(FirePlasma(smallShip, 3, smallShip.plasmaCannon1, smallShip.plasmaCannon2, smallShip.plasmaCannon3));
+                        Task a = new Task(FirePlasma(plasma, 3, plasma.plasmaCannon1, plasma.plasmaCannon2, plasma.plasmaCannon3));
                     }
-                    else if (smallShip.plasmaCannon1 != null & smallShip.plasmaCannon2 != null & smallShip.plasmaCannon3 != null & smallShip.plasmaCannon4 != null)
+                    else if (plasma.plasmaCannon1 != null & plasma.plasmaCannon2 != null & plasma.plasmaCannon3 != null & plasma.plasmaCannon4 != null)
                     {
-                        Task a = new Task(FirePlasma(smallShip, 4, smallShip.plasmaCannon1, smallShip.plasmaCannon2, smallShip.plasmaCannon3, smallShip.plasmaCannon4));
+                        Task a = new Task(FirePlasma(plasma, 4, plasma.plasmaCannon1, plasma.plasmaCannon2, plasma.plasmaCannon3, plasma.plasmaCannon4));
                     }
                 }
                
-                smallShip.plasmaPressedTime = Time.time + plasmaWaitTime;
+                plasma.plasmaPressedTime = Time.time + plasmaWaitTime;
             }
         }
     }
 
     //This fires a laser from the selected cannon
-    public static IEnumerator FirePlasma(SmallShip smallShip, float plasmaCannonsToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
+    public static IEnumerator FirePlasma(Plasma plasma, float plasmaCannonsToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
     {
-        smallShip.plasmafiring = true;
+        SmallShip smallShip = plasma.smallShip;
+
+        plasma.plasmafiring = true;
 
         if (smallShip != null)
         {
@@ -639,10 +671,10 @@ public static class PlasmaFunctions
                 smallShip.ogInput = OGInputFunctions.GetOGInput();
             }
 
-            if (smallShip.plasmaParticleSystem != null)
+            if (plasma.plasmaParticleSystem != null)
             {
-                ParticleSystem particleSystem = smallShip.plasmaParticleSystem.GetComponent<ParticleSystem>();
-                ParticleSystem particleSystemMuzzleFlash = smallShip.plasmaMuzzleFlashParticleSystem.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystem = plasma.plasmaParticleSystem.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystemMuzzleFlash = plasma.plasmaMuzzleFlashParticleSystem.GetComponent<ParticleSystem>();
 
                 float spatialBlend = 1f;
                 string mixer = "External";
@@ -743,7 +775,7 @@ public static class PlasmaFunctions
                     }
                 }
 
-                smallShip.plasmafiring = false;
+                plasma.plasmafiring = false;
             }
         } 
     }

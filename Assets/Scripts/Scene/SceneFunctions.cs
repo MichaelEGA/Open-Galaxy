@@ -914,6 +914,9 @@ public static class SceneFunctions
             {
                 //Add appropriate ship script
                 SmallShip smallShip = ship.AddComponent<SmallShip>();
+                ship.AddComponent<Laser>(); //NOTE: These should only be added if the ship prefab contains the relevant gameobjects
+                ship.AddComponent<Plasma>();
+                ship.AddComponent<Ion>();
 
                 if (scene.smallShips == null)
                 {

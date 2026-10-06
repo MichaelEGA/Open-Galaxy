@@ -940,8 +940,8 @@ public static class SceneFunctions
                 smallShip.hullLevel = shipType.hullRating;
                 smallShip.systemsRating = shipType.hullRating;
                 smallShip.systemsLevel = shipType.hullRating;
-                smallShip.laserFireRating = shipType.laserFireRating;
-                smallShip.laserRating = shipType.laserRating;
+                smallShip.energyWeaponFireRating = shipType.laserFireRating;
+                smallShip.energyWeaponRating = shipType.laserRating;
                 smallShip.maneuverabilityRating = shipType.maneuverabilityRating;
                 smallShip.shieldRating = shipType.shieldRating;
                 smallShip.shieldLevel = shipType.shieldRating;

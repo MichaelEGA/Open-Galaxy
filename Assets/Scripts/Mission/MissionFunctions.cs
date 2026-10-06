@@ -4453,8 +4453,8 @@ public static class MissionFunctions
                                 smallShip.maneuverabilityRating = maneuverabilityRating;
                                 smallShip.hullRating = hullRating;
                                 smallShip.shieldRating = shieldRating;
-                                smallShip.laserFireRating = laserFireRating;
-                                smallShip.laserRating = laserRating;
+                                smallShip.energyWeaponFireRating = laserFireRating;
+                                smallShip.energyWeaponRating = laserRating;
                                 smallShip.wepRating = WEPRating;
                             }
                         }

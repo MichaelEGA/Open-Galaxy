@@ -8,13 +8,32 @@ public static class LaserFunctions
 {
     #region intiate particle system
 
+    public static void PrepareLasers(Laser laser)
+    {
+        if (laser != null)
+        {
+            laser.smallShip = laser.GetComponent<SmallShip>();
+        }
+
+        if (laser.laserParticleSystem == null)
+        {
+            SmallShip smallShip = laser.smallShip;
+
+            LaserFunctions.GetCannons(smallShip);
+            LaserFunctions.LoadLaserParticleSystem(smallShip);
+            LaserFunctions.LoadLaserMuzzleFlashParticleSystem(smallShip);
+        }
+    }
+
     //This sets all the correct settings on the provided particle system to fire lasers
     public static void LoadLaserParticleSystem(SmallShip smallShip)
     {
-        //This loads the necessary prefabs
-        GameObject laser = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
+        Laser laser = GetLaserScript(smallShip);
 
-        Mesh laserMesh = laser.GetComponent<MeshFilter>().sharedMesh;
+        //This loads the necessary prefabs
+        GameObject laserGO = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
+
+        Mesh laserMesh = laserGO.GetComponent<MeshFilter>().sharedMesh;
 
         Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
         Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_green") as Material;
@@ -25,11 +44,11 @@ public static class LaserFunctions
         GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
 
         //This loads the particle system and the particle collider
-        smallShip.laserParticleSystem = new GameObject();
-        smallShip.laserParticleSystem.name = "laserparticlesystem_" + smallShip.gameObject.name;       
-        ParticleSystem particleSystem = smallShip.laserParticleSystem.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = smallShip.laserParticleSystem.GetComponent<ParticleSystemRenderer>();
-        OnLaserHit onLaserHit = smallShip.laserParticleSystem.AddComponent<OnLaserHit>();
+        laser.laserParticleSystem = new GameObject();
+        laser.laserParticleSystem.name = "laserparticlesystem_" + smallShip.gameObject.name;       
+        ParticleSystem particleSystem = laser.laserParticleSystem.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = laser.laserParticleSystem.GetComponent<ParticleSystemRenderer>();
+        Laser onLaserHit = laser.laserParticleSystem.AddComponent<Laser>();
         onLaserHit.particleSystemScript = particleSystem;
         onLaserHit.smallShip = smallShip;
 
@@ -53,7 +72,7 @@ public static class LaserFunctions
                 smallShip.scene.lasersPool = new List<GameObject>();
             }
 
-            smallShip.scene.lasersPool.Add(smallShip.laserParticleSystem);
+            smallShip.scene.lasersPool.Add(laser.laserParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -128,6 +147,8 @@ public static class LaserFunctions
     //This sets all the correct settings on the provided particle system to make a muzzle flash
     public static void LoadLaserMuzzleFlashParticleSystem(SmallShip smallShip)
     {
+        Laser laser = GetLaserScript(smallShip);
+
         //This loads the necessary prefabs
         GameObject redMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
         GameObject greenMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
@@ -138,15 +159,15 @@ public static class LaserFunctions
         Material yellowMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_yellow") as Material;
 
         //This loads the particle system and the particle collider
-        smallShip.laserMuzzleFlashParticleSystem = new GameObject();
-        smallShip.laserMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
-        smallShip.laserMuzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + smallShip.gameObject.name;
-        ParticleSystem particleSystem = smallShip.laserMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = smallShip.laserMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
+        laser.laserMuzzleFlashParticleSystem = new GameObject();
+        laser.laserMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
+        laser.laserMuzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + smallShip.gameObject.name;
+        ParticleSystem particleSystem = laser.laserMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = laser.laserMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
 
         //This sets the particle system to be subordinate to the smallship
         particleSystem.transform.SetParent(smallShip.transform);
-        smallShip.laserMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
+        laser.laserMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
 
         //This adds the new particle system to the pool
         if (smallShip.scene != null)
@@ -156,7 +177,7 @@ public static class LaserFunctions
                 smallShip.scene.lasersPool = new List<GameObject>();
             }
 
-            smallShip.scene.lasersPool.Add(smallShip.laserParticleSystem);
+            smallShip.scene.lasersPool.Add(laser.laserParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -224,7 +245,9 @@ public static class LaserFunctions
     //This modifies the collision layers to the player layer so that it's visible in film mode
     public static void ChangeCollisionLayerToPlayer(SmallShip smallShip)
     {
-        OnLaserHit onLaserHit = smallShip.laserParticleSystem.GetComponent<OnLaserHit>();
+        Laser laser = GetLaserScript(smallShip);
+
+        Laser onLaserHit = laser.laserParticleSystem.GetComponent<Laser>();
 
         if (onLaserHit != null)
         {
@@ -241,7 +264,9 @@ public static class LaserFunctions
     //This resets the collision layers
     public static void ResetCollisionLayers(SmallShip smallShip)
     {
-        OnLaserHit onLaserHit = smallShip.laserParticleSystem.GetComponent<OnLaserHit>();
+        Laser laser = GetLaserScript(smallShip);
+
+        Laser onLaserHit = laser.laserParticleSystem.GetComponent<Laser>();
 
         if (onLaserHit != null)
         {
@@ -320,6 +345,8 @@ public static class LaserFunctions
     //This grabs all the ships laser cannons
     public static void GetCannons(SmallShip smallShip)
     {
+        Laser laser = GetLaserScript(smallShip);
+
         Transform laser1 = smallShip.gameObject.transform.Find("gunbank01/gunbank01-01");
         Transform laser2 = smallShip.gameObject.transform.Find("gunbank01/gunbank01-02");
         Transform laser3 = smallShip.gameObject.transform.Find("gunbank01/gunbank01-03");
@@ -327,17 +354,17 @@ public static class LaserFunctions
 
         if (laser1 != null)
         {
-            smallShip.laserCannon1 = laser1.gameObject;
+            laser.laserCannon1 = laser1.gameObject;
         }
 
         if (laser2 != null)
         {
-            smallShip.laserCannon2 = laser2.gameObject;
+            laser.laserCannon2 = laser2.gameObject;
         }
 
         if (laser3 != null)
         {
-            smallShip.laserCannon3 = laser3.gameObject;
+            laser.laserCannon3 = laser3.gameObject;
         }
         else
         {
@@ -345,13 +372,13 @@ public static class LaserFunctions
 
             if (laser3 != null)
             {
-                smallShip.laserCannon3 = laser3.gameObject;
+                laser.laserCannon3 = laser3.gameObject;
             }
         }
 
         if (laser4 != null)
         {
-            smallShip.laserCannon4 = laser4.gameObject;
+            laser.laserCannon4 = laser4.gameObject;
         }
         else
         {
@@ -359,7 +386,7 @@ public static class LaserFunctions
 
             if (laser4 != null)
             {
-                smallShip.laserCannon4 = laser4.gameObject;
+                laser.laserCannon4 = laser4.gameObject;
             }
         }
 
@@ -367,53 +394,54 @@ public static class LaserFunctions
 
     //This sets the rotation of the lasers to angle at the correct distance for the targetted ship
     public static void SetCannons(SmallShip smallShip)
-    {      
+    {
+        Laser laser = GetLaserScript(smallShip);
 
         if (smallShip.autoaim == true & smallShip.target != null & smallShip.targetRigidbody != null & smallShip.targetForward > 0.995f & smallShip.targetLargeShip == null)
         {
 
             Vector3 interceptPoint = GameObjectUtils.CalculateInterceptPoint(smallShip.transform.position, smallShip.target.transform.position, smallShip.targetRigidbody.linearVelocity, 750);
 
-            if (smallShip.laserCannon1 != null)
+            if (laser.laserCannon1 != null)
             {
-                smallShip.laserCannon1.transform.LookAt(interceptPoint);
+                laser.laserCannon1.transform.LookAt(interceptPoint);
             }
 
-            if (smallShip.laserCannon2 != null)
+            if (laser.laserCannon2 != null)
             {
-                smallShip.laserCannon2.transform.LookAt(interceptPoint);
+                laser.laserCannon2.transform.LookAt(interceptPoint);
             }
 
-            if (smallShip.laserCannon3 != null)
+            if (laser.laserCannon3 != null)
             {
-                smallShip.laserCannon3.transform.LookAt(interceptPoint);
+                laser.laserCannon3.transform.LookAt(interceptPoint);
             }
 
-            if (smallShip.laserCannon4 != null)
+            if (laser.laserCannon4 != null)
             {
-                smallShip.laserCannon4.transform.LookAt(interceptPoint);
+                laser.laserCannon4.transform.LookAt(interceptPoint);
             }
         }
         else
         {
-            if (smallShip.laserCannon1 != null)
+            if (laser.laserCannon1 != null)
             {
-                smallShip.laserCannon1.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                laser.laserCannon1.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
             }
 
-            if (smallShip.laserCannon2 != null)
+            if (laser.laserCannon2 != null)
             {
-                smallShip.laserCannon2.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                laser.laserCannon2.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
             }
 
-            if (smallShip.laserCannon3 != null)
+            if (laser.laserCannon3 != null)
             {
-                smallShip.laserCannon3.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                laser.laserCannon3.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
             }
 
-            if (smallShip.laserCannon4 != null)
+            if (laser.laserCannon4 != null)
             {
-                smallShip.laserCannon4.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                laser.laserCannon4.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
             }
         }
     }
@@ -423,15 +451,17 @@ public static class LaserFunctions
     #region laser mode
 
     //This cycles the laser mode between single, dual, and quad lasers
-    public static void ToggleWeaponMode(SmallShip smallShip)
+    public static void ToggleWeaponMode(Laser laser)
     {
-        if (smallShip.toggleWeaponNumber == true & Time.time > smallShip.laserModePressedTime & smallShip.activeWeapon == "lasers")
+        SmallShip smallShip = laser.smallShip;
+
+        if (smallShip.toggleWeaponNumber == true & Time.time > laser.laserModePressedTime & smallShip.activeWeapon == "lasers")
         {
-            if (smallShip.weaponMode == "single" & smallShip.laserCannon2 != null)
+            if (smallShip.weaponMode == "single" & laser.laserCannon2 != null)
             {
                 smallShip.weaponMode = "dual";
             }
-            else if (smallShip.weaponMode == "dual" & smallShip.laserCannon3 != null)
+            else if (smallShip.weaponMode == "dual" & laser.laserCannon3 != null)
             {
                 smallShip.weaponMode = "all";
             }
@@ -440,7 +470,7 @@ public static class LaserFunctions
                 smallShip.weaponMode = "single";
             }
 
-            smallShip.laserModePressedTime = Time.time + 0.2f;
+            laser.laserModePressedTime = Time.time + 0.2f;
 
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
         }
@@ -453,6 +483,8 @@ public static class LaserFunctions
     //This charges the laser
     public static void LaserCharging(SmallShip smallShip)
     {
+        Laser laser = GetLaserScript(smallShip);
+
         if (smallShip.weaponRechargeDelay + 1 < Time.time)
         {
             if (smallShip.laserPower == 50)
@@ -516,8 +548,10 @@ public static class LaserFunctions
     #region laser fire functions
 
     //This allows the player to fire the lasers
-    public static void InitiateFiringPlayer(SmallShip smallShip)
+    public static void InitiateFiringPlayer(Laser laser)
     {
+        SmallShip smallShip = laser.smallShip;
+
         if (smallShip.fireWeapon == true & smallShip.isAI == false || smallShip.rapidFire == true & smallShip.isAI == false & smallShip.hasRapidFire == true)
         {
             InitiateFiring(smallShip);
@@ -527,6 +561,8 @@ public static class LaserFunctions
     //This executes the firing according to the laser mode
     public static void InitiateFiring(SmallShip smallShip)
     {
+        Laser laser = GetLaserScript(smallShip);
+
         SetCannons(smallShip); //This sets cannon angle prior to firing the laser
 
         if (smallShip.isDisabled == false & smallShip.laserCharge > 0 & smallShip.activeWeapon == "lasers")
@@ -539,7 +575,7 @@ public static class LaserFunctions
             }
 
             //This calculates the delay before the next laser fires
-            float laserWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
+            float laserWaitTime = 0.1f + (1 - (smallShip.energyWeaponFireRating / 100f)) * 0.250f;
 
             if (weaponMode == "dual")
             {
@@ -573,92 +609,92 @@ public static class LaserFunctions
             }
 
             //This intiates firing for the lasers
-            if (Time.time > smallShip.laserPressedTime & smallShip.laserfiring != true & smallShip.weaponsLock == false)
+            if (Time.time > laser.laserPressedTime & laser.laserfiring != true & smallShip.weaponsLock == false)
             {
                 if (weaponMode == "single" || weaponMode == "rapid")
                 {
-                    if (smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
+                    if (laser.laserCannon3 != null & laser.laserCannon4 != null)
                     {
-                        smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
+                        laser.laserCycleNumber = laser.laserCycleNumber + 1;
 
-                        if (smallShip.laserCycleNumber > 4)
+                        if (laser.laserCycleNumber > 4)
                         {
-                            smallShip.laserCycleNumber = 1;
+                            laser.laserCycleNumber = 1;
                         }
 
-                        if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
-                        else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
-                        else if (smallShip.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon3)); }
-                        else if (smallShip.laserCycleNumber == 4) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon4)); }
+                        if (laser.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon1)); }
+                        else if (laser.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon2)); }
+                        else if (laser.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon3)); }
+                        else if (laser.laserCycleNumber == 4) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon4)); }
 
                     }
-                    else if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null)
+                    else if (laser.laserCannon1 != null & laser.laserCannon2 != null & laser.laserCannon3 != null)
                     {
-                        smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
+                        laser.laserCycleNumber = laser.laserCycleNumber + 1;
 
-                        if (smallShip.laserCycleNumber > 3)
+                        if (laser.laserCycleNumber > 3)
                         {
-                            smallShip.laserCycleNumber = 1;
+                            laser.laserCycleNumber = 1;
                         }
 
-                        if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
-                        else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
-                        else if (smallShip.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon3)); }
+                        if (laser.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon1)); }
+                        else if (laser.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon2)); }
+                        else if (laser.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon3)); }
                     }
-                    else if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null)
+                    else if (laser.laserCannon1 != null & laser.laserCannon2 != null)
                     {
-                        smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
+                        laser.laserCycleNumber = laser.laserCycleNumber + 1;
 
-                        if (smallShip.laserCycleNumber > 2)
+                        if (laser.laserCycleNumber > 2)
                         {
-                            smallShip.laserCycleNumber = 1;
+                            laser.laserCycleNumber = 1;
                         }
 
-                        if (smallShip.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1)); }
-                        else if (smallShip.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon2)); }
+                        if (laser.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon1)); }
+                        else if (laser.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon2)); }
                     }
-                    else if (smallShip.laserCannon1 != null)
+                    else if (laser.laserCannon1 != null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 1, smallShip.laserCannon1));
+                        Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon1));
                     }
 
                 }
                 else if (smallShip.weaponMode == "dual")
                 {
 
-                    smallShip.laserCycleNumber = smallShip.laserCycleNumber + 1;
+                    laser.laserCycleNumber = laser.laserCycleNumber + 1;
 
-                    if (smallShip.laserCycleNumber > 2)
+                    if (laser.laserCycleNumber > 2)
                     {
-                        smallShip.laserCycleNumber = 1;
+                        laser.laserCycleNumber = 1;
                     }
 
-                    if (smallShip.laserCycleNumber == 1 & smallShip.laserCannon1 != null & smallShip.laserCannon2 != null)
+                    if (laser.laserCycleNumber == 1 & laser.laserCannon1 != null & laser.laserCannon2 != null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 2, smallShip.laserCannon1, smallShip.laserCannon2));
+                        Task a = new Task(FireLasers(smallShip, 2, laser.laserCannon1, laser.laserCannon2));
                     }
-                    else if (smallShip.laserCycleNumber == 2 & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null & smallShip.laserCannon4 == null)
+                    else if (laser.laserCycleNumber == 2 & laser.laserCannon2 != null & laser.laserCannon3 != null & laser.laserCannon4 == null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 2, smallShip.laserCannon2, smallShip.laserCannon3));
+                        Task a = new Task(FireLasers(smallShip, 2, laser.laserCannon2, laser.laserCannon3));
                     }
-                    else if (smallShip.laserCycleNumber == 2 & smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
+                    else if (laser.laserCycleNumber == 2 & laser.laserCannon3 != null & laser.laserCannon4 != null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 2, smallShip.laserCannon3, smallShip.laserCannon4));
+                        Task a = new Task(FireLasers(smallShip, 2, laser.laserCannon3, laser.laserCannon4));
                     }
                 }
                 else if (smallShip.weaponMode == "all")
                 {
-                    if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null & smallShip.laserCannon4 == null)
+                    if (laser.laserCannon1 != null & laser.laserCannon2 != null & laser.laserCannon3 != null & laser.laserCannon4 == null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 3, smallShip.laserCannon1, smallShip.laserCannon2, smallShip.laserCannon3));
+                        Task a = new Task(FireLasers(smallShip, 3, laser.laserCannon1, laser.laserCannon2, laser.laserCannon3));
                     }
-                    else if (smallShip.laserCannon1 != null & smallShip.laserCannon2 != null & smallShip.laserCannon3 != null & smallShip.laserCannon4 != null)
+                    else if (laser.laserCannon1 != null & laser.laserCannon2 != null & laser.laserCannon3 != null & laser.laserCannon4 != null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 4, smallShip.laserCannon1, smallShip.laserCannon2, smallShip.laserCannon3, smallShip.laserCannon4));
+                        Task a = new Task(FireLasers(smallShip, 4, laser.laserCannon1, laser.laserCannon2, laser.laserCannon3, laser.laserCannon4));
                     }
                 }
 
-                smallShip.laserPressedTime = Time.time + laserWaitTime;
+                laser.laserPressedTime = Time.time + laserWaitTime;
             }
         }
     }
@@ -666,7 +702,9 @@ public static class LaserFunctions
     //This fires a laser from the selected cannon
     public static IEnumerator FireLasers(SmallShip smallShip, float lasersToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
     {
-        smallShip.laserfiring = true;
+        Laser laser = GetLaserScript(smallShip);
+
+        laser.laserfiring = true;
 
         float volume = 0.6f;
         float pitch = 1;
@@ -684,10 +722,10 @@ public static class LaserFunctions
 
         if (smallShip != null)
         {
-            if (smallShip.laserParticleSystem != null)
+            if (laser.laserParticleSystem != null)
             {
-                ParticleSystem particleSystem = smallShip.laserParticleSystem.GetComponent<ParticleSystem>();
-                ParticleSystem particleSystemMuzzleFlash = smallShip.laserMuzzleFlashParticleSystem.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystem = laser.laserParticleSystem.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystemMuzzleFlash = laser.laserMuzzleFlashParticleSystem.GetComponent<ParticleSystem>();
 
                 float spatialBlend = 1f;
                 string mixer = "External";
@@ -789,7 +827,7 @@ public static class LaserFunctions
                     }
                 }
 
-                smallShip.laserfiring = false;
+                laser.laserfiring = false;
             }
         } 
     }
@@ -801,6 +839,8 @@ public static class LaserFunctions
     //This handles an event where the laser hits something
     public static void RunCollisionEvent(GameObject objectHit, List<ParticleCollisionEvent> collisionEvents, ParticleSystem particleSystemScript, SmallShip smallShip)
     {
+        Laser laser = GetLaserScript(smallShip);
+
         //Get collision information
         List<Vector3> hitPositions = new List<Vector3>();
 
@@ -979,7 +1019,7 @@ public static class LaserFunctions
         float laserDamage = 0;
 
         laserPower = smallShip.laserPower;
-        laserRating = smallShip.laserRating;
+        laserRating = smallShip.energyWeaponRating;
         laserDamage = 50;
         
         if (laserPower > 50)
@@ -999,5 +1039,17 @@ public static class LaserFunctions
     }
 
     #endregion
+
+    public static Laser GetLaserScript(SmallShip smallShip)
+    {
+        Laser laser = null;
+
+        if (smallShip != null)
+        {
+            laser = smallShip.GetComponent<Laser>();
+        }
+
+        return laser;
+    }
 
 }

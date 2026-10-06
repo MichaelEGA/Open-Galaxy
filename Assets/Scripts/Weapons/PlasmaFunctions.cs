@@ -48,7 +48,7 @@ public static class PlasmaFunctions
                 smallShip.scene.lasersPool = new List<GameObject>();
             }
 
-            smallShip.scene.lasersPool.Add(smallShip.laserParticleSystem);
+            smallShip.scene.lasersPool.Add(smallShip.plasmaParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -134,7 +134,7 @@ public static class PlasmaFunctions
                 smallShip.scene.plasmaPool = new List<GameObject>();
             }
 
-            smallShip.scene.plasmaPool.Add(smallShip.laserParticleSystem);
+            smallShip.scene.plasmaPool.Add(smallShip.plasmaParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -189,11 +189,11 @@ public static class PlasmaFunctions
     //This modifies the collision layers to the player layer so that it's visible in film mode
     public static void ChangeCollisionLayerToPlayer(SmallShip smallShip)
     {
-        OnLaserHit onLaserHit = smallShip.laserParticleSystem.GetComponent<OnLaserHit>();
+        OnPlasmaHit onPlasmaHit = smallShip.plasmaParticleSystem.GetComponent<OnPlasmaHit>();
 
-        if (onLaserHit != null)
+        if (onPlasmaHit != null)
         {
-            ParticleSystem particleSystem = onLaserHit.particleSystemScript;
+            ParticleSystem particleSystem = onPlasmaHit.particleSystemScript;
 
             if (particleSystem != null)
             {
@@ -206,11 +206,11 @@ public static class PlasmaFunctions
     //This resets the collision layers
     public static void ResetCollisionLayers(SmallShip smallShip)
     {
-        OnLaserHit onLaserHit = smallShip.laserParticleSystem.GetComponent<OnLaserHit>();
+        OnPlasmaHit onPlasmaHit = smallShip.plasmaParticleSystem.GetComponent<OnPlasmaHit>();
 
-        if (onLaserHit != null)
+        if (onPlasmaHit != null)
         {
-            ParticleSystem particleSystem = onLaserHit.particleSystemScript;
+            ParticleSystem particleSystem = onPlasmaHit.particleSystemScript;
 
             if (particleSystem != null)
             {
@@ -415,7 +415,7 @@ public static class PlasmaFunctions
                 smallShip.weaponMode = "single";
             }
 
-            smallShip.laserModePressedTime = Time.time + 0.2f;
+            smallShip.plasmaModePressedTime = Time.time + 0.2f;
 
             AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
@@ -504,7 +504,7 @@ public static class PlasmaFunctions
         if (smallShip.isDisabled == false & smallShip.plasmaCharge > 0 & smallShip.activeWeapon == "plasma")
         {
             //This calculates the delay before the next laser fires
-            float plasmaWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
+            float plasmaWaitTime = 0.1f + (1 - (smallShip.energyWeaponFireRating / 100f)) * 0.250f;
 
             if (smallShip.weaponMode == "dual")
             {
@@ -537,7 +537,7 @@ public static class PlasmaFunctions
                 smallShip.weaponRechargeDelay = Time.time;
             }
 
-            if (Time.time > smallShip.plasmaPressedTime & smallShip.laserfiring != true & smallShip.weaponsLock == false)
+            if (Time.time > smallShip.plasmaPressedTime & smallShip.plasmafiring != true & smallShip.weaponsLock == false)
             {
                 if (smallShip.weaponMode == "single" || smallShip.weaponMode == "rapid")
                 {
@@ -931,7 +931,7 @@ public static class PlasmaFunctions
         float plasmaDamage = 0;
 
         plasmaPower = smallShip.laserPower;
-        plasmaRating = smallShip.laserRating;
+        plasmaRating = smallShip.energyWeaponRating;
         plasmaDamage = 50;
 
         if (plasmaPower > 50)

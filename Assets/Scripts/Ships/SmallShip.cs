@@ -37,8 +37,8 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float hullRating = 50; //Value set in inspector or by loading script
     [HideInInspector] public float systemsRating = 50;
     [HideInInspector] public float shieldRating = 50; //Value set in inspector or by loading script
-    [HideInInspector] public float laserFireRating = 50; //Value set in inspector or by loading script
-    [HideInInspector] public float laserRating = 50; //Value set in inspector or by loading script
+    [HideInInspector] public float energyWeaponFireRating = 50; //Value set in inspector or by loading script
+    [HideInInspector] public float energyWeaponRating = 50; //Value set in inspector or by loading script
     [HideInInspector] public float wepRating = 50;//Value set in inspector or by loading script
 
     [Header("Ship Speed")]
@@ -82,6 +82,8 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float laserPower = 100;
     [HideInInspector] public float enginePower = 100;
     [HideInInspector] public float shieldPower = 100;
+    [HideInInspector] public float laserCharge;
+    [HideInInspector] public bool laserRecharged;
     [HideInInspector] public float powerPressedTime;
 
     [Header("Ship Controls")]
@@ -131,26 +133,13 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool hasRapidFire = false;
     [HideInInspector] public string activeWeapon = "lasers";
     [HideInInspector] public string weaponMode = "single";
-    [HideInInspector] public float laserCharge;
+    [HideInInspector] public string laserColor = "red"; //Value set in inspector or by loading script
     [HideInInspector] public float ionCharge;
     [HideInInspector] public float plasmaCharge;
     [HideInInspector] public float weaponRechargeDelay;
-    [HideInInspector] public bool laserRecharged;
     [HideInInspector] public bool ionRecharged;
     [HideInInspector] public bool plasmaRecharged;
     [HideInInspector] public float toggleWeaponPressedTime;
-
-    [HideInInspector] public GameObject laserParticleSystem;
-    [HideInInspector] public GameObject laserMuzzleFlashParticleSystem;
-    [HideInInspector] public GameObject laserCannon1;
-    [HideInInspector] public GameObject laserCannon2;
-    [HideInInspector] public GameObject laserCannon3;
-    [HideInInspector] public GameObject laserCannon4;
-    [HideInInspector] public string laserColor = "red"; //Value set in inspector or by loading script
-    [HideInInspector] public float laserCycleNumber;
-    [HideInInspector] public float laserPressedTime;
-    [HideInInspector] public float laserModePressedTime;
-    [HideInInspector] public bool laserfiring;
 
     [HideInInspector] public GameObject ionParticleSystem;
     [HideInInspector] public GameObject ionMuzzleFlashParticleSystem;
@@ -163,6 +152,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float ionModePressedTime;
     [HideInInspector] public bool ionfiring;
     [HideInInspector] public bool hasIon;
+
 
     [HideInInspector] public GameObject plasmaParticleSystem;
     [HideInInspector] public GameObject plasmaMuzzleFlashParticleSystem;
@@ -185,6 +175,7 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public float torpedoPressedTime;
     [HideInInspector] public float torpedoLockOnTime;
     [HideInInspector] public int torpedoCycleNumber;
+    [HideInInspector] public float torpedoModePressedTime;
     [HideInInspector] public bool hasTorpedos;
     [HideInInspector] public bool torpedoLockingOn;
     [HideInInspector] public bool torpedoLockedOn;

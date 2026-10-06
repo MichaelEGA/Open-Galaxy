@@ -414,7 +414,7 @@ public static class TorpedoFunctions
     //This toggles the ships weapon mode for torpedos
     public static void ToggleWeaponMode(SmallShip smallShip)
     {
-        if (smallShip.toggleWeaponNumber == true & Time.time > smallShip.laserModePressedTime & smallShip.activeWeapon == "torpedos")
+        if (smallShip.toggleWeaponNumber == true & Time.time > smallShip.torpedoModePressedTime & smallShip.activeWeapon == "torpedos")
         {
             if (smallShip.weaponMode == "single" & smallShip.torpedoTube2 != null & smallShip.torpedoNumber > 1)
             {
@@ -429,7 +429,7 @@ public static class TorpedoFunctions
                 smallShip.weaponMode = "single";
             }
 
-            smallShip.laserModePressedTime = Time.time + 0.2f;
+            smallShip.torpedoModePressedTime = Time.time + 0.2f;
 
             if (smallShip.isAI == false)
             {

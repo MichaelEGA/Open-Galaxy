@@ -133,7 +133,7 @@ public static class IonFunctions
                 smallShip.scene.lasersPool = new List<GameObject>();
             }
 
-            smallShip.scene.lasersPool.Add(smallShip.laserParticleSystem);
+            smallShip.scene.lasersPool.Add(smallShip.ionParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -188,11 +188,11 @@ public static class IonFunctions
     //This modifies the collision layers to the player layer so that it's visible in film mode
     public static void ChangeCollisionLayerToPlayer(SmallShip smallShip)
     {
-        OnLaserHit onLaserHit = smallShip.laserParticleSystem.GetComponent<OnLaserHit>();
+        OnIonHit onIonHit = smallShip.ionParticleSystem.GetComponent<OnIonHit>();
 
-        if (onLaserHit != null)
+        if (onIonHit != null)
         {
-            ParticleSystem particleSystem = onLaserHit.particleSystemScript;
+            ParticleSystem particleSystem = onIonHit.particleSystemScript;
 
             if (particleSystem != null)
             {
@@ -205,11 +205,11 @@ public static class IonFunctions
     //This resets the collision layers
     public static void ResetCollisionLayers(SmallShip smallShip)
     {
-        OnLaserHit onLaserHit = smallShip.laserParticleSystem.GetComponent<OnLaserHit>();
+        OnIonHit onIonHit = smallShip.ionParticleSystem.GetComponent<OnIonHit>();
 
-        if (onLaserHit != null)
+        if (onIonHit != null)
         {
-            ParticleSystem particleSystem = onLaserHit.particleSystemScript;
+            ParticleSystem particleSystem = onIonHit.particleSystemScript;
 
             if (particleSystem != null)
             {
@@ -507,7 +507,7 @@ public static class IonFunctions
         if (smallShip.isDisabled == false & smallShip.ionCharge > 0 & smallShip.activeWeapon == "ion")
         {
             //This calculates the delay before the next ion fires
-            float ionWaitTime = 0.1f + (1 - (smallShip.laserFireRating / 100f)) * 0.250f;
+            float ionWaitTime = 0.1f + (1 - (smallShip.energyWeaponFireRating / 100f)) * 0.250f;
 
             if (smallShip.weaponMode == "dual")
             {
@@ -931,7 +931,7 @@ public static class IonFunctions
         float ionDamage = 0;
 
         ionPower = smallShip.laserPower;
-        ionRating = smallShip.laserRating;
+        ionRating = smallShip.energyWeaponRating;
         ionDamage = 50;
 
         if (ionPower > 50)

@@ -81,12 +81,6 @@ public static class SmallShipFunctions
     //This loads the laser particle system if its missing
     public static void LoadLaserParticleSystem(SmallShip smallShip)
     {
-        if (smallShip.laserParticleSystem == null)
-        {
-            LaserFunctions.GetCannons(smallShip);
-            LaserFunctions.LoadLaserParticleSystem(smallShip);
-            LaserFunctions.LoadLaserMuzzleFlashParticleSystem(smallShip);
-        }
 
         if (smallShip.ionParticleSystem == null)
         {
@@ -118,7 +112,6 @@ public static class SmallShipFunctions
 
         //Start functions
         PrepareShip(smallShip);
-        LoadLaserParticleSystem(smallShip);
 
         //Energy Management functions
         CalculatePower(smallShip);
@@ -137,10 +130,6 @@ public static class SmallShipFunctions
 
         //Weapon functions
         ToggleWeapons(smallShip);
-
-        //Laser functions
-        LaserFunctions.ToggleWeaponMode(smallShip);
-        LaserFunctions.InitiateFiringPlayer(smallShip);
 
         //Ion Cannon functions
         IonFunctions.ToggleWeaponMode(smallShip);

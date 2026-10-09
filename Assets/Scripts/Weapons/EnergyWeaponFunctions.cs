@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Rendering;
+using static UnityEditor.Rendering.CameraUI;
 
 //These functions are called by the small ship functions script
-public static class LaserFunctions
+public static class EnergyWeaponFunctions
 {
     #region intiate particle system
 
-    public static void PrepareLasers(Laser laser)
+    public static void PrepareLasers(EnergyWeapon laser)
     {
         if (laser != null)
         {
@@ -19,14 +22,14 @@ public static class LaserFunctions
         {
             SmallShip smallShip = laser.smallShip;
 
-            LaserFunctions.GetCannons(laser);
-            LaserFunctions.LoadLaserParticleSystem(laser);
-            LaserFunctions.LoadLaserMuzzleFlashParticleSystem(laser);
+            EnergyWeaponFunctions.GetCannons(laser);
+            EnergyWeaponFunctions.LoadLaserParticleSystem(laser);
+            EnergyWeaponFunctions.LoadLaserMuzzleFlashParticleSystem(laser);
         }
     }
 
     //This sets all the correct settings on the provided particle system to fire lasers
-    public static void LoadLaserParticleSystem(Laser laser)
+    public static void LoadLaserParticleSystem(EnergyWeapon laser)
     {
         SmallShip smallShip = laser.smallShip;
 
@@ -144,7 +147,7 @@ public static class LaserFunctions
     }
 
     //This sets all the correct settings on the provided particle system to make a muzzle flash
-    public static void LoadLaserMuzzleFlashParticleSystem(Laser laser)
+    public static void LoadLaserMuzzleFlashParticleSystem(EnergyWeapon laser)
     {
         SmallShip smallShip = laser.smallShip;
 
@@ -244,9 +247,9 @@ public static class LaserFunctions
     //This modifies the collision layers to the player layer so that it's visible in film mode
     public static void ChangeCollisionLayerToPlayer(SmallShip smallShip)
     {
-        Laser laser = GetLaserScript(smallShip);
+        EnergyWeapon laser = GetLaserScript(smallShip);
 
-        Laser onLaserHit = laser.laserParticleSystem.GetComponent<Laser>();
+        EnergyWeapon onLaserHit = laser.laserParticleSystem.GetComponent<EnergyWeapon>();
 
         if (onLaserHit != null)
         {
@@ -263,9 +266,9 @@ public static class LaserFunctions
     //This resets the collision layers
     public static void ResetCollisionLayers(SmallShip smallShip)
     {
-        Laser laser = GetLaserScript(smallShip);
+        EnergyWeapon laser = GetLaserScript(smallShip);
 
-        Laser onLaserHit = laser.laserParticleSystem.GetComponent<Laser>();
+        EnergyWeapon onLaserHit = laser.laserParticleSystem.GetComponent<EnergyWeapon>();
 
         if (onLaserHit != null)
         {
@@ -342,7 +345,7 @@ public static class LaserFunctions
     #region ship cannons
 
     //This grabs all the ships laser cannons
-    public static void GetCannons(Laser laser)
+    public static void GetCannons(EnergyWeapon laser)
     {
         SmallShip smallShip = laser.smallShip;
 
@@ -394,7 +397,7 @@ public static class LaserFunctions
     //This sets the rotation of the lasers to angle at the correct distance for the targetted ship
     public static void SetCannons(SmallShip smallShip)
     {
-        Laser laser = GetLaserScript(smallShip);
+        EnergyWeapon laser = GetLaserScript(smallShip);
 
         if (smallShip.autoaim == true & smallShip.target != null & smallShip.targetRigidbody != null & smallShip.targetForward > 0.995f & smallShip.targetLargeShip == null)
         {
@@ -450,7 +453,7 @@ public static class LaserFunctions
     #region laser mode
 
     //This cycles the laser mode between single, dual, and quad lasers
-    public static void ToggleWeaponMode(Laser laser)
+    public static void ToggleWeaponMode(EnergyWeapon laser)
     {
         SmallShip smallShip = laser.smallShip;
 
@@ -482,7 +485,7 @@ public static class LaserFunctions
     //This charges the laser
     public static void LaserCharging(SmallShip smallShip)
     {
-        Laser laser = GetLaserScript(smallShip);
+        EnergyWeapon laser = GetLaserScript(smallShip);
 
         if (smallShip.weaponRechargeDelay + 1 < Time.time)
         {
@@ -547,7 +550,7 @@ public static class LaserFunctions
     #region laser fire functions
 
     //This allows the player to fire the lasers
-    public static void InitiateFiringPlayer(Laser laser)
+    public static void InitiateFiringPlayer(EnergyWeapon laser)
     {
         SmallShip smallShip = laser.smallShip;
 
@@ -560,7 +563,7 @@ public static class LaserFunctions
     //This executes the firing according to the laser mode
     public static void InitiateFiring(SmallShip smallShip)
     {
-        Laser laser = GetLaserScript(smallShip);
+        EnergyWeapon laser = GetLaserScript(smallShip);
 
         SetCannons(smallShip); //This sets cannon angle prior to firing the laser
 
@@ -701,14 +704,19 @@ public static class LaserFunctions
     //This fires a laser from the selected cannon
     public static IEnumerator FireLasers(SmallShip smallShip, float lasersToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
     {
-        Laser laser = GetLaserScript(smallShip);
+        EnergyWeapon laser = GetLaserScript(smallShip);
 
         laser.laserfiring = true;
+
+        float power = smallShip.laserPower;
+        float rating = smallShip.energyWeaponFireRating;
+        int type = 0;
+        int mode = 0;
 
         float volume = 0.6f;
         float pitch = 1;
 
-        if (smallShip.weaponMode == "rapid")
+        if (mode == 1) //weapon mode one is rapid fire
         {
             volume = 0.3f;
             pitch = 1.1f;
@@ -741,22 +749,8 @@ public static class LaserFunctions
                 {
                     if (particleSystem != null & firstCannon != null & smallShip != null)
                     {
-                        particleSystemMuzzleFlash.transform.position = firstCannon.transform.position;
-                        particleSystemMuzzleFlash.transform.rotation = firstCannon.transform.rotation;
-                        particleSystemMuzzleFlash.Play();
-
-                        particleSystem.transform.position = firstCannon.transform.position;
-                        particleSystem.transform.rotation = firstCannon.transform.rotation;
-                        particleSystem.Play();
-
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, firstCannon.transform.position, spatialBlend, pitch, 500, volume);
-
-                        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
-                        {
-                            Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
-                        }
-
-                        yield return null;
+                        FireEnergyWeapon(smallShip, laser, particleSystem, particleSystemMuzzleFlash, firstCannon, power, rating, type, mode);
+                        PlayEnergyWeaponSound(smallShip, firstCannon, audioFile, mixer, spatialBlend, pitch, volume);
                     }  
                 }
 
@@ -765,20 +759,9 @@ public static class LaserFunctions
                     if (particleSystem != null & secondCannon != null & smallShip != null)
                     {
                         yield return null;
-                        particleSystemMuzzleFlash.transform.position = secondCannon.transform.position;
-                        particleSystemMuzzleFlash.transform.rotation = secondCannon.transform.rotation;
-                        particleSystemMuzzleFlash.Play();
 
-                        particleSystem.transform.position = secondCannon.transform.position;
-                        particleSystem.transform.rotation = secondCannon.transform.rotation;
-                        particleSystem.Play();
-
-                        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
-                        {
-                            Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
-                        }
-
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, secondCannon.transform.position, spatialBlend, pitch, 500, volume);
+                        FireEnergyWeapon(smallShip, laser, particleSystem, particleSystemMuzzleFlash, secondCannon, power, rating, type, mode);
+                        PlayEnergyWeaponSound(smallShip, secondCannon, audioFile, mixer, spatialBlend, pitch, volume);
                     }
                 }
 
@@ -787,20 +770,9 @@ public static class LaserFunctions
                     if (particleSystem != null & thirdCannon != null)
                     {
                         yield return null;
-                        particleSystemMuzzleFlash.transform.position = thirdCannon.transform.position;
-                        particleSystemMuzzleFlash.transform.rotation = thirdCannon.transform.rotation;
-                        particleSystemMuzzleFlash.Play();
 
-                        particleSystem.transform.position = thirdCannon.transform.position;
-                        particleSystem.transform.rotation = thirdCannon.transform.rotation;
-                        particleSystem.Play();
-
-                        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
-                        {
-                            Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
-                        }
-
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, thirdCannon.transform.position, spatialBlend, pitch, 500, volume);
+                        FireEnergyWeapon(smallShip, laser, particleSystem, particleSystemMuzzleFlash, thirdCannon, power, rating, type, mode);
+                        PlayEnergyWeaponSound(smallShip, thirdCannon, audioFile, mixer, spatialBlend, pitch, volume);
                     }
                 }
 
@@ -809,20 +781,9 @@ public static class LaserFunctions
                     if (particleSystem != null & fourthCannon != null & smallShip != null)
                     {
                         yield return null;
-                        particleSystemMuzzleFlash.transform.position = fourthCannon.transform.position;
-                        particleSystemMuzzleFlash.transform.rotation = fourthCannon.transform.rotation;
-                        particleSystemMuzzleFlash.Play();
 
-                        particleSystem.transform.position = fourthCannon.transform.position;
-                        particleSystem.transform.rotation = fourthCannon.transform.rotation;
-                        particleSystem.Play();
-
-                        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
-                        {
-                            Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
-                        }
-
-                        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, fourthCannon.transform.position, spatialBlend, pitch, 500, volume);
+                        FireEnergyWeapon(smallShip, laser, particleSystem, particleSystemMuzzleFlash, fourthCannon, power, rating, type, mode);
+                        PlayEnergyWeaponSound(smallShip, fourthCannon, audioFile, mixer, spatialBlend, pitch, volume);
                     }
                 }
 
@@ -831,54 +792,80 @@ public static class LaserFunctions
         } 
     }
 
+    //Actually fires the energy weapon
+    public static void FireEnergyWeapon(SmallShip smallShip, EnergyWeapon energyWeapon, ParticleSystem particleSystem, ParticleSystem particleSystemMuzzleFlash, GameObject cannon, float power, float rating, float type, float mode)
+    {
+        particleSystemMuzzleFlash.transform.position = cannon.transform.position;
+        particleSystemMuzzleFlash.transform.rotation = cannon.transform.rotation;
+        particleSystemMuzzleFlash.Play();
+
+        particleSystem.transform.position = cannon.transform.position;
+        particleSystem.transform.rotation = cannon.transform.rotation;
+        particleSystem.Emit(1);
+
+        energyWeapon.customData.Clear();
+        energyWeapon.customData.Add(new Vector4(power, rating, type, mode));
+        particleSystem.SetCustomParticleData(energyWeapon.customData, ParticleSystemCustomData.Custom1);
+
+        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
+        {
+            Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
+        }
+    }
+
+    //Plays the energy weapon sound
+    public static void PlayEnergyWeaponSound(SmallShip smallShip, GameObject cannon, string audioFile, string mixer, float spatialBlend, float pitch, float volume)
+    {
+        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, cannon.transform.position, spatialBlend, pitch, 500, volume);
+    }
+
     #endregion
 
-    #region collision functions
+    #region collision and damage functions
 
     //This handles an event where the laser hits something
-    public static void RunCollisionEvent(GameObject objectHit, List<ParticleCollisionEvent> collisionEvents, ParticleSystem particleSystemScript, SmallShip smallShip)
+    public static void RunCollisionEvent(ParticleSystem particleSystemScript, SmallShip smallShip)
     {
-        Laser laser = GetLaserScript(smallShip);
-
         //Get collision information
         List<Vector3> hitPositions = new List<Vector3>();
+        List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
+        List<Vector4> customData = new List<Vector4>();
 
-        int events = particleSystemScript.GetCollisionEvents(objectHit, collisionEvents); //This grabs all the collision events
+        int events = particleSystemScript.GetCollisionEvents(smallShip.gameObject, collisionEvents); //This grabs all the collision events
+        particleSystemScript.GetCustomParticleData(customData, ParticleSystemCustomData.Custom1);
 
         for (int i = 0; i < events; i++) //This cycles through all the collision events and deals with one at a time
         {
-            Vector3 hitPosition = collisionEvents[i].intersection; //This gets the position of the collision event
+            //This gets key data from the collision event
+            Vector3 hitPosition = collisionEvents[i].intersection; //This gets the position of the collision event 
+            float power = customData[i].x;
+            float rating = customData[i].y;
+            float type = customData[i].z;
 
-            GameObject objectHitParent = ReturnParent(objectHit); //This gets the colliders object parent  
-
-            Collider hitCollider = collisionEvents[i].colliderComponent as Collider; // Get the specific collider andd object that was hit in this event
-            GameObject hitChildObject = hitCollider.gameObject;
-
-            if (smallShip != null & objectHitParent != null)
+            if (smallShip != null)
             {
-                if (objectHitParent != smallShip.gameObject)
+                //This gets a key reference, audiomanager
+                Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
+
+                //This gets key information on the object hit
+                var objectHitDetails = ObjectHitDetails(smallShip.gameObject, hitPosition);
+                float shieldFront = objectHitDetails.shieldFront;
+                float shieldBack = objectHitDetails.shieldBack;
+                float forward = objectHitDetails.forward;
+                string shieldType = objectHitDetails.shieldType;
+
+                //This instantiates an explosion
+                InstantiateLaserExplosion(hitPosition, forward, shieldFront, shieldBack, smallShip.laserColor, shieldType, audioManager);
+
+                //This makes the screen flash
+                if (objectHitDetails.isAI == false)
                 {
-                    //This gets key information on the object hit
-                    var objectHitDetails = ObjectHitDetails(objectHit, hitPosition);
-
-                    float shieldFront = objectHitDetails.shieldFront;
-                    float shieldBack = objectHitDetails.shieldBack;
-                    float forward = objectHitDetails.forward;
-                    string shieldType = objectHitDetails.shieldType;
-
-                    Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
-
-                    //This instantiates an explosion at the hit position
-                    InstantiateLaserExplosion(smallShip.gameObject, objectHit, hitPosition, forward, shieldFront, shieldBack, smallShip.laserColor, shieldType, audioManager);
-
-                    if (objectHitDetails.isAI == false)
-                    {
-                        HudFunctions.ScreenFlash();
-                    }
-
-                    //This applies damage to the target
-                    ApplyDamage(smallShip, objectHit, hitPosition, hitChildObject);
+                    HudFunctions.ScreenFlash();
                 }
+
+                //This causes the ship to take damage
+                float damage = CalculateLaserDamage(power, rating);
+                DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, false);              
             }
         }
     }
@@ -942,7 +929,7 @@ public static class LaserFunctions
     }
 
     //This instantiates the correct explosion at the hit position
-    public static void InstantiateLaserExplosion(GameObject turretGO, GameObject objectHit, Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string laserColor, string shieldType, Audio audioManager)
+    public static void InstantiateLaserExplosion(Vector3 hitPosition, float forward, float shieldFront, float shieldBack, string laserColor, string shieldType, Audio audioManager)
     {
         //This selects the correct explosion colour
         string explosionChoice = "laserblast_red";
@@ -972,53 +959,12 @@ public static class LaserFunctions
         
     }
 
-    //This calculates and applies damage to the 
-    public static void ApplyDamage(SmallShip attackingShip, GameObject objectHit, Vector3 hitPosition, GameObject childObject = null)
-    {
-        SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
-        LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
-        ShipSystem shipSystem = null;
-
-        if (childObject != null)
-        {
-            shipSystem = childObject.gameObject.GetComponent<ShipSystem>();
-        }
-            
-        float damage = CalculateLaserDamage(attackingShip);
-
-        if (smallShip != null)
-        {
-            bool rapidFire = false;
-
-            if (attackingShip.rapidFire == true & attackingShip.hasRapidFire == true)
-            {
-                rapidFire = true;
-            }
-
-            DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, rapidFire);
-        }
-
-        if (largeShip != null)
-        {
-            DamageFunctions.TakeDamage_LargeShip(largeShip, damage, hitPosition);
-        }
-
-        if (shipSystem != null)
-        {
-            DamageFunctions.TakeShipSystemDamage(shipSystem, damage);
-        }
-    }
-
     //This calculates the laser damage
-    public static float CalculateLaserDamage(SmallShip smallShip)
+    public static float CalculateLaserDamage(float laserPower, float laserRating)
     {
         float damage = 0;
-        float laserPower = 0;
-        float laserRating = 0;
         float laserDamage = 0;
 
-        laserPower = smallShip.laserPower;
-        laserRating = smallShip.energyWeaponRating;
         laserDamage = 50;
         
         if (laserPower > 50)
@@ -1039,13 +985,13 @@ public static class LaserFunctions
 
     #endregion
 
-    public static Laser GetLaserScript(SmallShip smallShip)
+    public static EnergyWeapon GetLaserScript(SmallShip smallShip)
     {
-        Laser laser = null;
+        EnergyWeapon laser = null;
 
         if (smallShip != null)
         {
-            laser = smallShip.GetComponent<Laser>();
+            laser = smallShip.GetComponent<EnergyWeapon>();
         }
 
         return laser;

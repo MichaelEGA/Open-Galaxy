@@ -740,7 +740,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "single";
-                        LaserFunctions.InitiateFiring(smallShip);
+                        EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -764,7 +764,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "dual";
-                        LaserFunctions.InitiateFiring(smallShip);
+                        EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -787,7 +787,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "all";
-                        LaserFunctions.InitiateFiring(smallShip);
+                        EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -810,12 +810,12 @@ public static class SmallShipAIFunctions
                     if (dontFire == false & smallShip.hasRapidFire == true)
                     {
                         smallShip.weaponMode = "rapid";
-                        LaserFunctions.InitiateFiring(smallShip);
+                        EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                     else if (dontFire == false)
                     {
                         smallShip.weaponMode = "single";
-                        LaserFunctions.InitiateFiring(smallShip);
+                        EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -838,7 +838,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "single";
-                        PlasmaFunctions.InitiateFiring(smallShip);
+                        //PlasmaFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -862,7 +862,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "dual";
-                        PlasmaFunctions.InitiateFiring(smallShip);
+                        //PlasmaFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -885,7 +885,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "all";
-                        PlasmaFunctions.InitiateFiring(smallShip);
+                        //PlasmaFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -908,7 +908,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "single";
-                        IonFunctions.InitiateFiring(smallShip);
+                        //IonFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -931,7 +931,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "dual";
-                        IonFunctions.InitiateFiring(smallShip);
+                        //IonFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -954,7 +954,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "all";
-                        IonFunctions.InitiateFiring(smallShip);
+                        //IonFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -977,12 +977,12 @@ public static class SmallShipAIFunctions
                     if (dontFire == false & smallShip.hasRapidFire == true)
                     {
                         smallShip.weaponMode = "rapid";
-                        IonFunctions.InitiateFiring(smallShip);
+                        //IonFunctions.InitiateFiring(smallShip);
                     }
                     else if (dontFire == false)
                     {
                         smallShip.weaponMode = "single";
-                        IonFunctions.InitiateFiring(smallShip);
+                        //IonFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -1100,7 +1100,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false & smallShip.laserRecharged == true)
                     {
                         smallShip.weaponMode = "single";
-                        LaserFunctions.InitiateFiring(smallShip);
+                        EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -1140,7 +1140,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "dual";
-                        LaserFunctions.InitiateFiring(smallShip);
+                        EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -1180,7 +1180,7 @@ public static class SmallShipAIFunctions
                     if (dontFire == false)
                     {
                         smallShip.weaponMode = "all";
-                        LaserFunctions.InitiateFiring(smallShip);
+                        EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
             }
@@ -1212,19 +1212,19 @@ public static class SmallShipAIFunctions
                             if (smallShip.targetSmallShip.hasPlasma == true & smallShip.targetSmallShip.shieldLevel > 10)
                             {
                                 smallShip.weaponMode = "rapid";
-                                LaserFunctions.InitiateFiring(smallShip);
+                                EnergyWeaponFunctions.InitiateFiring(smallShip);
                             }
                             else
                             {
                                 smallShip.weaponMode = "single";
-                                LaserFunctions.InitiateFiring(smallShip);
+                                EnergyWeaponFunctions.InitiateFiring(smallShip);
                             }
                         }
                     }
                     else
                     {
                         smallShip.weaponMode = "single";
-                        LaserFunctions.InitiateFiring(smallShip);
+                        EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
             }

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Laser : MonoBehaviour
+public class EnergyWeapon : MonoBehaviour
 {
     public ParticleSystem particleSystemScript;
-    public List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
     public SmallShip smallShip;
+    public List<Vector4> customData = new List<Vector4>();
 
     public float laserCycleNumber;
     public float laserPressedTime;
@@ -25,13 +25,8 @@ public class Laser : MonoBehaviour
     void Update()
     {
         //Laser functions
-        LaserFunctions.PrepareLasers(this);
-        LaserFunctions.ToggleWeaponMode(this);
-        LaserFunctions.InitiateFiringPlayer(this);
-    }
-
-    private void OnParticleCollision(GameObject objectHit)
-    {
-        LaserFunctions.RunCollisionEvent(objectHit, collisionEvents, particleSystemScript, smallShip);
+        EnergyWeaponFunctions.PrepareLasers(this);
+        EnergyWeaponFunctions.ToggleWeaponMode(this);
+        EnergyWeaponFunctions.InitiateFiringPlayer(this);
     }
 }

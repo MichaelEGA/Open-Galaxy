@@ -908,15 +908,49 @@ public static class SceneFunctions
             }
         }
 
+        bool addEnergyWeapons = false;
+        bool addMissiles = false;
+
+        //Check what type of weapon system to add
+        if (ship != null)
+        {
+           Transform laser = GameObjectUtils.FindChildTransformContaining(ship.transform, "gunbank");
+           Transform ion = GameObjectUtils.FindChildTransformContaining(ship.transform, "ionbank");
+           Transform plasma = GameObjectUtils.FindChildTransformContaining(ship.transform, "plasmabank");
+
+           if (laser != null)
+           {
+               addEnergyWeapons = true;
+           }
+
+           if (ion != null)
+           {
+                addEnergyWeapons = true;
+           }
+
+           if (plasma != null)
+           {
+                addEnergyWeapons = true;
+           }
+
+           Transform missile = GameObjectUtils.FindChildTransformContaining(ship.transform, "missilebank");
+
+           if (missile != null)
+           {
+                addMissiles = true;
+           }
+
+        }
+
         if (ship != null)
         {
             if (shipType.scriptType == "smallship")
             {
                 //Add appropriate ship script
                 SmallShip smallShip = ship.AddComponent<SmallShip>();
-                ship.AddComponent<Laser>(); //NOTE: These should only be added if the ship prefab contains the relevant gameobjects
-                ship.AddComponent<Plasma>();
-                ship.AddComponent<Ion>();
+                ship.AddComponent<EnergyWeaponHit>();
+
+                if (addEnergyWeapons == true) { ship.AddComponent<EnergyWeapon>(); }
 
                 if (scene.smallShips == null)
                 {
@@ -1052,10 +1086,6 @@ public static class SceneFunctions
                 LaserTurret laserTurret = ship.AddComponent<LaserTurret>();
                 laserTurret.largeTurretDamage = shipType.largeturret;
                 laserTurret.smallTurretDamage = shipType.smallturret;
-
-                PlasmaTurret plasmaTurret = ship.AddComponent<PlasmaTurret>();
-                plasmaTurret.largeTurretDamage = shipType.largeturret;
-                plasmaTurret.smallTurretDamage = shipType.smallturret;
             }
 
             //Set ship position, rotation and scale

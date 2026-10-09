@@ -133,9 +133,7 @@ public static class SmallShipFunctions
         MoveShip(smallShip);
 
         //Laser functions
-        LaserFunctions.LaserCharging(smallShip);
-        PlasmaFunctions.PlasmaCharging(smallShip);
-        IonFunctions.IonCharging(smallShip);
+        EnergyWeaponFunctions.LaserCharging(smallShip);
     }
 
     #endregion

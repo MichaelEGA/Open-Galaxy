@@ -1259,9 +1259,7 @@ public class OGCameraFunctions : MonoBehaviour
 
             if (smallShip != null)
             {
-                LaserFunctions.ChangeCollisionLayerToPlayer(smallShip);
-                IonFunctions.ChangeCollisionLayerToPlayer(smallShip);
-                PlasmaFunctions.ChangeCollisionLayerToPlayer(smallShip);
+                EnergyWeaponFunctions.ChangeCollisionLayerToPlayer(smallShip);
             }
         }
     }
@@ -1279,9 +1277,7 @@ public class OGCameraFunctions : MonoBehaviour
 
             if (smallShip != null)
             {
-                LaserFunctions.ResetCollisionLayers(smallShip);
-                IonFunctions.ResetCollisionLayers(smallShip);
-                PlasmaFunctions.ResetCollisionLayers(smallShip);
+                EnergyWeaponFunctions.ResetCollisionLayers(smallShip);
             }
         }
     }

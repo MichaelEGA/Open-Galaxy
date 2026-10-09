@@ -731,15 +731,15 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "lasers";
+                smallShip.weaponManagement.weaponType = "lasers";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.laserRecharged == true)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "single";
+                        smallShip.weaponManagement.weaponMode = "single";
                         EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -755,15 +755,15 @@ public static class SmallShipAIFunctions
 
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "lasers";
+                smallShip.weaponManagement.weaponType = "lasers";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.laserRecharged == true)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "dual";
+                        smallShip.weaponManagement.weaponMode = "dual";
                         EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -778,15 +778,15 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "lasers";
+                smallShip.weaponManagement.weaponType = "lasers";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.laserRecharged == true)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "all";
+                        smallShip.weaponManagement.weaponMode = "all";
                         EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -801,20 +801,20 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "lasers";
+                smallShip.weaponManagement.weaponType = "lasers";
 
                 if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
-                    if (dontFire == false & smallShip.hasRapidFire == true)
+                    if (dontFire == false & smallShip.weaponManagement.hasRapidFire == true)
                     {
-                        smallShip.weaponMode = "rapid";
+                        smallShip.weaponManagement.weaponMode = "rapid";
                         EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                     else if (dontFire == false)
                     {
-                        smallShip.weaponMode = "single";
+                        smallShip.weaponManagement.weaponMode = "single";
                         EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -829,15 +829,15 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "plasma";
+                smallShip.weaponManagement.weaponType = "plasma";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.plasmaRecharged == true)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "single";
+                        smallShip.weaponManagement.weaponMode = "single";
                         //PlasmaFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -853,15 +853,15 @@ public static class SmallShipAIFunctions
 
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "plasma";
+                smallShip.weaponManagement.weaponType = "plasma";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.plasmaRecharged == true)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "dual";
+                        smallShip.weaponManagement.weaponMode = "dual";
                         //PlasmaFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -876,15 +876,15 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "plasma";
+                smallShip.weaponManagement.weaponType = "plasma";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.plasmaRecharged == true)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "all";
+                        smallShip.weaponManagement.weaponMode = "all";
                         //PlasmaFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -899,15 +899,15 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "ion";
+                smallShip.weaponManagement.weaponType = "ion";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.ionRecharged == true)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "single";
+                        smallShip.weaponManagement.weaponMode = "single";
                         //IonFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -922,15 +922,15 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "ion";
+                smallShip.weaponManagement.weaponType = "ion";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.ionRecharged == true)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "dual";
+                        smallShip.weaponManagement.weaponMode = "dual";
                         //IonFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -945,15 +945,15 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "ion";
+                smallShip.weaponManagement.weaponType = "ion";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.ionRecharged == true)
+                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "all";
+                        smallShip.weaponManagement.weaponMode = "all";
                         //IonFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -968,20 +968,20 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "ion";
+                smallShip.weaponManagement.weaponType = "ion";
 
                 if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
-                    if (dontFire == false & smallShip.hasRapidFire == true)
+                    if (dontFire == false & smallShip.weaponManagement.hasRapidFire == true)
                     {
-                        smallShip.weaponMode = "rapid";
+                        smallShip.weaponManagement.weaponMode = "rapid";
                         //IonFunctions.InitiateFiring(smallShip);
                     }
                     else if (dontFire == false)
                     {
-                        smallShip.weaponMode = "single";
+                        smallShip.weaponManagement.weaponMode = "single";
                         //IonFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -996,19 +996,19 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "torpedos";
+                smallShip.weaponManagement.weaponType = "torpedos";
 
                 if (smallShip.torpedoNumber > 0)
                 {
                     if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
                     {
-                        smallShip.weaponMode = "single";
-                        TorpedoFunctions.FireTorpedo(smallShip);
+                        smallShip.weaponManagement.weaponMode = "single";
+                        TorpedoTubesFunctions.FireTorpedo(smallShip);
                     }
                 }
                 else
                 {
-                    smallShip.activeWeapon = "lasers";
+                    smallShip.weaponManagement.weaponType = "lasers";
                     SingleLaser(smallShip);
                 }
             }
@@ -1022,19 +1022,19 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "torpedos";
+                smallShip.weaponManagement.weaponType = "torpedos";
 
                 if (smallShip.torpedoNumber > 0)
                 {
                     if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
                     {
-                        smallShip.weaponMode = "dual";
-                        TorpedoFunctions.FireTorpedo(smallShip);
+                        smallShip.weaponManagement.weaponMode = "dual";
+                        TorpedoTubesFunctions.FireTorpedo(smallShip);
                     }
                 }
                 else
                 {
-                    smallShip.activeWeapon = "lasers";
+                    smallShip.weaponManagement.weaponType = "lasers";
                     SingleLaser(smallShip);
                 }
             }
@@ -1048,19 +1048,19 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.target != null)
             {
-                smallShip.activeWeapon = "torpedos";
+                smallShip.weaponManagement.weaponType = "torpedos";
 
                 if (smallShip.torpedoNumber > 0)
                 {
                     if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
                     {
-                        smallShip.weaponMode = "all";
-                        TorpedoFunctions.FireTorpedo(smallShip);
+                        smallShip.weaponManagement.weaponMode = "all";
+                        TorpedoTubesFunctions.FireTorpedo(smallShip);
                     }
                 }
                 else
                 {
-                    smallShip.activeWeapon = "lasers";
+                    smallShip.weaponManagement.weaponType = "lasers";
                     SingleLaser(smallShip);
                 }
             }
@@ -1076,30 +1076,30 @@ public static class SmallShipAIFunctions
             {
                 if (smallShip.torpedoNumber > 0 & smallShip.interceptDistance > 2000 & smallShip.target.gameObject.activeSelf == true)
                 {
-                    smallShip.activeWeapon = "torpedos";
+                    smallShip.weaponManagement.weaponType = "torpedos";
 
                     if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
                     {
-                        smallShip.weaponMode = "single";
-                        TorpedoFunctions.FireTorpedo(smallShip);
+                        smallShip.weaponManagement.weaponMode = "single";
+                        TorpedoTubesFunctions.FireTorpedo(smallShip);
                     }
                 }
                 else if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
                 {
-                    if (smallShip.hasPlasma == false)
+                    if (smallShip.weaponManagement.hasPlasma == false)
                     {
-                        smallShip.activeWeapon = "lasers";
+                        smallShip.weaponManagement.weaponType = "lasers";
                     }
                     else
                     {
-                        smallShip.activeWeapon = "plasma";
+                        smallShip.weaponManagement.weaponType = "plasma";
                     }
 
                     bool dontFire = CheckFire(smallShip);
 
-                    if (dontFire == false & smallShip.laserRecharged == true)
+                    if (dontFire == false & smallShip.energyWeapon.energyWeaponRecharged == true)
                     {
-                        smallShip.weaponMode = "single";
+                        smallShip.weaponManagement.weaponMode = "single";
                         EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -1116,30 +1116,30 @@ public static class SmallShipAIFunctions
             {
                 if (smallShip.torpedoNumber > 0 & smallShip.interceptDistance > 2000 & smallShip.target.gameObject.activeSelf == true)
                 {
-                    smallShip.activeWeapon = "torpedos";
+                    smallShip.weaponManagement.weaponType = "torpedos";
 
                     if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
                     {
-                        smallShip.weaponMode = "dual";
-                        TorpedoFunctions.FireTorpedo(smallShip);
+                        smallShip.weaponManagement.weaponMode = "dual";
+                        TorpedoTubesFunctions.FireTorpedo(smallShip);
                     }
                 }
                 else if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
                 {
-                    if (smallShip.hasPlasma == false)
+                    if (smallShip.weaponManagement.hasPlasma == false)
                     {
-                        smallShip.activeWeapon = "lasers";
+                        smallShip.weaponManagement.weaponType = "lasers";
                     }
                     else
                     {
-                        smallShip.activeWeapon = "plasma";
+                        smallShip.weaponManagement.weaponType = "plasma";
                     }
 
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "dual";
+                        smallShip.weaponManagement.weaponMode = "dual";
                         EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -1156,30 +1156,30 @@ public static class SmallShipAIFunctions
             {
                 if (smallShip.torpedoNumber > 0 & smallShip.interceptDistance > 2000 & smallShip.target.gameObject.activeSelf == true)
                 {
-                    smallShip.activeWeapon = "torpedos";
+                    smallShip.weaponManagement.weaponType = "torpedos";
 
                     if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
                     {
-                        smallShip.weaponMode = "all";
-                        TorpedoFunctions.FireTorpedo(smallShip);
+                        smallShip.weaponManagement.weaponMode = "all";
+                        TorpedoTubesFunctions.FireTorpedo(smallShip);
                     }
                 }
                 else if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
                 {
-                    if (smallShip.hasPlasma == false)
+                    if (smallShip.weaponManagement.hasPlasma == false)
                     {
-                        smallShip.activeWeapon = "lasers";
+                        smallShip.weaponManagement.weaponType = "lasers";
                     }
                     else
                     {
-                        smallShip.activeWeapon = "plasma";
+                        smallShip.weaponManagement.weaponType = "plasma";
                     }
 
                     bool dontFire = CheckFire(smallShip);
 
                     if (dontFire == false)
                     {
-                        smallShip.weaponMode = "all";
+                        smallShip.weaponManagement.weaponMode = "all";
                         EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }
@@ -1192,38 +1192,38 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.hasPlasma == false)
+            if (smallShip.weaponManagement.hasPlasma == false)
             {
-                smallShip.activeWeapon = "lasers";
+                smallShip.weaponManagement.weaponType = "lasers";
             }
             else
             {
-                smallShip.activeWeapon = "plasma";
+                smallShip.weaponManagement.weaponType = "plasma";
             }
 
             if (smallShip.target != null)
             {
                 if (smallShip.interceptForward > 0.95f & smallShip.target.gameObject.activeSelf == true)
                 {
-                    if (smallShip.hasRapidFire == true)
+                    if (smallShip.weaponManagement.hasRapidFire == true)
                     {
                         if (smallShip.targetSmallShip != null)
                         {
-                            if (smallShip.targetSmallShip.hasPlasma == true & smallShip.targetSmallShip.shieldLevel > 10)
+                            if (smallShip.targetSmallShip.weaponManagement.hasPlasma == true & smallShip.targetSmallShip.shieldLevel > 10)
                             {
-                                smallShip.weaponMode = "rapid";
+                                smallShip.weaponManagement.weaponMode = "rapid";
                                 EnergyWeaponFunctions.InitiateFiring(smallShip);
                             }
                             else
                             {
-                                smallShip.weaponMode = "single";
+                                smallShip.weaponManagement.weaponMode = "single";
                                 EnergyWeaponFunctions.InitiateFiring(smallShip);
                             }
                         }
                     }
                     else
                     {
-                        smallShip.weaponMode = "single";
+                        smallShip.weaponManagement.weaponMode = "single";
                         EnergyWeaponFunctions.InitiateFiring(smallShip);
                     }
                 }

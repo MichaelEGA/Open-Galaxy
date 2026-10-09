@@ -35,7 +35,7 @@ public static class LaserTurretFunctions
                 {
                     turret.allegiance = turret.smallShip.allegiance;
                     turret.largeTurretAccuracy = turret.smallShip.aiTargetingMode;
-                    turret.laserColor = turret.smallShip.laserColor;
+                    turret.laserColor = turret.smallShip.energyWeapon.laserColour;
                 }
             }
 
@@ -1036,7 +1036,7 @@ public static class LaserTurretFunctions
 
         if (smallShip != null)
         {
-            DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, smallShip.hasRapidFire);
+            DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, smallShip.weaponManagement.hasRapidFire);
         }
 
         if (largeShip != null)

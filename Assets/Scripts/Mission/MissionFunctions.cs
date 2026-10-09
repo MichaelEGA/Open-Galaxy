@@ -1220,11 +1220,11 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(shipName))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            WeaponManagement weaponManagement = ship.GetComponent<WeaponManagement>();
 
-                            if (smallShip != null)
+                            if (weaponManagement != null)
                             {
-                                smallShip.hasRapidFire = hasRadidFire;
+                                weaponManagement.hasRapidFire = hasRadidFire;
                             }
                         }
                     }
@@ -4722,13 +4722,14 @@ public static class MissionFunctions
                     if (ship != null)
                     {
                         SmallShip smallShip = ship.GetComponent<SmallShip>();
+                        WeaponManagement weaponManagement = ship.GetComponent<WeaponManagement>();
 
-                        if (smallShip != null)
+                        if (smallShip != null & weaponManagement != null)
                         {
                             if (smallShip.isAI == false)
                             {
-                                SmallShipFunctions.SetWeapons(smallShip, weapon, mode);
-                                smallShip.preventWeaponChange = preventWeaponChange;
+                                WeaponManagementFunctions.SetWeapons(weaponManagement, weapon, mode);
+                                smallShip.weaponManagement.preventWeaponChange = preventWeaponChange;
                                 break;
                             }
                         }

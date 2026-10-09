@@ -949,8 +949,17 @@ public static class SceneFunctions
                 //Add appropriate ship script
                 SmallShip smallShip = ship.AddComponent<SmallShip>();
                 ship.AddComponent<EnergyWeaponHit>();
+                WeaponManagement weaponManagement = null;
+                EnergyWeapon energyWeapon = null;
+                TorpedoTubes torpedoTubes = null;
 
-                if (addEnergyWeapons == true) { ship.AddComponent<EnergyWeapon>(); }
+                if (addEnergyWeapons == true) { energyWeapon = ship.AddComponent<EnergyWeapon>();}
+                if (addMissiles == true) { torpedoTubes = ship.AddComponent<TorpedoTubes>(); }
+
+                if (addMissiles == true || addEnergyWeapons == true)
+                {
+                    weaponManagement = ship.AddComponent<WeaponManagement>();
+                }
 
                 if (scene.smallShips == null)
                 {
@@ -987,7 +996,6 @@ public static class SceneFunctions
                 smallShip.frontShieldLevel = shipType.shieldRating / 2f;
                 smallShip.rearShieldLevel = shipType.shieldRating / 2f;
                 smallShip.speedRating = shipType.speedRating;
-                smallShip.laserColor = laserColor;
                 smallShip.healthSave = shipType.shieldRating + shipType.hullRating;  
                 smallShip.type = type;
                 smallShip.thrustType = shipType.thrustType;
@@ -1006,6 +1014,13 @@ public static class SceneFunctions
                 smallShip.shipLength = shipType.shipLength;
                 smallShip.shieldType = shipType.shieldType;
                 ship.name = smallShip.name;
+
+                smallShip.energyWeapon = energyWeapon;
+
+                if (energyWeapon != null)
+                {
+                    energyWeapon.laserColour = laserColor;
+                }
 
                 if (smallShip.torpedoNumber == 0)
                 {

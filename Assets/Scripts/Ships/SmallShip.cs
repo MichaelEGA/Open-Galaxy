@@ -79,12 +79,12 @@ public class SmallShip : MonoBehaviour
 
     [Header("Ship Power Distribution")]
     [HideInInspector] public string powerMode = "reset";
-    [HideInInspector] public float laserPower = 100;
+    [HideInInspector] public float energyWeaponPower = 100;
     [HideInInspector] public float enginePower = 100;
     [HideInInspector] public float shieldPower = 100;
-    [HideInInspector] public float laserCharge;
-    [HideInInspector] public bool laserRecharged;
+    [HideInInspector] public float energyWeaponCharge;
     [HideInInspector] public float powerPressedTime;
+
 
     [Header("Ship Controls")]
     [HideInInspector] public bool controlLock = false;
@@ -100,8 +100,6 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool getNextEnemy;
     [HideInInspector] public bool getClosestEnemy;
     [HideInInspector] public bool selectTargetInFront;
-    [HideInInspector] public bool toggleWeapons;
-    [HideInInspector] public bool toggleWeaponNumber;
     [HideInInspector] public bool matchSpeed;
     [HideInInspector] public bool focusCamera;
     [HideInInspector] public bool fireCounterMeasures;
@@ -128,34 +126,9 @@ public class SmallShip : MonoBehaviour
     [HideInInspector] public bool docking;
 
     [Header("Ship Weapons")]
-    [HideInInspector] public bool weaponsLock = false;
-    [HideInInspector] public bool preventWeaponChange = false;
-    [HideInInspector] public bool hasRapidFire = false;
-    [HideInInspector] public string activeWeapon = "lasers";
-    [HideInInspector] public string weaponMode = "single";
-    [HideInInspector] public string laserColor = "red"; //Value set in inspector or by loading script
-    [HideInInspector] public float ionCharge;
-    [HideInInspector] public float plasmaCharge;
-    [HideInInspector] public float weaponRechargeDelay;
-    [HideInInspector] public bool ionRecharged;
-    [HideInInspector] public bool plasmaRecharged;
-    [HideInInspector] public float toggleWeaponPressedTime;
-    public bool hasPlasma;
-    public bool hasIon;
-
-    [HideInInspector] public GameObject torpedoTube1;
-    [HideInInspector] public GameObject torpedoTube2;
-    [HideInInspector] public GameObject torpedoTube3;
-    [HideInInspector] public GameObject torpedoTube4;
-    [HideInInspector] public string torpedoType = "proton torpedo";
-    [HideInInspector] public float torpedoNumber = 0;
-    [HideInInspector] public float torpedoPressedTime;
-    [HideInInspector] public float torpedoLockOnTime;
-    [HideInInspector] public int torpedoCycleNumber;
-    [HideInInspector] public float torpedoModePressedTime;
-    [HideInInspector] public bool hasTorpedos;
-    [HideInInspector] public bool torpedoLockingOn;
-    [HideInInspector] public bool torpedoLockedOn;
+    public WeaponManagement weaponManagement;
+    public EnergyWeapon energyWeapon;
+    public TorpedoTubes torpedoTubes;
 
     [Header("Ship Targetting")]
     [HideInInspector] public GameObject waypoint;
@@ -245,6 +218,13 @@ public class SmallShip : MonoBehaviour
 
     [Header("Ship Coroutine Tasks")]
     [HideInInspector] public List<Task> tasks;
+
+    private void Start()
+    {
+        weaponManagement = GetComponent<WeaponManagement>();
+        energyWeapon = GetComponent<EnergyWeapon>();
+        torpedoTubes = GetComponent<TorpedoTubes>();
+    }
 
     // Update is called once per frame
     void Update()

@@ -11,25 +11,25 @@ public static class EnergyWeaponFunctions
 {
     #region intiate particle system
 
-    public static void PrepareLasers(EnergyWeapon laser)
+    public static void PrepareEnergyWeapon(EnergyWeapon laser)
     {
         if (laser != null)
         {
             laser.smallShip = laser.GetComponent<SmallShip>();
         }
 
-        if (laser.laserParticleSystem == null)
+        if (laser.energyWeaponParticleSystem == null)
         {
             SmallShip smallShip = laser.smallShip;
 
             EnergyWeaponFunctions.GetCannons(laser);
-            EnergyWeaponFunctions.LoadLaserParticleSystem(laser);
-            EnergyWeaponFunctions.LoadLaserMuzzleFlashParticleSystem(laser);
+            EnergyWeaponFunctions.LoadEnergyWeaponParticleSystem(laser);
+            EnergyWeaponFunctions.LoadEnergyWeaponMuzzleFlashParticleSystem(laser);
         }
     }
 
     //This sets all the correct settings on the provided particle system to fire lasers
-    public static void LoadLaserParticleSystem(EnergyWeapon laser)
+    public static void LoadEnergyWeaponParticleSystem(EnergyWeapon laser)
     {
         SmallShip smallShip = laser.smallShip;
 
@@ -47,10 +47,10 @@ public static class EnergyWeaponFunctions
         GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
 
         //This loads the particle system and the particle collider
-        laser.laserParticleSystem = new GameObject();
-        laser.laserParticleSystem.name = "laserparticlesystem_" + smallShip.gameObject.name;       
-        ParticleSystem particleSystem = laser.laserParticleSystem.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = laser.laserParticleSystem.GetComponent<ParticleSystemRenderer>();
+        laser.energyWeaponParticleSystem = new GameObject();
+        laser.energyWeaponParticleSystem.name = "laserparticlesystem_" + smallShip.gameObject.name;       
+        ParticleSystem particleSystem = laser.energyWeaponParticleSystem.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = laser.energyWeaponParticleSystem.GetComponent<ParticleSystemRenderer>();
         laser.particleSystemScript = particleSystem;
         laser.smallShip = smallShip;
 
@@ -74,7 +74,7 @@ public static class EnergyWeaponFunctions
                 smallShip.scene.lasersPool = new List<GameObject>();
             }
 
-            smallShip.scene.lasersPool.Add(laser.laserParticleSystem);
+            smallShip.scene.lasersPool.Add(laser.energyWeaponParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -119,19 +119,19 @@ public static class EnergyWeaponFunctions
         collision.bounce = 0;
         collision.lifetimeLoss = 1;
         collision.sendCollisionMessages = true;
-        collision.collidesWith = SetLaserCollisionLayers(smallShip);
+        collision.collidesWith = SetEnergyWeaponCollisionLayers(smallShip);
 
         //This makes the particle looks like a laser
         particleSystemRenderer.renderMode = ParticleSystemRenderMode.Mesh;
         particleSystemRenderer.alignment = ParticleSystemRenderSpace.Velocity;
         particleSystemRenderer.mesh = laserMesh;
 
-        if (smallShip.laserColor == "red")
+        if (smallShip.energyWeapon.laserColour == "red")
         {
             particleSystemRenderer.material = redLaserMaterial;
             lights.light = redLaserLight.GetComponent<Light>();
         }
-        else if (smallShip.laserColor == "green")
+        else if (smallShip.energyWeapon.laserColour == "green")
         {
             particleSystemRenderer.material = greenLaserMaterial;
             lights.light = greenLaserLight.GetComponent<Light>();
@@ -147,7 +147,7 @@ public static class EnergyWeaponFunctions
     }
 
     //This sets all the correct settings on the provided particle system to make a muzzle flash
-    public static void LoadLaserMuzzleFlashParticleSystem(EnergyWeapon laser)
+    public static void LoadEnergyWeaponMuzzleFlashParticleSystem(EnergyWeapon laser)
     {
         SmallShip smallShip = laser.smallShip;
 
@@ -161,15 +161,15 @@ public static class EnergyWeaponFunctions
         Material yellowMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_yellow") as Material;
 
         //This loads the particle system and the particle collider
-        laser.laserMuzzleFlashParticleSystem = new GameObject();
-        laser.laserMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
-        laser.laserMuzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + smallShip.gameObject.name;
-        ParticleSystem particleSystem = laser.laserMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = laser.laserMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
+        laser.energyWeaponMuzzleFlashParticleSystem = new GameObject();
+        laser.energyWeaponMuzzleFlashParticleSystem.layer = smallShip.gameObject.layer;
+        laser.energyWeaponMuzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + smallShip.gameObject.name;
+        ParticleSystem particleSystem = laser.energyWeaponMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
+        ParticleSystemRenderer particleSystemRenderer = laser.energyWeaponMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
 
         //This sets the particle system to be subordinate to the smallship
         particleSystem.transform.SetParent(smallShip.transform);
-        laser.laserMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
+        laser.energyWeaponMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
 
         //This adds the new particle system to the pool
         if (smallShip.scene != null)
@@ -179,7 +179,7 @@ public static class EnergyWeaponFunctions
                 smallShip.scene.lasersPool = new List<GameObject>();
             }
 
-            smallShip.scene.lasersPool.Add(laser.laserParticleSystem);
+            smallShip.scene.lasersPool.Add(laser.energyWeaponParticleSystem);
         }
 
         //This sets the paticle to operate in scene space (as opposed to local and world)
@@ -224,12 +224,12 @@ public static class EnergyWeaponFunctions
         var lights = particleSystem.lights;
         lights.enabled = true;
 
-        if (smallShip.laserColor == "red")
+        if (smallShip.energyWeapon.laserColour == "red")
         {
             particleSystemRenderer.material = redMuzzleFlashMaterial;
             lights.light = redMuzzleFlashLight.GetComponent<Light>();
         }
-        else if (smallShip.laserColor == "green")
+        else if (smallShip.energyWeapon.laserColour == "green")
         {
             particleSystemRenderer.material = greenMuzzleFlashMaterial;
             lights.light = greenMuzzleFlashLight.GetComponent<Light>();
@@ -247,9 +247,9 @@ public static class EnergyWeaponFunctions
     //This modifies the collision layers to the player layer so that it's visible in film mode
     public static void ChangeCollisionLayerToPlayer(SmallShip smallShip)
     {
-        EnergyWeapon laser = GetLaserScript(smallShip);
+        EnergyWeapon laser = GetEnergyWeapon(smallShip);
 
-        EnergyWeapon onLaserHit = laser.laserParticleSystem.GetComponent<EnergyWeapon>();
+        EnergyWeapon onLaserHit = laser.energyWeaponParticleSystem.GetComponent<EnergyWeapon>();
 
         if (onLaserHit != null)
         {
@@ -258,7 +258,7 @@ public static class EnergyWeaponFunctions
             if (particleSystem != null)
             {
                 var collision = particleSystem.collision;
-                collision.collidesWith = SetLaserCollisionLayers(smallShip, true);
+                collision.collidesWith = SetEnergyWeaponCollisionLayers(smallShip, true);
             }
         } 
     }
@@ -266,9 +266,9 @@ public static class EnergyWeaponFunctions
     //This resets the collision layers
     public static void ResetCollisionLayers(SmallShip smallShip)
     {
-        EnergyWeapon laser = GetLaserScript(smallShip);
+        EnergyWeapon laser = GetEnergyWeapon(smallShip);
 
-        EnergyWeapon onLaserHit = laser.laserParticleSystem.GetComponent<EnergyWeapon>();
+        EnergyWeapon onLaserHit = laser.energyWeaponParticleSystem.GetComponent<EnergyWeapon>();
 
         if (onLaserHit != null)
         {
@@ -277,13 +277,13 @@ public static class EnergyWeaponFunctions
             if (particleSystem != null)
             {
                 var collision = particleSystem.collision;
-                collision.collidesWith = SetLaserCollisionLayers(smallShip);
+                collision.collidesWith = SetEnergyWeaponCollisionLayers(smallShip);
             }
         }
     }
 
     //This sets the collision layer for the lasers
-    public static LayerMask SetLaserCollisionLayers(SmallShip smallShip, bool markAsPlayer = false)
+    public static LayerMask SetEnergyWeaponCollisionLayers(SmallShip smallShip, bool markAsPlayer = false)
     {
         LayerMask collisionLayers = new LayerMask(); 
 
@@ -397,7 +397,7 @@ public static class EnergyWeaponFunctions
     //This sets the rotation of the lasers to angle at the correct distance for the targetted ship
     public static void SetCannons(SmallShip smallShip)
     {
-        EnergyWeapon laser = GetLaserScript(smallShip);
+        EnergyWeapon laser = GetEnergyWeapon(smallShip);
 
         if (smallShip.autoaim == true & smallShip.target != null & smallShip.targetRigidbody != null & smallShip.targetForward > 0.995f & smallShip.targetLargeShip == null)
         {
@@ -453,28 +453,28 @@ public static class EnergyWeaponFunctions
     #region laser mode
 
     //This cycles the laser mode between single, dual, and quad lasers
-    public static void ToggleWeaponMode(EnergyWeapon laser)
+    public static void ToggleWeaponMode(EnergyWeapon energyWeapon)
     {
-        SmallShip smallShip = laser.smallShip;
+        WeaponManagement weaponManagement = energyWeapon.weaponManagement;
 
-        if (smallShip.toggleWeaponNumber == true & Time.time > laser.laserModePressedTime & smallShip.activeWeapon == "lasers")
+        if (weaponManagement.toggleWeaponNumber == true & Time.time > energyWeapon.energyWeaponModePressedTime & weaponManagement.weaponType == "lasers")
         {
-            if (smallShip.weaponMode == "single" & laser.laserCannon2 != null)
+            if (weaponManagement.weaponMode == "single" & energyWeapon.laserCannon2 != null)
             {
-                smallShip.weaponMode = "dual";
+                weaponManagement.weaponMode = "dual";
             }
-            else if (smallShip.weaponMode == "dual" & laser.laserCannon3 != null)
+            else if (weaponManagement.weaponMode == "dual" & energyWeapon.laserCannon3 != null)
             {
-                smallShip.weaponMode = "all";
+                weaponManagement.weaponMode = "all";
             }
             else
             {
-                smallShip.weaponMode = "single";
+                weaponManagement.weaponMode = "single";
             }
 
-            laser.laserModePressedTime = Time.time + 0.2f;
+            energyWeapon.energyWeaponModePressedTime = Time.time + 0.2f;
 
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+            AudioFunctions.PlayAudioClip(energyWeapon.smallShip.audioManager, "beep01_toggle", "Cockpit", energyWeapon.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
         }
     }
 
@@ -483,65 +483,65 @@ public static class EnergyWeaponFunctions
     #region laser charging
 
     //This charges the laser
-    public static void LaserCharging(SmallShip smallShip)
+    public static void EnergyWeaponCharging(EnergyWeapon energyWeapon)
     {
-        EnergyWeapon laser = GetLaserScript(smallShip);
 
-        if (smallShip.weaponRechargeDelay + 1 < Time.time)
+
+        if (energyWeapon.weaponRechargeDelay + 1 < Time.time)
         {
-            if (smallShip.laserPower == 50)
+            if (energyWeapon.smallShip.energyWeaponPower == 50)
             {
-                if (smallShip.laserCharge < 50)
+                if (energyWeapon.smallShip.energyWeaponCharge < 50)
                 {
-                    smallShip.laserCharge += 0.5f;
+                    energyWeapon.smallShip.energyWeaponCharge += 0.5f;
                 }
-                else if (smallShip.laserCharge > 50)
+                else if (energyWeapon.smallShip.energyWeaponCharge > 50)
                 {
-                    smallShip.laserCharge -= 0.5f;
-                    smallShip.laserRecharged = true;
+                    energyWeapon.smallShip.energyWeaponCharge -= 0.5f;
+                    energyWeapon.energyWeaponRecharged = true;
                 }
                 else
                 {
-                    smallShip.laserRecharged = true;
+                    energyWeapon.energyWeaponRecharged = true;
                 }
             }
-            else if (smallShip.laserPower > 50)
+            else if (energyWeapon.smallShip.energyWeaponPower > 50)
             {
-                if (smallShip.laserCharge < 100)
+                if (energyWeapon.smallShip.energyWeaponCharge < 100)
                 {
-                    smallShip.laserCharge += 0.5f;
+                    energyWeapon.smallShip.energyWeaponCharge += 0.5f;
                 }
-                else if (smallShip.laserCharge > 100)
+                else if (energyWeapon.smallShip.energyWeaponCharge > 100)
                 {
-                    smallShip.laserCharge -= 0.5f;
-                    smallShip.laserRecharged = true;
+                    energyWeapon.smallShip.energyWeaponCharge -= 0.5f;
+                    energyWeapon.energyWeaponRecharged = true;
                 }
                 else
                 {
-                    smallShip.laserRecharged = true;
+                    energyWeapon.energyWeaponRecharged = true;
                 }
             }
-            else if (smallShip.laserPower < 50)
+            else if (energyWeapon.smallShip.energyWeaponPower < 50)
             {
-                if (smallShip.laserCharge < 25)
+                if (energyWeapon.smallShip.energyWeaponCharge < 25)
                 {
-                    smallShip.laserCharge += 0.5f;
+                    energyWeapon.smallShip.energyWeaponCharge += 0.5f;
                 }
-                else if (smallShip.laserCharge > 25)
+                else if (energyWeapon.smallShip.energyWeaponCharge > 25)
                 {
-                    smallShip.laserCharge -= 0.5f;
-                    smallShip.laserRecharged = true;
+                    energyWeapon.smallShip.energyWeaponCharge -= 0.5f;
+                    energyWeapon.energyWeaponRecharged = true;
                 }
                 else
                 {
-                    smallShip.laserRecharged = true;
+                    energyWeapon.energyWeaponRecharged = true;
                 }
             }
         }
 
-        if (smallShip.laserCharge <= 0)
+        if (energyWeapon.smallShip.energyWeaponCharge <= 0)
         {
-            smallShip.laserRecharged = false;
+            energyWeapon.energyWeaponRecharged = false;
         }
     }
 
@@ -550,11 +550,11 @@ public static class EnergyWeaponFunctions
     #region laser fire functions
 
     //This allows the player to fire the lasers
-    public static void InitiateFiringPlayer(EnergyWeapon laser)
+    public static void InitiateFiringPlayer(EnergyWeapon energyWeapon)
     {
-        SmallShip smallShip = laser.smallShip;
+        SmallShip smallShip = energyWeapon.smallShip;
 
-        if (smallShip.fireWeapon == true & smallShip.isAI == false || smallShip.rapidFire == true & smallShip.isAI == false & smallShip.hasRapidFire == true)
+        if (smallShip.fireWeapon == true & smallShip.isAI == false || smallShip.rapidFire == true & smallShip.isAI == false & energyWeapon.weaponManagement.hasRapidFire == true)
         {
             InitiateFiring(smallShip);
         }
@@ -563,31 +563,26 @@ public static class EnergyWeaponFunctions
     //This executes the firing according to the laser mode
     public static void InitiateFiring(SmallShip smallShip)
     {
-        EnergyWeapon laser = GetLaserScript(smallShip);
+        EnergyWeapon energyWeapon = GetEnergyWeapon(smallShip);
 
         SetCannons(smallShip); //This sets cannon angle prior to firing the laser
 
-        if (smallShip.isDisabled == false & smallShip.laserCharge > 0 & smallShip.activeWeapon == "lasers")
+        if (smallShip.isDisabled == false & smallShip.energyWeaponCharge > 0 & smallShip.weaponManagement.weaponType == "lasers")
         {
-            string weaponMode = smallShip.weaponMode;
-
-            if (smallShip.hasRapidFire == true & smallShip.rapidFire == true)
-            {
-                weaponMode = "rapid";
-            }
+            int weaponMode = WeaponManagementFunctions.GetWeaponMode(energyWeapon.weaponManagement);
 
             //This calculates the delay before the next laser fires
             float laserWaitTime = 0.1f + (1 - (smallShip.energyWeaponFireRating / 100f)) * 0.250f;
 
-            if (weaponMode == "dual")
+            if (weaponMode == 1) //Dual
             {
                 laserWaitTime = laserWaitTime * 2;
             }
-            else if (weaponMode == "all")
+            else if (weaponMode == 2) //All
             {
                 laserWaitTime = laserWaitTime * 4;
             }
-            else if (weaponMode == "rapid")
+            else if (weaponMode == 3) //Rapid
             {
                 laserWaitTime = laserWaitTime * 0.25f;
             }
@@ -595,123 +590,123 @@ public static class EnergyWeaponFunctions
             //This calculates the weapon charge the laser is going to use
             float weaponCharge = 0.5f;
 
-            if (weaponMode == "dual")
+            if (weaponMode == 1) //Dual
             {
                 weaponCharge = weaponCharge * 2;
             }
-            else if (weaponMode == "all")
+            else if (weaponMode ==2) //All
             {
                 weaponCharge = weaponCharge * 4;
             }
 
-            if (weaponMode != "rapid")
+            if (weaponMode != 3) //!= rapid
             {
-                smallShip.laserCharge -= weaponCharge;
-                smallShip.weaponRechargeDelay = Time.time;
+                smallShip.energyWeaponCharge -= weaponCharge;
+                smallShip.energyWeapon.weaponRechargeDelay = Time.time;
             }
 
             //This intiates firing for the lasers
-            if (Time.time > laser.laserPressedTime & laser.laserfiring != true & smallShip.weaponsLock == false)
+            if (Time.time > energyWeapon.energyWeaponPressedTime & energyWeapon.energyWeaponFiring != true & smallShip.weaponManagement.weaponsLock == false)
             {
-                if (weaponMode == "single" || weaponMode == "rapid")
+                if (weaponMode == 0 || weaponMode == 3) //Single || Rapid
                 {
-                    if (laser.laserCannon3 != null & laser.laserCannon4 != null)
+                    if (energyWeapon.laserCannon3 != null & energyWeapon.laserCannon4 != null)
                     {
-                        laser.laserCycleNumber = laser.laserCycleNumber + 1;
+                        energyWeapon.energyWeaponCycleNumber = energyWeapon.energyWeaponCycleNumber + 1;
 
-                        if (laser.laserCycleNumber > 4)
+                        if (energyWeapon.energyWeaponCycleNumber > 4)
                         {
-                            laser.laserCycleNumber = 1;
+                            energyWeapon.energyWeaponCycleNumber = 1;
                         }
 
-                        if (laser.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon1)); }
-                        else if (laser.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon2)); }
-                        else if (laser.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon3)); }
-                        else if (laser.laserCycleNumber == 4) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon4)); }
+                        if (energyWeapon.energyWeaponCycleNumber == 1) { Task a = new Task(FireEnergyWeapons(smallShip, 1, energyWeapon.laserCannon1)); }
+                        else if (energyWeapon.energyWeaponCycleNumber == 2) { Task a = new Task(FireEnergyWeapons(smallShip, 1, energyWeapon.laserCannon2)); }
+                        else if (energyWeapon.energyWeaponCycleNumber == 3) { Task a = new Task(FireEnergyWeapons(smallShip, 1, energyWeapon.laserCannon3)); }
+                        else if (energyWeapon.energyWeaponCycleNumber == 4) { Task a = new Task(FireEnergyWeapons(smallShip, 1, energyWeapon.laserCannon4)); }
 
                     }
-                    else if (laser.laserCannon1 != null & laser.laserCannon2 != null & laser.laserCannon3 != null)
+                    else if (energyWeapon.laserCannon1 != null & energyWeapon.laserCannon2 != null & energyWeapon.laserCannon3 != null)
                     {
-                        laser.laserCycleNumber = laser.laserCycleNumber + 1;
+                        energyWeapon.energyWeaponCycleNumber = energyWeapon.energyWeaponCycleNumber + 1;
 
-                        if (laser.laserCycleNumber > 3)
+                        if (energyWeapon.energyWeaponCycleNumber > 3)
                         {
-                            laser.laserCycleNumber = 1;
+                            energyWeapon.energyWeaponCycleNumber = 1;
                         }
 
-                        if (laser.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon1)); }
-                        else if (laser.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon2)); }
-                        else if (laser.laserCycleNumber == 3) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon3)); }
+                        if (energyWeapon.energyWeaponCycleNumber == 1) { Task a = new Task(FireEnergyWeapons(smallShip, 1, energyWeapon.laserCannon1)); }
+                        else if (energyWeapon.energyWeaponCycleNumber == 2) { Task a = new Task(FireEnergyWeapons(smallShip, 1, energyWeapon.laserCannon2)); }
+                        else if (energyWeapon.energyWeaponCycleNumber == 3) { Task a = new Task(FireEnergyWeapons(smallShip, 1, energyWeapon.laserCannon3)); }
                     }
-                    else if (laser.laserCannon1 != null & laser.laserCannon2 != null)
+                    else if (energyWeapon.laserCannon1 != null & energyWeapon.laserCannon2 != null)
                     {
-                        laser.laserCycleNumber = laser.laserCycleNumber + 1;
+                        energyWeapon.energyWeaponCycleNumber = energyWeapon.energyWeaponCycleNumber + 1;
 
-                        if (laser.laserCycleNumber > 2)
+                        if (energyWeapon.energyWeaponCycleNumber > 2)
                         {
-                            laser.laserCycleNumber = 1;
+                            energyWeapon.energyWeaponCycleNumber = 1;
                         }
 
-                        if (laser.laserCycleNumber == 1) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon1)); }
-                        else if (laser.laserCycleNumber == 2) { Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon2)); }
+                        if (energyWeapon.energyWeaponCycleNumber == 1) { Task a = new Task(FireEnergyWeapons(smallShip, 1, energyWeapon.laserCannon1)); }
+                        else if (energyWeapon.energyWeaponCycleNumber == 2) { Task a = new Task(FireEnergyWeapons(smallShip, 1, energyWeapon.laserCannon2)); }
                     }
-                    else if (laser.laserCannon1 != null)
+                    else if (energyWeapon.laserCannon1 != null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 1, laser.laserCannon1));
+                        Task a = new Task(FireEnergyWeapons(smallShip, 1, energyWeapon.laserCannon1));
                     }
 
                 }
-                else if (smallShip.weaponMode == "dual")
+                else if (weaponMode == 1) //Dual
                 {
 
-                    laser.laserCycleNumber = laser.laserCycleNumber + 1;
+                    energyWeapon.energyWeaponCycleNumber = energyWeapon.energyWeaponCycleNumber + 1;
 
-                    if (laser.laserCycleNumber > 2)
+                    if (energyWeapon.energyWeaponCycleNumber > 2)
                     {
-                        laser.laserCycleNumber = 1;
+                        energyWeapon.energyWeaponCycleNumber = 1;
                     }
 
-                    if (laser.laserCycleNumber == 1 & laser.laserCannon1 != null & laser.laserCannon2 != null)
+                    if (energyWeapon.energyWeaponCycleNumber == 1 & energyWeapon.laserCannon1 != null & energyWeapon.laserCannon2 != null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 2, laser.laserCannon1, laser.laserCannon2));
+                        Task a = new Task(FireEnergyWeapons(smallShip, 2, energyWeapon.laserCannon1, energyWeapon.laserCannon2));
                     }
-                    else if (laser.laserCycleNumber == 2 & laser.laserCannon2 != null & laser.laserCannon3 != null & laser.laserCannon4 == null)
+                    else if (energyWeapon.energyWeaponCycleNumber == 2 & energyWeapon.laserCannon2 != null & energyWeapon.laserCannon3 != null & energyWeapon.laserCannon4 == null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 2, laser.laserCannon2, laser.laserCannon3));
+                        Task a = new Task(FireEnergyWeapons(smallShip, 2, energyWeapon.laserCannon2, energyWeapon.laserCannon3));
                     }
-                    else if (laser.laserCycleNumber == 2 & laser.laserCannon3 != null & laser.laserCannon4 != null)
+                    else if (energyWeapon.energyWeaponCycleNumber == 2 & energyWeapon.laserCannon3 != null & energyWeapon.laserCannon4 != null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 2, laser.laserCannon3, laser.laserCannon4));
+                        Task a = new Task(FireEnergyWeapons(smallShip, 2, energyWeapon.laserCannon3, energyWeapon.laserCannon4));
                     }
                 }
-                else if (smallShip.weaponMode == "all")
+                else if (weaponMode == 2) //All
                 {
-                    if (laser.laserCannon1 != null & laser.laserCannon2 != null & laser.laserCannon3 != null & laser.laserCannon4 == null)
+                    if (energyWeapon.laserCannon1 != null & energyWeapon.laserCannon2 != null & energyWeapon.laserCannon3 != null & energyWeapon.laserCannon4 == null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 3, laser.laserCannon1, laser.laserCannon2, laser.laserCannon3));
+                        Task a = new Task(FireEnergyWeapons(smallShip, 3, energyWeapon.laserCannon1, energyWeapon.laserCannon2, energyWeapon.laserCannon3));
                     }
-                    else if (laser.laserCannon1 != null & laser.laserCannon2 != null & laser.laserCannon3 != null & laser.laserCannon4 != null)
+                    else if (energyWeapon.laserCannon1 != null & energyWeapon.laserCannon2 != null & energyWeapon.laserCannon3 != null & energyWeapon.laserCannon4 != null)
                     {
-                        Task a = new Task(FireLasers(smallShip, 4, laser.laserCannon1, laser.laserCannon2, laser.laserCannon3, laser.laserCannon4));
+                        Task a = new Task(FireEnergyWeapons(smallShip, 4, energyWeapon.laserCannon1, energyWeapon.laserCannon2, energyWeapon.laserCannon3, energyWeapon.laserCannon4));
                     }
                 }
 
-                laser.laserPressedTime = Time.time + laserWaitTime;
+                energyWeapon.energyWeaponPressedTime = Time.time + laserWaitTime;
             }
         }
     }
 
-    //This fires a laser from the selected cannon
-    public static IEnumerator FireLasers(SmallShip smallShip, float lasersToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
+    //This runs through the cannons and runs the FireSingleEnergyWeapon script
+    public static IEnumerator FireEnergyWeapons(SmallShip smallShip, float lasersToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
     {
-        EnergyWeapon laser = GetLaserScript(smallShip);
+        EnergyWeapon energyWeapon = GetEnergyWeapon(smallShip);
 
-        laser.laserfiring = true;
+        energyWeapon.energyWeaponFiring = true;
 
-        float power = smallShip.laserPower;
+        float power = smallShip.energyWeaponPower;
         float rating = smallShip.energyWeaponFireRating;
-        int type = 0;
-        int mode = 0;
+        int type = WeaponManagementFunctions.GetWeaponType(energyWeapon.weaponManagement);
+        int mode = WeaponManagementFunctions.GetWeaponMode(energyWeapon.weaponManagement);
 
         float volume = 0.6f;
         float pitch = 1;
@@ -729,10 +724,10 @@ public static class EnergyWeaponFunctions
 
         if (smallShip != null)
         {
-            if (laser.laserParticleSystem != null)
+            if (energyWeapon.energyWeaponParticleSystem != null)
             {
-                ParticleSystem particleSystem = laser.laserParticleSystem.GetComponent<ParticleSystem>();
-                ParticleSystem particleSystemMuzzleFlash = laser.laserMuzzleFlashParticleSystem.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystem = energyWeapon.energyWeaponParticleSystem.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystemMuzzleFlash = energyWeapon.energyWeaponMuzzleFlashParticleSystem.GetComponent<ParticleSystem>();
 
                 float spatialBlend = 1f;
                 string mixer = "External";
@@ -749,7 +744,7 @@ public static class EnergyWeaponFunctions
                 {
                     if (particleSystem != null & firstCannon != null & smallShip != null)
                     {
-                        FireEnergyWeapon(smallShip, laser, particleSystem, particleSystemMuzzleFlash, firstCannon, power, rating, type, mode);
+                        FireSingleEnergyWeapon(smallShip, energyWeapon, particleSystem, particleSystemMuzzleFlash, firstCannon, power, rating, type, mode);
                         PlayEnergyWeaponSound(smallShip, firstCannon, audioFile, mixer, spatialBlend, pitch, volume);
                     }  
                 }
@@ -760,7 +755,7 @@ public static class EnergyWeaponFunctions
                     {
                         yield return null;
 
-                        FireEnergyWeapon(smallShip, laser, particleSystem, particleSystemMuzzleFlash, secondCannon, power, rating, type, mode);
+                        FireSingleEnergyWeapon(smallShip, energyWeapon, particleSystem, particleSystemMuzzleFlash, secondCannon, power, rating, type, mode);
                         PlayEnergyWeaponSound(smallShip, secondCannon, audioFile, mixer, spatialBlend, pitch, volume);
                     }
                 }
@@ -771,7 +766,7 @@ public static class EnergyWeaponFunctions
                     {
                         yield return null;
 
-                        FireEnergyWeapon(smallShip, laser, particleSystem, particleSystemMuzzleFlash, thirdCannon, power, rating, type, mode);
+                        FireSingleEnergyWeapon(smallShip, energyWeapon, particleSystem, particleSystemMuzzleFlash, thirdCannon, power, rating, type, mode);
                         PlayEnergyWeaponSound(smallShip, thirdCannon, audioFile, mixer, spatialBlend, pitch, volume);
                     }
                 }
@@ -782,18 +777,18 @@ public static class EnergyWeaponFunctions
                     {
                         yield return null;
 
-                        FireEnergyWeapon(smallShip, laser, particleSystem, particleSystemMuzzleFlash, fourthCannon, power, rating, type, mode);
+                        FireSingleEnergyWeapon(smallShip, energyWeapon, particleSystem, particleSystemMuzzleFlash, fourthCannon, power, rating, type, mode);
                         PlayEnergyWeaponSound(smallShip, fourthCannon, audioFile, mixer, spatialBlend, pitch, volume);
                     }
                 }
 
-                laser.laserfiring = false;
+                energyWeapon.energyWeaponFiring = false;
             }
         } 
     }
 
-    //Actually fires the energy weapon
-    public static void FireEnergyWeapon(SmallShip smallShip, EnergyWeapon energyWeapon, ParticleSystem particleSystem, ParticleSystem particleSystemMuzzleFlash, GameObject cannon, float power, float rating, float type, float mode)
+    //This actuallly fires the energy weapon
+    public static void FireSingleEnergyWeapon(SmallShip smallShip, EnergyWeapon energyWeapon, ParticleSystem particleSystem, ParticleSystem particleSystemMuzzleFlash, GameObject cannon, float power, float rating, float type, float mode)
     {
         particleSystemMuzzleFlash.transform.position = cannon.transform.position;
         particleSystemMuzzleFlash.transform.rotation = cannon.transform.rotation;
@@ -855,7 +850,7 @@ public static class EnergyWeaponFunctions
                 string shieldType = objectHitDetails.shieldType;
 
                 //This instantiates an explosion
-                InstantiateLaserExplosion(hitPosition, forward, shieldFront, shieldBack, smallShip.laserColor, shieldType, audioManager);
+                InstantiateLaserExplosion(hitPosition, forward, shieldFront, shieldBack, smallShip.energyWeapon.laserColour, shieldType, audioManager);
 
                 //This makes the screen flash
                 if (objectHitDetails.isAI == false)
@@ -864,7 +859,7 @@ public static class EnergyWeaponFunctions
                 }
 
                 //This causes the ship to take damage
-                float damage = CalculateLaserDamage(power, rating);
+                float damage = CalculateWeaponDamage(power, rating);
                 DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, false);              
             }
         }
@@ -960,7 +955,7 @@ public static class EnergyWeaponFunctions
     }
 
     //This calculates the laser damage
-    public static float CalculateLaserDamage(float laserPower, float laserRating)
+    public static float CalculateWeaponDamage(float laserPower, float laserRating)
     {
         float damage = 0;
         float laserDamage = 0;
@@ -985,7 +980,9 @@ public static class EnergyWeaponFunctions
 
     #endregion
 
-    public static EnergyWeapon GetLaserScript(SmallShip smallShip)
+    #region utilities
+
+    public static EnergyWeapon GetEnergyWeapon(SmallShip smallShip)
     {
         EnergyWeapon laser = null;
 
@@ -996,5 +993,7 @@ public static class EnergyWeaponFunctions
 
         return laser;
     }
+
+    #endregion
 
 }

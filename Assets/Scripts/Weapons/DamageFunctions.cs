@@ -150,7 +150,7 @@ public static class DamageFunctions
                 {
                     if (smallShip.frontShieldLevel > 0)
                     {
-                        if (smallShip.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        if (smallShip.weaponManagement.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
                         {
                             damage = (damage / 100f) * 10;
                         }
@@ -160,7 +160,7 @@ public static class DamageFunctions
                     }
                     else
                     {
-                        if (smallShip.hasPlasma == false) //Vong ships are not harmed by ion cannons 
+                        if (smallShip.weaponManagement.hasPlasma == false) //Vong ships are not harmed by ion cannons 
                         {
                             if (smallShip.systemsLevel - damage < 5 & smallShip.invincible == true)
                             {
@@ -177,7 +177,7 @@ public static class DamageFunctions
                 {
                     if (smallShip.rearShieldLevel > 0)
                     {
-                        if (smallShip.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        if (smallShip.weaponManagement.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
                         {
                             damage = (damage / 100f) * 10;
                         }
@@ -187,7 +187,7 @@ public static class DamageFunctions
                     }
                     else
                     {
-                        if (smallShip.hasPlasma == false) //Vong ships are not harmed by ion cannons
+                        if (smallShip.weaponManagement.hasPlasma == false) //Vong ships are not harmed by ion cannons
                         {
                             if (smallShip.systemsLevel - damage < 5 & smallShip.cannotbedisabled == true)
                             {

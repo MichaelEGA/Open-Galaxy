@@ -292,7 +292,7 @@ public static class HudFunctions
 
         if (hud.laserMeter != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            hud.laserMeter.value = hud.smallShip.laserPower;
+            hud.laserMeter.value = hud.smallShip.energyWeaponPower;
         }
     }
 
@@ -314,30 +314,23 @@ public static class HudFunctions
     //This displays WEP meter
     public static void DisplayChargeMeter(Hud hud)
     {
+        if (hud.smallShip != null)
+        {
+            if (hud.energyWeapon == null)
+            {
+                hud.energyWeapon = hud.smallShip.GetComponent<EnergyWeapon>();
+            }
+        }
+
         if (hud.chargeMeter == null)
         {
             GameObject chargeMeter = GameObject.Find("ChargeMeter");
             if (chargeMeter != null) { hud.chargeMeter = chargeMeter.GetComponent<Slider>(); }
         }
 
-        if (hud.chargeMeter != null & hud.smallShip != null & Time.timeScale != 0)
+        if (hud.chargeMeter != null & hud.energyWeapon != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.activeWeapon == "lasers")
-            {
-                hud.chargeMeter.value = hud.smallShip.laserCharge;
-            }
-            else if (hud.smallShip.activeWeapon == "ion")
-            {
-                hud.chargeMeter.value = hud.smallShip.ionCharge;
-            }
-            else if (hud.smallShip.activeWeapon == "plasma")
-            {
-                hud.chargeMeter.value = hud.smallShip.plasmaCharge;
-            }
-            else
-            {
-                hud.chargeMeter.value = hud.smallShip.laserCharge;
-            }
+            hud.chargeMeter.value = hud.smallShip.energyWeaponCharge;
         }
     }
 
@@ -456,27 +449,32 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayActiveWeapon(Hud hud)
     {
+
+        if (hud.smallShip != null)
+        {
+            if (hud.weaponManagement == null)
+            {
+                hud.weaponManagement = hud.smallShip.GetComponent<WeaponManagement>();
+            }
+        }
+
         if (hud.activeWeaponText == null)
         {
             GameObject activeWeaponText = GameObject.Find("ActiveWeaponText");
             if (activeWeaponText != null) { hud.activeWeaponText = activeWeaponText.GetComponent<Text>(); }
         }
 
-        if (hud.activeWeaponText != null & hud.smallShip != null & Time.timeScale != 0)
+        if (hud.activeWeaponText != null & hud.weaponManagement != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.activeWeapon == "lasers")
+            if (hud.weaponManagement.weaponType == "lasers")
             {
                 hud.activeWeaponText.text = "LSR";
             }
-            else if (hud.smallShip.activeWeapon == "ion")
+            else if (hud.weaponManagement.weaponType == "ion")
             {
                 hud.activeWeaponText.text = "ION";
             }
-            else if (hud.smallShip.activeWeapon == "torpedos")
-            {
-                hud.activeWeaponText.text = "TRP";
-            }
-            else if (hud.smallShip.activeWeapon == "plasma")
+            else if (hud.weaponManagement.weaponType == "plasma")
             {
                 hud.activeWeaponText.text = "PLS";
             }
@@ -484,21 +482,35 @@ public static class HudFunctions
             {
                 hud.activeWeaponText.text = " ";
             }
+
+            //To add back in once relationship between torpedos and energy weapons is redefined
+            //else if (hud.weaponManagement.weaponType == "torpedos")
+            //{
+            //    hud.activeWeaponText.text = "TRP";
+            //}
         }
     }
 
     //This displays the speed of the ship
     public static void DisplayWeaponMode(Hud hud)
     {
+        if (hud.smallShip != null)
+        {
+            if (hud.energyWeapon == null)
+            {
+                hud.energyWeapon = hud.smallShip.GetComponent<EnergyWeapon>();
+            }
+        }
+
         if (hud.weaponModeText == null)
         {
             GameObject weaponModeText = GameObject.Find("WeaponModeText");
             if (weaponModeText != null) { hud.weaponModeText = weaponModeText.GetComponent<Text>(); }
         }
 
-        if (hud.weaponModeText != null & hud.smallShip != null & Time.timeScale != 0)
+        if (hud.weaponModeText != null & hud.energyWeapon != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.hasRapidFire == true & hud.smallShip.rapidFire == true)
+            if (hud.weaponManagement.hasRapidFire == true & hud.weaponManagement.weaponMode == "rapid")
             {
                 SetTextColour("#EBB426", hud.weaponModeText);
 
@@ -508,15 +520,15 @@ public static class HudFunctions
             {
                 SetTextColour("#D73320", hud.weaponModeText);
 
-                if (hud.smallShip.weaponMode == "single")
+                if (hud.weaponManagement.weaponMode == "single")
                 {
                     hud.weaponModeText.text = "SNG";
                 }
-                else if (hud.smallShip.weaponMode == "dual")
+                else if (hud.weaponManagement.weaponMode == "dual")
                 {
                     hud.weaponModeText.text = "DUL";
                 }
-                else if (hud.smallShip.weaponMode == "all")
+                else if (hud.weaponManagement.weaponMode == "all")
                 {
                     hud.weaponModeText.text = "ALL";
                 }
@@ -531,6 +543,14 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayWeaponNumber(Hud hud)
     {
+        if (hud.smallShip != null)
+        {
+            if (hud.energyWeapon == null)
+            {
+                hud.energyWeapon = hud.smallShip.GetComponent<EnergyWeapon>();
+            }
+        }
+
         if (hud.weaponNumberText == null)
         {
             GameObject weaponNumberText = GameObject.Find("WeaponNumberText");
@@ -539,18 +559,19 @@ public static class HudFunctions
 
         if (hud.weaponNumberText != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.activeWeapon == "lasers")
-            {
-                hud.weaponNumberText.text = "---";
-            }
-            else if (hud.smallShip.activeWeapon == "ion")
-            {
-                hud.weaponNumberText.text = "---";
-            }
-            else
-            {
-                hud.weaponNumberText.text = hud.smallShip.torpedoNumber.ToString();
-            }
+            //To add back in once relationship between torpedos and energy weapons is redefined
+            //if (hud.weaponManagement.weaponType == "lasers")
+            //{
+            //    hud.weaponNumberText.text = "---";
+            //}
+            //else if (hud.smallShip.activeWeapon == "ion")
+            //{
+            //    hud.weaponNumberText.text = "---";
+            //}
+            //else
+            //{
+            //    hud.weaponNumberText.text = hud.smallShip.torpedoNumber.ToString();
+            //}
         }
     }
 
@@ -1701,7 +1722,7 @@ public static class HudFunctions
 
         if (hud.targetLockingReticule != null & hud.targetLockedReticule != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.activeWeapon == "torpedos")
+            if (hud.weaponManagement.weaponType == "torpedos")
             {
                 if (hud.smallShip.torpedoLockingOn == true & hud.smallShip.torpedoLockedOn == false)
                 {

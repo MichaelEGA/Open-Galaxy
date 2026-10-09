@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public static class TorpedoFunctions
+public static class TorpedoTubesFunctions
 {
     #region start functions
 
@@ -71,7 +71,7 @@ public static class TorpedoFunctions
     //This locks onto the ship
     public static void EstablishLockOn(SmallShip smallShip)
     {
-        if (smallShip.target != null & smallShip.activeWeapon == "torpedos" & smallShip.torpedoNumber > 0)
+        if (smallShip.target != null & smallShip.weaponManagement.weaponType == "torpedos" & smallShip.torpedoNumber > 0)
         {
             if (smallShip.target.activeSelf == true)
             {
@@ -121,7 +121,7 @@ public static class TorpedoFunctions
     //This fires a torpedo
     public static void FireTorpedo(SmallShip smallShip)
     {
-        if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.activeWeapon == "torpedos" & smallShip.torpedoPressedTime < Time.time & smallShip.weaponsLock == false)
+        if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.weaponManagement.weaponType == "torpedos" & smallShip.torpedoPressedTime < Time.time & smallShip.weaponManagement.weaponsLock == false)
         {
             float spatialBlend = 1;
             string mixer = "External";
@@ -159,7 +159,7 @@ public static class TorpedoFunctions
                 torpedoTubes.Add(smallShip.torpedoTube4);
             }
 
-            if (smallShip.weaponMode == "single")
+            if (smallShip.weaponManagement.weaponMode == "single")
             {
                 if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
                 Torpedo torpedo = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
@@ -179,7 +179,7 @@ public static class TorpedoFunctions
                 smallShip.torpedoNumber -= 1;
 
             }
-            else if (smallShip.weaponMode == "dual")
+            else if (smallShip.weaponManagement.weaponMode == "dual")
             {
                 if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
                 Torpedo torpedo01 = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
@@ -209,7 +209,7 @@ public static class TorpedoFunctions
                 smallShip.torpedoNumber -= 2;
 
             }
-            else if (smallShip.weaponMode == "all")
+            else if (smallShip.weaponManagement.weaponMode == "all")
             {
                 if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
                 Torpedo torpedo01 = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
@@ -414,19 +414,19 @@ public static class TorpedoFunctions
     //This toggles the ships weapon mode for torpedos
     public static void ToggleWeaponMode(SmallShip smallShip)
     {
-        if (smallShip.toggleWeaponNumber == true & Time.time > smallShip.torpedoModePressedTime & smallShip.activeWeapon == "torpedos")
+        if (smallShip.weaponManagement.toggleWeaponNumber == true & Time.time > smallShip.torpedoModePressedTime & smallShip.weaponManagement.weaponType == "torpedos")
         {
-            if (smallShip.weaponMode == "single" & smallShip.torpedoTube2 != null & smallShip.torpedoNumber > 1)
+            if (smallShip.weaponManagement.weaponMode == "single" & smallShip.torpedoTube2 != null & smallShip.torpedoNumber > 1)
             {
-                smallShip.weaponMode = "dual";
+                smallShip.weaponManagement.weaponMode = "dual";
             }
-            else if (smallShip.weaponMode == "dual" & smallShip.torpedoTube3 != null & smallShip.torpedoTube4 != null & smallShip.torpedoNumber > 3)
+            else if (smallShip.weaponManagement.weaponMode == "dual" & smallShip.torpedoTube3 != null & smallShip.torpedoTube4 != null & smallShip.torpedoNumber > 3)
             {
-                smallShip.weaponMode = "all";
+                smallShip.weaponManagement.weaponMode = "all";
             }
             else
             {
-                smallShip.weaponMode = "single";
+                smallShip.weaponManagement.weaponMode = "single";
             }
 
             smallShip.torpedoModePressedTime = Time.time + 0.2f;
@@ -633,7 +633,7 @@ public static class TorpedoFunctions
                     HudFunctions.ScreenFlash();
                 }
 
-                if (targetSmallShip.hasPlasma == false)
+                if (targetSmallShip.weaponManagement.hasPlasma == false)
                 {
                     ParticleFunctions.InstantiateExplosion(contact.point, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
                 }
@@ -687,7 +687,7 @@ public static class TorpedoFunctions
                         HudFunctions.ScreenFlash();
                     }
 
-                    if (targetSmallShip.hasPlasma == false)
+                    if (targetSmallShip.weaponManagement.hasPlasma == false)
                     {
                         ParticleFunctions.InstantiateExplosion(torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
                     }

@@ -399,10 +399,10 @@ public static class EnergyWeaponFunctions
     {
         EnergyWeapon laser = GetEnergyWeapon(smallShip);
 
-        if (smallShip.autoaim == true & smallShip.target != null & smallShip.targetRigidbody != null & smallShip.targetForward > 0.995f & smallShip.targetLargeShip == null)
+        if (smallShip.targetingSystem.autoaim == true & smallShip.targetingSystem.target != null & smallShip.targetingSystem.targetRigidbody != null & smallShip.targetingSystem.targetForward > 0.995f & smallShip.targetingSystem.targetLargeShip == null)
         {
 
-            Vector3 interceptPoint = GameObjectUtils.CalculateInterceptPoint(smallShip.transform.position, smallShip.target.transform.position, smallShip.targetRigidbody.linearVelocity, 750);
+            Vector3 interceptPoint = GameObjectUtils.CalculateInterceptPoint(smallShip.transform.position, smallShip.targetingSystem.target.transform.position, smallShip.targetingSystem.targetRigidbody.linearVelocity, 750);
 
             if (laser.laserCannon1 != null)
             {
@@ -428,22 +428,22 @@ public static class EnergyWeaponFunctions
         {
             if (laser.laserCannon1 != null)
             {
-                laser.laserCannon1.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                laser.laserCannon1.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.targetingSystem.interceptDistance));
             }
 
             if (laser.laserCannon2 != null)
             {
-                laser.laserCannon2.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                laser.laserCannon2.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.targetingSystem.interceptDistance));
             }
 
             if (laser.laserCannon3 != null)
             {
-                laser.laserCannon3.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                laser.laserCannon3.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.targetingSystem.interceptDistance));
             }
 
             if (laser.laserCannon4 != null)
             {
-                laser.laserCannon4.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.interceptDistance));
+                laser.laserCannon4.transform.LookAt(smallShip.cameraPosition.transform.position + (smallShip.cameraPosition.transform.forward * smallShip.targetingSystem.interceptDistance));
             }
         }
     }
@@ -860,7 +860,7 @@ public static class EnergyWeaponFunctions
 
                 //This causes the ship to take damage
                 float damage = CalculateWeaponDamage(power, rating);
-                DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, false);              
+                DamageSystemFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, false);              
             }
         }
     }

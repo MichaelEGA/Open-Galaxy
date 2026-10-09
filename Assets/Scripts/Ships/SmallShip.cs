@@ -6,224 +6,190 @@ using UnityEngine;
 public class SmallShip : MonoBehaviour
 {
     [Header("Key Reference")]
-    [HideInInspector] public Scene scene;
-    [HideInInspector] public OGInput ogInput;
-
-    [Header("Ship Information")]
-    [HideInInspector] public string allegiance; //Value set in inspector or by loading script
-    [HideInInspector] public string type;
-    [HideInInspector] public string shipClass;
-    [HideInInspector] public string prefabName;
-    [HideInInspector] public float loadTime;
-    [HideInInspector] public float shipLength;
-    [HideInInspector] public string thrustType;
-    [HideInInspector] public bool exploded;
-    [HideInInspector] public bool scanned = false;
-    [HideInInspector] public bool jumpingToHyperspace;
-    [HideInInspector] public bool exitingHyperspace;
-    [HideInInspector] public string shieldType;
-    [HideInInspector] public string cargo = "no cargo";
-    [HideInInspector] public string explosionType;
-    [HideInInspector] public string cockpitName;
-
-    [Header("Ship Components")]
-    [HideInInspector] public Rigidbody shipRigidbody;
-    [HideInInspector] public Collider[] colliders;
-
-    [Header("Ship Ratings")]
-    [HideInInspector] public float accelerationRating = 50; //Value set in inspector or by loading script
-    [HideInInspector] public float speedRating = 50; //Value set in inspector or by loading script
-    [HideInInspector] public float maneuverabilityRating = 50; //Value set in inspector or by loading script
-    [HideInInspector] public float hullRating = 50; //Value set in inspector or by loading script
-    [HideInInspector] public float systemsRating = 50;
-    [HideInInspector] public float shieldRating = 50; //Value set in inspector or by loading script
-    [HideInInspector] public float energyWeaponFireRating = 50; //Value set in inspector or by loading script
-    [HideInInspector] public float energyWeaponRating = 50; //Value set in inspector or by loading script
-    [HideInInspector] public float wepRating = 50;//Value set in inspector or by loading script
-
-    [Header("Ship Speed")]
-    [HideInInspector] public float thrustSpeed = 70;
-    [HideInInspector] public float thrustInput = 1;
-    [HideInInspector] public float thrustTimeStamp;
-    [HideInInspector] public bool wep;
-
-    [Header("Ship Rotation")]
-    [HideInInspector] public float pitchSpeed;
-    [HideInInspector] public float pitchInput;
-    [HideInInspector] public float turnSpeed;
-    [HideInInspector] public float turnInput;
-    [HideInInspector] public float rollSpeed;
-    [HideInInspector] public float rollInput;
-    [HideInInspector] public float rollInputActual;
-    [HideInInspector] public bool automaticRotationTurnAround;
-    [HideInInspector] public bool automaticRotationSpin;
-    [HideInInspector] public bool messageSent;
-    [HideInInspector] public bool spinShip;
-    [HideInInspector] public bool avoidGimbalLock;
-
-    [Header("Ship Levels")]
-    [HideInInspector] public float systemsLevel = 100;
-    [HideInInspector] public float hullLevel = 100;
-    [HideInInspector] public float shieldLevel = 200;
-    [HideInInspector] public float frontShieldLevel = 100;
-    [HideInInspector] public float rearShieldLevel = 100;
-    [HideInInspector] public float wepLevel;
-    [HideInInspector] public float shieldRecharge; //Value set in inspector or by loading script
-    [HideInInspector] public float shieldDischarge; //Value set in inspector or by loading script
-    [HideInInspector] public float wepRecharge; //Value set in inspector or by loading script
-    [HideInInspector] public float wepDischarge; //Value set in inspector or by loading script
-    [HideInInspector] public bool invincible;
-    [HideInInspector] public bool cannotbedisabled;
-    [HideInInspector] public bool isDisabled;
-    [HideInInspector] public bool warningSoundPlayed;
-
-    [Header("Ship Power Distribution")]
-    [HideInInspector] public string powerMode = "reset";
-    [HideInInspector] public float energyWeaponPower = 100;
-    [HideInInspector] public float enginePower = 100;
-    [HideInInspector] public float shieldPower = 100;
-    [HideInInspector] public float energyWeaponCharge;
-    [HideInInspector] public float powerPressedTime;
-
-
-    [Header("Ship Controls")]
-    [HideInInspector] public bool controlLock = false;
-    [HideInInspector] public bool invertUpDown;
-    [HideInInspector] public bool invertLeftRight;
-    [HideInInspector] public bool powerToShields;
-    [HideInInspector] public bool powerToLasers;
-    [HideInInspector] public bool powerToEngine;
-    [HideInInspector] public bool resetPowerLevels;
-    [HideInInspector] public bool fireWeapon;
-    [HideInInspector] public bool rapidFire;
-    [HideInInspector] public bool getNextTarget;
-    [HideInInspector] public bool getNextEnemy;
-    [HideInInspector] public bool getClosestEnemy;
-    [HideInInspector] public bool selectTargetInFront;
-    [HideInInspector] public bool matchSpeed;
-    [HideInInspector] public bool focusCamera;
-    [HideInInspector] public bool fireCounterMeasures;
-
-    [Header("Hyperspace")]
-    [HideInInspector] public bool inHyperspace;
-
-    [Header("Ship Audio")]
-    [HideInInspector] public Audio audioManager;
-    [HideInInspector] public AudioSource engineAudioSource;
-    [HideInInspector] public string laserAudio;
-    [HideInInspector] public string ionAudio = "weapon_ioncannon";
-    [HideInInspector] public string plasmaAudio = "weapon_plasma";
-    [HideInInspector] public string engineAudio;
-
-    [Header("Ship Cameras Positions")]
-    [HideInInspector] public GameObject cameraPosition;
-    [HideInInspector] public GameObject followCameraPosition;
-    [HideInInspector] public GameObject focusCameraPosition;
-
-    [Header("Docking")]
-    [HideInInspector] public GameObject targetDockingPoint;
-    [HideInInspector] public DockingPoint dockingPoint;
-    [HideInInspector] public bool docking;
-
-    [Header("Ship Weapons")]
+    public Scene scene;
+    public OGInput ogInput;
     public WeaponManagement weaponManagement;
     public EnergyWeapon energyWeapon;
-    public TorpedoTubes torpedoTubes;
+    public TorpedoSystem torpedoSystem;
+    public TargetingSystem targetingSystem;
 
-    [Header("Ship Targetting")]
-    [HideInInspector] public GameObject waypoint;
-    [HideInInspector] public GameObject target;
-    [HideInInspector] public bool dontSelectLargeShips;
-    [HideInInspector] public bool autoaim;
-    [HideInInspector] public SmallShip targetSmallShip;
-    [HideInInspector] public LargeShip targetLargeShip;
-    [HideInInspector] public Rigidbody targetRigidbody;
-    [HideInInspector] public string targetAllegiance;
-    [HideInInspector] public string targetName;
-    [HideInInspector] public string targetType;
-    [HideInInspector] public string targetPrefabName;
-    [HideInInspector] public int targetNumber;
-    [HideInInspector] public bool targetIsHostile;
-    [HideInInspector] public float targetForward;
-    [HideInInspector] public float targetRight;
-    [HideInInspector] public float targetUp;
-    [HideInInspector] public float targetDistance;
-    [HideInInspector] public float targetSpeed;
-    [HideInInspector] public float targetShield;
-    [HideInInspector] public float targetHull;
-    [HideInInspector] public Vector3 interceptPoint;
-    [HideInInspector] public float interceptForward;
-    [HideInInspector] public float interceptRight;
-    [HideInInspector] public float interceptUp;
-    [HideInInspector] public float interceptDistance;
-    [HideInInspector] public float waypointForward;
-    [HideInInspector] public float waypointRight;
-    [HideInInspector] public float waypointUp;
-    [HideInInspector] public float waypointDistance;
-    [HideInInspector] public float targetPressedTime;
-    [HideInInspector] public int numberTargeting = 0;
+    [Header("Ship Information")]
+    public string allegiance; //Value set in inspector or by loading script
+    public string type;
+    public string shipClass;
+    public string prefabName;
+    public float loadTime;
+    public float shipLength;
+    public string thrustType;
+    public bool exploded;
+    public bool scanned = false;
+    public bool jumpingToHyperspace;
+    public bool exitingHyperspace;
+    public string shieldType;
+    public string cargo = "no cargo";
+    public string explosionType;
+    public string cockpitName;
+
+    [Header("Ship Components")]
+    public Rigidbody shipRigidbody;
+    public Collider[] colliders;
+
+    [Header("Ship Ratings")]
+    public float accelerationRating = 50; //Value set in inspector or by loading script
+    public float speedRating = 50; //Value set in inspector or by loading script
+    public float maneuverabilityRating = 50; //Value set in inspector or by loading script
+    public float hullRating = 50; //Value set in inspector or by loading script
+    public float systemsRating = 50;
+    public float shieldRating = 50; //Value set in inspector or by loading script
+    public float energyWeaponFireRating = 50; //Value set in inspector or by loading script
+    public float energyWeaponRating = 50; //Value set in inspector or by loading script
+    public float wepRating = 50;//Value set in inspector or by loading script
+
+    [Header("Ship Speed")]
+    public float thrustSpeed = 70;
+    public float thrustInput = 1;
+    public float thrustTimeStamp;
+    public bool wep;
+
+    [Header("Ship Rotation")]
+    public float pitchSpeed;
+    public float pitchInput;
+    public float turnSpeed;
+    public float turnInput;
+    public float rollSpeed;
+    public float rollInput;
+    public float rollInputActual;
+    public bool automaticRotationTurnAround;
+    public bool automaticRotationSpin;
+    public bool messageSent;
+    public bool spinShip;
+    public bool avoidGimbalLock;
+
+    [Header("Ship Levels")]
+    public float systemsLevel = 100;
+    public float hullLevel = 100;
+    public float shieldLevel = 200;
+    public float frontShieldLevel = 100;
+    public float rearShieldLevel = 100;
+    public float wepLevel;
+    public float shieldRecharge; //Value set in inspector or by loading script
+    public float shieldDischarge; //Value set in inspector or by loading script
+    public float wepRecharge; //Value set in inspector or by loading script
+    public float wepDischarge; //Value set in inspector or by loading script
+    public bool invincible;
+    public bool cannotbedisabled;
+    public bool isDisabled;
+    public bool warningSoundPlayed;
+
+    [Header("Ship Power Distribution")]
+    public string powerMode = "reset";
+    public float energyWeaponPower = 100;
+    public float enginePower = 100;
+    public float shieldPower = 100;
+    public float energyWeaponCharge;
+    public float powerPressedTime;
+
+    [Header("Ship Controls")]
+    public bool controlLock = false;
+    public bool invertUpDown;
+    public bool invertLeftRight;
+    public bool powerToShields;
+    public bool powerToLasers;
+    public bool powerToEngine;
+    public bool resetPowerLevels;
+    public bool fireWeapon;
+    public bool rapidFire;
+    public bool getNextTarget;
+    public bool getNextEnemy;
+    public bool getClosestEnemy;
+    public bool selectTargetInFront;
+    public bool matchSpeed;
+    public bool focusCamera;
+    public bool fireCounterMeasures;
+
+    [Header("Hyperspace")]
+    public bool inHyperspace;
+
+    [Header("Ship Audio")]
+    public Audio audioManager;
+    public AudioSource engineAudioSource;
+    public string laserAudio;
+    public string ionAudio = "weapon_ioncannon";
+    public string plasmaAudio = "weapon_plasma";
+    public string engineAudio;
+
+    [Header("Ship Cameras Positions")]
+    public GameObject cameraPosition;
+    public GameObject followCameraPosition;
+    public GameObject focusCameraPosition;
+
+    [Header("Docking")]
+    public GameObject targetDockingPoint;
+    public DockingPoint dockingPoint;
+    public bool docking;
 
     [Header("Ship AI")]
     public List<string> aiTags;
-    [HideInInspector] public string aiTargetingMode;
-    [HideInInspector] public Vector3 aiTargetingErrorMargin = new Vector3(0, 0, 0);
-    [HideInInspector] public float aiRetreatTime;
-    [HideInInspector] public float aiAttackTime;
-    [HideInInspector] public float healthSave;
-    [HideInInspector] public bool withdraw;
-    [HideInInspector] public bool isAI;
-    [HideInInspector] public bool requestingTarget;
-    [HideInInspector] public bool aiMatchSpeed;
-    [HideInInspector] public bool aiStarted;
-    [HideInInspector] public bool aiEvade;
-    [HideInInspector] public bool boostIsActive;
+    public string aiTargetingMode;
+    public Vector3 aiTargetingErrorMargin = new Vector3(0, 0, 0);
+    public float aiRetreatTime;
+    public float aiAttackTime;
+    public float healthSave;
+    public bool withdraw;
+    public bool isAI;
+    public bool requestingTarget;
+    public bool aiMatchSpeed;
+    public bool aiStarted;
+    public bool aiEvade;
+    public bool boostIsActive;
 
     [Header("Formation Flying")]
     public SmallShip followTarget;
     public bool flyInFormation;
-    [HideInInspector] public bool positionLocked;
-    [HideInInspector] public float xFormationPos;
-    [HideInInspector] public float yFormationPos;
-    [HideInInspector] public float zFormationPos;
+    public bool positionLocked;
+    public float xFormationPos;
+    public float yFormationPos;
+    public float zFormationPos;
 
     [Header("Particle Effcets")]
-    [HideInInspector] public GameObject smokeTrail;
-    [HideInInspector] public ParticleSystem movementEffect;
+    public GameObject smokeTrail;
+    public ParticleSystem movementEffect;
 
     [Header("Ship Loading")]
-    [HideInInspector] public bool loaded;
+    public bool loaded;
 
     [Header("Ship Collisions")]
-    [HideInInspector] public bool isCurrentlyColliding;
-    [HideInInspector] public bool isCurrentlyCollidingSmallShip;
+    public bool isCurrentlyColliding;
+    public bool isCurrentlyCollidingSmallShip;
 
     [Header("Systems")]
-    [HideInInspector] public float restoreDelayTime;
+    public float restoreDelayTime;
 
     [Header("Wings")]
-    [HideInInspector] public bool wingsOpen = true;
-    [HideInInspector] public Transform[] wings;
-    [HideInInspector] public GameObject wing01;
-    [HideInInspector] public GameObject wing02;
-    [HideInInspector] public GameObject wing03;
-    [HideInInspector] public GameObject wing04;
-    [HideInInspector] public GameObject wing01_open;
-    [HideInInspector] public GameObject wing01_closed;
-    [HideInInspector] public GameObject wing02_open;
-    [HideInInspector] public GameObject wing02_closed;
-    [HideInInspector] public GameObject wing03_open;
-    [HideInInspector] public GameObject wing03_closed;
-    [HideInInspector] public GameObject wing04_open;
-    [HideInInspector] public GameObject wing04_closed;
+    public bool wingsOpen = true;
+    public Transform[] wings;
+    public GameObject wing01;
+    public GameObject wing02;
+    public GameObject wing03;
+    public GameObject wing04;
+    public GameObject wing01_open;
+    public GameObject wing01_closed;
+    public GameObject wing02_open;
+    public GameObject wing02_closed;
+    public GameObject wing03_open;
+    public GameObject wing03_closed;
+    public GameObject wing04_open;
+    public GameObject wing04_closed;
 
     [Header("Ship Coroutine Tasks")]
-    [HideInInspector] public List<Task> tasks;
+    public List<Task> tasks;
 
     private void Start()
     {
         weaponManagement = GetComponent<WeaponManagement>();
         energyWeapon = GetComponent<EnergyWeapon>();
-        torpedoTubes = GetComponent<TorpedoTubes>();
+        torpedoSystem = GetComponent<TorpedoSystem>();
+        targetingSystem = GetComponent<TargetingSystem>();
     }
 
     // Update is called once per frame
@@ -239,13 +205,13 @@ public class SmallShip : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        DamageFunctions.StartCollision_SmallShip(this, collision.gameObject);
+        DamageSystemFunctions.StartCollision_SmallShip(this, collision.gameObject);
 
         Debug.Log("Collided with " + collision.gameObject.name + " " + collision.collider.gameObject.name + "at point" + collision.gameObject.transform.localPosition);
     }
 
     void OnCollisionExit(Collision collision)
     {
-        DamageFunctions.EndCollision_SmallShip(this);
+        DamageSystemFunctions.EndCollision_SmallShip(this);
     }
 }

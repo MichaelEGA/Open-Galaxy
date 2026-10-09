@@ -4,7 +4,7 @@ public class WeaponManagement : MonoBehaviour
 {
     public SmallShip smallShip;
     public EnergyWeapon energyWeapon;
-    public TorpedoTubes torpedoTubes;
+    public TorpedoSystem torpedoTubes;
 
     public string weaponType = "lasers";
     public string weaponMode = "single";
@@ -26,7 +26,7 @@ public class WeaponManagement : MonoBehaviour
     {
         smallShip = GetComponent<SmallShip>();
         energyWeapon = GetComponent<EnergyWeapon>();
-        torpedoTubes = GetComponent<TorpedoTubes>();
+        torpedoTubes = GetComponent<TorpedoSystem>();
     }
 
     // Update is called once per frame

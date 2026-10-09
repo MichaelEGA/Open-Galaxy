@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.UIElements;
 
-public static class DamageFunctions
+public static class DamageSystemFunctions
 {
     #region smallship damage functions
 
@@ -225,17 +225,17 @@ public static class DamageFunctions
             if (smallShip.isDisabled == false & smallShip.systemsLevel <= 0)
             {
                 //Stops listing the ship as targetting another ship
-                if (smallShip.target != null)
+                if (smallShip.targetingSystem.target != null)
                 {
-                    if (smallShip.target.gameObject.activeSelf == true)
+                    if (smallShip.targetingSystem.target.gameObject.activeSelf == true)
                     {
-                        if (smallShip.targetSmallShip != null)
+                        if (smallShip.targetingSystem.targetSmallShip != null)
                         {
-                            smallShip.targetSmallShip.numberTargeting -= 1;
+                            smallShip.targetingSystem.targetSmallShip.targetingSystem.numberTargeting -= 1;
                         }
                     }
 
-                    smallShip.target = null;
+                    smallShip.targetingSystem.target = null;
                 }
 
                 //This tells the player that the ship has been destroyed
@@ -544,17 +544,17 @@ public static class DamageFunctions
         Scene scene = smallShip.scene;
 
         //Stops listing the ship as targetting another ship
-        if (smallShip.target != null)
+        if (smallShip.targetingSystem.target != null)
         {
-            if (smallShip.target.gameObject.activeSelf == true)
+            if (smallShip.targetingSystem.target.gameObject.activeSelf == true)
             {
-                if (smallShip.targetSmallShip != null)
+                if (smallShip.targetingSystem.targetSmallShip != null)
                 {
-                    smallShip.targetSmallShip.numberTargeting -= 1;
+                    smallShip.targetingSystem.targetSmallShip.targetingSystem.numberTargeting -= 1;
                 }
             }
 
-            smallShip.target = null;
+            smallShip.targetingSystem.target = null;
         }
 
         //This stops all task being run by the ship
@@ -592,7 +592,7 @@ public static class DamageFunctions
         }
 
         //This deactivates the ship
-        GameObject.Destroy(smallShip.waypoint);
+        GameObject.Destroy(smallShip.targetingSystem.waypoint);
         GameObject.Destroy(smallShip.gameObject);
 
         //This removes null objects from the pool

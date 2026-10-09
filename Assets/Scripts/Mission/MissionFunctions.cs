@@ -1781,14 +1781,14 @@ public static class MissionFunctions
 
                             if (smallShip != null)
                             {
-                                DamageFunctions.DeactivateShip_SmallShip(smallShip);
+                                DamageSystemFunctions.DeactivateShip_SmallShip(smallShip);
                             }
 
                             LargeShip largeShip = ship.GetComponent<LargeShip>();
 
                             if (largeShip != null)
                             {
-                                DamageFunctions.DeactivateShip_LargeShip(largeShip);
+                                DamageSystemFunctions.DeactivateShip_LargeShip(largeShip);
                             }
                         }
                     }
@@ -2602,9 +2602,9 @@ public static class MissionFunctions
 
                             if (smallShip != null)
                             {
-                                if (smallShip.waypoint != null)
+                                if (smallShip.targetingSystem.waypoint != null)
                                 {
-                                    float tempDistance = Vector3.Distance(smallShip.transform.position, smallShip.waypoint.transform.position);
+                                    float tempDistance = Vector3.Distance(smallShip.transform.position, smallShip.targetingSystem.waypoint.transform.position);
 
                                     if (tempDistance < distance)
                                     {
@@ -2672,7 +2672,7 @@ public static class MissionFunctions
 
                             if (smallShip != null)
                             {
-                                if (smallShip.waypoint != null)
+                                if (smallShip.targetingSystem.waypoint != null)
                                 {
                                     float tempDistance = Vector3.Distance(smallShip.transform.position, locationInSpace);
 
@@ -3754,7 +3754,7 @@ public static class MissionFunctions
 
                                 if (smallShip != null)
                                 {
-                                    smallShip.dontSelectLargeShips = bool.Parse(missionEvent.data2);
+                                    smallShip.targetingSystem.dontSelectLargeShips = bool.Parse(missionEvent.data2);
                                 }
                             }
                         }
@@ -4483,14 +4483,14 @@ public static class MissionFunctions
 
                             if (smallShip != null)
                             {
-                                TargetingFunctions.GetSpecificTarget_SmallShip(smallShip, missionEvent.data2);
+                                TargetingSystemFunctions.GetSpecificTarget_SmallShip(smallShip, missionEvent.data2);
                             }
 
                             LargeShip largeShip = ship.GetComponent<LargeShip>();
 
                             if (largeShip != null)
                             {
-                                TargetingFunctions.GetSpecificTarget_LargeShipAI(largeShip, missionEvent.data2);
+                                TargetingSystemFunctions.GetSpecificTarget_LargeShipAI(largeShip, missionEvent.data2);
                             }
                         }
                     }
@@ -4518,7 +4518,7 @@ public static class MissionFunctions
 
                             if (smallShip != null)
                             {
-                                TargetingFunctions.GetClosestEnemy_SmallShipPlayer(smallShip, true);
+                                TargetingSystemFunctions.GetClosestEnemy_SmallShipPlayer(smallShip, true);
                             }
                         }
                     } 
@@ -4573,14 +4573,14 @@ public static class MissionFunctions
 
                             if (smallShip != null)
                             {
-                                smallShip.torpedoType = torpedoType;
+                                smallShip.torpedoSystem.torpedoType = torpedoType;
 
                                 if (noChangeToTorpedoNo == true)
                                 {
-                                    torpedoNo = smallShip.torpedoNumber;
+                                    torpedoNo = smallShip.torpedoSystem.torpedoNumber;
                                 }
 
-                                smallShip.torpedoNumber = torpedoNo;
+                                smallShip.torpedoSystem.torpedoNumber = torpedoNo;
                             }
                         }
                     }
@@ -4608,14 +4608,14 @@ public static class MissionFunctions
 
                             if (smallShip != null)
                             {
-                                if (smallShip.waypoint != null)
+                                if (smallShip.targetingSystem.waypoint != null)
                                 {
                                     float x = missionEvent.x;
                                     float y = missionEvent.y;
                                     float z = missionEvent.z;
                                     Vector3 waypoint = scene.transform.position + new Vector3(x, y, z);
 
-                                    smallShip.waypoint.transform.position = waypoint;
+                                    smallShip.targetingSystem.waypoint.transform.position = waypoint;
                                 }
                             }
 
@@ -4659,7 +4659,7 @@ public static class MissionFunctions
 
                             if (smallShip != null)
                             {
-                                if (smallShip.waypoint != null)
+                                if (smallShip.targetingSystem.waypoint != null)
                                 {
                                     foreach (GameObject ship2 in scene.objectPool.ToList())
                                     {
@@ -4667,7 +4667,7 @@ public static class MissionFunctions
                                         {
                                             if (ship2.name.Contains(missionEvent.data2))
                                             {
-                                                smallShip.waypoint.transform.position = ship2.transform.position;
+                                                smallShip.targetingSystem.waypoint.transform.position = ship2.transform.position;
                                             }
                                         }
                                     }

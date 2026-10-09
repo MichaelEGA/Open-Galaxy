@@ -173,7 +173,7 @@ public static class LargeShipFunctions
 
         largeShip.jumpingToHyperspace = false;
 
-        DamageFunctions.DeactivateShip_LargeShip(largeShip);
+        DamageSystemFunctions.DeactivateShip_LargeShip(largeShip);
     }
 
     //Exit Hyperspace

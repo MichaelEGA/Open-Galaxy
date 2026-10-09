@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class TargetingFunctions
+public static class TargetingSystemFunctions
 {
     //This draws key data/info from the target including relative position, distance, and hostility
     public static void GetTargetInfo_SmallShip(SmallShip smallShip = null)
@@ -11,45 +11,45 @@ public static class TargetingFunctions
         Transform shipTransform = smallShip.gameObject.transform;
         Vector3 shipPosition = shipTransform.position;
 
-        if (smallShip.target != null)
+        if (smallShip.targetingSystem.target != null)
         {
-            if (smallShip.target.activeSelf == true)
+            if (smallShip.targetingSystem.target.activeSelf == true)
             {
-                if (smallShip.targetSmallShip != null)
+                if (smallShip.targetingSystem.targetSmallShip != null)
                 {
-                    smallShip.targetAllegiance = smallShip.targetSmallShip.allegiance;
-                    smallShip.targetSpeed = smallShip.targetSmallShip.thrustSpeed;
-                    smallShip.targetHull = smallShip.targetSmallShip.hullLevel;
-                    smallShip.targetShield = smallShip.targetSmallShip.shieldLevel;
-                    smallShip.targetType = smallShip.targetSmallShip.type;
-                    smallShip.targetPrefabName = smallShip.targetSmallShip.prefabName;
+                    smallShip.targetingSystem.targetAllegiance = smallShip.targetingSystem.targetSmallShip.allegiance;
+                    smallShip.targetingSystem.targetSpeed = smallShip.targetingSystem.targetSmallShip.thrustSpeed;
+                    smallShip.targetingSystem.targetHull = smallShip.targetingSystem.targetSmallShip.hullLevel;
+                    smallShip.targetingSystem.targetShield = smallShip.targetingSystem.targetSmallShip.shieldLevel;
+                    smallShip.targetingSystem.targetType = smallShip.targetingSystem.targetSmallShip.type;
+                    smallShip.targetingSystem.targetPrefabName = smallShip.targetingSystem.targetSmallShip.prefabName;
                 }
 
-                if (smallShip.targetLargeShip != null)
+                if (smallShip.targetingSystem.targetLargeShip != null)
                 {
-                    smallShip.targetAllegiance = smallShip.targetLargeShip.allegiance;
-                    smallShip.targetSpeed = smallShip.targetLargeShip.thrustSpeed;
-                    smallShip.targetHull = smallShip.targetLargeShip.hullLevel;
-                    smallShip.targetShield = smallShip.targetLargeShip.shieldLevel;
-                    smallShip.targetType = smallShip.targetLargeShip.type;
-                    smallShip.targetPrefabName = smallShip.targetLargeShip.prefabName;
+                    smallShip.targetingSystem.targetAllegiance = smallShip.targetingSystem.targetLargeShip.allegiance;
+                    smallShip.targetingSystem.targetSpeed = smallShip.targetingSystem.targetLargeShip.thrustSpeed;
+                    smallShip.targetingSystem.targetHull = smallShip.targetingSystem.targetLargeShip.hullLevel;
+                    smallShip.targetingSystem.targetShield = smallShip.targetingSystem.targetLargeShip.shieldLevel;
+                    smallShip.targetingSystem.targetType = smallShip.targetingSystem.targetLargeShip.type;
+                    smallShip.targetingSystem.targetPrefabName = smallShip.targetingSystem.targetLargeShip.prefabName;
                 }
 
-                Transform targetTransform = smallShip.target.transform;
+                Transform targetTransform = smallShip.targetingSystem.target.transform;
                 Vector3 targetPosition = targetTransform.position;
                 Vector3 targetVelocity = new Vector3(0, 0, 0);
 
-                if (smallShip.targetRigidbody != null)
+                if (smallShip.targetingSystem.targetRigidbody != null)
                 {
-                    targetVelocity = smallShip.targetRigidbody.linearVelocity;
+                    targetVelocity = smallShip.targetingSystem.targetRigidbody.linearVelocity;
                 }
 
                 Vector3 targetRelativePosition = targetPosition - shipPosition;
 
-                smallShip.targetDistance = Vector3.Distance(shipPosition, targetPosition);
-                smallShip.targetForward = Vector3.Dot(shipTransform.forward, targetRelativePosition.normalized);
-                smallShip.targetRight = Vector3.Dot(shipTransform.right, targetRelativePosition.normalized);
-                smallShip.targetUp = Vector3.Dot(shipTransform.up, targetRelativePosition.normalized);
+                smallShip.targetingSystem.targetDistance = Vector3.Distance(shipPosition, targetPosition);
+                smallShip.targetingSystem.targetForward = Vector3.Dot(shipTransform.forward, targetRelativePosition.normalized);
+                smallShip.targetingSystem.targetRight = Vector3.Dot(shipTransform.right, targetRelativePosition.normalized);
+                smallShip.targetingSystem.targetUp = Vector3.Dot(shipTransform.up, targetRelativePosition.normalized);
 
                 Vector3 targettingErrorMargin = smallShip.aiTargetingErrorMargin;
                 float distanceToIntercept = ((targetPosition) - shipPosition).magnitude / 750f;
@@ -60,27 +60,27 @@ public static class TargetingFunctions
                 Vector3 currentVelocity = Vector3.zero;
                 float smoothTime = 0.3f;
 
-                smallShip.interceptPoint = Vector3.SmoothDamp(smallShip.interceptPoint, interceptRelativePosition, ref currentVelocity, smoothTime);
-                smallShip.interceptDistance = Vector3.Distance(interceptPosition, shipPosition);
-                smallShip.interceptForward = Vector3.Dot(shipTransform.forward, interceptRelativePosition.normalized);
-                smallShip.interceptRight = Vector3.Dot(shipTransform.right, interceptRelativePosition.normalized);
-                smallShip.interceptUp = Vector3.Dot(shipTransform.up, interceptRelativePosition.normalized);
+                smallShip.targetingSystem.interceptPoint = Vector3.SmoothDamp(smallShip.targetingSystem.interceptPoint, interceptRelativePosition, ref currentVelocity, smoothTime);
+                smallShip.targetingSystem.interceptDistance = Vector3.Distance(interceptPosition, shipPosition);
+                smallShip.targetingSystem.interceptForward = Vector3.Dot(shipTransform.forward, interceptRelativePosition.normalized);
+                smallShip.targetingSystem.interceptRight = Vector3.Dot(shipTransform.right, interceptRelativePosition.normalized);
+                smallShip.targetingSystem.interceptUp = Vector3.Dot(shipTransform.up, interceptRelativePosition.normalized);
             }
         }
         else
         {
-            smallShip.interceptDistance = 250;
+            smallShip.targetingSystem.interceptDistance = 250;
         }
 
-        if (smallShip.waypoint != null)
+        if (smallShip.targetingSystem.waypoint != null)
         {
-            Vector3 waypointPosition = smallShip.waypoint.transform.position;
+            Vector3 waypointPosition = smallShip.targetingSystem.waypoint.transform.position;
             Vector3 waypointRelativePosition = waypointPosition - shipPosition;
 
-            smallShip.waypointDistance = Vector3.Distance(shipPosition, waypointPosition);
-            smallShip.waypointForward = Vector3.Dot(shipTransform.forward, waypointRelativePosition.normalized);
-            smallShip.waypointRight = Vector3.Dot(shipTransform.right, waypointRelativePosition.normalized);
-            smallShip.waypointUp = Vector3.Dot(shipTransform.up, waypointRelativePosition.normalized);
+            smallShip.targetingSystem.waypointDistance = Vector3.Distance(shipPosition, waypointPosition);
+            smallShip.targetingSystem.waypointForward = Vector3.Dot(shipTransform.forward, waypointRelativePosition.normalized);
+            smallShip.targetingSystem.waypointRight = Vector3.Dot(shipTransform.right, waypointRelativePosition.normalized);
+            smallShip.targetingSystem.waypointUp = Vector3.Dot(shipTransform.up, waypointRelativePosition.normalized);
         }
 
     }
@@ -104,15 +104,15 @@ public static class TargetingFunctions
         {
             bool automaticSearch = false;
 
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
-                if (smallShip.target.activeSelf == false)
+                if (smallShip.targetingSystem.target.activeSelf == false)
                 {
                     automaticSearch = true;
                 }
             }
 
-            if (smallShip.targetPressedTime < Time.time & smallShip.getNextTarget == true || automaticSearch == true)
+            if (smallShip.targetingSystem.targetPressedTime < Time.time & smallShip.getNextTarget == true || automaticSearch == true)
             {
                 Scene scene = smallShip.scene;
                 int countStart = 0;
@@ -125,51 +125,51 @@ public static class TargetingFunctions
                 {
                     if (i > scene.objectPool.Count - 1) //This clears the target at the end of the list
                     {
-                        smallShip.target = null;
-                        smallShip.targetName = " ";
-                        smallShip.targetNumber = i;
-                        smallShip.targetSmallShip = null;
-                        smallShip.targetRigidbody = null;
-                        smallShip.targetPrefabName = " ";
+                        smallShip.targetingSystem.target = null;
+                        smallShip.targetingSystem.targetName = " ";
+                        smallShip.targetingSystem.targetNumber = i;
+                        smallShip.targetingSystem.targetSmallShip = null;
+                        smallShip.targetingSystem.targetRigidbody = null;
+                        smallShip.targetingSystem.targetPrefabName = " ";
                         break;
                     }
-                    else if (scene.objectPool[i] != null & smallShip.targetNumber != i) //This gets any type of ship in the scene
+                    else if (scene.objectPool[i] != null & smallShip.targetingSystem.targetNumber != i) //This gets any type of ship in the scene
                     {
                         if (scene.objectPool[i].activeSelf == true & scene.objectPool[i] != smallShip.gameObject) //This ignores objects that are inactive
                         {
-                            smallShip.target = scene.objectPool[i];
-                            smallShip.targetName = scene.objectPool[i].name;
+                            smallShip.targetingSystem.target = scene.objectPool[i];
+                            smallShip.targetingSystem.targetName = scene.objectPool[i].name;
 
                             SmallShip targetSmallShip = scene.objectPool[i].GetComponent<SmallShip>();
                             LargeShip targetLargeShip = scene.objectPool[i].GetComponent<LargeShip>();
 
                             if (targetSmallShip != null)
                             {
-                                smallShip.targetSmallShip = targetSmallShip;
-                                smallShip.targetLargeShip = null;
-                                smallShip.targetPrefabName = targetSmallShip.prefabName;
+                                smallShip.targetingSystem.targetSmallShip = targetSmallShip;
+                                smallShip.targetingSystem.targetLargeShip = null;
+                                smallShip.targetingSystem.targetPrefabName = targetSmallShip.prefabName;
                             }
                             else if (targetLargeShip != null)
                             {
-                                smallShip.targetSmallShip = null;
-                                smallShip.targetLargeShip = targetLargeShip;
-                                smallShip.targetPrefabName = targetLargeShip.prefabName;
+                                smallShip.targetingSystem.targetSmallShip = null;
+                                smallShip.targetingSystem.targetLargeShip = targetLargeShip;
+                                smallShip.targetingSystem.targetPrefabName = targetLargeShip.prefabName;
                             }
 
-                            smallShip.targetRigidbody = scene.objectPool[i].GetComponent<Rigidbody>();
-                            smallShip.targetNumber = i;
+                            smallShip.targetingSystem.targetRigidbody = scene.objectPool[i].GetComponent<Rigidbody>();
+                            smallShip.targetingSystem.targetNumber = i;
                             break;
                         }
                     }
                 }
 
-                smallShip.targetPressedTime = Time.time + 0.2f;
+                smallShip.targetingSystem.targetPressedTime = Time.time + 0.2f;
 
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
                 //This prevents the torpedo from immediately locking on to the new target
-                smallShip.torpedoLockedOn = false;
-                smallShip.torpedoLockingOn = false;
+                smallShip.torpedoSystem.torpedoLockedOn = false;
+                smallShip.torpedoSystem.torpedoLockingOn = false;
             }
         }
     }
@@ -181,15 +181,15 @@ public static class TargetingFunctions
         {
             bool automaticSearch = false;
 
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
-                if (smallShip.target.activeSelf == false)
+                if (smallShip.targetingSystem.target.activeSelf == false)
                 {
                     automaticSearch = true;
                 }
             }
 
-            if (smallShip.targetPressedTime < Time.time & smallShip.getNextEnemy == true || automaticSearch == true || forceSearch == true)
+            if (smallShip.targetingSystem.targetPressedTime < Time.time & smallShip.getNextEnemy == true || automaticSearch == true || forceSearch == true)
             {
                 Scene scene = smallShip.scene;
                 int countStart = 0;
@@ -199,7 +199,7 @@ public static class TargetingFunctions
 
                 for (int i = countStart; i < scene.objectPool.Count; i++)
                 {
-                    if (scene.objectPool[i] != null & smallShip.targetNumber != i) //This gets enemy ships in the scene
+                    if (scene.objectPool[i] != null & smallShip.targetingSystem.targetNumber != i) //This gets enemy ships in the scene
                     {
                         if (scene.objectPool[i].activeSelf == true) //This ignores objects that are inactive
                         {
@@ -211,7 +211,7 @@ public static class TargetingFunctions
 
                             if (targetSmallShip != null)
                             {
-                                numberTargetting = targetSmallShip.numberTargeting;
+                                numberTargetting = targetSmallShip.targetingSystem.numberTargeting;
                                 isHostile = GetHostility_SmallShipPlayer(smallShip, targetSmallShip.allegiance);
                             }
                             else if (targetLargeShip != null)
@@ -222,37 +222,37 @@ public static class TargetingFunctions
 
                             if (isHostile == true)
                             {
-                                smallShip.target = scene.objectPool[i];
-                                smallShip.targetName = scene.objectPool[i].name;
-                                smallShip.targetNumber = i;
+                                smallShip.targetingSystem.target = scene.objectPool[i];
+                                smallShip.targetingSystem.targetName = scene.objectPool[i].name;
+                                smallShip.targetingSystem.targetNumber = i;
 
                                 if (targetSmallShip != null)
                                 {
-                                    smallShip.targetSmallShip = targetSmallShip;
-                                    smallShip.targetLargeShip = null;
-                                    smallShip.targetPrefabName = targetSmallShip.prefabName;
+                                    smallShip.targetingSystem.targetSmallShip = targetSmallShip;
+                                    smallShip.targetingSystem.targetLargeShip = null;
+                                    smallShip.targetingSystem.targetPrefabName = targetSmallShip.prefabName;
                                 }
                                 else if (targetLargeShip != null)
                                 {
-                                    smallShip.targetSmallShip = null;
-                                    smallShip.targetLargeShip = targetLargeShip;
-                                    smallShip.targetPrefabName = targetLargeShip.prefabName;
+                                    smallShip.targetingSystem.targetSmallShip = null;
+                                    smallShip.targetingSystem.targetLargeShip = targetLargeShip;
+                                    smallShip.targetingSystem.targetPrefabName = targetLargeShip.prefabName;
                                 }
 
-                                smallShip.targetRigidbody = scene.objectPool[i].GetComponent<Rigidbody>();
+                                smallShip.targetingSystem.targetRigidbody = scene.objectPool[i].GetComponent<Rigidbody>();
                                 break;
                             }
                         }
                     }
                 }
 
-                smallShip.targetPressedTime = Time.time + 0.2f;
+                smallShip.targetingSystem.targetPressedTime = Time.time + 0.2f;
 
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
                 //This prevents the torpedo from immediately locking on to the new target
-                smallShip.torpedoLockedOn = false;
-                smallShip.torpedoLockingOn = false;
+                smallShip.torpedoSystem.torpedoLockedOn = false;
+                smallShip.torpedoSystem.torpedoLockingOn = false;
             }
         }
     }
@@ -264,15 +264,15 @@ public static class TargetingFunctions
         {
             bool automaticSearch = false;
 
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
-                if (smallShip.target.activeSelf == false)
+                if (smallShip.targetingSystem.target.activeSelf == false)
                 {
                     automaticSearch = true;
                 }
             }
 
-            if (smallShip.targetPressedTime < Time.time & smallShip.getClosestEnemy == true || automaticSearch == true || externalActivation == true)
+            if (smallShip.targetingSystem.targetPressedTime < Time.time & smallShip.getClosestEnemy == true || automaticSearch == true || externalActivation == true)
             {
                 Scene scene = smallShip.scene;
 
@@ -302,9 +302,9 @@ public static class TargetingFunctions
 
                                 if (tempDistance < distance)
                                 {
-                                    float numberTargetting = tempSmallShip.numberTargeting;
+                                    float numberTargetting = tempSmallShip.targetingSystem.numberTargeting;
 
-                                    if (smallShip.isAI == true & smallShip.targetNumber <= 1)
+                                    if (smallShip.isAI == true & smallShip.targetingSystem.targetNumber <= 1)
                                     {
                                         target = ship;
                                         targetSmallShip = tempSmallShip;
@@ -373,9 +373,9 @@ public static class TargetingFunctions
 
                                     if (tempDistance < distance)
                                     {
-                                        float numberTargetting = tempSmallShip.numberTargeting;
+                                        float numberTargetting = tempSmallShip.targetingSystem.numberTargeting;
 
-                                        if (smallShip.isAI == true & smallShip.targetNumber <= 1)
+                                        if (smallShip.isAI == true & smallShip.targetingSystem.targetNumber <= 1)
                                         {
                                             target = ship;
                                             targetSmallShip = tempSmallShip;
@@ -428,38 +428,38 @@ public static class TargetingFunctions
                 //This applies the chosen target if it isn't null
                 if (target != null)
                 {
-                    smallShip.target = target;
-                    smallShip.targetName = target.name;
+                    smallShip.targetingSystem.target = target;
+                    smallShip.targetingSystem.targetName = target.name;
 
                     if (targetSmallShip != null)
                     {
-                        smallShip.targetSmallShip = targetSmallShip;
-                        smallShip.targetLargeShip = null;
-                        smallShip.targetPrefabName = targetSmallShip.prefabName;
+                        smallShip.targetingSystem.targetSmallShip = targetSmallShip;
+                        smallShip.targetingSystem.targetLargeShip = null;
+                        smallShip.targetingSystem.targetPrefabName = targetSmallShip.prefabName;
 
                         if (smallShip.isAI == true)
                         {
-                            targetSmallShip.numberTargeting += 1;
+                            targetSmallShip.targetingSystem.numberTargeting += 1;
                         }
 
                     }
                     else if (targetLargeShip != null)
                     {
-                        smallShip.targetSmallShip = null;
-                        smallShip.targetLargeShip = targetLargeShip;
-                        smallShip.targetPrefabName = targetLargeShip.prefabName;
+                        smallShip.targetingSystem.targetSmallShip = null;
+                        smallShip.targetingSystem.targetLargeShip = targetLargeShip;
+                        smallShip.targetingSystem.targetPrefabName = targetLargeShip.prefabName;
                     }
 
-                    smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
+                    smallShip.targetingSystem.targetRigidbody = target.GetComponent<Rigidbody>();
                 }
 
-                smallShip.targetPressedTime = Time.time + 0.2f;
+                smallShip.targetingSystem.targetPressedTime = Time.time + 0.2f;
 
                 AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep01_toggle", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
 
                 //This prevents the torpedo from immediately locking on to the new target
-                smallShip.torpedoLockedOn = false;
-                smallShip.torpedoLockingOn = false;
+                smallShip.torpedoSystem.torpedoLockedOn = false;
+                smallShip.torpedoSystem.torpedoLockingOn = false;
             }
         }
     }
@@ -469,7 +469,7 @@ public static class TargetingFunctions
     {
         if (smallShip.isAI == false)
         {     
-            if (smallShip.targetPressedTime < Time.time & smallShip.selectTargetInFront == true)
+            if (smallShip.targetingSystem.targetPressedTime < Time.time & smallShip.selectTargetInFront == true)
             {
                 Scene scene = smallShip.scene;
                 float forward = 0.9f;
@@ -497,28 +497,28 @@ public static class TargetingFunctions
 
                 if (target != null)
                 {
-                    smallShip.target = target;
-                    smallShip.targetName = target.name;
+                    smallShip.targetingSystem.target = target;
+                    smallShip.targetingSystem.targetName = target.name;
                     targetSmallShip = target.GetComponent<SmallShip>();
                     targetLargeShip = target.GetComponent<LargeShip>();
 
                     if (targetSmallShip != null)
                     {
-                        smallShip.targetSmallShip = targetSmallShip;
-                        smallShip.targetLargeShip = null;
-                        smallShip.targetPrefabName = targetSmallShip.prefabName;
+                        smallShip.targetingSystem.targetSmallShip = targetSmallShip;
+                        smallShip.targetingSystem.targetLargeShip = null;
+                        smallShip.targetingSystem.targetPrefabName = targetSmallShip.prefabName;
                     }
                     else if (targetLargeShip != null)
                     {
-                        smallShip.targetSmallShip = null;
-                        smallShip.targetLargeShip = targetLargeShip;
-                        smallShip.targetPrefabName = targetLargeShip.prefabName;
+                        smallShip.targetingSystem.targetSmallShip = null;
+                        smallShip.targetingSystem.targetLargeShip = targetLargeShip;
+                        smallShip.targetingSystem.targetPrefabName = targetLargeShip.prefabName;
                     }
 
-                    smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
+                    smallShip.targetingSystem.targetRigidbody = target.GetComponent<Rigidbody>();
                 }
 
-                smallShip.targetPressedTime = Time.time + 0.2f;
+                smallShip.targetingSystem.targetPressedTime = Time.time + 0.2f;
 
             }
         }
@@ -565,23 +565,23 @@ public static class TargetingFunctions
 
         if (target != null)
         {
-            smallShip.target = target;
-            smallShip.targetName = target.name;
+            smallShip.targetingSystem.target = target;
+            smallShip.targetingSystem.targetName = target.name;
 
             if (targetSmallShip != null)
             {
-                smallShip.targetSmallShip = targetSmallShip;
-                smallShip.targetLargeShip = null;
-                smallShip.targetPrefabName = targetSmallShip.prefabName;
+                smallShip.targetingSystem.targetSmallShip = targetSmallShip;
+                smallShip.targetingSystem.targetLargeShip = null;
+                smallShip.targetingSystem.targetPrefabName = targetSmallShip.prefabName;
             }
             else if (targetLargeShip != null)
             {
-                smallShip.targetSmallShip = null;
-                smallShip.targetLargeShip = targetLargeShip;
-                smallShip.targetPrefabName = targetLargeShip.prefabName;
+                smallShip.targetingSystem.targetSmallShip = null;
+                smallShip.targetingSystem.targetLargeShip = targetLargeShip;
+                smallShip.targetingSystem.targetPrefabName = targetLargeShip.prefabName;
             }
 
-            smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
+            smallShip.targetingSystem.targetRigidbody = target.GetComponent<Rigidbody>();
         }
 
         if (smallShip.isAI == false)
@@ -590,19 +590,19 @@ public static class TargetingFunctions
         }
 
         //This prevents the torpedo from immediately locking on to the new target
-        smallShip.torpedoLockedOn = false;
-        smallShip.torpedoLockingOn = false;
+        smallShip.torpedoSystem.torpedoLockedOn = false;
+        smallShip.torpedoSystem.torpedoLockingOn = false;
     }
 
     //This creates the ship waypoint
     public static void CreateWaypoint_SmallShipPlayer(SmallShip smallShip = null)
     {
-        if (smallShip.waypoint == null)
+        if (smallShip.targetingSystem.waypoint == null)
         {
             Scene scene = SceneFunctions.GetScene();
-            smallShip.waypoint = new GameObject();
-            smallShip.waypoint.name = "waypoint_" + smallShip.name;
-            smallShip.waypoint.transform.SetParent(scene.transform);
+            smallShip.targetingSystem.waypoint = new GameObject();
+            smallShip.targetingSystem.waypoint.name = "waypoint_" + smallShip.name;
+            smallShip.targetingSystem.waypoint.transform.SetParent(scene.transform);
         }
     }
 
@@ -686,13 +686,13 @@ public static class TargetingFunctions
         {
             if (scene.objectPool != null)
             {
-                if (smallShip.target != null)
+                if (smallShip.targetingSystem.target != null)
                 {
                     for (int i = 0; i < scene.objectPool.Count; i++)
                     {
                         if (scene.objectPool[i] != null)
                         {
-                            if (scene.objectPool[i].name == smallShip.target.name)
+                            if (scene.objectPool[i].name == smallShip.targetingSystem.target.name)
                             {
                                 targetNumber = i + 1;
                             }
@@ -737,7 +737,7 @@ public static class TargetingFunctions
                     {
                         float tempDistance = Vector3.Distance(tempSmallShip.transform.position, smallShip.gameObject.transform.position);
 
-                        if (tempDistance < distance & tempSmallShip.numberTargeting < 3)
+                        if (tempDistance < distance & tempSmallShip.targetingSystem.numberTargeting < 3)
                         {
                             target = tempSmallShip.gameObject;
                             targetSmallShip = tempSmallShip;
@@ -751,27 +751,27 @@ public static class TargetingFunctions
 
         if (target != null)
         {
-            smallShip.target = target;
-            smallShip.targetName = target.name;
+            smallShip.targetingSystem.target = target;
+            smallShip.targetingSystem.targetName = target.name;
 
             if (targetSmallShip != null)
             {
-                smallShip.targetSmallShip = targetSmallShip;
-                smallShip.targetLargeShip = null;
-                smallShip.targetPrefabName = targetSmallShip.prefabName;
+                smallShip.targetingSystem.targetSmallShip = targetSmallShip;
+                smallShip.targetingSystem.targetLargeShip = null;
+                smallShip.targetingSystem.targetPrefabName = targetSmallShip.prefabName;
 
                 if (smallShip.isAI == true)
                 {
-                    targetSmallShip.numberTargeting += 1;
+                    targetSmallShip.targetingSystem.numberTargeting += 1;
                 }
             }
 
-            smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
+            smallShip.targetingSystem.targetRigidbody = target.GetComponent<Rigidbody>();
         }
 
         //This prevents the torpedo from immediately locking on to the new target
-        smallShip.torpedoLockedOn = false;
-        smallShip.torpedoLockingOn = false;
+        smallShip.torpedoSystem.torpedoLockedOn = false;
+        smallShip.torpedoSystem.torpedoLockingOn = false;
 
         yield return null;
     }
@@ -815,22 +815,22 @@ public static class TargetingFunctions
 
         if (target != null)
         {
-            smallShip.target = target;
-            smallShip.targetName = target.name;
+            smallShip.targetingSystem.target = target;
+            smallShip.targetingSystem.targetName = target.name;
 
             if (targetLargeShip != null)
             {
-                smallShip.targetSmallShip = null;
-                smallShip.targetLargeShip = targetLargeShip;
-                smallShip.targetPrefabName = targetLargeShip.prefabName;
+                smallShip.targetingSystem.targetSmallShip = null;
+                smallShip.targetingSystem.targetLargeShip = targetLargeShip;
+                smallShip.targetingSystem.targetPrefabName = targetLargeShip.prefabName;
             }
 
-            smallShip.targetRigidbody = target.GetComponent<Rigidbody>();
+            smallShip.targetingSystem.targetRigidbody = target.GetComponent<Rigidbody>();
         }
 
         //This prevents the torpedo from immediately locking on to the new target
-        smallShip.torpedoLockedOn = false;
-        smallShip.torpedoLockingOn = false;
+        smallShip.torpedoSystem.torpedoLockedOn = false;
+        smallShip.torpedoSystem.torpedoLockingOn = false;
 
         yield return null;
     }
@@ -1281,7 +1281,7 @@ public static class TargetingFunctions
                         Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
                         while (a.Running == true) { yield return null; }
 
-                        if (smallShip.target == null)
+                        if (smallShip.targetingSystem.target == null)
                         {
                             Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
                             while (b.Running == true) { yield return null; }
@@ -1292,7 +1292,7 @@ public static class TargetingFunctions
                         Task b = new Task(GetClosestEnemyLargeShip_SmallShipAI(smallShip));
                         while (b.Running == true) { yield return null; }
 
-                        if (smallShip.target == null)
+                        if (smallShip.targetingSystem.target == null)
                         {
                             Task a = new Task(GetClosestEnemySmallShip_SmallShipAI(smallShip));
                             while (a.Running == true) { yield return null; }
@@ -1326,7 +1326,7 @@ public static class TargetingFunctions
                 {
                     if (largeShip.target == null)
                     {
-                        Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShipAI(largeShip));
+                        Task a = new Task(TargetingSystemFunctions.GetClosestEnemyLargeShip_LargeShipAI(largeShip));
                         while (a.Running == true) { yield return null; }
 
                     }
@@ -1334,7 +1334,7 @@ public static class TargetingFunctions
                     {
                         if (largeShip.target.activeSelf == false)
                         {
-                            Task a = new Task(TargetingFunctions.GetClosestEnemyLargeShip_LargeShipAI(largeShip));
+                            Task a = new Task(TargetingSystemFunctions.GetClosestEnemyLargeShip_LargeShipAI(largeShip));
                             while (a.Running == true) { yield return null; }
                         }
                     }

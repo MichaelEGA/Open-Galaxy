@@ -162,17 +162,17 @@ public static class HudFunctions
 
         if (hud.radarPool != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.target != null)
+            if (hud.smallShip.targetingSystem.target != null)
             {
-                if (hud.smallShip.target.activeSelf != false)
+                if (hud.smallShip.targetingSystem.target.activeSelf != false)
                 {
-                    if (hud.radarObject == null || hud.radarObject.activeSelf == false || !hud.radarObject.name.Contains(hud.smallShip.targetPrefabName))
+                    if (hud.radarObject == null || hud.radarObject.activeSelf == false || !hud.radarObject.name.Contains(hud.smallShip.targetingSystem.targetPrefabName))
                     {
                         bool foundShip = false;
 
                         foreach (GameObject radarObject in hud.radarPool)
                         {
-                            if (radarObject.name == hud.smallShip.targetPrefabName + "(Clone)")
+                            if (radarObject.name == hud.smallShip.targetingSystem.targetPrefabName + "(Clone)")
                             {
                                 radarObject.SetActive(true);
                                 hud.radarObject = radarObject;
@@ -188,7 +188,7 @@ public static class HudFunctions
                         {
                             foreach (Object ship in hud.scene.shipsPrefabPool)
                             {
-                                if (ship.name == hud.smallShip.targetPrefabName)
+                                if (ship.name == hud.smallShip.targetingSystem.targetPrefabName)
                                 {
                                     //This instantiates the radar object,sets it to the correct position, sets its layer, scales the object and removes any colliders on the object
                                     GameObject radarObject = GameObject.Instantiate(ship) as GameObject;
@@ -233,7 +233,7 @@ public static class HudFunctions
                     {
                         if (hud.radarObject != null)
                         {
-                            Quaternion relativeRotation = Quaternion.Inverse(hud.smallShip.gameObject.transform.rotation) * hud.smallShip.target.transform.rotation;
+                            Quaternion relativeRotation = Quaternion.Inverse(hud.smallShip.gameObject.transform.rotation) * hud.smallShip.targetingSystem.target.transform.rotation;
                             hud.radarObject.transform.rotation = relativeRotation;
                         }
                     }
@@ -633,9 +633,9 @@ public static class HudFunctions
 
         if (hud.targetDistanceText != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.target != null)
+            if (hud.smallShip.targetingSystem.target != null)
             {
-                hud.targetDistanceText.text = (hud.smallShip.targetDistance / 1000f).ToString("0.000");
+                hud.targetDistanceText.text = (hud.smallShip.targetingSystem.targetDistance / 1000f).ToString("0.000");
             }
             else
             {
@@ -655,9 +655,9 @@ public static class HudFunctions
 
         if (hud.targetType != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.target != null & hud.smallShip.targetAllegiance != null & hud.smallShip.targetType != null) 
+            if (hud.smallShip.targetingSystem.target != null & hud.smallShip.targetingSystem.targetAllegiance != null & hud.smallShip.targetingSystem.targetType != null) 
             {
-                hud.targetType.text = hud.smallShip.targetAllegiance.ToUpper() + " " + hud.smallShip.targetType.ToUpper();
+                hud.targetType.text = hud.smallShip.targetingSystem.targetAllegiance.ToUpper() + " " + hud.smallShip.targetingSystem.targetType.ToUpper();
             }
             else
             {
@@ -677,9 +677,9 @@ public static class HudFunctions
 
         if (hud.targetName != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.target != null)
+            if (hud.smallShip.targetingSystem.target != null)
             {
-                hud.targetName.text = hud.smallShip.targetName.ToUpper();
+                hud.targetName.text = hud.smallShip.targetingSystem.targetName.ToUpper();
             }
             else
             {
@@ -699,13 +699,13 @@ public static class HudFunctions
 
         if (hud.targetSpeedText != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.target != null)
+            if (hud.smallShip.targetingSystem.target != null)
             {
-                if (hud.smallShip.targetSmallShip != null)
+                if (hud.smallShip.targetingSystem.targetSmallShip != null)
                 {
-                    if (hud.smallShip.targetSmallShip.shipRigidbody != null)
+                    if (hud.smallShip.targetingSystem.targetSmallShip.shipRigidbody != null)
                     {
-                        float speed = hud.smallShip.targetSmallShip.shipRigidbody.linearVelocity.magnitude * 3.6f;
+                        float speed = hud.smallShip.targetingSystem.targetSmallShip.shipRigidbody.linearVelocity.magnitude * 3.6f;
 
                         if (speed > hud.speed)
                         {
@@ -719,9 +719,9 @@ public static class HudFunctions
                         hud.targetSpeedText.text = hud.speed.ToString("000");
                     }
                 }
-                else if (hud.smallShip.targetLargeShip != null)
+                else if (hud.smallShip.targetingSystem.targetLargeShip != null)
                 {
-                    Vector3 newPosition = hud.smallShip.targetLargeShip.transform.position;
+                    Vector3 newPosition = hud.smallShip.targetingSystem.targetLargeShip.transform.position;
                     var media = (newPosition - hud.lastPosition);
                     Vector3 velocity = media / Time.deltaTime;
                     hud.lastPosition = newPosition;
@@ -757,9 +757,9 @@ public static class HudFunctions
 
         if (hud.targetShieldsText != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.target != null)
+            if (hud.smallShip.targetingSystem.target != null)
             {
-                hud.targetShieldsText.text = hud.smallShip.targetShield.ToString("000");
+                hud.targetShieldsText.text = hud.smallShip.targetingSystem.targetShield.ToString("000");
             }
             else
             {
@@ -779,15 +779,15 @@ public static class HudFunctions
 
         if (hud.targetSystemsText != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.target != null)
+            if (hud.smallShip.targetingSystem.target != null)
             {
-                if (hud.smallShip.targetSmallShip != null)
+                if (hud.smallShip.targetingSystem.targetSmallShip != null)
                 {
-                    hud.targetSystemsText.text = hud.smallShip.targetSmallShip.systemsLevel.ToString("000");
+                    hud.targetSystemsText.text = hud.smallShip.targetingSystem.targetSmallShip.systemsLevel.ToString("000");
                 }
-                else if (hud.smallShip.targetLargeShip != null)
+                else if (hud.smallShip.targetingSystem.targetLargeShip != null)
                 {
-                    hud.targetSystemsText.text = hud.smallShip.targetLargeShip.systemsLevel.ToString("000");
+                    hud.targetSystemsText.text = hud.smallShip.targetingSystem.targetLargeShip.systemsLevel.ToString("000");
                 }
                 else
                 {
@@ -812,9 +812,9 @@ public static class HudFunctions
 
         if (hud.targetHullText != null & hud.smallShip != null & Time.timeScale != 0)
         {
-            if (hud.smallShip.target != null)
+            if (hud.smallShip.targetingSystem.target != null)
             {
-                hud.targetHullText.text = hud.smallShip.targetHull.ToString("000");
+                hud.targetHullText.text = hud.smallShip.targetingSystem.targetHull.ToString("000");
             }
             else
             {
@@ -834,54 +834,54 @@ public static class HudFunctions
 
         if (hud.targetCargo != null & hud.smallShip != null)
         {
-            if (hud.smallShip.target != null)
+            if (hud.smallShip.targetingSystem.target != null)
             {
-                if (hud.smallShip.targetSmallShip != null)
+                if (hud.smallShip.targetingSystem.targetSmallShip != null)
                 {
-                    float distance = Vector3.Distance(hud.smallShip.transform.position, hud.smallShip.targetSmallShip.transform.position);
+                    float distance = Vector3.Distance(hud.smallShip.transform.position, hud.smallShip.targetingSystem.targetSmallShip.transform.position);
 
-                    if (hud.smallShip.targetSmallShip.scanned == false & distance > 200)
+                    if (hud.smallShip.targetingSystem.targetSmallShip.scanned == false & distance > 200)
                     {
                         hud.targetCargo.text = "---";
                     }
-                    else if (hud.smallShip.targetSmallShip.scanned == false & distance < 200)
+                    else if (hud.smallShip.targetingSystem.targetSmallShip.scanned == false & distance < 200)
                     {
-                        hud.targetCargo.text = hud.smallShip.targetSmallShip.cargo.ToUpper();
-                        hud.smallShip.targetSmallShip.scanned = true;
-                        AddToShipLog(hud.smallShip.targetName.ToUpper() + " has been scanned: " + hud.smallShip.targetSmallShip.cargo.ToUpper());
+                        hud.targetCargo.text = hud.smallShip.targetingSystem.targetSmallShip.cargo.ToUpper();
+                        hud.smallShip.targetingSystem.targetSmallShip.scanned = true;
+                        AddToShipLog(hud.smallShip.targetingSystem.targetName.ToUpper() + " has been scanned: " + hud.smallShip.targetingSystem.targetSmallShip.cargo.ToUpper());
 
                         if (hud.smallShip.audioManager != null)
                         {
                             AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep04_double", "Cockpit", hud.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                         }                  
                     }
-                    else if (hud.smallShip.targetSmallShip.scanned == true)
+                    else if (hud.smallShip.targetingSystem.targetSmallShip.scanned == true)
                     {
-                        hud.targetCargo.text = hud.smallShip.targetSmallShip.cargo.ToUpper();
+                        hud.targetCargo.text = hud.smallShip.targetingSystem.targetSmallShip.cargo.ToUpper();
                     }
                 }
-                else if (hud.smallShip.targetLargeShip != null)
+                else if (hud.smallShip.targetingSystem.targetLargeShip != null)
                 {
-                    float distance = Vector3.Distance(hud.smallShip.transform.position, hud.smallShip.targetLargeShip.transform.position);
+                    float distance = Vector3.Distance(hud.smallShip.transform.position, hud.smallShip.targetingSystem.targetLargeShip.transform.position);
 
-                    if (hud.smallShip.targetLargeShip.scanned == false & distance > 300)
+                    if (hud.smallShip.targetingSystem.targetLargeShip.scanned == false & distance > 300)
                     {
                         hud.targetCargo.text = "---";
                     }
-                    else if (hud.smallShip.targetLargeShip.scanned == false & distance < 300)
+                    else if (hud.smallShip.targetingSystem.targetLargeShip.scanned == false & distance < 300)
                     {
-                        hud.targetCargo.text = hud.smallShip.targetLargeShip.cargo.ToUpper();
-                        hud.smallShip.targetLargeShip.scanned = true;
-                        AddToShipLog(hud.smallShip.targetName.ToUpper() + " has been scanned: " + hud.smallShip.targetLargeShip.cargo.ToUpper());
+                        hud.targetCargo.text = hud.smallShip.targetingSystem.targetLargeShip.cargo.ToUpper();
+                        hud.smallShip.targetingSystem.targetLargeShip.scanned = true;
+                        AddToShipLog(hud.smallShip.targetingSystem.targetName.ToUpper() + " has been scanned: " + hud.smallShip.targetingSystem.targetLargeShip.cargo.ToUpper());
 
                         if (hud.smallShip.audioManager != null)
                         {
                             AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep04_double", "Cockpit", hud.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
                         }
                     }
-                    else if (hud.smallShip.targetLargeShip.scanned == true)
+                    else if (hud.smallShip.targetingSystem.targetLargeShip.scanned == true)
                     {
-                        hud.targetCargo.text = hud.smallShip.targetLargeShip.cargo.ToUpper();
+                        hud.targetCargo.text = hud.smallShip.targetingSystem.targetLargeShip.cargo.ToUpper();
                     }
                 }
             }
@@ -905,7 +905,7 @@ public static class HudFunctions
 
             if (hud.smallShip != null)
             {
-                playerTarget = hud.smallShip.target;
+                playerTarget = hud.smallShip.targetingSystem.target;
             }
             Vector2 radarPosition = new Vector2();
             Vector2 radarDirection = new Vector2();
@@ -1002,7 +1002,7 @@ public static class HudFunctions
                                 //This activates the target braces
                                 if (playerTarget != null)
                                 {
-                                    if (ship == hud.smallShip.target)
+                                    if (ship == hud.smallShip.targetingSystem.target)
                                     {
                                         hud.frontRadarBrace.SetActive(true);
                                         hud.frontRadarBrace.transform.SetParent(hud.frontRadarCircle.transform);
@@ -1041,7 +1041,7 @@ public static class HudFunctions
 
             if (hud.smallShip != null)
             {
-                playerTarget = hud.smallShip.target;
+                playerTarget = hud.smallShip.targetingSystem.target;
             }
 
             if (hud.rearRadarCircle == null)
@@ -1143,7 +1143,7 @@ public static class HudFunctions
                                 //This activates the target braces
                                 if (playerTarget != null)
                                 {
-                                    if (ship == hud.smallShip.target)
+                                    if (ship == hud.smallShip.targetingSystem.target)
                                     {
                                         hud.rearRadarBrace.SetActive(true);
                                         hud.rearRadarBrace.transform.SetParent(hud.rearRadarCircle.transform);
@@ -1212,11 +1212,11 @@ public static class HudFunctions
             {
                 if (hud.smallShip != null & selectionBrace != null & directionArrow != null)
                 {
-                    if (hud.smallShip.target != null)
+                    if (hud.smallShip.targetingSystem.target != null)
                     {
-                        if (hud.smallShip.target.activeSelf != false)
+                        if (hud.smallShip.targetingSystem.target.activeSelf != false)
                         {
-                            GameObject target = hud.smallShip.target;
+                            GameObject target = hud.smallShip.targetingSystem.target;
                             GameObject mainShip = hud.smallShip.gameObject;
 
                             //This gets the targets position on the camera
@@ -1419,15 +1419,15 @@ public static class HudFunctions
             {
                 if (hud.smallShip != null & interceptPoint != null)
                 {
-                    if (hud.smallShip.target != null)
+                    if (hud.smallShip.targetingSystem.target != null)
                     {
-                        if (hud.smallShip.target.activeSelf != false & hud.smallShip.targetRigidbody != null & hud.smallShip.targetSmallShip != null)
+                        if (hud.smallShip.targetingSystem.target.activeSelf != false & hud.smallShip.targetingSystem.targetRigidbody != null & hud.smallShip.targetingSystem.targetSmallShip != null)
                         {
-                            GameObject target = hud.smallShip.target;
+                            GameObject target = hud.smallShip.targetingSystem.target;
                             GameObject mainShip = hud.smallShip.gameObject;
 
                             //This gets the intercept point
-                            Vector3 interceptPosition = GameObjectUtils.CalculateInterceptPoint(mainShip.transform.position, target.transform.position, hud.smallShip.targetRigidbody.linearVelocity, 750);
+                            Vector3 interceptPosition = GameObjectUtils.CalculateInterceptPoint(mainShip.transform.position, target.transform.position, hud.smallShip.targetingSystem.targetRigidbody.linearVelocity, 750);
 
                             //This gets the targets position on the camera
                             Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(interceptPosition);
@@ -1488,7 +1488,7 @@ public static class HudFunctions
 
             if (hud.scene.waypointObject == null & hud.smallShip != null)
             {
-                hud.scene.waypointObject = hud.smallShip.waypoint;
+                hud.scene.waypointObject = hud.smallShip.targetingSystem.waypoint;
             }
 
             GameObject waypointMarker = hud.waypointMarker;
@@ -1724,7 +1724,7 @@ public static class HudFunctions
         {
             if (hud.weaponManagement.weaponType == "torpedos")
             {
-                if (hud.smallShip.torpedoLockingOn == true & hud.smallShip.torpedoLockedOn == false)
+                if (hud.smallShip.torpedoSystem.torpedoLockingOn == true & hud.smallShip.torpedoSystem.torpedoLockedOn == false)
                 {
                     if (hud.reticuleFlashing == false)
                     {
@@ -1735,7 +1735,7 @@ public static class HudFunctions
                     hud.targetLockedReticule.gameObject.SetActive(false);
 
                 }
-                else if (hud.smallShip.torpedoLockedOn == true)
+                else if (hud.smallShip.torpedoSystem.torpedoLockedOn == true)
                 {
                     hud.targetLockingReticule.gameObject.SetActive(false);
                     hud.targetLockedReticule.gameObject.SetActive(true);
@@ -1970,13 +1970,13 @@ public static class HudFunctions
             {
                 if (hud.ogCamera != null & hud.reticule != null & hud.smallShip != null)
                 {
-                    if (hud.smallShip.target != null & hud.ogCamera.viewType == "thirdperson")
+                    if (hud.smallShip.targetingSystem.target != null & hud.ogCamera.viewType == "thirdperson")
                     {
-                        GameObject target = hud.smallShip.target;
+                        GameObject target = hud.smallShip.targetingSystem.target;
                         GameObject mainShip = hud.smallShip.gameObject;
 
                         //This gets the current firing position using the intercept distance
-                        Vector3 reticulePosition = hud.smallShip.transform.position + (hud.smallShip.transform.forward * hud.smallShip.interceptDistance);
+                        Vector3 reticulePosition = hud.smallShip.transform.position + (hud.smallShip.transform.forward * hud.smallShip.targetingSystem.interceptDistance);
 
                         //This gets the targets position on the camera
                         Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(reticulePosition);
@@ -1986,7 +1986,7 @@ public static class HudFunctions
                     }
                     else if (hud.ogCamera.viewType == "thirdperson")
                     {
-                        GameObject target = hud.smallShip.target;
+                        GameObject target = hud.smallShip.targetingSystem.target;
                         GameObject mainShip = hud.smallShip.gameObject;
 
                         //This gets the current firing position using the intercept distance

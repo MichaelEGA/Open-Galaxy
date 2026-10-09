@@ -517,7 +517,7 @@ public static class LaserTurretFunctions
         {
             if (turret.largeTargetGO == null)
             {
-                target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+                target = TargetingSystemFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
                 turret.largeTargetGO = target;
             }
             else
@@ -529,7 +529,7 @@ public static class LaserTurretFunctions
         {
             if (turret.largeTargetGO == null)
             {
-                target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+                target = TargetingSystemFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
                 turret.largeTargetGO = target;
             }
             else
@@ -541,38 +541,38 @@ public static class LaserTurretFunctions
         {
             if (turret.largeTargetGO == null)
             {
-                target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+                target = TargetingSystemFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
                 turret.largeTargetGO = target;
 
                 if (target == null)
                 {
-                    target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+                    target = TargetingSystemFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
                     turret.largeTargetGO = target;
                 }
             }
         }
         else if (turret.largeTargetingMode == "large_multipletargets_largeship")
         {
-            target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+            target = TargetingSystemFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
         }
         else if (turret.largeTargetingMode == "large_multipletargets_smallship")
         {
-            target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+            target = TargetingSystemFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
         }
         else if (turret.largeTargetingMode == "large_multipletargets_all")
         {
-            target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+            target = TargetingSystemFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
 
             if (target == null)
             {
-                target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+                target = TargetingSystemFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
             }
         }
         else if (turret.largeTargetingMode == "large_shiptarget")
         {
             if (turret.smallShip != null)
             {
-                target = turret.smallShip.target;
+                target = turret.smallShip.targetingSystem.target;
                 turret.largeTargetGO = target;
             }
             else if (turret.largeShip != null)
@@ -594,7 +594,7 @@ public static class LaserTurretFunctions
         {
             if (turret.smallTargetGO == null)
             {
-                target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+                target = TargetingSystemFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
                 turret.smallTargetGO = target;
             }
             else
@@ -606,7 +606,7 @@ public static class LaserTurretFunctions
         {
             if (turret.smallTargetGO == null)
             {
-                target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+                target = TargetingSystemFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
                 target = turret.smallTargetGO;
             }
             else
@@ -618,38 +618,38 @@ public static class LaserTurretFunctions
         {
             if (turret.smallTargetGO == null)
             {
-                target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+                target = TargetingSystemFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
                 turret.smallTargetGO = target;
 
                 if (target == null)
                 {
-                    target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+                    target = TargetingSystemFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
                     turret.smallTargetGO = target;
                 }
             }
         }
         else if (turret.smallTargetingMode == "small_multipletargets_largeship")
         {
-            target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+            target = TargetingSystemFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
         }
         else if (turret.smallTargetingMode == "small_multipletargets_smallship")
         {
-            target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+            target = TargetingSystemFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
         }
         else if (turret.smallTargetingMode == "small_multipletargets_all")
         {
-            target = TargetingFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
+            target = TargetingSystemFunctions.GetClosestEnemyLargeShip_Turret(turretPosition, turret.allegiance);
 
             if (target == null)
             {
-                target = TargetingFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
+                target = TargetingSystemFunctions.GetClosestEnemySmallShip_Turret(turretPosition, turret.allegiance);
             }
         }
         else if (turret.smallTargetingMode == "small_shiptarget")
         {
             if (turret.smallShip != null)
             {
-                target = turret.smallShip.target;
+                target = turret.smallShip.targetingSystem.target;
                 turret.smallTargetGO = target;
             }
             else if (turret.largeShip != null)
@@ -1036,17 +1036,17 @@ public static class LaserTurretFunctions
 
         if (smallShip != null)
         {
-            DamageFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, smallShip.weaponManagement.hasRapidFire);
+            DamageSystemFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, smallShip.weaponManagement.hasRapidFire);
         }
 
         if (largeShip != null)
         {
-            DamageFunctions.TakeDamage_LargeShip(largeShip, damage, hitPosition);
+            DamageSystemFunctions.TakeDamage_LargeShip(largeShip, damage, hitPosition);
         }
 
         if (shipSystem != null)
         {
-            DamageFunctions.TakeShipSystemDamage(shipSystem, damage);
+            DamageSystemFunctions.TakeShipSystemDamage(shipSystem, damage);
         }
     }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public static class TorpedoTubesFunctions
+public static class TorpedoSystemFunctions
 {
     #region start functions
 
@@ -17,17 +17,17 @@ public static class TorpedoTubesFunctions
 
         if (tube1 != null)
         {
-            smallShip.torpedoTube1 = tube1.gameObject;
+            smallShip.torpedoSystem.torpedoTube1 = tube1.gameObject;
         }
 
         if (tube2 != null)
         {
-            smallShip.torpedoTube2 = tube2.gameObject;
+            smallShip.torpedoSystem.torpedoTube2 = tube2.gameObject;
         }
 
         if (tube3 != null)
         {
-            smallShip.torpedoTube3 = tube3.gameObject;
+            smallShip.torpedoSystem.torpedoTube3 = tube3.gameObject;
         }
         else
         {
@@ -35,13 +35,13 @@ public static class TorpedoTubesFunctions
 
             if (tube3 != null)
             {
-                smallShip.torpedoTube3 = tube3.gameObject;
+                smallShip.torpedoSystem.torpedoTube3 = tube3.gameObject;
             }
         }
 
         if (tube4 != null)
         {
-            smallShip.torpedoTube4 = tube4.gameObject;
+            smallShip.torpedoSystem.torpedoTube4 = tube4.gameObject;
         }
         else
         {
@@ -49,17 +49,17 @@ public static class TorpedoTubesFunctions
 
             if (tube4 != null)
             {
-                smallShip.torpedoTube4 = tube4.gameObject;
+                smallShip.torpedoSystem.torpedoTube4 = tube4.gameObject;
             }
         }
 
         if (tube1 == null & tube2 == null & tube3 == null & tube4 == null)
         {
-            smallShip.hasTorpedos = false;
+            smallShip.torpedoSystem.hasTorpedos = false;
         }
         else
         {
-            smallShip.hasTorpedos = true;
+            smallShip.torpedoSystem.hasTorpedos = true;
         }
 
     }
@@ -71,41 +71,41 @@ public static class TorpedoTubesFunctions
     //This locks onto the ship
     public static void EstablishLockOn(SmallShip smallShip)
     {
-        if (smallShip.target != null & smallShip.weaponManagement.weaponType == "torpedos" & smallShip.torpedoNumber > 0)
+        if (smallShip.targetingSystem.target != null & smallShip.weaponManagement.weaponType == "torpedos" & smallShip.torpedoSystem.torpedoNumber > 0)
         {
-            if (smallShip.target.activeSelf == true)
+            if (smallShip.targetingSystem.target.activeSelf == true)
             {
-                if (smallShip.targetForward > 0.99f & smallShip.targetDistance < 4000)
+                if (smallShip.targetingSystem.targetForward > 0.99f & smallShip.targetingSystem.targetDistance < 4000)
                 {
 
-                    if (smallShip.torpedoLockingOn != true)
+                    if (smallShip.torpedoSystem.torpedoLockingOn != true)
                     {
-                        smallShip.torpedoLockOnTime = Time.time + 5;
-                        smallShip.torpedoLockingOn = true;
+                        smallShip.torpedoSystem.torpedoLockOnTime = Time.time + 5;
+                        smallShip.torpedoSystem.torpedoLockingOn = true;
                     }
 
-                    if (smallShip.torpedoLockOnTime < Time.time)
+                    if (smallShip.torpedoSystem.torpedoLockOnTime < Time.time)
                     {
-                        smallShip.torpedoLockedOn = true;
+                        smallShip.torpedoSystem.torpedoLockedOn = true;
                     }
 
                 }
                 else
                 {
-                    smallShip.torpedoLockingOn = false;
-                    smallShip.torpedoLockedOn = false;
+                    smallShip.torpedoSystem.torpedoLockingOn = false;
+                    smallShip.torpedoSystem.torpedoLockedOn = false;
                 }
             }
             else
             {
-                smallShip.torpedoLockingOn = false;
-                smallShip.torpedoLockedOn = false;
+                smallShip.torpedoSystem.torpedoLockingOn = false;
+                smallShip.torpedoSystem.torpedoLockedOn = false;
             }
         }
         else
         {
-            smallShip.torpedoLockingOn = false;
-            smallShip.torpedoLockedOn = false;
+            smallShip.torpedoSystem.torpedoLockingOn = false;
+            smallShip.torpedoSystem.torpedoLockedOn = false;
         }
     }
 
@@ -121,7 +121,7 @@ public static class TorpedoTubesFunctions
     //This fires a torpedo
     public static void FireTorpedo(SmallShip smallShip)
     {
-        if (smallShip.hasTorpedos == true & smallShip.torpedoNumber > 0 & smallShip.weaponManagement.weaponType == "torpedos" & smallShip.torpedoPressedTime < Time.time & smallShip.weaponManagement.weaponsLock == false)
+        if (smallShip.torpedoSystem.hasTorpedos == true & smallShip.torpedoSystem.torpedoNumber > 0 & smallShip.weaponManagement.weaponType == "torpedos" & smallShip.torpedoSystem.torpedoPressedTime < Time.time & smallShip.weaponManagement.weaponsLock == false)
         {
             float spatialBlend = 1;
             string mixer = "External";
@@ -139,34 +139,34 @@ public static class TorpedoTubesFunctions
 
             List<GameObject> torpedoTubes = new List<GameObject>();
 
-            if (smallShip.torpedoTube1 != null)
+            if (smallShip.torpedoSystem.torpedoTube1 != null)
             {
-                torpedoTubes.Add(smallShip.torpedoTube1);
+                torpedoTubes.Add(smallShip.torpedoSystem.torpedoTube1);
             }
 
-            if (smallShip.torpedoTube2 != null)
+            if (smallShip.torpedoSystem.torpedoTube2 != null)
             {
-                torpedoTubes.Add(smallShip.torpedoTube2);
+                torpedoTubes.Add(smallShip.torpedoSystem.torpedoTube2);
             }
 
-            if (smallShip.torpedoTube3 != null)
+            if (smallShip.torpedoSystem.torpedoTube3 != null)
             {
-                torpedoTubes.Add(smallShip.torpedoTube3);
+                torpedoTubes.Add(smallShip.torpedoSystem.torpedoTube3);
             }
 
-            if (smallShip.torpedoTube4 != null)
+            if (smallShip.torpedoSystem.torpedoTube4 != null)
             {
-                torpedoTubes.Add(smallShip.torpedoTube4);
+                torpedoTubes.Add(smallShip.torpedoSystem.torpedoTube4);
             }
 
             if (smallShip.weaponManagement.weaponMode == "single")
             {
-                if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
-                Torpedo torpedo = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
+                if (smallShip.torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoSystem.torpedoCycleNumber = 0; }
+                Torpedo torpedo = CreateTorpedo(smallShip, smallShip.targetingSystem.target, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo.launchAudio, mixer, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
@@ -174,29 +174,29 @@ public static class TorpedoTubesFunctions
                     Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.1f, 0.50f, 0.50f));
                 }
 
-                smallShip.torpedoCycleNumber += 1;
+                smallShip.torpedoSystem.torpedoCycleNumber += 1;
 
-                smallShip.torpedoNumber -= 1;
+                smallShip.torpedoSystem.torpedoNumber -= 1;
 
             }
             else if (smallShip.weaponManagement.weaponMode == "dual")
             {
-                if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
-                Torpedo torpedo01 = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
+                if (smallShip.torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoSystem.torpedoCycleNumber = 0; }
+                Torpedo torpedo01 = CreateTorpedo(smallShip, smallShip.targetingSystem.target, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo01 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
-                smallShip.torpedoCycleNumber += 1;
+                smallShip.torpedoSystem.torpedoCycleNumber += 1;
 
-                if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
-                Torpedo torpedo02 = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
+                if (smallShip.torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoSystem.torpedoCycleNumber = 0; }
+                Torpedo torpedo02 = CreateTorpedo(smallShip, smallShip.targetingSystem.target, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo02 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
@@ -204,49 +204,49 @@ public static class TorpedoTubesFunctions
                     Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.1f, 0.55f, 0.55f));
                 }
 
-                smallShip.torpedoCycleNumber += 1;
+                smallShip.torpedoSystem.torpedoCycleNumber += 1;
 
-                smallShip.torpedoNumber -= 2;
+                smallShip.torpedoSystem.torpedoNumber -= 2;
 
             }
             else if (smallShip.weaponManagement.weaponMode == "all")
             {
-                if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
-                Torpedo torpedo01 = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
+                if (smallShip.torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoSystem.torpedoCycleNumber = 0; }
+                Torpedo torpedo01 = CreateTorpedo(smallShip, smallShip.targetingSystem.target, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo01 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
-                smallShip.torpedoCycleNumber += 1;
+                smallShip.torpedoSystem.torpedoCycleNumber += 1;
 
-                if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
-                Torpedo torpedo02 = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
+                if (smallShip.torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoSystem.torpedoCycleNumber = 0; }
+                Torpedo torpedo02 = CreateTorpedo(smallShip, smallShip.targetingSystem.target, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo02 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
-                smallShip.torpedoCycleNumber += 1;
+                smallShip.torpedoSystem.torpedoCycleNumber += 1;
 
-                if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
-                Torpedo torpedo03 = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
+                if (smallShip.torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoSystem.torpedoCycleNumber = 0; }
+                Torpedo torpedo03 = CreateTorpedo(smallShip, smallShip.targetingSystem.target, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo03 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo03.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo03.launchAudio, mixer, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
-                smallShip.torpedoCycleNumber += 1;
+                smallShip.torpedoSystem.torpedoCycleNumber += 1;
 
-                if (smallShip.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoCycleNumber = 0; }
-                Torpedo torpedo04 = CreateTorpedo(smallShip, smallShip.target, torpedoTubes[smallShip.torpedoCycleNumber].transform.position);
+                if (smallShip.torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { smallShip.torpedoSystem.torpedoCycleNumber = 0; }
+                Torpedo torpedo04 = CreateTorpedo(smallShip, smallShip.targetingSystem.target, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo04 != null)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo04.launchAudio, mixer, torpedoTubes[smallShip.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(smallShip.audioManager, torpedo04.launchAudio, mixer, torpedoTubes[smallShip.torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
 
                 }
 
@@ -255,9 +255,9 @@ public static class TorpedoTubesFunctions
                     Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.1f, 0.60f, 0.60f));
                 }
 
-                smallShip.torpedoCycleNumber += 1;
+                smallShip.torpedoSystem.torpedoCycleNumber += 1;
 
-                smallShip.torpedoNumber -= 4;
+                smallShip.torpedoSystem.torpedoNumber -= 4;
 
             }
 
@@ -267,7 +267,7 @@ public static class TorpedoTubesFunctions
                 smallShip.scene.ogCamera.shipHit = true;
             }
 
-            smallShip.torpedoPressedTime = Time.time + 2.5f;
+            smallShip.torpedoSystem.torpedoPressedTime = Time.time + 2.5f;
         }
     }
 
@@ -299,7 +299,7 @@ public static class TorpedoTubesFunctions
             torpedoScript.destroyAfter = Time.time + 30;
             torpedoScript.fireTime = Time.time;
             torpedoScript.target = null;
-            torpedoScript.target = smallShip.target;
+            torpedoScript.target = smallShip.targetingSystem.target;
             torpedoScript.torpedoRigidbody.linearVelocity = new Vector3(0f, 0f, 0f);
             torpedoScript.torpedoRigidbody.angularVelocity = new Vector3(0f, 0f, 0f);
             torpedoScript.audioManager = smallShip.audioManager;
@@ -320,7 +320,7 @@ public static class TorpedoTubesFunctions
 
             foreach (TorpedoType tempTorpedoType in torpedoTypes.torpedoTypeData)
             {
-                if (tempTorpedoType.name == smallShip.torpedoType)
+                if (tempTorpedoType.name == smallShip.torpedoSystem.torpedoType)
                 {
                     torpedoType = tempTorpedoType;
                     break;
@@ -347,7 +347,7 @@ public static class TorpedoTubesFunctions
                 torpedoScript.audioManager = smallShip.audioManager;
                 AttachParticleTrail(smallShip, torpedoScript, torpedoType.trailColor);
 
-                if (smallShip.torpedoLockedOn == true)
+                if (smallShip.torpedoSystem.torpedoLockedOn == true)
                 {
                     torpedoScript.target = target;
 
@@ -414,13 +414,13 @@ public static class TorpedoTubesFunctions
     //This toggles the ships weapon mode for torpedos
     public static void ToggleWeaponMode(SmallShip smallShip)
     {
-        if (smallShip.weaponManagement.toggleWeaponNumber == true & Time.time > smallShip.torpedoModePressedTime & smallShip.weaponManagement.weaponType == "torpedos")
+        if (smallShip.weaponManagement.toggleWeaponNumber == true & Time.time > smallShip.torpedoSystem.torpedoModePressedTime & smallShip.weaponManagement.weaponType == "torpedos")
         {
-            if (smallShip.weaponManagement.weaponMode == "single" & smallShip.torpedoTube2 != null & smallShip.torpedoNumber > 1)
+            if (smallShip.weaponManagement.weaponMode == "single" & smallShip.torpedoSystem.torpedoTube2 != null & smallShip.torpedoSystem.torpedoNumber > 1)
             {
                 smallShip.weaponManagement.weaponMode = "dual";
             }
-            else if (smallShip.weaponManagement.weaponMode == "dual" & smallShip.torpedoTube3 != null & smallShip.torpedoTube4 != null & smallShip.torpedoNumber > 3)
+            else if (smallShip.weaponManagement.weaponMode == "dual" & smallShip.torpedoSystem.torpedoTube3 != null & smallShip.torpedoSystem.torpedoTube4 != null & smallShip.torpedoSystem.torpedoNumber > 3)
             {
                 smallShip.weaponManagement.weaponMode = "all";
             }
@@ -429,7 +429,7 @@ public static class TorpedoTubesFunctions
                 smallShip.weaponManagement.weaponMode = "single";
             }
 
-            smallShip.torpedoModePressedTime = Time.time + 0.2f;
+            smallShip.torpedoSystem.torpedoModePressedTime = Time.time + 0.2f;
 
             if (smallShip.isAI == false)
             {
@@ -658,7 +658,7 @@ public static class TorpedoTubesFunctions
 
             if (shipSystem != null)
             {
-                DamageFunctions.TakeShipSystemDamage(shipSystem, torpedo.damagePower);
+                DamageSystemFunctions.TakeShipSystemDamage(shipSystem, torpedo.damagePower);
             }
         }
 
@@ -720,22 +720,22 @@ public static class TorpedoTubesFunctions
                 {
                     if (smallShip.gameObject != firingShip.gameObject)
                     {
-                        DamageFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
-                        Task a = new Task(DamageFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
+                        DamageSystemFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
+                        Task a = new Task(DamageSystemFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
                     }
                 }
                 else
                 {
                     if (smallShip.gameObject != firingShip.gameObject)
                     {
-                        DamageFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
-                        Task a = new Task(DamageFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
+                        DamageSystemFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
+                        Task a = new Task(DamageSystemFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
                     }
                 }
             }
             else if (largeShip != null)
             {
-                DamageFunctions.TakeDamage_LargeShip(largeShip, torpedo.damagePower * 4, hitPosition);
+                DamageSystemFunctions.TakeDamage_LargeShip(largeShip, torpedo.damagePower * 4, hitPosition);
             }
         }
     }

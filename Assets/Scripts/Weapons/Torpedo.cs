@@ -44,22 +44,22 @@ public class Torpedo : MonoBehaviour
 
     private void Start()
     {
-        TorpedoTubesFunctions.IgnoreColliders(this);
+        TorpedoSystemFunctions.IgnoreColliders(this);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        TorpedoTubesFunctions.GetTargetInfo(this);
-        TorpedoTubesFunctions.AngleTowardsTarget(this);
-        TorpedoTubesFunctions.TorpedoMove(this);
-        TorpedoTubesFunctions.DestroyCloseToTarget(this);
-        TorpedoTubesFunctions.DestroyAfterTime(this);
-        TorpedoTubesFunctions.CounterMeasures(this);
+        TorpedoSystemFunctions.GetTargetInfo(this);
+        TorpedoSystemFunctions.AngleTowardsTarget(this);
+        TorpedoSystemFunctions.TorpedoMove(this);
+        TorpedoSystemFunctions.DestroyCloseToTarget(this);
+        TorpedoSystemFunctions.DestroyAfterTime(this);
+        TorpedoSystemFunctions.CounterMeasures(this);
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        TorpedoTubesFunctions.RunCollisionEvent(this, collision);
+        TorpedoSystemFunctions.RunCollisionEvent(this, collision);
     }
 }

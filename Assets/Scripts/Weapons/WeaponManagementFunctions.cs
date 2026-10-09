@@ -6,7 +6,7 @@ public class WeaponManagementFunctions
     public static void ToggleWeapons(WeaponManagement weaponManagement)
     {
 
-        TorpedoTubes torpedoTubes = weaponManagement.GetComponent<TorpedoTubes>();
+        TorpedoSystem torpedoTubes = weaponManagement.GetComponent<TorpedoSystem>();
         bool hasTorpedos = true;
         float torpedoNumber = torpedoTubes.torpedoNumber;
 

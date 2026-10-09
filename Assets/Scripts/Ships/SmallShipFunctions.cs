@@ -67,9 +67,9 @@ public static class SmallShipFunctions
                 GameObjectUtils.AddRigidbody(smallShip.gameObject, 100f, 9f, 7.5f);
             }
 
-            TorpedoTubesFunctions.GetTorpedoTubes(smallShip);
+            TorpedoSystemFunctions.GetTorpedoTubes(smallShip);
             smallShip.colliders = smallShip.GetComponentsInChildren<Collider>();
-            TargetingFunctions.CreateWaypoint_SmallShipPlayer(smallShip);
+            TargetingSystemFunctions.CreateWaypoint_SmallShipPlayer(smallShip);
             DockingFunctions.AddDockingPointsSmallShip(smallShip);
             SmallShipAIFunctions.SetTargetingErrorMargin(smallShip, "low");
             smallShip.ogInput = OGInputFunctions.GetOGInput();
@@ -104,24 +104,6 @@ public static class SmallShipFunctions
         CalculatePitchTurnRollSpeeds(smallShip);
         MovementEffect(smallShip);
         AudioFunctions.PlayEngineNoise_SmallShip(smallShip);
-
-        //Targeting Functions
-        TargetingFunctions.RunPlayerTargetingFunctions(smallShip);
-        TargetingFunctions.GetTargetInfo_SmallShip(smallShip);
-
-        //Torpedo functions
-        TorpedoTubesFunctions.EstablishLockOn(smallShip);
-        TorpedoTubesFunctions.FireTorpedoPlayer(smallShip);
-        TorpedoTubesFunctions.ToggleWeaponMode(smallShip);
-
-        //Damage functions
-        DamageFunctions.TakeCollisionDamage_SmallShip(smallShip);
-        DamageFunctions.SmokeTrail_SmallShip(smallShip);
-        DamageFunctions.Explode_SmallShip(smallShip);
-        DamageFunctions.PlayDamageWarningSound(smallShip);
-
-        //Systems functions
-        DamageFunctions.RestoreShipsSystems_SmallShip(smallShip);
     }
 
     //Run ship fixed update functions
@@ -174,15 +156,15 @@ public static class SmallShipFunctions
     //This causes the ship to match the speed of it's target (not used by AI)
     public static void MatchSpeed(SmallShip smallShip)
     {
-        if (smallShip.target != null & smallShip.matchSpeed == true)
+        if (smallShip.targetingSystem.target != null & smallShip.matchSpeed == true)
         {
-            if (smallShip.target.activeSelf != false)
+            if (smallShip.targetingSystem.target.activeSelf != false)
             {
-                if (smallShip.thrustSpeed > smallShip.targetSpeed)
+                if (smallShip.thrustSpeed > smallShip.targetingSystem.targetSpeed)
                 {
                     smallShip.thrustInput = -1;
                 }
-                else if (smallShip.thrustSpeed < smallShip.targetSpeed)
+                else if (smallShip.thrustSpeed < smallShip.targetingSystem.targetSpeed)
                 {
                     smallShip.thrustInput = 1;
                 }
@@ -635,7 +617,7 @@ public static class SmallShipFunctions
 
                 smallShip.jumpingToHyperspace = false;
 
-                DamageFunctions.DeactivateShip_SmallShip(smallShip);
+                DamageSystemFunctions.DeactivateShip_SmallShip(smallShip);
             }
         }
     }

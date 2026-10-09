@@ -449,7 +449,7 @@ public static class SmallShipAIFunctions
                     smallShip.boostIsActive = false;
                 }
             }
-            else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
+            else if (smallShip.targetingSystem.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
             {
                 MatchSpeed(smallShip);
             }
@@ -476,7 +476,7 @@ public static class SmallShipAIFunctions
                     smallShip.thrustInput = 1;
                 }
             }
-            else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
+            else if (smallShip.targetingSystem.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
             {
                 MatchSpeed(smallShip);
             }
@@ -505,7 +505,7 @@ public static class SmallShipAIFunctions
                     smallShip.thrustInput = 1;
                 }
             }
-            else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
+            else if (smallShip.targetingSystem.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
             {
                 MatchSpeed(smallShip);
             }
@@ -534,7 +534,7 @@ public static class SmallShipAIFunctions
                     smallShip.thrustInput = 1;
                 }
             }
-            else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
+            else if (smallShip.targetingSystem.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
             {
                 MatchSpeed(smallShip);
             }
@@ -572,7 +572,7 @@ public static class SmallShipAIFunctions
                     smallShip.thrustInput = 1;
                 }
             }
-            else if (smallShip.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
+            else if (smallShip.targetingSystem.target != null & smallShip.flyInFormation == false || smallShip.followTarget != null & smallShip.flyInFormation == true)
             {
                 MatchSpeed(smallShip);
             }
@@ -588,11 +588,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 if (smallShip.aiMatchSpeed == false)
                 {
-                    if (smallShip.targetForward < 0.5f)
+                    if (smallShip.targetingSystem.targetForward < 0.5f)
                     {
                         float halfSpeed = (smallShip.speedRating / 2f);
 
@@ -646,7 +646,7 @@ public static class SmallShipAIFunctions
             float oneThird = (smallShip.speedRating / 3f);
             float oneHalf = (smallShip.speedRating / 2f);
 
-            if (smallShip.thrustSpeed > smallShip.targetSpeed & smallShip.thrustSpeed > oneThird)
+            if (smallShip.thrustSpeed > smallShip.targetingSystem.targetSpeed & smallShip.thrustSpeed > oneThird)
             {
                 //smallShip.thrustInput = -1;
                 smallShip.thrustSpeed -= 1;
@@ -729,11 +729,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "lasers";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -753,11 +753,11 @@ public static class SmallShipAIFunctions
         if (smallShip != null)
         {
 
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "lasers";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -776,11 +776,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "lasers";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -799,11 +799,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "lasers";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -827,11 +827,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "plasma";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -851,11 +851,11 @@ public static class SmallShipAIFunctions
         if (smallShip != null)
         {
 
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "plasma";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -874,11 +874,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "plasma";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -897,11 +897,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "ion";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -920,11 +920,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "ion";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -943,11 +943,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "ion";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -966,11 +966,11 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "ion";
 
-                if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
                 {
                     bool dontFire = CheckFire(smallShip);
 
@@ -994,16 +994,16 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "torpedos";
 
-                if (smallShip.torpedoNumber > 0)
+                if (smallShip.torpedoSystem.torpedoNumber > 0)
                 {
-                    if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
                     {
                         smallShip.weaponManagement.weaponMode = "single";
-                        TorpedoTubesFunctions.FireTorpedo(smallShip);
+                        TorpedoSystemFunctions.FireTorpedo(smallShip);
                     }
                 }
                 else
@@ -1020,16 +1020,16 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "torpedos";
 
-                if (smallShip.torpedoNumber > 0)
+                if (smallShip.torpedoSystem.torpedoNumber > 0)
                 {
-                    if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
                     {
                         smallShip.weaponManagement.weaponMode = "dual";
-                        TorpedoTubesFunctions.FireTorpedo(smallShip);
+                        TorpedoSystemFunctions.FireTorpedo(smallShip);
                     }
                 }
                 else
@@ -1046,16 +1046,16 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 smallShip.weaponManagement.weaponType = "torpedos";
 
-                if (smallShip.torpedoNumber > 0)
+                if (smallShip.torpedoSystem.torpedoNumber > 0)
                 {
-                    if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
                     {
                         smallShip.weaponManagement.weaponMode = "all";
-                        TorpedoTubesFunctions.FireTorpedo(smallShip);
+                        TorpedoSystemFunctions.FireTorpedo(smallShip);
                     }
                 }
                 else
@@ -1072,19 +1072,19 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
-                if (smallShip.torpedoNumber > 0 & smallShip.interceptDistance > 2000 & smallShip.target.gameObject.activeSelf == true)
+                if (smallShip.torpedoSystem.torpedoNumber > 0 & smallShip.targetingSystem.interceptDistance > 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
                 {
                     smallShip.weaponManagement.weaponType = "torpedos";
 
-                    if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
                     {
                         smallShip.weaponManagement.weaponMode = "single";
-                        TorpedoTubesFunctions.FireTorpedo(smallShip);
+                        TorpedoSystemFunctions.FireTorpedo(smallShip);
                     }
                 }
-                else if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                else if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
                 {
                     if (smallShip.weaponManagement.hasPlasma == false)
                     {
@@ -1112,19 +1112,19 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
-                if (smallShip.torpedoNumber > 0 & smallShip.interceptDistance > 2000 & smallShip.target.gameObject.activeSelf == true)
+                if (smallShip.torpedoSystem.torpedoNumber > 0 & smallShip.targetingSystem.interceptDistance > 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
                 {
                     smallShip.weaponManagement.weaponType = "torpedos";
 
-                    if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
                     {
                         smallShip.weaponManagement.weaponMode = "dual";
-                        TorpedoTubesFunctions.FireTorpedo(smallShip);
+                        TorpedoSystemFunctions.FireTorpedo(smallShip);
                     }
                 }
-                else if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                else if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
                 {
                     if (smallShip.weaponManagement.hasPlasma == false)
                     {
@@ -1152,19 +1152,19 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
-                if (smallShip.torpedoNumber > 0 & smallShip.interceptDistance > 2000 & smallShip.target.gameObject.activeSelf == true)
+                if (smallShip.torpedoSystem.torpedoNumber > 0 & smallShip.targetingSystem.interceptDistance > 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
                 {
                     smallShip.weaponManagement.weaponType = "torpedos";
 
-                    if (smallShip.targetForward > 0.995f & smallShip.torpedoLockedOn == true)
+                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
                     {
                         smallShip.weaponManagement.weaponMode = "all";
-                        TorpedoTubesFunctions.FireTorpedo(smallShip);
+                        TorpedoSystemFunctions.FireTorpedo(smallShip);
                     }
                 }
-                else if (smallShip.interceptForward > 0.95f & smallShip.interceptDistance < 2000 & smallShip.target.gameObject.activeSelf == true)
+                else if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
                 {
                     if (smallShip.weaponManagement.hasPlasma == false)
                     {
@@ -1201,15 +1201,15 @@ public static class SmallShipAIFunctions
                 smallShip.weaponManagement.weaponType = "plasma";
             }
 
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
-                if (smallShip.interceptForward > 0.95f & smallShip.target.gameObject.activeSelf == true)
+                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.target.gameObject.activeSelf == true)
                 {
                     if (smallShip.weaponManagement.hasRapidFire == true)
                     {
-                        if (smallShip.targetSmallShip != null)
+                        if (smallShip.targetingSystem.targetSmallShip != null)
                         {
-                            if (smallShip.targetSmallShip.weaponManagement.hasPlasma == true & smallShip.targetSmallShip.shieldLevel > 10)
+                            if (smallShip.targetingSystem.targetSmallShip.weaponManagement.hasPlasma == true & smallShip.targetingSystem.targetSmallShip.shieldLevel > 10)
                             {
                                 smallShip.weaponManagement.weaponMode = "rapid";
                                 EnergyWeaponFunctions.InitiateFiring(smallShip);
@@ -1249,7 +1249,7 @@ public static class SmallShipAIFunctions
 
                 if (otherSmallship != null)
                 {
-                    bool isHostile = TargetingFunctions.GetHostility_SmallShipPlayer(smallShip, otherSmallship.allegiance);
+                    bool isHostile = TargetingSystemFunctions.GetHostility_SmallShipPlayer(smallShip, otherSmallship.allegiance);
 
                     if (isHostile != true)
                     {
@@ -1340,9 +1340,9 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.aiEvade == false)
             {
-                if (smallShip.target != null)
+                if (smallShip.targetingSystem.target != null)
                 {
-                    if (smallShip.targetDistance > 250)
+                    if (smallShip.targetingSystem.targetDistance > 250)
                     {
                         smallShip.aiMatchSpeed = false;
                         AngleTowardsTarget(smallShip);
@@ -1370,9 +1370,9 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.aiEvade == false)
             {
-                if (smallShip.target != null)
+                if (smallShip.targetingSystem.target != null)
                 {
-                    if (smallShip.targetDistance > 250)
+                    if (smallShip.targetingSystem.targetDistance > 250)
                     {
                         smallShip.aiMatchSpeed = false;
                         AngleTowardsTarget(smallShip);
@@ -1422,14 +1422,14 @@ public static class SmallShipAIFunctions
                     float attackDistance = 250;
                     float withdrawDistance = 1000;
 
-                    if (smallShip.targetLargeShip != null)
+                    if (smallShip.targetingSystem.targetLargeShip != null)
                     {
-                        if (smallShip.targetLargeShip.shipClass == "large")
+                        if (smallShip.targetingSystem.targetLargeShip.shipClass == "large")
                         {
                             attackDistance = 1500;
                             withdrawDistance = 3000;
                         }
-                        else if (smallShip.targetLargeShip.shipClass == "middle")
+                        else if (smallShip.targetingSystem.targetLargeShip.shipClass == "middle")
                         {
                             attackDistance = 1000;
                             withdrawDistance = 2000;
@@ -1441,15 +1441,15 @@ public static class SmallShipAIFunctions
                         }
                     }
 
-                    if (smallShip.targetDistance > attackDistance & smallShip.withdraw == false)
+                    if (smallShip.targetingSystem.targetDistance > attackDistance & smallShip.withdraw == false)
                     {
                         AngleTowardsTarget(smallShip);
                     }
-                    else if (smallShip.targetDistance < attackDistance & smallShip.withdraw == false)
+                    else if (smallShip.targetingSystem.targetDistance < attackDistance & smallShip.withdraw == false)
                     {
                         smallShip.withdraw = true;
                     }
-                    else if (smallShip.targetDistance > withdrawDistance & smallShip.withdraw == true)
+                    else if (smallShip.targetingSystem.targetDistance > withdrawDistance & smallShip.withdraw == true)
                     {
                         smallShip.withdraw = false;
                     }
@@ -1489,9 +1489,9 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.aiEvade == false)
             {
-                if (smallShip.waypoint != null)
+                if (smallShip.targetingSystem.waypoint != null)
                 {
-                    float distanceToWaypoint = Vector3.Distance(smallShip.gameObject.transform.position, smallShip.waypoint.transform.position);
+                    float distanceToWaypoint = Vector3.Distance(smallShip.gameObject.transform.position, smallShip.targetingSystem.waypoint.transform.position);
 
                     if (distanceToWaypoint < 50)
                     {
@@ -1545,9 +1545,9 @@ public static class SmallShipAIFunctions
                     z = referencePosition.z + Random.Range(-2500, 2500);
                 }
 
-                if (smallShip.waypoint != null)
+                if (smallShip.targetingSystem.waypoint != null)
                 {
-                    smallShip.waypoint.transform.localPosition = new Vector3(x, y, z);
+                    smallShip.targetingSystem.waypoint.transform.localPosition = new Vector3(x, y, z);
                 }
             }
         }
@@ -1641,9 +1641,9 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
-                if (smallShip.targetDistance < 1000 & smallShip.targetForward > 0)
+                if (smallShip.targetingSystem.targetDistance < 1000 & smallShip.targetingSystem.targetForward > 0)
                 {
                     smallShip.powerMode = "lasers";
                 }
@@ -1664,7 +1664,7 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 if (smallShip.shieldLevel < smallShip.shieldRating / 2f)
                 {
@@ -1687,17 +1687,17 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            if (smallShip.target != null)
+            if (smallShip.targetingSystem.target != null)
             {
                 if (smallShip.shieldLevel < smallShip.shieldRating / 2f)
                 {
                     smallShip.powerMode = "shields";
                 }
-                else if (smallShip.targetDistance < 1000 & smallShip.targetForward > 0)
+                else if (smallShip.targetingSystem.targetDistance < 1000 & smallShip.targetingSystem.targetForward > 0)
                 {
                     smallShip.powerMode = "lasers";
                 }
-                else if (smallShip.targetDistance > 2000 & smallShip.targetForward > 0)
+                else if (smallShip.targetingSystem.targetDistance > 2000 & smallShip.targetingSystem.targetForward > 0)
                 {
                     smallShip.powerMode = "engines";
                 }
@@ -1720,7 +1720,7 @@ public static class SmallShipAIFunctions
     //This checks if the ship needs to request a new target - this function is run automatically
     public static void RequestTarget(SmallShip smallShip)
     {
-        if (smallShip.target == null)
+        if (smallShip.targetingSystem.target == null)
         {
             smallShip.requestingTarget = true;
         }
@@ -1733,24 +1733,24 @@ public static class SmallShipAIFunctions
     //This clears the target if it doesn't meet certain conditions i.e. was destroyed or disabled  - this function is run automatically
     public static void ClearTarget(SmallShip smallShip)
     {
-        if (smallShip.target != null)
+        if (smallShip.targetingSystem.target != null)
         {
-            if (smallShip.target.activeSelf == false)
+            if (smallShip.targetingSystem.target.activeSelf == false)
             {
-                smallShip.target = null;
+                smallShip.targetingSystem.target = null;
             }
-            else if (smallShip.targetSmallShip != null)
+            else if (smallShip.targetingSystem.targetSmallShip != null)
             {
-                if (smallShip.targetSmallShip.isDisabled == true)
+                if (smallShip.targetingSystem.targetSmallShip.isDisabled == true)
                 {
-                    smallShip.target = null;
+                    smallShip.targetingSystem.target = null;
                 }
             }
-            else if (smallShip.targetLargeShip != null)
+            else if (smallShip.targetingSystem.targetLargeShip != null)
             {
-                if (smallShip.targetLargeShip.isDisabled == true)
+                if (smallShip.targetingSystem.targetLargeShip.isDisabled == true)
                 {
-                    smallShip.target = null;
+                    smallShip.targetingSystem.target = null;
                 }
             }
         }
@@ -1763,7 +1763,7 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.aiTargetingMode != "targetallprefsmall") //This ensures the previous target is cleared
             {
-                smallShip.target = null;
+                smallShip.targetingSystem.target = null;
                 smallShip.requestingTarget = true;
             }
 
@@ -1778,7 +1778,7 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.aiTargetingMode != "targetallpreflarge") //This ensures the previous target is cleared
             {
-                smallShip.target = null;
+                smallShip.targetingSystem.target = null;
                 smallShip.requestingTarget = true;
             }
 
@@ -1793,7 +1793,7 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.aiTargetingMode != "targetsmallshipsonly") //This ensures the previous target is cleared
             {
-                smallShip.target = null;
+                smallShip.targetingSystem.target = null;
                 smallShip.requestingTarget = true;
             }
 
@@ -1808,7 +1808,7 @@ public static class SmallShipAIFunctions
         {
             if (smallShip.aiTargetingMode != "targetlargeshipsonly") //This ensures the previous target is cleared
             {
-                smallShip.target = null;
+                smallShip.targetingSystem.target = null;
                 smallShip.requestingTarget = true;
             }
 
@@ -1891,43 +1891,43 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            AvoidGimbalLock(smallShip, smallShip.interceptForward);
+            AvoidGimbalLock(smallShip, smallShip.targetingSystem.interceptForward);
 
-            if (smallShip.target != null & smallShip.avoidGimbalLock == false)
+            if (smallShip.targetingSystem.target != null & smallShip.avoidGimbalLock == false)
             {
-                if (smallShip.interceptForward < 0.8)
+                if (smallShip.targetingSystem.interceptForward < 0.8)
                 {
                     if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
                     {
                         //Right way up
-                        smallShip.turnInput = smallShip.interceptRight;
-                        smallShip.pitchInput = -smallShip.interceptUp;
+                        smallShip.turnInput = smallShip.targetingSystem.interceptRight;
+                        smallShip.pitchInput = -smallShip.targetingSystem.interceptUp;
 
                     }
                     else
                     {
                         //Upside down
-                        smallShip.turnInput = -smallShip.interceptRight;
-                        smallShip.pitchInput = -smallShip.interceptUp;
+                        smallShip.turnInput = -smallShip.targetingSystem.interceptRight;
+                        smallShip.pitchInput = -smallShip.targetingSystem.interceptUp;
                     }
                 }
                 else
                 {
                     //Smoothly interpolate the multiplier from 1 to 5 to prevent a jerk
-                    float t = Mathf.InverseLerp(0.8f, 1.0f, smallShip.interceptForward);
+                    float t = Mathf.InverseLerp(0.8f, 1.0f, smallShip.targetingSystem.interceptForward);
                     float multiplier = Mathf.SmoothStep(1f, 5f, t);
 
                     if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
                     {
                         //Right way up
-                        smallShip.turnInput = smallShip.interceptRight * multiplier;
-                        smallShip.pitchInput = -smallShip.interceptUp * multiplier;
+                        smallShip.turnInput = smallShip.targetingSystem.interceptRight * multiplier;
+                        smallShip.pitchInput = -smallShip.targetingSystem.interceptUp * multiplier;
                     }
                     else
                     {
                         //Upside down
-                        smallShip.turnInput = -smallShip.interceptRight * multiplier;
-                        smallShip.pitchInput = -smallShip.interceptUp * multiplier;
+                        smallShip.turnInput = -smallShip.targetingSystem.interceptRight * multiplier;
+                        smallShip.pitchInput = -smallShip.targetingSystem.interceptUp * multiplier;
                     }
                 }
             }
@@ -1939,23 +1939,23 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            AvoidGimbalLock(smallShip, smallShip.interceptForward, true);
+            AvoidGimbalLock(smallShip, smallShip.targetingSystem.interceptForward, true);
 
-            if (smallShip.target != null & smallShip.avoidGimbalLock == false)
+            if (smallShip.targetingSystem.target != null & smallShip.avoidGimbalLock == false)
             {
-                if (-smallShip.interceptForward < 1)
+                if (-smallShip.targetingSystem.interceptForward < 1)
                 {
                     if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
                     {
                         //Right way up
-                        smallShip.turnInput = -smallShip.interceptRight;
-                        smallShip.pitchInput = smallShip.interceptUp;
+                        smallShip.turnInput = -smallShip.targetingSystem.interceptRight;
+                        smallShip.pitchInput = smallShip.targetingSystem.interceptUp;
                     }
                     else
                     {
                         //Upside down
-                        smallShip.turnInput = smallShip.interceptRight;
-                        smallShip.pitchInput = -smallShip.interceptUp;
+                        smallShip.turnInput = smallShip.targetingSystem.interceptRight;
+                        smallShip.pitchInput = -smallShip.targetingSystem.interceptUp;
                     }
                 }
             }
@@ -1967,43 +1967,43 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            AvoidGimbalLock(smallShip, smallShip.waypointForward);
+            AvoidGimbalLock(smallShip, smallShip.targetingSystem.waypointForward);
 
-            if (smallShip.waypoint != null & smallShip.avoidGimbalLock == false)
+            if (smallShip.targetingSystem.waypoint != null & smallShip.avoidGimbalLock == false)
             {
-                if (smallShip.waypointForward < 0.8)
+                if (smallShip.targetingSystem.waypointForward < 0.8)
                 {
                     if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
                     {
                         //Right way up
-                        smallShip.turnInput = smallShip.waypointRight;
-                        smallShip.pitchInput = -smallShip.waypointUp;
+                        smallShip.turnInput = smallShip.targetingSystem.waypointRight;
+                        smallShip.pitchInput = -smallShip.targetingSystem.waypointUp;
 
                     }
                     else
                     {
                         //Upside down
-                        smallShip.turnInput = -smallShip.waypointRight;
-                        smallShip.pitchInput = -smallShip.waypointUp;
+                        smallShip.turnInput = -smallShip.targetingSystem.waypointRight;
+                        smallShip.pitchInput = -smallShip.targetingSystem.waypointUp;
                     }
                 }
                 else
                 {
                     //Smoothly interpolate the multiplier from 1 to 5 to prevent a jerk
-                    float t = Mathf.InverseLerp(0.8f, 1.0f, smallShip.waypointForward);
+                    float t = Mathf.InverseLerp(0.8f, 1.0f, smallShip.targetingSystem.waypointForward);
                     float multiplier = Mathf.SmoothStep(1f, 5f, t);
 
                     if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
                     {
                         //Right way up
-                        smallShip.turnInput = smallShip.waypointRight * multiplier;
-                        smallShip.pitchInput = -smallShip.waypointUp * multiplier;
+                        smallShip.turnInput = smallShip.targetingSystem.waypointRight * multiplier;
+                        smallShip.pitchInput = -smallShip.targetingSystem.waypointUp * multiplier;
                     }
                     else
                     {
                         //Upside down
-                        smallShip.turnInput = -smallShip.waypointRight * multiplier;
-                        smallShip.pitchInput = -smallShip.waypointUp * multiplier;
+                        smallShip.turnInput = -smallShip.targetingSystem.waypointRight * multiplier;
+                        smallShip.pitchInput = -smallShip.targetingSystem.waypointUp * multiplier;
                     }
                 }
             }
@@ -2015,23 +2015,23 @@ public static class SmallShipAIFunctions
     {
         if (smallShip != null)
         {
-            AvoidGimbalLock(smallShip, smallShip.waypointForward, true);
+            AvoidGimbalLock(smallShip, smallShip.targetingSystem.waypointForward, true);
 
-            if (smallShip.waypoint != null & smallShip.avoidGimbalLock == false)
+            if (smallShip.targetingSystem.waypoint != null & smallShip.avoidGimbalLock == false)
             {
-                if (smallShip.waypointForward > -0.95)
+                if (smallShip.targetingSystem.waypointForward > -0.95)
                 {
                     if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
                     {
                         //Right way up
-                        smallShip.turnInput = -smallShip.waypointRight;
-                        smallShip.pitchInput = smallShip.waypointUp;
+                        smallShip.turnInput = -smallShip.targetingSystem.waypointRight;
+                        smallShip.pitchInput = smallShip.targetingSystem.waypointUp;
                     }
                     else
                     {
                         //Upside down
-                        smallShip.turnInput = smallShip.waypointRight;
-                        smallShip.pitchInput = -smallShip.waypointUp;
+                        smallShip.turnInput = smallShip.targetingSystem.waypointRight;
+                        smallShip.pitchInput = -smallShip.targetingSystem.waypointUp;
                     }
                 }
             }

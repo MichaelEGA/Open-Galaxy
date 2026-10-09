@@ -949,12 +949,14 @@ public static class SceneFunctions
                 //Add appropriate ship script
                 SmallShip smallShip = ship.AddComponent<SmallShip>();
                 ship.AddComponent<EnergyWeaponHit>();
+                ship.AddComponent<DamageSystem>();
+                ship.AddComponent<TargetingSystem>();
                 WeaponManagement weaponManagement = null;
                 EnergyWeapon energyWeapon = null;
-                TorpedoTubes torpedoTubes = null;
+                TorpedoSystem torpedoSystem = null;
 
                 if (addEnergyWeapons == true) { energyWeapon = ship.AddComponent<EnergyWeapon>();}
-                if (addMissiles == true) { torpedoTubes = ship.AddComponent<TorpedoTubes>(); }
+                if (addMissiles == true) { torpedoSystem = ship.AddComponent<TorpedoSystem>(); }
 
                 if (addMissiles == true || addEnergyWeapons == true)
                 {
@@ -1003,8 +1005,7 @@ public static class SceneFunctions
                 smallShip.shipClass = shipType.shipClass;
                 smallShip.laserAudio = shipType.laserAudio;
                 smallShip.engineAudio = shipType.engineAudio;
-                smallShip.torpedoNumber = shipType.torpedoRating;
-                smallShip.torpedoType = shipType.torpedoType;
+
                 smallShip.cockpitName = shipType.cockpitPrefab;
                 smallShip.scene = scene;
                 smallShip.audioManager = audioManager;
@@ -1015,17 +1016,23 @@ public static class SceneFunctions
                 smallShip.shieldType = shipType.shieldType;
                 ship.name = smallShip.name;
 
-                smallShip.energyWeapon = energyWeapon;
-
                 if (energyWeapon != null)
                 {
                     energyWeapon.laserColour = laserColor;
                 }
 
-                if (smallShip.torpedoNumber == 0)
+                if (torpedoSystem != null & weaponManagement != null)
                 {
-                    smallShip.hasTorpedos = false;
+                    torpedoSystem.torpedoNumber = shipType.torpedoRating;
+                    torpedoSystem.torpedoType = shipType.torpedoType;
+
+                    if (torpedoSystem.torpedoNumber == 0)
+                    {
+                        weaponManagement.hasTorpedos = false;
+                    }
                 }
+
+               
 
                 //Marks whether the ship is the player or AI
                 smallShip.isAI = isAI;
@@ -1036,7 +1043,7 @@ public static class SceneFunctions
 
                     smallShip.invertUpDown = settings.invertY;
                     smallShip.invertLeftRight = settings.invertX;
-                    smallShip.autoaim = settings.autoaim;
+                    smallShip.targetingSystem.autoaim = settings.autoaim;
 
                     scene.mainShip = smallShip.gameObject;
                 }
@@ -2520,9 +2527,9 @@ public static class SceneFunctions
 
                     if (smallShip != null)
                     {
-                        if (smallShip.waypoint != null)
+                        if (smallShip.targetingSystem.waypoint != null)
                         {
-                            GameObject.Destroy(smallShip.waypoint);
+                            GameObject.Destroy(smallShip.targetingSystem.waypoint);
                         }
                     }
 
@@ -2648,9 +2655,9 @@ public static class SceneFunctions
 
                         if (smallShip != null)
                         {
-                            if (smallShip.waypoint != null)
+                            if (smallShip.targetingSystem.waypoint != null)
                             {
-                                GameObject.Destroy(smallShip.waypoint);
+                                GameObject.Destroy(smallShip.targetingSystem.waypoint);
                             }
                         }
 

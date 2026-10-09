@@ -150,7 +150,7 @@ public class LargeShip : MonoBehaviour
             LargeShipFunctions.GetAIInput(this);
 
             //Targetting functions
-            TargetingFunctions.GetTargetInfo_LargeShipAI(this);
+            TargetingSystemFunctions.GetTargetInfo_LargeShipAI(this);
         }
 
         if (shipClass != "station" & shipClass != "turret" & shipClass != "buoy" & shipClass != "container")
@@ -162,10 +162,10 @@ public class LargeShip : MonoBehaviour
         }
 
         //Damage functions
-        DamageFunctions.Explode_LargeShip(this);
+        DamageSystemFunctions.Explode_LargeShip(this);
 
         //Systems functions
-        DamageFunctions.RestoreShipsSystems_LargeShip(this);
+        DamageSystemFunctions.RestoreShipsSystems_LargeShip(this);
     }
 
     void FixedUpdate()

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class WeaponManagement : MonoBehaviour
 {
-    public SmallShip smallShip;
+    public FlightControlSystem_Small smallShip;
     public EnergyWeapon energyWeapon;
     public TorpedoSystem torpedoTubes;
 
@@ -24,7 +24,7 @@ public class WeaponManagement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        smallShip = GetComponent<SmallShip>();
+        smallShip = GetComponent<FlightControlSystem_Small>();
         energyWeapon = GetComponent<EnergyWeapon>();
         torpedoTubes = GetComponent<TorpedoSystem>();
     }

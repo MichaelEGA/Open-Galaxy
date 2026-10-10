@@ -92,7 +92,7 @@ public class LargeShip : MonoBehaviour
     public GameObject waypoint;
     public GameObject target;
     public string mode = "largeship";
-    [HideInInspector] public SmallShip targetSmallShip;
+    [HideInInspector] public FlightControlSystem_Small targetSmallShip;
     [HideInInspector] public LargeShip targetLargeShip;
     [HideInInspector] public Rigidbody targetRigidbody;
     [HideInInspector] public string targetAllegiance;

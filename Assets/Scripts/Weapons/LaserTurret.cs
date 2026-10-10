@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LaserTurret : MonoBehaviour
 {
-    public SmallShip smallShip;
+    public FlightControlSystem_Small smallShip;
     public LargeShip largeShip;
     public Mesh smallLaserMesh;
     public Mesh largeLaserMesh;

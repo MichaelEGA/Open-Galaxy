@@ -3,29 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //These functions are called by the small ship functions script
-public static class SmallShipAIFunctions
+public static class FlightControlAI_SmallFunctions
 {
     #region Base AI Functions
 
     //This is the base function that calls all the other AI functions except collisions which is called by an external script (evasions are called internally though)
-    public static void GetAIInput(SmallShip smallShip)
+    public static void GetAIInput(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        if (flightControlAI.isAI == true & flightControlSystem.automaticRotationTurnAround == false & flightControlSystem.automaticRotationSpin == false & flightControlSystem.controlLock == false)
         {
-            //This adds all the default ai tags when the ship is first run
-            if (smallShip.aiStarted == false)
+            if (flightControlAI != null)
             {
-                AddDefaultTags(smallShip);
-                smallShip.aiStarted = true;
+                //This adds all the default ai tags when the ship is first run
+                if (flightControlAI.aiStarted == false)
+                {
+                    AddDefaultTags(flightControlAI);
+                    flightControlAI.aiStarted = true;
+                }
+
+                //This checks if the ship needs to request a new target
+                ClearTarget(flightControlAI);
+                RequestTarget(flightControlAI);
+
+                //This runs all the ai functions
+                RunTags(flightControlAI);
             }
-
-            //This checks if the ship needs to request a new target
-            ClearTarget(smallShip);
-            RequestTarget(smallShip);
-
-            //This runs all the ai functions
-            RunTags(smallShip);
         }
+            
     }
 
     #endregion
@@ -33,142 +39,142 @@ public static class SmallShipAIFunctions
     #region AI Tagging System
 
     //This adds the default ai tags
-    public static void AddDefaultTags(SmallShip smallShip)
+    public static void AddDefaultTags(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
-            AddTag(smallShip, "threequarterspeed");
-            AddTag(smallShip, "singlelaser");
-            AddTag(smallShip, "lowaccuracy");
-            AddTag(smallShip, "chasewithdraw");
-            AddTag(smallShip, "resetenergylevels");
-            AddTag(smallShip, "targetallprefsmall");
-            AddTag(smallShip, "collisionevasiongeg");
+            AddTag(flightControlAI, "threequarterspeed");
+            AddTag(flightControlAI, "singlelaser");
+            AddTag(flightControlAI, "lowaccuracy");
+            AddTag(flightControlAI, "chasewithdraw");
+            AddTag(flightControlAI, "resetenergylevels");
+            AddTag(flightControlAI, "targetallprefsmall");
+            AddTag(flightControlAI, "collisionevasiongeg");
         }
     }
 
     //This adds an ai tag and removes conflicting tags using the two functions below
-    public static void AddTag(SmallShip smallShip, string tag)
+    public static void AddTag(FlightControlAI_Small flightControlAI, string tag)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
             if (tag == "matchspeed" || tag == "fullspeedwithboost" || tag == "fullspeed" || tag == "threequarterspeed" || tag == "halfspeed" || tag == "quarterspeed" || tag == "dynamicspeed" || tag == "nospeed")
             {
-                RemoveSingleTag(smallShip, "fullspeedwithboost");
-                RemoveSingleTag(smallShip, "fullspeed");
-                RemoveSingleTag(smallShip, "threequarterspeed");
-                RemoveSingleTag(smallShip, "halfspeed");
-                RemoveSingleTag(smallShip, "quarterspeed");
-                RemoveSingleTag(smallShip, "dynamicspeed");
-                RemoveSingleTag(smallShip, "nospeed");
+                RemoveSingleTag(flightControlAI, "fullspeedwithboost");
+                RemoveSingleTag(flightControlAI, "fullspeed");
+                RemoveSingleTag(flightControlAI, "threequarterspeed");
+                RemoveSingleTag(flightControlAI, "halfspeed");
+                RemoveSingleTag(flightControlAI, "quarterspeed");
+                RemoveSingleTag(flightControlAI, "dynamicspeed");
+                RemoveSingleTag(flightControlAI, "nospeed");
 
             }
             else if (tag == "singlelaser" || tag == "duallasers" || tag == "alllasers" || tag == "rapidlasers" || tag == "singleplasma" || tag == "dualplasma" || tag == "allplasma" || tag == "singleion" || tag == "dualion" || tag == "allion" || tag == "rapidion" || tag == "singletorpedo" || tag == "dualtorpedos" || tag == "noweapons" || tag == "dynamicweapons_single" || tag == "dynamicweapons_dual" || tag == "dynamicweapons_all" || tag == "dynamicweapons_rapid")
             {
-                RemoveSingleTag(smallShip, "singlelaser");
-                RemoveSingleTag(smallShip, "duallasers");
-                RemoveSingleTag(smallShip, "alllasers");
-                RemoveSingleTag(smallShip, "rapidlasers");
-                RemoveSingleTag(smallShip, "singleplasma");
-                RemoveSingleTag(smallShip, "dualplasma");
-                RemoveSingleTag(smallShip, "allplasma");
-                RemoveSingleTag(smallShip, "singleion");
-                RemoveSingleTag(smallShip, "dualion");
-                RemoveSingleTag(smallShip, "allion");
-                RemoveSingleTag(smallShip, "rapidion");
-                RemoveSingleTag(smallShip, "singletorpedo");
-                RemoveSingleTag(smallShip, "dualtorpedos");
-                RemoveSingleTag(smallShip, "alltorpedos");
-                RemoveSingleTag(smallShip, "dynamicweapons_single");
-                RemoveSingleTag(smallShip, "dynamicweapons_dual");
-                RemoveSingleTag(smallShip, "dynamicweapons_all");
-                RemoveSingleTag(smallShip, "dynamicweapons_rapid");
-                RemoveSingleTag(smallShip, "noweapons");
+                RemoveSingleTag(flightControlAI, "singlelaser");
+                RemoveSingleTag(flightControlAI, "duallasers");
+                RemoveSingleTag(flightControlAI, "alllasers");
+                RemoveSingleTag(flightControlAI, "rapidlasers");
+                RemoveSingleTag(flightControlAI, "singleplasma");
+                RemoveSingleTag(flightControlAI, "dualplasma");
+                RemoveSingleTag(flightControlAI, "allplasma");
+                RemoveSingleTag(flightControlAI, "singleion");
+                RemoveSingleTag(flightControlAI, "dualion");
+                RemoveSingleTag(flightControlAI, "allion");
+                RemoveSingleTag(flightControlAI, "rapidion");
+                RemoveSingleTag(flightControlAI, "singletorpedo");
+                RemoveSingleTag(flightControlAI, "dualtorpedos");
+                RemoveSingleTag(flightControlAI, "alltorpedos");
+                RemoveSingleTag(flightControlAI, "dynamicweapons_single");
+                RemoveSingleTag(flightControlAI, "dynamicweapons_dual");
+                RemoveSingleTag(flightControlAI, "dynamicweapons_all");
+                RemoveSingleTag(flightControlAI, "dynamicweapons_rapid");
+                RemoveSingleTag(flightControlAI, "noweapons");
             }
             else if (tag == "lowaccuracy" || tag == "mediumaccuracy" || tag == "highaccuracy")
             {
-                RemoveSingleTag(smallShip, "lowaccuracy");
-                RemoveSingleTag(smallShip, "mediumaccuracy");
-                RemoveSingleTag(smallShip, "highaccuracy");
+                RemoveSingleTag(flightControlAI, "lowaccuracy");
+                RemoveSingleTag(flightControlAI, "mediumaccuracy");
+                RemoveSingleTag(flightControlAI, "highaccuracy");
             }
             else if (tag == "chase" || tag == "chasewithdraw" || tag == "strafewithdraw" || tag == "movetowaypoint" || tag == "patrolrandom" || tag == "norotation" || tag == "formationflying")
             {
-                RemoveSingleTag(smallShip, "chase");
-                RemoveSingleTag(smallShip, "chasewithdraw");
-                RemoveSingleTag(smallShip, "strafewithdraw");
-                RemoveSingleTag(smallShip, "movetowaypoint");
-                RemoveSingleTag(smallShip, "patrolrandom");
-                RemoveSingleTag(smallShip, "formationflying");
-                RemoveSingleTag(smallShip, "norotation");
-                smallShip.flyInFormation = false; //This deactivates formation flying when flying pattern is changed.
+                RemoveSingleTag(flightControlAI, "chase");
+                RemoveSingleTag(flightControlAI, "chasewithdraw");
+                RemoveSingleTag(flightControlAI, "strafewithdraw");
+                RemoveSingleTag(flightControlAI, "movetowaypoint");
+                RemoveSingleTag(flightControlAI, "patrolrandom");
+                RemoveSingleTag(flightControlAI, "formationflying");
+                RemoveSingleTag(flightControlAI, "norotation");
+                flightControlAI.flyInFormation = false; //This deactivates formation flying when flying pattern is changed.
             }
             else if (tag == "resetenergylevels" || tag == "energytoshields" || tag == "energytoengines" || tag == "energytolasers" || tag == "energyprotective" || tag == "energyaggressive" || tag == "energydynamic")
             {
-                RemoveSingleTag(smallShip, "resetenergylevels");
-                RemoveSingleTag(smallShip, "energytoshields");
-                RemoveSingleTag(smallShip, "energytoengines");
-                RemoveSingleTag(smallShip, "energytolasers");
-                RemoveSingleTag(smallShip, "energyprotective");
-                RemoveSingleTag(smallShip, "energyaggressive");
-                RemoveSingleTag(smallShip, "energydynamic");
+                RemoveSingleTag(flightControlAI, "resetenergylevels");
+                RemoveSingleTag(flightControlAI, "energytoshields");
+                RemoveSingleTag(flightControlAI, "energytoengines");
+                RemoveSingleTag(flightControlAI, "energytolasers");
+                RemoveSingleTag(flightControlAI, "energyprotective");
+                RemoveSingleTag(flightControlAI, "energyaggressive");
+                RemoveSingleTag(flightControlAI, "energydynamic");
             }
             else if (tag == "targetallprefsmall" || tag == "targetallpreflarge" || tag == "targetsmallshipsonly" || tag == "targetlargeshipsonly")
             {
-                RemoveSingleTag(smallShip, "targetallprefsmall");
-                RemoveSingleTag(smallShip, "targetallpreflarge");
-                RemoveSingleTag(smallShip, "targetsmallshipsonly");
-                RemoveSingleTag(smallShip, "targetlargeshipsonly");
+                RemoveSingleTag(flightControlAI, "targetallprefsmall");
+                RemoveSingleTag(flightControlAI, "targetallpreflarge");
+                RemoveSingleTag(flightControlAI, "targetsmallshipsonly");
+                RemoveSingleTag(flightControlAI, "targetlargeshipsonly");
             }
             else if (tag == "collisionevasion" || tag == "nocollisionevasion")
             {
-                RemoveSingleTag(smallShip, "collisionevasion");
-                RemoveSingleTag(smallShip, "nocollisionevasion");
+                RemoveSingleTag(flightControlAI, "collisionevasion");
+                RemoveSingleTag(flightControlAI, "nocollisionevasion");
             }
 
 
-            AddSingleTag(smallShip, tag);
+            AddSingleTag(flightControlAI, tag);
         }
     }
 
     //This adds an ai tag
-    public static void AddSingleTag(SmallShip smallShip, string tag)
+    public static void AddSingleTag(FlightControlAI_Small flightControlAI, string tag)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
             //This checks the tag list exists
-            if (smallShip.aiTags == null)
+            if (flightControlAI.aiTags == null)
             {
-                smallShip.aiTags = new List<string>();
+                flightControlAI.aiTags = new List<string>();
             }
 
             //This adds the new tag
-            if (smallShip.aiTags != null)
+            if (flightControlAI.aiTags != null)
             {
-                smallShip.aiTags.Add(tag);
+                flightControlAI.aiTags.Add(tag);
             }
         }
     }
 
     //This removes an ai tag
-    public static void RemoveSingleTag(SmallShip smallShip, string tag)
+    public static void RemoveSingleTag(FlightControlAI_Small flightControlAI, string tag)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
             //This checks the tag list exists
-            if (smallShip.aiTags == null)
+            if (flightControlAI.aiTags == null)
             {
-                smallShip.aiTags = new List<string>();
+                flightControlAI.aiTags = new List<string>();
             }
 
             //This removes the designated tag
-            if (smallShip.aiTags != null)
+            if (flightControlAI.aiTags != null)
             {
                 //This removes the tag
-                for (int i = 0; i < smallShip.aiTags.Count; i++)
+                for (int i = 0; i < flightControlAI.aiTags.Count; i++)
                 {
-                    if (smallShip.aiTags[i] == tag)
+                    if (flightControlAI.aiTags[i] == tag)
                     {
-                        smallShip.aiTags.RemoveAt(i);
+                        flightControlAI.aiTags.RemoveAt(i);
                         break;
                     }
                 }
@@ -177,120 +183,120 @@ public static class SmallShipAIFunctions
     }
 
     //This runs the ai tags
-    public static void RunTags(SmallShip smallShip)
+    public static void RunTags(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
             //This checks the tag list exists
-            if (smallShip.aiTags == null)
+            if (flightControlAI.aiTags == null)
             {
-                smallShip.aiTags = new List<string>();
+                flightControlAI.aiTags = new List<string>();
             }
 
             //This runs through the ship tags and runs the appropriate functions
-            if (smallShip.aiTags != null)
+            if (flightControlAI.aiTags != null)
             {
-                foreach (string tag in smallShip.aiTags.ToArray())
+                foreach (string tag in flightControlAI.aiTags.ToArray())
                 {
                     if (tag == "fullspeedwithboost") //Speed control
                     {
-                        FullSpeedWithBoost(smallShip);
+                        FullSpeedWithBoost(flightControlAI);
                     }
                     else if (tag == "fullspeed") //Speed control
                     {
-                        FullSpeed(smallShip);
+                        FullSpeed(flightControlAI);
                     }
                     else if (tag == "threequarterspeed")
                     {
-                        ThreeQuarterSpeed(smallShip);
+                        ThreeQuarterSpeed(flightControlAI);
                     }
                     else if (tag == "halfspeed")
                     {
-                        HalfSpeed(smallShip);
+                        HalfSpeed(flightControlAI);
                     }
                     else if (tag == "quarterspeed")
                     {
-                        QuarterSpeed(smallShip);
+                        QuarterSpeed(flightControlAI);
                     }
                     else if (tag == "dynamicspeed")
                     {
-                        DynamicSpeed(smallShip);
+                        DynamicSpeed(flightControlAI);
                     }
                     else if (tag == "nospeed")
                     {
-                        NoSpeed(smallShip);
+                        NoSpeed(flightControlAI);
                     }
                     else if (tag == "singlelaser") //Weapon control
                     {
-                        SingleLaser(smallShip);
+                        SingleLaser(flightControlAI);
                     }
                     else if (tag == "duallasers")
                     {
-                        DualLasers(smallShip);
+                        DualLasers(flightControlAI);
                     }
                     else if (tag == "alllasers")
                     {
-                        AllLasers(smallShip);
+                        AllLasers(flightControlAI);
                     }
                     else if (tag == "rapidlasers")
                     {
-                        RapidLasers(smallShip);
+                        RapidLasers(flightControlAI);
                     }
                     else if (tag == "singleplasma")
                     {
-                        SinglePlasma(smallShip);
+                        SinglePlasma(flightControlAI);
                     }
                     else if (tag == "dualplasma")
                     {
-                        DualPlasma(smallShip);
+                        DualPlasma(flightControlAI);
                     }
                     else if (tag == "allplasma")
                     {
-                        AllPlasma(smallShip);
+                        AllPlasma(flightControlAI);
                     }
                     else if (tag == "singleion")
                     {
-                        SingleIon(smallShip);
+                        SingleIon(flightControlAI);
                     }
                     else if (tag == "dualion")
                     {
-                        DualIon(smallShip);
+                        DualIon(flightControlAI);
                     }
                     else if (tag == "allion")
                     {
-                        AllIon(smallShip);
+                        AllIon(flightControlAI);
                     }
                     else if (tag == "rapidion")
                     {
-                        RapidIon(smallShip);
+                        RapidIon(flightControlAI);
                     }
                     else if (tag == "singletorpedo")
                     {
-                        SingleTorpedo(smallShip);
+                        SingleTorpedo(flightControlAI);
                     }
                     else if (tag == "dualtorpedos")
                     {
-                        DualTorpedos(smallShip);
+                        DualTorpedos(flightControlAI);
                     }
                     else if (tag == "alltorpedos")
                     {
-                        AllTorpedos(smallShip);
+                        AllTorpedos(flightControlAI);
                     }
                     else if (tag == "dynamicweapons_single")
                     {
-                        DynamicWeapons_Single(smallShip);
+                        DynamicWeapons_Single(flightControlAI);
                     }
                     else if (tag == "dynamicweapons_dual")
                     {
-                        DynamicWeapons_Dual(smallShip);
+                        DynamicWeapons_Dual(flightControlAI);
                     }
                     else if (tag == "dynamicweapons_all")
                     {
-                        DynamicWeapons_All(smallShip);
+                        DynamicWeapons_All(flightControlAI);
                     }
                     else if (tag == "dynamicweapons_rapid")
                     {
-                        DynamicWeapons_Rapid(smallShip);
+                        DynamicWeapons_Rapid(flightControlAI);
                     }
                     else if (tag == "noweapons")
                     {
@@ -298,87 +304,87 @@ public static class SmallShipAIFunctions
                     }
                     else if (tag == "lowaccuracy") //Weapon accuracy
                     {
-                        LowAccuracy(smallShip);
+                        LowAccuracy(flightControlAI);
                     }
                     else if (tag == "mediumaccuracy")
                     {
-                        MediumAccuracy(smallShip);
+                        MediumAccuracy(flightControlAI);
                     }
                     else if (tag == "highaccuracy")
                     {
-                        HighAccuracy(smallShip);
+                        HighAccuracy(flightControlAI);
                     }
                     else if (tag == "chase") //Flight patterns
                     {
-                        Chase(smallShip);
+                        Chase(flightControlAI);
                     }
                     else if (tag == "chasewithdraw")
                     {
-                        ChaseWithdraw(smallShip);
+                        ChaseWithdraw(flightControlAI);
                     }
                     else if (tag == "strafewithdraw")
                     {
-                        StrafeWithdraw(smallShip);
+                        StrafeWithdraw(flightControlAI);
                     }
                     else if (tag == "movetowaypoint")
                     {
-                        MoveToWayPoint(smallShip);
+                        MoveToWayPoint(flightControlAI);
                     }
                     else if (tag == "patrolrandom")
                     {
-                        PatrolRandom(smallShip);
+                        PatrolRandom(flightControlAI);
                     }
                     else if (tag == "formationflying")
                     {
-                        FormationFlying(smallShip);
+                        FormationFlying(flightControlAI);
                     }
                     else if (tag == "norotation")
                     {
-                        NoRotation(smallShip);
+                        NoRotation(flightControlAI);
                     }
                     else if (tag == "resetenergylevels") //Energy Management
                     {
-                        ResetEnergyLevels(smallShip);
+                        ResetEnergyLevels(flightControlAI);
                     }
                     else if (tag == "energytoshields")
                     {
-                        EnergyToShields(smallShip);
+                        EnergyToShields(flightControlAI);
                     }
                     else if (tag == "energytoengines")
                     {
-                        EnergyToEngines(smallShip);
+                        EnergyToEngines(flightControlAI);
                     }
                     else if (tag == "energytolasers")
                     {
-                        EnergyToLasers(smallShip);
+                        EnergyToLasers(flightControlAI);
                     }
                     else if (tag == "energyprotective")
                     {
-                        EnergyProtective(smallShip);
+                        EnergyProtective(flightControlAI);
                     }
                     else if (tag == "energyaggressive")
                     {
-                        EnergyAggressive(smallShip);
+                        EnergyAggressive(flightControlAI);
                     }
                     else if (tag == "energydynamic")
                     {
-                        EnergyDynamic(smallShip);
+                        EnergyDynamic(flightControlAI);
                     }
                     else if (tag == "targetallprefsmall") //Targetting Preference
                     {
-                        TargetAllPrefSmall(smallShip);
+                        TargetAllPrefSmall(flightControlAI);
                     }
                     else if (tag == "targetallpreflarge")
                     {
-                        TargetAllPrefLarge(smallShip);
+                        TargetAllPrefLarge(flightControlAI);
                     }
                     else if (tag == "targetlargeshipsonly")
                     {
-                        TargetLargeShipOnly(smallShip);
+                        TargetLargeShipOnly(flightControlAI);
                     }
                     else if (tag == "targetsmallshipsonly")
                     {
-                        TargetSmallShipsOnly(smallShip);
+                        TargetSmallShipsOnly(flightControlAI);
                     }
                 }
             }
@@ -386,13 +392,13 @@ public static class SmallShipAIFunctions
     }
 
     //This checks if an ai tag exists
-    public static bool TagExists(SmallShip smallShip, string tag)
+    public static bool TagExists(Ship ship, string tag)
     {
         bool exists = false;
 
-        if (smallShip != null)
+        if (ship != null)
         {
-            foreach (string tempTag in smallShip.aiTags.ToArray())
+            foreach (string tempTag in ship.flightControlAI_Small.aiTags.ToArray())
             {
                 if (tempTag == tag)
                 {
@@ -410,7 +416,7 @@ public static class SmallShipAIFunctions
     #region AI Speed Functions
 
     //This sets the ship at full speed
-    public static void FullSpeedWithBoost(SmallShip smallShip)
+    public static void FullSpeedWithBoost(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -461,7 +467,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets the ship at full speed
-    public static void FullSpeed(SmallShip smallShip)
+    public static void FullSpeed(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -488,7 +494,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets the ship to three quarter speed
-    public static void ThreeQuarterSpeed(SmallShip smallShip)
+    public static void ThreeQuarterSpeed(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -517,7 +523,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets the ship to half speed 
-    public static void HalfSpeed(SmallShip smallShip)
+    public static void HalfSpeed(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -555,7 +561,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets the ship to quarter speed
-    public static void QuarterSpeed(SmallShip smallShip)
+    public static void QuarterSpeed(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -584,7 +590,7 @@ public static class SmallShipAIFunctions
     }
 
     //This changes the speed of the ship dynamically to allow for a fast speed and sharp turns
-    public static void DynamicSpeed(SmallShip smallShip)
+    public static void DynamicSpeed(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -623,7 +629,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets the ship to half speed (typically used when no enemies are detected)
-    public static void NoSpeed(SmallShip smallShip)
+    public static void NoSpeed(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -639,7 +645,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets the ship to half speed (typically used when no enemies are detected)
-    public static void MatchSpeed(SmallShip smallShip)
+    public static void MatchSpeed(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -725,7 +731,7 @@ public static class SmallShipAIFunctions
     #region AI Weapon Control
 
     //This fires one laser at a time
-    public static void SingleLaser(SmallShip smallShip)
+    public static void SingleLaser(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -748,7 +754,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires two lasers at a time
-    public static void DualLasers(SmallShip smallShip)
+    public static void DualLasers(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -772,7 +778,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires all the ships lasers at once
-    public static void AllLasers(SmallShip smallShip)
+    public static void AllLasers(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -795,7 +801,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires one laser at a time
-    public static void RapidLasers(SmallShip smallShip)
+    public static void RapidLasers(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -823,7 +829,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires one laser at a time
-    public static void SinglePlasma(SmallShip smallShip)
+    public static void SinglePlasma(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -846,7 +852,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires two lasers at a time
-    public static void DualPlasma(SmallShip smallShip)
+    public static void DualPlasma(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -870,7 +876,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires all the ships lasers at once
-    public static void AllPlasma(SmallShip smallShip)
+    public static void AllPlasma(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -893,7 +899,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires one ion at a time
-    public static void SingleIon(SmallShip smallShip)
+    public static void SingleIon(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -916,7 +922,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires two ions at a time
-    public static void DualIon(SmallShip smallShip)
+    public static void DualIon(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -939,7 +945,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires all the ships ions at once
-    public static void AllIon(SmallShip smallShip)
+    public static void AllIon(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -962,7 +968,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires one ion at a time
-    public static void RapidIon(SmallShip smallShip)
+    public static void RapidIon(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -990,7 +996,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires one torpedo at a time
-    public static void SingleTorpedo(SmallShip smallShip)
+    public static void SingleTorpedo(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1016,7 +1022,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires two  torpedo at once
-    public static void DualTorpedos(SmallShip smallShip)
+    public static void DualTorpedos(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1042,7 +1048,7 @@ public static class SmallShipAIFunctions
     }
 
     //This fires from all torpedo tubes
-    public static void AllTorpedos(SmallShip smallShip)
+    public static void AllTorpedos(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1068,7 +1074,7 @@ public static class SmallShipAIFunctions
     }
 
     //This switches between single lasers and torpedos
-    public static void DynamicWeapons_Single(SmallShip smallShip)
+    public static void DynamicWeapons_Single(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1108,7 +1114,7 @@ public static class SmallShipAIFunctions
     }
 
     //This switches betwene dual lasers and torpedos
-    public static void DynamicWeapons_Dual(SmallShip smallShip)
+    public static void DynamicWeapons_Dual(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1148,7 +1154,7 @@ public static class SmallShipAIFunctions
     }
 
     //This switches betwene dual lasers and torpedos
-    public static void DynamicWeapons_All(SmallShip smallShip)
+    public static void DynamicWeapons_All(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1188,7 +1194,7 @@ public static class SmallShipAIFunctions
     }
 
     //This switches between rapid lasers and normal lasers
-    public static void DynamicWeapons_Rapid(SmallShip smallShip)
+    public static void DynamicWeapons_Rapid(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1231,7 +1237,7 @@ public static class SmallShipAIFunctions
         }
     }
     //This checks whether a non hostile ship is in the firing line or not
-    public static bool CheckFire(SmallShip smallShip)
+    public static bool CheckFire(FlightControlAI_Small smallShip)
     {
         bool dontFire = false;
 
@@ -1245,11 +1251,11 @@ public static class SmallShipAIFunctions
 
             if (Physics.SphereCast(forwardRaycast, 10, smallShip.gameObject.gameObject.transform.TransformDirection(Vector3.forward), out hit, 1000, layerMask))
             {
-                SmallShip otherSmallship = hit.collider.GetComponentInParent<SmallShip>();
+                FlightControlAI_Small otherSmallship = hit.collider.GetComponentInParent<FlightControlAI_Small>();
 
                 if (otherSmallship != null)
                 {
-                    bool isHostile = TargetingSystemFunctions.GetHostility_SmallShipPlayer(smallShip, otherSmallship.allegiance);
+                    bool isHostile = TargetingSystemFunctions.GetHostility_SmallShipPlayer(smallShip, otherSmallship.ship.allegiance);
 
                     if (isHostile != true)
                     {
@@ -1267,7 +1273,7 @@ public static class SmallShipAIFunctions
     #region AI Weapon Accuracy
 
     //This sets the targetting accuracy to low
-    public static void LowAccuracy(SmallShip smallShip)
+    public static void LowAccuracy(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1276,7 +1282,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets the targetting accuracy to medium
-    public static void MediumAccuracy(SmallShip smallShip)
+    public static void MediumAccuracy(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1285,7 +1291,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets the targetting accuracy to jihj
-    public static void HighAccuracy(SmallShip smallShip)
+    public static void HighAccuracy(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1294,7 +1300,7 @@ public static class SmallShipAIFunctions
     }
 
     //Targeting error margin
-    public static void SetTargetingErrorMargin(SmallShip smallShip, string mode)
+    public static void SetTargetingErrorMargin(FlightControlAI_Small smallShip, string mode)
     {
         if (smallShip != null)
         {
@@ -1334,7 +1340,7 @@ public static class SmallShipAIFunctions
     #region AI Flight Patterns
 
     //Chase: The enemy relenlessly pursues the player without withdrawing
-    public static void Chase(SmallShip smallShip)
+    public static void Chase(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1364,7 +1370,7 @@ public static class SmallShipAIFunctions
     }
 
     //Chase-Withdraw: Attack for 15-20 followed by withdrawal for 30-35 seconds
-    public static void ChaseWithdraw(SmallShip smallShip)
+    public static void ChaseWithdraw(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1411,7 +1417,7 @@ public static class SmallShipAIFunctions
     }
 
     //Strafe-Withdraw: Attacks enemy ship at distance before withdrawing again (typically used for attack large ships)
-    public static void StrafeWithdraw(SmallShip smallShip)
+    public static void StrafeWithdraw(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1469,7 +1475,7 @@ public static class SmallShipAIFunctions
     }
 
     //This angles towards the ships waypoint
-    public static void MoveToWayPoint(SmallShip smallShip)
+    public static void MoveToWayPoint(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1483,7 +1489,7 @@ public static class SmallShipAIFunctions
     }
 
     //This is the basic flight pattern for patrolling
-    public static void PatrolRandom(SmallShip smallShip, bool stayClose = false)
+    public static void PatrolRandom(FlightControlAI_Small smallShip, bool stayClose = false)
     {
         if (smallShip != null)
         {
@@ -1507,7 +1513,7 @@ public static class SmallShipAIFunctions
     }
 
     //This selects a random waypoint
-    public static void SelectRandomWaypoint(SmallShip smallShip, bool stayClose = false)
+    public static void SelectRandomWaypoint(FlightControlAI_Small smallShip, bool stayClose = false)
     {
         if (smallShip != null)
         {
@@ -1554,7 +1560,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets the ship to fly in formation
-    public static void FormationFlying(SmallShip smallShip)
+    public static void FormationFlying(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1585,7 +1591,7 @@ public static class SmallShipAIFunctions
     }
 
     //This prevents the ship from performing any rotations and locks the direction forward
-    public static void NoRotation(SmallShip smallShip)
+    public static void NoRotation(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1601,7 +1607,7 @@ public static class SmallShipAIFunctions
     #region AI Energy Management
 
     //This sets shield power to maximum
-    public static void EnergyToShields(SmallShip smallShip)
+    public static void EnergyToShields(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1610,7 +1616,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets engine power to maximum
-    public static void EnergyToEngines(SmallShip smallShip)
+    public static void EnergyToEngines(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1619,7 +1625,7 @@ public static class SmallShipAIFunctions
     }
 
     //This sets engine power to maximum
-    public static void EnergyToLasers(SmallShip smallShip)
+    public static void EnergyToLasers(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1628,7 +1634,7 @@ public static class SmallShipAIFunctions
     }
 
     //This resets all energy levels
-    public static void ResetEnergyLevels(SmallShip smallShip)
+    public static void ResetEnergyLevels(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1637,7 +1643,7 @@ public static class SmallShipAIFunctions
     }
 
     //This uses the ships energy in a way that maxmises aggression but leaves lowers the defensive capabilites of the ship
-    public static void EnergyAggressive(SmallShip smallShip)
+    public static void EnergyAggressive(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1660,7 +1666,7 @@ public static class SmallShipAIFunctions
     }
 
     //This uses the ships energy in a way that maxmises defenses but minimises attack capabilities
-    public static void EnergyProtective(SmallShip smallShip)
+    public static void EnergyProtective(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1683,7 +1689,7 @@ public static class SmallShipAIFunctions
     }
 
     //This uses the ships energy in way that is most effective for both offense and defense
-    public static void EnergyDynamic(SmallShip smallShip)
+    public static void EnergyDynamic(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1718,7 +1724,7 @@ public static class SmallShipAIFunctions
     #region AI Targetting
 
     //This checks if the ship needs to request a new target - this function is run automatically
-    public static void RequestTarget(SmallShip smallShip)
+    public static void RequestTarget(FlightControlAI_Small smallShip)
     {
         if (smallShip.targetingSystem.target == null)
         {
@@ -1731,7 +1737,7 @@ public static class SmallShipAIFunctions
     }
 
     //This clears the target if it doesn't meet certain conditions i.e. was destroyed or disabled  - this function is run automatically
-    public static void ClearTarget(SmallShip smallShip)
+    public static void ClearTarget(FlightControlAI_Small smallShip)
     {
         if (smallShip.targetingSystem.target != null)
         {
@@ -1757,7 +1763,7 @@ public static class SmallShipAIFunctions
     }
 
     //Tagets all ships but looks for small ships first
-    public static void TargetAllPrefSmall(SmallShip smallShip)
+    public static void TargetAllPrefSmall(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1772,7 +1778,7 @@ public static class SmallShipAIFunctions
     }
 
     //Targets all ships but looks for large ships first
-    public static void TargetAllPrefLarge(SmallShip smallShip)
+    public static void TargetAllPrefLarge(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1787,7 +1793,7 @@ public static class SmallShipAIFunctions
     }
 
     //Targets only small ships
-    public static void TargetSmallShipsOnly(SmallShip smallShip)
+    public static void TargetSmallShipsOnly(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1802,7 +1808,7 @@ public static class SmallShipAIFunctions
     }
 
     //Targets only small ships
-    public static void TargetLargeShipOnly(SmallShip smallShip)
+    public static void TargetLargeShipOnly(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1821,62 +1827,62 @@ public static class SmallShipAIFunctions
     #region AI Evasion and Collision Avoidance
 
     //This allows the ship to evade attacks and avoid collisions with other objects and ships
-    public static IEnumerator Evade(SmallShip smallShip, float time, string mode, int direction)
+    public static IEnumerator Evade(Ship ship, float time, string mode, int direction)
     {
-        if (smallShip != null)
+        if (ship != null)
         {
-            if (TagExists(smallShip, "nospeed") == true & TagExists(smallShip, "norotation") == true || TagExists(smallShip, "nocollisionevasion") == true || TagExists(smallShip, "formationflying") == true)
+            if (TagExists(ship.flightControlAI_Small, "nospeed") == true & TagExists(ship, "norotation") == true || TagExists(ship, "nocollisionevasion") == true || TagExists(ship, "formationflying") == true)
             {
                 //Do nothing
             }
             else
             {
-                if (smallShip != null)
+                if (ship != null)
                 {
-                    smallShip.aiEvade = true;
+                    ship.aiEvade = true;
 
                     time = time + Time.time;
 
                     while (time > Time.time)
                     {
-                        HalfSpeed(smallShip);
+                        HalfSpeed(ship);
 
                         if (direction == 0)
                         {
-                            TurnRight(smallShip);
+                            TurnRight(ship);
                         }
                         else if (direction == 1)
                         {
-                            TurnLeft(smallShip);
+                            TurnLeft(ship);
                         }
                         else if (direction == 2)
                         {
-                            PitchUp(smallShip);
+                            PitchUp(ship);
                         }
                         else if (direction == 3)
                         {
-                            PitchDown(smallShip);
+                            PitchDown(ship);
                         }
                         else if (direction == 4)
                         {
-                            RollRight(smallShip);
+                            RollRight(ship);
                         }
                         else if (direction == 5)
                         {
-                            RollLeft(smallShip);
+                            RollLeft(ship);
                         }
                         else if (direction == 6)
                         {
-                            FlyFoward(smallShip);
+                            FlyFoward(ship);
                         }
 
                         yield return null;
 
                     }
 
-                    ResetSteeringInputs(smallShip);
+                    ResetSteeringInputs(ship);
 
-                    smallShip.aiEvade = false;
+                    ship.aiEvade = false;
                 }
             }
         }
@@ -1887,7 +1893,7 @@ public static class SmallShipAIFunctions
     #region AI Steering Control
 
     //This angles the ship towards the target vector
-    public static void AngleTowardsTarget(SmallShip smallShip)
+    public static void AngleTowardsTarget(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1935,7 +1941,7 @@ public static class SmallShipAIFunctions
     }
 
     //This angles the ship away from the target vector
-    public static void AngleAwayFromTarget(SmallShip smallShip)
+    public static void AngleAwayFromTarget(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -1963,7 +1969,7 @@ public static class SmallShipAIFunctions
     }
 
     //This angles the ship towards the target vector
-    public static void AngleTowardsWaypoint(SmallShip smallShip)
+    public static void AngleTowardsWaypoint(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -2011,7 +2017,7 @@ public static class SmallShipAIFunctions
     }
 
     //This angles the ship away from the target vector
-    public static void AngleAwayFromWaypoint(SmallShip smallShip)
+    public static void AngleAwayFromWaypoint(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -2039,7 +2045,7 @@ public static class SmallShipAIFunctions
     }
 
     //This angles the ship towards the target vector
-    public static void AngleTowardsPoint(SmallShip smallShip, Vector3 point)
+    public static void AngleTowardsPoint(FlightControlAI_Small smallShip, Vector3 point)
     {
         if (smallShip != null)
         {
@@ -2093,7 +2099,7 @@ public static class SmallShipAIFunctions
     }
 
     //This pitches the ship up
-    public static void PitchUp(SmallShip smallShip)
+    public static void PitchUp(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -2102,7 +2108,7 @@ public static class SmallShipAIFunctions
     }
 
     //This pitches the ship down
-    public static void PitchDown(SmallShip smallShip)
+    public static void PitchDown(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -2111,7 +2117,7 @@ public static class SmallShipAIFunctions
     }
 
     //This turns the ship right
-    public static void TurnRight(SmallShip smallShip)
+    public static void TurnRight(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -2120,7 +2126,7 @@ public static class SmallShipAIFunctions
     }
 
     //This turns the ship Left
-    public static void TurnLeft(SmallShip smallShip)
+    public static void TurnLeft(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -2129,7 +2135,7 @@ public static class SmallShipAIFunctions
     }
 
     //This causes the ship to roll Right
-    public static void RollRight(SmallShip smallShip)
+    public static void RollRight(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -2138,7 +2144,7 @@ public static class SmallShipAIFunctions
     }
 
     //This causes the ship to roll left
-    public static void RollLeft(SmallShip smallShip)
+    public static void RollLeft(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -2147,7 +2153,7 @@ public static class SmallShipAIFunctions
     }
 
     //This causes the ship to fly forward
-    public static void FlyFoward(SmallShip smallShip)
+    public static void FlyFoward(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {
@@ -2157,7 +2163,7 @@ public static class SmallShipAIFunctions
     }
 
     //This prevents gimbal lock when the ships turn
-    public static void AvoidGimbalLock(SmallShip smallShip, float forward, bool reverse = false)
+    public static void AvoidGimbalLock(FlightControlAI_Small smallShip, float forward, bool reverse = false)
     {
 
         if (reverse == false)
@@ -2214,7 +2220,7 @@ public static class SmallShipAIFunctions
     }
 
     //This resets all the inputs
-    public static void ResetSteeringInputs(SmallShip smallShip)
+    public static void ResetSteeringInputs(FlightControlAI_Small smallShip)
     {
         if (smallShip != null)
         {

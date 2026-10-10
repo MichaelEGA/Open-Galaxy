@@ -1075,7 +1075,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(shipName))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -1175,11 +1175,11 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
-                                Task a = new Task(SmallShipFunctions.JumpToHyperspace(smallShip));
+                                Task a = new Task(FlightControlSystem_SmallFunctions.JumpToHyperspace(smallShip));
                             }
 
                             LargeShip largeShip = ship.GetComponent<LargeShip>();
@@ -1293,9 +1293,9 @@ public static class MissionFunctions
                 hud.waypointTitleString = "";
             }
 
-            if (hud.smallShip != null)
+            if (hud.ship != null)
             {
-                AudioFunctions.PlayAudioClip(hud.smallShip.audioManager, "beep01_toggle", "Cockpit", hud.smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                AudioFunctions.PlayAudioClip(hud.ship.audioManager, "beep01_toggle", "Cockpit", hud.ship.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
             HudFunctions.AddToShipLog("Waypoint activated " + waypointTitleString);
@@ -1388,7 +1388,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -1396,37 +1396,37 @@ public static class MissionFunctions
                                 {
                                     if (speedControlTag != "none" & speedControlTag != "nochange")
                                     {
-                                        SmallShipAIFunctions.AddTag(smallShip, speedControlTag);
+                                        FlightControlAI_SmallFunctions.AddTag(smallShip, speedControlTag);
                                     }
 
                                     if (weaponControlTag != "none" & weaponControlTag != "nochange")
                                     {
-                                        SmallShipAIFunctions.AddTag(smallShip, weaponControlTag);
+                                        FlightControlAI_SmallFunctions.AddTag(smallShip, weaponControlTag);
                                     }
 
                                     if (weaponAccuracyTag != "none" & weaponAccuracyTag != "nochange")
                                     {
-                                        SmallShipAIFunctions.AddTag(smallShip, weaponAccuracyTag);
+                                        FlightControlAI_SmallFunctions.AddTag(smallShip, weaponAccuracyTag);
                                     }
 
                                     if (flightPatternsTag != "none" & flightPatternsTag != "nochange")
                                     {
-                                        SmallShipAIFunctions.AddTag(smallShip, flightPatternsTag);
+                                        FlightControlAI_SmallFunctions.AddTag(smallShip, flightPatternsTag);
                                     }
 
                                     if (enermyManagementTag != "none" & enermyManagementTag != "nochange")
                                     {
-                                        SmallShipAIFunctions.AddTag(smallShip, enermyManagementTag);
+                                        FlightControlAI_SmallFunctions.AddTag(smallShip, enermyManagementTag);
                                     }
 
                                     if (targetingControlTag != "none" & targetingControlTag != "nochange")
                                     {
-                                        SmallShipAIFunctions.AddTag(smallShip, targetingControlTag);
+                                        FlightControlAI_SmallFunctions.AddTag(smallShip, targetingControlTag);
                                     }
 
                                     if (collisionControlTag != "none" & collisionControlTag != "nochange")
                                     {
-                                        SmallShipAIFunctions.AddTag(smallShip, collisionControlTag);
+                                        FlightControlAI_SmallFunctions.AddTag(smallShip, collisionControlTag);
                                     }
                                 }
                             }
@@ -1456,7 +1456,7 @@ public static class MissionFunctions
         //This gets several important references
         Scene scene = SceneFunctions.GetScene();
         OGCamera ogCamera = OGCameraFunctions.GetOGCamera();
-        SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+        FlightControlSystem_Small smallShip = scene.mainShip.GetComponent<FlightControlSystem_Small>();
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
         GameObject starfield = SceneFunctions.GetStarfield();
@@ -1478,7 +1478,7 @@ public static class MissionFunctions
             Task fadeOut = new Task(HudFunctions.FadeOutHud(1));
         }
 
-        SmallShipFunctions.CloseWings(smallShip);
+        FlightControlSystem_SmallFunctions.CloseWings(smallShip);
 
         yield return new WaitForSecondsRealtime(3.4f);
 
@@ -1625,7 +1625,7 @@ public static class MissionFunctions
 
         yield return new WaitForSecondsRealtime(1);
 
-        SmallShipFunctions.OpenWings(smallShip);
+        FlightControlSystem_SmallFunctions.OpenWings(smallShip);
 
         //This unpauses the event series
         missionManager.pauseEventSeries = false;
@@ -1649,7 +1649,7 @@ public static class MissionFunctions
         //This gets several important references
         Scene scene = SceneFunctions.GetScene();
         OGCamera ogCamera = OGCameraFunctions.GetOGCamera();
-        SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+        FlightControlSystem_Small smallShip = scene.mainShip.GetComponent<FlightControlSystem_Small>();
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
         GameObject starfield = SceneFunctions.GetStarfield();
@@ -1777,7 +1777,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -2088,7 +2088,7 @@ public static class MissionFunctions
         {
             if(scene.mainShip != null)
             {
-                SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+                FlightControlSystem_Small smallShip = scene.mainShip.GetComponent<FlightControlSystem_Small>();
 
                 if (smallShip != null)
                 {
@@ -2126,7 +2126,7 @@ public static class MissionFunctions
                     {
                         if (mode == "none" || mode == "smallships" || mode == "allships")
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -2189,7 +2189,7 @@ public static class MissionFunctions
                     {
                         if (mode == "none" || mode == "smallships" || mode == "allships")
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -2252,7 +2252,7 @@ public static class MissionFunctions
                     {
                         if (mode == "none" || mode == "smallships" || mode == "allships")
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -2305,7 +2305,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
                             LargeShip largeShip = ship.GetComponent<LargeShip>();
 
                             if (smallShip != null)
@@ -2350,7 +2350,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
                             LargeShip largeShip = ship.GetComponent<LargeShip>();
 
                             if (smallShip != null)
@@ -2395,7 +2395,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
                             LargeShip largeShip = ship.GetComponent<LargeShip>();
 
                             if (smallShip != null)
@@ -2440,7 +2440,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
                             LargeShip largeShip = ship.GetComponent<LargeShip>();
 
                             if (smallShip != null)
@@ -2492,7 +2492,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
                             LargeShip largeShip = ship.GetComponent<LargeShip>();
 
                             if (smallShip != null)
@@ -2598,7 +2598,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -2668,7 +2668,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -2758,7 +2758,7 @@ public static class MissionFunctions
                     {
                         if (mode == "none" || mode == "smallships" || mode == "allships")
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -2816,7 +2816,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(shipName))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
                             LargeShip largeShip = ship.GetComponent<LargeShip>();
 
                             if (smallShip != null)
@@ -2868,7 +2868,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
                             LargeShip largeShip = ship.GetComponent<LargeShip>();
 
                             if (smallShip != null)
@@ -3670,7 +3670,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -3713,7 +3713,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -3750,7 +3750,7 @@ public static class MissionFunctions
                         {
                             if (ship.name.Contains(missionEvent.data1))
                             {
-                                SmallShip smallShip = ship.GetComponent<SmallShip>();
+                                FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                                 if (smallShip != null)
                                 {
@@ -3784,7 +3784,7 @@ public static class MissionFunctions
                     {
                         if (tempShip.name.Contains(missionEvent.data2))
                         {
-                            SmallShip followTarget = tempShip.GetComponent<SmallShip>();
+                            FlightControlSystem_Small followTarget = tempShip.GetComponent<FlightControlSystem_Small>();
 
                             if (followTarget != null)
                             {
@@ -3793,7 +3793,7 @@ public static class MissionFunctions
                                 {
                                     if (tempShip2.name.Contains(missionEvent.data1))
                                     {
-                                        SmallShip smallShip = tempShip2.GetComponent<SmallShip>();
+                                        FlightControlSystem_Small smallShip = tempShip2.GetComponent<FlightControlSystem_Small>();
 
                                         if (smallShip != null)
                                         {
@@ -4082,7 +4082,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -4117,7 +4117,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -4160,7 +4160,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -4242,7 +4242,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -4438,24 +4438,24 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool.ToList())
+                foreach (GameObject shipGO in scene.objectPool.ToList())
                 {
-                    if (ship != null)
+                    if (shipGO != null)
                     {
-                        if (ship.name.Contains(missionEvent.data1))
+                        if (shipGO.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            Ship ship = shipGO.GetComponent<Ship>();
 
-                            if (smallShip != null)
+                            if (ship != null)
                             {
-                                smallShip.accelerationRating = accelerationRating;
-                                smallShip.speedRating = speedRating;
-                                smallShip.maneuverabilityRating = maneuverabilityRating;
-                                smallShip.hullRating = hullRating;
-                                smallShip.shieldRating = shieldRating;
-                                smallShip.energyWeaponFireRating = laserFireRating;
-                                smallShip.energyWeaponRating = laserRating;
-                                smallShip.wepRating = WEPRating;
+                                ship.accelerationRating = accelerationRating;
+                                ship.speedRating = speedRating;
+                                ship.maneuverabilityRating = maneuverabilityRating;
+                                ship.hullRating = hullRating;
+                                ship.shieldRating = shieldRating;
+                                ship.wepRating = WEPRating;
+                                ship.laserFireRating = laserFireRating;
+                                ship.laserRating = laserRating;
                             }
                         }
                     }
@@ -4479,7 +4479,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -4514,7 +4514,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -4569,18 +4569,18 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            TorpedoSystem torpedoSystem = ship.GetComponent<TorpedoSystem>();
 
-                            if (smallShip != null)
+                            if (torpedoSystem != null)
                             {
-                                smallShip.torpedoSystem.torpedoType = torpedoType;
+                                torpedoSystem.torpedoType = torpedoType;
 
                                 if (noChangeToTorpedoNo == true)
                                 {
-                                    torpedoNo = smallShip.torpedoSystem.torpedoNumber;
+                                    torpedoNo = torpedoSystem.torpedoNumber;
                                 }
 
-                                smallShip.torpedoSystem.torpedoNumber = torpedoNo;
+                                torpedoSystem.torpedoNumber = torpedoNo;
                             }
                         }
                     }
@@ -4604,7 +4604,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -4655,7 +4655,7 @@ public static class MissionFunctions
                     {
                         if (ship.name.Contains(missionEvent.data1))
                         {
-                            SmallShip smallShip = ship.GetComponent<SmallShip>();
+                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                             if (smallShip != null)
                             {
@@ -4721,7 +4721,7 @@ public static class MissionFunctions
                 {    
                     if (ship != null)
                     {
-                        SmallShip smallShip = ship.GetComponent<SmallShip>();
+                        FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
                         WeaponManagement weaponManagement = ship.GetComponent<WeaponManagement>();
 
                         if (smallShip != null & weaponManagement != null)
@@ -4805,7 +4805,7 @@ public static class MissionFunctions
         {
             if (scene.mainShip != null)
             {
-                SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+                FlightControlSystem_Small smallShip = scene.mainShip.GetComponent<FlightControlSystem_Small>();
 
                 if (smallShip != null)
                 {
@@ -4826,7 +4826,7 @@ public static class MissionFunctions
         {
             if (scene.mainShip != null)
             {
-                SmallShip smallShip = scene.mainShip.GetComponent<SmallShip>();
+                FlightControlSystem_Small smallShip = scene.mainShip.GetComponent<FlightControlSystem_Small>();
 
                 if (smallShip != null)
                 {

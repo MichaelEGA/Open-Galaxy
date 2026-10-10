@@ -6,7 +6,7 @@ public class EnergyWeaponHit : MonoBehaviour
     {
         ParticleSystem ps = attacker.GetComponent<ParticleSystem>();
 
-        SmallShip smallShip = this.gameObject.GetComponent<SmallShip>();
+        FlightControlSystem_Small smallShip = this.gameObject.GetComponent<FlightControlSystem_Small>();
 
         EnergyWeaponFunctions.RunCollisionEvent(ps, smallShip);
     }

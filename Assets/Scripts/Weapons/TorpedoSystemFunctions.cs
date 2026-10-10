@@ -8,7 +8,7 @@ public static class TorpedoSystemFunctions
     #region start functions
 
     //This finds all torpedo launchers on the ship
-    public static void GetTorpedoTubes(SmallShip smallShip)
+    public static void GetTorpedoTubes(FlightControlSystem_Small smallShip)
     {
         Transform tube1 = smallShip.gameObject.transform.Find("missilebank01/missilebank01-01");
         Transform tube2 = smallShip.gameObject.transform.Find("missilebank01/missilebank01-02");
@@ -69,7 +69,7 @@ public static class TorpedoSystemFunctions
     #region fire torpedo
 
     //This locks onto the ship
-    public static void EstablishLockOn(SmallShip smallShip)
+    public static void EstablishLockOn(FlightControlSystem_Small smallShip)
     {
         if (smallShip.targetingSystem.target != null & smallShip.weaponManagement.weaponType == "torpedos" & smallShip.torpedoSystem.torpedoNumber > 0)
         {
@@ -110,7 +110,7 @@ public static class TorpedoSystemFunctions
     }
 
     //This causes the player to fire a torpedo
-    public static void FireTorpedoPlayer(SmallShip smallShip)
+    public static void FireTorpedoPlayer(FlightControlSystem_Small smallShip)
     {
         if (smallShip.fireWeapon == true & smallShip.isAI == false)
         {
@@ -119,7 +119,7 @@ public static class TorpedoSystemFunctions
     }
 
     //This fires a torpedo
-    public static void FireTorpedo(SmallShip smallShip)
+    public static void FireTorpedo(FlightControlSystem_Small smallShip)
     {
         if (smallShip.torpedoSystem.hasTorpedos == true & smallShip.torpedoSystem.torpedoNumber > 0 & smallShip.weaponManagement.weaponType == "torpedos" & smallShip.torpedoSystem.torpedoPressedTime < Time.time & smallShip.weaponManagement.weaponsLock == false)
         {
@@ -276,7 +276,7 @@ public static class TorpedoSystemFunctions
     #region create torpedo
 
     //This creates a new torpedo either by grabbing an inactive torpedo from the pool of the same type or instantiating a new one if none are availilble in the pool
-    public static Torpedo CreateTorpedo(SmallShip smallShip, GameObject target, Vector3 position)
+    public static Torpedo CreateTorpedo(FlightControlSystem_Small smallShip, GameObject target, Vector3 position)
     {
         Torpedo torpedoScript = null;
         Scene scene = smallShip.scene;
@@ -353,7 +353,7 @@ public static class TorpedoSystemFunctions
 
                     if (torpedoScript.targetSmallShip == null)
                     {
-                        torpedoScript.targetSmallShip = target.GetComponent<SmallShip>();
+                        torpedoScript.targetSmallShip = target.GetComponent<FlightControlSystem_Small>();
                     }
 
                     if (torpedoScript.targetLargeShip == null)
@@ -381,7 +381,7 @@ public static class TorpedoSystemFunctions
     }
 
     //This attaches the particle trail to the torpedo
-    public static void AttachParticleTrail(SmallShip smallShip, Torpedo torpedo, string color)
+    public static void AttachParticleTrail(FlightControlSystem_Small smallShip, Torpedo torpedo, string color)
     {
         Object trailObject = PoolUtils.FindPrefabObjectInPool(smallShip.scene.particlePrefabPool, color);
 
@@ -412,7 +412,7 @@ public static class TorpedoSystemFunctions
     #region toggle weapon mode
 
     //This toggles the ships weapon mode for torpedos
-    public static void ToggleWeaponMode(SmallShip smallShip)
+    public static void ToggleWeaponMode(FlightControlSystem_Small smallShip)
     {
         if (smallShip.weaponManagement.toggleWeaponNumber == true & Time.time > smallShip.torpedoSystem.torpedoModePressedTime & smallShip.weaponManagement.weaponType == "torpedos")
         {
@@ -624,7 +624,7 @@ public static class TorpedoSystemFunctions
         {
             Scene scene = SceneFunctions.GetScene();
 
-            SmallShip targetSmallShip = collision.gameObject.GetComponentInParent<SmallShip>();
+            FlightControlSystem_Small targetSmallShip = collision.gameObject.GetComponentInParent<FlightControlSystem_Small>();
 
             if (targetSmallShip != null)
             {
@@ -672,7 +672,7 @@ public static class TorpedoSystemFunctions
         {
             float distance = Vector3.Distance(torpedo.gameObject.transform.position, torpedo.target.transform.position);
 
-            SmallShip targetSmallShip = torpedo.target.GetComponentInParent<SmallShip>();
+            FlightControlSystem_Small targetSmallShip = torpedo.target.GetComponentInParent<FlightControlSystem_Small>();
 
             if (distance < 25)
             {
@@ -707,9 +707,9 @@ public static class TorpedoSystemFunctions
     }
 
     //This causes the ship to take damage from torpedos
-    public static void CauseTorpedoDamage(SmallShip firingShip, GameObject other, Torpedo torpedo, Vector3 hitPosition)
+    public static void CauseTorpedoDamage(FlightControlSystem_Small firingShip, GameObject other, Torpedo torpedo, Vector3 hitPosition)
     {
-        SmallShip smallShip = other.GetComponentInParent<SmallShip>();
+        FlightControlSystem_Small smallShip = other.GetComponentInParent<FlightControlSystem_Small>();
         LargeShip largeShip = other.GetComponentInParent<LargeShip>();
 
         if (Time.time > 10)

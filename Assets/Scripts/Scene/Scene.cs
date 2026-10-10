@@ -48,7 +48,7 @@ public class Scene : MonoBehaviour
 
     [Header("Script Pools")]
     public bool allocatingTargets;
-    [HideInInspector] public List<SmallShip> smallShips;
+    [HideInInspector] public List<Ship> smallShips;
     [HideInInspector] public List<LargeShip> largeShips;
     [HideInInspector] public List<LaserTurret> turrets;
 

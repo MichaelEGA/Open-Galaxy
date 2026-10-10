@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class TargetingSystem : MonoBehaviour
 {
-    public SmallShip smallShip;
+    public FlightControlSystem_Small smallShip;
 
 
     public GameObject waypoint;
     public GameObject target;
     public bool dontSelectLargeShips;
     public bool autoaim;
-    public SmallShip targetSmallShip;
+    public Ship targetShip;
     public LargeShip targetLargeShip;
     public Rigidbody targetRigidbody;
     public string targetAllegiance;
@@ -40,7 +40,7 @@ public class TargetingSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        smallShip = GetComponent<SmallShip>();
+        smallShip = GetComponent<FlightControlSystem_Small>();
     }
 
     // Update is called once per frame

@@ -23,7 +23,7 @@ public static class LaserTurretFunctions
             if (turret.largeShip == null & turret.smallShip == null)
             {
                 turret.largeShip = turret.shipGO.GetComponent<LargeShip>();
-                turret.smallShip = turret.shipGO.GetComponent<SmallShip>();
+                turret.smallShip = turret.shipGO.GetComponent<FlightControlSystem_Small>();
 
                 if (turret.largeShip != null)
                 {
@@ -916,7 +916,7 @@ public static class LaserTurretFunctions
     {
         GameObject parent = objectHit; //This assumes the object his is the parent unless another is found
 
-        SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
+        FlightControlSystem_Small smallShip = objectHit.gameObject.GetComponentInParent<FlightControlSystem_Small>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
         if (smallShip != null)
@@ -940,7 +940,7 @@ public static class LaserTurretFunctions
         string shieldType = "default";
         bool isAI = true;
 
-        SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
+        FlightControlSystem_Small smallShip = objectHit.gameObject.GetComponentInParent<FlightControlSystem_Small>(); //This gets the smallship function if avaiblible
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
         if (smallShip != null)
@@ -1014,7 +1014,7 @@ public static class LaserTurretFunctions
     //This calculates and applies damage to the 
     public static void ApplyDamage(LaserTurret laserTurret, GameObject objectHit, Vector3 hitPosition, GameObject childObject = null)
     {
-        SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
+        FlightControlSystem_Small smallShip = objectHit.gameObject.GetComponentInParent<FlightControlSystem_Small>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
         ShipSystem shipSystem = null;
 

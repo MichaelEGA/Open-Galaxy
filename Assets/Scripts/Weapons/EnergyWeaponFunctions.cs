@@ -15,12 +15,12 @@ public static class EnergyWeaponFunctions
     {
         if (laser != null)
         {
-            laser.smallShip = laser.GetComponent<SmallShip>();
+            laser.smallShip = laser.GetComponent<FlightControlSystem_Small>();
         }
 
         if (laser.energyWeaponParticleSystem == null)
         {
-            SmallShip smallShip = laser.smallShip;
+            FlightControlSystem_Small smallShip = laser.smallShip;
 
             EnergyWeaponFunctions.GetCannons(laser);
             EnergyWeaponFunctions.LoadEnergyWeaponParticleSystem(laser);
@@ -31,7 +31,7 @@ public static class EnergyWeaponFunctions
     //This sets all the correct settings on the provided particle system to fire lasers
     public static void LoadEnergyWeaponParticleSystem(EnergyWeapon laser)
     {
-        SmallShip smallShip = laser.smallShip;
+        FlightControlSystem_Small smallShip = laser.smallShip;
 
         //This loads the necessary prefabs
         GameObject laserGO = Resources.Load(OGGetAddress.particles + "models/laser") as GameObject;
@@ -149,7 +149,7 @@ public static class EnergyWeaponFunctions
     //This sets all the correct settings on the provided particle system to make a muzzle flash
     public static void LoadEnergyWeaponMuzzleFlashParticleSystem(EnergyWeapon laser)
     {
-        SmallShip smallShip = laser.smallShip;
+        FlightControlSystem_Small smallShip = laser.smallShip;
 
         //This loads the necessary prefabs
         GameObject redMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
@@ -245,7 +245,7 @@ public static class EnergyWeaponFunctions
     }
 
     //This modifies the collision layers to the player layer so that it's visible in film mode
-    public static void ChangeCollisionLayerToPlayer(SmallShip smallShip)
+    public static void ChangeCollisionLayerToPlayer(FlightControlSystem_Small smallShip)
     {
         EnergyWeapon laser = GetEnergyWeapon(smallShip);
 
@@ -264,7 +264,7 @@ public static class EnergyWeaponFunctions
     }
 
     //This resets the collision layers
-    public static void ResetCollisionLayers(SmallShip smallShip)
+    public static void ResetCollisionLayers(FlightControlSystem_Small smallShip)
     {
         EnergyWeapon laser = GetEnergyWeapon(smallShip);
 
@@ -283,7 +283,7 @@ public static class EnergyWeaponFunctions
     }
 
     //This sets the collision layer for the lasers
-    public static LayerMask SetEnergyWeaponCollisionLayers(SmallShip smallShip, bool markAsPlayer = false)
+    public static LayerMask SetEnergyWeaponCollisionLayers(FlightControlSystem_Small smallShip, bool markAsPlayer = false)
     {
         LayerMask collisionLayers = new LayerMask(); 
 
@@ -347,7 +347,7 @@ public static class EnergyWeaponFunctions
     //This grabs all the ships laser cannons
     public static void GetCannons(EnergyWeapon laser)
     {
-        SmallShip smallShip = laser.smallShip;
+        FlightControlSystem_Small smallShip = laser.smallShip;
 
         Transform laser1 = smallShip.gameObject.transform.Find("gunbank01/gunbank01-01");
         Transform laser2 = smallShip.gameObject.transform.Find("gunbank01/gunbank01-02");
@@ -395,7 +395,7 @@ public static class EnergyWeaponFunctions
     }
 
     //This sets the rotation of the lasers to angle at the correct distance for the targetted ship
-    public static void SetCannons(SmallShip smallShip)
+    public static void SetCannons(FlightControlSystem_Small smallShip)
     {
         EnergyWeapon laser = GetEnergyWeapon(smallShip);
 
@@ -552,7 +552,7 @@ public static class EnergyWeaponFunctions
     //This allows the player to fire the lasers
     public static void InitiateFiringPlayer(EnergyWeapon energyWeapon)
     {
-        SmallShip smallShip = energyWeapon.smallShip;
+        FlightControlSystem_Small smallShip = energyWeapon.smallShip;
 
         if (smallShip.fireWeapon == true & smallShip.isAI == false || smallShip.rapidFire == true & smallShip.isAI == false & energyWeapon.weaponManagement.hasRapidFire == true)
         {
@@ -561,7 +561,7 @@ public static class EnergyWeaponFunctions
     }
 
     //This executes the firing according to the laser mode
-    public static void InitiateFiring(SmallShip smallShip)
+    public static void InitiateFiring(FlightControlSystem_Small smallShip)
     {
         EnergyWeapon energyWeapon = GetEnergyWeapon(smallShip);
 
@@ -697,7 +697,7 @@ public static class EnergyWeaponFunctions
     }
 
     //This runs through the cannons and runs the FireSingleEnergyWeapon script
-    public static IEnumerator FireEnergyWeapons(SmallShip smallShip, float lasersToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
+    public static IEnumerator FireEnergyWeapons(FlightControlSystem_Small smallShip, float lasersToFire, GameObject firstCannon, GameObject secondCannon = null, GameObject thirdCannon = null, GameObject fourthCannon = null)
     {
         EnergyWeapon energyWeapon = GetEnergyWeapon(smallShip);
 
@@ -788,7 +788,7 @@ public static class EnergyWeaponFunctions
     }
 
     //This actuallly fires the energy weapon
-    public static void FireSingleEnergyWeapon(SmallShip smallShip, EnergyWeapon energyWeapon, ParticleSystem particleSystem, ParticleSystem particleSystemMuzzleFlash, GameObject cannon, float power, float rating, float type, float mode)
+    public static void FireSingleEnergyWeapon(FlightControlSystem_Small smallShip, EnergyWeapon energyWeapon, ParticleSystem particleSystem, ParticleSystem particleSystemMuzzleFlash, GameObject cannon, float power, float rating, float type, float mode)
     {
         particleSystemMuzzleFlash.transform.position = cannon.transform.position;
         particleSystemMuzzleFlash.transform.rotation = cannon.transform.rotation;
@@ -802,16 +802,16 @@ public static class EnergyWeaponFunctions
         energyWeapon.customData.Add(new Vector4(power, rating, type, mode));
         particleSystem.SetCustomParticleData(energyWeapon.customData, ParticleSystemCustomData.Custom1);
 
-        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
+        if (smallShip.ship.isAI == false & smallShip.ship.ogInput.keyboardAndMouse == false)
         {
             Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
         }
     }
 
     //Plays the energy weapon sound
-    public static void PlayEnergyWeaponSound(SmallShip smallShip, GameObject cannon, string audioFile, string mixer, float spatialBlend, float pitch, float volume)
+    public static void PlayEnergyWeaponSound(FlightControlSystem_Small smallShip, GameObject cannon, string audioFile, string mixer, float spatialBlend, float pitch, float volume)
     {
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, audioFile, mixer, cannon.transform.position, spatialBlend, pitch, 500, volume);
+        AudioFunctions.PlayAudioClip(smallShip.ship.audioManager, audioFile, mixer, cannon.transform.position, spatialBlend, pitch, 500, volume);
     }
 
     #endregion
@@ -819,7 +819,7 @@ public static class EnergyWeaponFunctions
     #region collision and damage functions
 
     //This handles an event where the laser hits something
-    public static void RunCollisionEvent(ParticleSystem particleSystemScript, SmallShip smallShip)
+    public static void RunCollisionEvent(ParticleSystem particleSystemScript, FlightControlSystem_Small smallShip)
     {
         //Get collision information
         List<Vector3> hitPositions = new List<Vector3>();
@@ -870,7 +870,7 @@ public static class EnergyWeaponFunctions
     {
         GameObject parent = objectHit; //This assumes the object his is the parent unless another is found
 
-        SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>();
+        FlightControlSystem_Small smallShip = objectHit.gameObject.GetComponentInParent<FlightControlSystem_Small>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
         if (smallShip != null)
@@ -894,7 +894,7 @@ public static class EnergyWeaponFunctions
         string shieldType = "default";
         bool isAI = true;
 
-        SmallShip smallShip = objectHit.gameObject.GetComponentInParent<SmallShip>(); //This gets the smallship function if avaiblible
+        FlightControlSystem_Small smallShip = objectHit.gameObject.GetComponentInParent<FlightControlSystem_Small>(); //This gets the smallship function if avaiblible
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
         if (smallShip != null)
@@ -982,7 +982,7 @@ public static class EnergyWeaponFunctions
 
     #region utilities
 
-    public static EnergyWeapon GetEnergyWeapon(SmallShip smallShip)
+    public static EnergyWeapon GetEnergyWeapon(FlightControlSystem_Small smallShip)
     {
         EnergyWeapon laser = null;
 

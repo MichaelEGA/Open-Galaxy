@@ -11,32 +11,34 @@ public static class DamageSystemFunctions
     #region smallship damage functions
 
     //This causes the ship to take damage from lasers and torpedoes
-    public static void TakeDamage_SmallShip(SmallShip smallShip, float damage, Vector3 hitPosition, bool isRapidFire = false)
+    public static void TakeDamage_SmallShip(DamageSystem damageSystem, float damage, Vector3 hitPosition, bool isRapidFire = false)
     {
-        if (smallShip.isAI == false)
+        EnergyManagementSystem energyManagementSystem = damageSystem.ship.energyManagementSystem;
+
+        if (damageSystem.ship.isAI == false)
         {
             damage = CalculateDamage_SmallShip(damage);
         }
 
-        if (Time.time - smallShip.loadTime > 10)
+        if (Time.time - damageSystem.ship.loadTime > 10)
         {
-            Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
-            float forward = -Vector3.Dot(smallShip.gameObject.transform.position, relativePosition.normalized);
+            Vector3 relativePosition = damageSystem.gameObject.transform.position - hitPosition;
+            float forward = -Vector3.Dot(damageSystem.gameObject.transform.position, relativePosition.normalized);
 
-            if (smallShip.hullLevel > 0)
+            if (damageSystem.ship.energyManagementSystem.hullLevel > 0)
             {
                 if (forward > 0)
                 {
                     //This calculates the damage
-                    if (smallShip.frontShieldLevel > 0)
+                    if (energyManagementSystem.frontShieldLevel > 0)
                     {
-                        if (smallShip.shieldType == "blackhole" & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        if (damageSystem.shieldType == "blackhole" & isRapidFire == false) //This minimises the damage on ships with black hole shields
                         {
                             damage = (damage / 100f) * 10;
                         }
 
-                        smallShip.frontShieldLevel = smallShip.frontShieldLevel - damage;
-                        smallShip.shieldLevel = smallShip.shieldLevel - damage;
+                        energyManagementSystem.frontShieldLevel = energyManagementSystem.frontShieldLevel - damage;
+                        energyManagementSystem.shieldLevel = energyManagementSystem.shieldLevel - damage;
                     }
                     else
                     {
@@ -45,28 +47,28 @@ public static class DamageSystemFunctions
                             damage = (damage / 100f) * 2;
                         }
 
-                        if (smallShip.hullLevel - damage < 5 & smallShip.invincible == true)
+                        if (energyManagementSystem.hullLevel - damage < 5 & damageSystem.invincible == true)
                         {
-                            smallShip.hullLevel = 5;
+                            energyManagementSystem.hullLevel = 5;
                         }
                         else
                         {
-                            smallShip.hullLevel = smallShip.hullLevel - damage;
+                            energyManagementSystem.hullLevel = energyManagementSystem.hullLevel - damage;
                         }
                     }
                 }
                 else
                 {
                     //This calculates the damage
-                    if (smallShip.rearShieldLevel > 0)
+                    if (energyManagementSystem.rearShieldLevel > 0)
                     {
-                        if (smallShip.shieldType == "blackhole" & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        if (damageSystem.shieldType == "blackhole" & isRapidFire == false) //This minimises the damage on ships with black hole shields
                         {
                             damage = (damage / 100f) * 10;
                         }
 
-                        smallShip.rearShieldLevel = smallShip.rearShieldLevel - damage;
-                        smallShip.shieldLevel = smallShip.shieldLevel - damage;
+                        energyManagementSystem.rearShieldLevel = energyManagementSystem.rearShieldLevel - damage;
+                        energyManagementSystem.shieldLevel = energyManagementSystem.shieldLevel - damage;
                     }
                     else
                     {
@@ -75,35 +77,35 @@ public static class DamageSystemFunctions
                             damage = (damage / 100f) * 2;
                         }
 
-                        if (smallShip.hullLevel - damage < 5 & smallShip.invincible == true)
+                        if (energyManagementSystem.hullLevel - damage < 5 & damageSystem.invincible == true)
                         {
-                            smallShip.hullLevel = 5;
+                            energyManagementSystem.hullLevel = 5;
                         }
                         else
                         {
-                            smallShip.hullLevel = smallShip.hullLevel - damage;
+                            energyManagementSystem.hullLevel = energyManagementSystem.hullLevel - damage;
                         }
                     }
                 }
 
-                if (smallShip.frontShieldLevel < 0) { smallShip.frontShieldLevel = 0; }
-                if (smallShip.rearShieldLevel < 0) { smallShip.rearShieldLevel = 0; }
-                if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
+                if (energyManagementSystem.frontShieldLevel < 0) { energyManagementSystem.frontShieldLevel = 0; }
+                if (energyManagementSystem.rearShieldLevel < 0) { energyManagementSystem.rearShieldLevel = 0; }
+                if (energyManagementSystem.shieldLevel < 0) { energyManagementSystem.shieldLevel = 0; }
 
-                if (smallShip.isAI == false)
+                if (damageSystem.ship.isAI == false)
                 {
                     //This shakes the cockpit camera
-                    smallShip.scene.ogCamera.shipHit = true;
+                    damageSystem.ship.scene.ogCamera.shipHit = true;
 
                     
                 }
 
-                if (smallShip.ogInput == null)
+                if (damageSystem.ship.ogInput == null)
                 {
-                    smallShip.ogInput = OGInputFunctions.GetOGInput();
+                    damageSystem.ship.ogInput = OGInputFunctions.GetOGInput();
                 }
 
-                if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
+                if (damageSystem.ship.isAI == false & damageSystem.ship.ogInput.keyboardAndMouse == false)
                 {
                     Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
                 }
@@ -112,151 +114,151 @@ public static class DamageSystemFunctions
     }
 
     //This plays a sound when the player ships hull is less than 25
-    public static void PlayDamageWarningSound(SmallShip smallShip)
+    public static void PlayDamageWarningSound(DamageSystem damageSystem)
     {
-        if (smallShip.isAI == false)
+        if (damageSystem.ship.isAI == false)
         {
             //This plays a warning sound
-            if (smallShip.hullLevel < 25 & smallShip.warningSoundPlayed == false)
+            if (damageSystem.ship.energyManagementSystem.hullLevel < 25 & damageSystem.warningSoundPlayed == false)
             {
-                AudioFunctions.PlayAudioClip(smallShip.audioManager, "beep_alert", "Cockpit", new Vector3(0, 0, 0), 0, 1, 500, 0.6f);
+                AudioFunctions.PlayAudioClip(damageSystem.ship.audioManager, "beep_alert", "Cockpit", new Vector3(0, 0, 0), 0, 1, 500, 0.6f);
 
-                smallShip.warningSoundPlayed = true;
+                damageSystem.warningSoundPlayed = true;
             }
         }
     }
 
     //This causes the ship to take damage from lasers and torpedoes
-    public static void TakeSystemDamage_SmallShip(SmallShip smallShip, float damage, Vector3 hitPosition, bool isRapidFire = false)
+    public static void TakeSystemDamage_SmallShip(DamageSystem damageSystem, float damage, Vector3 hitPosition, bool isRapidFire = false)
     {
         //This sets the time until the ship systems start restoring
-        smallShip.restoreDelayTime = Time.time + 15;
+        damageSystem.restoreDelayTime = Time.time + 15;
 
         //This calculates the damage level for different difficultes
-        if (smallShip.isAI == false)
+        if (damageSystem.ship.isAI == false)
         {
             damage = CalculateDamage_SmallShip(damage);
         }
 
         //This calculates the damage
-        if (Time.time - smallShip.loadTime > 10)
+        if (Time.time - damageSystem.ship.loadTime > 10)
         {
-            Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
-            float forward = -Vector3.Dot(smallShip.gameObject.transform.position, relativePosition.normalized);
+            Vector3 relativePosition = damageSystem.gameObject.transform.position - hitPosition;
+            float forward = -Vector3.Dot(damageSystem.gameObject.transform.position, relativePosition.normalized);
 
-            if (smallShip.systemsLevel > 0)
+            if (damageSystem.ship.energyManagementSystem.systemsLevel > 0)
             {
                 if (forward > 0)
                 {
-                    if (smallShip.frontShieldLevel > 0)
+                    if (damageSystem.ship.energyManagementSystem.frontShieldLevel > 0)
                     {
-                        if (smallShip.weaponManagement.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        if (damageSystem.ship.weaponManagement.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
                         {
                             damage = (damage / 100f) * 10;
                         }
 
-                        smallShip.frontShieldLevel = smallShip.frontShieldLevel - damage;
-                        smallShip.shieldLevel = smallShip.shieldLevel - damage;
+                        damageSystem.ship.energyManagementSystem.frontShieldLevel = damageSystem.ship.energyManagementSystem.frontShieldLevel - damage;
+                        damageSystem.ship.energyManagementSystem.shieldLevel = damageSystem.ship.energyManagementSystem.shieldLevel - damage;
                     }
                     else
                     {
-                        if (smallShip.weaponManagement.hasPlasma == false) //Vong ships are not harmed by ion cannons 
+                        if (damageSystem.ship.weaponManagement.hasPlasma == false) //Vong ships are not harmed by ion cannons 
                         {
-                            if (smallShip.systemsLevel - damage < 5 & smallShip.invincible == true)
+                            if (damageSystem.ship.energyManagementSystem.systemsLevel - damage < 5 & damageSystem.invincible == true)
                             {
-                                smallShip.systemsLevel = 5;
+                                damageSystem.ship.energyManagementSystem.systemsLevel = 5;
                             }
                             else
                             {
-                                smallShip.systemsLevel = smallShip.systemsLevel - damage;
+                                damageSystem.ship.energyManagementSystem.systemsLevel = damageSystem.ship.energyManagementSystem.systemsLevel - damage;
                             }
                         }
                     }
                 }
                 else
                 {
-                    if (smallShip.rearShieldLevel > 0)
+                    if (damageSystem.ship.energyManagementSystem.rearShieldLevel > 0)
                     {
-                        if (smallShip.weaponManagement.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
+                        if (damageSystem.ship.weaponManagement.hasPlasma == true & isRapidFire == false) //This minimises the damage on ships with black hole shields
                         {
                             damage = (damage / 100f) * 10;
                         }
 
-                        smallShip.rearShieldLevel = smallShip.rearShieldLevel - damage;
-                        smallShip.shieldLevel = smallShip.shieldLevel - damage;
+                        damageSystem.ship.energyManagementSystem.rearShieldLevel = damageSystem.ship.energyManagementSystem.rearShieldLevel - damage;
+                        damageSystem.ship.energyManagementSystem.shieldLevel = damageSystem.ship.energyManagementSystem.shieldLevel - damage;
                     }
                     else
                     {
-                        if (smallShip.weaponManagement.hasPlasma == false) //Vong ships are not harmed by ion cannons
+                        if (damageSystem.ship.weaponManagement.hasPlasma == false) //Vong ships are not harmed by ion cannons
                         {
-                            if (smallShip.systemsLevel - damage < 5 & smallShip.cannotbedisabled == true)
+                            if (damageSystem.ship.energyManagementSystem.systemsLevel - damage < 5 & damageSystem.cannotbedisabled == true)
                             {
-                                smallShip.systemsLevel = 5;
+                                damageSystem.ship.energyManagementSystem.systemsLevel = 5;
                             }
                             else
                             {
-                                smallShip.systemsLevel = smallShip.systemsLevel - damage;
+                                damageSystem.ship.energyManagementSystem.systemsLevel = damageSystem.ship.energyManagementSystem.systemsLevel - damage;
                             }
                         }
                     }
                 }
 
-                if (smallShip.frontShieldLevel < 0) { smallShip.frontShieldLevel = 0; }
-                if (smallShip.rearShieldLevel < 0) { smallShip.rearShieldLevel = 0; }
-                if (smallShip.shieldLevel < 0) { smallShip.shieldLevel = 0; }
+                if (damageSystem.ship.energyManagementSystem.frontShieldLevel < 0) { damageSystem.ship.energyManagementSystem.frontShieldLevel = 0; }
+                if (damageSystem.ship.energyManagementSystem.rearShieldLevel < 0) { damageSystem.ship.energyManagementSystem.rearShieldLevel = 0; }
+                if (damageSystem.ship.energyManagementSystem.shieldLevel < 0) { damageSystem.ship.energyManagementSystem.shieldLevel = 0; }
 
-                if (smallShip.isAI == false)
+                if (damageSystem.ship.isAI == false)
                 {
-                    smallShip.scene.ogCamera.shipHit = true;
+                    damageSystem.ship.scene.ogCamera.shipHit = true;
                 }
 
-                if (smallShip.ogInput == null)
+                if (damageSystem.ship.ogInput == null)
                 {
-                    smallShip.ogInput = OGInputFunctions.GetOGInput();
+                    damageSystem.ship.ogInput = OGInputFunctions.GetOGInput();
                 }
 
-                if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
+                if (damageSystem.ship.isAI == false & damageSystem.ship.ogInput.keyboardAndMouse == false)
                 {
                     Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.25f, 0.65f, 0.65f));
                 }
             }
 
             //This disables a ship that has less than 1 percent systems power
-            if (smallShip.isDisabled == false & smallShip.systemsLevel <= 0)
+            if (damageSystem.isDisabled == false & damageSystem.ship.energyManagementSystem.systemsLevel <= 0)
             {
                 //Stops listing the ship as targetting another ship
-                if (smallShip.targetingSystem.target != null)
+                if (damageSystem.ship.targetingSystem.target != null)
                 {
-                    if (smallShip.targetingSystem.target.gameObject.activeSelf == true)
+                    if (damageSystem.ship.targetingSystem.target.gameObject.activeSelf == true)
                     {
-                        if (smallShip.targetingSystem.targetSmallShip != null)
+                        if (damageSystem.ship.targetingSystem.targetShip != null)
                         {
-                            smallShip.targetingSystem.targetSmallShip.targetingSystem.numberTargeting -= 1;
+                            damageSystem.ship.targetingSystem.targetShip.ship.targetingSystem.numberTargeting -= 1;
                         }
                     }
 
-                    smallShip.targetingSystem.target = null;
+                    damageSystem.ship.targetingSystem.target = null;
                 }
 
                 //This tells the player that the ship has been destroyed
-                HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was disabled");
-                smallShip.isDisabled = true;
+                HudFunctions.AddToShipLog(damageSystem.name.ToUpper() + " was disabled");
+                damageSystem.isDisabled = true;
 
                 //This causes the ship to spin a little rather than being completely stationary
-                smallShip.shipRigidbody.angularVelocity = Random.onUnitSphere * Random.Range(0.1f, 1f);
-                smallShip.shipRigidbody.angularDamping = 0; //Prevents the spin from stopping
-                smallShip.shipRigidbody.linearVelocity = Random.onUnitSphere * Random.Range(0.1f, 1f);
-                smallShip.shipRigidbody.linearDamping = 0; //Prevents the movements from stopping
+                damageSystem.ship.flightControlSystem_Small.shipRigidbody.angularVelocity = Random.onUnitSphere * Random.Range(0.1f, 1f);
+                damageSystem.ship.flightControlSystem_Small.shipRigidbody.angularDamping = 0; //Prevents the spin from stopping
+                damageSystem.ship.flightControlSystem_Small.shipRigidbody.linearVelocity = Random.onUnitSphere * Random.Range(0.1f, 1f);
+                damageSystem.ship.flightControlSystem_Small.shipRigidbody.linearDamping = 0; //Prevents the movements from stopping
 
                 //This creates an explosion where the ship is
-                float explosionsScale = smallShip.shipLength / 10;
+                float explosionsScale = damageSystem.ship.shipLength / 10;
 
-                ParticleFunctions.InstantiateExplosion(smallShip.gameObject.transform.position, "explosion_ion_smallship", explosionsScale);
+                ParticleFunctions.InstantiateExplosion(damageSystem.gameObject.transform.position, "explosion_ion_smallship", explosionsScale);
 
                 //This makes an explosion sound
-                AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact01_laserhitshield", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
+                AudioFunctions.PlayAudioClip(damageSystem.ship.audioManager, "impact01_laserhitshield", "External", damageSystem.gameObject.transform.position, 1, 1, 1000, 1);
 
-                if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
+                if (damageSystem.ship.isAI == false & damageSystem.ship.ogInput.keyboardAndMouse == false)
                 {
                     Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.5f, 0.90f, 0.90f));
                 }
@@ -267,33 +269,33 @@ public static class DamageSystemFunctions
     }
 
     //This restores a ships systems to the desired level
-    public static void RestoreShipsSystems_SmallShip(SmallShip smallShip)
+    public static void RestoreShipsSystems_SmallShip(DamageSystem damageSystem)
     {
-        if (smallShip.isAI == false)
+        if (damageSystem.ship.isAI == false)
         {
-            if (Time.time > smallShip.restoreDelayTime)
+            if (Time.time > damageSystem.restoreDelayTime)
             {
-                if (smallShip.systemsLevel < 0)
+                if (damageSystem.ship.energyManagementSystem.systemsLevel < 0)
                 {
-                    smallShip.systemsLevel = 0;
+                    damageSystem.ship.energyManagementSystem.systemsLevel = 0;
                 }
-                else if (smallShip.systemsLevel < 100)
+                else if (damageSystem.ship.energyManagementSystem.systemsLevel < 100)
                 {
-                    smallShip.systemsLevel += 1;
+                    damageSystem.ship.energyManagementSystem.systemsLevel += 1;
                 }
             }
         }
 
-        if (smallShip.isDisabled == true & smallShip.systemsLevel > 0)
+        if (damageSystem.isDisabled == true & damageSystem.ship.energyManagementSystem.systemsLevel > 0)
         {
-            smallShip.shipRigidbody.linearVelocity = new Vector3(0f, 0f, 0f);
-            smallShip.shipRigidbody.angularVelocity = new Vector3(0f, 0f, 0f);
-            smallShip.shipRigidbody.linearDamping = 9;
-            smallShip.shipRigidbody.angularDamping = 7.5f;
+            damageSystem.ship.flightControlSystem_Small.shipRigidbody.linearVelocity = new Vector3(0f, 0f, 0f);
+            damageSystem.ship.flightControlSystem_Small.shipRigidbody.angularVelocity = new Vector3(0f, 0f, 0f);
+            damageSystem.ship.flightControlSystem_Small.shipRigidbody.linearDamping = 9;
+            damageSystem.ship.flightControlSystem_Small.shipRigidbody.angularDamping = 7.5f;
 
-            smallShip.isDisabled = false;
+            damageSystem.isDisabled = false;
 
-            HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " has restored systems");
+            HudFunctions.AddToShipLog(damageSystem.name.ToUpper() + " has restored systems");
         }
     }
 
@@ -330,26 +332,26 @@ public static class DamageSystemFunctions
     }
 
     //This tells the damage system that a collision has begun
-    public static void StartCollision_SmallShip(SmallShip smallShip, GameObject collidingWith)
+    public static void StartCollision_SmallShip(DamageSystem damageSystem, GameObject collidingWith)
     {
-        if (smallShip != null & collidingWith != null)
+        if (damageSystem != null & collidingWith != null)
         {
-            if (smallShip.docking == false)
+            if (damageSystem.ship.flightControlSystem_Small.docking == false)
             {
-                smallShip.isCurrentlyColliding = true;
+                damageSystem.isCurrentlyColliding = true;
 
-                SmallShip smallShip2 = collidingWith.GetComponentInParent<SmallShip>();
+                DamageSystem damageSystem2 = collidingWith.GetComponentInParent<DamageSystem>();
 
-                if (smallShip2 != null)
+                if (damageSystem2 != null)
                 {
-                    smallShip2.isCurrentlyCollidingSmallShip = true;
+                    damageSystem2.isCurrentlyCollidingSmallShip = true;
                 }
 
-                if (smallShip.isAI == false & smallShip.invincible == false)
+                if (damageSystem.ship.isAI == false & damageSystem.invincible == false)
                 {
-                    AudioFunctions.PlayAudioClip(smallShip.audioManager, "impact03_crash", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    AudioFunctions.PlayAudioClip(damageSystem.ship.audioManager, "impact03_crash", "Cockpit", damageSystem.gameObject.transform.position, 0, 1, 500, 1, 100);
 
-                    if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
+                    if (damageSystem.ship.isAI == false & damageSystem.ship.ogInput.keyboardAndMouse == false)
                     {
                         Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.5f, 0.90f, 0.90f));
                     }
@@ -359,46 +361,48 @@ public static class DamageSystemFunctions
     }
 
     //This tells the damage system that a collision has ended
-    public static void EndCollision_SmallShip(SmallShip smallShip)
+    public static void EndCollision_SmallShip(DamageSystem damageSystem)
     {
-        smallShip.isCurrentlyColliding = false;
-        smallShip.isCurrentlyCollidingSmallShip = false;
+        damageSystem.isCurrentlyColliding = false;
+        damageSystem.isCurrentlyCollidingSmallShip = false;
     }
 
     //This called when the ship collides with something causing it to take collision damage
-    public static void TakeCollisionDamage_SmallShip(SmallShip smallShip)
+    public static void TakeCollisionDamage_SmallShip(DamageSystem damageSystem)
     {
-        if (smallShip.isCurrentlyColliding == true & smallShip.invincible == false & smallShip.docking == false)
+        EnergyManagementSystem energyManagementSystem = damageSystem.ship.energyManagementSystem;
+
+        if (damageSystem.isCurrentlyColliding == true & damageSystem.invincible == false & damageSystem.ship.flightControlSystem_Small.docking == false)
         {
-            if (Time.time - smallShip.loadTime > 10)
+            if (Time.time - damageSystem.ship.loadTime > 10)
             {
-                if (smallShip.hullLevel > 0 & smallShip.invincible == false)
+                if (energyManagementSystem.hullLevel > 0 & damageSystem.invincible == false)
                 {
-                    if (smallShip.invincible == true & smallShip.hullLevel - 5 < 5)
+                    if (damageSystem.invincible == true & energyManagementSystem.hullLevel - 5 < 5)
                     {
-                        smallShip.hullLevel = 5;
+                        energyManagementSystem.hullLevel = 5;
                     }
                     else
                     {
-                        if (smallShip.isCurrentlyCollidingSmallShip == true)
+                        if (damageSystem.isCurrentlyCollidingSmallShip == true)
                         {
-                            smallShip.hullLevel -= 5;
+                            energyManagementSystem.hullLevel -= 5;
                         }
                         else
                         {
-                            smallShip.hullLevel -= 50;
+                            energyManagementSystem.hullLevel -= 50;
                         }
                     }
 
-                    if (smallShip.hullLevel < 0)
+                    if (energyManagementSystem.hullLevel < 0)
                     {
-                        smallShip.hullLevel = 0;
+                        energyManagementSystem.hullLevel = 0;
                     }
 
                     //This shakes the cockpit camera
-                    if (smallShip.isAI == false)
+                    if (damageSystem.ship.isAI == false)
                     {
-                        smallShip.scene.ogCamera.shipHit = true;
+                        damageSystem.ship.scene.ogCamera.shipHit = true;
                     }
                 }
             }
@@ -406,26 +410,28 @@ public static class DamageSystemFunctions
     }
 
     //This causes a smoke trail to appear behind the damaged ship
-    public static void SmokeTrail_SmallShip(SmallShip smallShip)
+    public static void SmokeTrail_SmallShip(DamageSystem damageSystem)
     {
-        if (smallShip.hullLevel < 10 & smallShip.smokeTrail == null & smallShip.scene != null & smallShip.isAI == true)
+        EnergyManagementSystem energyManagementSystem = damageSystem.ship.energyManagementSystem;
+
+        if (damageSystem.ship.energyManagementSystem.hullLevel < 10 & damageSystem.smokeTrail == null & damageSystem.ship.scene != null & damageSystem.ship.isAI == true)
         {
-            Object tempSmokeTrail = PoolUtils.FindPrefabObjectInPool(smallShip.scene.particlePrefabPool, "SmokeTrail");
+            Object tempSmokeTrail = PoolUtils.FindPrefabObjectInPool(damageSystem.ship.scene.particlePrefabPool, "SmokeTrail");
 
             if (tempSmokeTrail != null)
             {
                 GameObject smokeTrail = GameObject.Instantiate(tempSmokeTrail) as GameObject;
-                smallShip.smokeTrail = smokeTrail;
-                smokeTrail.transform.SetParent(smallShip.transform);
+                damageSystem.smokeTrail = smokeTrail;
+                smokeTrail.transform.SetParent(damageSystem.transform);
                 smokeTrail.transform.localPosition = new Vector3(0, 0, 0);
-                smokeTrail.layer = smallShip.gameObject.layer;
+                smokeTrail.layer = damageSystem.gameObject.layer;
                 smokeTrail.SetActive(true);
             }
 
             //This sets the smoke trails simulation space to the scene
-            if (smallShip.smokeTrail != null)
+            if (damageSystem.smokeTrail != null)
             {
-                ParticleSystem particleSystem = smallShip.smokeTrail.GetComponent<ParticleSystem>();
+                ParticleSystem particleSystem = damageSystem.smokeTrail.GetComponent<ParticleSystem>();
 
                 if (particleSystem != null)
                 {
@@ -439,143 +445,141 @@ public static class DamageSystemFunctions
                 }
             }
         }
-        else if (smallShip.hullLevel < 10 & smallShip.smokeTrail != null)
+        else if (energyManagementSystem.hullLevel < 10 & damageSystem.smokeTrail != null)
         {
-            smallShip.smokeTrail.SetActive(true);
+            damageSystem.smokeTrail.SetActive(true);
         }
-        else if (smallShip.hullLevel > 10 & smallShip.smokeTrail != null)
+        else if (energyManagementSystem.hullLevel > 10 & damageSystem.smokeTrail != null)
         {
-            smallShip.smokeTrail.SetActive(false);
+            damageSystem.smokeTrail.SetActive(false);
         }
     }
 
     //This causes the ship to explode
-    public static void Explode_SmallShip(SmallShip smallShip)
+    public static void Explode_SmallShip(DamageSystem damageSystem)
     {
-        if (smallShip.hullLevel <= 0 & smallShip.exploded == false || smallShip.hullLevel <= 0 & smallShip.exploded == false & smallShip.isCurrentlyColliding == true)
+        EnergyManagementSystem energyManagementSystem = damageSystem.ship.energyManagementSystem;
+
+        if (energyManagementSystem.hullLevel <= 0 & damageSystem.exploded == false || energyManagementSystem.hullLevel <= 0 & damageSystem.exploded == false & damageSystem.isCurrentlyColliding == true)
         {
             int explosion = Random.Range(0, 3);
 
-            if (explosion == 0 & smallShip.isAI == true)
+            if (explosion == 0 & damageSystem.ship.isAI == true)
             {
-                Task a = new Task(ExplosionType_Spin_SmallShip(smallShip));
-                SmallShipFunctions.AddTaskToPool(smallShip, a);
-                smallShip.exploded = true;
+                Task a = new Task(ExplosionType_Spin_SmallShip(damageSystem));
+                damageSystem.exploded = true;
             }
             else
             {
-                ExplosionType_Immediate_SmallShip(smallShip);
-                smallShip.exploded = true;
+                ExplosionType_Immediate_SmallShip(damageSystem);
+                damageSystem.exploded = true;
             }
         }
     }
 
     //Explode after spinning
-    public static IEnumerator ExplosionType_Spin_SmallShip(SmallShip smallShip)
+    public static IEnumerator ExplosionType_Spin_SmallShip(DamageSystem damageSystem)
     {
-        if (smallShip.isCurrentlyColliding == false)
+        if (damageSystem.isCurrentlyColliding == false)
         {
-            smallShip.spinShip = true;
+            damageSystem.ship.flightControlSystem_Small.spinShip = true;
             float time = Random.Range(2, 6);
             yield return new WaitForSeconds(time);
         }
 
-        if (smallShip != null)
+        if (damageSystem != null)
         {
-            if (smallShip.scene == null)
+            if (damageSystem.ship.scene == null)
             {
-                smallShip.scene = SceneFunctions.GetScene();
+                damageSystem.ship.scene = SceneFunctions.GetScene();
             }
 
             //This creates an explosion where the ship is
-            float explosionsScale = smallShip.shipLength / 5;
+            float explosionsScale = damageSystem.ship.shipLength / 5;
 
-            ParticleFunctions.InstantiateExplosion(smallShip.gameObject.transform.position, "explosion_smallship", explosionsScale);
+            ParticleFunctions.InstantiateExplosion(damageSystem.gameObject.transform.position, "explosion_smallship", explosionsScale);
 
             //This makes an explosion sound
-            AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
+            AudioFunctions.PlayAudioClip(damageSystem.ship.audioManager, "mid_explosion_01", "External", damageSystem.gameObject.transform.position, 1, 1, 1000, 1);
 
             //This tells the player that the ship has been destroyed
-            HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
+            HudFunctions.AddToShipLog(damageSystem.name.ToUpper() + " was destroyed");
 
             //This deactivates the ship
-            DeactivateShip_SmallShip(smallShip);
+            DeactivateShip_SmallShip(damageSystem);
         }
     }
 
     //Explode straight away
-    public static void ExplosionType_Immediate_SmallShip(SmallShip smallShip)
+    public static void ExplosionType_Immediate_SmallShip(DamageSystem damageSystem)
     {
-        if (smallShip.scene == null)
+        if (damageSystem.ship.scene == null)
         {
-            smallShip.scene = SceneFunctions.GetScene();
+            damageSystem.ship.scene = SceneFunctions.GetScene();
         }
 
         //This creates an explosion where the ship is
-        float explosionsScale = smallShip.shipLength / 5;
+        float explosionsScale = damageSystem.ship.shipLength / 5;
 
-        ParticleFunctions.InstantiateExplosion(smallShip.gameObject.transform.position, "explosion_smallship", explosionsScale);
+        ParticleFunctions.InstantiateExplosion(damageSystem.gameObject.transform.position, "explosion_smallship", explosionsScale);
 
         //This makes an explosion sound
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "mid_explosion_01", "External", smallShip.gameObject.transform.position, 1, 1, 1000, 1);
+        AudioFunctions.PlayAudioClip(damageSystem.ship.audioManager, "mid_explosion_01", "External", damageSystem.gameObject.transform.position, 1, 1, 1000, 1);
 
         //This tells the game that the ship has been destroyed
-        HudFunctions.AddToShipLog(smallShip.name.ToUpper() + " was destroyed");
+        HudFunctions.AddToShipLog(damageSystem.name.ToUpper() + " was destroyed");
 
         //This deactivates the ship
-        DeactivateShip_SmallShip(smallShip);
+        DeactivateShip_SmallShip(damageSystem);
     }
 
-    public static IEnumerator ShipSpinSequence_SmallShip(SmallShip smallShip, float time)
+    public static IEnumerator ShipSpinSequence_SmallShip(DamageSystem damageSystem, float time)
     {
-        smallShip.spinShip = true;
+        damageSystem.ship.flightControlSystem_Small.spinShip = true;
 
-        if (smallShip.isCurrentlyColliding == false)
+        if (damageSystem.isCurrentlyColliding == false)
         {
             yield return new WaitForSeconds(time);
         }
 
-        smallShip.spinShip = false;
+        damageSystem.ship.flightControlSystem_Small.spinShip = false;
     }
 
-    public static void DeactivateShip_SmallShip(SmallShip smallShip)
+    public static void DeactivateShip_SmallShip(DamageSystem damageSystem)
     {
         //This gets the scene reference
-        Scene scene = smallShip.scene;
+        Scene scene = damageSystem.ship.scene;
 
         //Stops listing the ship as targetting another ship
-        if (smallShip.targetingSystem.target != null)
+        if (damageSystem.ship.targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target.gameObject.activeSelf == true)
+            if (damageSystem.ship.targetingSystem.target.gameObject.activeSelf == true)
             {
-                if (smallShip.targetingSystem.targetSmallShip != null)
+                if (damageSystem.ship.targetingSystem.targetShip != null)
                 {
-                    smallShip.targetingSystem.targetSmallShip.targetingSystem.numberTargeting -= 1;
+                    damageSystem.ship.targetingSystem.targetShip.targetingSystem.numberTargeting -= 1;
                 }
             }
 
-            smallShip.targetingSystem.target = null;
+            damageSystem.ship.targetingSystem.target = null;
         }
-
-        //This stops all task being run by the ship
-        SmallShipFunctions.EndAllTasks(smallShip);
 
         //This cancels any docking procedures
-        DockingFunctions.CancelDocking(smallShip, null);
+        DockingFunctions.CancelDocking(damageSystem.ship, null);
 
         //This turns of the engine sound and release the ship audio source from the ship
-        if (smallShip.audioManager != null)
+        if (damageSystem.ship.audioManager != null)
         {
-            if (smallShip.engineAudioSource != null)
+            if (damageSystem.ship.flightControlSystem_Small.engineAudioSource != null)
             {
-                smallShip.engineAudioSource.Stop();
-                smallShip.engineAudioSource = null;
+                damageSystem.ship.flightControlSystem_Small.engineAudioSource.Stop();
+                damageSystem.ship.flightControlSystem_Small.engineAudioSource = null;
             }
 
-            smallShip.audioManager = null;
+            damageSystem.ship.audioManager = null;
         }
 
-        Transform ogCamera = GameObjectUtils.FindChildTransformContaining(smallShip.gameObject.transform, "ogcameraGO");
+        Transform ogCamera = GameObjectUtils.FindChildTransformContaining(damageSystem.gameObject.transform, "ogcameraGO");
 
         if (ogCamera != null)
         {
@@ -583,17 +587,17 @@ public static class DamageSystemFunctions
         }
 
         //This resets the ship for the next load if needed
-        smallShip.exploded = false;
+        damageSystem.exploded = false;
 
         //This unloads the mission
-        if (smallShip.isAI == false)
+        if (damageSystem.ship.isAI == false)
         {
             MissionFunctions.ExitOnPlayerDestroy();
         }
 
         //This deactivates the ship
-        GameObject.Destroy(smallShip.targetingSystem.waypoint);
-        GameObject.Destroy(smallShip.gameObject);
+        GameObject.Destroy(damageSystem.ship.targetingSystem.waypoint);
+        GameObject.Destroy(damageSystem.gameObject);
 
         //This removes null objects from the pool
         scene.objectPool.RemoveAll(item => item == null);

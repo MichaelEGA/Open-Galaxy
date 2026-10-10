@@ -5,8 +5,8 @@ using UnityEngine;
 public class Torpedo : MonoBehaviour
 {
     [Header("Key References")]
-    public SmallShip attackingShip;
-    public SmallShip targetSmallShip;
+    public FlightControlSystem_Small attackingShip;
+    public FlightControlSystem_Small targetSmallShip;
     public LargeShip targetLargeShip;
     [HideInInspector] public Rigidbody torpedoRigidbody;
     [HideInInspector] public Audio audioManager;

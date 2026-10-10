@@ -6,7 +6,7 @@ using UnityEngine;
 public static class TargetingSystemFunctions
 {
     //This draws key data/info from the target including relative position, distance, and hostility
-    public static void GetTargetInfo_SmallShip(SmallShip smallShip = null)
+    public static void GetTargetInfo_SmallShip(FlightControlSystem_Small smallShip = null)
     {
         Transform shipTransform = smallShip.gameObject.transform;
         Vector3 shipPosition = shipTransform.position;
@@ -88,7 +88,7 @@ public static class TargetingSystemFunctions
     #region player targetting
 
     //This runs all the player targetting functions
-    public static void RunPlayerTargetingFunctions(SmallShip smallShip)
+    public static void RunPlayerTargetingFunctions(FlightControlSystem_Small smallShip)
     {
         //Targetting functions
         GetClosestEnemy_SmallShipPlayer(smallShip);
@@ -98,7 +98,7 @@ public static class TargetingSystemFunctions
     }
 
     //This gets the next target of any kind
-    public static void GetNextTarget_SmallShipPlayer(SmallShip smallShip = null)
+    public static void GetNextTarget_SmallShipPlayer(FlightControlSystem_Small smallShip = null)
     {
         if (smallShip.isAI == false)
         {
@@ -140,7 +140,7 @@ public static class TargetingSystemFunctions
                             smallShip.targetingSystem.target = scene.objectPool[i];
                             smallShip.targetingSystem.targetName = scene.objectPool[i].name;
 
-                            SmallShip targetSmallShip = scene.objectPool[i].GetComponent<SmallShip>();
+                            FlightControlSystem_Small targetSmallShip = scene.objectPool[i].GetComponent<FlightControlSystem_Small>();
                             LargeShip targetLargeShip = scene.objectPool[i].GetComponent<LargeShip>();
 
                             if (targetSmallShip != null)
@@ -175,7 +175,7 @@ public static class TargetingSystemFunctions
     }
 
     //This gets the next enemy target
-    public static void GetNextEnemy_SmallShipPlayer(SmallShip smallShip = null, bool forceSearch = false)
+    public static void GetNextEnemy_SmallShipPlayer(FlightControlSystem_Small smallShip = null, bool forceSearch = false)
     {
         if (smallShip.isAI == false)
         {
@@ -206,7 +206,7 @@ public static class TargetingSystemFunctions
                             bool isHostile = false;
                             int numberTargetting = 0;
 
-                            SmallShip targetSmallShip = scene.objectPool[i].GetComponent<SmallShip>();
+                            FlightControlSystem_Small targetSmallShip = scene.objectPool[i].GetComponent<FlightControlSystem_Small>();
                             LargeShip targetLargeShip = scene.objectPool[i].GetComponent<LargeShip>();
 
                             if (targetSmallShip != null)
@@ -258,7 +258,7 @@ public static class TargetingSystemFunctions
     }
 
     //This gets the closesd enemy target
-    public static void GetClosestEnemy_SmallShipPlayer(SmallShip smallShip = null, bool externalActivation = false)
+    public static void GetClosestEnemy_SmallShipPlayer(FlightControlSystem_Small smallShip = null, bool externalActivation = false)
     {
         if (smallShip.isAI == false)
         {
@@ -277,8 +277,8 @@ public static class TargetingSystemFunctions
                 Scene scene = smallShip.scene;
 
                 GameObject target = null;
-                SmallShip tempSmallShip = null;
-                SmallShip targetSmallShip = null;
+                FlightControlSystem_Small tempSmallShip = null;
+                FlightControlSystem_Small targetSmallShip = null;
                 LargeShip tempLargeShip = null;
                 LargeShip targetLargeShip = null;
 
@@ -289,7 +289,7 @@ public static class TargetingSystemFunctions
                 {
                     if (ship != null)
                     {
-                        tempSmallShip = ship.GetComponent<SmallShip>();
+                        tempSmallShip = ship.GetComponent<FlightControlSystem_Small>();
                         tempLargeShip = ship.GetComponent<LargeShip>();
 
                         if (ship.activeSelf == true & tempSmallShip != null)
@@ -330,7 +330,7 @@ public static class TargetingSystemFunctions
                     {
                         if (ship != null)
                         {
-                            tempSmallShip = ship.GetComponent<SmallShip>();
+                            tempSmallShip = ship.GetComponent<FlightControlSystem_Small>();
                             tempLargeShip = ship.GetComponent<LargeShip>();
 
                             if (ship.activeSelf == true & tempLargeShip != null)
@@ -360,7 +360,7 @@ public static class TargetingSystemFunctions
                     {
                         if (ship != null)
                         {
-                            tempSmallShip = ship.GetComponent<SmallShip>();
+                            tempSmallShip = ship.GetComponent<FlightControlSystem_Small>();
                             tempLargeShip = ship.GetComponent<LargeShip>();
 
                             if (ship.activeSelf == true & tempSmallShip != null)
@@ -402,7 +402,7 @@ public static class TargetingSystemFunctions
                     {
                         if (ship != null)
                         {
-                            tempSmallShip = ship.GetComponent<SmallShip>();
+                            tempSmallShip = ship.GetComponent<FlightControlSystem_Small>();
                             tempLargeShip = ship.GetComponent<LargeShip>();
 
                             if (ship.activeSelf == true & tempLargeShip != null)
@@ -465,7 +465,7 @@ public static class TargetingSystemFunctions
     }
 
     //This gets the target directly ahead
-    public static void GetTargetDirectlyAhead_SmallShipPlayer(SmallShip smallShip = null)
+    public static void GetTargetDirectlyAhead_SmallShipPlayer(FlightControlSystem_Small smallShip = null)
     {
         if (smallShip.isAI == false)
         {     
@@ -474,7 +474,7 @@ public static class TargetingSystemFunctions
                 Scene scene = smallShip.scene;
                 float forward = 0.9f;
                 GameObject target = null;
-                SmallShip targetSmallShip = null;
+                FlightControlSystem_Small targetSmallShip = null;
                 LargeShip targetLargeShip = null;
 
                 //This checks for the closest small ship first
@@ -499,7 +499,7 @@ public static class TargetingSystemFunctions
                 {
                     smallShip.targetingSystem.target = target;
                     smallShip.targetingSystem.targetName = target.name;
-                    targetSmallShip = target.GetComponent<SmallShip>();
+                    targetSmallShip = target.GetComponent<FlightControlSystem_Small>();
                     targetLargeShip = target.GetComponent<LargeShip>();
 
                     if (targetSmallShip != null)
@@ -525,12 +525,12 @@ public static class TargetingSystemFunctions
     }
 
     //This gets the designated target and sets it as the ships target if it can be found
-    public static void GetSpecificTarget_SmallShip(SmallShip smallShip = null, string targetName = "none")
+    public static void GetSpecificTarget_SmallShip(FlightControlSystem_Small smallShip = null, string targetName = "none")
     {
         Scene scene = smallShip.scene;
         GameObject target = null;
-        SmallShip tempSmallShip = null;
-        SmallShip targetSmallShip = null;
+        FlightControlSystem_Small tempSmallShip = null;
+        FlightControlSystem_Small targetSmallShip = null;
         LargeShip tempLargeShip = null;
         LargeShip targetLargeShip = null;
 
@@ -545,7 +545,7 @@ public static class TargetingSystemFunctions
                     if (ship.name.Contains(targetName))
                     {
                         target = ship;
-                        tempSmallShip = ship.GetComponent<SmallShip>();
+                        tempSmallShip = ship.GetComponent<FlightControlSystem_Small>();
                         tempLargeShip = ship.GetComponent<LargeShip>();
 
                         if (tempSmallShip != null)
@@ -595,7 +595,7 @@ public static class TargetingSystemFunctions
     }
 
     //This creates the ship waypoint
-    public static void CreateWaypoint_SmallShipPlayer(SmallShip smallShip = null)
+    public static void CreateWaypoint_SmallShipPlayer(FlightControlSystem_Small smallShip = null)
     {
         if (smallShip.targetingSystem.waypoint == null)
         {
@@ -607,7 +607,7 @@ public static class TargetingSystemFunctions
     }
 
     //This checks whether a target is hostile or not
-    public static bool GetHostility_SmallShipPlayer(SmallShip smallShip = null, string targetAllegiance = "none")
+    public static bool GetHostility_SmallShipPlayer(FlightControlSystem_Small smallShip = null, string targetAllegiance = "none")
     {
         bool isHostile = false;
 
@@ -677,7 +677,7 @@ public static class TargetingSystemFunctions
     }
 
     //This gets the target number of the currently selected ship
-    public static int GetNextTargetNo_SmallShipPlayer(SmallShip smallShip)
+    public static int GetNextTargetNo_SmallShipPlayer(FlightControlSystem_Small smallShip)
     {
         Scene scene = smallShip.scene;
         int targetNumber = 0;
@@ -715,17 +715,17 @@ public static class TargetingSystemFunctions
     #region AI smallship targetting
 
     //This gets the closesd enemy target
-    public static IEnumerator GetClosestEnemySmallShip_SmallShipAI(SmallShip smallShip)
+    public static IEnumerator GetClosestEnemySmallShip_SmallShipAI(FlightControlSystem_Small smallShip)
     {
         Scene scene = smallShip.scene;
 
         GameObject target = null;
-        SmallShip targetSmallShip = null;
+        FlightControlSystem_Small targetSmallShip = null;
 
         float distance = Mathf.Infinity;
 
         //This checks for the closest small ship first
-        foreach (SmallShip tempSmallShip in scene.smallShips)
+        foreach (FlightControlSystem_Small tempSmallShip in scene.smallShips)
         {
             if (tempSmallShip != null & smallShip != null)
             {
@@ -777,7 +777,7 @@ public static class TargetingSystemFunctions
     }
 
     //This gets the closesd enemy target
-    public static IEnumerator GetClosestEnemyLargeShip_SmallShipAI(SmallShip smallShip)
+    public static IEnumerator GetClosestEnemyLargeShip_SmallShipAI(FlightControlSystem_Small smallShip)
     {
         Scene scene = smallShip.scene;
 
@@ -902,8 +902,8 @@ public static class TargetingSystemFunctions
     {
         Scene scene = largeShip.scene;
         GameObject target = null;
-        SmallShip tempSmallShip = null;
-        SmallShip targetSmallShip = null;
+        FlightControlSystem_Small tempSmallShip = null;
+        FlightControlSystem_Small targetSmallShip = null;
         LargeShip tempLargeShip = null;
         LargeShip targetLargeShip = null;
 
@@ -916,7 +916,7 @@ public static class TargetingSystemFunctions
                     if (ship.name.Contains(targetName))
                     {
                         target = ship;
-                        tempSmallShip = ship.GetComponent<SmallShip>();
+                        tempSmallShip = ship.GetComponent<FlightControlSystem_Small>();
                         tempLargeShip = ship.GetComponent<LargeShip>();
 
                         if (tempSmallShip != null)
@@ -1149,7 +1149,7 @@ public static class TargetingSystemFunctions
         Scene scene = SceneFunctions.GetScene();
 
         GameObject target = null;
-        SmallShip tempSmallShip = null;
+        FlightControlSystem_Small tempSmallShip = null;
 
         float distance = Mathf.Infinity;
 
@@ -1160,7 +1160,7 @@ public static class TargetingSystemFunctions
             {
                 if (ship != null)
                 {
-                    tempSmallShip = ship.GetComponent<SmallShip>();
+                    tempSmallShip = ship.GetComponent<FlightControlSystem_Small>();
 
                     if (ship.activeSelf == true & tempSmallShip != null)
                     {
@@ -1267,10 +1267,10 @@ public static class TargetingSystemFunctions
         //This selects targets for smallship ai
         if (scene.smallShips == null)
         {
-            scene.smallShips = new List<SmallShip>();
+            scene.smallShips = new List<FlightControlSystem_Small>();
         }
 
-        foreach (SmallShip smallShip in scene.smallShips.ToArray())
+        foreach (FlightControlSystem_Small smallShip in scene.smallShips.ToArray())
         {
             if (smallShip != null)
             {

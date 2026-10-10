@@ -409,7 +409,7 @@ public class OGCameraFunctions : MonoBehaviour
 
                 if (ogCamera.cockpitGO == null)
                 {
-                    SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+                    FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
 
                     if (smallShip != null)
                     {
@@ -421,7 +421,7 @@ public class OGCameraFunctions : MonoBehaviour
 
                 if (ogCamera.cockpitGO != null & ogCamera.cockpitCamera != null)
                 {
-                    SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+                    FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
 
                     if (smallShip != null)
                     {
@@ -554,7 +554,7 @@ public class OGCameraFunctions : MonoBehaviour
 
         if (ogCamera.targetShip != null)
         {
-            SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+            FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
 
             if (smallShip != null)
             {
@@ -630,7 +630,7 @@ public class OGCameraFunctions : MonoBehaviour
     {
         if (ogCamera.targetShip != null & ogCamera.cockpitGO != null)
         {
-            SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+            FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
 
             float shakeStrength = 0;
             float shakeRate = 10;
@@ -665,7 +665,7 @@ public class OGCameraFunctions : MonoBehaviour
     {
         if (ogCamera.targetShip != null)
         {
-            SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+            FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
 
             float shakeStrength = 0;
             float shakeRate = 10;
@@ -969,7 +969,7 @@ public class OGCameraFunctions : MonoBehaviour
 
                 if (ogCamera.cockpitGO == null)
                 {
-                    SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+                    FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
 
                     if (smallShip != null)
                     {
@@ -981,7 +981,7 @@ public class OGCameraFunctions : MonoBehaviour
 
                 if (ogCamera.cockpitGO != null & ogCamera.cockpitCamera != null)
                 {
-                    SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+                    FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
 
                     if (smallShip != null)
                     {
@@ -1218,7 +1218,7 @@ public class OGCameraFunctions : MonoBehaviour
                 {
                     if (tempShip != null)
                     {
-                        SmallShip smallShip = tempShip.GetComponent<SmallShip>();
+                        FlightControlSystem_Small smallShip = tempShip.GetComponent<FlightControlSystem_Small>();
 
                         if (smallShip != null)
                         {
@@ -1255,7 +1255,7 @@ public class OGCameraFunctions : MonoBehaviour
 
             GameObjectUtils.SetLayerAllChildren(ogCamera.targetShip.transform, LayerMask.NameToLayer("collision_player"));
 
-            SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+            FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
 
             if (smallShip != null)
             {
@@ -1273,7 +1273,7 @@ public class OGCameraFunctions : MonoBehaviour
 
             GameObjectUtils.SetLayerAllChildren(ogCamera.targetShip.transform, ogCamera.savedLayerMask);
 
-            SmallShip smallShip = ogCamera.targetShip.GetComponent<SmallShip>();
+            FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
 
             if (smallShip != null)
             {

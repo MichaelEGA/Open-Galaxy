@@ -10,9 +10,7 @@ public class Hud : MonoBehaviour
     [HideInInspector] public Scene scene;
     [HideInInspector] public OGCamera ogCamera;
     [HideInInspector] public OGInput ogInput;
-    [HideInInspector] public SmallShip smallShip;
-    [HideInInspector] public EnergyWeapon energyWeapon;
-    [HideInInspector] public WeaponManagement weaponManagement;
+    [HideInInspector] public Ship ship;
     [HideInInspector] public Camera mainCamera;
     [HideInInspector] public Camera starfieldCamera;
     [HideInInspector] public float startTime;

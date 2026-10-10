@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TorpedoSystem : MonoBehaviour
 {
-    public SmallShip smallShip;
+    public FlightControlSystem_Small smallShip;
     public WeaponManagement weaponManagement;
     public GameObject torpedoTube1;
     public GameObject torpedoTube2;
@@ -21,7 +21,7 @@ public class TorpedoSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        smallShip = GetComponent<SmallShip>();
+        smallShip = GetComponent<FlightControlSystem_Small>();
         weaponManagement = GetComponent<WeaponManagement>();
     }
 

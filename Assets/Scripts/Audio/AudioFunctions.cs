@@ -251,28 +251,33 @@ public static class AudioFunctions
     }
 
     //This function specifcally plays engine noise
-    public static void PlayEngineNoise_SmallShip(SmallShip smallShip)
+    public static void PlayEngineNoise_SmallShip(Ship ship)
     {
+        FlightControlSystem_Small flightControl = ship.flightControlSystem_Small;
+
         float pitch = 1;
         float spatialBlend = 1;
         int priority = 128;
+       
 
-        if (smallShip.isAI == false)
+        if (ship.isAI == false)
         {
-            pitch = (1f / smallShip.speedRating) * smallShip.thrustSpeed;
+            pitch = (1f / ship.speedRating) * flightControl.thrustSpeed;
             spatialBlend = 0;
             priority = 128;
         }
 
-        if (smallShip.engineAudioSource == null)
+
+
+        if (flightControl.engineAudioSource == null)
         {
-            AudioClip audioClip = GetAudioClip(smallShip.audioManager, smallShip.engineAudio);
-            AudioSource audioSource = GetAudioSource(smallShip.audioManager);
+            AudioClip audioClip = GetAudioClip(ship.audioManager, ship.engineAudio);
+            AudioSource audioSource = GetAudioSource(ship.audioManager);
 
             if (audioClip != null & audioSource != null)
             {
-                smallShip.engineAudioSource = audioSource;
-                smallShip.engineAudioSource.clip = audioClip;
+                flightControl.engineAudioSource = audioSource;
+                flightControl.engineAudioSource.clip = audioClip;
 
                 AudioDistortionFilter audioDistortionFilter = audioSource.gameObject.GetComponent<AudioDistortionFilter>();
                 AudioHighPassFilter audioHighPassFilter = audioSource.gameObject.GetComponent<AudioHighPassFilter>();
@@ -291,29 +296,29 @@ public static class AudioFunctions
             }
         }
 
-        if (smallShip.engineAudioSource != null)
+        if (flightControl.engineAudioSource != null)
         {
-            smallShip.engineAudioSource.priority = priority;
-            smallShip.engineAudioSource.spatialBlend = spatialBlend;
-            smallShip.engineAudioSource.pitch = pitch;
+            flightControl.engineAudioSource.priority = priority;
+            flightControl.engineAudioSource.spatialBlend = spatialBlend;
+            flightControl.engineAudioSource.pitch = pitch;
 
-            if (smallShip.engineAudioSource.isPlaying == false & smallShip.engineAudioSource.enabled == true)
+            if (flightControl.engineAudioSource.isPlaying == false & flightControl.engineAudioSource.enabled == true)
             {
-                smallShip.engineAudioSource.reverbZoneMix = 1;
-                smallShip.engineAudioSource.dopplerLevel = 0f;
-                smallShip.engineAudioSource.spread = 45;
-                smallShip.engineAudioSource.maxDistance = 500;
-                smallShip.engineAudioSource.volume = 0.2f;
-                smallShip.engineAudioSource.rolloffMode = AudioRolloffMode.Linear;
-                smallShip.engineAudioSource.loop = true;
-                smallShip.engineAudioSource.Play();
+                flightControl.engineAudioSource.reverbZoneMix = 1;
+                flightControl.engineAudioSource.dopplerLevel = 0f;
+                flightControl.engineAudioSource.spread = 45;
+                flightControl.engineAudioSource.maxDistance = 500;
+                flightControl.engineAudioSource.volume = 0.2f;
+                flightControl.engineAudioSource.rolloffMode = AudioRolloffMode.Linear;
+                flightControl.engineAudioSource.loop = true;
+                flightControl.engineAudioSource.Play();
 
                 Audio audioManager = GetAudioManager();
 
-                ConnectAudioMixerGroup(audioManager, smallShip.engineAudioSource, "Engine");
+                ConnectAudioMixerGroup(audioManager, flightControl.engineAudioSource, "Engine");
             }
 
-            smallShip.engineAudioSource.gameObject.transform.position = smallShip.transform.position;
+            flightControl.engineAudioSource.gameObject.transform.position = ship.transform.position;
         }
     }
 

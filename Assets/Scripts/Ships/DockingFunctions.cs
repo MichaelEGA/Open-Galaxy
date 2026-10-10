@@ -6,13 +6,13 @@ using UnityEngine;
 public static class DockingFunctions
 {
     //This finds and adds the docking points to the smallship
-    public static void AddDockingPointsSmallShip(SmallShip smallShip)
+    public static void AddDockingPointsSmallShip(Ship smallShip)
     {
         Transform dockingPoint = GameObjectUtils.FindFirstChildTransformContaining(smallShip.transform, "docking");
             
         if (dockingPoint != null)
         {
-            smallShip.dockingPoint = dockingPoint.gameObject.AddComponent<DockingPoint>();
+            smallShip.flightControlSystem_Small.dockingPoint = dockingPoint.gameObject.AddComponent<DockingPoint>();
         }
         else
         {
@@ -24,7 +24,7 @@ public static class DockingFunctions
 
             dockingPoint.localPosition = new Vector3(0, -(smallShip.shipLength/2), 0);
 
-            smallShip.dockingPoint = dockingPointGO.AddComponent<DockingPoint>();
+            smallShip.flightControlSystem_Small.dockingPoint = dockingPointGO.AddComponent<DockingPoint>();
         }
 
     }
@@ -83,7 +83,7 @@ public static class DockingFunctions
     {
         DockingPoint dockingPoint = null;
 
-        SmallShip smallShip = ship.GetComponent<SmallShip>();
+        FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
         LargeShip largeShip = ship.GetComponent<LargeShip>();
 
         if (smallShip != null)
@@ -138,15 +138,15 @@ public static class DockingFunctions
         //This searches for the docking point on a smallship
         if (largeShip == null)
         {
-            foreach (SmallShip tempSmallShip in scene.smallShips)
+            foreach (Ship tempSmallShip in scene.smallShips)
             {
                 if (tempSmallShip != null)
                 {
-                    if (tempSmallShip.name.Contains(targetShipName) & tempSmallShip.dockingPoint != null)
+                    if (tempSmallShip.name.Contains(targetShipName) & tempSmallShip.flightControlSystem_Small.dockingPoint != null)
                     {
-                        if (tempSmallShip.dockingPoint.isActive == false || tempSmallShip.dockingPoint.isActive == true & includeActive == true)
+                        if (tempSmallShip.flightControlSystem_Small.dockingPoint.isActive == false || tempSmallShip.flightControlSystem_Small.dockingPoint.isActive == true & includeActive == true)
                         {
-                            dockingPoint = tempSmallShip.dockingPoint;
+                            dockingPoint = tempSmallShip.flightControlSystem_Small.dockingPoint;
                             dockingPointFound = true;
                             break;
                         }
@@ -206,16 +206,16 @@ public static class DockingFunctions
     }
 
     //This intiates the docking sequence
-    public static IEnumerator StartDocking(Transform ship, DockingPoint shipDockingPoint, DockingPoint targetDockingPoint, Quaternion flip, float rotationSpeed, float movementSpeed)
+    public static IEnumerator StartDocking(Transform shipTransform, DockingPoint shipDockingPoint, DockingPoint targetDockingPoint, Quaternion flip, float rotationSpeed, float movementSpeed)
     {
         shipDockingPoint.isActive = true;
         targetDockingPoint.isActive = true;
         bool largeshipDockingOnly = false;
         
-        SmallShip smallShip = ship.GetComponent<SmallShip>();
-        LargeShip largeShip = ship.GetComponent<LargeShip>();
+        Ship ship = shipTransform.GetComponent<Ship>();
+        LargeShip largeShip = shipTransform.GetComponent<LargeShip>();
 
-        SmallShip targetSmallShip = targetDockingPoint.GetComponentInParent<SmallShip>();
+        Ship targetShip = targetDockingPoint.GetComponentInParent<Ship>();
         LargeShip targetLargeShip = targetDockingPoint.GetComponentInParent<LargeShip>();
 
         if (largeShip != null & targetLargeShip != null)
@@ -223,14 +223,14 @@ public static class DockingFunctions
             largeshipDockingOnly = true;
         }
 
-        HudFunctions.AddToShipLog(ship.name.ToUpper() + " commencing docking sequence with " + targetDockingPoint.transform.parent.name.ToUpper());
+        HudFunctions.AddToShipLog(shipTransform.name.ToUpper() + " commencing docking sequence with " + targetDockingPoint.transform.parent.name.ToUpper());
 
-        if (smallShip != null)
+        if (ship != null)
         {
-            smallShip.docking = true;
-            smallShip.thrustSpeed = 0;
-            SmallShipFunctions.CloseWings(smallShip);
-            smallShip.targetDockingPoint = targetDockingPoint.gameObject;
+            ship.flightControlSystem_Small.docking = true;
+            ship.flightControlSystem_Small.thrustSpeed = 0;
+            WingSystemFunctions.CloseWings(ship.wingSystems);
+            ship.flightControlSystem_Small.targetDockingPoint = targetDockingPoint.gameObject;
         }
 
         if (largeShip != null)
@@ -240,18 +240,18 @@ public static class DockingFunctions
             largeShip.targetDockingPoint = targetDockingPoint.gameObject;
         }
 
-        if (targetSmallShip != null)
+        if (targetShip != null)
         {
-            targetSmallShip.docking = true;
-            targetSmallShip.thrustSpeed = 0;
+            targetShip.flightControlSystem_Small.docking = true;
+            targetShip.flightControlSystem_Small.thrustSpeed = 0;
 
             //This stops spinning on disabled ships so that the docking happens correctly
-            if (targetSmallShip.isDisabled == true)
+            if (targetShip.damageSystem.isDisabled == true)
             {
-                targetSmallShip.shipRigidbody.linearVelocity = new Vector3(0f, 0f, 0f);
-                targetSmallShip.shipRigidbody.angularVelocity = new Vector3(0f, 0f, 0f);
-                targetSmallShip.shipRigidbody.linearDamping = 9;
-                targetSmallShip.shipRigidbody.angularDamping = 7.5f;
+                targetShip.flightControlSystem_Small.shipRigidbody.linearVelocity = new Vector3(0f, 0f, 0f);
+                targetShip.flightControlSystem_Small.shipRigidbody.angularVelocity = new Vector3(0f, 0f, 0f);
+                targetShip.flightControlSystem_Small.shipRigidbody.linearDamping = 9;
+                targetShip.flightControlSystem_Small.shipRigidbody.angularDamping = 7.5f;
             }
         }
 
@@ -261,12 +261,12 @@ public static class DockingFunctions
             targetLargeShip.thrustSpeed = 0;
         }
 
-        if (ship != null & shipDockingPoint != null & shipDockingPoint.transform.IsChildOf(ship) & targetDockingPoint != null)
+        if (shipTransform != null & shipDockingPoint != null & shipDockingPoint.transform.IsChildOf(shipTransform) & targetDockingPoint != null)
         {
             Scene scene = SceneFunctions.GetScene();
 
-            Quaternion startRotation = ship.transform.localRotation;
-            Quaternion endRotation = targetDockingPoint.transform.rotation * Quaternion.Inverse(Quaternion.Inverse(ship.rotation) * shipDockingPoint.transform.rotation) * flip;
+            Quaternion startRotation = shipTransform.transform.localRotation;
+            Quaternion endRotation = targetDockingPoint.transform.rotation * Quaternion.Inverse(Quaternion.Inverse(shipTransform.rotation) * shipDockingPoint.transform.rotation) * flip;
             
             if (largeshipDockingOnly == true)
             {
@@ -278,9 +278,9 @@ public static class DockingFunctions
 
             while (timeElapsed < lerpDuration)
             {
-                if (ship != null)
+                if (shipTransform != null)
                 {
-                    ship.transform.rotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
+                    shipTransform.transform.rotation = Quaternion.Lerp(startRotation, endRotation, timeElapsed / lerpDuration);
                     timeElapsed += Time.deltaTime;
                     yield return null;
                 }
@@ -290,23 +290,23 @@ public static class DockingFunctions
                 }
             }
 
-            if (ship != null)
+            if (shipTransform != null)
             {
-                ship.transform.rotation = endRotation;
+                shipTransform.transform.rotation = endRotation;
 
-                Vector3 startPosition = ship.localPosition;
+                Vector3 startPosition = shipTransform.localPosition;
                 Vector3 tdockingPoint = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position);
                 Vector3 sDockingPoint = scene.transform.InverseTransformPoint(shipDockingPoint.transform.position);
-                Vector3 endPosition = tdockingPoint + (ship.localPosition - sDockingPoint);
+                Vector3 endPosition = tdockingPoint + (shipTransform.localPosition - sDockingPoint);
 
                 timeElapsed = 0;
                 lerpDuration = movementSpeed;
 
                 while (timeElapsed < lerpDuration)
                 {
-                    if (ship != null)
+                    if (shipTransform != null)
                     {
-                        ship.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+                        shipTransform.transform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
                         timeElapsed += Time.deltaTime;
                         yield return new WaitForFixedUpdate();
                     }
@@ -316,56 +316,56 @@ public static class DockingFunctions
                     }
                 }
 
-                if (ship != null)
+                if (shipTransform != null)
                 {
-                    ship.transform.localPosition = endPosition;
+                    shipTransform.transform.localPosition = endPosition;
 
-                    if (smallShip != null)
+                    if (ship != null)
                     {
-                        if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
+                        if (ship.isAI == false & ship.ogInput.keyboardAndMouse == false)
                         {
-                            AudioFunctions.PlayAudioClip(smallShip.audioManager, "clank01", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                            AudioFunctions.PlayAudioClip(ship.audioManager, "clank01", "Cockpit", ship.gameObject.transform.position, 0, 1, 500, 1, 100);
                             Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.25f, 0.6f, 0.6f));
                         }
                     }
 
-                    HudFunctions.AddToShipLog(ship.name.ToUpper() + " docked with " + targetDockingPoint.transform.parent.name.ToUpper());
+                    HudFunctions.AddToShipLog(shipTransform.name.ToUpper() + " docked with " + targetDockingPoint.transform.parent.name.ToUpper());
                 }
             }
         }
     }
 
     //This ends the docking sequence
-    public static IEnumerator EndDocking(Transform ship, DockingPoint shipDockingPoint, DockingPoint targetDockingPoint, float speed)
+    public static IEnumerator EndDocking(Transform shipTransform, DockingPoint shipDockingPoint, DockingPoint targetDockingPoint, float speed)
     {
-        SmallShip smallShip = ship.GetComponent<SmallShip>();
-        LargeShip largeShip = ship.GetComponent<LargeShip>();
+        Ship ship = shipTransform.GetComponent<Ship>();
+        LargeShip largeShip = shipTransform.GetComponent<LargeShip>();
 
-        SmallShip targetSmallShip = targetDockingPoint.GetComponentInParent<SmallShip>();
+        Ship targetShip = targetDockingPoint.GetComponentInParent<Ship>();
         LargeShip targetLargeShip = targetDockingPoint.GetComponentInParent<LargeShip>();
 
-        HudFunctions.AddToShipLog(ship.name.ToUpper() + " commencing exit dock sequence with " + targetDockingPoint.transform.parent.name.ToUpper());
+        HudFunctions.AddToShipLog(shipTransform.name.ToUpper() + " commencing exit dock sequence with " + targetDockingPoint.transform.parent.name.ToUpper());
 
-        if (smallShip != null)
+        if (ship != null)
         {
-            if (smallShip.isAI == false & smallShip.ogInput.keyboardAndMouse == false)
+            if (ship.isAI == false & ship.ogInput.keyboardAndMouse == false)
             {
-                AudioFunctions.PlayAudioClip(smallShip.audioManager, "clank01", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+                AudioFunctions.PlayAudioClip(ship.audioManager, "clank01", "Cockpit", ship.gameObject.transform.position, 0, 1, 500, 1, 100);
                 Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.25f, 0.6f, 0.6f));
             }
         }
 
         Scene scene = SceneFunctions.GetScene();
-        ship.transform.SetParent(scene.transform);
+        shipTransform.transform.SetParent(scene.transform);
 
         //This sets the default position to launch up
-        Vector3 startPosition = ship.transform.localPosition;
+        Vector3 startPosition = shipTransform.transform.localPosition;
         Vector3 endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (targetDockingPoint.transform.up * 20);
 
         //This modifies the positions to launch down
         if (targetDockingPoint.releaseDown == true)
         {
-            startPosition = ship.transform.localPosition;
+            startPosition = shipTransform.transform.localPosition;
             endPosition = scene.transform.InverseTransformPoint(targetDockingPoint.transform.position) + (targetDockingPoint.transform.up * -20);
         }
 
@@ -379,9 +379,9 @@ public static class DockingFunctions
 
         while (timeElapsed < lerpDuration)
         {
-            if (ship != null)
+            if (shipTransform != null)
             {
-                ship.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
+                shipTransform.localPosition = Vector3.Lerp(startPosition, endPosition, timeElapsed / lerpDuration);
                 timeElapsed += Time.deltaTime;
                 yield return new WaitForFixedUpdate();
             }
@@ -391,20 +391,20 @@ public static class DockingFunctions
             }
         }
 
-        if (ship != null)
+        if (shipTransform != null)
         {
-            ship.localPosition = endPosition;
+            shipTransform.localPosition = endPosition;
 
             shipDockingPoint.isActive = false;
             targetDockingPoint.isActive = false;
 
-            HudFunctions.AddToShipLog(ship.name.ToUpper() + " released from dock ");
+            HudFunctions.AddToShipLog(shipTransform.name.ToUpper() + " released from dock ");
 
-            if (smallShip != null)
+            if (ship != null)
             {
-                smallShip.docking = false;
-                smallShip.thrustSpeed = 0;
-                SmallShipFunctions.OpenWings(smallShip);
+                ship.flightControlSystem_Small.docking = false;
+                ship.flightControlSystem_Small.thrustSpeed = 0;
+                WingSystemFunctions.OpenWings(ship.wingSystems);
             }
 
             if (largeShip != null)
@@ -413,10 +413,10 @@ public static class DockingFunctions
                 largeShip.thrustSpeed = 0;
             }
 
-            if (targetSmallShip != null)
+            if (targetShip != null)
             {
-                targetSmallShip.docking = false;
-                targetSmallShip.thrustSpeed = 0;
+                targetShip.flightControlSystem_Small.docking = false;
+                targetShip.flightControlSystem_Small.thrustSpeed = 0;
             }
 
             if (targetLargeShip != null)
@@ -428,27 +428,27 @@ public static class DockingFunctions
     }
 
     //This cancels the docking if the ship has been deactivated or destroyed
-    public static void CancelDocking (SmallShip smallShip = null, LargeShip largeShip = null)
+    public static void CancelDocking (Ship ship = null, LargeShip largeShip = null)
     {
-        if (smallShip != null)
+        if (ship != null)
         {
-            if (smallShip.targetDockingPoint != null)
+            if (ship.flightControlSystem_Small.targetDockingPoint != null)
             {
-                LargeShip otherLargeShip = smallShip.targetDockingPoint.GetComponentInParent<LargeShip>();
+                LargeShip otherLargeShip = ship.flightControlSystem_Small.targetDockingPoint.GetComponentInParent<LargeShip>();
 
                 if (otherLargeShip != null)
                 {
                     otherLargeShip.docking = false;
                 }
 
-                SmallShip otherSmallShip = smallShip.targetDockingPoint.GetComponentInParent<SmallShip>();
+                FlightControlSystem_Small otherSmallShip = ship.flightControlSystem_Small.targetDockingPoint.GetComponentInParent<FlightControlSystem_Small>();
 
                 if (otherSmallShip  != null)
                 {
                     otherSmallShip.docking = false;
                 }
 
-                DockingPoint targetDockingPoint = smallShip.targetDockingPoint.GetComponent<DockingPoint>();
+                DockingPoint targetDockingPoint = ship.flightControlSystem_Small.targetDockingPoint.GetComponent<DockingPoint>();
 
                 if (targetDockingPoint != null)
                 {
@@ -467,7 +467,7 @@ public static class DockingFunctions
                     otherLargeShip.docking = false;
                 }
 
-                SmallShip otherSmallShip = largeShip.targetDockingPoint.GetComponentInParent<SmallShip>();
+                FlightControlSystem_Small otherSmallShip = largeShip.targetDockingPoint.GetComponentInParent<FlightControlSystem_Small>();
 
                 if (otherSmallShip != null)
                 {

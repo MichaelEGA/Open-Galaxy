@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnergyWeapon : MonoBehaviour
 {
     public ParticleSystem particleSystemScript;
-    public SmallShip smallShip;
+    public FlightControlSystem_Small smallShip;
     public WeaponManagement weaponManagement;
     public List<Vector4> customData = new List<Vector4>();
 
@@ -26,10 +26,14 @@ public class EnergyWeapon : MonoBehaviour
     public GameObject laserCannon3;
     public GameObject laserCannon4;
 
+    public string laserAudio;
+    public string ionAudio = "weapon_ioncannon";
+    public string plasmaAudio = "weapon_plasma";
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        smallShip = GetComponent<SmallShip>();
+        smallShip = GetComponent<FlightControlSystem_Small>();
         weaponManagement = GetComponent<WeaponManagement>();
     }
 

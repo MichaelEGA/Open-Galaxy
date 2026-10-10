@@ -48,17 +48,17 @@ public static class AvoidCollisionsFunctions
         {
             if (shipA != null)
             {
-                if (shipA.activeSelf == true & shipA.GetComponent<SmallShip>() != null)
+                if (shipA.activeSelf == true & shipA.GetComponent<Ship>() != null)
                 {
                     foreach (GameObject shipB in scene.objectPool.ToArray())
                     {
                         if (shipA != null & shipB != null)
                         {
-                            if (shipB.activeSelf == true & shipB.GetComponent<SmallShip>() != null & shipB != shipA)
+                            if (shipB.activeSelf == true & shipB.GetComponent<Ship>() != null & shipB != shipA)
                             {
                                 //This checks if two ships need to avoid a collision
-                                SmallShip smallShipA = shipA.GetComponent<SmallShip>();
-                                SmallShip smallShipB = shipB.GetComponent<SmallShip>();
+                                Ship smallShipA = shipA.GetComponent<Ship>();
+                                Ship smallShipB = shipB.GetComponent<Ship>();
 
                                 Vector3 shipATargetPosition = shipB.transform.position - shipA.transform.position;
                                 float shipAForward = Vector3.Dot(shipA.transform.forward, shipATargetPosition.normalized);
@@ -92,7 +92,7 @@ public static class AvoidCollisionsFunctions
                                     avoidCollisionB = true;
                                 }
 
-                                if (avoidCollisionA == true & smallShipA.aiEvade == false)
+                                if (avoidCollisionA == true & smallShipA.flightControlAI_Small.aiEvade == false)
                                 {
                                     direction = 0; //Right = 0, Left = 1, Up = 2, Down, 3, RollRight 4, RollLeft 5, Fly Forward = 6 
                                     if (shipARight > 0) { direction = 1; } else { direction = 0; }
@@ -100,45 +100,45 @@ public static class AvoidCollisionsFunctions
 
                                     if (smallShipA.isAI == true)
                                     {
-                                        Task a = new Task(SmallShipAIFunctions.Evade(smallShipA, 2, "avoidCollision", direction));
+                                        Task a = new Task(FlightControlAI_SmallFunctions.Evade(smallShipA, 2, "avoidCollision", direction));
                                     }
                                 }
 
-                                if (avoidCollisionB == true & smallShipB.aiEvade == false)
+                                if (avoidCollisionB == true & smallShipB.flightControlAI_Small.aiEvade == false)
                                 {
                                     direction = 0; //Right = 0, Left = 1, Up = 2, Down, 3, RollRight 4, RollLeft 5, Fly Forward = 6 
                                     if (shipBRight > 0) { direction = 1; } else { direction = 0; }
                                     if (shipBUp > 0) { direction = 3; } else { direction = 2; }
 
-                                    if (smallShipB.aiEvade == false & smallShipB.isAI == true)
+                                    if (smallShipB.flightControlAI_Small.aiEvade == false & smallShipB.isAI == true)
                                     {
-                                        Task b = new Task(SmallShipAIFunctions.Evade(smallShipB, 2, "avoidCollision", direction));
+                                        Task b = new Task(FlightControlAI_SmallFunctions.Evade(smallShipB, 2, "avoidCollision", direction));
                                     }
                                 }
 
                                 //This checks if the ship needs to evade enemy fire
-                                float healthTotalA = smallShipA.shieldLevel + smallShipA.hullLevel;
-                                float healthTotalB = smallShipB.shieldLevel + smallShipB.hullLevel;
+                                float healthTotalA = smallShipA.energyManagementSystem.shieldLevel + smallShipA.energyManagementSystem.hullLevel;
+                                float healthTotalB = smallShipB.energyManagementSystem.shieldLevel + smallShipB.energyManagementSystem.hullLevel;
                                 direction = Random.Range(0, 6);
 
-                                if (smallShipA.healthSave > healthTotalA + 10)
+                                if (smallShipA.flightControlAI_Small.healthSave > healthTotalA + 10)
                                 {
-                                    smallShipA.healthSave = healthTotalA;
+                                    smallShipA.flightControlAI_Small.healthSave = healthTotalA;
 
                                     if (avoidCollisionA == false & smallShipA.isAI == true)
                                     {
-                                        Task a = new Task(SmallShipAIFunctions.Evade(smallShipA, 2, "evadeAttack", direction));
+                                        Task a = new Task(FlightControlAI_SmallFunctions.Evade(smallShipA, 2, "evadeAttack", direction));
                                     }
 
                                 }
 
-                                if (smallShipB.healthSave > healthTotalB + 10)
+                                if (smallShipB.flightControlAI_Small.healthSave > healthTotalB + 10)
                                 {
-                                    smallShipB.healthSave = healthTotalB;
+                                    smallShipB.flightControlAI_Small.healthSave = healthTotalB;
 
                                     if (avoidCollisionB == false & smallShipB.isAI == true)
                                     {
-                                        Task a = new Task(SmallShipAIFunctions.Evade(smallShipB, 2, "evadeAttack", direction));
+                                        Task a = new Task(FlightControlAI_SmallFunctions.Evade(smallShipB, 2, "evadeAttack", direction));
                                     }
 
                                 }
@@ -165,16 +165,16 @@ public static class AvoidCollisionsFunctions
     {
         scene.avoidLargeObjectsRunning = true;
 
-        foreach (GameObject ship in scene.objectPool.ToArray())
+        foreach (GameObject shipGO in scene.objectPool.ToArray())
         {
-            if (ship != null)
+            if (shipGO != null)
             {
-                if (ship.activeSelf == true)
+                if (shipGO.activeSelf == true)
                 {
-                    Vector3 forwardRaycast = ship.transform.position + (ship.transform.forward * 10);
-                    Vector3 backwardRaycast = ship.transform.position + (ship.transform.forward * -10);
-                    SmallShip smallShip = ship.GetComponent<SmallShip>();
-                    LargeShip largeShip = ship.GetComponent<LargeShip>();
+                    Vector3 forwardRaycast = shipGO.transform.position + (shipGO.transform.forward * 10);
+                    Vector3 backwardRaycast = shipGO.transform.position + (shipGO.transform.forward * -10);
+                    Ship ship = shipGO.GetComponent<Ship>();
+                    LargeShip largeShip = shipGO.GetComponent<LargeShip>();
 
                     if (largeShip != null)
                     {
@@ -189,27 +189,27 @@ public static class AvoidCollisionsFunctions
 
                     int direction = 0;
 
-                    if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.forward), out hit, 500))
+                    if (Physics.SphereCast(forwardRaycast, 50, shipGO.transform.TransformDirection(Vector3.forward), out hit, 500))
                     {
                         direction = 0;
                         hitSave = hit;
 
-                        if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.right), out hit, 500))
+                        if (Physics.SphereCast(forwardRaycast, 50, shipGO.transform.TransformDirection(Vector3.right), out hit, 500))
                         {
                             direction = 1;
                             hitSave = hit;
 
-                            if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.left), out hit, 500))
+                            if (Physics.SphereCast(forwardRaycast, 50, shipGO.transform.TransformDirection(Vector3.left), out hit, 500))
                             {
                                 direction = 2;
                                 hitSave = hit;
 
-                                if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.up), out hit, 500))
+                                if (Physics.SphereCast(forwardRaycast, 50, shipGO.transform.TransformDirection(Vector3.up), out hit, 500))
                                 {
                                     direction = 3;
                                     hitSave = hit;
 
-                                    if (Physics.SphereCast(forwardRaycast, 50, ship.transform.TransformDirection(Vector3.down), out hit, 500))
+                                    if (Physics.SphereCast(forwardRaycast, 50, shipGO.transform.TransformDirection(Vector3.down), out hit, 500))
                                     {
                                         direction = 1;
                                         hitSave = hit;
@@ -218,26 +218,26 @@ public static class AvoidCollisionsFunctions
                             }
                         }
 
-                        if (hitSave.transform.GetComponentInParent<SmallShip>() != true & !hitSave.transform.name.Contains("planet"))
+                        if (hitSave.transform.GetComponentInParent<FlightControlSystem_Small>() != true & !hitSave.transform.name.Contains("planet"))
                         {
-                            if (smallShip != null)
+                            if (ship != null)
                             {
-                                if (smallShip.isAI == true)
+                                if (ship.isAI == true)
                                 {
-                                    Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 2, "avoidCollision", direction));
+                                    Task a = new Task(FlightControlAI_SmallFunctions.Evade(ship, 2, "avoidCollision", direction));
                                 }
                             }
                         }
                     }
-                    else if (Physics.SphereCast(backwardRaycast, 50, ship.transform.TransformDirection(Vector3.back), out hit, 500) & smallShip != null)
+                    else if (Physics.SphereCast(backwardRaycast, 50, shipGO.transform.TransformDirection(Vector3.back), out hit, 500) & ship != null)
                     {
                         direction = 6;
 
-                        if (smallShip != null)
+                        if (ship != null)
                         {
-                            if (smallShip.isAI == true & hit.transform.GetComponentInParent<SmallShip>() != true & !hit.transform.name.Contains("planet"))
+                            if (ship.isAI == true & hit.transform.GetComponentInParent<FlightControlSystem_Small>() != true & !hit.transform.name.Contains("planet"))
                             {
-                                Task a = new Task(SmallShipAIFunctions.Evade(smallShip, 6, "avoidCollision", direction));
+                                Task a = new Task(FlightControlAI_SmallFunctions.Evade(ship, 6, "avoidCollision", direction));
                             }
                         }
                     }

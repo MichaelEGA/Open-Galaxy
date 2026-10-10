@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class EnergyWeapon : MonoBehaviour
 {
-    public ParticleSystem particleSystemScript;
-    public FlightControlSystem_Small smallShip;
+    public Ship ship;
     public WeaponManagement weaponManagement;
+
+    public ParticleSystem particleSystemScript;
     public List<Vector4> customData = new List<Vector4>();
 
     public float energyWeaponCycleNumber;
@@ -33,7 +34,7 @@ public class EnergyWeapon : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        smallShip = GetComponent<FlightControlSystem_Small>();
+        ship = GetComponent<Ship>();
         weaponManagement = GetComponent<WeaponManagement>();
     }
 

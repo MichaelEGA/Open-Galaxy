@@ -607,25 +607,25 @@ public static class TargetingSystemFunctions
     }
 
     //This checks whether a target is hostile or not
-    public static bool GetHostility_SmallShipPlayer(FlightControlSystem_Small smallShip = null, string targetAllegiance = "none")
+    public static bool GetHostility(Ship ship = null, string targetAllegiance = "none")
     {
         bool isHostile = false;
 
-        if (smallShip.scene != null)
+        if (ship.scene != null)
         {
-            if (smallShip.scene.allegiance == "none")
+            if (ship.scene.allegiance == "none")
             {
                 TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
-                smallShip.scene.allegiance = allegiancesFile.text;
+                ship.scene.allegiance = allegiancesFile.text;
             }
 
-            Allegiances allegiances = JsonUtility.FromJson<Allegiances>(smallShip.scene.allegiance);
+            Allegiances allegiances = JsonUtility.FromJson<Allegiances>(ship.scene.allegiance);
 
             Allegiance allegiance = null;
 
             foreach (Allegiance tempAllegiance in allegiances.allegianceData)
             {
-                if (tempAllegiance.allegiance == smallShip.allegiance)
+                if (tempAllegiance.allegiance == ship.allegiance)
                 {
                     allegiance = tempAllegiance;
                 }

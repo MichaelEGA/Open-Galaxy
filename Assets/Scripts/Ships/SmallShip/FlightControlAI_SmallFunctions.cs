@@ -834,410 +834,428 @@ public static class FlightControlAI_SmallFunctions
     }
 
     //This fires two lasers at a time
-    public static void DualPlasma(FlightControlAI_Small smallShip)
+    public static void DualPlasma(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        EnergyWeapon energyWeapon = flightControlAI.ship.energyWeapon;
+
+        if (targetingSystem.target != null)
         {
+            weaponManagement.weaponType = "plasma";
 
-            if (smallShip.targetingSystem.target != null)
+            if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true & energyWeapon.energyWeaponRecharged == true)
             {
-                smallShip.weaponManagement.weaponType = "plasma";
+                bool dontFire = CheckFire(flightControlAI);
 
-                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (dontFire == false)
                 {
-                    bool dontFire = CheckFire(smallShip);
-
-                    if (dontFire == false)
-                    {
-                        smallShip.weaponManagement.weaponMode = "dual";
-                        //PlasmaFunctions.InitiateFiring(smallShip);
-                    }
+                    weaponManagement.weaponMode = "dual";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                 }
             }
         }
     }
 
     //This fires all the ships lasers at once
-    public static void AllPlasma(FlightControlAI_Small smallShip)
+    public static void AllPlasma(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        EnergyWeapon energyWeapon = flightControlAI.ship.energyWeapon;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            weaponManagement.weaponType = "plasma";
+
+            if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true & energyWeapon.energyWeaponRecharged == true)
             {
-                smallShip.weaponManagement.weaponType = "plasma";
+                bool dontFire = CheckFire(flightControlAI);
 
-                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (dontFire == false)
                 {
-                    bool dontFire = CheckFire(smallShip);
-
-                    if (dontFire == false)
-                    {
-                        smallShip.weaponManagement.weaponMode = "all";
-                        //PlasmaFunctions.InitiateFiring(smallShip);
-                    }
+                    weaponManagement.weaponMode = "all";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                 }
             }
         }
     }
 
     //This fires one ion at a time
-    public static void SingleIon(FlightControlAI_Small smallShip)
+    public static void SingleIon(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        EnergyWeapon energyWeapon = flightControlAI.ship.energyWeapon;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            weaponManagement.weaponType = "ion";
+
+            if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true & energyWeapon.energyWeaponRecharged == true)
             {
-                smallShip.weaponManagement.weaponType = "ion";
+                bool dontFire = CheckFire(flightControlAI);
 
-                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (dontFire == false)
                 {
-                    bool dontFire = CheckFire(smallShip);
-
-                    if (dontFire == false)
-                    {
-                        smallShip.weaponManagement.weaponMode = "single";
-                        //IonFunctions.InitiateFiring(smallShip);
-                    }
+                    weaponManagement.weaponMode = "single";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                 }
             }
         }
     }
 
     //This fires two ions at a time
-    public static void DualIon(FlightControlAI_Small smallShip)
+    public static void DualIon(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        EnergyWeapon energyWeapon = flightControlAI.ship.energyWeapon;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            weaponManagement.weaponType = "ion";
+
+            if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true & energyWeapon.energyWeaponRecharged == true)
             {
-                smallShip.weaponManagement.weaponType = "ion";
+                bool dontFire = CheckFire(flightControlAI);
 
-                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (dontFire == false)
                 {
-                    bool dontFire = CheckFire(smallShip);
-
-                    if (dontFire == false)
-                    {
-                        smallShip.weaponManagement.weaponMode = "dual";
-                        //IonFunctions.InitiateFiring(smallShip);
-                    }
+                    weaponManagement.weaponMode = "dual";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                 }
             }
         }
     }
 
     //This fires all the ships ions at once
-    public static void AllIon(FlightControlAI_Small smallShip)
+    public static void AllIon(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        EnergyWeapon energyWeapon = flightControlAI.ship.energyWeapon;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            weaponManagement.weaponType = "ion";
+
+            if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true & energyWeapon.energyWeaponRecharged == true)
             {
-                smallShip.weaponManagement.weaponType = "ion";
+                bool dontFire = CheckFire(flightControlAI);
 
-                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true & smallShip.energyWeapon.energyWeaponRecharged == true)
+                if (dontFire == false)
                 {
-                    bool dontFire = CheckFire(smallShip);
-
-                    if (dontFire == false)
-                    {
-                        smallShip.weaponManagement.weaponMode = "all";
-                        //IonFunctions.InitiateFiring(smallShip);
-                    }
+                    weaponManagement.weaponMode = "all";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                 }
             }
-        }
+        }      
     }
 
     //This fires one ion at a time
-    public static void RapidIon(FlightControlAI_Small smallShip)
+    public static void RapidIon(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        EnergyWeapon energyWeapon = flightControlAI.ship.energyWeapon;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            weaponManagement.weaponType = "ion";
+
+            if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true)
             {
-                smallShip.weaponManagement.weaponType = "ion";
+                bool dontFire = CheckFire(flightControlAI);
 
-                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
+                if (dontFire == false & weaponManagement.hasRapidFire == true)
                 {
-                    bool dontFire = CheckFire(smallShip);
-
-                    if (dontFire == false & smallShip.weaponManagement.hasRapidFire == true)
-                    {
-                        smallShip.weaponManagement.weaponMode = "rapid";
-                        //IonFunctions.InitiateFiring(smallShip);
-                    }
-                    else if (dontFire == false)
-                    {
-                        smallShip.weaponManagement.weaponMode = "single";
-                        //IonFunctions.InitiateFiring(smallShip);
-                    }
+                    weaponManagement.weaponMode = "rapid";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
+                }
+                else if (dontFire == false)
+                {
+                    weaponManagement.weaponMode = "single";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                 }
             }
         }
     }
 
     //This fires one torpedo at a time
-    public static void SingleTorpedo(FlightControlAI_Small smallShip)
+    public static void SingleTorpedo(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            if (smallShip.targetingSystem.target != null)
-            {
-                smallShip.weaponManagement.weaponType = "torpedos";
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        TorpedoSystem torpedoSystem = flightControlAI.ship.torpedoSystem;
 
-                if (smallShip.torpedoSystem.torpedoNumber > 0)
+        if (flightControlAI.ship.targetingSystem.target != null)
+        {
+            weaponManagement.weaponType = "torpedos";
+
+            if (torpedoSystem.torpedoNumber > 0)
+            {
+                if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
                 {
-                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
-                    {
-                        smallShip.weaponManagement.weaponMode = "single";
-                        TorpedoSystemFunctions.FireTorpedo(smallShip);
-                    }
+                    weaponManagement.weaponMode = "single";
+                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
                 }
-                else
-                {
-                    smallShip.weaponManagement.weaponType = "lasers";
-                    SingleLaser(smallShip);
-                }
+            }
+            else
+            {
+                weaponManagement.weaponType = "lasers";
+                SingleLaser(flightControlAI);
             }
         }
     }
 
     //This fires two  torpedo at once
-    public static void DualTorpedos(FlightControlAI_Small smallShip)
+    public static void DualTorpedos(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            if (smallShip.targetingSystem.target != null)
-            {
-                smallShip.weaponManagement.weaponType = "torpedos";
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        TorpedoSystem torpedoSystem = flightControlAI.ship.torpedoSystem;
 
-                if (smallShip.torpedoSystem.torpedoNumber > 0)
+        if (targetingSystem.target != null)
+        {
+            weaponManagement.weaponType = "torpedos";
+
+            if (torpedoSystem.torpedoNumber > 0)
+            {
+                if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
                 {
-                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
-                    {
-                        smallShip.weaponManagement.weaponMode = "dual";
-                        TorpedoSystemFunctions.FireTorpedo(smallShip);
-                    }
+                    weaponManagement.weaponMode = "dual";
+                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
                 }
-                else
-                {
-                    smallShip.weaponManagement.weaponType = "lasers";
-                    SingleLaser(smallShip);
-                }
+            }
+            else
+            {
+                weaponManagement.weaponType = "lasers";
+                SingleLaser(flightControlAI);
             }
         }
     }
 
     //This fires from all torpedo tubes
-    public static void AllTorpedos(FlightControlAI_Small smallShip)
+    public static void AllTorpedos(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            if (smallShip.targetingSystem.target != null)
-            {
-                smallShip.weaponManagement.weaponType = "torpedos";
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        TorpedoSystem torpedoSystem = flightControlAI.ship.torpedoSystem;
 
-                if (smallShip.torpedoSystem.torpedoNumber > 0)
+        if (targetingSystem.target != null)
+        {
+            weaponManagement.weaponType = "torpedos";
+
+            if (torpedoSystem.torpedoNumber > 0)
+            {
+                if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
                 {
-                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
-                    {
-                        smallShip.weaponManagement.weaponMode = "all";
-                        TorpedoSystemFunctions.FireTorpedo(smallShip);
-                    }
-                }
-                else
-                {
-                    smallShip.weaponManagement.weaponType = "lasers";
-                    SingleLaser(smallShip);
+                    weaponManagement.weaponMode = "all";
+                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
                 }
             }
-        }
+            else
+            {
+                weaponManagement.weaponType = "lasers";
+                SingleLaser(flightControlAI);
+            }
+        }      
     }
 
     //This switches between single lasers and torpedos
-    public static void DynamicWeapons_Single(FlightControlAI_Small smallShip)
+    public static void DynamicWeapons_Single(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        TorpedoSystem torpedoSystem = flightControlAI.ship.torpedoSystem;
+        EnergyWeapon energyWeapon = flightControlAI.ship.energyWeapon;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            if (torpedoSystem.torpedoNumber > 0 & targetingSystem.interceptDistance > 2000 & targetingSystem.target.gameObject.activeSelf == true)
             {
-                if (smallShip.torpedoSystem.torpedoNumber > 0 & smallShip.targetingSystem.interceptDistance > 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
-                {
-                    smallShip.weaponManagement.weaponType = "torpedos";
+                weaponManagement.weaponType = "torpedos";
 
-                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
-                    {
-                        smallShip.weaponManagement.weaponMode = "single";
-                        TorpedoSystemFunctions.FireTorpedo(smallShip);
-                    }
+                if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
+                {
+                    weaponManagement.weaponMode = "single";
+                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
                 }
-                else if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
+            }
+            else if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true)
+            {
+                if (weaponManagement.hasPlasma == false)
                 {
-                    if (smallShip.weaponManagement.hasPlasma == false)
-                    {
-                        smallShip.weaponManagement.weaponType = "lasers";
-                    }
-                    else
-                    {
-                        smallShip.weaponManagement.weaponType = "plasma";
-                    }
+                    weaponManagement.weaponType = "lasers";
+                }
+                else
+                {
+                    weaponManagement.weaponType = "plasma";
+                }
 
-                    bool dontFire = CheckFire(smallShip);
+                bool dontFire = CheckFire(flightControlAI);
 
-                    if (dontFire == false & smallShip.energyWeapon.energyWeaponRecharged == true)
-                    {
-                        smallShip.weaponManagement.weaponMode = "single";
-                        EnergyWeaponFunctions.InitiateFiring(smallShip);
-                    }
+                if (dontFire == false & energyWeapon.energyWeaponRecharged == true)
+                {
+                    weaponManagement.weaponMode = "single";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                 }
             }
         }
     }
 
     //This switches betwene dual lasers and torpedos
-    public static void DynamicWeapons_Dual(FlightControlAI_Small smallShip)
+    public static void DynamicWeapons_Dual(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        TorpedoSystem torpedoSystem = flightControlAI.ship.torpedoSystem;
+        EnergyWeapon energyWeapon = flightControlAI.ship.energyWeapon;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            if (torpedoSystem.torpedoNumber > 0 & targetingSystem.interceptDistance > 2000 & targetingSystem.target.gameObject.activeSelf == true)
             {
-                if (smallShip.torpedoSystem.torpedoNumber > 0 & smallShip.targetingSystem.interceptDistance > 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
-                {
-                    smallShip.weaponManagement.weaponType = "torpedos";
+                weaponManagement.weaponType = "torpedos";
 
-                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
-                    {
-                        smallShip.weaponManagement.weaponMode = "dual";
-                        TorpedoSystemFunctions.FireTorpedo(smallShip);
-                    }
+                if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
+                {
+                    weaponManagement.weaponMode = "dual";
+                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
                 }
-                else if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
+            }
+            else if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true)
+            {
+                if (weaponManagement.hasPlasma == false)
                 {
-                    if (smallShip.weaponManagement.hasPlasma == false)
-                    {
-                        smallShip.weaponManagement.weaponType = "lasers";
-                    }
-                    else
-                    {
-                        smallShip.weaponManagement.weaponType = "plasma";
-                    }
+                    weaponManagement.weaponType = "lasers";
+                }
+                else
+                {
+                    weaponManagement.weaponType = "plasma";
+                }
 
-                    bool dontFire = CheckFire(smallShip);
+                bool dontFire = CheckFire(flightControlAI);
 
-                    if (dontFire == false)
-                    {
-                        smallShip.weaponManagement.weaponMode = "dual";
-                        EnergyWeaponFunctions.InitiateFiring(smallShip);
-                    }
+                if (dontFire == false)
+                {
+                    weaponManagement.weaponMode = "dual";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                 }
             }
         }
+        
     }
 
     //This switches betwene dual lasers and torpedos
-    public static void DynamicWeapons_All(FlightControlAI_Small smallShip)
+    public static void DynamicWeapons_All(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        TorpedoSystem torpedoSystem = flightControlAI.ship.torpedoSystem;
+        EnergyWeapon energyWeapon = flightControlAI.ship.energyWeapon;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            if (torpedoSystem.torpedoNumber > 0 & targetingSystem.interceptDistance > 2000 & targetingSystem.target.gameObject.activeSelf == true)
             {
-                if (smallShip.torpedoSystem.torpedoNumber > 0 & smallShip.targetingSystem.interceptDistance > 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
-                {
-                    smallShip.weaponManagement.weaponType = "torpedos";
+                weaponManagement.weaponType = "torpedos";
 
-                    if (smallShip.targetingSystem.targetForward > 0.995f & smallShip.torpedoSystem.torpedoLockedOn == true)
-                    {
-                        smallShip.weaponManagement.weaponMode = "all";
-                        TorpedoSystemFunctions.FireTorpedo(smallShip);
-                    }
+                if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
+                {
+                    weaponManagement.weaponMode = "all";
+                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
                 }
-                else if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.interceptDistance < 2000 & smallShip.targetingSystem.target.gameObject.activeSelf == true)
+            }
+            else if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true)
+            {
+                if (weaponManagement.hasPlasma == false)
                 {
-                    if (smallShip.weaponManagement.hasPlasma == false)
-                    {
-                        smallShip.weaponManagement.weaponType = "lasers";
-                    }
-                    else
-                    {
-                        smallShip.weaponManagement.weaponType = "plasma";
-                    }
+                    weaponManagement.weaponType = "lasers";
+                }
+                else
+                {
+                    weaponManagement.weaponType = "plasma";
+                }
 
-                    bool dontFire = CheckFire(smallShip);
+                bool dontFire = CheckFire(flightControlAI);
 
-                    if (dontFire == false)
-                    {
-                        smallShip.weaponManagement.weaponMode = "all";
-                        EnergyWeaponFunctions.InitiateFiring(smallShip);
-                    }
+                if (dontFire == false)
+                {
+                    weaponManagement.weaponMode = "all";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                 }
             }
         }
     }
 
     //This switches between rapid lasers and normal lasers
-    public static void DynamicWeapons_Rapid(FlightControlAI_Small smallShip)
+    public static void DynamicWeapons_Rapid(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            if (smallShip.weaponManagement.hasPlasma == false)
-            {
-                smallShip.weaponManagement.weaponType = "lasers";
-            }
-            else
-            {
-                smallShip.weaponManagement.weaponType = "plasma";
-            }
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        WeaponManagement weaponManagement = flightControlAI.ship.weaponManagement;
+        TorpedoSystem torpedoSystem = flightControlAI.ship.torpedoSystem;
+        EnergyWeapon energyWeapon = flightControlAI.ship.energyWeapon;
 
-            if (smallShip.targetingSystem.target != null)
+        if (weaponManagement.hasPlasma == false)
+        {
+            weaponManagement.weaponType = "lasers";
+        }
+        else
+        {
+           weaponManagement.weaponType = "plasma";
+        }
+
+        if (targetingSystem.target != null)
+        {
+            if (targetingSystem.interceptForward > 0.95f & targetingSystem.target.gameObject.activeSelf == true)
             {
-                if (smallShip.targetingSystem.interceptForward > 0.95f & smallShip.targetingSystem.target.gameObject.activeSelf == true)
+                if (weaponManagement.hasRapidFire == true)
                 {
-                    if (smallShip.weaponManagement.hasRapidFire == true)
+                    if (targetingSystem.targetShip != null)
                     {
-                        if (smallShip.targetingSystem.targetSmallShip != null)
+                        if (targetingSystem.targetShip.weaponManagement.hasPlasma == true & targetingSystem.targetShip.energyManagementSystem.shieldLevel > 10)
                         {
-                            if (smallShip.targetingSystem.targetSmallShip.weaponManagement.hasPlasma == true & smallShip.targetingSystem.targetSmallShip.shieldLevel > 10)
-                            {
-                                smallShip.weaponManagement.weaponMode = "rapid";
-                                EnergyWeaponFunctions.InitiateFiring(smallShip);
-                            }
-                            else
-                            {
-                                smallShip.weaponManagement.weaponMode = "single";
-                                EnergyWeaponFunctions.InitiateFiring(smallShip);
-                            }
+                            weaponManagement.weaponMode = "rapid";
+                            EnergyWeaponFunctions.InitiateFiring(energyWeapon);
+                        }
+                        else
+                        {
+                            weaponManagement.weaponMode = "single";
+                            EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                         }
                     }
-                    else
-                    {
-                        smallShip.weaponManagement.weaponMode = "single";
-                        EnergyWeaponFunctions.InitiateFiring(smallShip);
-                    }
+                }
+                else
+                {
+                    weaponManagement.weaponMode = "single";
+                    EnergyWeaponFunctions.InitiateFiring(energyWeapon);
                 }
             }
         }
     }
+    
     //This checks whether a non hostile ship is in the firing line or not
-    public static bool CheckFire(FlightControlAI_Small smallShip)
+    public static bool CheckFire(FlightControlAI_Small flightControlAI)
     {
         bool dontFire = false;
 
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
             RaycastHit hit;
 
             int layerMask = (1 << 6) | (1 << 7) | (1 << 8) | (1 << 9) | (1 << 10) | (1 << 11) | (1 << 12) | (1 << 13) | (1 << 14) | (1 << 15) | (1 << 16) | (1 << 17) | (1 << 18) | (1 << 19) | (1 << 20) | (1 << 21) | (1 << 22) | (1 << 23);
 
-            Vector3 forwardRaycast = smallShip.gameObject.transform.position + (smallShip.gameObject.transform.forward * 10);
+            Vector3 forwardRaycast = flightControlAI.gameObject.transform.position + (flightControlAI.gameObject.transform.forward * 10);
 
-            if (Physics.SphereCast(forwardRaycast, 10, smallShip.gameObject.gameObject.transform.TransformDirection(Vector3.forward), out hit, 1000, layerMask))
+            if (Physics.SphereCast(forwardRaycast, 10, flightControlAI.gameObject.gameObject.transform.TransformDirection(Vector3.forward), out hit, 1000, layerMask))
             {
                 FlightControlAI_Small otherSmallship = hit.collider.GetComponentInParent<FlightControlAI_Small>();
 
                 if (otherSmallship != null)
                 {
-                    bool isHostile = TargetingSystemFunctions.GetHostility_SmallShipPlayer(smallShip, otherSmallship.ship.allegiance);
+                    bool isHostile = TargetingSystemFunctions.GetHostility(flightControlAI.ship, otherSmallship.ship.allegiance);
 
                     if (isHostile != true)
                     {
@@ -1255,36 +1273,36 @@ public static class FlightControlAI_SmallFunctions
     #region AI Weapon Accuracy
 
     //This sets the targetting accuracy to low
-    public static void LowAccuracy(FlightControlAI_Small smallShip)
+    public static void LowAccuracy(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
-            SetTargetingErrorMargin(smallShip, "low");
+            SetTargetingErrorMargin(flightControlAI, "low");
         }
     }
 
     //This sets the targetting accuracy to medium
-    public static void MediumAccuracy(FlightControlAI_Small smallShip)
+    public static void MediumAccuracy(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
-            SetTargetingErrorMargin(smallShip, "medium");
+            SetTargetingErrorMargin(flightControlAI, "medium");
         }
     }
 
     //This sets the targetting accuracy to jihj
-    public static void HighAccuracy(FlightControlAI_Small smallShip)
+    public static void HighAccuracy(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
-            SetTargetingErrorMargin(smallShip, "high");
+            SetTargetingErrorMargin(flightControlAI, "high");
         }
     }
 
     //Targeting error margin
-    public static void SetTargetingErrorMargin(FlightControlAI_Small smallShip, string mode)
+    public static void SetTargetingErrorMargin(FlightControlAI_Small flightControlAI, string mode)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
             float lowRange = 100;
             float mediumRange = 50;
@@ -1313,7 +1331,7 @@ public static class FlightControlAI_SmallFunctions
                 z = Random.Range(-highRange, highRange);
             }
 
-            smallShip.aiTargetingErrorMargin = new Vector3(x, y, z);
+            flightControlAI.aiTargetingErrorMargin = new Vector3(x, y, z);
         }
     }
 
@@ -1322,102 +1340,102 @@ public static class FlightControlAI_SmallFunctions
     #region AI Flight Patterns
 
     //Chase: The enemy relenlessly pursues the player without withdrawing
-    public static void Chase(FlightControlAI_Small smallShip)
+    public static void Chase(FlightControlAI_Small flghtControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flghtControlAI.ship.targetingSystem;
+
+        if (flghtControlAI.aiEvade == false)
         {
-            if (smallShip.aiEvade == false)
+            if (targetingSystem.target != null)
             {
-                if (smallShip.targetingSystem.target != null)
+                if (targetingSystem.targetDistance > 250)
                 {
-                    if (smallShip.targetingSystem.targetDistance > 250)
-                    {
-                        smallShip.aiMatchSpeed = false;
-                        AngleTowardsTarget(smallShip);
-                    }
-                    else
-                    {
-                        smallShip.aiMatchSpeed = true;
-                        AngleTowardsTarget(smallShip);
-                    }
+                    flghtControlAI.aiMatchSpeed = false;
+                    AngleTowardsTarget(flghtControlAI);
                 }
                 else
                 {
-                    PatrolRandom(smallShip, true);
+                    flghtControlAI.aiMatchSpeed = true;
+                    AngleTowardsTarget(flghtControlAI);
                 }
             }
-
-            smallShip.flyInFormation = false;
+            else
+            {
+                PatrolRandom(flghtControlAI, true);
+            }
         }
+
+        flghtControlAI.flyInFormation = false;     
     }
 
     //Chase-Withdraw: Attack for 15-20 followed by withdrawal for 30-35 seconds
-    public static void ChaseWithdraw(FlightControlAI_Small smallShip)
+    public static void ChaseWithdraw(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            if (smallShip.aiEvade == false)
-            {
-                if (smallShip.targetingSystem.target != null)
-                {
-                    if (smallShip.targetingSystem.targetDistance > 250)
-                    {
-                        smallShip.aiMatchSpeed = false;
-                        AngleTowardsTarget(smallShip);
-                    }
-                    else
-                    {
-                        if (Time.time < smallShip.aiAttackTime)
-                        {
-                            smallShip.aiMatchSpeed = true;
-                            AngleTowardsTarget(smallShip);
-                            smallShip.aiRetreatTime = Time.time + Random.Range(15, 20);
-                        }
-                        else
-                        {
-                            smallShip.aiMatchSpeed = false;
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
 
-                            if (Time.time < smallShip.aiRetreatTime)
-                            {
-                                AngleAwayFromTarget(smallShip);
-                            }
-                            else
-                            {
-                                smallShip.aiAttackTime = Time.time + Random.Range(30, 35);
-                            }
-                        }
-                    }
+        if (flightControlAI.aiEvade == false)
+        {
+            if (targetingSystem.target != null)
+            {
+                if (targetingSystem.targetDistance > 250)
+                {
+                    flightControlAI.aiMatchSpeed = false;
+                    AngleTowardsTarget(flightControlAI);
                 }
                 else
                 {
-                    PatrolRandom(smallShip, true);
+                    if (Time.time < flightControlAI.aiAttackTime)
+                    {
+                        flightControlAI.aiMatchSpeed = true;
+                        AngleTowardsTarget(flightControlAI);
+                        flightControlAI.aiRetreatTime = Time.time + Random.Range(15, 20);
+                    }
+                    else
+                    {
+                        flightControlAI.aiMatchSpeed = false;
+
+                        if (Time.time < flightControlAI.aiRetreatTime)
+                        {
+                            AngleAwayFromTarget(flightControlAI);
+                        }
+                        else
+                        {
+                            flightControlAI.aiAttackTime = Time.time + Random.Range(30, 35);
+                        }
+                    }
                 }
             }
-
-            smallShip.flyInFormation = false;
+            else
+            {
+                PatrolRandom(flightControlAI, true);
+            }
         }
+
+        flightControlAI.flyInFormation = false;
     }
 
     //Strafe-Withdraw: Attacks enemy ship at distance before withdrawing again (typically used for attack large ships)
-    public static void StrafeWithdraw(FlightControlAI_Small smallShip)
+    public static void StrafeWithdraw(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+
+        if (flightControlAI != null)
         {
-            if (smallShip.aiEvade == false)
+            if (flightControlAI.aiEvade == false)
             {
-                if (smallShip != null)
+                if (flightControlAI != null)
                 {
                     float attackDistance = 250;
                     float withdrawDistance = 1000;
 
-                    if (smallShip.targetingSystem.targetLargeShip != null)
+                    if (targetingSystem.targetLargeShip != null)
                     {
-                        if (smallShip.targetingSystem.targetLargeShip.shipClass == "large")
+                        if (targetingSystem.targetLargeShip.shipClass == "large")
                         {
                             attackDistance = 1500;
                             withdrawDistance = 3000;
                         }
-                        else if (smallShip.targetingSystem.targetLargeShip.shipClass == "middle")
+                        else if (targetingSystem.targetLargeShip.shipClass == "middle")
                         {
                             attackDistance = 1000;
                             withdrawDistance = 2000;
@@ -1429,159 +1447,161 @@ public static class FlightControlAI_SmallFunctions
                         }
                     }
 
-                    if (smallShip.targetingSystem.targetDistance > attackDistance & smallShip.withdraw == false)
+                    if (targetingSystem.targetDistance > attackDistance & flightControlAI.withdraw == false)
                     {
-                        AngleTowardsTarget(smallShip);
+                        AngleTowardsTarget(flightControlAI);
                     }
-                    else if (smallShip.targetingSystem.targetDistance < attackDistance & smallShip.withdraw == false)
+                    else if (targetingSystem.targetDistance < attackDistance & flightControlAI.withdraw == false)
                     {
-                        smallShip.withdraw = true;
+                        flightControlAI.withdraw = true;
                     }
-                    else if (smallShip.targetingSystem.targetDistance > withdrawDistance & smallShip.withdraw == true)
+                    else if (targetingSystem.targetDistance > withdrawDistance & flightControlAI.withdraw == true)
                     {
-                        smallShip.withdraw = false;
+                        flightControlAI.withdraw = false;
                     }
                     else
                     {
-                        AngleAwayFromTarget(smallShip);
+                        AngleAwayFromTarget(flightControlAI);
                     }
                 }
                 else
                 {
-                    PatrolRandom(smallShip, true);
+                    PatrolRandom(flightControlAI, true);
                 }
             }
 
-            smallShip.flyInFormation = false;
+            flightControlAI.flyInFormation = false;
         }
     }
 
     //This angles towards the ships waypoint
-    public static void MoveToWayPoint(FlightControlAI_Small smallShip)
+    public static void MoveToWayPoint(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
-            if (smallShip.aiEvade == false)
+            if (flightControlAI.aiEvade == false)
             {
-                AngleTowardsWaypoint(smallShip);
+                AngleTowardsWaypoint(flightControlAI);
             }
 
-            smallShip.flyInFormation = false;
+            flightControlAI.flyInFormation = false;
         }
     }
 
     //This is the basic flight pattern for patrolling
-    public static void PatrolRandom(FlightControlAI_Small smallShip, bool stayClose = false)
+    public static void PatrolRandom(FlightControlAI_Small flightControlAI, bool stayClose = false)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+
+        if (flightControlAI != null)
         {
-            if (smallShip.aiEvade == false)
+            if (flightControlAI.aiEvade == false)
             {
-                if (smallShip.targetingSystem.waypoint != null)
+                if (targetingSystem.waypoint != null)
                 {
-                    float distanceToWaypoint = Vector3.Distance(smallShip.gameObject.transform.position, smallShip.targetingSystem.waypoint.transform.position);
+                    float distanceToWaypoint = Vector3.Distance(flightControlAI.gameObject.transform.position, targetingSystem.waypoint.transform.position);
 
                     if (distanceToWaypoint < 50)
                     {
-                        SelectRandomWaypoint(smallShip, stayClose);
+                        SelectRandomWaypoint(flightControlAI, stayClose);
                     }
 
-                    AngleTowardsWaypoint(smallShip);
+                    AngleTowardsWaypoint(flightControlAI);
                 }
             }
 
-            smallShip.flyInFormation = false;
+            flightControlAI.flyInFormation = false;
         }
     }
 
     //This selects a random waypoint
-    public static void SelectRandomWaypoint(FlightControlAI_Small smallShip, bool stayClose = false)
+    public static void SelectRandomWaypoint(FlightControlAI_Small flightControlAI, bool stayClose = false)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+
+        if (flightControlAI.aiEvade == false)
         {
-            if (smallShip.aiEvade == false)
+            float min = -flightControlAI.ship.scene.sceneRadius + 1000;
+            float max = flightControlAI.ship.scene.sceneRadius - 1000;
+
+            float x = Random.Range(min, max);
+            float y = Random.Range(min, max);
+            float z = Random.Range(min, max);
+
+            //This makes ships with no target stay within range of the player/center of the scene
+            if (stayClose == true)
             {
-                float min = -smallShip.scene.sceneRadius + 1000;
-                float max = smallShip.scene.sceneRadius - 1000;
+                Vector3 referencePosition = new Vector3(0, 0, 0);
 
-                float x = Random.Range(min, max);
-                float y = Random.Range(min, max);
-                float z = Random.Range(min, max);
-
-                //This makes ships with no target stay within range of the player/center of the scene
-                if (stayClose == true)
+                if (flightControlAI.ship.scene != null)
                 {
-                    Vector3 referencePosition = new Vector3(0, 0, 0);
+                    Scene scene = flightControlAI.ship.scene;
 
-                    if (smallShip.scene != null)
+                    if (scene != null)
                     {
-                        Scene scene = smallShip.scene;
-
-                        if (scene != null)
+                        if (scene.mainShip != null)
                         {
-                            if (scene.mainShip != null)
-                            {
-                                referencePosition.x = scene.mainShip.transform.localPosition.x;
-                                referencePosition.y = scene.mainShip.transform.localPosition.y;
-                                referencePosition.z = scene.mainShip.transform.localPosition.z;
-                            }
+                            referencePosition.x = scene.mainShip.transform.localPosition.x;
+                            referencePosition.y = scene.mainShip.transform.localPosition.y;
+                            referencePosition.z = scene.mainShip.transform.localPosition.z;
                         }
                     }
-
-                    x = referencePosition.x + Random.Range(-2500, 2500);
-                    y = referencePosition.y + Random.Range(-2500, 2500);
-                    z = referencePosition.z + Random.Range(-2500, 2500);
                 }
 
-                if (smallShip.targetingSystem.waypoint != null)
-                {
-                    smallShip.targetingSystem.waypoint.transform.localPosition = new Vector3(x, y, z);
-                }
+                x = referencePosition.x + Random.Range(-2500, 2500);
+                y = referencePosition.y + Random.Range(-2500, 2500);
+                z = referencePosition.z + Random.Range(-2500, 2500);
+            }
+
+            if (targetingSystem.waypoint != null)
+            {
+                targetingSystem.waypoint.transform.localPosition = new Vector3(x, y, z);
             }
         }
+        
     }
 
     //This sets the ship to fly in formation
-    public static void FormationFlying(FlightControlAI_Small smallShip)
+    public static void FormationFlying(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
-            if (smallShip.followTarget != null)
+            if (flightControlAI.followTarget != null)
             {
-                if (smallShip.isAI == true)
+                if (flightControlAI.isAI == true)
                 {
-                    smallShip.flyInFormation = true;
+                    flightControlAI.flyInFormation = true;
                 }
 
-                Quaternion flatLeaderRotation = Quaternion.Euler(0, smallShip.followTarget.transform.eulerAngles.y, 0);
+                Quaternion flatLeaderRotation = Quaternion.Euler(0, flightControlAI.followTarget.transform.eulerAngles.y, 0);
 
-                Vector3 desiredPosition = smallShip.followTarget.transform.position + flatLeaderRotation * new Vector3(smallShip.xFormationPos, smallShip.yFormationPos, smallShip.zFormationPos);
+                Vector3 desiredPosition = flightControlAI.followTarget.transform.position + flatLeaderRotation * new Vector3(flightControlAI.xFormationPos, flightControlAI.yFormationPos, flightControlAI.zFormationPos);
 
-                float distance = Vector3.Distance(smallShip.transform.position, desiredPosition);
+                float distance = Vector3.Distance(flightControlAI.transform.position, desiredPosition);
 
-                smallShip.aiMatchSpeed = true;
+                flightControlAI.aiMatchSpeed = true;
 
-                AngleTowardsPoint(smallShip, desiredPosition);
+                AngleTowardsPoint(flightControlAI, desiredPosition);
             }
             else
             {
-                smallShip.aiMatchSpeed = false;
-                smallShip.flyInFormation = false;
-                ChaseWithdraw(smallShip);
+                flightControlAI.aiMatchSpeed = false;
+                flightControlAI.flyInFormation = false;
+                ChaseWithdraw(flightControlAI);
             }
         }
     }
 
     //This prevents the ship from performing any rotations and locks the direction forward
-    public static void NoRotation(FlightControlAI_Small smallShip)
+    public static void NoRotation(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        if (flightControlAI != null)
         {
-            ResetSteeringInputs(smallShip);
+            ResetSteeringInputs(flightControlAI);
         }
 
-        smallShip.flyInFormation = false;
-        smallShip.positionLocked = false;
+        flightControlAI.flyInFormation = false;
+        flightControlAI.positionLocked = false;
     }
 
     #endregion
@@ -1589,116 +1609,104 @@ public static class FlightControlAI_SmallFunctions
     #region AI Energy Management
 
     //This sets shield power to maximum
-    public static void EnergyToShields(FlightControlAI_Small smallShip)
+    public static void EnergyToShields(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.powerMode = "shields";
-        }
+        flightControlAI.ship.energyManagementSystem.powerMode = "shields";        
     }
 
     //This sets engine power to maximum
-    public static void EnergyToEngines(FlightControlAI_Small smallShip)
+    public static void EnergyToEngines(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.powerMode = "engines";
-        }
+        flightControlAI.ship.energyManagementSystem.powerMode = "engines";       
     }
 
     //This sets engine power to maximum
-    public static void EnergyToLasers(FlightControlAI_Small smallShip)
+    public static void EnergyToLasers(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.powerMode = "lasers";
-        }
+        flightControlAI.ship.energyManagementSystem.powerMode = "lasers";       
     }
 
     //This resets all energy levels
-    public static void ResetEnergyLevels(FlightControlAI_Small smallShip)
+    public static void ResetEnergyLevels(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.powerMode = "reset";
-        }
+        flightControlAI.ship.energyManagementSystem.powerMode = "reset";      
     }
 
     //This uses the ships energy in a way that maxmises aggression but leaves lowers the defensive capabilites of the ship
-    public static void EnergyAggressive(FlightControlAI_Small smallShip)
+    public static void EnergyAggressive(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        EnergyManagementSystem energyManagementSystem = flightControlAI.ship.energyManagementSystem;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            if (targetingSystem.targetDistance < 1000 & targetingSystem.targetForward > 0)
             {
-                if (smallShip.targetingSystem.targetDistance < 1000 & smallShip.targetingSystem.targetForward > 0)
-                {
-                    smallShip.powerMode = "lasers";
-                }
-                else
-                {
-                    smallShip.powerMode = "engines";
-                }
+                energyManagementSystem.powerMode = "lasers";
             }
             else
             {
-                smallShip.powerMode = "reset";
+                energyManagementSystem.powerMode = "engines";
             }
         }
+        else
+        {
+            energyManagementSystem.powerMode = "reset";
+        }        
     }
 
     //This uses the ships energy in a way that maxmises defenses but minimises attack capabilities
-    public static void EnergyProtective(FlightControlAI_Small smallShip)
+    public static void EnergyProtective(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        EnergyManagementSystem energyManagementSystem = flightControlAI.ship.energyManagementSystem;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            if (energyManagementSystem.shieldLevel < flightControlAI.ship.shieldRating / 2f)
             {
-                if (smallShip.shieldLevel < smallShip.shieldRating / 2f)
-                {
-                    smallShip.powerMode = "shields";
-                }
-                else
-                {
-                    smallShip.powerMode = "reset";
-                }
+                energyManagementSystem.powerMode = "shields";
             }
             else
             {
-                smallShip.powerMode = "reset";
+                energyManagementSystem.powerMode = "reset";
             }
+        }
+        else
+        {
+            energyManagementSystem.powerMode = "reset";
         }
     }
 
     //This uses the ships energy in way that is most effective for both offense and defense
-    public static void EnergyDynamic(FlightControlAI_Small smallShip)
+    public static void EnergyDynamic(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        EnergyManagementSystem energyManagementSystem = flightControlAI.ship.energyManagementSystem;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target != null)
+            if (energyManagementSystem.shieldLevel < flightControlAI.ship.shieldRating / 2f)
             {
-                if (smallShip.shieldLevel < smallShip.shieldRating / 2f)
-                {
-                    smallShip.powerMode = "shields";
-                }
-                else if (smallShip.targetingSystem.targetDistance < 1000 & smallShip.targetingSystem.targetForward > 0)
-                {
-                    smallShip.powerMode = "lasers";
-                }
-                else if (smallShip.targetingSystem.targetDistance > 2000 & smallShip.targetingSystem.targetForward > 0)
-                {
-                    smallShip.powerMode = "engines";
-                }
-                else
-                {
-                    smallShip.powerMode = "reset";
-                }
+                energyManagementSystem.powerMode = "shields";
+            }
+            else if (targetingSystem.targetDistance < 1000 & targetingSystem.targetForward > 0)
+            {
+                energyManagementSystem.powerMode = "lasers";
+            }
+            else if (targetingSystem.targetDistance > 2000 & targetingSystem.targetForward > 0)
+            {
+                energyManagementSystem.powerMode = "engines";
             }
             else
             {
-                smallShip.powerMode = "reset";
+                energyManagementSystem.powerMode = "reset";
             }
         }
+        else
+        {
+            energyManagementSystem.powerMode = "reset";
+        }     
     }
 
     #endregion
@@ -1706,102 +1714,106 @@ public static class FlightControlAI_SmallFunctions
     #region AI Targetting
 
     //This checks if the ship needs to request a new target - this function is run automatically
-    public static void RequestTarget(FlightControlAI_Small smallShip)
+    public static void RequestTarget(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip.targetingSystem.target == null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+
+        if (targetingSystem.target == null)
         {
-            smallShip.requestingTarget = true;
+            flightControlAI.requestingTarget = true;
         }
         else
         {
-            smallShip.requestingTarget = false;
+            flightControlAI.requestingTarget = false;
         }
     }
 
     //This clears the target if it doesn't meet certain conditions i.e. was destroyed or disabled  - this function is run automatically
-    public static void ClearTarget(FlightControlAI_Small smallShip)
+    public static void ClearTarget(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip.targetingSystem.target != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+
+        if (targetingSystem.target != null)
         {
-            if (smallShip.targetingSystem.target.activeSelf == false)
+            if (targetingSystem.target.activeSelf == false)
             {
-                smallShip.targetingSystem.target = null;
+                targetingSystem.target = null;
             }
-            else if (smallShip.targetingSystem.targetSmallShip != null)
+            else if (targetingSystem.targetShip != null)
             {
-                if (smallShip.targetingSystem.targetSmallShip.isDisabled == true)
+                if (targetingSystem.targetShip.damageSystem.isDisabled == true)
                 {
-                    smallShip.targetingSystem.target = null;
+                    targetingSystem.target = null;
                 }
             }
-            else if (smallShip.targetingSystem.targetLargeShip != null)
+            else if (targetingSystem.targetLargeShip != null)
             {
-                if (smallShip.targetingSystem.targetLargeShip.isDisabled == true)
+                if (targetingSystem.targetLargeShip.isDisabled == true)
                 {
-                    smallShip.targetingSystem.target = null;
+                    targetingSystem.target = null;
                 }
             }
         }
     }
 
     //Tagets all ships but looks for small ships first
-    public static void TargetAllPrefSmall(FlightControlAI_Small smallShip)
+    public static void TargetAllPrefSmall(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            if (smallShip.aiTargetingMode != "targetallprefsmall") //This ensures the previous target is cleared
-            {
-                smallShip.targetingSystem.target = null;
-                smallShip.requestingTarget = true;
-            }
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
 
-            smallShip.aiTargetingMode = "targetallprefsmall";
+        if (flightControlAI.aiTargetingMode != "targetallprefsmall") //This ensures the previous target is cleared
+        {
+            targetingSystem.target = null;
+            flightControlAI.requestingTarget = true;
         }
+
+        flightControlAI.aiTargetingMode = "targetallprefsmall";
+        
     }
 
     //Targets all ships but looks for large ships first
-    public static void TargetAllPrefLarge(FlightControlAI_Small smallShip)
+    public static void TargetAllPrefLarge(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+
+        if (flightControlAI != null)
         {
-            if (smallShip.aiTargetingMode != "targetallpreflarge") //This ensures the previous target is cleared
+            if (flightControlAI.aiTargetingMode != "targetallpreflarge") //This ensures the previous target is cleared
             {
-                smallShip.targetingSystem.target = null;
-                smallShip.requestingTarget = true;
+                targetingSystem.target = null;
+                flightControlAI.requestingTarget = true;
             }
 
-            smallShip.aiTargetingMode = "targetallpreflarge";
+            flightControlAI.aiTargetingMode = "targetallpreflarge";
         }
     }
 
     //Targets only small ships
-    public static void TargetSmallShipsOnly(FlightControlAI_Small smallShip)
+    public static void TargetSmallShipsOnly(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            if (smallShip.aiTargetingMode != "targetsmallshipsonly") //This ensures the previous target is cleared
-            {
-                smallShip.targetingSystem.target = null;
-                smallShip.requestingTarget = true;
-            }
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
 
-            smallShip.aiTargetingMode = "targetsmallshipsonly";
+        if (flightControlAI.aiTargetingMode != "targetsmallshipsonly") //This ensures the previous target is cleared
+        {
+            targetingSystem.target = null;
+            flightControlAI.requestingTarget = true;
         }
+
+        flightControlAI.aiTargetingMode = "targetsmallshipsonly";
     }
 
     //Targets only small ships
-    public static void TargetLargeShipOnly(FlightControlAI_Small smallShip)
+    public static void TargetLargeShipOnly(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            if (smallShip.aiTargetingMode != "targetlargeshipsonly") //This ensures the previous target is cleared
-            {
-                smallShip.targetingSystem.target = null;
-                smallShip.requestingTarget = true;
-            }
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
 
-            smallShip.aiTargetingMode = "targetlargeshipsonly";
+        if (flightControlAI.aiTargetingMode != "targetlargeshipsonly") //This ensures the previous target is cleared
+        {
+            targetingSystem.target = null;
+            flightControlAI.requestingTarget = true;
         }
+
+        flightControlAI.aiTargetingMode = "targetlargeshipsonly";      
     }
 
     #endregion
@@ -1811,9 +1823,11 @@ public static class FlightControlAI_SmallFunctions
     //This allows the ship to evade attacks and avoid collisions with other objects and ships
     public static IEnumerator Evade(Ship ship, float time, string mode, int direction)
     {
+        FlightControlAI_Small flightControlAI_Small = ship.flightControlAI_Small;
+
         if (ship != null)
         {
-            if (TagExists(ship.flightControlAI_Small, "nospeed") == true & TagExists(ship, "norotation") == true || TagExists(ship, "nocollisionevasion") == true || TagExists(ship, "formationflying") == true)
+            if (TagExists(ship.flightControlAI_Small, "nospeed") == true & TagExists(flightControlAI_Small, "norotation") == true || TagExists(flightControlAI_Small, "nocollisionevasion") == true || TagExists(flightControlAI_Small, "formationflying") == true)
             {
                 //Do nothing
             }
@@ -1821,50 +1835,50 @@ public static class FlightControlAI_SmallFunctions
             {
                 if (ship != null)
                 {
-                    ship.aiEvade = true;
+                    flightControlAI_Small.aiEvade = true;
 
                     time = time + Time.time;
 
                     while (time > Time.time)
                     {
-                        HalfSpeed(ship);
+                        HalfSpeed(flightControlAI_Small);
 
                         if (direction == 0)
                         {
-                            TurnRight(ship);
+                            TurnRight(flightControlAI_Small);
                         }
                         else if (direction == 1)
                         {
-                            TurnLeft(ship);
+                            TurnLeft(flightControlAI_Small);
                         }
                         else if (direction == 2)
                         {
-                            PitchUp(ship);
+                            PitchUp(flightControlAI_Small);
                         }
                         else if (direction == 3)
                         {
-                            PitchDown(ship);
+                            PitchDown(flightControlAI_Small);
                         }
                         else if (direction == 4)
                         {
-                            RollRight(ship);
+                            RollRight(flightControlAI_Small);
                         }
                         else if (direction == 5)
                         {
-                            RollLeft(ship);
+                            RollLeft(flightControlAI_Small);
                         }
                         else if (direction == 6)
                         {
-                            FlyFoward(ship);
+                            FlyFoward(flightControlAI_Small);
                         }
 
                         yield return null;
 
                     }
 
-                    ResetSteeringInputs(ship);
+                    ResetSteeringInputs(flightControlAI_Small);
 
-                    ship.aiEvade = false;
+                    flightControlAI_Small.aiEvade = false;
                 }
             }
         }
@@ -1875,47 +1889,50 @@ public static class FlightControlAI_SmallFunctions
     #region AI Steering Control
 
     //This angles the ship towards the target vector
-    public static void AngleTowardsTarget(FlightControlAI_Small smallShip)
+    public static void AngleTowardsTarget(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            AvoidGimbalLock(smallShip, smallShip.targetingSystem.interceptForward);
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
 
-            if (smallShip.targetingSystem.target != null & smallShip.avoidGimbalLock == false)
+        if (flightControlAI != null)
+        {
+            AvoidGimbalLock(flightControlAI, targetingSystem.interceptForward);
+
+            if (targetingSystem.target != null & flightControlAI.avoidGimbalLock == false)
             {
-                if (smallShip.targetingSystem.interceptForward < 0.8)
+                if (targetingSystem.interceptForward < 0.8)
                 {
-                    if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                    if (Vector3.Dot(flightControlAI.transform.up, Vector3.down) < 0)
                     {
                         //Right way up
-                        smallShip.turnInput = smallShip.targetingSystem.interceptRight;
-                        smallShip.pitchInput = -smallShip.targetingSystem.interceptUp;
+                        flightControlSystem.turnInput = targetingSystem.interceptRight;
+                        flightControlSystem.pitchInput = -targetingSystem.interceptUp;
 
                     }
                     else
                     {
                         //Upside down
-                        smallShip.turnInput = -smallShip.targetingSystem.interceptRight;
-                        smallShip.pitchInput = -smallShip.targetingSystem.interceptUp;
+                        flightControlSystem.turnInput = -targetingSystem.interceptRight;
+                        flightControlSystem.pitchInput = -targetingSystem.interceptUp;
                     }
                 }
                 else
                 {
                     //Smoothly interpolate the multiplier from 1 to 5 to prevent a jerk
-                    float t = Mathf.InverseLerp(0.8f, 1.0f, smallShip.targetingSystem.interceptForward);
+                    float t = Mathf.InverseLerp(0.8f, 1.0f, targetingSystem.interceptForward);
                     float multiplier = Mathf.SmoothStep(1f, 5f, t);
 
-                    if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                    if (Vector3.Dot(flightControlAI.transform.up, Vector3.down) < 0)
                     {
                         //Right way up
-                        smallShip.turnInput = smallShip.targetingSystem.interceptRight * multiplier;
-                        smallShip.pitchInput = -smallShip.targetingSystem.interceptUp * multiplier;
+                        flightControlSystem.turnInput = targetingSystem.interceptRight * multiplier;
+                        flightControlSystem.pitchInput = -targetingSystem.interceptUp * multiplier;
                     }
                     else
                     {
                         //Upside down
-                        smallShip.turnInput = -smallShip.targetingSystem.interceptRight * multiplier;
-                        smallShip.pitchInput = -smallShip.targetingSystem.interceptUp * multiplier;
+                        flightControlSystem.turnInput = -targetingSystem.interceptRight * multiplier;
+                        flightControlSystem.pitchInput = -targetingSystem.interceptUp * multiplier;
                     }
                 }
             }
@@ -1923,27 +1940,30 @@ public static class FlightControlAI_SmallFunctions
     }
 
     //This angles the ship away from the target vector
-    public static void AngleAwayFromTarget(FlightControlAI_Small smallShip)
+    public static void AngleAwayFromTarget(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            AvoidGimbalLock(smallShip, smallShip.targetingSystem.interceptForward, true);
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
 
-            if (smallShip.targetingSystem.target != null & smallShip.avoidGimbalLock == false)
+        if (flightControlAI != null)
+        {
+            AvoidGimbalLock(flightControlAI, targetingSystem.interceptForward, true);
+
+            if (targetingSystem.target != null & flightControlAI.avoidGimbalLock == false)
             {
-                if (-smallShip.targetingSystem.interceptForward < 1)
+                if (-targetingSystem.interceptForward < 1)
                 {
-                    if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                    if (Vector3.Dot(flightControlAI.transform.up, Vector3.down) < 0)
                     {
                         //Right way up
-                        smallShip.turnInput = -smallShip.targetingSystem.interceptRight;
-                        smallShip.pitchInput = smallShip.targetingSystem.interceptUp;
+                        flightControlSystem.turnInput = -targetingSystem.interceptRight;
+                        flightControlSystem.pitchInput = targetingSystem.interceptUp;
                     }
                     else
                     {
                         //Upside down
-                        smallShip.turnInput = smallShip.targetingSystem.interceptRight;
-                        smallShip.pitchInput = -smallShip.targetingSystem.interceptUp;
+                        flightControlSystem.turnInput = targetingSystem.interceptRight;
+                        flightControlSystem.pitchInput = -targetingSystem.interceptUp;
                     }
                 }
             }
@@ -1951,265 +1971,257 @@ public static class FlightControlAI_SmallFunctions
     }
 
     //This angles the ship towards the target vector
-    public static void AngleTowardsWaypoint(FlightControlAI_Small smallShip)
+    public static void AngleTowardsWaypoint(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        AvoidGimbalLock(flightControlAI, targetingSystem.waypointForward);
+
+        if (targetingSystem.waypoint != null & flightControlAI.avoidGimbalLock == false)
         {
-            AvoidGimbalLock(smallShip, smallShip.targetingSystem.waypointForward);
-
-            if (smallShip.targetingSystem.waypoint != null & smallShip.avoidGimbalLock == false)
+            if (targetingSystem.waypointForward < 0.8)
             {
-                if (smallShip.targetingSystem.waypointForward < 0.8)
+                if (Vector3.Dot(flightControlAI.transform.up, Vector3.down) < 0)
                 {
-                    if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                    {
-                        //Right way up
-                        smallShip.turnInput = smallShip.targetingSystem.waypointRight;
-                        smallShip.pitchInput = -smallShip.targetingSystem.waypointUp;
+                    //Right way up
+                    flightControlSystem.turnInput = targetingSystem.waypointRight;
+                    flightControlSystem.pitchInput = -targetingSystem.waypointUp;
 
-                    }
-                    else
-                    {
-                        //Upside down
-                        smallShip.turnInput = -smallShip.targetingSystem.waypointRight;
-                        smallShip.pitchInput = -smallShip.targetingSystem.waypointUp;
-                    }
                 }
                 else
                 {
-                    //Smoothly interpolate the multiplier from 1 to 5 to prevent a jerk
-                    float t = Mathf.InverseLerp(0.8f, 1.0f, smallShip.targetingSystem.waypointForward);
-                    float multiplier = Mathf.SmoothStep(1f, 5f, t);
+                    //Upside down
+                    flightControlSystem.turnInput = -targetingSystem.waypointRight;
+                    flightControlSystem.pitchInput = -targetingSystem.waypointUp;
+                }
+            }
+            else
+            {
+                //Smoothly interpolate the multiplier from 1 to 5 to prevent a jerk
+                float t = Mathf.InverseLerp(0.8f, 1.0f, targetingSystem.waypointForward);
+                float multiplier = Mathf.SmoothStep(1f, 5f, t);
 
-                    if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                    {
-                        //Right way up
-                        smallShip.turnInput = smallShip.targetingSystem.waypointRight * multiplier;
-                        smallShip.pitchInput = -smallShip.targetingSystem.waypointUp * multiplier;
-                    }
-                    else
-                    {
-                        //Upside down
-                        smallShip.turnInput = -smallShip.targetingSystem.waypointRight * multiplier;
-                        smallShip.pitchInput = -smallShip.targetingSystem.waypointUp * multiplier;
-                    }
+                if (Vector3.Dot(flightControlAI.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    flightControlSystem.turnInput = targetingSystem.waypointRight * multiplier;
+                    flightControlSystem.pitchInput = -targetingSystem.waypointUp * multiplier;
+                }
+                else
+                {
+                    //Upside down
+                    flightControlSystem.turnInput = -targetingSystem.waypointRight * multiplier;
+                    flightControlSystem.pitchInput = -targetingSystem.waypointUp * multiplier;
                 }
             }
         }
     }
 
     //This angles the ship away from the target vector
-    public static void AngleAwayFromWaypoint(FlightControlAI_Small smallShip)
+    public static void AngleAwayFromWaypoint(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        AvoidGimbalLock(flightControlAI, targetingSystem.waypointForward, true);
+
+        if (targetingSystem.waypoint != null & flightControlAI.avoidGimbalLock == false)
         {
-            AvoidGimbalLock(smallShip, smallShip.targetingSystem.waypointForward, true);
-
-            if (smallShip.targetingSystem.waypoint != null & smallShip.avoidGimbalLock == false)
+            if (targetingSystem.waypointForward > -0.95)
             {
-                if (smallShip.targetingSystem.waypointForward > -0.95)
+                if (Vector3.Dot(flightControlAI.transform.up, Vector3.down) < 0)
                 {
-                    if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                    {
-                        //Right way up
-                        smallShip.turnInput = -smallShip.targetingSystem.waypointRight;
-                        smallShip.pitchInput = smallShip.targetingSystem.waypointUp;
-                    }
-                    else
-                    {
-                        //Upside down
-                        smallShip.turnInput = smallShip.targetingSystem.waypointRight;
-                        smallShip.pitchInput = -smallShip.targetingSystem.waypointUp;
-                    }
-                }
-            }
-        }
-    }
-
-    //This angles the ship towards the target vector
-    public static void AngleTowardsPoint(FlightControlAI_Small smallShip, Vector3 point)
-    {
-        if (smallShip != null)
-        {
-            Vector3 targetPosition = point;
-
-            Vector3 targetRelativePosition = targetPosition - smallShip.transform.position;
-
-            float targetForward = Vector3.Dot(smallShip.transform.forward, targetRelativePosition.normalized);
-            float targetRight = Vector3.Dot(smallShip.transform.right, targetRelativePosition.normalized);
-            float targetUp = Vector3.Dot(smallShip.transform.up, targetRelativePosition.normalized);
-
-            AvoidGimbalLock(smallShip, targetForward);
-
-            if (smallShip.avoidGimbalLock == false)
-            {
-                if (targetForward < 0.8)
-                {
-                    if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                    {
-                        smallShip.turnInput = targetRight;
-                        smallShip.pitchInput = -targetUp;
-                    }
-                    else
-                    {
-                        //Upside down
-                        smallShip.turnInput = -targetRight;
-                        smallShip.pitchInput = -targetUp;
-                    }
+                    //Right way up
+                    flightControlSystem.turnInput = -targetingSystem.waypointRight;
+                    flightControlSystem.pitchInput = targetingSystem.waypointUp;
                 }
                 else
                 {
-                    //Smoothly interpolate the multiplier from 1 to 5 to prevent a jerk
-                    float t = Mathf.InverseLerp(0.8f, 1.0f, targetForward);
-                    float multiplier = Mathf.SmoothStep(1f, 5f, t);
+                    //Upside down
+                    flightControlSystem.turnInput = targetingSystem.waypointRight;
+                    flightControlSystem.pitchInput = -targetingSystem.waypointUp;
+                }
+            }
+        }      
+    }
 
-                    if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
-                    {
-                        //Right way up
-                        smallShip.turnInput = targetRight * multiplier;
-                        smallShip.pitchInput = -targetUp * multiplier;
-                    }
-                    else
-                    {
-                        //Upside down
-                        smallShip.turnInput = -targetRight * multiplier;
-                        smallShip.pitchInput = -targetUp * multiplier;
-                    }
+    //This angles the ship towards the target vector
+    public static void AngleTowardsPoint(FlightControlAI_Small flightControlAI, Vector3 point)
+    {
+        TargetingSystem targetingSystem = flightControlAI.ship.targetingSystem;
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        Vector3 targetPosition = point;
+
+        Vector3 targetRelativePosition = targetPosition - flightControlAI.transform.position;
+
+        float targetForward = Vector3.Dot(flightControlAI.transform.forward, targetRelativePosition.normalized);
+        float targetRight = Vector3.Dot(flightControlAI.transform.right, targetRelativePosition.normalized);
+        float targetUp = Vector3.Dot(flightControlAI.transform.up, targetRelativePosition.normalized);
+
+        AvoidGimbalLock(flightControlAI, targetForward);
+
+        if (flightControlAI.avoidGimbalLock == false)
+        {
+            if (targetForward < 0.8)
+            {
+                if (Vector3.Dot(flightControlAI.transform.up, Vector3.down) < 0)
+                {
+                    flightControlSystem.turnInput = targetRight;
+                    flightControlSystem.pitchInput = -targetUp;
+                }
+                else
+                {
+                    //Upside down
+                    flightControlSystem.turnInput = -targetRight;
+                    flightControlSystem.pitchInput = -targetUp;
+                }
+            }
+            else
+            {
+                //Smoothly interpolate the multiplier from 1 to 5 to prevent a jerk
+                float t = Mathf.InverseLerp(0.8f, 1.0f, targetForward);
+                float multiplier = Mathf.SmoothStep(1f, 5f, t);
+
+                if (Vector3.Dot(flightControlAI.transform.up, Vector3.down) < 0)
+                {
+                    //Right way up
+                    flightControlSystem.turnInput = targetRight * multiplier;
+                    flightControlSystem.pitchInput = -targetUp * multiplier;
+                }
+                else
+                {
+                    //Upside down
+                    flightControlSystem.turnInput = -targetRight * multiplier;
+                    flightControlSystem.pitchInput = -targetUp * multiplier;
                 }
             }
         }
+        
     }
 
     //This pitches the ship up
-    public static void PitchUp(FlightControlAI_Small smallShip)
+    public static void PitchUp(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.pitchInput = 1;
-        }
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        flightControlSystem.pitchInput = 1;
     }
 
     //This pitches the ship down
-    public static void PitchDown(FlightControlAI_Small smallShip)
+    public static void PitchDown(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.pitchInput = -1;
-        }
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        flightControlSystem.pitchInput = -1;
     }
 
     //This turns the ship right
-    public static void TurnRight(FlightControlAI_Small smallShip)
+    public static void TurnRight(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.turnInput = 1;
-        }
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        flightControlSystem.turnInput = 1;
     }
 
     //This turns the ship Left
-    public static void TurnLeft(FlightControlAI_Small smallShip)
+    public static void TurnLeft(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.turnInput = -1;
-        }
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        flightControlSystem.turnInput = -1;
     }
 
     //This causes the ship to roll Right
-    public static void RollRight(FlightControlAI_Small smallShip)
+    public static void RollRight(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.rollInput = 1;
-        }
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        flightControlSystem.rollInput = 1;
     }
 
     //This causes the ship to roll left
-    public static void RollLeft(FlightControlAI_Small smallShip)
+    public static void RollLeft(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.rollInput = -1;
-        }
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        flightControlSystem.rollInput = -1;
     }
 
     //This causes the ship to fly forward
-    public static void FlyFoward(FlightControlAI_Small smallShip)
+    public static void FlyFoward(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.turnInput = 0;
-            smallShip.pitchInput = 0;
-        }
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        flightControlSystem.turnInput = 0;
+        flightControlSystem.pitchInput = 0;
     }
 
     //This prevents gimbal lock when the ships turn
-    public static void AvoidGimbalLock(FlightControlAI_Small smallShip, float forward, bool reverse = false)
+    public static void AvoidGimbalLock(FlightControlAI_Small flightControlAI, float forward, bool reverse = false)
     {
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
 
         if (reverse == false)
         {
             if (forward < -0.9)
             {
-                smallShip.avoidGimbalLock = true;
+                flightControlAI.avoidGimbalLock = true;
 
-                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                if (Vector3.Dot(flightControlAI.transform.up, Vector3.down) < 0)
                 {
                     //Steering when ship is the right way up
-                    smallShip.turnInput = 1;
-                    smallShip.pitchInput = 0;
+                    flightControlSystem.turnInput = 1;
+                    flightControlSystem.pitchInput = 0;
                 }
                 else
                 {
                     //Steering when the ship is upside down
-                    smallShip.turnInput = -1;
-                    smallShip.pitchInput = 0;
+                    flightControlSystem.turnInput = -1;
+                    flightControlSystem.pitchInput = 0;
                 }
             }
             else
             {
-                smallShip.avoidGimbalLock = false;
+                flightControlAI.avoidGimbalLock = false;
             }
         }
         else
         {
             if (forward > 0.9)
             {
-                smallShip.avoidGimbalLock = true;
+                flightControlAI.avoidGimbalLock = true;
 
-                if (Vector3.Dot(smallShip.transform.up, Vector3.down) < 0)
+                if (Vector3.Dot(flightControlAI.transform.up, Vector3.down) < 0)
                 {
                     //Right way up
-                    smallShip.turnInput = -1;
-                    smallShip.pitchInput = 0;
-                    smallShip.rollInput = 0;
+                    flightControlSystem.turnInput = -1;
+                    flightControlSystem.pitchInput = 0;
+                    flightControlSystem.rollInput = 0;
                 }
                 else
                 {
                     //upside down
-                    smallShip.turnInput = 1;
-                    smallShip.pitchInput = 0;
+                    flightControlSystem.turnInput = 1;
+                    flightControlSystem.pitchInput = 0;
                 }
             }
             else
             {
-                smallShip.avoidGimbalLock = false;
+                flightControlAI.avoidGimbalLock = false;
             }
         }
-
-
     }
 
     //This resets all the inputs
-    public static void ResetSteeringInputs(FlightControlAI_Small smallShip)
+    public static void ResetSteeringInputs(FlightControlAI_Small flightControlAI)
     {
-        if (smallShip != null)
-        {
-            smallShip.pitchInput = 0;
-            smallShip.turnInput = 0;
-            smallShip.rollInput = 0;
-        }
+        FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
+
+        flightControlSystem.pitchInput = 0;
+        flightControlSystem.turnInput = 0;
+        flightControlSystem.rollInput = 0;       
     }
 
     #endregion

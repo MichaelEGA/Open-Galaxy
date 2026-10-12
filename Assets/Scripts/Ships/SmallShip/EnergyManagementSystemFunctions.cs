@@ -2,6 +2,18 @@ using UnityEngine;
 
 public static class EnergyManagementSystemFunctions
 {
+    //This gets the input for the energy management system
+    public static void GetInput(EnergyManagementSystem energyManagementSystem)
+    {
+        if (energyManagementSystem.ship.isAI == false)
+        {
+            energyManagementSystem.powerToShields = energyManagementSystem.ship.ogInput.powerToShields;
+            energyManagementSystem.powerToEngine = energyManagementSystem.ship.ogInput.powerToEngine;
+            energyManagementSystem.powerToLasers = energyManagementSystem.ship.ogInput.powerToLasers;
+            energyManagementSystem.resetPowerLevels = energyManagementSystem.ship.ogInput.resetPowerLevels;
+        }
+    }
+
     //This calculates the ships power distribution
     public static void CalculatePower(EnergyManagementSystem energyManagementSystem)
     {
@@ -121,7 +133,7 @@ public static class EnergyManagementSystemFunctions
         //This sets the ships wep power levels
         if (energyManagementSystem.powerMode == "engines")
         {
-            if (energyManagementSystem.ship.flightControlSystem_Small.wep == false & energyManagementSystem.ship.flightControlSystem_Small.thrustInput <= 0)
+            if (energyManagementSystem.ship.energyManagementSystem_Small.wep == false & energyManagementSystem.ship.energyManagementSystem_Small.thrustInput <= 0)
             {
                 if (energyManagementSystem.wepLevel < 100) { energyManagementSystem.wepLevel += energyManagementSystem.wepRecharge; }
             }
@@ -132,7 +144,7 @@ public static class EnergyManagementSystemFunctions
         }
         else if (energyManagementSystem.powerMode == "reset")
         {
-            if (energyManagementSystem.ship.flightControlSystem_Small.wep == false & energyManagementSystem.ship.flightControlSystem_Small.thrustInput <= 0)
+            if (energyManagementSystem.ship.energyManagementSystem_Small.wep == false & energyManagementSystem.ship.energyManagementSystem_Small.thrustInput <= 0)
             {
                 if (energyManagementSystem.wepLevel > 50) { energyManagementSystem.wepLevel -= energyManagementSystem.wepDischarge; }
                 else if (energyManagementSystem.wepLevel < 50) { energyManagementSystem.wepLevel += energyManagementSystem.wepRecharge; }
@@ -186,4 +198,5 @@ public static class EnergyManagementSystemFunctions
             }
         }
     }
+
 }

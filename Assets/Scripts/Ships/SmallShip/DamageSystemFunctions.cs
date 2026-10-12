@@ -233,7 +233,7 @@ public static class DamageSystemFunctions
                     {
                         if (damageSystem.ship.targetingSystem.targetShip != null)
                         {
-                            damageSystem.ship.targetingSystem.targetShip.ship.targetingSystem.numberTargeting -= 1;
+                            damageSystem.ship.targetingSystem.targetShip.targetingSystem.numberTargeting -= 1;
                         }
                     }
 

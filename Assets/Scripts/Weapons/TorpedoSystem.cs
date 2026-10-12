@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TorpedoSystem : MonoBehaviour
 {
-    public FlightControlSystem_Small smallShip;
+    public Ship ship;
     public WeaponManagement weaponManagement;
     public GameObject torpedoTube1;
     public GameObject torpedoTube2;
@@ -21,16 +21,17 @@ public class TorpedoSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        smallShip = GetComponent<FlightControlSystem_Small>();
+        ship = GetComponent<Ship>();
         weaponManagement = GetComponent<WeaponManagement>();
+        TorpedoSystemFunctions.GetTorpedoTubes(this);
     }
 
     // Update is called once per frame
     void Update()
     {
         //Torpedo functions
-        TorpedoSystemFunctions.EstablishLockOn(smallShip);
-        TorpedoSystemFunctions.FireTorpedoPlayer(smallShip);
-        TorpedoSystemFunctions.ToggleWeaponMode(smallShip);
+        TorpedoSystemFunctions.EstablishLockOn(this);
+        TorpedoSystemFunctions.FireTorpedoPlayer(this);
+        TorpedoSystemFunctions.ToggleWeaponMode(this);
     }
 }

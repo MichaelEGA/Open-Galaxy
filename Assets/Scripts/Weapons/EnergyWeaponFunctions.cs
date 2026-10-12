@@ -9,6 +9,7 @@ using static UnityEditor.Rendering.CameraUI;
 //These functions are called by the small ship functions script
 public static class EnergyWeaponFunctions
 {
+
     #region intiate particle system
 
     public static void PrepareEnergyWeapon(EnergyWeapon laser)

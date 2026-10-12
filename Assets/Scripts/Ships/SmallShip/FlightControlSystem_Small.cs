@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//This script controls a ship by calling the appropriate functions from: Small Ship Functions, Small Ship Laser Functions, and Small Ship AI Functions
 public class FlightControlSystem_Small : MonoBehaviour
 {
     [Header("Key Reference")]
@@ -36,15 +35,8 @@ public class FlightControlSystem_Small : MonoBehaviour
     public bool controlLock = false;
     public bool invertUpDown;
     public bool invertLeftRight;
-    public bool fireWeapon;
-    public bool rapidFire;
-    public bool getNextTarget;
-    public bool getNextEnemy;
-    public bool getClosestEnemy;
-    public bool selectTargetInFront;
-    public bool matchSpeed;
     public bool focusCamera;
-    public bool fireCounterMeasures;
+    public bool matchSpeed;
 
     [Header("Hyperspace")]
     public bool inHyperspace;
@@ -63,49 +55,36 @@ public class FlightControlSystem_Small : MonoBehaviour
     public DockingPoint dockingPoint;
     public bool docking;
 
+    [Header("Movement Effect")]
     public ParticleSystem movementEffect;
-
-    [Header("Ship Loading")]
-    public bool loaded;
-
-    [Header("Ship Coroutine Tasks")]
-    public List<Task> tasks;
 
     private void Start()
     {
-        targetingSystem = GetComponent<TargetingSystem>();
-        damageSystem = GetComponent<DamageSystem>();
-        weaponManagement = GetComponent<WeaponManagement>();
-        energyWeapon = GetComponent<EnergyWeapon>();
-        torpedoSystem = GetComponent<TorpedoSystem>();
+        ship = GetComponent<Ship>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //Input functions
-        GetInput(smallShip);
-        TurnShipAround(smallShip);
-        SpinShip(smallShip);
-        ControlLock(smallShip);
+        FlightControlSystem_SmallFunctions.GetInput(this);
+        FlightControlSystem_SmallFunctions.TurnShipAround(this);
+        FlightControlSystem_SmallFunctions.SpinShip(this);
+        FlightControlSystem_SmallFunctions.ControlLock(this);
 
         //Start functions
-        PrepareShip(smallShip);
-
-        //Energy Management functions
-        CalculatePower(smallShip);
-        CalculateLevels(smallShip);
+        FlightControlSystem_SmallFunctions.PrepareShip(this);
 
         //Ship movement functions
-        MatchSpeed(smallShip);
-        CalculateThrustSpeed(smallShip);
-        CalculatePitchTurnRollSpeeds(smallShip);
-        MovementEffect(smallShip);
-        AudioFunctions.PlayEngineNoise_SmallShip(smallShip);
+        FlightControlSystem_SmallFunctions.MatchSpeed(this);
+        FlightControlSystem_SmallFunctions.CalculateThrustSpeed(this);
+        FlightControlSystem_SmallFunctions.CalculatePitchTurnRollSpeeds(this);
+        FlightControlSystem_SmallFunctions.MovementEffect(this);
+        AudioFunctions.PlayEngineNoise_Ship(ship);
     }
     
     void FixedUpdate()
     {
-        MoveShip(smallShip);
+        FlightControlSystem_SmallFunctions.MoveShip(this);
     }
 }

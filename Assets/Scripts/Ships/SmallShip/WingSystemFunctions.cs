@@ -33,7 +33,7 @@ public static class WingSystemFunctions
                     mixer = "Cockpit";
                 }
 
-                AudioFunctions.PlayAudioClip(wingSystem.ship.flightControlSystem_Small.audioManager, "wings_open", mixer, wingSystem.transform.position, spatialBlend, 1, 500, 0.6f);
+                AudioFunctions.PlayAudioClip(wingSystem.ship.flightControlSystem_Small.ship.audioManager, "wings_open", mixer, wingSystem.transform.position, spatialBlend, 1, 500, 0.6f);
             }
 
             if (wingSystem.wing02 != null & wingSystem.wing02_open != null & wingSystem.wing02_closed != null)
@@ -82,7 +82,7 @@ public static class WingSystemFunctions
                     mixer = "Cockpit";
                 }
 
-                AudioFunctions.PlayAudioClip(wingSystems.ship.flightControlSystem_Small.audioManager, "wings_close", mixer, wingSystems.transform.position, spatialBlend, 1, 500, 0.6f);
+                AudioFunctions.PlayAudioClip(wingSystems.ship.flightControlSystem_Small.ship.audioManager, "wings_close", mixer, wingSystems.transform.position, spatialBlend, 1, 500, 0.6f);
             }
 
             if (wingSystems.wing02 != null & wingSystems.wing02_open != null & wingSystems.wing02_closed != null)

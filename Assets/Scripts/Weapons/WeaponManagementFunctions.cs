@@ -2,6 +2,18 @@ using UnityEngine;
 
 public class WeaponManagementFunctions 
 {
+    public static void GetInput(WeaponManagement weaponManagement)
+    {
+        if (weaponManagement.ship.isAI == false)
+        {
+            weaponManagement.fireWeapon = weaponManagement.ship.ogInput.fireWeapon;
+            weaponManagement.rapidFire = weaponManagement.ship.ogInput.rapidFire;
+            weaponManagement.fireCounterMeasures = weaponManagement.ship.ogInput.fireCounterMeasures;
+            weaponManagement.toggleWeapons = weaponManagement.ship.ogInput.toggleWeapons;
+            weaponManagement.toggleWeaponNumber = weaponManagement.ship.ogInput.toggleWeaponNumber;
+        }
+    }
+
     //This toggles between different types of weapons
     public static void ToggleWeapons(WeaponManagement weaponManagement)
     {
@@ -13,7 +25,7 @@ public class WeaponManagementFunctions
 
         if (weaponManagement.hasPlasma == false)
         {
-            if (weaponManagement.toggleWeapons == true & weaponManagement.toggleWeaponPressedTime < Time.time & weaponManagement.smallShip.isDisabled == false & weaponManagement.preventWeaponChange == false)
+            if (weaponManagement.toggleWeapons == true & weaponManagement.toggleWeaponPressedTime < Time.time & weaponManagement.ship.isDisabled == false & weaponManagement.preventWeaponChange == false)
             {
                 if (hasTorpedos == true & torpedoNumber > 0 & weaponManagement.hasIon == true)
                 {
@@ -39,9 +51,9 @@ public class WeaponManagementFunctions
                         weaponManagement.weaponMode = "single";
                     }
 
-                    if (weaponManagement.smallShip.isAI == false)
+                    if (weaponManagement.ship.isAI == false)
                     {
-                        AudioFunctions.PlayAudioClip(weaponManagement.smallShip.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
+                        AudioFunctions.PlayAudioClip(weaponManagement.ship.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
                     }
                 }
                 else if (hasTorpedos == true & torpedoNumber > 0 & weaponManagement.hasIon == false)
@@ -63,9 +75,9 @@ public class WeaponManagementFunctions
                         weaponManagement.weaponMode = "single";
                     }
 
-                    if (weaponManagement.smallShip.isAI == false)
+                    if (weaponManagement.ship.isAI == false)
                     {
-                        AudioFunctions.PlayAudioClip(weaponManagement.smallShip.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
+                        AudioFunctions.PlayAudioClip(weaponManagement.ship.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
                     }
                 }
                 else if (hasTorpedos == false & weaponManagement.hasIon == true || hasTorpedos == true & torpedoNumber <= 0 & weaponManagement.hasIon == true)
@@ -87,9 +99,9 @@ public class WeaponManagementFunctions
                         weaponManagement.weaponMode = "single";
                     }
 
-                    if (weaponManagement.smallShip.isAI == false)
+                    if (weaponManagement.ship.isAI == false)
                     {
-                        AudioFunctions.PlayAudioClip(weaponManagement.smallShip.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
+                        AudioFunctions.PlayAudioClip(weaponManagement.ship.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
                     }
                 }
                 else
@@ -99,7 +111,7 @@ public class WeaponManagementFunctions
 
                 weaponManagement.toggleWeaponPressedTime = Time.time + 0.25f;
             }
-            else if (weaponManagement.smallShip.isDisabled == true)
+            else if (weaponManagement.ship.isDisabled == true)
             {
                 weaponManagement.weaponType = "---";
                 weaponManagement.weaponMode = "---";
@@ -115,7 +127,7 @@ public class WeaponManagementFunctions
         }
         else
         {
-            if (weaponManagement.toggleWeapons == true & weaponManagement.toggleWeaponPressedTime < Time.time & weaponManagement.smallShip.isDisabled == false & weaponManagement.preventWeaponChange == false)
+            if (weaponManagement.toggleWeapons == true & weaponManagement.toggleWeaponPressedTime < Time.time & weaponManagement.ship.isDisabled == false & weaponManagement.preventWeaponChange == false)
             {
                 if (hasTorpedos == true & torpedoNumber > 0)
                 {
@@ -136,9 +148,9 @@ public class WeaponManagementFunctions
                         weaponManagement.weaponMode = "single";
                     }
 
-                    if (weaponManagement.smallShip.isAI == false)
+                    if (weaponManagement.ship.isAI == false)
                     {
-                        AudioFunctions.PlayAudioClip(weaponManagement.smallShip.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
+                        AudioFunctions.PlayAudioClip(weaponManagement.ship.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
                     }
                 }
                 else if (hasTorpedos == true & torpedoNumber <= 0)
@@ -146,9 +158,9 @@ public class WeaponManagementFunctions
                     weaponManagement.weaponType = "plasma";
                     weaponManagement.weaponMode = "single";
 
-                    if (weaponManagement.smallShip.isAI == false)
+                    if (weaponManagement.ship.isAI == false)
                     {
-                        AudioFunctions.PlayAudioClip(weaponManagement.smallShip.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
+                        AudioFunctions.PlayAudioClip(weaponManagement.ship.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
                     }
                 }
                 else
@@ -158,7 +170,7 @@ public class WeaponManagementFunctions
 
                 weaponManagement.toggleWeaponPressedTime = Time.time + 0.25f;
             }
-            else if (weaponManagement.smallShip.isDisabled == true)
+            else if (weaponManagement.ship.isDisabled == true)
             {
                 weaponManagement.weaponType = "---";
                 weaponManagement.weaponMode = "---";
@@ -180,9 +192,9 @@ public class WeaponManagementFunctions
         weaponManagement.weaponType = weapon;
         weaponManagement.weaponMode = mode;
 
-        if (weaponManagement.smallShip.isAI == false)
+        if (weaponManagement.ship.isAI == false)
         {
-            AudioFunctions.PlayAudioClip(weaponManagement.smallShip.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
+            AudioFunctions.PlayAudioClip(weaponManagement.ship.audioManager, "beep03_weaponchange", "Cockpit", weaponManagement.gameObject.transform.position, 0, 1, 500, 1, 100);
         }
     }
 

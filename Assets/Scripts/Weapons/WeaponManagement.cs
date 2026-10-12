@@ -2,29 +2,33 @@ using UnityEngine;
 
 public class WeaponManagement : MonoBehaviour
 {
-    public FlightControlSystem_Small smallShip;
+    [Header("Key References")]
+    public Ship ship;
     public EnergyWeapon energyWeapon;
     public TorpedoSystem torpedoTubes;
 
+    [Header("Information")]
     public string weaponType = "lasers";
     public string weaponMode = "single";
-
-    public bool weaponsLock = false;
-    public bool preventWeaponChange = false;
-
     public bool hasTorpedos;
     public bool hasIon;
     public bool hasPlasma;
     public bool hasRapidFire;
 
+    [Header("Controls")]
+    public bool fireWeapon;
+    public bool rapidFire;
+    public bool fireCounterMeasures;
     public bool toggleWeapons;
     public bool toggleWeaponNumber;
     public float toggleWeaponPressedTime;
+    public bool weaponsLock = false;
+    public bool preventWeaponChange = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        smallShip = GetComponent<FlightControlSystem_Small>();
+        ship = GetComponent<Ship>();
         energyWeapon = GetComponent<EnergyWeapon>();
         torpedoTubes = GetComponent<TorpedoSystem>();
     }

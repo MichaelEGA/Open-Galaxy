@@ -948,10 +948,10 @@ public static class SceneFunctions
             {
                 //Add appropriate ship script
                 Ship ship = shipGO.AddComponent<Ship>();
-                shipGO.AddComponent<FlightControlSystem_Small>();
-                shipGO.AddComponent<EnergyWeaponHit>();
-                shipGO.AddComponent<DamageSystem>();
-                shipGO.AddComponent<TargetingSystem>();
+                FlightControlSystem_Small flightControlSystem_Small = shipGO.AddComponent<FlightControlSystem_Small>();
+                EnergyWeaponHit energyWeaponHit = shipGO.AddComponent<EnergyWeaponHit>();
+                DamageSystem damageSystem = shipGO.AddComponent<DamageSystem>();
+                TargetingSystem targetingSystem = shipGO.AddComponent<TargetingSystem>();
                 WeaponManagement weaponManagement = null;
                 EnergyWeapon energyWeapon = null;
                 TorpedoSystem torpedoSystem = null;

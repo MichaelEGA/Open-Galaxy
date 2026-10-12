@@ -39,6 +39,7 @@ public class Ship : MonoBehaviour
     public bool scanned = false;
     public bool jumpingToHyperspace;
     public bool exitingHyperspace;
+    public bool loaded;
     public float loadTime;
 
     //Key References
@@ -63,7 +64,9 @@ public class Ship : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Scene scene = SceneFunctions.GetScene();
+        scene = SceneFunctions.GetScene();
+        ogInput = OGInputFunctions.GetOGInput();
+        audioManager = AudioFunctions.GetAudioManager();
 
         //Find small ship systems
         flightControlSystem_Small = GetComponent<FlightControlSystem_Small>();

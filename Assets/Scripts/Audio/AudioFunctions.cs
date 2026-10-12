@@ -251,7 +251,7 @@ public static class AudioFunctions
     }
 
     //This function specifcally plays engine noise
-    public static void PlayEngineNoise_SmallShip(Ship ship)
+    public static void PlayEngineNoise_Ship(Ship ship)
     {
         FlightControlSystem_Small flightControl = ship.flightControlSystem_Small;
 

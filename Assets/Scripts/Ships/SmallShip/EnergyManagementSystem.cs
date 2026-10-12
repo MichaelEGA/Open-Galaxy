@@ -40,6 +40,7 @@ public class EnergyManagementSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        EnergyManagementSystemFunctions.GetInput(this);
         EnergyManagementSystemFunctions.CalculateLevels(this);
         EnergyManagementSystemFunctions.CalculatePower(this);    
     }

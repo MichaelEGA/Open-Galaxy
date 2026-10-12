@@ -31,6 +31,7 @@ public class EnergyWeapon : MonoBehaviour
     public string ionAudio = "weapon_ioncannon";
     public string plasmaAudio = "weapon_plasma";
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -1302,37 +1302,34 @@ public static class FlightControlAI_SmallFunctions
     //Targeting error margin
     public static void SetTargetingErrorMargin(FlightControlAI_Small flightControlAI, string mode)
     {
-        if (flightControlAI != null)
+        float lowRange = 100;
+        float mediumRange = 50;
+        float highRange = 25;
+
+        float x = 0;
+        float y = 0;
+        float z = 0;
+
+        if (mode == "low")
         {
-            float lowRange = 100;
-            float mediumRange = 50;
-            float highRange = 25;
-
-            float x = 0;
-            float y = 0;
-            float z = 0;
-
-            if (mode == "low")
-            {
-                x = Random.Range(-lowRange, lowRange);
-                y = Random.Range(-lowRange, lowRange);
-                z = Random.Range(-lowRange, lowRange);
-            }
-            else if (mode == "medium")
-            {
-                x = Random.Range(-mediumRange, mediumRange);
-                y = Random.Range(-mediumRange, mediumRange);
-                z = Random.Range(-mediumRange, mediumRange);
-            }
-            else if (mode == "high")
-            {
-                x = Random.Range(-highRange, highRange);
-                y = Random.Range(-highRange, highRange);
-                z = Random.Range(-highRange, highRange);
-            }
-
-            flightControlAI.aiTargetingErrorMargin = new Vector3(x, y, z);
+            x = Random.Range(-lowRange, lowRange);
+            y = Random.Range(-lowRange, lowRange);
+            z = Random.Range(-lowRange, lowRange);
         }
+        else if (mode == "medium")
+        {
+            x = Random.Range(-mediumRange, mediumRange);
+            y = Random.Range(-mediumRange, mediumRange);
+            z = Random.Range(-mediumRange, mediumRange);
+        }
+        else if (mode == "high")
+        {
+            x = Random.Range(-highRange, highRange);
+            y = Random.Range(-highRange, highRange);
+            z = Random.Range(-highRange, highRange);
+        }
+
+        flightControlAI.aiTargetingErrorMargin = new Vector3(x, y, z);        
     }
 
     #endregion

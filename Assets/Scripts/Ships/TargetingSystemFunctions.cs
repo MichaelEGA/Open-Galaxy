@@ -5,6 +5,17 @@ using UnityEngine;
 
 public static class TargetingSystemFunctions
 {
+    public static void GetInput(TargetingSystem targetingSystem)
+    {
+        if (targetingSystem.ship.isAI == false)
+        {
+            targetingSystem.getNextTarget = targetingSystem.ship.ogInput.getNextTarget;
+            targetingSystem.getNextEnemy = targetingSystem.ship.ogInput.getNextEnemy;
+            targetingSystem.getClosestEnemy = targetingSystem.ship.ogInput.getClosestEnemy;
+            targetingSystem.selectTargetInFront = targetingSystem.ship.ogInput.selectTargetInFront;
+        }
+    }
+
     //This draws key data/info from the target including relative position, distance, and hostility
     public static void GetTargetInfo_SmallShip(FlightControlSystem_Small smallShip = null)
     {

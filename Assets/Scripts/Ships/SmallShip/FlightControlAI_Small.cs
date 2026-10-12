@@ -31,6 +31,7 @@ public class FlightControlAI_Small : MonoBehaviour
     void Start()
     {
         ship = GetComponent<Ship>();
+        FlightControlAI_SmallFunctions.SetTargetingErrorMargin(this, "low");
     }
 
     // Update is called once per frame

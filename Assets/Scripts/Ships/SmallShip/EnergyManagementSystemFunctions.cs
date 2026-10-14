@@ -133,7 +133,7 @@ public static class EnergyManagementSystemFunctions
         //This sets the ships wep power levels
         if (energyManagementSystem.powerMode == "engines")
         {
-            if (energyManagementSystem.ship.energyManagementSystem_Small.wep == false & energyManagementSystem.ship.energyManagementSystem_Small.thrustInput <= 0)
+            if (energyManagementSystem.ship.flightControlSystem_Small.wep == false & energyManagementSystem.ship.flightControlSystem_Small.thrustInput <= 0)
             {
                 if (energyManagementSystem.wepLevel < 100) { energyManagementSystem.wepLevel += energyManagementSystem.wepRecharge; }
             }
@@ -144,7 +144,7 @@ public static class EnergyManagementSystemFunctions
         }
         else if (energyManagementSystem.powerMode == "reset")
         {
-            if (energyManagementSystem.ship.energyManagementSystem_Small.wep == false & energyManagementSystem.ship.energyManagementSystem_Small.thrustInput <= 0)
+            if (energyManagementSystem.ship.flightControlSystem_Small.wep == false & energyManagementSystem.ship.flightControlSystem_Small.thrustInput <= 0)
             {
                 if (energyManagementSystem.wepLevel > 50) { energyManagementSystem.wepLevel -= energyManagementSystem.wepDischarge; }
                 else if (energyManagementSystem.wepLevel < 50) { energyManagementSystem.wepLevel += energyManagementSystem.wepRecharge; }

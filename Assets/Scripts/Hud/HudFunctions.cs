@@ -40,9 +40,6 @@ public static class HudFunctions
         letterboxGO.name = "Letterbox";
         hudScript.letterboxCG = letterboxGO.GetComponent<CanvasGroup>();
 
-        Scene scene = SceneFunctions.GetScene();
-        scene.fade = fadeGO;
-
         LoadRadarCamera();     
     }
 
@@ -441,36 +438,52 @@ public static class HudFunctions
     //This displays the speed of the ship
     public static void DisplayActiveWeapon(Hud hud)
     {
-        if (hud.activeWeaponText == null)
+        Ship ship = null;
+        Scene scene = SceneFunctions.GetScene();
+
+        if (hud.scene != null)
         {
-            GameObject activeWeaponText = GameObject.Find("ActiveWeaponText");
-            if (activeWeaponText != null) { hud.activeWeaponText = activeWeaponText.GetComponent<Text>(); }
+            if(hud.ship == null & hud.scene.mainShip != null)
+            {
+                ship = hud.scene.mainShip.GetComponent<Ship>();
+                hud.ship = ship;
+            }
         }
 
-        if (hud.activeWeaponText != null & hud.ship.weaponManagement != null & Time.timeScale != 0)
+        if (hud.ship != null)
         {
-            if (hud.ship.weaponManagement.weaponType == "lasers")
+
+            if (hud.activeWeaponText == null)
             {
-                hud.activeWeaponText.text = "LSR";
-            }
-            else if (hud.ship.weaponManagement.weaponType == "ion")
-            {
-                hud.activeWeaponText.text = "ION";
-            }
-            else if (hud.ship.weaponManagement.weaponType == "plasma")
-            {
-                hud.activeWeaponText.text = "PLS";
-            }
-            else
-            {
-                hud.activeWeaponText.text = " ";
+                GameObject activeWeaponText = GameObject.Find("ActiveWeaponText");
+                if (activeWeaponText != null) { hud.activeWeaponText = activeWeaponText.GetComponent<Text>(); }
             }
 
-            //To add back in once relationship between torpedos and energy weapons is redefined
-            //else if (hud.weaponManagement.weaponType == "torpedos")
-            //{
-            //    hud.activeWeaponText.text = "TRP";
-            //}
+            if (hud.activeWeaponText != null & hud.ship.weaponManagement != null & Time.timeScale != 0)
+            {
+                if (hud.ship.weaponManagement.weaponType == "lasers")
+                {
+                    hud.activeWeaponText.text = "LSR";
+                }
+                else if (hud.ship.weaponManagement.weaponType == "ion")
+                {
+                    hud.activeWeaponText.text = "ION";
+                }
+                else if (hud.ship.weaponManagement.weaponType == "plasma")
+                {
+                    hud.activeWeaponText.text = "PLS";
+                }
+                else
+                {
+                    hud.activeWeaponText.text = " ";
+                }
+
+                //To add back in once relationship between torpedos and energy weapons is redefined
+                //else if (hud.weaponManagement.weaponType == "torpedos")
+                //{
+                //    hud.activeWeaponText.text = "TRP";
+                //}
+            }
         }
     }
 
@@ -483,41 +496,41 @@ public static class HudFunctions
             {
                 hud.ship.energyWeapon = hud.ship.GetComponent<EnergyWeapon>();
             }
-        }
 
-        if (hud.weaponModeText == null)
-        {
-            GameObject weaponModeText = GameObject.Find("WeaponModeText");
-            if (weaponModeText != null) { hud.weaponModeText = weaponModeText.GetComponent<Text>(); }
-        }
-
-        if (hud.weaponModeText != null & hud.ship.energyWeapon != null & Time.timeScale != 0)
-        {
-            if (hud.ship.weaponManagement.hasRapidFire == true & hud.ship.weaponManagement.weaponMode == "rapid")
+            if (hud.weaponModeText == null)
             {
-                SetTextColour("#EBB426", hud.weaponModeText);
-
-                hud.weaponModeText.text = "RPD";
+                GameObject weaponModeText = GameObject.Find("WeaponModeText");
+                if (weaponModeText != null) { hud.weaponModeText = weaponModeText.GetComponent<Text>(); }
             }
-            else
-            {
-                SetTextColour("#D73320", hud.weaponModeText);
 
-                if (hud.ship.weaponManagement.weaponMode == "single")
+            if (hud.weaponModeText != null & hud.ship.energyWeapon != null & Time.timeScale != 0)
+            {
+                if (hud.ship.weaponManagement.hasRapidFire == true & hud.ship.weaponManagement.weaponMode == "rapid")
                 {
-                    hud.weaponModeText.text = "SNG";
-                }
-                else if (hud.ship.weaponManagement.weaponMode == "dual")
-                {
-                    hud.weaponModeText.text = "DUL";
-                }
-                else if (hud.ship.weaponManagement.weaponMode == "all")
-                {
-                    hud.weaponModeText.text = "ALL";
+                    SetTextColour("#EBB426", hud.weaponModeText);
+
+                    hud.weaponModeText.text = "RPD";
                 }
                 else
                 {
-                    hud.weaponModeText.text = "";
+                    SetTextColour("#D73320", hud.weaponModeText);
+
+                    if (hud.ship.weaponManagement.weaponMode == "single")
+                    {
+                        hud.weaponModeText.text = "SNG";
+                    }
+                    else if (hud.ship.weaponManagement.weaponMode == "dual")
+                    {
+                        hud.weaponModeText.text = "DUL";
+                    }
+                    else if (hud.ship.weaponManagement.weaponMode == "all")
+                    {
+                        hud.weaponModeText.text = "ALL";
+                    }
+                    else
+                    {
+                        hud.weaponModeText.text = "";
+                    }
                 }
             }
         }
@@ -2380,7 +2393,7 @@ public static class HudFunctions
 
                     hud.movingReticule.transform.position = new Vector2(x, y);
 
-                    if (hud.ship.invertUpDown == true)
+                    if (hud.ship.flightControlSystem_Small.invertUpDown == true)
                     {
                         y2 = Screen.height - y;
                     }
@@ -2389,7 +2402,7 @@ public static class HudFunctions
                         y2 = y;
                     }
 
-                    if (hud.ship.invertLeftRight == true)
+                    if (hud.ship.flightControlSystem_Small.invertLeftRight == true)
                     {
                         x2 = Screen.width - x;
                     }

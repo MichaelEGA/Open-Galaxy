@@ -1256,11 +1256,11 @@ public class OGCameraFunctions : MonoBehaviour
 
             GameObjectUtils.SetLayerAllChildren(ogCamera.targetShip.transform, LayerMask.NameToLayer("collision_player"));
 
-            FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
+            Ship ship = ogCamera.targetShip.GetComponent<Ship>();
 
-            if (smallShip != null)
+            if (ship != null)
             {
-                EnergyWeaponFunctions.ChangeCollisionLayerToPlayer(smallShip);
+                EnergyWeaponFunctions.ChangeCollisionLayerToPlayer(ship);
             }
         }
     }
@@ -1274,11 +1274,11 @@ public class OGCameraFunctions : MonoBehaviour
 
             GameObjectUtils.SetLayerAllChildren(ogCamera.targetShip.transform, ogCamera.savedLayerMask);
 
-            FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
+            Ship ship = ogCamera.targetShip.GetComponent<Ship>();
 
-            if (smallShip != null)
+            if (ship != null)
             {
-                EnergyWeaponFunctions.ResetCollisionLayers(smallShip);
+                EnergyWeaponFunctions.ResetCollisionLayers(ship);
             }
         }
     }

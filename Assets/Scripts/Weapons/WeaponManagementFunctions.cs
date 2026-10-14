@@ -25,7 +25,7 @@ public class WeaponManagementFunctions
 
         if (weaponManagement.hasPlasma == false)
         {
-            if (weaponManagement.toggleWeapons == true & weaponManagement.toggleWeaponPressedTime < Time.time & weaponManagement.ship.isDisabled == false & weaponManagement.preventWeaponChange == false)
+            if (weaponManagement.toggleWeapons == true & weaponManagement.toggleWeaponPressedTime < Time.time & weaponManagement.ship.damageSystem.isDisabled == false & weaponManagement.preventWeaponChange == false)
             {
                 if (hasTorpedos == true & torpedoNumber > 0 & weaponManagement.hasIon == true)
                 {
@@ -111,7 +111,7 @@ public class WeaponManagementFunctions
 
                 weaponManagement.toggleWeaponPressedTime = Time.time + 0.25f;
             }
-            else if (weaponManagement.ship.isDisabled == true)
+            else if (weaponManagement.ship.damageSystem.isDisabled == true)
             {
                 weaponManagement.weaponType = "---";
                 weaponManagement.weaponMode = "---";
@@ -127,7 +127,7 @@ public class WeaponManagementFunctions
         }
         else
         {
-            if (weaponManagement.toggleWeapons == true & weaponManagement.toggleWeaponPressedTime < Time.time & weaponManagement.ship.isDisabled == false & weaponManagement.preventWeaponChange == false)
+            if (weaponManagement.toggleWeapons == true & weaponManagement.toggleWeaponPressedTime < Time.time & weaponManagement.ship.damageSystem.isDisabled == false & weaponManagement.preventWeaponChange == false)
             {
                 if (hasTorpedos == true & torpedoNumber > 0)
                 {
@@ -170,7 +170,7 @@ public class WeaponManagementFunctions
 
                 weaponManagement.toggleWeaponPressedTime = Time.time + 0.25f;
             }
-            else if (weaponManagement.ship.isDisabled == true)
+            else if (weaponManagement.ship.damageSystem.isDisabled == true)
             {
                 weaponManagement.weaponType = "---";
                 weaponManagement.weaponMode = "---";

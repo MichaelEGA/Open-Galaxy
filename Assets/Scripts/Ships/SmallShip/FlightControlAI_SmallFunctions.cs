@@ -379,6 +379,11 @@ public static class FlightControlAI_SmallFunctions
     public static bool TagExists(FlightControlAI_Small flightControlAI, string tag)
     {
         bool exists = false;
+        
+        if (flightControlAI.aiTags == null)
+        {
+            flightControlAI.aiTags = new List<string>();
+        }
 
         foreach (string tempTag in flightControlAI.aiTags.ToArray())
         {
@@ -998,7 +1003,7 @@ public static class FlightControlAI_SmallFunctions
                 if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
                 {
                     weaponManagement.weaponMode = "single";
-                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
+                    TorpedoSystemFunctions.FireTorpedo(torpedoSystem);
                 }
             }
             else
@@ -1025,7 +1030,7 @@ public static class FlightControlAI_SmallFunctions
                 if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
                 {
                     weaponManagement.weaponMode = "dual";
-                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
+                    TorpedoSystemFunctions.FireTorpedo(torpedoSystem);
                 }
             }
             else
@@ -1052,7 +1057,7 @@ public static class FlightControlAI_SmallFunctions
                 if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
                 {
                     weaponManagement.weaponMode = "all";
-                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
+                    TorpedoSystemFunctions.FireTorpedo(torpedoSystem);
                 }
             }
             else
@@ -1080,7 +1085,7 @@ public static class FlightControlAI_SmallFunctions
                 if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
                 {
                     weaponManagement.weaponMode = "single";
-                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
+                    TorpedoSystemFunctions.FireTorpedo(torpedoSystem);
                 }
             }
             else if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true)
@@ -1122,7 +1127,7 @@ public static class FlightControlAI_SmallFunctions
                 if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
                 {
                     weaponManagement.weaponMode = "dual";
-                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
+                    TorpedoSystemFunctions.FireTorpedo(torpedoSystem);
                 }
             }
             else if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true)
@@ -1165,7 +1170,7 @@ public static class FlightControlAI_SmallFunctions
                 if (targetingSystem.targetForward > 0.995f & torpedoSystem.torpedoLockedOn == true)
                 {
                     weaponManagement.weaponMode = "all";
-                    TorpedoSystemFunctions.FireTorpedo(flightControlAI.ship);
+                    TorpedoSystemFunctions.FireTorpedo(torpedoSystem);
                 }
             }
             else if (targetingSystem.interceptForward > 0.95f & targetingSystem.interceptDistance < 2000 & targetingSystem.target.gameObject.activeSelf == true)

@@ -20,10 +20,10 @@ public static class LaserTurretFunctions
             }
 
             //This sets key values on the turret script
-            if (turret.largeShip == null & turret.smallShip == null)
+            if (turret.largeShip == null & turret.ship == null)
             {
                 turret.largeShip = turret.shipGO.GetComponent<LargeShip>();
-                turret.smallShip = turret.shipGO.GetComponent<FlightControlSystem_Small>();
+                turret.ship = turret.shipGO.GetComponent<Ship>();
 
                 if (turret.largeShip != null)
                 {
@@ -31,11 +31,11 @@ public static class LaserTurretFunctions
                     turret.largeTurretAccuracy = turret.largeShip.aiTargetingMode;
                     turret.laserColor = turret.largeShip.laserColor;
                 }
-                else if (turret.smallShip != null)
+                else if (turret.ship != null)
                 {
-                    turret.allegiance = turret.smallShip.allegiance;
-                    turret.largeTurretAccuracy = turret.smallShip.aiTargetingMode;
-                    turret.laserColor = turret.smallShip.energyWeapon.laserColour;
+                    turret.allegiance = turret.ship.allegiance;
+                    turret.largeTurretAccuracy = turret.ship.flightControlAI_Small.aiTargetingMode;
+                    turret.laserColor = turret.ship.energyWeapon.laserColour;
                 }
             }
 
@@ -570,9 +570,9 @@ public static class LaserTurretFunctions
         }
         else if (turret.largeTargetingMode == "large_shiptarget")
         {
-            if (turret.smallShip != null)
+            if (turret.ship != null)
             {
-                target = turret.smallShip.targetingSystem.target;
+                target = turret.ship.targetingSystem.target;
                 turret.largeTargetGO = target;
             }
             else if (turret.largeShip != null)
@@ -647,9 +647,9 @@ public static class LaserTurretFunctions
         }
         else if (turret.smallTargetingMode == "small_shiptarget")
         {
-            if (turret.smallShip != null)
+            if (turret.ship != null)
             {
-                target = turret.smallShip.targetingSystem.target;
+                target = turret.ship.targetingSystem.target;
                 turret.smallTargetGO = target;
             }
             else if (turret.largeShip != null)
@@ -940,20 +940,20 @@ public static class LaserTurretFunctions
         string shieldType = "default";
         bool isAI = true;
 
-        FlightControlSystem_Small smallShip = objectHit.gameObject.GetComponentInParent<FlightControlSystem_Small>(); //This gets the smallship function if avaiblible
+        Ship ship = objectHit.gameObject.GetComponentInParent<Ship>(); //This gets the smallship function if avaiblible
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
 
-        if (smallShip != null)
+        if (ship != null)
         {
-            shieldType = smallShip.shieldType;
+            shieldType = ship.shieldType;
 
-            shieldFront = smallShip.frontShieldLevel;
-            shieldBack = smallShip.rearShieldLevel;
+            shieldFront = ship.energyManagementSystem.frontShieldLevel;
+            shieldBack = ship.energyManagementSystem.rearShieldLevel;
 
-            Vector3 relativePosition = smallShip.gameObject.transform.position - hitPosition;
-            forward = -Vector3.Dot(smallShip.gameObject.transform.position, relativePosition.normalized);
+            Vector3 relativePosition = ship.gameObject.transform.position - hitPosition;
+            forward = -Vector3.Dot(ship.gameObject.transform.position, relativePosition.normalized);
 
-            isAI = smallShip.isAI;
+            isAI = ship.isAI;
         }
 
         if (largeShip != null)
@@ -1014,7 +1014,7 @@ public static class LaserTurretFunctions
     //This calculates and applies damage to the 
     public static void ApplyDamage(LaserTurret laserTurret, GameObject objectHit, Vector3 hitPosition, GameObject childObject = null)
     {
-        FlightControlSystem_Small smallShip = objectHit.gameObject.GetComponentInParent<FlightControlSystem_Small>();
+        Ship ship = objectHit.gameObject.GetComponentInParent<Ship>();
         LargeShip largeShip = objectHit.gameObject.GetComponentInParent<LargeShip>();
         ShipSystem shipSystem = null;
 
@@ -1034,9 +1034,9 @@ public static class LaserTurretFunctions
             damage = laserTurret.smallTurretDamage;
         }
 
-        if (smallShip != null)
+        if (ship != null)
         {
-            DamageSystemFunctions.TakeDamage_SmallShip(smallShip, damage, hitPosition, smallShip.weaponManagement.hasRapidFire);
+            DamageSystemFunctions.TakeDamage_SmallShip(ship.damageSystem, damage, hitPosition, ship.weaponManagement.hasRapidFire);
         }
 
         if (largeShip != null)

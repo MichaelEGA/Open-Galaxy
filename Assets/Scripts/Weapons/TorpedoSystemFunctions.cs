@@ -164,14 +164,14 @@ public static class TorpedoSystemFunctions
             if (torpedoSystem.weaponManagement.weaponMode == "single")
             {
                 if (torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { torpedoSystem.torpedoCycleNumber = 0; }
-                Torpedo torpedo = CreateTorpedo(torpedoSystem, torpedoSystem.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
+                Torpedo torpedo = CreateTorpedo(torpedoSystem.ship, torpedoSystem.ship.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo != null)
                 {
-                    AudioFunctions.PlayAudioClip(torpedoSystem.audioManager, torpedo.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(torpedoSystem.ship.audioManager, torpedo.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
-                if (torpedoSystem.isAI == false & torpedoSystem.ogInput.keyboardAndMouse == false)
+                if (torpedoSystem.ship.isAI == false & torpedoSystem.ship.ogInput.keyboardAndMouse == false)
                 {
                     Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.1f, 0.50f, 0.50f));
                 }
@@ -184,24 +184,24 @@ public static class TorpedoSystemFunctions
             else if (torpedoSystem.weaponManagement.weaponMode == "dual")
             {
                 if (torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { torpedoSystem.torpedoCycleNumber = 0; }
-                Torpedo torpedo01 = CreateTorpedo(torpedoSystem, torpedoSystem.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
+                Torpedo torpedo01 = CreateTorpedo(torpedoSystem.ship, torpedoSystem.ship.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo01 != null)
                 {
-                    AudioFunctions.PlayAudioClip(torpedoSystem.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(torpedoSystem.ship.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 torpedoSystem.torpedoCycleNumber += 1;
 
                 if (torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { torpedoSystem.torpedoCycleNumber = 0; }
-                Torpedo torpedo02 = CreateTorpedo(torpedoSystem, torpedoSystem.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
+                Torpedo torpedo02 = CreateTorpedo(torpedoSystem.ship, torpedoSystem.ship.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo02 != null)
                 {
-                    AudioFunctions.PlayAudioClip(torpedoSystem.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(torpedoSystem.ship.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
-                if (torpedoSystem.isAI == false & torpedoSystem.ogInput.keyboardAndMouse == false)
+                if (torpedoSystem.ship.isAI == false & torpedoSystem.ship.ogInput.keyboardAndMouse == false)
                 {
                     Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.1f, 0.55f, 0.55f));
                 }
@@ -214,45 +214,45 @@ public static class TorpedoSystemFunctions
             else if (torpedoSystem.weaponManagement.weaponMode == "all")
             {
                 if (torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { torpedoSystem.torpedoCycleNumber = 0; }
-                Torpedo torpedo01 = CreateTorpedo(torpedoSystem, torpedoSystem.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
+                Torpedo torpedo01 = CreateTorpedo(torpedoSystem.ship, torpedoSystem.ship.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo01 != null)
                 {
-                    AudioFunctions.PlayAudioClip(torpedoSystem.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(torpedoSystem.ship.audioManager, torpedo01.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 torpedoSystem.torpedoCycleNumber += 1;
 
                 if (torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { torpedoSystem.torpedoCycleNumber = 0; }
-                Torpedo torpedo02 = CreateTorpedo(torpedoSystem, torpedoSystem.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
+                Torpedo torpedo02 = CreateTorpedo(torpedoSystem.ship, torpedoSystem.ship.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo02 != null)
                 {
-                    AudioFunctions.PlayAudioClip(torpedoSystem.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(torpedoSystem.ship.audioManager, torpedo02.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 torpedoSystem.torpedoCycleNumber += 1;
 
                 if (torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { torpedoSystem.torpedoCycleNumber = 0; }
-                Torpedo torpedo03 = CreateTorpedo(torpedoSystem, torpedoSystem.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
+                Torpedo torpedo03 = CreateTorpedo(torpedoSystem.ship, torpedoSystem.ship.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo03 != null)
                 {
-                    AudioFunctions.PlayAudioClip(torpedoSystem.audioManager, torpedo03.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(torpedoSystem.ship.audioManager, torpedo03.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
                 }
 
                 torpedoSystem.torpedoCycleNumber += 1;
 
                 if (torpedoSystem.torpedoCycleNumber + 1 > torpedoTubes.Count) { torpedoSystem.torpedoCycleNumber = 0; }
-                Torpedo torpedo04 = CreateTorpedo(torpedoSystem, torpedoSystem.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
+                Torpedo torpedo04 = CreateTorpedo(torpedoSystem.ship, torpedoSystem.ship.targetingSystem.target, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position);
 
                 if (torpedo04 != null)
                 {
-                    AudioFunctions.PlayAudioClip(torpedoSystem.audioManager, torpedo04.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
+                    AudioFunctions.PlayAudioClip(torpedoSystem.ship.audioManager, torpedo04.launchAudio, mixer, torpedoTubes[torpedoSystem.torpedoCycleNumber].transform.position, spatialBlend, 1, 500, 0.9f);
 
                 }
 
-                if (torpedoSystem.isAI == false & torpedoSystem.ogInput.keyboardAndMouse == false)
+                if (torpedoSystem.ship.isAI == false & torpedoSystem.ship.ogInput.keyboardAndMouse == false)
                 {
                     Task b = new Task(OGInputFunctions.ShakeControllerForSetTime(0.1f, 0.60f, 0.60f));
                 }
@@ -264,9 +264,9 @@ public static class TorpedoSystemFunctions
             }
 
             //This shakes the cockpit camera
-            if (torpedoSystem.isAI == false)
+            if (torpedoSystem.ship.isAI == false)
             {
-                torpedoSystem.scene.ogCamera.shipHit = true;
+                torpedoSystem.ship.scene.ogCamera.shipHit = true;
             }
 
             torpedoSystem.torpedoPressedTime = Time.time + 2.5f;
@@ -278,10 +278,10 @@ public static class TorpedoSystemFunctions
     #region create torpedo
 
     //This creates a new torpedo either by grabbing an inactive torpedo from the pool of the same type or instantiating a new one if none are availilble in the pool
-    public static Torpedo CreateTorpedo(FlightControlSystem_Small smallShip, GameObject target, Vector3 position)
+    public static Torpedo CreateTorpedo(Ship ship, GameObject target, Vector3 position)
     {
         Torpedo torpedoScript = null;
-        Scene scene = smallShip.scene;
+        Scene scene = ship.scene;
 
         if (scene != null)
         {
@@ -297,17 +297,17 @@ public static class TorpedoSystemFunctions
         if (torpedo != null)
         {
             torpedoScript = torpedo.GetComponent<Torpedo>();
-            torpedoScript.attackingShip = smallShip;
+            torpedoScript.attackingShip = ship;
             torpedoScript.destroyAfter = Time.time + 30;
             torpedoScript.fireTime = Time.time;
             torpedoScript.target = null;
-            torpedoScript.target = smallShip.targetingSystem.target;
+            torpedoScript.target = ship.targetingSystem.target;
             torpedoScript.torpedoRigidbody.linearVelocity = new Vector3(0f, 0f, 0f);
             torpedoScript.torpedoRigidbody.angularVelocity = new Vector3(0f, 0f, 0f);
-            torpedoScript.audioManager = smallShip.audioManager;
+            torpedoScript.audioManager = ship.audioManager;
             torpedo.transform.position = position;
-            torpedo.transform.rotation = smallShip.transform.rotation;
-            torpedo.transform.SetParent(smallShip.scene.transform);
+            torpedo.transform.rotation = ship.transform.rotation;
+            torpedo.transform.SetParent(ship.scene.transform);
             torpedo.SetActive(true);
         }
 
@@ -322,7 +322,7 @@ public static class TorpedoSystemFunctions
 
             foreach (TorpedoType tempTorpedoType in torpedoTypes.torpedoTypeData)
             {
-                if (tempTorpedoType.name == smallShip.torpedoSystem.torpedoType)
+                if (tempTorpedoType.name == ship.torpedoSystem.torpedoType)
                 {
                     torpedoType = tempTorpedoType;
                     break;
@@ -333,7 +333,7 @@ public static class TorpedoSystemFunctions
             {
                 torpedo = SceneFunctions.InstantiateShipPrefab(torpedoType.prefab);
                 torpedo.name = torpedoType.name;
-                torpedo.layer = smallShip.gameObject.layer;
+                torpedo.layer = ship.gameObject.layer;
                 GameObjectUtils.SetLayerAllChildren(torpedo.transform, 25);
 
                 torpedoScript = torpedo.AddComponent<Torpedo>();
@@ -346,16 +346,16 @@ public static class TorpedoSystemFunctions
                 torpedoScript.damagePower = torpedoType.damageRating;
                 torpedoScript.explosionAudio = torpedoType.explosionAudio;
                 torpedoScript.launchAudio = torpedoType.launchAudio;
-                torpedoScript.audioManager = smallShip.audioManager;
-                AttachParticleTrail(smallShip, torpedoScript, torpedoType.trailColor);
+                torpedoScript.audioManager = ship.audioManager;
+                AttachParticleTrail(ship, torpedoScript, torpedoType.trailColor);
 
-                if (smallShip.torpedoSystem.torpedoLockedOn == true)
+                if (ship.torpedoSystem.torpedoLockedOn == true)
                 {
                     torpedoScript.target = target;
 
                     if (torpedoScript.targetSmallShip == null)
                     {
-                        torpedoScript.targetSmallShip = target.GetComponent<FlightControlSystem_Small>();
+                        torpedoScript.targetSmallShip = target.GetComponent<Ship>();
                     }
 
                     if (torpedoScript.targetLargeShip == null)
@@ -364,7 +364,7 @@ public static class TorpedoSystemFunctions
                     }
                 }
 
-                torpedoScript.attackingShip = smallShip;
+                torpedoScript.attackingShip = ship;
                 torpedoScript.destroyAfter = Time.time + 30;
 
                 GameObjectUtils.AddMeshColliders(torpedo, true);
@@ -372,8 +372,8 @@ public static class TorpedoSystemFunctions
                 torpedoScript.torpedoRigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
                 torpedo.transform.position = position;
-                torpedo.transform.rotation = smallShip.transform.rotation;
-                torpedo.transform.SetParent(smallShip.scene.transform);
+                torpedo.transform.rotation = ship.transform.rotation;
+                torpedo.transform.SetParent(ship.scene.transform);
 
                 scene.torpedosPool.Add(torpedo);
             }
@@ -383,9 +383,9 @@ public static class TorpedoSystemFunctions
     }
 
     //This attaches the particle trail to the torpedo
-    public static void AttachParticleTrail(FlightControlSystem_Small smallShip, Torpedo torpedo, string color)
+    public static void AttachParticleTrail(Ship ship, Torpedo torpedo, string color)
     {
-        Object trailObject = PoolUtils.FindPrefabObjectInPool(smallShip.scene.particlePrefabPool, color);
+        Object trailObject = PoolUtils.FindPrefabObjectInPool(ship.scene.particlePrefabPool, color);
 
         if (trailObject != null)
         {
@@ -403,7 +403,7 @@ public static class TorpedoSystemFunctions
 
         Collider torpedoCollider = torpedo.gameObject.GetComponentInChildren<Collider>();
 
-        foreach (Collider collider in torpedo.attackingShip.colliders)
+        foreach (Collider collider in torpedo.attackingShip.flightControlSystem_Small.colliders)
         {
             Physics.IgnoreCollision(collider, torpedoCollider, true);
         }
@@ -580,7 +580,7 @@ public static class TorpedoSystemFunctions
 
                 if (distance > 1000 & torpedo.pressedTime + 5 < Time.time)
                 {
-                    if (torpedo.targetSmallShip.fireCounterMeasures == true)
+                    if (torpedo.targetSmallShip.weaponManagement.fireCounterMeasures == true)
                     {
                         if (torpedo.targetSmallShip.isAI == false)
                         {
@@ -595,7 +595,7 @@ public static class TorpedoSystemFunctions
 
                 if (distance < 1000 & torpedo.pressedTime + 5 < Time.time)
                 {
-                    if (torpedo.targetSmallShip.fireCounterMeasures == true)
+                    if (torpedo.targetSmallShip.weaponManagement.fireCounterMeasures == true)
                     {
                         //Play sound
 
@@ -630,12 +630,12 @@ public static class TorpedoSystemFunctions
 
             if (targetSmallShip != null)
             {
-                if (targetSmallShip.isAI == false)
+                if (targetSmallShip.ship.isAI == false)
                 {
                     HudFunctions.ScreenFlash();
                 }
 
-                if (targetSmallShip.weaponManagement.hasPlasma == false)
+                if (targetSmallShip.ship.weaponManagement.hasPlasma == false)
                 {
                     ParticleFunctions.InstantiateExplosion(contact.point, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
                 }
@@ -684,12 +684,12 @@ public static class TorpedoSystemFunctions
 
                 if (targetSmallShip != null)
                 {
-                    if (targetSmallShip.isAI == false)
+                    if (targetSmallShip.ship.isAI == false)
                     {
                         HudFunctions.ScreenFlash();
                     }
 
-                    if (targetSmallShip.weaponManagement.hasPlasma == false)
+                    if (targetSmallShip.ship.weaponManagement.hasPlasma == false)
                     {
                         ParticleFunctions.InstantiateExplosion(torpedo.transform.position, "explosion_torpedo", 3f, torpedo.audioManager, "mid_explosion_02", 1500, "Explosions");
                     }
@@ -709,29 +709,29 @@ public static class TorpedoSystemFunctions
     }
 
     //This causes the ship to take damage from torpedos
-    public static void CauseTorpedoDamage(FlightControlSystem_Small firingShip, GameObject other, Torpedo torpedo, Vector3 hitPosition)
+    public static void CauseTorpedoDamage(Ship firingShip, GameObject other, Torpedo torpedo, Vector3 hitPosition)
     {
-        FlightControlSystem_Small smallShip = other.GetComponentInParent<FlightControlSystem_Small>();
+        Ship ship = other.GetComponentInParent<Ship>();
         LargeShip largeShip = other.GetComponentInParent<LargeShip>();
 
         if (Time.time > 10)
         {
-            if (smallShip != null)
+            if (ship != null)
             {
                 if (firingShip != null)
                 {
-                    if (smallShip.gameObject != firingShip.gameObject)
+                    if (ship.gameObject != firingShip.gameObject)
                     {
-                        DamageSystemFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
-                        Task a = new Task(DamageSystemFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
+                        DamageSystemFunctions.TakeDamage_SmallShip(ship.damageSystem, torpedo.damagePower, hitPosition, false);
+                        Task a = new Task(DamageSystemFunctions.ShipSpinSequence_SmallShip(ship.damageSystem, 2));
                     }
                 }
                 else
                 {
-                    if (smallShip.gameObject != firingShip.gameObject)
+                    if (ship.gameObject != firingShip.gameObject)
                     {
-                        DamageSystemFunctions.TakeDamage_SmallShip(smallShip, torpedo.damagePower, hitPosition, false);
-                        Task a = new Task(DamageSystemFunctions.ShipSpinSequence_SmallShip(smallShip, 2));
+                        DamageSystemFunctions.TakeDamage_SmallShip(ship.damageSystem, torpedo.damagePower, hitPosition, false);
+                        Task a = new Task(DamageSystemFunctions.ShipSpinSequence_SmallShip(ship.damageSystem, 2));
                     }
                 }
             }

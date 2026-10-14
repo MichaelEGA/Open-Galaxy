@@ -36,6 +36,7 @@ public class WeaponManagement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        WeaponManagementFunctions.GetInput(this);
         WeaponManagementFunctions.ToggleWeapons(this);
     }
 }

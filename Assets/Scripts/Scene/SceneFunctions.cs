@@ -949,6 +949,8 @@ public static class SceneFunctions
                 //Add appropriate ship script
                 Ship ship = shipGO.AddComponent<Ship>();
                 FlightControlSystem_Small flightControlSystem_Small = shipGO.AddComponent<FlightControlSystem_Small>();
+                FlightControlAI_Small flightControlAI_Small = shipGO.AddComponent<FlightControlAI_Small>();
+                EnergyManagementSystem energyManagementSystem = shipGO.AddComponent<EnergyManagementSystem>();
                 EnergyWeaponHit energyWeaponHit = shipGO.AddComponent<EnergyWeaponHit>();
                 DamageSystem damageSystem = shipGO.AddComponent<DamageSystem>();
                 TargetingSystem targetingSystem = shipGO.AddComponent<TargetingSystem>();
@@ -983,31 +985,23 @@ public static class SceneFunctions
                     ship.name = shipType.callsign + "-" + name;
                 }
 
-                smallShip.allegiance = allegiance;
+                ship.allegiance = allegiance;
                 ship.wepRating = shipType.wepRating;
-                ship.hullRating = shipType.hullRating;
-                ship.hullLevel = shipType.hullRating;
+                ship.hullRating = shipType.hullRating;      
                 ship.systemsRating = shipType.hullRating;
-                ship.systemsLevel = shipType.hullRating;
-                ship.energyWeaponFireRating = shipType.laserFireRating;
-                ship.energyWeaponRating = shipType.laserRating;
+                ship.laserFireRating = shipType.laserFireRating;
+                ship.laserRating = shipType.laserRating;
                 ship.maneuverabilityRating = shipType.maneuverabilityRating;
                 ship.shieldRating = shipType.shieldRating;
-                ship.shieldLevel = shipType.shieldRating;
                 ship.systemsRating = shipType.systemsRating;
-                ship.systemsLevel = shipType.systemsRating;
-                ship.frontShieldLevel = shipType.shieldRating / 2f;
-                ship.rearShieldLevel = shipType.shieldRating / 2f;
                 ship.speedRating = shipType.speedRating;
-                ship.healthSave = shipType.shieldRating + shipType.hullRating;  
                 ship.type = type;
                 ship.thrustType = shipType.thrustType;
-                ship.prefabName = shipType.prefab;
+                ship.prefab = shipType.prefab;
                 ship.shipClass = shipType.shipClass;
                 ship.laserAudio = shipType.laserAudio;
                 ship.engineAudio = shipType.engineAudio;
-
-                ship.cockpitName = shipType.cockpitPrefab;
+                ship.cockpitPrefab = shipType.cockpitPrefab;
                 ship.scene = scene;
                 ship.audioManager = audioManager;
                 ship.loadTime = Time.time;
@@ -1016,6 +1010,15 @@ public static class SceneFunctions
                 ship.shipLength = shipType.shipLength;
                 ship.shieldType = shipType.shieldType;
                 shipGO.name = ship.name;
+
+                flightControlAI_Small.healthSave = shipType.shieldRating + shipType.hullRating;
+
+                energyManagementSystem.hullLevel = shipType.hullRating;
+                energyManagementSystem.systemsLevel = shipType.hullRating;
+                energyManagementSystem.shieldLevel = shipType.shieldRating;
+                energyManagementSystem.systemsLevel = shipType.systemsRating;
+                energyManagementSystem.frontShieldLevel = shipType.shieldRating / 2f;
+                energyManagementSystem.rearShieldLevel = shipType.shieldRating / 2f;
 
                 if (energyWeapon != null)
                 {
@@ -1033,20 +1036,19 @@ public static class SceneFunctions
                     }
                 }
 
-               
 
                 //Marks whether the ship is the player or AI
-                smallShip.isAI = isAI;
+                ship.isAI = isAI;
 
                 if (isAI == false)
                 {
                     OGSettings settings = OGSettingsFunctions.GetSettings();
 
-                    smallShip.invertUpDown = settings.invertY;
-                    smallShip.invertLeftRight = settings.invertX;
-                    smallShip.targetingSystem.autoaim = settings.autoaim;
+                    flightControlSystem_Small.invertUpDown = settings.invertY;
+                    flightControlSystem_Small.invertLeftRight = settings.invertX;
+                    targetingSystem.autoaim = settings.autoaim;
 
-                    scene.mainShip = smallShip.gameObject;
+                    scene.mainShip = flightControlSystem_Small.gameObject;
                 }
             }
 
@@ -1181,7 +1183,6 @@ public static class SceneFunctions
 
                     FlightControlSystem_Small smallShip = shipGO.GetComponent<FlightControlSystem_Small>();
                     Task a = new Task(FlightControlSystem_SmallFunctions.ExitHyperspace(smallShip));
-                    FlightControlSystem_SmallFunctions.AddTaskToPool(smallShip, a);
                 }
             }
 
@@ -1435,7 +1436,7 @@ public static class SceneFunctions
             if (hangars == null || hangars.Length < 1)
             {
                 LargeShip largeShip = launchShipGO.GetComponent<LargeShip>();
-                FlightControlSystem_Small smallShip = launchShipGO.GetComponent<FlightControlSystem_Small>();
+                Ship ship = launchShipGO.GetComponent<Ship>();
 
                 GameObject hangarLaunchGO = new GameObject();
                 hangarLaunchGO.name = "hangarlaunch";
@@ -1448,9 +1449,9 @@ public static class SceneFunctions
                     shipLength = largeShip.shipLength;
                 }
 
-                if (smallShip != null)
+                if (ship != null)
                 {
-                    shipLength = smallShip.shipLength;
+                    shipLength = ship.shipLength;
                 }
 
                 hangarLaunchGO.transform.localPosition = new Vector3(0, -shipLength, 0);
@@ -1541,7 +1542,7 @@ public static class SceneFunctions
             if (hangars == null || hangars.Length < 1)
             {
                 LargeShip largeShip = launchShipGO.GetComponent<LargeShip>();
-                FlightControlSystem_Small smallShip = launchShipGO.GetComponent<FlightControlSystem_Small>();
+                Ship ship = launchShipGO.GetComponent<Ship>();
 
                 GameObject hangarLaunchGO = new GameObject();
                 hangarLaunchGO.name = "hangarlaunch";
@@ -1554,9 +1555,9 @@ public static class SceneFunctions
                     shipLength = largeShip.shipLength;
                 }
 
-                if (smallShip != null)
+                if (ship != null)
                 {
-                    shipLength = smallShip.shipLength;
+                    shipLength = ship.shipLength;
                 }
 
                 hangarLaunchGO.transform.localPosition = new Vector3(0, -shipLength, 0);
@@ -2523,14 +2524,14 @@ public static class SceneFunctions
                 if (gameobject != null)
                 {
                     //This destroys the waypoint object
-                    FlightControlSystem_Small smallShip = gameobject.GetComponent<FlightControlSystem_Small>();
+                    Ship ship = gameobject.GetComponent<Ship>();
                     LargeShip largeShip = gameobject.GetComponent<LargeShip>();
 
-                    if (smallShip != null)
+                    if (ship != null)
                     {
-                        if (smallShip.targetingSystem.waypoint != null)
+                        if (ship.targetingSystem.waypoint != null)
                         {
-                            GameObject.Destroy(smallShip.targetingSystem.waypoint);
+                            GameObject.Destroy(ship.targetingSystem.waypoint);
                         }
                     }
 
@@ -2651,14 +2652,14 @@ public static class SceneFunctions
                     if (scene.mainShip != gameobject) // This prevents the player ship from being destroyed
                     {
                         //This destroys the waypoint object
-                        FlightControlSystem_Small smallShip = gameobject.GetComponent<FlightControlSystem_Small>();
+                        Ship ship = gameobject.GetComponent<Ship>();
                         LargeShip largeShip = gameobject.GetComponent<LargeShip>();
 
-                        if (smallShip != null)
+                        if (ship != null)
                         {
-                            if (smallShip.targetingSystem.waypoint != null)
+                            if (ship.targetingSystem.waypoint != null)
                             {
-                                GameObject.Destroy(smallShip.targetingSystem.waypoint);
+                                GameObject.Destroy(ship.targetingSystem.waypoint);
                             }
                         }
 
@@ -2696,11 +2697,11 @@ public static class SceneFunctions
         {
             scene.smallShips.Clear();
 
-            FlightControlSystem_Small smallShip = scene.mainShip.GetComponent<FlightControlSystem_Small>();
+            Ship ship = scene.mainShip.GetComponent<Ship>();
 
-            if (smallShip != null)
+            if (ship != null)
             {
-                scene.smallShips.Add(smallShip);
+                scene.smallShips.Add(ship);
             }
         }
 

@@ -409,11 +409,12 @@ public class OGCameraFunctions : MonoBehaviour
 
                 if (ogCamera.cockpitGO == null)
                 {
-                    FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
+                    Ship ship = ogCamera.targetShip.GetComponent<Ship>();
 
-                    if (smallShip != null)
+                    if (ship != null)
                     {
-                        string cockpitName = smallShip.cockpitName;
+                        string cockpitName = ship.cockpitPrefab
+                        ;
                         ogCamera.cockpitGO = SceneFunctions.ActivateCockpit(cockpitName);
                         SetTargetShipToPlayerLayer(ogCamera); //This sets the ships layer to player to prevent the ship being seen in cockpit view
                     }
@@ -421,23 +422,23 @@ public class OGCameraFunctions : MonoBehaviour
 
                 if (ogCamera.cockpitGO != null & ogCamera.cockpitCamera != null)
                 {
-                    FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
+                    Ship ship = ogCamera.targetShip.GetComponent<Ship>();
 
-                    if (smallShip != null)
+                    if (ship != null)
                     {
                         float gForceMagnitude;
 
                         //This smooth changes the thrust speed to prevent the camera lurching backwards and forwards between two values
-                        if (ogCamera.smoothThrust < smallShip.thrustSpeed)
+                        if (ogCamera.smoothThrust < ship.flightControlSystem_Small.thrustSpeed)
                         {
                             ogCamera.smoothThrust += 0.1f;
                         }
-                        else if (ogCamera.smoothThrust > smallShip.thrustSpeed)
+                        else if (ogCamera.smoothThrust > ship.flightControlSystem_Small.thrustSpeed)
                         {
                             ogCamera.smoothThrust += 0.1f;
                         }
 
-                        if (ogCamera.smoothThrust <= smallShip.speedRating)
+                        if (ogCamera.smoothThrust <= ship.speedRating)
                         {
                             gForceMagnitude = 5f / 125f * ogCamera.smoothThrust;
                         }
@@ -472,23 +473,23 @@ public class OGCameraFunctions : MonoBehaviour
 
                         float variation = 0.015f; //This makes minor adjustments to the variation according to speed
 
-                        if (smallShip.thrustSpeed < 10)
+                        if (ship.flightControlSystem_Small.thrustSpeed < 10)
                         {
                             variation = 0.005f;
                         }
-                        else if (smallShip.thrustSpeed < 20)
+                        else if (ship.flightControlSystem_Small.thrustSpeed < 20)
                         {
                             variation = 0.01f;
                         }
 
                         //This calculates the final movement
-                        float xLocation = 0 + (0.0001f * smallShip.turnInput * 100 * gForceMagnitude) + (variation * (Mathf.PerlinNoise(ogCamera.randomisationX, ogCamera.movementTime) - 0.5f));
-                        float yLocation = 0 + (0.0001f * smallShip.pitchInput * 100 * gForceMagnitude) + (variation * (Mathf.PerlinNoise(ogCamera.randomisationY, ogCamera.movementTime) - 0.5f));
-                        float zLocation = 0 - 0.0005f * smallShip.thrustSpeed;
+                        float xLocation = 0 + (0.0001f * ship.flightControlSystem_Small.turnInput * 100 * gForceMagnitude) + (variation * (Mathf.PerlinNoise(ogCamera.randomisationX, ogCamera.movementTime) - 0.5f));
+                        float yLocation = 0 + (0.0001f * ship.flightControlSystem_Small.pitchInput * 100 * gForceMagnitude) + (variation * (Mathf.PerlinNoise(ogCamera.randomisationY, ogCamera.movementTime) - 0.5f));
+                        float zLocation = 0 - 0.0005f * ship.flightControlSystem_Small.thrustSpeed;
 
-                        float xRotation = 3f * smallShip.pitchInput;
-                        float yRotation = 3f * smallShip.turnInput;
-                        float zRotation = 3f * smallShip.rollInput;
+                        float xRotation = 3f * ship.flightControlSystem_Small.pitchInput;
+                        float yRotation = 3f * ship.flightControlSystem_Small.turnInput;
+                        float zRotation = 3f * ship.flightControlSystem_Small.rollInput;
 
                         //This dampens the movement prevent eratic jumps due to changes in input
                         float currentVelocity = 0;
@@ -506,7 +507,7 @@ public class OGCameraFunctions : MonoBehaviour
                         float step = 2f * Time.deltaTime;
                         float step2 = 10f * Time.deltaTime;
 
-                        if (smallShip.focusCamera == false)
+                        if (ship.flightControlSystem_Small.focusCamera == false)
                         {
                             ogCamera.cockpitPosition = Vector3.MoveTowards(ogCamera.cockpitPosition, dynamicLocation, step);
                             ogCamera.cockpitCamera.transform.localPosition = ogCamera.cockpitPosition;
@@ -532,7 +533,7 @@ public class OGCameraFunctions : MonoBehaviour
 
                         if (ogCamera.cockpitAnchor != null)
                         {
-                            ogCamera.cockpitAnchor.transform.rotation = smallShip.transform.rotation;
+                            ogCamera.cockpitAnchor.transform.rotation = ship.transform.rotation;
                         }
                     }
                 }
@@ -554,9 +555,9 @@ public class OGCameraFunctions : MonoBehaviour
 
         if (ogCamera.targetShip != null)
         {
-            FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
+            Ship ship = ogCamera.targetShip.GetComponent<Ship>();
 
-            if (smallShip != null)
+            if (ship != null)
             {
                 Transform target = ogCamera.targetShip.transform; // The target to follow (the ship itself);
                 GameObject followCamera = ogCamera.transform.gameObject;
@@ -565,33 +566,33 @@ public class OGCameraFunctions : MonoBehaviour
                 float rotationSpeed = 6;
 
                 //This sets the cameras primary position
-                Vector3 primaryPositionOffset = new Vector3(0, smallShip.shipLength / 2f, smallShip.shipLength * -1);
+                Vector3 primaryPositionOffset = new Vector3(0, ship.shipLength / 2f, ship.shipLength * -1);
 
                 Vector3 primaryPosition = target.TransformPoint(primaryPositionOffset);
 
-                if (smallShip.followCameraPosition != null)
+                if (ship.flightControlSystem_Small.followCameraPosition != null)
                 {
-                    primaryPosition = smallShip.followCameraPosition.transform.position;
+                    primaryPosition = ship.flightControlSystem_Small.followCameraPosition.transform.position;
                 }
 
-                primaryPosition = smallShip.scene.transform.InverseTransformPoint(primaryPosition);
+                primaryPosition = ship.scene.transform.InverseTransformPoint(primaryPosition);
 
                 //This sets the cameras secondary position
-                Vector3 secondaryPositionOffset = new Vector3(0, smallShip.shipLength / 4f, 0);
+                Vector3 secondaryPositionOffset = new Vector3(0, ship.shipLength / 4f, 0);
 
                 Vector3 secondaryPosition = target.TransformPoint(secondaryPositionOffset);
 
-                if (smallShip.focusCameraPosition != null)
+                if (ship.flightControlSystem_Small.focusCameraPosition != null)
                 {
-                    secondaryPosition = smallShip.focusCameraPosition.transform.position;
+                    secondaryPosition = ship.flightControlSystem_Small.focusCameraPosition.transform.position;
                 }
 
                 //This caluclates the dynamic position of the camera
-                if (smallShip.inHyperspace == false & smallShip.docking == false)
+                if (ship.flightControlSystem_Small.inHyperspace == false & ship.flightControlSystem_Small.docking == false)
                 {
-                    if (smallShip.focusCamera == false)
+                    if (ship.flightControlSystem_Small.focusCamera == false)
                     {
-                        followCamera.transform.SetParent(smallShip.scene.transform);
+                        followCamera.transform.SetParent(ship.scene.transform);
                         followCamera.transform.localPosition = Vector3.Lerp(followCamera.transform.localPosition, primaryPosition, followSpeed * Time.deltaTime);
 
                         //This should prevent the camera passing its designated position
@@ -603,7 +604,7 @@ public class OGCameraFunctions : MonoBehaviour
                     else
                     {
                         rotationSpeed = 12;
-                        followCamera.transform.SetParent(smallShip.transform);
+                        followCamera.transform.SetParent(ship.transform);
                         followCamera.transform.position = secondaryPosition;
                     }
 
@@ -613,7 +614,7 @@ public class OGCameraFunctions : MonoBehaviour
                 }
                 else
                 {
-                    followCamera.transform.SetParent(smallShip.transform);
+                    followCamera.transform.SetParent(ship.transform);
                 }
 
                 ShakeAndHitThirdPerson(ogCamera);
@@ -969,11 +970,11 @@ public class OGCameraFunctions : MonoBehaviour
 
                 if (ogCamera.cockpitGO == null)
                 {
-                    FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
+                    Ship ship = ogCamera.targetShip.GetComponent<Ship>();
 
-                    if (smallShip != null)
+                    if (ship != null)
                     {
-                        string cockpitName = smallShip.cockpitName;
+                        string cockpitName = ship.cockpitPrefab;
                         ogCamera.cockpitGO = SceneFunctions.ActivateCockpit(cockpitName);
                         SetTargetShipToPlayerLayer(ogCamera); //This sets the ships layer to player to prevent the ship being seen in cockpit view
                     }
@@ -981,23 +982,23 @@ public class OGCameraFunctions : MonoBehaviour
 
                 if (ogCamera.cockpitGO != null & ogCamera.cockpitCamera != null)
                 {
-                    FlightControlSystem_Small smallShip = ogCamera.targetShip.GetComponent<FlightControlSystem_Small>();
+                    Ship ship = ogCamera.targetShip.GetComponent<Ship>();
 
-                    if (smallShip != null)
+                    if (ship != null)
                     {
                         float gForceMagnitude;
 
                         //This smooth changes the thrust speed to prevent the camera lurching backwards and forwards between two values
-                        if (ogCamera.smoothThrust < smallShip.thrustSpeed)
+                        if (ogCamera.smoothThrust < ship.flightControlSystem_Small.thrustSpeed)
                         {
                             ogCamera.smoothThrust += 0.1f;
                         }
-                        else if (ogCamera.smoothThrust > smallShip.thrustSpeed)
+                        else if (ogCamera.smoothThrust > ship.flightControlSystem_Small.thrustSpeed)
                         {
                             ogCamera.smoothThrust += 0.1f;
                         }
 
-                        if (ogCamera.smoothThrust <= smallShip.speedRating)
+                        if (ogCamera.smoothThrust <= ship.speedRating)
                         {
                             gForceMagnitude = 5f / 125f * ogCamera.smoothThrust;
                         }
@@ -1032,23 +1033,23 @@ public class OGCameraFunctions : MonoBehaviour
 
                         float variation = 0.015f; //This makes minor adjustments to the variation according to speed
 
-                        if (smallShip.thrustSpeed < 10)
+                        if (ship.flightControlSystem_Small.thrustSpeed < 10)
                         {
                             variation = 0.005f;
                         }
-                        else if (smallShip.thrustSpeed < 20)
+                        else if (ship.flightControlSystem_Small.thrustSpeed < 20)
                         {
                             variation = 0.01f;
                         }
 
                         //This calculates the final movement
-                        float xLocation = 0 + (0.0001f * smallShip.turnInput * 100 * gForceMagnitude) + (variation * (Mathf.PerlinNoise(ogCamera.randomisationX, ogCamera.movementTime) - 0.5f));
-                        float yLocation = 0 + (0.0001f * smallShip.pitchInput * 100 * gForceMagnitude) + (variation * (Mathf.PerlinNoise(ogCamera.randomisationY, ogCamera.movementTime) - 0.5f));
-                        float zLocation = 0 - 0.0005f * smallShip.thrustSpeed;
+                        float xLocation = 0 + (0.0001f * ship.flightControlSystem_Small.turnInput * 100 * gForceMagnitude) + (variation * (Mathf.PerlinNoise(ogCamera.randomisationX, ogCamera.movementTime) - 0.5f));
+                        float yLocation = 0 + (0.0001f * ship.flightControlSystem_Small.pitchInput * 100 * gForceMagnitude) + (variation * (Mathf.PerlinNoise(ogCamera.randomisationY, ogCamera.movementTime) - 0.5f));
+                        float zLocation = 0 - 0.0005f * ship.flightControlSystem_Small.thrustSpeed;
 
-                        float xRotation = 3f * smallShip.pitchInput;
-                        float yRotation = 3f * smallShip.turnInput;
-                        float zRotation = 3f * smallShip.rollInput;
+                        float xRotation = 3f * ship.flightControlSystem_Small.pitchInput;
+                        float yRotation = 3f * ship.flightControlSystem_Small.turnInput;
+                        float zRotation = 3f * ship.flightControlSystem_Small.rollInput;
 
                         //This dampens the input prevent eratic movement due to dramatic changes in input
                         float currentVelocity = 0;
@@ -1066,7 +1067,7 @@ public class OGCameraFunctions : MonoBehaviour
                         float step = 2f * Time.deltaTime;
                         float step2 = 10f * Time.deltaTime;
 
-                        if (smallShip.focusCamera == false)
+                        if (ship.flightControlSystem_Small.focusCamera == false)
                         {
                             ogCamera.cockpitPosition = Vector3.MoveTowards(ogCamera.cockpitPosition, dynamicLocation, step);
                             ogCamera.cockpitCamera.transform.localPosition = ogCamera.cockpitPosition;
@@ -1092,7 +1093,7 @@ public class OGCameraFunctions : MonoBehaviour
 
                         if (ogCamera.cockpitAnchor != null)
                         {
-                            ogCamera.cockpitAnchor.transform.rotation = smallShip.transform.rotation;
+                            ogCamera.cockpitAnchor.transform.rotation = ship.transform.rotation;
                         }
                     }
                 }
@@ -1218,7 +1219,7 @@ public class OGCameraFunctions : MonoBehaviour
                 {
                     if (tempShip != null)
                     {
-                        FlightControlSystem_Small smallShip = tempShip.GetComponent<FlightControlSystem_Small>();
+                        Ship smallShip = tempShip.GetComponent<Ship>();
 
                         if (smallShip != null)
                         {

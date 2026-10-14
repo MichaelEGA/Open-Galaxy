@@ -680,9 +680,9 @@ public static class HudFunctions
             {
                 if (hud.ship.targetingSystem.targetShip != null)
                 {
-                    if (hud.ship.targetingSystem.targetShip.shipRigidbody != null)
+                    if (hud.ship.targetingSystem.targetShip.flightControlSystem_Small.shipRigidbody != null)
                     {
-                        float speed = hud.ship.targetingSystem.targetShip.shipRigidbody.linearVelocity.magnitude * 3.6f;
+                        float speed = hud.ship.targetingSystem.targetShip.flightControlSystem_Small.shipRigidbody.linearVelocity.magnitude * 3.6f;
 
                         if (speed > hud.speed)
                         {
@@ -760,7 +760,7 @@ public static class HudFunctions
             {
                 if (hud.ship.targetingSystem.targetShip != null)
                 {
-                    hud.targetSystemsText.text = hud.ship.targetingSystem.targetShip.systemsLevel.ToString("000");
+                    hud.targetSystemsText.text = hud.ship.targetingSystem.targetShip.energyManagementSystem.systemsLevel.ToString("000");
                 }
                 else if (hud.ship.targetingSystem.targetLargeShip != null)
                 {
@@ -1699,7 +1699,7 @@ public static class HudFunctions
 
         if (hud.targetLockingReticule != null & hud.targetLockedReticule != null & hud.ship != null & Time.timeScale != 0)
         {
-            if (hud.weaponManagement.weaponType == "torpedos")
+            if (hud.ship.weaponManagement.weaponType == "torpedos")
             {
                 if (hud.ship.torpedoSystem.torpedoLockingOn == true & hud.ship.torpedoSystem.torpedoLockedOn == false)
                 {

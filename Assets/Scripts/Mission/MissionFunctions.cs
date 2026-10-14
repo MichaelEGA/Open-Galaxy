@@ -1382,51 +1382,51 @@ public static class MissionFunctions
         {
             if (scene.objectPool != null)
             {
-                foreach (GameObject ship in scene.objectPool.ToList())
+                foreach (GameObject shipGO in scene.objectPool.ToList())
                 {
-                    if (ship != null)
+                    if (shipGO != null)
                     {
-                        if (ship.name.Contains(missionEvent.data1))
+                        if (shipGO.name.Contains(missionEvent.data1))
                         {
-                            FlightControlSystem_Small smallShip = ship.GetComponent<FlightControlSystem_Small>();
+                            FlightControlAI_Small flightControlSystem = shipGO.GetComponent<FlightControlAI_Small>();
 
-                            if (smallShip != null)
+                            if (flightControlSystem != null)
                             {
-                                if (smallShip.isAI == true)
+                                if (flightControlSystem.isAI == true)
                                 {
                                     if (speedControlTag != "none" & speedControlTag != "nochange")
                                     {
-                                        FlightControlAI_SmallFunctions.AddTag(smallShip, speedControlTag);
+                                        FlightControlAI_SmallFunctions.AddTag(flightControlSystem, speedControlTag);
                                     }
 
                                     if (weaponControlTag != "none" & weaponControlTag != "nochange")
                                     {
-                                        FlightControlAI_SmallFunctions.AddTag(smallShip, weaponControlTag);
+                                        FlightControlAI_SmallFunctions.AddTag(flightControlSystem, weaponControlTag);
                                     }
 
                                     if (weaponAccuracyTag != "none" & weaponAccuracyTag != "nochange")
                                     {
-                                        FlightControlAI_SmallFunctions.AddTag(smallShip, weaponAccuracyTag);
+                                        FlightControlAI_SmallFunctions.AddTag(flightControlSystem, weaponAccuracyTag);
                                     }
 
                                     if (flightPatternsTag != "none" & flightPatternsTag != "nochange")
                                     {
-                                        FlightControlAI_SmallFunctions.AddTag(smallShip, flightPatternsTag);
+                                        FlightControlAI_SmallFunctions.AddTag(flightControlSystem, flightPatternsTag);
                                     }
 
                                     if (enermyManagementTag != "none" & enermyManagementTag != "nochange")
                                     {
-                                        FlightControlAI_SmallFunctions.AddTag(smallShip, enermyManagementTag);
+                                        FlightControlAI_SmallFunctions.AddTag(flightControlSystem, enermyManagementTag);
                                     }
 
                                     if (targetingControlTag != "none" & targetingControlTag != "nochange")
                                     {
-                                        FlightControlAI_SmallFunctions.AddTag(smallShip, targetingControlTag);
+                                        FlightControlAI_SmallFunctions.AddTag(flightControlSystem, targetingControlTag);
                                     }
 
                                     if (collisionControlTag != "none" & collisionControlTag != "nochange")
                                     {
-                                        FlightControlAI_SmallFunctions.AddTag(smallShip, collisionControlTag);
+                                        FlightControlAI_SmallFunctions.AddTag(flightControlSystem, collisionControlTag);
                                     }
                                 }
                             }
@@ -1456,7 +1456,7 @@ public static class MissionFunctions
         //This gets several important references
         Scene scene = SceneFunctions.GetScene();
         OGCamera ogCamera = OGCameraFunctions.GetOGCamera();
-        FlightControlSystem_Small smallShip = scene.mainShip.GetComponent<FlightControlSystem_Small>();
+        Ship ship = scene.mainShip.GetComponent<Ship>();
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
         GameObject starfield = SceneFunctions.GetStarfield();
@@ -1466,11 +1466,11 @@ public static class MissionFunctions
 
         missionManager.pauseEventSeries = true;
 
-        bool controlLock = smallShip.controlLock; //This preserves the current lock position
+        bool controlLock = ship.flightControlSystem_Small.controlLock; //This preserves the current lock position
 
-        smallShip.focusCamera = false; //This prevents the ship jumping with the camera in the focus position
-        smallShip.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
-        smallShip.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
+        ship.flightControlSystem_Small.focusCamera = false; //This prevents the ship jumping with the camera in the focus position
+        ship.flightControlSystem_Small.controlLock = true; //This locks the player ship controls so the ship remains correctly orientated to the hyperspace effect
+        ship.damageSystem.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
 
         //This fades out the hud
         if (hud.mode == "hud")
@@ -1478,14 +1478,14 @@ public static class MissionFunctions
             Task fadeOut = new Task(HudFunctions.FadeOutHud(1));
         }
 
-        FlightControlSystem_SmallFunctions.CloseWings(smallShip);
+        WingSystemFunctions.CloseWings(ship.wingSystems);
 
         yield return new WaitForSecondsRealtime(3.4f);
 
         //This plays the hyperspace entry sound
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace01_entry", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+        AudioFunctions.PlayAudioClip(ship.audioManager, "hyperspace01_entry", "Cockpit", ship.gameObject.transform.position, 0, 1, 500, 1, 100);
 
-        smallShip.inHyperspace = true;
+        ship.flightControlSystem_Small.inHyperspace = true;
 
         yield return new WaitForSecondsRealtime(2); //This gives the audio clip time to play
 
@@ -1514,12 +1514,12 @@ public static class MissionFunctions
 
         if (scene.hyperspaceTunnel != null)
         {
-            scene.hyperspaceTunnel.transform.SetParent(smallShip.transform);
+            scene.hyperspaceTunnel.transform.SetParent(ship.transform);
             scene.hyperspaceTunnel.transform.localPosition = new Vector3(0, 0, 0);
             scene.hyperspaceTunnel.transform.localRotation = Quaternion.identity;
             scene.hyperspaceTunnel.SetActive(true);
             
-            if (smallShip.ogInput.keyboardAndMouse == false)
+            if (ship.ogInput.keyboardAndMouse == false)
             {
                 Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.15f, 0.9f, 0.9f));
             }
@@ -1528,10 +1528,10 @@ public static class MissionFunctions
         }
 
         //This sets the rotation of the ship in the new location designated in the node
-        smallShip.transform.rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
+        ship.transform.rotation = Quaternion.Euler(xRotation, yRotation, zRotation);
 
         //This sets the position of the ship in the new location designated in the node
-        smallShip.transform.localPosition = new Vector3(x, y, z);
+        ship.transform.localPosition = new Vector3(x, y, z);
 
         //This resets the skybox to black
         SceneFunctions.SetSkybox("space", true);
@@ -1583,7 +1583,7 @@ public static class MissionFunctions
 
         yield return new WaitForSecondsRealtime(1); //This gives the rigidbody time to calculate the new velocity
 
-        smallShip.inHyperspace = false;
+        ship.inHyperspace = false;
 
         HudFunctions.ScreenFlash();
 
@@ -1594,14 +1594,14 @@ public static class MissionFunctions
             scene.hyperspaceTunnel.SetActive(false);
             scene.hyperspaceTunnel.transform.SetParent(null);
 
-            if (smallShip.ogInput.keyboardAndMouse == false)
+            if (ship.ogInput.keyboardAndMouse == false)
             {
                 Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.15f, 0.9f, 0.9f));
             }
         }
 
         //This plays the hyperspace exit
-        AudioFunctions.PlayAudioClip(smallShip.audioManager, "hyperspace03_exit", "Cockpit", smallShip.gameObject.transform.position, 0, 1, 500, 1, 100);
+        AudioFunctions.PlayAudioClip(ship.audioManager, "hyperspace03_exit", "Cockpit", ship.gameObject.transform.position, 0, 1, 500, 1, 100);
 
         scene.hyperspace = false;
 
@@ -1620,12 +1620,12 @@ public static class MissionFunctions
         }
 
         //This unlocks the player controls and turns off invincibility on the player ship
-        smallShip.controlLock = controlLock; //This restores the set lock position
-        smallShip.invincible = false;
+        ship.controlLock = controlLock; //This restores the set lock position
+        ship.invincible = false;
 
         yield return new WaitForSecondsRealtime(1);
 
-        FlightControlSystem_SmallFunctions.OpenWings(smallShip);
+        FlightControlSystem_SmallFunctions.OpenWings(ship);
 
         //This unpauses the event series
         missionManager.pauseEventSeries = false;

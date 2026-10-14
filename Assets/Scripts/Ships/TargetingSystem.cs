@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class TargetingSystem : MonoBehaviour
 {
-    public FlightControlSystem_Small flightControlSystem;
-
     [Header("Key Reference")]
     public Ship ship;
 
@@ -55,15 +53,15 @@ public class TargetingSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        flightControlSystem = GetComponent<FlightControlSystem_Small>();
-        TargetingSystemFunctions.CreateWaypoint_SmallShipPlayer(flightControlSystem);
+        ship = GetComponent<Ship>();
+        TargetingSystemFunctions.CreateWaypoint_SmallShipPlayer(ship.targetingSystem);
     }
 
     // Update is called once per frame
     void Update()
     {
         TargetingSystemFunctions.GetInput(this);
-        TargetingSystemFunctions.RunPlayerTargetingFunctions(flightControlSystem);
-        TargetingSystemFunctions.GetTargetInfo_SmallShip(flightControlSystem);
+        TargetingSystemFunctions.RunPlayerTargetingFunctions(ship.targetingSystem);
+        TargetingSystemFunctions.GetTargetInfo_SmallShip(ship.targetingSystem);
     }
 }

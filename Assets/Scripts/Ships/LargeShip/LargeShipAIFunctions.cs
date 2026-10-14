@@ -610,7 +610,7 @@ public static class LargeShipAIFunctions
             }
             else if (largeShip.targetSmallShip != null)
             {
-                if (largeShip.targetSmallShip.isDisabled == true)
+                if (largeShip.targetSmallShip.damageSystem.isDisabled == true)
                 {
                     largeShip.target = null;
                 }

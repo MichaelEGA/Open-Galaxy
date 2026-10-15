@@ -631,6 +631,7 @@ public static class NodeTypes
 
         List<string> options02 = new List<string>();
         options02.Add("cliff01");
+        options02.Add("cliff02");
 
         node.data3 = NodeFunctions.DrawDropDownMenu(node, options02, "cliff", "cliff01", 7, 5, drop, 12.5f, 90, 5f);
 
@@ -5336,8 +5337,8 @@ public static class NodeTypes
         terrainList.Add("mountain-tundra");
         terrainList.Add("mntn");
         terrainList.Add("mntn-snow");
-        terrainList.Add("mntn-snow-blues");
-        terrainList.Add("mntn-snow-greys");
+        terrainList.Add("mntn-snow-field");
+        terrainList.Add("mntn-snow-rocks");
         terrainList.Add("mntn-red-desert");
         terrainList.Add("new-road-top");
         terrainList.Add("new-road-top-light");

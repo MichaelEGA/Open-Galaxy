@@ -39,7 +39,7 @@ public class Unity6ForestRenderer : MonoBehaviour
 
     [Header("Variable cluster radius")]
     [Tooltip("When true, pick a random radius per-cluster in [clusterMinRadius, clusterMaxRadius].")]
-    [SerializeField] private bool useVariableClusterRadius = false;
+    [SerializeField] private bool useVariableClusterRadius = true;
     [SerializeField] private float clusterMinRadius = 100f;
     [SerializeField] private float clusterMaxRadius = 400f;
 

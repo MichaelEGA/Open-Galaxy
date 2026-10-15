@@ -1,4 +1,4 @@
-Shader "Custom/URPTreeInstancedCutout"
+Shader "Custom/AerialTreeInstanced"
 {
     Properties
     {

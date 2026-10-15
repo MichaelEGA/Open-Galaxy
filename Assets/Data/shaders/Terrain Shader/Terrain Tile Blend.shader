@@ -1,4 +1,4 @@
-Shader "Custom/URP/Terrain Tile Blend"
+﻿Shader "Custom/URP/Terrain Tile Blend"
 {
     Properties
     {
@@ -22,6 +22,8 @@ Shader "Custom/URP/Terrain Tile Blend"
         [Header(Texture Settings)]
         _TextureTiling ("Texture Tiling", Float) = 1
         _Brightness ("Brightness", Range(0, 2)) = 1
+
+        _MiterSoftness ("Miter Softness", Range(0.0, 0.2)) = 0.02
     }
 
     SubShader
@@ -71,12 +73,14 @@ Shader "Custom/URP/Terrain Tile Blend"
                 half _BorderBlend;
                 half _BlendRoughness;
                 half _BlendNoiseTiling;
+                half _MiterSoftness;
 
                 half _CliffStart;
                 half _CliffSoftness;
 
                 half _TextureTiling;
                 half _Brightness;
+
 
             CBUFFER_END
 
@@ -206,68 +210,58 @@ Shader "Custom/URP/Terrain Tile Blend"
 
             // Only blend to right (+X) and front (+Y) neighbors to avoid mutual blending seams.
             half3 BlendNeighborGround(
-                float2 tileUV,
-                float3 positionWS,
-                half3 currentGround)
-            {
-                half noise = (half)GetBlendNoise(positionWS);
+    float2 tileUV,
+    float3 positionWS,
+    half3 currentGround)
+{
+    half noise = (half)GetBlendNoise(positionWS);
 
-                // Irregularly offset the blend boundary.
-                half edgeOffset =
-                    noise *
-                    _BlendRoughness *
-                    _BorderBlend;
+    half edgeOffset =
+        noise *
+        _BlendRoughness *
+        _BorderBlend;
 
-                // Do NOT blend with -X/-Y neighbors (left/back).
-                half leftWeight = 0.0;
-                half backWeight = 0.0;
+    // Strip gradients: 0 on the inner edge of the strip, 1 at the tile edge.
+    half rightWeight = smoothstep(
+        1.0 - _BorderBlend,
+        1.0,
+        tileUV.x + edgeOffset
+    );
 
-                // Blend outward only in +X (right) and +Y (front).
-                half rightWeight = smoothstep(
-                    1.0 - _BorderBlend,
-                    1.0,
-                    tileUV.x + edgeOffset
-                );
+    half frontWeight = smoothstep(
+        1.0 - _BorderBlend,
+        1.0,
+        tileUV.y + edgeOffset
+    );
 
-                half frontWeight = smoothstep(
-                    1.0 - _BorderBlend,
-                    1.0,
-                    tileUV.y + edgeOffset
-                );
+    // Mitered ends: the strips only exist in the triangle above the
+    // diagonal u + v = 1. This gives the 45-degree cuts at the
+    // top-left (front strip) and bottom-right (right strip) corners.
+    half miter = smoothstep(
+        0.0,
+        max(_MiterSoftness, 0.0001),
+        tileUV.x + tileUV.y + edgeOffset - 1.0
+    );
 
-                // Sample only the right and front neighbor textures.
-                half3 rightGround = SampleGround(
-                    TEXTURE2D_ARGS(
-                        _RightGroundMap,
-                        sampler_RightGroundMap
-                    ),
-                    float2(tileUV.x, tileUV.y)
-                );
+    rightWeight *= miter;
+    frontWeight *= miter;
 
-                half3 frontGround = SampleGround(
-                    TEXTURE2D_ARGS(
-                        _FrontGroundMap,
-                        sampler_FrontGroundMap
-                    ),
-                    float2(tileUV.x, tileUV.y)
-                );
+    half3 rightGround = SampleGround(
+        TEXTURE2D_ARGS(_RightGroundMap, sampler_RightGroundMap),
+        tileUV
+    );
 
-                half3 color = currentGround;
+    half3 frontGround = SampleGround(
+        TEXTURE2D_ARGS(_FrontGroundMap, sampler_FrontGroundMap),
+        tileUV
+    );
 
-                color = lerp(
-                    color,
-                    rightGround,
-                    rightWeight
-                );
+    half3 color = currentGround;
+    color = lerp(color, rightGround, rightWeight);
+    color = lerp(color, frontGround, frontWeight);
 
-                color = lerp(
-                    color,
-                    frontGround,
-                    frontWeight
-                );
-
-                return color;
-            }
+    return color;
+}
 
             half4 Frag(Varyings input) : SV_Target
             {

@@ -56,48 +56,51 @@ public static class WingSystemFunctions
     //Closes the wings
     public static void CloseWings(WingSystems wingSystems)
     {
-        if (wingSystems.wingsOpen != false)
+        if (wingSystems != null)
         {
-            //This searches for movable wings on the ship if they haven't already been loaded
-            if (wingSystems.wings == null)
+            if (wingSystems.wingsOpen != false)
             {
-                FindMovableWings(wingSystems);
-            }
-
-            //This indicates to other functions whether the wings are open or closed
-            wingSystems.wingsOpen = false;
-
-            //This activates the wing rotation
-            if (wingSystems.wing01 != null & wingSystems.wing01_open != null & wingSystems.wing01_closed != null)
-            {
-                Task a = new Task(RotateToWingPosition(wingSystems.wing01, wingSystems.wing01_open.transform, wingSystems.wing01_closed.transform, 3.4f, false));
-
-                //This plays the wings open and close sound
-                float spatialBlend = 1f;
-                string mixer = "External";
-
-                if (wingSystems.ship.isAI == false)
+                //This searches for movable wings on the ship if they haven't already been loaded
+                if (wingSystems.wings == null)
                 {
-                    spatialBlend = 0;
-                    mixer = "Cockpit";
+                    FindMovableWings(wingSystems);
                 }
 
-                AudioFunctions.PlayAudioClip(wingSystems.ship.flightControlSystem_Small.ship.audioManager, "wings_close", mixer, wingSystems.transform.position, spatialBlend, 1, 500, 0.6f);
-            }
+                //This indicates to other functions whether the wings are open or closed
+                wingSystems.wingsOpen = false;
 
-            if (wingSystems.wing02 != null & wingSystems.wing02_open != null & wingSystems.wing02_closed != null)
-            {
-                Task a = new Task(RotateToWingPosition(wingSystems.wing02, wingSystems.wing02_open.transform, wingSystems.wing02_closed.transform, 3.4f, false));
-            }
+                //This activates the wing rotation
+                if (wingSystems.wing01 != null & wingSystems.wing01_open != null & wingSystems.wing01_closed != null)
+                {
+                    Task a = new Task(RotateToWingPosition(wingSystems.wing01, wingSystems.wing01_open.transform, wingSystems.wing01_closed.transform, 3.4f, false));
 
-            if (wingSystems.wing03 != null & wingSystems.wing03_open != null & wingSystems.wing03_closed != null)
-            {
-                Task a = new Task(RotateToWingPosition(wingSystems.wing03, wingSystems.wing03_open.transform, wingSystems.wing03_closed.transform, 3.4f, false));
-            }
+                    //This plays the wings open and close sound
+                    float spatialBlend = 1f;
+                    string mixer = "External";
 
-            if (wingSystems.wing04 != null & wingSystems.wing04_open != null & wingSystems.wing04_closed != null)
-            {
-                Task a = new Task(RotateToWingPosition(wingSystems.wing04, wingSystems.wing04_open.transform, wingSystems.wing04_closed.transform, 3.4f, false));
+                    if (wingSystems.ship.isAI == false)
+                    {
+                        spatialBlend = 0;
+                        mixer = "Cockpit";
+                    }
+
+                    AudioFunctions.PlayAudioClip(wingSystems.ship.flightControlSystem_Small.ship.audioManager, "wings_close", mixer, wingSystems.transform.position, spatialBlend, 1, 500, 0.6f);
+                }
+
+                if (wingSystems.wing02 != null & wingSystems.wing02_open != null & wingSystems.wing02_closed != null)
+                {
+                    Task a = new Task(RotateToWingPosition(wingSystems.wing02, wingSystems.wing02_open.transform, wingSystems.wing02_closed.transform, 3.4f, false));
+                }
+
+                if (wingSystems.wing03 != null & wingSystems.wing03_open != null & wingSystems.wing03_closed != null)
+                {
+                    Task a = new Task(RotateToWingPosition(wingSystems.wing03, wingSystems.wing03_open.transform, wingSystems.wing03_closed.transform, 3.4f, false));
+                }
+
+                if (wingSystems.wing04 != null & wingSystems.wing04_open != null & wingSystems.wing04_closed != null)
+                {
+                    Task a = new Task(RotateToWingPosition(wingSystems.wing04, wingSystems.wing04_open.transform, wingSystems.wing04_closed.transform, 3.4f, false));
+                }
             }
         }
     }

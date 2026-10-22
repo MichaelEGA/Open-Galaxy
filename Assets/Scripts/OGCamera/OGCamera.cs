@@ -14,6 +14,9 @@ public class OGCamera : MonoBehaviour
     public GameObject rotateGO;
     public GameObject cockpitAnchor;
 
+    //Camera positions
+    public GameObject focus_screen;
+
     //Key vaules
     public string targetName; //Target ship
     public GameObject targetShip;

@@ -517,9 +517,25 @@ public class OGCameraFunctions : MonoBehaviour
                         }
                         else
                         {
+                            if (ogCamera.focus_screen == null)
+                            {
+                                Transform focus_screen = GameObjectUtils.FindChildTransformCalled(ogCamera.cockpitGO.transform, "focus_screen");
+                                
+                                if (focus_screen != null)
+                                {
+                                    ogCamera.focus_screen = focus_screen.gameObject;
+                                }
+                            }
+
                             Vector3 focusPosition = new Vector3(0, 0, 0.25f);
                             Quaternion focusRotation = Quaternion.Euler(0, 0, 0);
 
+                            if (ogCamera.focus_screen != null)
+                            {
+                                focusPosition = ogCamera.focus_screen.transform.localPosition;
+                                focusRotation = Quaternion.Euler(0, 0, 0);
+                            }
+                            
                             step = 10f * Time.deltaTime;
 
                             ogCamera.cockpitPosition = Vector3.MoveTowards(ogCamera.cockpitPosition, focusPosition, step);

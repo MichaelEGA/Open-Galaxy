@@ -954,6 +954,7 @@ public static class SceneFunctions
                 EnergyWeaponHit energyWeaponHit = shipGO.AddComponent<EnergyWeaponHit>();
                 DamageSystem damageSystem = shipGO.AddComponent<DamageSystem>();
                 TargetingSystem targetingSystem = shipGO.AddComponent<TargetingSystem>();
+                WingSystems wingSystem = shipGO.AddComponent<WingSystems>();
                 WeaponManagement weaponManagement = null;
                 EnergyWeapon energyWeapon = null;
                 TorpedoSystem torpedoSystem = null;
@@ -1049,6 +1050,10 @@ public static class SceneFunctions
                     targetingSystem.autoaim = settings.autoaim;
 
                     scene.mainShip = flightControlSystem_Small.gameObject;
+
+                    //Load target display
+                    TargetingDisplay targetingDisplay = TargetingDisplayFunctions.LoadTargetingDisplay();
+                    targetingDisplay.ship = ship;
                 }
             }
 

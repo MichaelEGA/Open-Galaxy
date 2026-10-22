@@ -1,10 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static UnityEditor.Rendering.CameraUI;
 
 //These functions are called by the small ship functions script
 public static class EnergyWeaponFunctions

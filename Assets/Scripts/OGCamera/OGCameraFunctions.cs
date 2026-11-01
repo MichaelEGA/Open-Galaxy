@@ -162,6 +162,23 @@ public class OGCameraFunctions : MonoBehaviour
 
         ogCamera.cockpitCamera = cockpitCameraGO;
 
+        GameObject hudCameraGO = GameObject.Find("Hud Camera");
+        Camera hudCamera = null;
+
+        if (hudCameraGO == null)
+        {
+            hudCameraGO = new GameObject();
+            hudCameraGO.name = "Hud Camera";
+            hudCamera = hudCameraGO.AddComponent<Camera>();
+            hudCamera.cullingMask = LayerMask.GetMask("targetingDisplay");
+            hudCamera.nearClipPlane = 0.01f;
+            var cockpitCameraData = hudCamera.GetUniversalAdditionalCameraData();
+            cockpitCameraData.renderType = CameraRenderType.Overlay;
+            cockpitCameraData.renderPostProcessing = true;
+        }
+
+        //ogCamera.cockpitCamera = cockpitCameraGO;
+
         ogCamera.cockpitAnchor = GameObject.Find("cockpitanchor");
 
         if (ogCamera.cockpitAnchor == null)
@@ -180,6 +197,7 @@ public class OGCameraFunctions : MonoBehaviour
             starfieldCameraData.cameraStack.Add(planetCamera);
             starfieldCameraData.cameraStack.Add(mainCamera);
             starfieldCameraData.cameraStack.Add(cockpitCamera);
+            starfieldCameraData.cameraStack.Add(hudCamera);
         }
     }
 

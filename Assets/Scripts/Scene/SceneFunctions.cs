@@ -1050,10 +1050,6 @@ public static class SceneFunctions
                     targetingSystem.autoaim = settings.autoaim;
 
                     scene.mainShip = flightControlSystem_Small.gameObject;
-
-                    //Load target display
-                    TargetingDisplay targetingDisplay = TargetingDisplayFunctions.LoadTargetingDisplay();
-                    targetingDisplay.ship = ship;
                 }
             }
 

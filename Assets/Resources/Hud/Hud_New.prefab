@@ -3421,8 +3421,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -61.50049, y: 186}
-  m_SizeDelta: {x: 60.8326, y: 113.7}
+  m_AnchoredPosition: {x: -61.50049, y: 177}
+  m_SizeDelta: {x: 60.8326, y: 102.08}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5861691923015564759
 CanvasRenderer:
@@ -3467,18 +3467,16 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'SPD: 300
 
-    THR: 60
-
     MSP: OFF
 
     WEP: OFF
 
     WPN: LSR
 
-    MDE:
-    SNG
+    MDE: SNG
 
-    NUM: INF
+    NUM:
+    INF
 
     HULL: 100
 
@@ -4555,6 +4553,7 @@ GameObject:
   - component: {fileID: 734945832679435039}
   - component: {fileID: 5436279163010095088}
   - component: {fileID: 709572510535098439}
+  - component: {fileID: 25276383108706994}
   m_Layer: 31
   m_Name: Vignette
   m_TagString: Untagged
@@ -4616,6 +4615,18 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!225 &25276383108706994
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7857688783260172081}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8004162258969718997
 GameObject:
   m_ObjectHideFlags: 0

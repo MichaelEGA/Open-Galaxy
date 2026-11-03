@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 using UnityEngine.UI;
 
 public static class HudFunctions_New
@@ -34,6 +35,12 @@ public static class HudFunctions_New
 
         if (shipInfoText != null & mainShip != null)
         {
+            string speed = (mainShip.flightControlSystem_Small.shipRigidbody.linearVelocity.magnitude * 3.6f).ToString("000");
+
+            string throttle = ((int)((mainShip.flightControlSystem_Small.thrustSpeed / mainShip.speedRating) * 100)).ToString("000");
+
+            Debug.Log(" thrust speed is " + mainShip.flightControlSystem_Small.thrustSpeed + " speed rating is " + mainShip.speedRating + " and thrust is " + throttle);
+
             string weapponType = mainShip.weaponManagement.weaponType.ToString();
             
             if (weapponType == "lasers")
@@ -95,7 +102,8 @@ public static class HudFunctions_New
             }
 
             shipInfoText.text =
-                "SPD:" + ((int)mainShip.flightControlSystem_Small.thrustSpeed).ToString() +
+                "SPD:" + speed +
+                "\nTHR:" + throttle +
                 "\nMSP:" + matchSpeed +
                 "\nWEP:" + wep +
                 "\nWPN:" + weapponType +

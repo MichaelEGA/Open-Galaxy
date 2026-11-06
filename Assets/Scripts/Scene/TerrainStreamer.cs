@@ -123,13 +123,16 @@ public class TerrainStreamer : MonoBehaviour
         if (!initialized)
             return;
 
-        Vector3 shipLocalPosition = tileParent.InverseTransformPoint(ship.position);
-        Vector2Int shipTile = LocalPositionToTileCoordinate(shipLocalPosition);
-
-        if (shipTile != currentShipTile)
+        if (ship != null)
         {
-            currentShipTile = shipTile;
-            UpdateLoadedTiles();
+            Vector3 shipLocalPosition = tileParent.InverseTransformPoint(ship.position);
+            Vector2Int shipTile = LocalPositionToTileCoordinate(shipLocalPosition);
+
+            if (shipTile != currentShipTile)
+            {
+                currentShipTile = shipTile;
+                UpdateLoadedTiles();
+            }
         }
     }
 

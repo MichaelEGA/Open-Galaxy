@@ -114,6 +114,149 @@ public static class HudFunctions_New
         }
     }
 
+    //This displays the front radar
+    public static void DisplayFrontRadar(Hud_New hud)
+    {
+        CanvasGroup radar = FindCanvasGroup("Radar");
+
+        if (hud.scene == null)
+        {
+            hud.scene = SceneFunctions.GetScene();
+        }
+        
+        if (radar != null)
+        {
+            if (Time.timeScale != 0)
+            {
+                GameObject playerTarget = null;
+
+                if (hud.mainShip != null)
+                {
+                    playerTarget = hud.mainShip.targetingSystem.target;
+                }
+                
+                Vector2 radarPosition = new Vector2();
+                Vector2 radarDirection = new Vector2();
+                float yPositionRadar;
+                float xPositionRadar;
+                float forwardRadar;
+                int radarNumber = 0;
+
+                float radarRadius = ((radar.GetComponent<RectTransform>().rect.width / 2f) / 100f) * 90f;
+
+                if (hud.radarTarget == null)
+                {
+                    hud.radarTarget = GameObject.Find("RadarTarget");
+                    hud.radarTarget.SetActive(false);
+                }
+
+                if (hud.radarTargets == null)
+                {
+                    hud.radarTargets = new List<GameObject>();
+                }
+
+                if (hud.radarTargetSelected == null)
+                {
+                    hud.radarTargetSelected = GameObject.Find("RadarTargetSelected");
+                }
+
+                if (hud.radarTargetSelected != null & hud.scene.objectPool != null & hud.radarTargets != null)
+                {
+                    //This generates the radar icons
+                    if (hud.radarTargets.Count < hud.scene.objectPool.Count)
+                    {
+                        var clone = GameObject.Instantiate(hud.radarTarget) as GameObject;
+                        clone.transform.SetParent(radar.transform);
+                        clone.transform.localScale = Vector3.one;
+                        hud.radarTargets.Add(clone);
+                    }
+                    else if (hud.radarTargets.Count > hud.scene.objectPool.Count)
+                    {
+                        //This clears the radar dots when there are too many
+                        foreach (GameObject radarDotTemp in hud.radarTargets)
+                        {
+                            GameObject.Destroy(radarDotTemp);
+                        }
+
+                        hud.radarTargets.Clear();
+                    }
+
+                    //This cycles through all the ships in the list
+                    foreach (GameObject ship in hud.scene.objectPool)
+                    {
+                        if (ship != null)
+                        {
+                            GameObject mainShip = hud.scene.mainShip;
+
+                            if (mainShip != null)
+                            {
+                                //This gets the vector3 of the target
+                                Vector3 targetPositionRadar = ship.transform.position - mainShip.transform.position;
+
+                                //This determines the objects relative position and size
+                                yPositionRadar = Vector3.Dot(mainShip.transform.up, targetPositionRadar.normalized);
+                                xPositionRadar = Vector3.Dot(mainShip.transform.right, targetPositionRadar.normalized);
+                                forwardRadar = Vector3.Dot(mainShip.transform.forward, targetPositionRadar.normalized);
+
+                                if (forwardRadar > 0)
+                                {
+                                    radarPosition = new Vector2(xPositionRadar * radarRadius, yPositionRadar * radarRadius);
+                                }
+                                else
+                                {
+                                    radarDirection = new Vector2(xPositionRadar, yPositionRadar) - new Vector2(0, 0);
+                                    radarDirection = radarDirection.normalized * radarRadius;
+                                    radarPosition = new Vector2(0, 0) + radarDirection;
+                                }
+
+                                //Activates the dots
+                                if (radarNumber <= hud.radarTargets.Count - 1)
+                                {
+                                    if (ship.activeSelf == false)
+                                    {
+                                        hud.radarTargets[radarNumber].SetActive(false);
+                                    }
+                                    else
+                                    {
+                                        hud.radarTargets[radarNumber].SetActive(true);
+                                    }
+
+                                    hud.radarTargets[radarNumber].transform.localPosition = radarPosition;
+
+                                    //This activates the target braces
+                                    if (playerTarget != null)
+                                    {
+                                        if (ship == hud.mainShip.targetingSystem.target)
+                                        {
+                                            hud.radarTargetSelected.SetActive(true);
+                                            hud.radarTargetSelected.transform.SetParent(radar.transform);
+                                            hud.radarTargetSelected.transform.localPosition = radarPosition;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        hud.radarTargetSelected.SetActive(false);
+                                    }
+
+                                }
+
+                                //This moves onto the next radar dot
+                                if (radarNumber >= hud.scene.objectPool.Count - 1)
+                                {
+                                    radarNumber = 0;
+                                }
+                                else
+                                {
+                                    radarNumber = radarNumber + 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     #endregion
 
     #region utils

@@ -169,7 +169,7 @@ public static class LargeShipFunctions
             yield return new WaitForFixedUpdate();
         }
 
-        HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " jumped to hyperspace");
+        HudFunctions_Old.AddToShipLog(largeShip.name.ToUpper() + " jumped to hyperspace");
 
         largeShip.jumpingToHyperspace = false;
 
@@ -198,7 +198,7 @@ public static class LargeShipFunctions
 
         AudioFunctions.PlayAudioClip(largeShip.audioManager, "hyperspace03_exit", "Explosions", largeShip.transform.position, 1, 1, 10000, 1f);
 
-        HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " just exited hyperspace");
+        HudFunctions_Old.AddToShipLog(largeShip.name.ToUpper() + " just exited hyperspace");
 
         largeShip.exitingHyperspace = false;
     }

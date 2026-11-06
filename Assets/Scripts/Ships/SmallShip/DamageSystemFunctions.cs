@@ -241,7 +241,7 @@ public static class DamageSystemFunctions
                 }
 
                 //This tells the player that the ship has been destroyed
-                HudFunctions.AddToShipLog(damageSystem.name.ToUpper() + " was disabled");
+                HudFunctions_Old.AddToShipLog(damageSystem.name.ToUpper() + " was disabled");
                 damageSystem.isDisabled = true;
 
                 //This causes the ship to spin a little rather than being completely stationary
@@ -295,7 +295,7 @@ public static class DamageSystemFunctions
 
             damageSystem.isDisabled = false;
 
-            HudFunctions.AddToShipLog(damageSystem.name.ToUpper() + " has restored systems");
+            HudFunctions_Old.AddToShipLog(damageSystem.name.ToUpper() + " has restored systems");
         }
     }
 
@@ -503,7 +503,7 @@ public static class DamageSystemFunctions
             AudioFunctions.PlayAudioClip(damageSystem.ship.audioManager, "mid_explosion_01", "External", damageSystem.gameObject.transform.position, 1, 1, 1000, 1);
 
             //This tells the player that the ship has been destroyed
-            HudFunctions.AddToShipLog(damageSystem.name.ToUpper() + " was destroyed");
+            HudFunctions_Old.AddToShipLog(damageSystem.name.ToUpper() + " was destroyed");
 
             //This deactivates the ship
             DeactivateShip_SmallShip(damageSystem);
@@ -527,7 +527,7 @@ public static class DamageSystemFunctions
         AudioFunctions.PlayAudioClip(damageSystem.ship.audioManager, "mid_explosion_01", "External", damageSystem.gameObject.transform.position, 1, 1, 1000, 1);
 
         //This tells the game that the ship has been destroyed
-        HudFunctions.AddToShipLog(damageSystem.name.ToUpper() + " was destroyed");
+        HudFunctions_Old.AddToShipLog(damageSystem.name.ToUpper() + " was destroyed");
 
         //This deactivates the ship
         DeactivateShip_SmallShip(damageSystem);
@@ -722,7 +722,7 @@ public static class DamageSystemFunctions
         if (largeShip.isDisabled == false & largeShip.systemsLevel <= 0)
         {
             //This tells the player that the ship has been destroyed
-            HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was disabled");
+            HudFunctions_Old.AddToShipLog(largeShip.name.ToUpper() + " was disabled");
             largeShip.isDisabled = true;
         }
 
@@ -733,7 +733,7 @@ public static class DamageSystemFunctions
     {
         if (largeShip.isDisabled == true & largeShip.systemsLevel > 0)
         {
-            HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " has restored systems");
+            HudFunctions_Old.AddToShipLog(largeShip.name.ToUpper() + " has restored systems");
             largeShip.isDisabled = false;
         }
     }
@@ -836,7 +836,7 @@ public static class DamageSystemFunctions
 
                     TriggerDebrisExplosion_LargeShip(largeShip.gameObject.transform.position, 50 * scaleNumber);
 
-                    HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
+                    HudFunctions_Old.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
 
                     yield return new WaitForSeconds(0.75f);
 
@@ -860,7 +860,7 @@ public static class DamageSystemFunctions
 
                     TriggerDebrisExplosion_LargeShip(largeShip.gameObject.transform.position, 50 * scaleNumber);
 
-                    HudFunctions.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
+                    HudFunctions_Old.AddToShipLog(largeShip.name.ToUpper() + " was destroyed");
 
                     DeactivateShip_LargeShip(largeShip);
                 }
@@ -969,7 +969,7 @@ public static class DamageSystemFunctions
             systemSmoke.transform.SetParent(shipSystem.gameObject.transform.parent, true);
             systemSmoke.transform.localRotation = shipSystem.gameObject.transform.localRotation;
             shipSystem.gameObject.SetActive(false);
-            HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was destroyed.");
+            HudFunctions_Old.AddToShipLog(shipSystem.name.ToUpper() + " was destroyed.");
         }
     }
 
@@ -986,7 +986,7 @@ public static class DamageSystemFunctions
             float explosionScale = GetExplosionScale(shipSystem.gameObject, targetRenderer.bounds.size.y);
             ParticleSystem ionParticleSystem = ParticleFunctions.InstantiatePersistantExplosion(shipSystem.transform.position, "explosion_system_ion", explosionScale);
             shipSystem.ionParticleSystemGO = ionParticleSystem.gameObject;
-            HudFunctions.AddToShipLog(shipSystem.name.ToUpper() + " was disabled.");
+            HudFunctions_Old.AddToShipLog(shipSystem.name.ToUpper() + " was disabled.");
         }
     }
 

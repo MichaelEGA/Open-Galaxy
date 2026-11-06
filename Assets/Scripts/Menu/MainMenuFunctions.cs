@@ -1355,7 +1355,7 @@ public static class MainMenuFunctions
 
                 if (hudCanvasGroup != null)
                 {
-                    HudFunctions.SetHudTransparency(1);
+                    HudFunctions_Old.SetHudTransparency(1);
                 }
             }
         }

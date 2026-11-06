@@ -538,71 +538,76 @@ public static class TargetingSystemFunctions
     //This gets the designated target and sets it as the ships target if it can be found
     public static void GetSpecificTarget_SmallShip(TargetingSystem targetingSystem = null, string targetName = "none")
     {
-        Scene scene = targetingSystem.ship.scene;
-        GameObject target = null;
-        Ship tempShip = null;
-        Ship targetShip = null;
-        LargeShip tempLargeShip = null;
-        LargeShip targetLargeShip = null;
-
-        foreach (GameObject ship in scene.objectPool)
+        if (targetingSystem != null)
         {
-            if (ship != null)
-            {
+            Scene scene = SceneFunctions.GetScene();
+            GameObject target = null;
+            Ship tempShip = null;
+            Ship targetShip = null;
+            LargeShip tempLargeShip = null;
+            LargeShip targetLargeShip = null;
 
-                if (ship.activeSelf == true)
+            foreach (GameObject ship in scene.objectPool)
+            {
+                if (ship != null)
                 {
 
-                    if (ship.name.Contains(targetName))
+                    if (ship.activeSelf == true)
                     {
-                        target = ship;
-                        tempShip = ship.GetComponent<Ship>();
-                        tempLargeShip = ship.GetComponent<LargeShip>();
 
-                        if (tempShip != null)
+                        if (ship.name.Contains(targetName))
                         {
-                            targetShip = tempShip;
-                        }
-                        else if (tempLargeShip != null)
-                        {
-                            targetLargeShip = tempLargeShip;                           
-                        }
+                            target = ship;
+                            tempShip = ship.GetComponent<Ship>();
+                            tempLargeShip = ship.GetComponent<LargeShip>();
 
-                        break;
+                            if (tempShip != null)
+                            {
+                                targetShip = tempShip;
+                            }
+                            else if (tempLargeShip != null)
+                            {
+                                targetLargeShip = tempLargeShip;
+                            }
+
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        if (target != null)
-        {
-            targetingSystem.target = target;
-            targetingSystem.targetName = target.name;
-
-            if (targetShip != null)
+            if (target != null)
             {
-                targetingSystem.targetShip = targetShip;
-                targetingSystem.targetLargeShip = null;
-                targetingSystem.targetPrefabName = targetShip.prefab;
+                targetingSystem.target = target;
+                targetingSystem.targetName = target.name;
+
+                if (targetShip != null)
+                {
+                    targetingSystem.targetShip = targetShip;
+                    targetingSystem.targetLargeShip = null;
+                    targetingSystem.targetPrefabName = targetShip.prefab;
+                }
+                else if (targetLargeShip != null)
+                {
+                    targetingSystem.targetShip = null;
+                    targetingSystem.targetLargeShip = targetLargeShip;
+                    targetingSystem.targetPrefabName = targetLargeShip.prefabName;
+                }
+
+                targetingSystem.targetRigidbody = target.GetComponent<Rigidbody>();
             }
-            else if (targetLargeShip != null)
+
+            if (targetingSystem.ship.isAI == false)
             {
-                targetingSystem.targetShip = null;
-                targetingSystem.targetLargeShip = targetLargeShip;
-                targetingSystem.targetPrefabName = targetLargeShip.prefabName;
+                AudioFunctions.PlayAudioClip(targetingSystem.ship.audioManager, "beep01_toggle", "Cockpit", targetingSystem.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
-
-            targetingSystem.targetRigidbody = target.GetComponent<Rigidbody>();
+      
+            //This prevents the torpedo from immediately locking on to the new target
+            targetingSystem.ship.torpedoSystem.torpedoLockedOn = false;
+            targetingSystem.ship.torpedoSystem.torpedoLockingOn = false;
         }
 
-        if (targetingSystem.ship.isAI == false)
-        {
-            AudioFunctions.PlayAudioClip(targetingSystem.ship.audioManager, "beep01_toggle", "Cockpit", targetingSystem.gameObject.transform.position, 0, 1, 500, 1, 100);
-        }
-
-        //This prevents the torpedo from immediately locking on to the new target
-        targetingSystem.ship.torpedoSystem.torpedoLockedOn = false;
-        targetingSystem.ship.torpedoSystem.torpedoLockingOn = false;
+       
     }
 
     //This creates the ship waypoint

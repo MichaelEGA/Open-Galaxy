@@ -1,0 +1,186 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Video;
+
+public class Hud_Old: MonoBehaviour
+{
+    [Header("Key References")]
+    [HideInInspector] public Scene scene;
+    [HideInInspector] public OGCamera ogCamera;
+    [HideInInspector] public OGInput ogInput;
+    [HideInInspector] public Ship ship;
+    [HideInInspector] public Camera mainCamera;
+    [HideInInspector] public Camera starfieldCamera;
+    [HideInInspector] public float startTime;
+    [HideInInspector] public Color colour;
+    [HideInInspector] public string mode = "hud";
+
+    [Header("Canvas Groups")]
+    [HideInInspector] public CanvasGroup hudCG;
+    [HideInInspector] public CanvasGroup letterboxCG;
+    [HideInInspector] public CanvasGroup fadeCG;
+    [HideInInspector] public CanvasGroup screenflashCG;
+
+    [Header("Choice")]
+    [HideInInspector] public CanvasGroup choiceCG;
+    [HideInInspector] public Text choiceUp;
+    [HideInInspector] public Text choiceDown;
+    [HideInInspector] public Text choiceRight;
+    [HideInInspector] public Text choiceLeft;
+
+    [Header("Hud Elements Check")]
+    [HideInInspector] public bool hudElementsSet;
+
+    [Header("Ship Information")]
+    [HideInInspector] public Text shipInfo;
+    [HideInInspector] public Text shipName;
+    [HideInInspector] public Text speedText;
+    [HideInInspector] public Text matchSpeedText;
+    [HideInInspector] public Text WEPText;
+    [HideInInspector] public Text activeWeaponText;
+    [HideInInspector] public Text weaponModeText;
+    [HideInInspector] public Text weaponNumberText;
+    [HideInInspector] public Text systemsText;
+    [HideInInspector] public Slider shieldMeter;
+    [HideInInspector] public Slider engineMeter;
+    [HideInInspector] public Slider laserMeter;
+    [HideInInspector] public Slider WEPMeter;
+    [HideInInspector] public Slider chargeMeter;
+    [HideInInspector] public RawImage shieldForwardOutside;
+    [HideInInspector] public RawImage shieldForwardInside;
+    [HideInInspector] public RawImage hull;
+    [HideInInspector] public RawImage shieldRearInside;
+    [HideInInspector] public RawImage shieldRearOutside;
+
+    [Header("Counter Measure System")]
+    [HideInInspector] public Text objectiveIndicator;
+
+    [Header("Target Information")]
+    public AudioSource lockBeep;
+    [HideInInspector] public GameObject directionArrow;
+    [HideInInspector] public GameObject selectionBrace;
+    [HideInInspector] public GameObject systemSelectionBrace;
+    [HideInInspector] public GameObject targetObject;
+    [HideInInspector] public Text targetDistanceText;
+    [HideInInspector] public Text targetType;
+    [HideInInspector] public Text targetName;
+    [HideInInspector] public Text targetCargo;
+    [HideInInspector] public Text targetSpeedText;
+    [HideInInspector] public Text targetShieldsText;
+    [HideInInspector] public Text targetSystemsText;
+    [HideInInspector] public Text targetHullText;
+    [HideInInspector] public RawImage reticule;
+    [HideInInspector] public RawImage targetLockingReticule;
+    [HideInInspector] public RawImage targetLockedReticule;
+    [HideInInspector] public bool reticuleFlashing;
+    [HideInInspector] public Vector3 lastPosition;
+    [HideInInspector] public float speed;
+
+    [Header("Ship Log")]
+    [HideInInspector] public Text shipLog;
+    [HideInInspector] public Text objectiveLog;
+    [HideInInspector] public Task objectiveIndicatorTask;
+
+    [Header("Moving Reticule")]
+    [HideInInspector] public RawImage movingReticleImage;
+    [HideInInspector] public GameObject movingReticule;
+    [HideInInspector] public GameObject centerReticule;
+    [HideInInspector] public GameObject line;
+
+    [Header("Player Information")]
+    public Text title;
+    public Text subtitle;
+    public Text hintTextGO;
+    public Image hintImage;
+
+    [Header("Radar Information")]
+    [HideInInspector] public GameObject radarObject;
+    [HideInInspector] public GameObject frontRadarCircle;
+    [HideInInspector] public GameObject frontRadarDot;
+    [HideInInspector] public GameObject frontRadarBrace;
+    [HideInInspector] public GameObject rearRadarCircle;
+    [HideInInspector] public GameObject rearRadarDot;
+    [HideInInspector] public GameObject rearRadarBrace;
+    [HideInInspector] public Material wireframeMaterial;
+    [HideInInspector] public float previousArrowRotation;
+    [HideInInspector] public float arrowTargetRotation;
+    [HideInInspector] public float arrowLerpTime;
+
+    [Header("Intercept Point")]
+    [HideInInspector] public GameObject interceptPoint;
+
+    [Header("Waypoint Information")]
+    public bool waypointIsActive;
+    [HideInInspector] public GameObject waypointArrow;
+    [HideInInspector] public GameObject waypointMarker;
+    [HideInInspector] public Text waypointText;
+    [HideInInspector] public Text waypointTitle;
+    [HideInInspector] public string waypointTitleString;
+    [HideInInspector] public float waypointPreviousArrowRotation;
+    [HideInInspector] public float waypointArrowTargetRotation;
+    [HideInInspector] public float waypointArrowLerpTime;
+
+    [Header("Tabs")]
+    [HideInInspector] public Transform[] keyboardTags;
+    [HideInInspector] public Transform[] controllerTags;
+    [HideInInspector] public bool keyboardActive = false;
+
+    [Header("Hud Object Pools")]
+    [HideInInspector] public List<GameObject> radarPool;
+    [HideInInspector] public List<GameObject> frontRadarDotsPool;
+    [HideInInspector] public List<GameObject> rearRadarDotsPool;
+    [HideInInspector] public List<GameObject> systemSelectionBracePool;
+
+    [Header("Hud Task Pool")]
+    public List<Task> tasks;
+
+    // Update is called once per frame
+    void Update()
+    {
+        HudFunctions_Old.UpdateKeyReferences(this);
+
+        HudFunctions_Old.DisplayShieldMeter(this);
+        HudFunctions_Old.DisplayEngineMeter(this);
+        HudFunctions_Old.DisplayLaserMeter(this);
+        HudFunctions_Old.DisplayWEPMeter(this);
+        HudFunctions_Old.DisplayChargeMeter(this);
+
+        HudFunctions_Old.DisplayShipSpeed(this);
+        HudFunctions_Old.DisplayMatchSpeed(this);
+        HudFunctions_Old.DisplayWEP(this);
+        HudFunctions_Old.DisplayActiveWeapon(this);
+        HudFunctions_Old.DisplayWeaponMode(this);
+        HudFunctions_Old.DisplayWeaponNumber(this);
+        HudFunctions_Old.DisplayShieldAndHull(this);
+        HudFunctions_Old.DisplaySystemsStrength(this);
+
+        HudFunctions_Old.DisplayTargetDistance(this);
+        HudFunctions_Old.DisplayTargetType(this);
+        HudFunctions_Old.DisplayTargetName(this);
+        HudFunctions_Old.DisplayTargetCargo(this);
+        HudFunctions_Old.DisplayTargetSpeed(this);
+        HudFunctions_Old.DisplayTargetShield(this);
+        HudFunctions_Old.DisplayTargetSystems(this);
+        HudFunctions_Old.DisplayTargetHull(this);
+        HudFunctions_Old.DisplayReticule(this);
+        HudFunctions_Old.DisplaySystemTransforms(this);
+
+        HudFunctions_Old.MoveReticule(this);
+
+        HudFunctions_Old.DisplayFrontRadar(this);
+        HudFunctions_Old.DisplayRearRadar(this);
+
+        HudFunctions_Old.DisplaySelectionBraces(this);
+        HudFunctions_Old.DisplayTargetLockReticule(this);
+
+        HudFunctions_Old.DisplayInterceptPoint(this);
+
+        HudFunctions_Old.DisplayWaypointMarker(this);
+
+        HudFunctions_Old.DisplayShipPreview(this);
+
+        HudFunctions_Old.ToggleTabs(this);
+    }
+}

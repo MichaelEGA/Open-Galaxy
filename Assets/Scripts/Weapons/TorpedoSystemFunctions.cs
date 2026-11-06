@@ -564,7 +564,7 @@ public static class TorpedoSystemFunctions
                     {
                         torpedo.targetWarned = true;
 
-                        HudFunctions.AddToShipLog("Hostile torpedo locked and incoming");
+                        HudFunctions_Old.AddToShipLog("Hostile torpedo locked and incoming");
 
                         AudioFunctions.PlayAudioClip(torpedo.targetSmallShip.audioManager, "beep_alert", "Cockpit", torpedo.targetSmallShip.transform.position, 0, 1, 500, 0.9f);
                     }
@@ -572,10 +572,10 @@ public static class TorpedoSystemFunctions
                     //This displays information on the hud to warn the player
                     if (torpedo.hud == null)
                     {
-                        torpedo.hud = HudFunctions.GetHud();
+                        torpedo.hud = HudFunctions_Old.GetHud();
                     }
 
-                    HudFunctions.DisplayCounterMeasureWarning(torpedo.hud, distance);
+                    HudFunctions_Old.DisplayCounterMeasureWarning(torpedo.hud, distance);
                 }
 
                 if (distance > 1000 & torpedo.pressedTime + 5 < Time.time)
@@ -584,7 +584,7 @@ public static class TorpedoSystemFunctions
                     {
                         if (torpedo.targetSmallShip.isAI == false)
                         {
-                            HudFunctions.AddToShipLog("No counter measure fired: torpedo not in range");
+                            HudFunctions_Old.AddToShipLog("No counter measure fired: torpedo not in range");
                             
                             AudioFunctions.PlayAudioClip(torpedo.targetSmallShip.audioManager, "beep05_error", "Cockpit", torpedo.targetSmallShip.transform.position, 0, 1, 500, 0.9f);
                         }
@@ -603,7 +603,7 @@ public static class TorpedoSystemFunctions
 
                         if (torpedo.targetSmallShip.isAI == false)
                         {
-                            HudFunctions.AddToShipLog("Counter measure fire: Torpedo deactivated");
+                            HudFunctions_Old.AddToShipLog("Counter measure fire: Torpedo deactivated");
 
                             AudioFunctions.PlayAudioClip(torpedo.targetSmallShip.audioManager, "weapon_counter measure", "Cockpit", torpedo.targetSmallShip.transform.position, 0, 1, 500, 0.9f);
                         }
@@ -632,7 +632,7 @@ public static class TorpedoSystemFunctions
             {
                 if (targetSmallShip.ship.isAI == false)
                 {
-                    HudFunctions.ScreenFlash();
+                    HudFunctions_Old.ScreenFlash();
                 }
 
                 if (targetSmallShip.ship.weaponManagement.hasPlasma == false)
@@ -686,7 +686,7 @@ public static class TorpedoSystemFunctions
                 {
                     if (targetSmallShip.ship.isAI == false)
                     {
-                        HudFunctions.ScreenFlash();
+                        HudFunctions_Old.ScreenFlash();
                     }
 
                     if (targetSmallShip.ship.weaponManagement.hasPlasma == false)
@@ -767,10 +767,10 @@ public static class TorpedoSystemFunctions
                 //This clears the counter measure warning on the hud
                 if (torpedo.hud == null)
                 {
-                    torpedo.hud = HudFunctions.GetHud();
+                    torpedo.hud = HudFunctions_Old.GetHud();
                 }
 
-                HudFunctions.ClearCounterMeasureWarning(torpedo.hud);
+                HudFunctions_Old.ClearCounterMeasureWarning(torpedo.hud);
             }
         }
     }

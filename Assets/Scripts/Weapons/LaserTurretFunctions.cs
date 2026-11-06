@@ -901,7 +901,7 @@ public static class LaserTurretFunctions
 
                     if (objectHitDetails.isAI == false)
                     {
-                        HudFunctions.ScreenFlash();
+                        HudFunctions_Old.ScreenFlash();
                     }
 
                     //This applies damage to the target

@@ -21,7 +21,7 @@ public static class MissionBriefingFunctions
         SceneFunctions.SetLighting("#E2EAF4", false, 1, 1, 0, 0, 0, 60, 0, 0);
 
         //This makes the hud invisible
-        HudFunctions.SetHudTransparency(0);
+        HudFunctions_Old.SetHudTransparency(0);
 
         //This loads the ready room
         GameObject environmentGO = Resources.Load<GameObject>("objects/readyrooms/readyroom_white");
@@ -137,7 +137,7 @@ public static class MissionBriefingFunctions
         missionBriefing.gameObject.SetActive(false);
 
         //This makes the hud visible again
-        HudFunctions.SetHudTransparency(1);
+        HudFunctions_Old.SetHudTransparency(1);
     }
 
     //This lerps the camera to it's new position

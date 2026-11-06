@@ -77,7 +77,7 @@ public static class ShipSystemFunctions
                 AddTransformsToPool(systemTransforms);
             }
 
-            HudFunctions.AddToShipLog(ship.name.ToUpper() + ": critical systems marked for targeting");
+            HudFunctions_Old.AddToShipLog(ship.name.ToUpper() + ": critical systems marked for targeting");
         }
     }
 

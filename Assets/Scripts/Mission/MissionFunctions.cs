@@ -957,7 +957,7 @@ public static class MissionFunctions
 
         if (message != "none")
         {
-            HudFunctions.AddToShipLog(message);
+            HudFunctions_Old.AddToShipLog(message);
         }
 
         if (audio != "none" & internalAudioFile != "true")
@@ -1269,7 +1269,7 @@ public static class MissionFunctions
     //This activates the players onscreen waypoint marker
     public static void ActivateWaypointMarker(MissionEvent missionEvent)
     {
-        Hud hud = HudFunctions.GetHud();
+        Hud_Old hud = HudFunctions_Old.GetHud();
 
         bool waypointIsActive = false;
 
@@ -1298,7 +1298,7 @@ public static class MissionFunctions
                 AudioFunctions.PlayAudioClip(hud.ship.audioManager, "beep01_toggle", "Cockpit", hud.ship.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
-            HudFunctions.AddToShipLog("Waypoint activated " + waypointTitleString);
+            HudFunctions_Old.AddToShipLog("Waypoint activated " + waypointTitleString);
         }
     }
 
@@ -1460,7 +1460,7 @@ public static class MissionFunctions
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
         GameObject starfield = SceneFunctions.GetStarfield();
-        Hud hud = HudFunctions.GetHud();
+        //Hud hud = HudFunctions.GetHud();
 
         scene.hyperspace = true;
 
@@ -1473,10 +1473,10 @@ public static class MissionFunctions
         ship.damageSystem.invincible = true; //This sets the ship to invincible so that any objects the ship may hit while the scene changes doesn't destroy it
 
         //This fades out the hud
-        if (hud.mode == "hud")
-        {
-            Task fadeOut = new Task(HudFunctions.FadeOutHud(1));
-        }
+        //if (hud.mode == "hud")
+        //{
+        //    Task fadeOut = new Task(HudFunctions.FadeOutHud(1));
+        //}
 
         WingSystemFunctions.CloseWings(ship.wingSystems);
 
@@ -1504,7 +1504,7 @@ public static class MissionFunctions
         Task b = new Task(SceneFunctions.StretchStarfield());
         while(b.Running == true) { yield return null; }
 
-        HudFunctions.ScreenFlash();
+        //HudFunctions.ScreenFlash();
 
         //This activates the hyperspace tunnel
         if (scene.hyperspaceTunnel == null)
@@ -1562,12 +1562,12 @@ public static class MissionFunctions
             yield return new WaitForSecondsRealtime(1);
 
             //This fades the scene out
-            HudFunctions.FadeInBackground(0.5f, colour);
+            HudFunctions_Old.FadeInBackground(0.5f, colour);
 
             yield return new WaitForSecondsRealtime(4);
 
             //This fades the scene back in
-            HudFunctions.FadeOutBackground(0.5f, colour);
+            HudFunctions_Old.FadeOutBackground(0.5f, colour);
 
             yield return new WaitForSecondsRealtime(4);
         }
@@ -1585,7 +1585,7 @@ public static class MissionFunctions
 
         ship.flightControlSystem_Small.inHyperspace = false;
 
-        HudFunctions.ScreenFlash();
+        //HudFunctions.ScreenFlash();
 
         //This deactivates the hyperspace tunnel
         if (scene.hyperspaceTunnel != null)
@@ -1614,10 +1614,10 @@ public static class MissionFunctions
         ogCamera.planetCamera.GetComponent<Camera>().enabled = true;
 
         //This fades the hud back in
-        if (hud.mode == "hud")
-        {
-            Task fadeIN = new Task(HudFunctions.FadeInHud(1));
-        }
+        //if (hud.mode == "hud")
+        //{
+        //    Task fadeIN = new Task(HudFunctions.FadeInHud(1));
+        //}
 
         //This unlocks the player controls and turns off invincibility on the player ship
         ship.flightControlSystem_Small.controlLock = controlLock; //This restores the set lock position
@@ -1653,7 +1653,7 @@ public static class MissionFunctions
         MissionManager missionManager = GetMissionManager();
         Mission mission = JsonUtility.FromJson<Mission>(missionManager.missionData);
         GameObject starfield = SceneFunctions.GetStarfield();
-        Hud hud = HudFunctions.GetHud();
+        Hud_Old hud = HudFunctions_Old.GetHud();
 
         missionManager.pauseEventSeries = true;
 
@@ -1665,7 +1665,7 @@ public static class MissionFunctions
         //This fades out the hud
         if (hud.mode == "hud")
         {
-            Task a = new Task(HudFunctions.FadeOutHud(1));
+            Task a = new Task(HudFunctions_Old.FadeOutHud(1));
 
             while (a.Running == true)
             {
@@ -1674,7 +1674,7 @@ public static class MissionFunctions
         }
 
         //This fades the scene out
-        HudFunctions.FadeInBackground(1, colour);
+        HudFunctions_Old.FadeInBackground(1, colour);
 
         yield return new WaitForSeconds(1.5f);
 
@@ -1724,14 +1724,14 @@ public static class MissionFunctions
         //This fades the hud back in
         if (hud.mode == "hud")
         {
-            Task fadeIN = new Task(HudFunctions.FadeInHud(1));
+            Task fadeIN = new Task(HudFunctions_Old.FadeInHud(1));
 
             yield return new WaitForSeconds(1.5f);
 
         }
 
         //This fades the scene back in
-        HudFunctions.FadeOutBackground(1, colour);
+        HudFunctions_Old.FadeOutBackground(1, colour);
 
         //This unlocks the player controls and turns off invincibility on the player ship
         ship.flightControlSystem_Small.controlLock = controlLock; //This restores the set lock position
@@ -1825,7 +1825,7 @@ public static class MissionFunctions
 
             float savedTime = Time.time + displayTime;
 
-            HudFunctions.DisplayChoice(choiceUp, choiceDown, choiceRight, choiceLeft, displayTime);
+            HudFunctions_Old.DisplayChoice(choiceUp, choiceDown, choiceRight, choiceLeft, displayTime);
 
             while (Time.time < savedTime)
             {
@@ -1919,14 +1919,14 @@ public static class MissionFunctions
     {
         string hint = missionEvent.data1;
 
-        HudFunctions.DisplayHint(hint);
+        HudFunctions_Old.DisplayHint(hint);
     }
 
     //This temporary displays a large message in the center of the screen
     public static void DisplayTitle(MissionEvent missionEvent)
     {
         string title = missionEvent.data1;
-        HudFunctions.DisplayTitle(title);
+        HudFunctions_Old.DisplayTitle(title);
     }
 
     //This adds a message to the log and plays an audio file, it will wait for other messages to play before playing
@@ -1985,7 +1985,7 @@ public static class MissionFunctions
 
         if (message != "none")
         {
-            HudFunctions.AddToShipLog(message);
+            HudFunctions_Old.AddToShipLog(message);
         }
 
         if (audio != "none" & internalAudioFile != "true")
@@ -2061,7 +2061,7 @@ public static class MissionFunctions
     {
         bool objectiveIsActive = false;
 
-        Hud hud = HudFunctions.GetHud();
+        Hud_Old hud = HudFunctions_Old.GetHud();
 
         if (hud != null)
         {
@@ -3844,7 +3844,7 @@ public static class MissionFunctions
     {
         string mode = missionEvent.data1;
 
-        HudFunctions.SetHudMode(mode);
+        HudFunctions_Old.SetHudMode(mode);
     }
 
     //This returns the next position in the formation based on the received values
@@ -3994,9 +3994,9 @@ public static class MissionFunctions
 
                 missionManager.objectiveList = newObjectiveList.ToArray();
 
-                HudFunctions.ObjectiveIndicator(missionEvent.data2);
-                HudFunctions.UpdateObjectives(missionManager.objectiveList);
-                HudFunctions.AddToShipLog("NEW OBJECTIVE: " + objective);
+                HudFunctions_Old.ObjectiveIndicator(missionEvent.data2);
+                HudFunctions_Old.UpdateObjectives(missionManager.objectiveList);
+                HudFunctions_Old.AddToShipLog("NEW OBJECTIVE: " + objective);
             }
             else if (mode == "cancelobjective")
             {
@@ -4009,10 +4009,10 @@ public static class MissionFunctions
 
                     missionManager.objectiveList = newObjectiveList.ToArray();
 
-                    HudFunctions.UpdateObjectives(missionManager.objectiveList);               
+                    HudFunctions_Old.UpdateObjectives(missionManager.objectiveList);               
                 }
 
-                HudFunctions.AddToShipLog("OBJECTIVE CANCELLED: " + objective);
+                HudFunctions_Old.AddToShipLog("OBJECTIVE CANCELLED: " + objective);
             }
             else if (mode == "completeobjective")
             {
@@ -4025,10 +4025,10 @@ public static class MissionFunctions
 
                     missionManager.objectiveList = newObjectiveList.ToArray();
 
-                    HudFunctions.UpdateObjectives(missionManager.objectiveList);                   
+                    HudFunctions_Old.UpdateObjectives(missionManager.objectiveList);                   
                 }
 
-                HudFunctions.AddToShipLog("OBJECTIVE COMPLETED: " + objective);
+                HudFunctions_Old.AddToShipLog("OBJECTIVE COMPLETED: " + objective);
             }
             else if (mode == "clearobjective")
             {
@@ -4041,14 +4041,14 @@ public static class MissionFunctions
 
                     missionManager.objectiveList = newObjectiveList.ToArray();
 
-                    HudFunctions.UpdateObjectives(missionManager.objectiveList);
+                    HudFunctions_Old.UpdateObjectives(missionManager.objectiveList);
                 }
             }
             else if (mode == "clearallobjectives")
             {
                 missionManager.objectiveList = newObjectiveList.ToArray();
 
-                HudFunctions.UpdateObjectives(missionManager.objectiveList);
+                HudFunctions_Old.UpdateObjectives(missionManager.objectiveList);
             }
         }
     }
@@ -4848,7 +4848,7 @@ public static class MissionFunctions
         if (missionManager.unloading == false)
         {
             Task a = new Task(UnloadAfter(5));
-            Task b = new Task(HudFunctions.FadeOutHud(0.25f));
+            Task b = new Task(HudFunctions_Old.FadeOutHud(0.25f));
 
             missionManager.missionTasks.Add(a);
             missionManager.missionTasks.Add(b);
@@ -4971,7 +4971,7 @@ public static class MissionFunctions
         
         //This unloads the other systems
         AudioFunctions.UnloadAudioManager();
-        HudFunctions.UnloadHud();
+        HudFunctions_Old.UnloadHud();
         MusicFunctions.UnloadMusicManager();
         OGInputFunctions.StopShakeController();
         OGCameraFunctions.UnloadOGCamera();

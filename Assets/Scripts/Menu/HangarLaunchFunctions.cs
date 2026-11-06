@@ -233,7 +233,7 @@ public static class HangarLaunchFunctions
         }
 
         //This makes the hud invisible
-        HudFunctions.SetHudTransparency(0);
+        HudFunctions_Old.SetHudTransparency(0);
 
         //This sets up the scene for either landing or launching
         if (launchShip == true)
@@ -491,7 +491,7 @@ public static class HangarLaunchFunctions
                 //This fades to black at end of cutscene
                 if (timeElapsedB > 2f & fade == false)
                 {
-                    HudFunctions.FadeInBackground(0.5f, colour);
+                    HudFunctions_Old.FadeInBackground(0.5f, colour);
 
                     fade = true;
                 }
@@ -501,7 +501,7 @@ public static class HangarLaunchFunctions
         }
 
         //This resets the fade to transparent once the cutscene is finished 
-        HudFunctions.SetBackgroundAlphaAndColour(0, colour);
+        HudFunctions_Old.SetBackgroundAlphaAndColour(0, colour);
 
         HangarLaunchFunctions.CloseHangarLaunch(hangarLaunch);
     }
@@ -630,7 +630,7 @@ public static class HangarLaunchFunctions
         }
 
         //This makes the hud invisible
-        HudFunctions.SetHudTransparency(1);
+        HudFunctions_Old.SetHudTransparency(1);
 
         MissionFunctions.ResumeGame();
     }

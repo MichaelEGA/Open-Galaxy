@@ -564,7 +564,7 @@ public static class TorpedoSystemFunctions
                     {
                         torpedo.targetWarned = true;
 
-                        HudFunctions_Old.AddToShipLog("Hostile torpedo locked and incoming");
+                        HudFunctions.AddToMissionLog("Hostile torpedo locked and incoming");
 
                         AudioFunctions.PlayAudioClip(torpedo.targetSmallShip.audioManager, "beep_alert", "Cockpit", torpedo.targetSmallShip.transform.position, 0, 1, 500, 0.9f);
                     }
@@ -584,7 +584,7 @@ public static class TorpedoSystemFunctions
                     {
                         if (torpedo.targetSmallShip.isAI == false)
                         {
-                            HudFunctions_Old.AddToShipLog("No counter measure fired: torpedo not in range");
+                            HudFunctions.AddToMissionLog("No counter measure fired: torpedo not in range");
                             
                             AudioFunctions.PlayAudioClip(torpedo.targetSmallShip.audioManager, "beep05_error", "Cockpit", torpedo.targetSmallShip.transform.position, 0, 1, 500, 0.9f);
                         }
@@ -603,7 +603,7 @@ public static class TorpedoSystemFunctions
 
                         if (torpedo.targetSmallShip.isAI == false)
                         {
-                            HudFunctions_Old.AddToShipLog("Counter measure fire: Torpedo deactivated");
+                            HudFunctions.AddToMissionLog("Counter measure fire: Torpedo deactivated");
 
                             AudioFunctions.PlayAudioClip(torpedo.targetSmallShip.audioManager, "weapon_counter measure", "Cockpit", torpedo.targetSmallShip.transform.position, 0, 1, 500, 0.9f);
                         }
@@ -632,7 +632,7 @@ public static class TorpedoSystemFunctions
             {
                 if (targetSmallShip.ship.isAI == false)
                 {
-                    HudFunctions_Old.ScreenFlash();
+                    HudFunctions.ScreenFlash();
                 }
 
                 if (targetSmallShip.ship.weaponManagement.hasPlasma == false)
@@ -686,7 +686,7 @@ public static class TorpedoSystemFunctions
                 {
                     if (targetSmallShip.ship.isAI == false)
                     {
-                        HudFunctions_Old.ScreenFlash();
+                        HudFunctions.ScreenFlash();
                     }
 
                     if (targetSmallShip.ship.weaponManagement.hasPlasma == false)

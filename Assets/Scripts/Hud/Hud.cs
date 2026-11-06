@@ -25,6 +25,11 @@ public class Hud : MonoBehaviour
     public GameObject targetSelected;
     public List<GameObject> targets;
 
+    //Ship Preview
+    public List<GameObject> wireframePool; 
+    public GameObject wireframeObject;
+    public Material wireframeMaterial;
+
     void Start()
     {
        
@@ -38,5 +43,8 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplayFrontRadar(this);
         HudFunctions.DisplayTargets(this);
         HudFunctions.DisplayEnergyManagementMeters(this);
+        HudFunctions.DisplayShipPreview(this);
+        HudFunctions.DisplayTargetInformation(this);
+        HudFunctions.DisplayInterceptPoint(this);
     }
 }

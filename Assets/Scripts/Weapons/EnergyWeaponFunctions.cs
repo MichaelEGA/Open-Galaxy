@@ -845,7 +845,7 @@ public static class EnergyWeaponFunctions
                 //This makes the screen flash
                 if (objectHitDetails.isAI == false)
                 {
-                    HudFunctions_Old.ScreenFlash();
+                    HudFunctions.ScreenFlash();
                 }
 
                 //This causes the ship to take damage

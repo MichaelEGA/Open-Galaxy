@@ -155,7 +155,7 @@ public static class FlightControlSystem_SmallFunctions
 
                 if (flightControlSystem.messageSent == false & flightControlSystem.ship.isAI == false)
                 {
-                    HudFunctions_Old.AddToShipLog("WARNING: Too far out turning around");
+                    HudFunctions.AddToMissionLog("WARNING: Too far out turning around");
                     flightControlSystem.messageSent = true;
                 }
             }
@@ -372,7 +372,7 @@ public static class FlightControlSystem_SmallFunctions
 
             if (flightControlSystem != null)
             {
-                HudFunctions_Old.AddToShipLog(flightControlSystem.name.ToUpper() + " jumped to hyperspace");
+                HudFunctions.AddToMissionLog(flightControlSystem.name.ToUpper() + " jumped to hyperspace");
 
                 flightControlSystem.ship.jumpingToHyperspace = false;
 
@@ -412,7 +412,7 @@ public static class FlightControlSystem_SmallFunctions
 
         AudioFunctions.PlayAudioClip(flightControlSystem.ship.audioManager, "hyperspace03_exit", "Explosions", flightControlSystem.transform.position, 1, 1, 1000, 1f);
 
-        HudFunctions_Old.AddToShipLog(flightControlSystem.name.ToUpper() + " just exited hyperspace");
+        HudFunctions.AddToMissionLog(flightControlSystem.name.ToUpper() + " just exited hyperspace");
 
         WingSystemFunctions.OpenWings(flightControlSystem.ship.wingSystems); //Opens wings after hyperspace exit
 

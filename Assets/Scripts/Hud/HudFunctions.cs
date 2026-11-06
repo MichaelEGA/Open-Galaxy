@@ -16,6 +16,8 @@ public static class HudFunctions
 
         hudGO.name = "Hud";
         Hud hudScript = hudGO.AddComponent<Hud>();
+
+        LoadRadarCamera();
     }
 
     //This finds the main ship reference
@@ -38,6 +40,36 @@ public static class HudFunctions
     #endregion
 
     #region hud main functions
+
+    //This adds information to the ship log
+    public static void AddToMissionLog(string message)
+    {
+        if (Time.timeScale != 0)
+        {
+            Hud hud = GetHud();
+            Text missionLog = FindText("MissionLog");
+
+            if (hud != null)
+            {
+                missionLog.text = message.ToUpper();
+            }
+        }
+    }
+
+    //This adds information to the ship log
+    public static void AddToMessageLog(string message)
+    {
+        if (Time.timeScale != 0)
+        {
+            Hud hud = GetHud();
+            Text missionLog = FindText("MessageLog");
+
+            if (hud != null)
+            {
+                missionLog.text = "<< " + message + " >>";
+            }
+        }
+    }
 
     //This displays ship info on the hud
     public static void DisplayShipInfo(Hud hud)
@@ -390,7 +422,7 @@ public static class HudFunctions
                             //Activates the dots
                             if (targetNumber < hud.targets.Count)
                             {
-                                if (target.activeSelf == false || isVisible == false)
+                                if (target.activeSelf == false || isVisible == false || target == playerTarget || target == mainShip.gameObject)
                                 {
                                     hud.targets[targetNumber].SetActive(false);
                                 }
@@ -404,15 +436,11 @@ public static class HudFunctions
                                 //This activates the target braces
                                 if (playerTarget != null)
                                 {
-                                    if (target == hud.mainShip.targetingSystem.target & isVisible == true)
+                                    if (target == playerTarget & isVisible == true)
                                     {
                                         hud.targetSelected.SetActive(true);
                                         hud.targetSelected.transform.SetParent(hud.transform);
                                         hud.targetSelected.transform.position = new Vector2(screenPosition.x, screenPosition.y);
-                                    }
-                                    else
-                                    {
-                                        hud.targetSelected.SetActive(false);
                                     }
                                 }
                                 else
@@ -433,14 +461,309 @@ public static class HudFunctions
                             }
                         }
                     }
+                    else
+                    {
+                        hud.targets[targetNumber].SetActive(false);
+                    }
+
+                    //This disables the selected target
+                    if (playerTarget == null)
+                    {
+                        hud.targetSelected.SetActive(false);
+                    }
+                    else
+                    {
+                        bool isVisible = IsInCameraView(hud.mainCamera, playerTarget.GetComponentInChildren<Renderer>());
+
+                        if (isVisible == false)
+                        {
+                            hud.targetSelected.SetActive(false);
+                        }
+                    }
                 }
+            }
+        }
+    }
+
+    //This displays target information
+    public static void DisplayTargetInformation(Hud hud)
+    {
+        if (hud.mainShip != null)
+        {
+            Ship targetShip = hud.mainShip.targetingSystem.targetShip;
+
+            //Get references
+            Text targetName_text = FindText("RadarShipName");
+            Text targetCargo_text = FindText("RadarShipCargo");
+            Text targetDistance_text = FindText("TargetDistance");
+
+            Slider targetShield = FindSlider("TargetShield");
+            Slider targetHull = FindSlider("TargetHull");
+            Slider targetSystems = FindSlider("TargetSystems");
+
+            //Set information
+            if (targetShip != null)
+            {
+                targetName_text.text = targetShip.name.ToUpper();
+                targetCargo_text.text = targetShip.cargo.ToUpper();
+                targetDistance_text.text = hud.mainShip.targetingSystem.targetDistance.ToString("0000");
+
+                targetShield.maxValue = targetShip.shieldRating;
+                targetShield.value = targetShip.energyManagementSystem.shieldLevel;
+
+                targetHull.maxValue = targetShip.hullRating;
+                targetHull.value = targetShip.energyManagementSystem.hullLevel;
+
+                targetSystems.maxValue = targetShip.systemsRating;
+                targetSystems.value = targetShip.energyManagementSystem.systemsLevel;
+            }
+            else
+            {
+                targetName_text.text = "";
+                targetCargo_text.text = "";
+                targetDistance_text.text = "0000";
+
+                targetShield.value = 0;
+                targetHull.value = 0;
+                targetSystems.value = 0;
+            }
+        }
+
+        
+
+
+    }
+
+    //This displays the intercept point
+    public static void DisplayInterceptPoint(Hud hud)
+    {
+        CanvasGroup interceptPoint = FindCanvasGroup("InterceptPoint");
+
+        if (Time.timeScale != 0)
+        {
+            GameObject interceptPointGO = interceptPoint.gameObject;
+
+            if (interceptPointGO != null)
+            {
+                interceptPointGO.SetActive(false);
+            }
+
+            if (hud.mainCamera == null)
+            {
+                OGCamera ogCamera = OGCameraFunctions.GetOGCamera();
+
+                if (ogCamera != null)
+                {
+                    hud.mainCamera = ogCamera.mainCamera.GetComponent<Camera>();
+                }
+            }
+
+            if (hud.mainCamera != null)
+            {
+                if (hud.mainShip != null & interceptPointGO != null)
+                {
+                    if (hud.mainShip.targetingSystem.target != null)
+                    {
+                        if (hud.mainShip.targetingSystem.target.activeSelf != false & hud.mainShip.targetingSystem.targetRigidbody != null & hud.mainShip.targetingSystem.targetShip != null)
+                        {
+                            GameObject target = hud.mainShip.targetingSystem.target;
+                            GameObject mainShip = hud.mainShip.gameObject;
+
+                            //This gets the intercept point
+                            Vector3 interceptPosition = GameObjectUtils.CalculateInterceptPoint(mainShip.transform.position, target.transform.position, hud.mainShip.targetingSystem.targetRigidbody.linearVelocity, 750);
+
+                            //This gets the targets position on the camera
+                            Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(interceptPosition);
+
+                            //This sets key values
+                            Vector3 targetPosition = target.transform.position - mainShip.transform.position;
+                            float forward = Vector3.Dot(mainShip.transform.forward, targetPosition.normalized);
+                            float up = Vector3.Dot(mainShip.transform.up, targetPosition.normalized);
+                            float right = Vector3.Dot(mainShip.transform.right, targetPosition.normalized);
+
+                            //This checks that the target is on screen
+                            if (target.GetComponentInChildren<Renderer>().isVisible == true & forward > 0)
+                            {
+                                //This sets the intercept point to active when the target is on screen
+                                interceptPointGO.SetActive(true);
+
+                                //This translates that position to the intercept point
+                                interceptPointGO.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+                            }
+                            else
+                            {
+                                //This sets the intercept point to inactive when the target is behind the camera
+                                interceptPointGO.SetActive(false);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //This updates the ships objectives
+    public static void UpdateObjectives(string[] objectives)
+    {
+        Hud hud = GetHud();
+
+        Text objectivesText = FindText("Objectives");
+
+        if (hud != null)
+        {
+            //This loads each of the objectives on its own line in the order they appear on the list
+            objectivesText.text = "";
+
+            foreach (string objective in objectives)
+            {
+                objectivesText.text += objective + "\n";
             }
         }
     }
 
     #endregion
 
+    #region radar ship preview functions
+
+    //This loads the radar camera
+    public static void LoadRadarCamera()
+    {
+        GameObject radarCamera = new GameObject();
+        Camera camera = radarCamera.AddComponent<Camera>();
+        camera.orthographic = true;
+        camera.orthographicSize = 12.5f;
+        camera.clearFlags = CameraClearFlags.SolidColor;
+        camera.cullingMask = (1 << LayerMask.NameToLayer("radar"));
+        Object[] renderTexture = Resources.LoadAll(OGGetAddress.hud, typeof(RenderTexture));
+        camera.targetTexture = renderTexture[0] as RenderTexture;
+        camera.transform.position = new Vector3(0, 0, -50);
+        camera.name = "Radar Camera";
+    }
+
+    //Display preview of ship
+    public static void DisplayShipPreview(Hud hud)
+    {
+        if (hud.wireframePool == null)
+        {
+            hud.wireframePool = new List<GameObject>();
+        }
+
+        if (hud.wireframePool != null & hud.mainShip != null & Time.timeScale != 0)
+        {
+            if (hud.mainShip.targetingSystem.target != null)
+            {
+                if (hud.mainShip.targetingSystem.target.activeSelf != false)
+                {
+                    if (hud.wireframeObject == null || hud.wireframeObject.activeSelf == false || !hud.wireframeObject.name.Contains(hud.mainShip.targetingSystem.targetPrefabName))
+                    {
+                        bool foundShip = false;
+
+                        foreach (GameObject radarObject in hud.wireframePool)
+                        {
+                            if (radarObject.name == hud.mainShip.targetingSystem.targetPrefabName + "(Clone)")
+                            {
+                                radarObject.SetActive(true);
+                                hud.wireframeObject = radarObject;
+                                foundShip = true;
+                            }
+                            else
+                            {
+                                radarObject.SetActive(false);
+                            }
+                        }
+
+                        if (foundShip == false)
+                        {
+                            foreach (Object ship in hud.scene.shipsPrefabPool)
+                            {
+                                if (ship.name == hud.mainShip.targetingSystem.targetPrefabName)
+                                {
+                                    //This instantiates the radar object,sets it to the correct position, sets its layer, scales the object and removes any colliders on the object
+                                    GameObject radarObject = GameObject.Instantiate(ship) as GameObject;
+                                    hud.wireframePool.Add(radarObject);
+                                    radarObject.transform.position = new Vector3(0, 0, 0);
+                                    radarObject.layer = LayerMask.NameToLayer("radar");
+                                    GameObjectUtils.SetLayerAllChildren(radarObject.transform, 24);
+                                    radarObject.SetActive(true);
+                                    SceneFunctions.ScaleGameObjectByXYZAxis(radarObject, 10);
+                                    GameObjectUtils.RemoveColliders(radarObject);
+
+                                    //This checks the wireframe material is loaded
+                                    if (hud.wireframeMaterial == null)
+                                    {
+                                        Material wireframeMaterial = Resources.Load(OGGetAddress.hud + "wireframe_material") as Material;
+                                        hud.wireframeMaterial = wireframeMaterial;
+                                    }
+
+                                    //This applies the wireframe material to all objects
+                                    if (hud.wireframeMaterial != null)
+                                    {
+                                        GameObjectUtils.ApplyMaterialToAllMeshes(radarObject, hud.wireframeMaterial);
+                                    }
+
+                                    //This creates an anchor for all the radar objects
+                                    GameObject radarshipdisplayanchor = GameObject.Find("radarshipdisplayanchor");
+
+                                    if (radarshipdisplayanchor == null)
+                                    {
+                                        radarshipdisplayanchor = new GameObject("radarshipdisplayanchor");
+                                    }
+
+                                    radarObject.transform.SetParent(radarshipdisplayanchor.transform);
+
+                                    //This sets the radar object in the hud
+                                    hud.wireframeObject = radarObject;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (hud.wireframeObject != null)
+                        {
+                            Quaternion relativeRotation = Quaternion.Inverse(hud.mainShip.gameObject.transform.rotation) * hud.mainShip.targetingSystem.target.transform.rotation;
+                            hud.wireframeObject.transform.rotation = relativeRotation;
+                        }
+                    }
+                }
+                else if (hud.wireframeObject != null)
+                {
+                    hud.wireframeObject.SetActive(false);
+                }
+            }
+            else if (hud.wireframeObject != null)
+            {
+                hud.wireframeObject.SetActive(false);
+            }
+        }
+
+    }
+
+    #endregion
+
+    #region other functions
+
+    //This causes the screen to flash
+    public static void ScreenFlash()
+    {
+        Hud hud = HudFunctions.GetHud();
+
+        CanvasGroup screenFlash = FindCanvasGroup("ScreenFlash");
+
+        Task a = new Task(FadeInAndOutCanvasGroup(screenFlash, 0.025f));
+    }
+
+    #endregion
+
     #region utils
+
+    //This gets the hud script
+    public static Hud GetHud()
+    {
+        Hud hud = GameObject.FindFirstObjectByType<Hud>();
+
+        return hud;
+    }
 
     //This uses a string to find a specific text box
     public static Text FindText(string textBoxName)
@@ -563,6 +886,97 @@ public static class HudFunctions
 
         // Test if the renderer's bounding box is inside those planes
         return GeometryUtility.TestPlanesAABB(planes, targetRenderer.bounds);
+    }
+
+    //This fades in the black bars
+    public static IEnumerator FadeInCanvasGroup(CanvasGroup canvasGroup, float duration)
+    {
+        if (canvasGroup != null)
+        {
+            if (canvasGroup.alpha < 1)
+            {
+                //This sets the starting alpha value to 0
+                float alpha1 = canvasGroup.alpha;
+
+                //This fades in the canvas
+                while (alpha1 < 1)
+                {
+                    alpha1 = alpha1 + (1f / (60f * duration));
+
+                    if (canvasGroup != null)
+                    {
+                        canvasGroup.alpha = alpha1;
+                    }
+
+                    yield return new WaitForSecondsRealtime(0.016f);
+                }
+            }
+        }
+    }
+
+    //This fades out the black bars
+    public static IEnumerator FadeOutCanvasGroup(CanvasGroup canvasGroup, float duration)
+    {
+        if (canvasGroup != null)
+        {
+            if (canvasGroup.alpha > 0)
+            {
+                //This sets the starting alpha value to 1
+                float alpha = canvasGroup.alpha;
+
+                //This fades the canvas out
+                while (alpha > 0)
+                {
+                    alpha = alpha - (1f / (60f * duration));
+
+                    if (canvasGroup != null)
+                    {
+                        canvasGroup.alpha = alpha;
+                    }
+
+                    yield return new WaitForSecondsRealtime(0.016f);
+                }
+            }
+        }
+    }
+
+    //This fades out the a canvas group
+    public static IEnumerator FadeInAndOutCanvasGroup(CanvasGroup canvasGroup, float duration)
+    {
+        if (canvasGroup != null)
+        {
+            //This sets the starting alpha value to 0
+            float alpha = canvasGroup.alpha;
+
+            //This fades in the canvas
+            while (alpha < 1)
+            {
+                alpha = alpha + (1f / (60f * duration));
+
+                if (canvasGroup != null)
+                {
+                    canvasGroup.alpha = alpha;
+                }
+
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+
+            //This sets the starting alpha value to 1
+            alpha = canvasGroup.alpha;
+
+            //This fades the canvas out
+            while (alpha > 0)
+            {
+                alpha = alpha - (1f / (60f * (duration / 2f)));
+
+                if (canvasGroup != null)
+                {
+                    canvasGroup.alpha = alpha;
+                }
+
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+        }
     }
 
     #endregion

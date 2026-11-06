@@ -627,65 +627,68 @@ public static class TargetingSystemFunctions
     {
         bool isHostile = false;
 
-        if (ship.scene != null)
+        if (ship != null)
         {
-            if (ship.scene.allegiance == "none")
+            if (ship.scene != null)
             {
-                TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
-                ship.scene.allegiance = allegiancesFile.text;
-            }
-
-            Allegiances allegiances = JsonUtility.FromJson<Allegiances>(ship.scene.allegiance);
-
-            Allegiance allegiance = null;
-
-            foreach (Allegiance tempAllegiance in allegiances.allegianceData)
-            {
-                if (tempAllegiance.allegiance == ship.allegiance)
+                if (ship.scene.allegiance == "none")
                 {
-                    allegiance = tempAllegiance;
+                    TextAsset allegiancesFile = Resources.Load(OGGetAddress.files + "Allegiances") as TextAsset;
+                    ship.scene.allegiance = allegiancesFile.text;
                 }
-            }
 
-            if (allegiance.enemy01 == targetAllegiance)
-            {
-                isHostile = true;
-            }
-            else if (allegiance.enemy02 == targetAllegiance)
-            {
-                isHostile = true;
-            }
-            else if (allegiance.enemy03 == targetAllegiance)
-            {
-                isHostile = true;
-            }
-            else if (allegiance.enemy04 == targetAllegiance)
-            {
-                isHostile = true;
-            }
-            else if (allegiance.enemy05 == targetAllegiance)
-            {
-                isHostile = true;
-            }
-            else if (allegiance.enemy06 == targetAllegiance)
-            {
-                isHostile = true;
-            }
-            else if (allegiance.enemy07 == targetAllegiance)
-            {
-                isHostile = true;
-            }
-            else if (allegiance.enemy08 == targetAllegiance)
-            {
-                isHostile = true;
-            }
-            else if (allegiance.enemy09 == targetAllegiance)
-            {
-                isHostile = true;
-            }
-            else if (allegiance.enemy10 == targetAllegiance)
-            {
-                isHostile = true;
+                Allegiances allegiances = JsonUtility.FromJson<Allegiances>(ship.scene.allegiance);
+
+                Allegiance allegiance = null;
+
+                foreach (Allegiance tempAllegiance in allegiances.allegianceData)
+                {
+                    if (tempAllegiance.allegiance == ship.allegiance)
+                    {
+                        allegiance = tempAllegiance;
+                    }
+                }
+
+                if (allegiance.enemy01 == targetAllegiance)
+                {
+                    isHostile = true;
+                }
+                else if (allegiance.enemy02 == targetAllegiance)
+                {
+                    isHostile = true;
+                }
+                else if (allegiance.enemy03 == targetAllegiance)
+                {
+                    isHostile = true;
+                }
+                else if (allegiance.enemy04 == targetAllegiance)
+                {
+                    isHostile = true;
+                }
+                else if (allegiance.enemy05 == targetAllegiance)
+                {
+                    isHostile = true;
+                }
+                else if (allegiance.enemy06 == targetAllegiance)
+                {
+                    isHostile = true;
+                }
+                else if (allegiance.enemy07 == targetAllegiance)
+                {
+                    isHostile = true;
+                }
+                else if (allegiance.enemy08 == targetAllegiance)
+                {
+                    isHostile = true;
+                }
+                else if (allegiance.enemy09 == targetAllegiance)
+                {
+                    isHostile = true;
+                }
+                else if (allegiance.enemy10 == targetAllegiance)
+                {
+                    isHostile = true;
+                }
             }
         }
 

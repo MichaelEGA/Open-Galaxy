@@ -957,7 +957,7 @@ public static class MissionFunctions
 
         if (message != "none")
         {
-            HudFunctions_Old.AddToShipLog(message);
+            HudFunctions.AddToMessageLog(message);
         }
 
         if (audio != "none" & internalAudioFile != "true")
@@ -1298,7 +1298,7 @@ public static class MissionFunctions
                 AudioFunctions.PlayAudioClip(hud.ship.audioManager, "beep01_toggle", "Cockpit", hud.ship.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
-            HudFunctions_Old.AddToShipLog("Waypoint activated " + waypointTitleString);
+            HudFunctions.AddToMissionLog("Waypoint activated " + waypointTitleString);
         }
     }
 
@@ -1985,7 +1985,7 @@ public static class MissionFunctions
 
         if (message != "none")
         {
-            HudFunctions_Old.AddToShipLog(message);
+            HudFunctions.AddToMessageLog(message);
         }
 
         if (audio != "none" & internalAudioFile != "true")
@@ -3995,8 +3995,8 @@ public static class MissionFunctions
                 missionManager.objectiveList = newObjectiveList.ToArray();
 
                 HudFunctions_Old.ObjectiveIndicator(missionEvent.data2);
-                HudFunctions_Old.UpdateObjectives(missionManager.objectiveList);
-                HudFunctions_Old.AddToShipLog("NEW OBJECTIVE: " + objective);
+                HudFunctions.UpdateObjectives(missionManager.objectiveList);
+                HudFunctions.AddToMissionLog("NEW OBJECTIVE: " + objective);
             }
             else if (mode == "cancelobjective")
             {
@@ -4009,10 +4009,10 @@ public static class MissionFunctions
 
                     missionManager.objectiveList = newObjectiveList.ToArray();
 
-                    HudFunctions_Old.UpdateObjectives(missionManager.objectiveList);               
+                    HudFunctions.UpdateObjectives(missionManager.objectiveList);               
                 }
 
-                HudFunctions_Old.AddToShipLog("OBJECTIVE CANCELLED: " + objective);
+                HudFunctions.AddToMissionLog("OBJECTIVE CANCELLED: " + objective);
             }
             else if (mode == "completeobjective")
             {
@@ -4025,10 +4025,10 @@ public static class MissionFunctions
 
                     missionManager.objectiveList = newObjectiveList.ToArray();
 
-                    HudFunctions_Old.UpdateObjectives(missionManager.objectiveList);                   
+                    HudFunctions.UpdateObjectives(missionManager.objectiveList);                   
                 }
 
-                HudFunctions_Old.AddToShipLog("OBJECTIVE COMPLETED: " + objective);
+                HudFunctions.AddToMissionLog("OBJECTIVE COMPLETED: " + objective);
             }
             else if (mode == "clearobjective")
             {
@@ -4041,14 +4041,14 @@ public static class MissionFunctions
 
                     missionManager.objectiveList = newObjectiveList.ToArray();
 
-                    HudFunctions_Old.UpdateObjectives(missionManager.objectiveList);
+                    HudFunctions.UpdateObjectives(missionManager.objectiveList);
                 }
             }
             else if (mode == "clearallobjectives")
             {
                 missionManager.objectiveList = newObjectiveList.ToArray();
 
-                HudFunctions_Old.UpdateObjectives(missionManager.objectiveList);
+                HudFunctions.UpdateObjectives(missionManager.objectiveList);
             }
         }
     }

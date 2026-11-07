@@ -612,6 +612,86 @@ public static class HudFunctions
         }
     }
 
+    //This displays the intercept point
+    public static void DisplayWaypoint(Hud hud)
+    {
+        CanvasGroup waypoint = FindCanvasGroup("Waypoint");
+
+        Debug.Log(" is running A");
+
+        if (hud.waypointActive == true)
+        {
+            Debug.Log(" is running B");
+
+            GameObject waypointObject = hud.scene.waypointObject;
+            Text waypointTitle = FindText("WaypointTitle");
+            Text waypointDistance = FindText("WaypointDistance");
+
+            if (Time.timeScale != 0)
+            {
+                Debug.Log(" is running C");
+
+                if (hud.mainCamera == null)
+                {
+                    OGCamera ogCamera = OGCameraFunctions.GetOGCamera();
+
+                    if (ogCamera != null)
+                    {
+                        hud.mainCamera = ogCamera.mainCamera.GetComponent<Camera>();
+                        Debug.Log(" is running C1");
+                    }
+                }
+
+                if (hud.mainCamera != null)
+                {
+                    Debug.Log(" is running D ");
+
+                    GameObject shipGO = hud.mainShip.gameObject;
+                    GameObject waypointGO = hud.mainShip.targetingSystem.waypoint;
+
+                    if (shipGO != null & waypointGO != null)
+                    {
+                        //This gets the distance to the waypoint
+                        float distance = Vector3.Distance(waypointGO.transform.position, shipGO.transform.position);
+                        waypointDistance.text = (distance / 1000f).ToString("0.000");
+
+                        //This sets the title of the waypoint
+                        waypointTitle.text = hud.waypointTitle;
+
+                        //This set the position of the waypoint on the UI
+                        Vector3 screenPosition = hud.mainCamera.WorldToScreenPoint(waypointGO.transform.position);
+                        waypoint.transform.position = new Vector2(screenPosition.x, screenPosition.y);
+
+                        //bool isVisible = IsInCameraView(hud.mainCamera, waypointGO.GetComponentInChildren<Renderer>());
+
+                        Debug.Log(" is running E");
+
+                        //if (isVisible == true)
+                        //{
+                        waypoint.gameObject.SetActive(true);
+
+                        //    Debug.Log(" is running 2: " + isVisible);
+                        //}
+                        //else
+                        //{
+                        //    waypoint.gameObject.SetActive(false);
+
+                        //    Debug.Log(" is running 3: " + isVisible);
+                        //}
+                    }
+                    else
+                    {
+                        waypoint.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+        else
+        {
+            waypoint.gameObject.SetActive(false);
+        }
+    }
+
     //This updates the ships objectives
     public static void UpdateObjectives(string[] objectives)
     {
@@ -799,7 +879,7 @@ public static class HudFunctions
             {
                 hud.textBoxes = new List<Text>();
 
-                Text[] allText = hud.transform.GetComponentsInChildren<Text>();
+                Text[] allText = hud.transform.GetComponentsInChildren<Text>(true);
 
                 foreach (Text tempText in allText)
                 {
@@ -836,7 +916,7 @@ public static class HudFunctions
             {
                 hud.canvasGroups = new List<CanvasGroup>();
 
-                CanvasGroup[] allCanvasGroups = hud.transform.GetComponentsInChildren<CanvasGroup>();
+                CanvasGroup[] allCanvasGroups = hud.transform.GetComponentsInChildren<CanvasGroup>(true);
 
                 foreach (CanvasGroup tempCanvasGroup in allCanvasGroups)
                 {
@@ -873,7 +953,7 @@ public static class HudFunctions
             {
                 hud.sliders = new List<Slider>();
 
-                Slider[] allSliders = hud.transform.GetComponentsInChildren<Slider>();
+                Slider[] allSliders = hud.transform.GetComponentsInChildren<Slider>(true);
 
                 foreach (Slider tempSlider in allSliders)
                 {

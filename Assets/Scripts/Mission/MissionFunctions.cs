@@ -1269,7 +1269,7 @@ public static class MissionFunctions
     //This activates the players onscreen waypoint marker
     public static void ActivateWaypointMarker(MissionEvent missionEvent)
     {
-        Hud_Old hud = HudFunctions_Old.GetHud();
+        Hud hud = HudFunctions.GetHud();
 
         bool waypointIsActive = false;
 
@@ -1282,20 +1282,20 @@ public static class MissionFunctions
 
         if (hud != null)
         {
-            hud.waypointIsActive = waypointIsActive;
+            hud.waypointActive = waypointIsActive;
 
             if (waypointIsActive == true)
             {
-                hud.waypointTitleString = waypointTitleString;
+                hud.waypointTitle = waypointTitleString;
             }
             else
             {
-                hud.waypointTitleString = "";
+                hud.waypointTitle = "";
             }
 
-            if (hud.ship != null)
+            if (hud.mainShip != null)
             {
-                AudioFunctions.PlayAudioClip(hud.ship.audioManager, "beep01_toggle", "Cockpit", hud.ship.gameObject.transform.position, 0, 1, 500, 1, 100);
+                AudioFunctions.PlayAudioClip(hud.mainShip.audioManager, "beep01_toggle", "Cockpit", hud.mainShip.gameObject.transform.position, 0, 1, 500, 1, 100);
             }
 
             HudFunctions.AddToMissionLog("Waypoint activated " + waypointTitleString);

@@ -30,6 +30,11 @@ public class Hud : MonoBehaviour
     public GameObject wireframeObject;
     public Material wireframeMaterial;
 
+    //Waypoint
+    public bool waypointActive;
+    public string waypointTitle;
+    public GameObject waypointGO;
+
     void Start()
     {
        
@@ -46,5 +51,6 @@ public class Hud : MonoBehaviour
         HudFunctions.DisplayShipPreview(this);
         HudFunctions.DisplayTargetInformation(this);
         HudFunctions.DisplayInterceptPoint(this);
+        HudFunctions.DisplayWaypoint(this);
     }
 }

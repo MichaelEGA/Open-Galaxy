@@ -44,31 +44,41 @@ public static class HudFunctions
     //This adds information to the ship log
     public static void AddToMissionLog(string message)
     {
-        if (Time.timeScale != 0)
-        {
-            Hud hud = GetHud();
-            Text missionLog = FindText("MissionLog");
+        Text missionLog = FindText("MissionLog");
 
-            if (hud != null)
-            {
-                missionLog.text = message.ToUpper();
-            }
-        }
+        missionLog.text = message.ToUpper();
     }
 
     //This adds information to the ship log
     public static void AddToMessageLog(string message)
     {
-        if (Time.timeScale != 0)
-        {
-            Hud hud = GetHud();
-            Text missionLog = FindText("MessageLog");
+        Text missionLog = FindText("MessageLog");
 
-            if (hud != null)
-            {
-                missionLog.text = "<< " + message + " >>";
-            }
-        }
+        missionLog.text = "<< " + message + " >>";
+    }
+
+    //This displays a hint on the screen
+    public static void DisplayHint(string hintText)
+    {
+        Text text = FindText("HintText");
+
+        text.text = hintText;
+
+        CanvasGroup hintCanvas = FindCanvasGroup("Hint");
+
+        Task a = new Task(FadeInAndOutCanvasGroup(hintCanvas, 5));
+    }
+
+    //This displays a hint on the screen
+    public static void DisplayChoice(string choiceUp, string choiceDown, string choiceRight, string choiceLeft, float displayTime)
+    {
+        Text text = FindText("HintText");
+
+        text.text = "UP" + choiceUp + "\n" + "DOWN" + choiceDown + "\n" + "RIGHT" + choiceRight + "\n" + "LEFT" + choiceLeft;
+
+        CanvasGroup hintCanvas = FindCanvasGroup("Hint");
+
+        Task a = new Task(FadeInAndOutCanvasGroup(hintCanvas, displayTime));
     }
 
     //This displays ship info on the hud
@@ -750,7 +760,18 @@ public static class HudFunctions
 
         CanvasGroup screenFlash = FindCanvasGroup("ScreenFlash");
 
-        Task a = new Task(FadeInAndOutCanvasGroup(screenFlash, 0.025f));
+        Task a = new Task(FlashCanvasGroup(screenFlash, 0.025f));
+    }
+
+    //This fades in and out a selected canvas group
+    public static void FadeInAndOutChosenCanvas(string canvasGroupName, float displayTime = 5, float minAlpha = 0)
+    {
+        CanvasGroup canvasGroup = FindCanvasGroup(canvasGroupName);
+
+        if (canvasGroup != null)
+        {
+            Task a = new Task(FadeInAndOutCanvasGroup(canvasGroup, displayTime, minAlpha));
+        }
     }
 
     #endregion
@@ -941,7 +962,48 @@ public static class HudFunctions
     }
 
     //This fades out the a canvas group
-    public static IEnumerator FadeInAndOutCanvasGroup(CanvasGroup canvasGroup, float duration)
+    public static IEnumerator FadeInAndOutCanvasGroup(CanvasGroup canvasGroup, float duration, float minAlpha = 0)
+    {
+        if (canvasGroup != null)
+        {
+            //This sets the starting alpha value to 0
+            float alpha = canvasGroup.alpha;
+
+            //This fades in the canvas
+            while (alpha < 1)
+            {
+                alpha = alpha + (1f / (60f * 0.5f));
+
+                if (canvasGroup != null)
+                {
+                    canvasGroup.alpha = alpha;
+                }
+
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+
+            //This sets the starting alpha value to 1
+            alpha = canvasGroup.alpha;
+
+            yield return new WaitForSecondsRealtime(duration - 1f);
+
+            //This fades the canvas out
+            while (alpha > minAlpha)
+            {
+                alpha = alpha - (1f / (60f * (0.5f)));
+
+                if (canvasGroup != null)
+                {
+                    canvasGroup.alpha = alpha;
+                }
+
+                yield return new WaitForSecondsRealtime(0.016f);
+            }
+        }
+    }
+
+    //This fades out the a canvas group
+    public static IEnumerator FlashCanvasGroup(CanvasGroup canvasGroup, float duration)
     {
         if (canvasGroup != null)
         {

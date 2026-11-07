@@ -27,6 +27,7 @@ public static class EnergyManagementSystemFunctions
                 if (energyManagementSystem.ship.isAI == false)
                 {
                     AudioFunctions.PlayAudioClip(energyManagementSystem.ship.audioManager, "beep01_toggle", "Cockpit", energyManagementSystem.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    HudFunctions.FadeInAndOutChosenCanvas("EnergyManagement", 5, 0.3f);
                 }
 
             }
@@ -37,6 +38,7 @@ public static class EnergyManagementSystemFunctions
                 if (energyManagementSystem.ship.isAI == false)
                 {
                     AudioFunctions.PlayAudioClip(energyManagementSystem.ship.audioManager, "beep01_toggle", "Cockpit", energyManagementSystem.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    HudFunctions.FadeInAndOutChosenCanvas("EnergyManagement", 5, 0.3f);
                 }
 
             }
@@ -47,6 +49,7 @@ public static class EnergyManagementSystemFunctions
                 if (energyManagementSystem.ship.isAI == false)
                 {
                     AudioFunctions.PlayAudioClip(energyManagementSystem.ship.audioManager, "beep01_toggle", "Cockpit", energyManagementSystem.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    HudFunctions.FadeInAndOutChosenCanvas("EnergyManagement", 5, 0.3f);
                 }
 
             }
@@ -57,6 +60,7 @@ public static class EnergyManagementSystemFunctions
                 if (energyManagementSystem.ship.isAI == false)
                 {
                     AudioFunctions.PlayAudioClip(energyManagementSystem.ship.audioManager, "beep01_toggle", "Cockpit", energyManagementSystem.gameObject.transform.position, 0, 1, 500, 1, 100);
+                    HudFunctions.FadeInAndOutChosenCanvas("EnergyManagement", 5, 0.3f);
                 }
 
             }

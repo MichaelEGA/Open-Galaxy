@@ -1825,7 +1825,7 @@ public static class MissionFunctions
 
             float savedTime = Time.time + displayTime;
 
-            HudFunctions_Old.DisplayChoice(choiceUp, choiceDown, choiceRight, choiceLeft, displayTime);
+            HudFunctions.DisplayChoice(choiceUp, choiceDown, choiceRight, choiceLeft, displayTime);
 
             while (Time.time < savedTime)
             {
@@ -1919,7 +1919,7 @@ public static class MissionFunctions
     {
         string hint = missionEvent.data1;
 
-        HudFunctions_Old.DisplayHint(hint);
+        HudFunctions.DisplayHint(hint);
     }
 
     //This temporary displays a large message in the center of the screen

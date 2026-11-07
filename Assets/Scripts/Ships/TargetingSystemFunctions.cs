@@ -128,6 +128,8 @@ public static class TargetingSystemFunctions
                 Scene scene = targetingSystem.ship.scene;
                 int countStart = 0;
 
+                HudFunctions.FadeInAndOutChosenCanvas("Radar", 5f, 0.3f);
+
                 //This sets the count start according to the current target the ship has selected
                 countStart = GetNextTargetNo_SmallShipPlayer(targetingSystem);
 
@@ -204,6 +206,8 @@ public static class TargetingSystemFunctions
             {
                 Scene scene = targetingSystem.ship.scene;
                 int countStart = 0;
+
+                HudFunctions.FadeInAndOutChosenCanvas("Radar", 5f, 0.3f);
 
                 //This sets the count start according to the current target the ship has selected
                 countStart = GetNextTargetNo_SmallShipPlayer(targetingSystem);
@@ -285,6 +289,8 @@ public static class TargetingSystemFunctions
 
             if (targetingSystem.targetPressedTime < Time.time & targetingSystem.getClosestEnemy == true || automaticSearch == true || externalActivation == true)
             {
+                HudFunctions.FadeInAndOutChosenCanvas("Radar", 5f, 0.3f);
+
                 Scene scene = targetingSystem.ship.scene;
 
                 GameObject target = null;
@@ -488,6 +494,8 @@ public static class TargetingSystemFunctions
                 Ship targetShip = null;
                 LargeShip targetLargeShip = null;
 
+                HudFunctions.FadeInAndOutChosenCanvas("Radar", 5f, 0.3f);
+
                 //This checks for the closest small ship first
                 foreach (GameObject tempTarget in scene.objectPool)
                 {
@@ -546,6 +554,8 @@ public static class TargetingSystemFunctions
             Ship targetShip = null;
             LargeShip tempLargeShip = null;
             LargeShip targetLargeShip = null;
+
+            HudFunctions.FadeInAndOutChosenCanvas("Radar", 5f, 0.3f);
 
             foreach (GameObject ship in scene.objectPool)
             {

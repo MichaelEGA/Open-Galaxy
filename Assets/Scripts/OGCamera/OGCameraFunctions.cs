@@ -1288,7 +1288,7 @@ public class OGCameraFunctions : MonoBehaviour
 
             ogCamera.targetShip.layer = LayerMask.NameToLayer("collision_player");
 
-            GameObjectUtils.SetLayerAllChildren(ogCamera.targetShip.transform, LayerMask.NameToLayer("collision_player"));
+            GameObjectUtils.SetLayerAllChildren(ogCamera.targetShip.transform, LayerMask.NameToLayer("collision_player"), "nolayerchange");
 
             Ship ship = ogCamera.targetShip.GetComponent<Ship>();
 
@@ -1306,7 +1306,7 @@ public class OGCameraFunctions : MonoBehaviour
         {
             ogCamera.targetShip.layer = ogCamera.savedLayerMask;
 
-            GameObjectUtils.SetLayerAllChildren(ogCamera.targetShip.transform, ogCamera.savedLayerMask);
+            GameObjectUtils.SetLayerAllChildren(ogCamera.targetShip.transform, ogCamera.savedLayerMask, "nolayerchange");
 
             Ship ship = ogCamera.targetShip.GetComponent<Ship>();
 

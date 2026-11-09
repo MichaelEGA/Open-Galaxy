@@ -14,7 +14,7 @@ public static class EnergyWeaponFunctions
         {
             EnergyWeaponFunctions.GetCannons(energyWeapon);
             EnergyWeaponFunctions.LoadEnergyWeaponParticleSystem(energyWeapon);
-            EnergyWeaponFunctions.LoadEnergyWeaponMuzzleFlashParticleSystem(energyWeapon);
+            EnergyWeaponFunctions.LoadEnergyWeaponMuzzleFlash(energyWeapon);
         }
     }
 
@@ -137,101 +137,88 @@ public static class EnergyWeaponFunctions
     }
 
     //This sets all the correct settings on the provided particle system to make a muzzle flash
-    public static void LoadEnergyWeaponMuzzleFlashParticleSystem(EnergyWeapon energyWeapon)
+    public static void LoadEnergyWeaponMuzzleFlash(EnergyWeapon energyWeapon)
     {
-        Ship ship = energyWeapon.ship;
-
-        //This loads the necessary prefabs
-        GameObject redMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
-        GameObject greenMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
-        GameObject yellowMuzzleFlashLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
-
-        Material redMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_red") as Material;
-        Material greenMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_green") as Material;
-        Material yellowMuzzleFlashMaterial = Resources.Load(OGGetAddress.particles + "materials/muzzleflash_yellow") as Material;
-
-        //This loads the particle system and the particle collider
-        energyWeapon.energyWeaponMuzzleFlashParticleSystem = new GameObject();
-        energyWeapon.energyWeaponMuzzleFlashParticleSystem.layer = ship.gameObject.layer;
-        energyWeapon.energyWeaponMuzzleFlashParticleSystem.name = "muzzleflashparticlesystem_" + ship.gameObject.name;
-        ParticleSystem particleSystem = energyWeapon.energyWeaponMuzzleFlashParticleSystem.AddComponent<ParticleSystem>();
-        ParticleSystemRenderer particleSystemRenderer = energyWeapon.energyWeaponMuzzleFlashParticleSystem.GetComponent<ParticleSystemRenderer>();
-
-        //This sets the particle system to be subordinate to the smallship
-        particleSystem.transform.SetParent(ship.transform);
-        energyWeapon.energyWeaponMuzzleFlashParticleSystem.transform.localScale = new Vector3(1, 1, 1);
-
-        //This adds the new particle system to the pool
-        if (ship.scene != null)
+        if (energyWeapon.laserCannon1 != null)
         {
-            if (ship.scene.lasersPool == null)
-            {
-                ship.scene.lasersPool = new List<GameObject>();
-            }
-
-            ship.scene.lasersPool.Add(energyWeapon.energyWeaponParticleSystem);
+            energyWeapon.muzzleFlash1 = InstantiateMuzzleFlash(energyWeapon, energyWeapon.laserCannon1.transform, energyWeapon.laserColour);
+            energyWeapon.muzzleFlash1.SetActive(false);
+            energyWeapon.muzzleFlash1.layer = 0;
         }
 
-        //This sets the paticle to operate in scene space (as opposed to local and world)
-        var main = particleSystem.main;
-        main.loop = false;
-        main.playOnAwake = false;
-        main.startSpeed = new ParticleSystem.MinMaxCurve(0, 0);
-        main.simulationSpace = ParticleSystemSimulationSpace.Local;
-        main.customSimulationSpace = ship.transform;
-        main.startLifetime = new ParticleSystem.MinMaxCurve(0.1f, 0.2f);
-        main.startSize = 3;
-
-        //This causes the particle emmiter to only emit one particle per play
-        var emission = particleSystem.emission;
-        emission.enabled = true;
-        emission.rateOverTime = 0;
-        emission.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0f, 1), });
-
-        //This makes the particle emitter fire in one direction
-        var shape = particleSystem.shape;
-        shape.enabled = true;
-        shape.scale = new Vector3(1, 1, 1);
-        shape.radius = 0.0001f;
-        shape.radiusThickness = 0.001f;
-        shape.shapeType = ParticleSystemShapeType.Sphere;
-
-        //This makes the particle emitter fire in one direction
-        var textureSheetAnimation = particleSystem.textureSheetAnimation;
-        textureSheetAnimation.enabled = true;
-        textureSheetAnimation.numTilesX = 4;
-        textureSheetAnimation.numTilesY = 1;
-
-        //Values for the renderer
-        particleSystemRenderer.sortingFudge = 10;
-        particleSystemRenderer.minParticleSize = 0;
-        particleSystemRenderer.maxParticleSize = 5;
-        particleSystemRenderer.sortMode = ParticleSystemSortMode.Distance;
-        particleSystemRenderer.flip = new Vector3(0.5f, 0.5f, 0.5f);
-        particleSystemRenderer.sortingOrder = 2;
-
-        //This gets up the light system
-        var lights = particleSystem.lights;
-        lights.enabled = true;
-
-        if (ship.energyWeapon.laserColour == "red")
+        if (energyWeapon.laserCannon2 != null)
         {
-            particleSystemRenderer.material = redMuzzleFlashMaterial;
-            lights.light = redMuzzleFlashLight.GetComponent<Light>();
-        }
-        else if (ship.energyWeapon.laserColour == "green")
-        {
-            particleSystemRenderer.material = greenMuzzleFlashMaterial;
-            lights.light = greenMuzzleFlashLight.GetComponent<Light>();
-        }
-        else
-        {
-            particleSystemRenderer.material = yellowMuzzleFlashMaterial;
-            lights.light = yellowMuzzleFlashLight.GetComponent<Light>();
+            energyWeapon.muzzleFlash2 = InstantiateMuzzleFlash(energyWeapon, energyWeapon.laserCannon2.transform, energyWeapon.laserColour);
+            energyWeapon.muzzleFlash2.SetActive(false);
+            energyWeapon.muzzleFlash2.layer = 0;
         }
 
-        //This prevents the particle system playing when loaded
-        particleSystem.Stop();
+        if (energyWeapon.laserCannon3 != null)
+        {
+            energyWeapon.muzzleFlash3 = InstantiateMuzzleFlash(energyWeapon, energyWeapon.laserCannon3.transform, energyWeapon.laserColour);
+            energyWeapon.muzzleFlash3.SetActive(false);
+            energyWeapon.muzzleFlash3.layer = 0;
+        }
+
+        if (energyWeapon.laserCannon4 != null)
+        {
+            energyWeapon.muzzleFlash4 = InstantiateMuzzleFlash(energyWeapon, energyWeapon.laserCannon4.transform, energyWeapon.laserColour);
+            energyWeapon.muzzleFlash4.SetActive(false);
+            energyWeapon.muzzleFlash4.layer = 0;
+        }
+    }
+
+    public static GameObject InstantiateMuzzleFlash(EnergyWeapon energyWeapon, Transform parentTransform, string colour)
+    {
+        GameObject muzzleFlash = Resources.Load(OGGetAddress.particles + "models/laserbolt") as GameObject;
+
+        GameObject muzzleFlashGO = GameObject.Instantiate(muzzleFlash);
+        muzzleFlashGO.name = "muzzleFlash01_nolayerchange";
+        muzzleFlashGO.transform.parent = energyWeapon.ship.transform;
+        muzzleFlashGO.transform.position = parentTransform.position;
+        muzzleFlashGO.transform.localRotation = Quaternion.identity;
+        GameObjectUtils.SetGlobalScale(muzzleFlashGO.transform, Vector3.one);
+
+        MeshRenderer muzzleFlashMeshRenderer = muzzleFlash.GetComponent<MeshRenderer>();
+
+        if (energyWeapon.laserColour == "red")
+        {
+            Material redLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_red") as Material;
+            List<Material> redMaterial = new List<Material>();
+            redMaterial.Add(redLaserMaterial);
+            muzzleFlashMeshRenderer.SetMaterials(redMaterial);
+
+            GameObject redLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_red") as GameObject;
+            GameObject redLaserLightGO = GameObject.Instantiate(redLaserLight);
+            redLaserLightGO.transform.parent = muzzleFlashGO.transform;
+            redLaserLightGO.transform.localPosition = Vector3.zero;
+        }
+        else if (energyWeapon.laserColour == "green")
+        {
+            Material greenLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_green") as Material;
+            List<Material> greenMaterial = new List<Material>();
+            greenMaterial.Add(greenLaserMaterial);
+            muzzleFlashMeshRenderer.SetMaterials(greenMaterial);
+
+            GameObject greenLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_green") as GameObject;
+            GameObject greenLaserLightGO = GameObject.Instantiate(greenLaserLight);
+            greenLaserLightGO.transform.parent = muzzleFlashGO.transform;
+            greenLaserLightGO.transform.localPosition = Vector3.zero;
+        }
+        else if (energyWeapon.laserColour == "yellow")
+        {
+            Material yellowLaserMaterial = Resources.Load(OGGetAddress.particles + "materials/laser_material_yellow") as Material;
+            List<Material> yellowMaterial = new List<Material>();
+            yellowMaterial.Add(yellowLaserMaterial);
+            muzzleFlashMeshRenderer.SetMaterials(yellowMaterial);
+
+            GameObject yellowLaserLight = Resources.Load(OGGetAddress.particles + "lights/laser_light_yellow") as GameObject;
+            GameObject yellowLaserLightGO = GameObject.Instantiate(yellowLaserLight);
+            yellowLaserLightGO.transform.parent = muzzleFlashGO.transform;
+            yellowLaserLightGO.transform.localPosition = Vector3.zero;
+        }
+
+        return muzzleFlashGO;
     }
 
     //This modifies the collision layers to the player layer so that it's visible in film mode
@@ -691,98 +678,98 @@ public static class EnergyWeaponFunctions
     {
         EnergyWeapon energyWeapon = GetEnergyWeapon(ship);
 
-        energyWeapon.energyWeaponFiring = true;
-
-        float power = ship.energyManagementSystem.energyWeaponPower;
-        float rating = ship.laserFireRating;
-        int type = WeaponManagementFunctions.GetWeaponType(energyWeapon.weaponManagement);
-        int mode = WeaponManagementFunctions.GetWeaponMode(energyWeapon.weaponManagement);
-
-        float volume = 0.6f;
-        float pitch = 1;
-
-        if (mode == 1) //weapon mode one is rapid fire
+        if (energyWeapon != null)
         {
-            volume = 0.3f;
-            pitch = 1.1f;
-        }
+            energyWeapon.energyWeaponFiring = true;
 
-        if (ship.ogInput == null)
-        {
-            ship.ogInput = OGInputFunctions.GetOGInput();
-        }
+            float power = ship.energyManagementSystem.energyWeaponPower;
+            float rating = ship.laserFireRating;
+            int type = WeaponManagementFunctions.GetWeaponType(energyWeapon.weaponManagement);
+            int mode = WeaponManagementFunctions.GetWeaponMode(energyWeapon.weaponManagement);
 
-        if (ship != null)
-        {
-            if (energyWeapon.energyWeaponParticleSystem != null)
+            float volume = 0.6f;
+            float pitch = 1;
+
+            if (mode == 1) //weapon mode one is rapid fire
             {
-                ParticleSystem particleSystem = energyWeapon.energyWeaponParticleSystem.GetComponent<ParticleSystem>();
-                ParticleSystem particleSystemMuzzleFlash = energyWeapon.energyWeaponMuzzleFlashParticleSystem.GetComponent<ParticleSystem>();
-
-                float spatialBlend = 1f;
-                string mixer = "External";
-
-                if (ship.isAI == false)
-                {
-                    spatialBlend = 0;
-                    mixer = "Cockpit";
-                }
-
-                string audioFile = ship.laserAudio;
-
-                if (lasersToFire == 1 || lasersToFire == 2 || lasersToFire == 3 || lasersToFire == 4)
-                {
-                    if (particleSystem != null & firstCannon != null & ship != null)
-                    {
-                        FireSingleEnergyWeapon(ship, energyWeapon, particleSystem, particleSystemMuzzleFlash, firstCannon, power, rating, type, mode);
-                        PlayEnergyWeaponSound(ship, firstCannon, audioFile, mixer, spatialBlend, pitch, volume);
-                    }  
-                }
-
-                if (lasersToFire == 2 || lasersToFire == 3 || lasersToFire == 4)
-                {
-                    if (particleSystem != null & secondCannon != null & ship != null)
-                    {
-                        yield return null;
-
-                        FireSingleEnergyWeapon(ship, energyWeapon, particleSystem, particleSystemMuzzleFlash, secondCannon, power, rating, type, mode);
-                        PlayEnergyWeaponSound(ship, secondCannon, audioFile, mixer, spatialBlend, pitch, volume);
-                    }
-                }
-
-                if (lasersToFire == 3 || lasersToFire == 4)
-                {
-                    if (particleSystem != null & thirdCannon != null)
-                    {
-                        yield return null;
-
-                        FireSingleEnergyWeapon(ship, energyWeapon, particleSystem, particleSystemMuzzleFlash, thirdCannon, power, rating, type, mode);
-                        PlayEnergyWeaponSound(ship, thirdCannon, audioFile, mixer, spatialBlend, pitch, volume);
-                    }
-                }
-
-                if (lasersToFire == 4)
-                {
-                    if (particleSystem != null & fourthCannon != null & ship != null)
-                    {
-                        yield return null;
-
-                        FireSingleEnergyWeapon(ship, energyWeapon, particleSystem, particleSystemMuzzleFlash, fourthCannon, power, rating, type, mode);
-                        PlayEnergyWeaponSound(ship, fourthCannon, audioFile, mixer, spatialBlend, pitch, volume);
-                    }
-                }
-
-                energyWeapon.energyWeaponFiring = false;
+                volume = 0.3f;
+                pitch = 1.1f;
             }
-        } 
+
+            if (ship.ogInput == null)
+            {
+                ship.ogInput = OGInputFunctions.GetOGInput();
+            }
+
+            if (ship != null)
+            {
+                if (energyWeapon.energyWeaponParticleSystem != null)
+                {
+                    ParticleSystem particleSystem = energyWeapon.energyWeaponParticleSystem.GetComponent<ParticleSystem>();
+
+                    float spatialBlend = 1f;
+                    string mixer = "External";
+
+                    if (ship.isAI == false)
+                    {
+                        spatialBlend = 0;
+                        mixer = "Cockpit";
+                    }
+
+                    string audioFile = ship.laserAudio;
+
+                    if (lasersToFire == 1 || lasersToFire == 2 || lasersToFire == 3 || lasersToFire == 4)
+                    {
+                        if (particleSystem != null & firstCannon != null & ship != null)
+                        {
+                            FireSingleEnergyWeapon(ship, energyWeapon, particleSystem, firstCannon, power, rating, type, mode);
+                            PlayEnergyWeaponSound(ship, firstCannon, audioFile, mixer, spatialBlend, pitch, volume);
+                        }
+                    }
+
+                    if (lasersToFire == 2 || lasersToFire == 3 || lasersToFire == 4)
+                    {
+                        if (particleSystem != null & secondCannon != null & ship != null)
+                        {
+                            yield return null;
+
+                            FireSingleEnergyWeapon(ship, energyWeapon, particleSystem, secondCannon, power, rating, type, mode);
+                            PlayEnergyWeaponSound(ship, secondCannon, audioFile, mixer, spatialBlend, pitch, volume);
+                        }
+                    }
+
+                    if (lasersToFire == 3 || lasersToFire == 4)
+                    {
+                        if (particleSystem != null & thirdCannon != null)
+                        {
+                            yield return null;
+
+                            FireSingleEnergyWeapon(ship, energyWeapon, particleSystem, thirdCannon, power, rating, type, mode);
+                            PlayEnergyWeaponSound(ship, thirdCannon, audioFile, mixer, spatialBlend, pitch, volume);
+                        }
+                    }
+
+                    if (lasersToFire == 4)
+                    {
+                        if (particleSystem != null & fourthCannon != null & ship != null)
+                        {
+                            yield return null;
+
+                            FireSingleEnergyWeapon(ship, energyWeapon, particleSystem, fourthCannon, power, rating, type, mode);
+                            PlayEnergyWeaponSound(ship, fourthCannon, audioFile, mixer, spatialBlend, pitch, volume);
+                        }
+                    }
+
+                    energyWeapon.energyWeaponFiring = false;
+                }
+            }
+        }
     }
 
     //This actuallly fires the energy weapon
-    public static void FireSingleEnergyWeapon(Ship ship, EnergyWeapon energyWeapon, ParticleSystem particleSystem, ParticleSystem particleSystemMuzzleFlash, GameObject cannon, float power, float rating, float type, float mode)
+    public static void FireSingleEnergyWeapon(Ship ship, EnergyWeapon energyWeapon, ParticleSystem particleSystem, GameObject cannon, float power, float rating, float type, float mode)
     {
-        particleSystemMuzzleFlash.transform.position = cannon.transform.position;
-        particleSystemMuzzleFlash.transform.rotation = cannon.transform.rotation;
-        particleSystemMuzzleFlash.Play();
+        Task b = new Task(DisplayMuzzleFlash(energyWeapon, cannon));
 
         particleSystem.transform.position = cannon.transform.position;
         particleSystem.transform.rotation = cannon.transform.rotation;
@@ -795,6 +782,79 @@ public static class EnergyWeaponFunctions
         if (ship.isAI == false & ship.ogInput.keyboardAndMouse == false)
         {
             Task a = new Task(OGInputFunctions.ShakeControllerForSetTime(0.05f, 0.40f, 0.40f));
+        }
+    }
+
+    public static IEnumerator DisplayMuzzleFlash(EnergyWeapon energyWeapon, GameObject cannon)
+    {
+        int cannonNo = 1;
+
+        if (cannon == energyWeapon.laserCannon1)
+        {
+            cannonNo = 1;
+        }
+        else if (cannon == energyWeapon.laserCannon2)
+        {
+            cannonNo = 2;
+        }
+        else if (cannon == energyWeapon.laserCannon3)
+        {
+            cannonNo = 3;
+        }
+        else if (cannon == energyWeapon.laserCannon4)
+        {
+            cannonNo = 4;
+        }
+
+        if (cannonNo == 1)
+        {
+            if (energyWeapon.muzzleFlash1 != null)
+            {
+                energyWeapon.muzzleFlash1.SetActive(true);
+            }
+        }
+        else if (cannonNo == 2)
+        {
+            if (energyWeapon.muzzleFlash2 != null)
+            {
+                energyWeapon.muzzleFlash2.SetActive(true);
+            }
+        }
+        else if (cannonNo == 3)
+        {
+            if (energyWeapon.muzzleFlash3 != null)
+            {
+                energyWeapon.muzzleFlash3.SetActive(true);
+            }
+        }
+        else if (cannonNo == 4)
+        {
+            if (energyWeapon.muzzleFlash4 != null)
+            {
+                energyWeapon.muzzleFlash4.SetActive(true);
+            }
+        }
+
+        yield return new WaitForSeconds(0.05f);
+
+        if (energyWeapon.muzzleFlash1 != null)
+        {
+            energyWeapon.muzzleFlash1.SetActive(false);
+        }
+
+        if (energyWeapon.muzzleFlash2 != null)
+        {
+            energyWeapon.muzzleFlash2.SetActive(false);
+        }
+
+        if (energyWeapon.muzzleFlash3 != null)
+        {
+            energyWeapon.muzzleFlash3.SetActive(false);
+        }
+
+        if (energyWeapon.muzzleFlash4 != null)
+        {
+            energyWeapon.muzzleFlash4.SetActive(false);
         }
     }
 
@@ -819,38 +879,41 @@ public static class EnergyWeaponFunctions
         int events = particleSystemScript.GetCollisionEvents(ship.gameObject, collisionEvents); //This grabs all the collision events
         particleSystemScript.GetCustomParticleData(customData, ParticleSystemCustomData.Custom1);
 
-        for (int i = 0; i < events; i++) //This cycles through all the collision events and deals with one at a time
+        if (customData != null & collisionEvents != null & hitPositions != null)
         {
-            //This gets key data from the collision event
-            Vector3 hitPosition = collisionEvents[i].intersection; //This gets the position of the collision event 
-            float power = customData[i].x;
-            float rating = customData[i].y;
-            float type = customData[i].z;
-
-            if (ship != null)
+            for (int i = 0; i < events; i++) //This cycles through all the collision events and deals with one at a time
             {
-                //This gets a key reference, audiomanager
-                Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
+                //This gets key data from the collision event
+                Vector3 hitPosition = collisionEvents[i].intersection; //This gets the position of the collision event 
+                float power = customData[i].x;
+                float rating = customData[i].y;
+                float type = customData[i].z;
 
-                //This gets key information on the object hit
-                var objectHitDetails = ObjectHitDetails(ship.gameObject, hitPosition);
-                float shieldFront = objectHitDetails.shieldFront;
-                float shieldBack = objectHitDetails.shieldBack;
-                float forward = objectHitDetails.forward;
-                string shieldType = objectHitDetails.shieldType;
-
-                //This instantiates an explosion
-                InstantiateLaserExplosion(hitPosition, forward, shieldFront, shieldBack, ship.energyWeapon.laserColour, shieldType, audioManager);
-
-                //This makes the screen flash
-                if (objectHitDetails.isAI == false)
+                if (ship != null)
                 {
-                    HudFunctions.ScreenFlash();
-                }
+                    //This gets a key reference, audiomanager
+                    Audio audioManager = GameObject.FindFirstObjectByType<Audio>();
 
-                //This causes the ship to take damage
-                float damage = CalculateWeaponDamage(power, rating);
-                DamageSystemFunctions.TakeDamage_SmallShip(ship.damageSystem, damage, hitPosition, false);              
+                    //This gets key information on the object hit
+                    var objectHitDetails = ObjectHitDetails(ship.gameObject, hitPosition);
+                    float shieldFront = objectHitDetails.shieldFront;
+                    float shieldBack = objectHitDetails.shieldBack;
+                    float forward = objectHitDetails.forward;
+                    string shieldType = objectHitDetails.shieldType;
+
+                    //This instantiates an explosion
+                    InstantiateLaserExplosion(hitPosition, forward, shieldFront, shieldBack, ship.energyWeapon.laserColour, shieldType, audioManager);
+
+                    //This makes the screen flash
+                    if (objectHitDetails.isAI == false)
+                    {
+                        HudFunctions.ScreenFlash();
+                    }
+
+                    //This causes the ship to take damage
+                    float damage = CalculateWeaponDamage(power, rating);
+                    DamageSystemFunctions.TakeDamage_SmallShip(ship.damageSystem, damage, hitPosition, false);
+                }
             }
         }
     }

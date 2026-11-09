@@ -12,7 +12,7 @@ public static class FlightControlAI_SmallFunctions
     {
         FlightControlSystem_Small flightControlSystem = flightControlAI.ship.flightControlSystem_Small;
 
-        if (flightControlAI.isAI == true & flightControlSystem.automaticRotationTurnAround == false & flightControlSystem.automaticRotationSpin == false & flightControlSystem.controlLock == false)
+        if (flightControlAI.ship.isAI == true & flightControlSystem.automaticRotationTurnAround == false & flightControlSystem.automaticRotationSpin == false & flightControlSystem.controlLock == false)
         {
             //This adds all the default ai tags when the ship is first run
             if (flightControlAI.aiStarted == false)
@@ -1570,7 +1570,7 @@ public static class FlightControlAI_SmallFunctions
         {
             if (flightControlAI.followTarget != null)
             {
-                if (flightControlAI.isAI == true)
+                if (flightControlAI.ship.isAI == true)
                 {
                     flightControlAI.flyInFormation = true;
                 }

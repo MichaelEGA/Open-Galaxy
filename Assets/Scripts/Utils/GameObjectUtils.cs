@@ -300,13 +300,16 @@ public static class GameObjectUtils
     }
 
     //This sets the layer choice for all the children of an object
-    public static void SetLayerAllChildren(Transform root, int layer)
+    public static void SetLayerAllChildren(Transform root, int layer, string exception = "none")
     {
         var children = root.GetComponentsInChildren<Transform>(includeInactive: true);
 
         foreach (var child in children)
         {
-            child.gameObject.layer = layer;
+            if (!child.gameObject.name.Contains(exception))
+            {
+                child.gameObject.layer = layer;
+            }
         }
     }
 
@@ -535,5 +538,18 @@ public static class GameObjectUtils
         }
 
         gameObject.transform.localPosition = endPosition;
+    }
+
+    //Set an objects global scale
+    public static void SetGlobalScale(this Transform transform, Vector3 globalScale)
+    {
+        transform.localScale = Vector3.one;
+        Vector3 lossy = transform.lossyScale;
+
+        transform.localScale = new Vector3(
+            lossy.x != 0 ? globalScale.x / lossy.x : 1f,
+            lossy.y != 0 ? globalScale.y / lossy.y : 1f,
+            lossy.z != 0 ? globalScale.z / lossy.z : 1f
+        );
     }
 }

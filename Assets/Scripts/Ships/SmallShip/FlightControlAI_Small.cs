@@ -12,7 +12,6 @@ public class FlightControlAI_Small : MonoBehaviour
     public float aiAttackTime;
     public float healthSave;
     public bool withdraw;
-    public bool isAI;
     public bool requestingTarget;
     public bool aiMatchSpeed;
     public bool aiStarted;

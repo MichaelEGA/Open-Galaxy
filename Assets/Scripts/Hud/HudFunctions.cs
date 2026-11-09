@@ -617,20 +617,14 @@ public static class HudFunctions
     {
         CanvasGroup waypoint = FindCanvasGroup("Waypoint");
 
-        Debug.Log(" is running A");
-
-        if (hud.waypointActive == true)
+        if (hud.waypointActive == true & hud.scene != null)
         {
-            Debug.Log(" is running B");
-
             GameObject waypointObject = hud.scene.waypointObject;
             Text waypointTitle = FindText("WaypointTitle");
             Text waypointDistance = FindText("WaypointDistance");
 
             if (Time.timeScale != 0)
             {
-                Debug.Log(" is running C");
-
                 if (hud.mainCamera == null)
                 {
                     OGCamera ogCamera = OGCameraFunctions.GetOGCamera();
@@ -638,14 +632,11 @@ public static class HudFunctions
                     if (ogCamera != null)
                     {
                         hud.mainCamera = ogCamera.mainCamera.GetComponent<Camera>();
-                        Debug.Log(" is running C1");
                     }
                 }
 
                 if (hud.mainCamera != null)
                 {
-                    Debug.Log(" is running D ");
-
                     GameObject shipGO = hud.mainShip.gameObject;
                     GameObject waypointGO = hud.mainShip.targetingSystem.waypoint;
 
@@ -663,8 +654,6 @@ public static class HudFunctions
                         waypoint.transform.position = new Vector2(screenPosition.x, screenPosition.y);
 
                         //bool isVisible = IsInCameraView(hud.mainCamera, waypointGO.GetComponentInChildren<Renderer>());
-
-                        Debug.Log(" is running E");
 
                         //if (isVisible == true)
                         //{

@@ -27,6 +27,11 @@ public class EnergyWeapon : MonoBehaviour
     public GameObject laserCannon3;
     public GameObject laserCannon4;
 
+    public GameObject muzzleFlash1;
+    public GameObject muzzleFlash2;
+    public GameObject muzzleFlash3;
+    public GameObject muzzleFlash4;
+
     public string laserAudio;
     public string ionAudio = "weapon_ioncannon";
     public string plasmaAudio = "weapon_plasma";

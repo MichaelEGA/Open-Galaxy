@@ -1392,7 +1392,7 @@ public static class MissionFunctions
 
                             if (flightControlSystem != null)
                             {
-                                if (flightControlSystem.isAI == true)
+                                if (flightControlSystem.ship.isAI == true)
                                 {
                                     if (speedControlTag != "none" & speedControlTag != "nochange")
                                     {

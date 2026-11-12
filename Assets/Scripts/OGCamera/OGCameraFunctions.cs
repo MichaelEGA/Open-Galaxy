@@ -444,6 +444,8 @@ public class OGCameraFunctions : MonoBehaviour
 
                     if (ship != null)
                     {
+                        ogCamera.cockpitAnchor.transform.position = ogCamera.targetShipCameraGO.transform.position; //THIS IS A TEST LINE
+
                         float gForceMagnitude;
 
                         //This smooth changes the thrust speed to prevent the camera lurching backwards and forwards between two values

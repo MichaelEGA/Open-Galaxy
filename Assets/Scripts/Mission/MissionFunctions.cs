@@ -4971,7 +4971,7 @@ public static class MissionFunctions
         
         //This unloads the other systems
         AudioFunctions.UnloadAudioManager();
-        HudFunctions_Old.UnloadHud();
+        HudFunctions.UnloadHud();
         MusicFunctions.UnloadMusicManager();
         OGInputFunctions.StopShakeController();
         OGCameraFunctions.UnloadOGCamera();

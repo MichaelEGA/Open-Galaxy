@@ -565,10 +565,6 @@ public static class HudFunctions
                 targetSystems.value = 0;
             }
         }
-
-        
-
-
     }
 
     //This displays the intercept point

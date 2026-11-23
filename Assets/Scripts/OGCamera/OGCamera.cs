@@ -10,6 +10,7 @@ public class OGCamera : MonoBehaviour
     public GameObject cockpitCamera;
     public GameObject starfieldCamera;
     public GameObject planetCamera;
+    public GameObject hudCamera;
     public GameObject moveGO;
     public GameObject rotateGO;
     public GameObject cockpitAnchor;

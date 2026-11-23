@@ -177,7 +177,7 @@ public class OGCameraFunctions : MonoBehaviour
             cockpitCameraData.renderPostProcessing = true;
         }
 
-        //ogCamera.cockpitCamera = cockpitCameraGO;
+        ogCamera.hudCamera = hudCameraGO;
 
         ogCamera.cockpitAnchor = GameObject.Find("cockpitanchor");
 
@@ -306,6 +306,7 @@ public class OGCameraFunctions : MonoBehaviour
             GameObject.Destroy(ogCamera.mainCamera);
             GameObject.Destroy(ogCamera.cockpitCamera);
             GameObject.Destroy(ogCamera.starfieldCamera);
+            GameObject.Destroy(ogCamera.hudCamera);
             GameObject.Destroy(ogCamera.planetCamera);
             GameObject.Destroy(ogCamera.cockpitAnchor);
             GameObject.Destroy(ogCamera.gameObject);
